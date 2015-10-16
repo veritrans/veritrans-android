@@ -3,4 +3,25 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pay_with">Pay With</string>
+
+
+    <string-array name="payment_methods">
+        <item>Offers</item>
+        <item>Credit/Debit Card</item>
+        <item>Mandiri Clickpay</item>
+
+        <item>CIMB Clicks</item>
+        <item>ePay BRI</item>
+        <item>BBM Money</item>
+
+        <item>Indosat Dompetku</item>
+        <item>Mandiri e-Cash</item>
+        <item>Bank Transfer</item>
+        <item>Mandiri Bill Payment</item>
+        <item>Indomaret</item>
+
+    </string-array>
+
+
 </resources>
