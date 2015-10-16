@@ -7,7 +7,7 @@
         android:label="@string/app_name">
 
         <activity
-            android:name=".UserDetailsActivity"
+            android:name=".activities.UserDetailsActivity"
             android:theme="@style/VeritransAppTheme"/>
 
     </application>
