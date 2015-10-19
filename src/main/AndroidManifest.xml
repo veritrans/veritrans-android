@@ -10,6 +10,11 @@
             android:name=".activities.UserDetailsActivity"
             android:theme="@style/VeritransAppTheme"/>
 
+
+        <activity
+            android:name=".activities.PaymentMethodsActivity"
+            android:theme="@style/VeritransAppTheme"/>
+
     </application>
 
 </manifest>
