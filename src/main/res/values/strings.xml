@@ -6,6 +6,15 @@
     <string name="pay_with">Pay With</string>
 
 
+
+    <!-- Font names -->
+    <string name="font_roboto_regular">roboto_regular</string>
+    <string name="font_roboto_bold">roboto_bold</string>
+    <string name="font_roboto_light">roboto_light</string>
+
+
+
+    <!-- name of payment methods -->
     <string-array name="payment_methods">
         <item>Offers</item>
         <item>Credit/Debit Card</item>
@@ -22,6 +31,5 @@
         <item>Indomaret</item>
 
     </string-array>
-
 
 </resources>
