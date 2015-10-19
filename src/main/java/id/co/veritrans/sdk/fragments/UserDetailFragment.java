@@ -1,20 +1,29 @@
 package id.co.veritrans.sdk.fragments;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+import java.io.IOException;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.UserDetailsActivity;
+import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.SdkUtil;
+import id.co.veritrans.sdk.core.StorageDataHandler;
+import id.co.veritrans.sdk.model.UserDetail;
 
 public class UserDetailFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
-
-
+    private EditText fullnameEt;
+    private EditText phoneEt;
+    private EditText emailEt;
+    private Button nextBtn;
     public static UserDetailFragment newInstance() {
         UserDetailFragment fragment = new UserDetailFragment();
         return fragment;
@@ -32,46 +41,63 @@ public class UserDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_detail, container, false);
+        ((UserDetailsActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.title_user_details));
+        fullnameEt = (EditText) view.findViewById(R.id.et_full_name);
+        phoneEt = (EditText) view.findViewById(R.id.et_phone);
+        emailEt = (EditText) view.findViewById(R.id.et_email);
+        nextBtn = (Button) view.findViewById(R.id.btn_next);
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    validateSaveData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+            }
+        });
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    private void validateSaveData() throws IOException {
+        SdkUtil.hideKeyboard(getActivity());
+        String fullName = fullnameEt.getText().toString().trim();
+        String email = emailEt.getText().toString().trim();
+        String phoneNo = phoneEt.getText().toString().trim();
+
+        if (TextUtils.isEmpty(fullName)) {
+            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_full_name_empty));
+            fullnameEt.requestFocus();
+            return;
+        } else if (TextUtils.isEmpty(email)) {
+            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_email_empty));
+            emailEt.requestFocus();
+            return;
+        } else if (SdkUtil.isEmailValid(email)) {
+            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_email_invalid));
+            emailEt.requestFocus();
+            return;
+        } else if (TextUtils.isEmpty(phoneNo)) {
+            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_phone_no_empty));
+            phoneEt.requestFocus();
+            return;
+        } else if (SdkUtil.isPhoneNumberValid(phoneNo)) {
+            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_phone_no_invalid));
+            phoneEt.requestFocus();
+            return;
         }
-    }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+        UserDetail userDetail = new UserDetail();
+        userDetail.setUserFullName(fullName);
+        userDetail.setEmail(email);
+        userDetail.setPhoneNumber(phoneNo);
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+        storageDataHandler.writeObject(getActivity(), Constants.USER_DETAILS,userDetail);
+        UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
+        ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
 }

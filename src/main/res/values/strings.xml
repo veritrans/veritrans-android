@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">VeritransSdk</string>
+    <!--user detail-->
+    <string name="hint_full_name">Full name</string>
+    <string name="hint_email">Email</string>
+    <string name="next">Next</string>
+    <string name="hint_phone_number">Phone number</string>
+    <string name="validation_full_name_empty">Please enter full name</string>
+    <string name="validation_email_empty">Please enter email</string>
+    <string name="validation_email_invalid">Please enter valid email</string>
+    <string name="validation_phone_no_empty">Please enter phone number.</string>
+    <string name="validation_phone_no_invalid">Please enter valid phone number</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_user_details">User Details</string>
+
 </resources>
