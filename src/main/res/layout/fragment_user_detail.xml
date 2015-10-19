@@ -29,7 +29,7 @@
             android:id="@+id/email_til"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/full_name_til">
+            android:layout_below="@id/full_name_til">
 
 
             <EditText
@@ -46,7 +46,7 @@
             android:id="@+id/phone_til"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/email_til">
+            android:layout_below="@id/email_til">
 
 
             <EditText
@@ -61,7 +61,7 @@
         </android.support.design.widget.TextInputLayout>
         <RelativeLayout android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/phone_til"
+                        android:layout_below="@id/phone_til"
                         android:layout_alignParentBottom="true"
             >
         <Button android:layout_width="match_parent"

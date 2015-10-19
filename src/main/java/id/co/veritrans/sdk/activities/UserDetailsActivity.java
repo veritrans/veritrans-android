@@ -13,7 +13,7 @@ import java.io.IOException;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.StorageDataHandler;
-import id.co.veritrans.sdk.fragments.UserDetailFragment;
+import id.co.veritrans.sdk.fragments.UserAddressFragment;
 import id.co.veritrans.sdk.model.UserDetail;
 
 public class UserDetailsActivity extends AppCompatActivity {
@@ -36,8 +36,10 @@ public class UserDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
-        replaceFragment(userDetailFragment);
+        /*UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
+        replaceFragment(userDetailFragment);*/
+        UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
+        replaceFragment(userAddressFragment);
     }
 
     public void replaceFragment(Fragment fragment) {

@@ -9,6 +9,11 @@
     <dimen name="tertiary_text_size">12sp</dimen>
     <dimen name="sixteen">16dp</dimen>
     <dimen name="btn_height">48dp</dimen>
+    <dimen name="header_text">22sp</dimen>
+    <dimen name="eight">8dp</dimen>
+    <dimen name="twentyfour">24dp</dimen>
+    <dimen name="sixtyfour_dp">64dp</dimen>
+    <dimen name="eighty_dp">80dp</dimen>
 
 
 </resources>
