@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -14,13 +14,15 @@
 
 
     <id.co.veritrans.sdk.widgets.TextViewFont
+        android:layout_toRightOf="@id/img_payment_method_icon"
         android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
+        android:layout_centerVertical="true"
         android:text="demo"
         android:id="@+id/text_payment_method_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:font="@string/font_roboto_light"
+        app:font="@string/font_roboto_regular"
+        android:paddingLeft="@dimen/sixteen_dp"
         />
 
 </RelativeLayout>

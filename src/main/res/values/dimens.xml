@@ -7,7 +7,8 @@
     <dimen name="primary_text_size">16sp</dimen>
     <dimen name="secondary_text_size">14sp</dimen>
     <dimen name="tertiary_text_size">12sp</dimen>
-    <dimen name="eight">8dp</dimen>
+    <dimen name="eight_dp">8dp</dimen>
+    <dimen name="sixteen_dp">16dp</dimen>
 
 
 </resources>
