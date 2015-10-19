@@ -6,9 +6,18 @@
 
 
     <ImageView
+        android:id="@+id/img_payment_method_icon"
         android:src="@drawable/ic_launcher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+
+    <id.co.veritrans.sdk.widgets.TextViewFont
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="demo"
+        android:id="@+id/text_payment_method_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>
