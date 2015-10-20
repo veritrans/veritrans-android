@@ -21,5 +21,6 @@ public class Constants {
     public static final int PAYMENT_METHOD_MANDIRI_BILL_PAYMENT = 9;
     public static final int PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER = 10;
 
+    public static final String TAG = "VeritransSDK";
 
 }

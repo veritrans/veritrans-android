@@ -18,12 +18,12 @@ import android.graphics.Typeface;
     private static Typeface typefaceRobotoLight = null;
     private static Typeface typefaceRobotoBold = null;
     private static VeritransSDK sVeritransSDK = new VeritransSDK();
-
+    private boolean isLogEnabled = true;
 
     private static String sOrderId = null;
     private static double sAmount = 0.0;
     private static int sPaymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
-
+    private static boolean isRunning = false;
 
     private VeritransSDK(){
     }
@@ -40,7 +40,7 @@ import android.graphics.Typeface;
             initializeFonts();
             return sVeritransSDK;
         }else{
-            throw new IllegalArgumentException("Context cann't be null.");
+            return null;
         }
     }
 
@@ -67,4 +67,20 @@ import android.graphics.Typeface;
         return sVeritransSDK;
     }
 
+    public static boolean isRunning() {
+        return isRunning;
+    }
+
+    protected static void setIsRunning(boolean isRunning) {
+        VeritransSDK.isRunning = isRunning;
+    }
+
+
+    public boolean isLogEnabled() {
+        return isLogEnabled;
+    }
+
+    public void enableLog(boolean enableLog) {
+        this.isLogEnabled = enableLog;
+    }
 }
