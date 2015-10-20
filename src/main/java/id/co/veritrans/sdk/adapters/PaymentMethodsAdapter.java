@@ -2,7 +2,6 @@ package id.co.veritrans.sdk.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
@@ -31,7 +31,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
     public PaymentMethodsAdapter(Context mContext, ArrayList<PaymentMethodsModel> data) {
         this.mContext = mContext;
         this.data = data;
-        Log.d(TAG , "setting adapter");
+        Logger.d(TAG, "setting adapter");
 
     }
 
@@ -51,7 +51,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
         holder.mImageView.setImageResource(data.get(position).getImageId());
         holder.name.setText(data.get(position).getName());
 
-        Log.d(TAG , "name is "+data.get(position).getName());
+        Logger.d(TAG, "name is " + data.get(position).getName());
     }
 
     @Override
@@ -80,7 +80,8 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(mContext, "clicked on "+getAdapterPosition(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "clicked on " + getAdapterPosition(), Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 

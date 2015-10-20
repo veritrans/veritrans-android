@@ -18,7 +18,7 @@ import android.graphics.Typeface;
     private static Typeface typefaceRobotoLight = null;
     private static Typeface typefaceRobotoBold = null;
     private static VeritransSDK sVeritransSDK = new VeritransSDK();
-    private boolean isLogEnabled = true;
+    private static boolean sIsLogEnabled = true;
 
     private static String sOrderId = null;
     private static double sAmount = 0.0;
@@ -36,7 +36,7 @@ import android.graphics.Typeface;
             sOrderId = veritransBuilder.orderId;
             sAmount = veritransBuilder.amount;
             sPaymentMethod = veritransBuilder.paymentMethod;
-
+            sIsLogEnabled = veritransBuilder.enableLog;
             initializeFonts();
             return sVeritransSDK;
         }else{
@@ -77,10 +77,10 @@ import android.graphics.Typeface;
 
 
     public boolean isLogEnabled() {
-        return isLogEnabled;
+        return sIsLogEnabled;
     }
 
     public void enableLog(boolean enableLog) {
-        this.isLogEnabled = enableLog;
+        this.sIsLogEnabled = enableLog;
     }
 }
