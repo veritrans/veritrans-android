@@ -34,22 +34,19 @@ public class PaymentMethodsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_payments_method);
-
         setUpPaymentMethods();
     }
 
     private void setUpPaymentMethods() {
         initialiseAdapterData();
 
-
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)
                 findViewById(R.id.collapsing_toolbar_layout);
-        mCollapsingToolbarLayout.setTitle("DemoTitle");
-       
+        mCollapsingToolbarLayout.setTitle(getResources().getString(R.string.select_payment_method));
 
-        /*mTextViewPayableAmount = (TextView) findViewById(R.id.text_payable_amount);
-        mTextViewPayableAmount.setText(getResources().getString(R.string.payable_amount));
-        */
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_payment_methods);
         mRecyclerView.setHasFixedSize(true);
@@ -60,10 +57,6 @@ public class PaymentMethodsActivity extends AppCompatActivity {
                 PaymentMethodsAdapter(getApplicationContext(), data);
         mRecyclerView.setAdapter(paymentMethodsAdapter);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("Tool Bar");
-        mToolbar.setSubtitle("Subtitle");
-        setSupportActionBar(mToolbar);
 
     }
 
