@@ -21,5 +21,15 @@
     <string name="title_shipping_billing_address"><![CDATA[Shipping & Billing address]]></string>
     <string name="shipping_address">Shipping Address</string>
     <string name="shipping_cb_message">Same as billing address</string>
+    <string name="validation_billingaddress_empty">Please enter billing address</string>
+    <string name="validation_billingcity_empty">Please enter billing city</string>
+    <string name="validation_billingzipcode_empty">Please enter billing zipcode</string>
+    <string name="validation_billingcountry_empty">Please enter billing country</string>
+    <string name="validation_billingzipcode_invalid">Please enter valid zipcode</string>
+    <string name="validation_shippingaddress_empty">Please enter shipping address</string>
+    <string name="validation_shippingcity_empty">Please enter shipping address</string>
+    <string name="validation_shippingzipcode_empty">Please enter valid shipping zipcode</string>
+    <string name="validation_shippingcountry_empty">Please enter shipping country</string>
+    <string name="validation_shippingzipcode_invalid">Please enter valid shipping zipcode</string>
 
 </resources>

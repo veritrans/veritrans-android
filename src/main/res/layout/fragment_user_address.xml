@@ -15,7 +15,7 @@
     >
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingBottom="@dimen/eighty_dp"
+                    android:paddingBottom="@dimen/sixtyfour_dp"
                     android:paddingLeft="@dimen/eight"
                     android:paddingRight="@dimen/eight"
                     android:paddingTop="@dimen/eight"
@@ -113,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/billing_address_view"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             card_view:cardCornerRadius="4dp">
             <RelativeLayout android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -215,9 +215,9 @@
 
 </ScrollView>
 <RelativeLayout android:layout_width="match_parent"
-                android:layout_height="@dimen/eighty_dp"
+                android:layout_height="@dimen/sixtyfour_dp"
                 android:layout_alignParentBottom="true"
-                android:padding="@dimen/sixteen"
+                android:padding="@dimen/eight"
                 android:background="@color/colorAccentLight"
     >
 <Button android:layout_width="match_parent"

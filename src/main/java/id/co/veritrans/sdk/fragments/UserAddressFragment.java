@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,15 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
+import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.SdkUtil;
+import id.co.veritrans.sdk.core.StorageDataHandler;
+import id.co.veritrans.sdk.model.UserAddress;
 
 public class UserAddressFragment extends Fragment {
 
@@ -101,6 +109,8 @@ public class UserAddressFragment extends Fragment {
     }
 
     private void validateAndSaveAddress() {
+        SdkUtil.hideKeyboard(getActivity());
+        ArrayList<UserAddress> userAddresses = new ArrayList<>();
         String billingAddress = etAddress.getText().toString().trim();
         String billingCity = etCity.getText().toString().trim();
         String zipcode = etZipcode.getText().toString().trim();
@@ -109,6 +119,77 @@ public class UserAddressFragment extends Fragment {
         String shippingCity = etShippingCity.getText().toString().trim();
         String shippingZipcode = etShippingZipcode.getText().toString().trim();
         String shippingCountry = etShippingCountry.getText().toString().trim();
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+        if(TextUtils.isEmpty(billingAddress)){
+            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_billingaddress_empty));
+            etAddress.requestFocus();
+            return;
+        } else if(TextUtils.isEmpty(billingCity)){
+            SdkUtil.showSnackbar(getActivity(),getString(R.string.validation_billingcity_empty));
+            etCity.requestFocus();
+            return;
+        } else if(TextUtils.isEmpty(zipcode)){
+            SdkUtil.showSnackbar(getActivity(),getString(R.string.validation_billingzipcode_empty));
+            etZipcode.requestFocus();
+            return;
+        } else if(zipcode.length() < Constants.ZIPCODE_LENGTH){
+            SdkUtil.showSnackbar(getActivity(),getString(R.string.validation_billingzipcode_invalid));
+            etZipcode.requestFocus();
+            return;
+        } else if(TextUtils.isEmpty(country)){
+            SdkUtil.showSnackbar(getActivity(),getString(R.string.validation_billingcountry_empty));
+            etCountry.requestFocus();
+            return;
+        } else if(!cbShippingAddress.isChecked()) {
+            if (TextUtils.isEmpty(shippingAddress)) {
+                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_shippingaddress_empty));
+                etShippingAddress.requestFocus();
+                return;
+            } else if (TextUtils.isEmpty(shippingCity)) {
+                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_shippingcity_empty));
+                etShippingCity.requestFocus();
+                return;
+            } else if (TextUtils.isEmpty(shippingZipcode)) {
+                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_shippingzipcode_empty));
+                etShippingZipcode.requestFocus();
+                return;
+            } else if (shippingZipcode.length() < Constants.ZIPCODE_LENGTH) {
+                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_shippingzipcode_invalid));
+                etShippingZipcode.requestFocus();
+                return;
+            } else if (TextUtils.isEmpty(shippingCountry)) {
+                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_shippingcountry_empty));
+                etShippingCountry.requestFocus();
+                return;
+            }
+            UserAddress shippingUserAddress = new UserAddress();
+            shippingUserAddress.setAddress(shippingAddress);
+            shippingUserAddress.setCity(shippingCity);
+            shippingUserAddress.setCountry(shippingCountry);
+            shippingUserAddress.setZipcode(shippingZipcode);
+            shippingUserAddress.setIsShippingAddress(true);
+            userAddresses.add(shippingUserAddress);
+           /* try {
+                storageDataHandler.writeObject(getActivity(), Constants.USER_ADDRESS_DETAILS, shippingUserAddress);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
+        }
+        UserAddress billingUserAddress = new UserAddress();
+        billingUserAddress.setAddress(billingAddress);
+        billingUserAddress.setCity(billingCity);
+        billingUserAddress.setCountry(country);
+        billingUserAddress.setZipcode(zipcode);
+        billingUserAddress.setIsBillingAddress(true);
+        if(!cbShippingAddress.isChecked()){
+            billingUserAddress.setIsShippingAddress(true);
+        }
+        userAddresses.add(billingUserAddress);
+        try {
+            storageDataHandler.writeObject(getActivity(), Constants.USER_ADDRESS_DETAILS, userAddresses);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

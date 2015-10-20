@@ -12,7 +12,7 @@ public class UserAddress implements Serializable {
     private String city;
     private String zipcode;
     private String country;
-    private boolean isBookingAddress;
+    private boolean isBillingAddress;
     private boolean isShippingAddress;
 
     public String getAddress() {
@@ -47,12 +47,12 @@ public class UserAddress implements Serializable {
         this.country = country;
     }
 
-    public boolean isBookingAddress() {
-        return isBookingAddress;
+    public boolean isBillingAddress() {
+        return isBillingAddress;
     }
 
-    public void setIsBookingAddress(boolean isBookingAddress) {
-        this.isBookingAddress = isBookingAddress;
+    public void setIsBillingAddress(boolean isBookingAddress) {
+        this.isBillingAddress = isBookingAddress;
     }
 
     public boolean isShippingAddress() {
