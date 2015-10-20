@@ -7,13 +7,12 @@ import android.graphics.Typeface;
 /**
  * Created by shivam on 10/19/15.
  */
-public class VeritransSDK {
+ public class VeritransSDK {
 
     private static final String FONTS_ROBOTO_BOLD_TTF = "fonts/roboto_bold.ttf";
     private static final String FONTS_ROBOTO_REGULAR_TTF = "fonts/roboto_regular.ttf";
     private static final String FONTS_ROBOTO_LIGHT_TTF = "fonts/roboto_light.ttf";
     private static Context sContext = null;
-
 
     private static Typeface typefaceRobotoRegular = null;
     private static Typeface typefaceRobotoLight = null;
@@ -21,14 +20,23 @@ public class VeritransSDK {
     private static VeritransSDK sVeritransSDK = new VeritransSDK();
 
 
+    private static String sOrderId = null;
+    private static double sAmount = 0.0;
+    private static int sPaymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
+
+
     private VeritransSDK(){
     }
 
 
-    public static VeritransSDK getInstance(Context context){
+    protected static VeritransSDK getInstance(VeritransBuilder veritransBuilder){
 
-        if(context != null){
-            sContext = context;
+        if(veritransBuilder != null){
+            sContext = veritransBuilder.context;
+            sOrderId = veritransBuilder.orderId;
+            sAmount = veritransBuilder.amount;
+            sPaymentMethod = veritransBuilder.paymentMethod;
+
             initializeFonts();
             return sVeritransSDK;
         }else{
@@ -54,4 +62,9 @@ public class VeritransSDK {
     public Typeface getTypefaceRobotoBold() {
         return typefaceRobotoBold;
     }
+
+    public static VeritransSDK getVeritransSDK(){
+        return sVeritransSDK;
+    }
+
 }

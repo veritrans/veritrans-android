@@ -31,8 +31,10 @@ public class TextViewFont extends TextView {
     public TextViewFont(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
 
+        baseApplication = VeritransSDK.getVeritransSDK();
+
         if (baseApplication == null) {
-            baseApplication = VeritransSDK.getInstance(context);
+            return;
         }
 
         // prevent exception in Android Studio / ADT interface builder
