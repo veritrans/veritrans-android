@@ -75,7 +75,7 @@ public class UserDetailFragment extends Fragment {
             SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_email_empty));
             emailEt.requestFocus();
             return;
-        } else if (SdkUtil.isEmailValid(email)) {
+        } else if (!SdkUtil.isEmailValid(email)) {
             SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_email_invalid));
             emailEt.requestFocus();
             return;
@@ -83,7 +83,7 @@ public class UserDetailFragment extends Fragment {
             SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_phone_no_empty));
             phoneEt.requestFocus();
             return;
-        } else if (SdkUtil.isPhoneNumberValid(phoneNo)) {
+        } else if (!SdkUtil.isPhoneNumberValid(phoneNo)) {
             SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_phone_no_invalid));
             phoneEt.requestFocus();
             return;

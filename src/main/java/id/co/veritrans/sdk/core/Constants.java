@@ -27,4 +27,10 @@ public class Constants {
     public static final String USER_DETAILS = "user_details";
     public static final int ZIPCODE_LENGTH = 6;
     public static final String USER_ADDRESS_DETAILS = "user_address_details";
+    public static final int ADDRESS_TYPE_BILLING = 1;
+    public static final int ADDRESS_TYPE_SHIPPING = 2;
+    public static final int ADDRESS_TYPE_BOTH = 3;
+    public static final String EMAIL_PATTERN ="^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
 }
