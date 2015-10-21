@@ -12,8 +12,7 @@ public class UserAddress implements Serializable {
     private String city;
     private String zipcode;
     private String country;
-    private boolean isBillingAddress;
-    private boolean isShippingAddress;
+    private int addressType;
 
     public String getAddress() {
         return TextUtils.isEmpty(address) ? "" : address;
@@ -47,19 +46,11 @@ public class UserAddress implements Serializable {
         this.country = country;
     }
 
-    public boolean isBillingAddress() {
-        return isBillingAddress;
+    public int getAddressType() {
+        return addressType;
     }
 
-    public void setIsBillingAddress(boolean isBookingAddress) {
-        this.isBillingAddress = isBookingAddress;
-    }
-
-    public boolean isShippingAddress() {
-        return isShippingAddress;
-    }
-
-    public void setIsShippingAddress(boolean isShippingAddress) {
-        this.isShippingAddress = isShippingAddress;
+    public void setAddressType(int addressType) {
+        this.addressType = addressType;
     }
 }

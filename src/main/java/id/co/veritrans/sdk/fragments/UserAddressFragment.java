@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -16,11 +17,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.PaymentMethodsActivity;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.model.UserAddress;
+import id.co.veritrans.sdk.model.UserDetail;
 
 public class UserAddressFragment extends Fragment {
 
@@ -110,6 +114,21 @@ public class UserAddressFragment extends Fragment {
 
     private void validateAndSaveAddress() {
         SdkUtil.hideKeyboard(getActivity());
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+        UserDetail userDetail = null;
+        try {
+            userDetail = (UserDetail) storageDataHandler.readObject(getActivity(), Constants.USER_DETAILS);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try{
+            Logger.i("userDetails:" + userDetail.getUserFullName());
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
         ArrayList<UserAddress> userAddresses = new ArrayList<>();
         String billingAddress = etAddress.getText().toString().trim();
         String billingCity = etCity.getText().toString().trim();
@@ -119,7 +138,7 @@ public class UserAddressFragment extends Fragment {
         String shippingCity = etShippingCity.getText().toString().trim();
         String shippingZipcode = etShippingZipcode.getText().toString().trim();
         String shippingCountry = etShippingCountry.getText().toString().trim();
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
+
         if(TextUtils.isEmpty(billingAddress)){
             SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_billingaddress_empty));
             etAddress.requestFocus();
@@ -167,7 +186,7 @@ public class UserAddressFragment extends Fragment {
             shippingUserAddress.setCity(shippingCity);
             shippingUserAddress.setCountry(shippingCountry);
             shippingUserAddress.setZipcode(shippingZipcode);
-            shippingUserAddress.setIsShippingAddress(true);
+            shippingUserAddress.setAddressType(Constants.ADDRESS_TYPE_SHIPPING);
             userAddresses.add(shippingUserAddress);
            /* try {
                 storageDataHandler.writeObject(getActivity(), Constants.USER_ADDRESS_DETAILS, shippingUserAddress);
@@ -180,13 +199,22 @@ public class UserAddressFragment extends Fragment {
         billingUserAddress.setCity(billingCity);
         billingUserAddress.setCountry(country);
         billingUserAddress.setZipcode(zipcode);
-        billingUserAddress.setIsBillingAddress(true);
-        if(!cbShippingAddress.isChecked()){
-            billingUserAddress.setIsShippingAddress(true);
+        if(cbShippingAddress.isChecked()){
+            billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BOTH);
+        } else {
+            billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BILLING);
         }
         userAddresses.add(billingUserAddress);
+
         try {
-            storageDataHandler.writeObject(getActivity(), Constants.USER_ADDRESS_DETAILS, userAddresses);
+            if(userDetail == null){
+                userDetail = new UserDetail();
+            }
+            userDetail.setUserAddresses(userAddresses);
+            storageDataHandler.writeObject(getActivity(), Constants.USER_DETAILS, userDetail);
+            Intent selectPaymentIntent = new Intent(getActivity(), PaymentMethodsActivity.class);
+            startActivity(selectPaymentIntent);
+            getActivity().finish();
         } catch (IOException e) {
             e.printStackTrace();
         }

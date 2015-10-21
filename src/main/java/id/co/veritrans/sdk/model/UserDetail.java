@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.model;
 import android.text.TextUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by chetan on 19/10/15.
@@ -11,6 +12,7 @@ public class UserDetail implements Serializable {
     private String userFullName;
     private String email;
     private String phoneNumber;
+    private ArrayList<UserAddress> userAddresses;
 
     public String getUserFullName() {
         return TextUtils.isEmpty(userFullName) ? "" : userFullName;
@@ -34,5 +36,13 @@ public class UserDetail implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public ArrayList<UserAddress> getUserAddresses() {
+        return userAddresses;
+    }
+
+    public void setUserAddresses(ArrayList<UserAddress> userAddresses) {
+        this.userAddresses = userAddresses;
     }
 }
