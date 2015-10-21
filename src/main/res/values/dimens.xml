@@ -4,22 +4,24 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
 
-    <dimen name="primary_text_size">16sp</dimen>
-    <dimen name="secondary_text_size">14sp</dimen>
-    <dimen name="tertiary_text_size">12sp</dimen>
 
+    <!-- dimensions-->
+    <dimen name="four_dp">4dp</dimen>
     <dimen name="eight_dp">8dp</dimen>
     <dimen name="sixteen_dp">16dp</dimen>
-    <dimen name="header_text_size">20sp</dimen>
-
-    <dimen name="sixteen">16dp</dimen>
+    <dimen name="twenty_four_dp">24dp</dimen>
     <dimen name="btn_height">48dp</dimen>
-    <dimen name="header_text">22sp</dimen>
-    <dimen name="eight">8dp</dimen>
     <dimen name="twentyfour">24dp</dimen>
     <dimen name="sixtyfour_dp">64dp</dimen>
     <dimen name="eighty_dp">80dp</dimen>
     <dimen name="fiftyfour_dp">54dp</dimen>
 
+
+    <!-- text size-->
+    <dimen name="big_text">22sp</dimen>
+    <dimen name="header_text_size">20sp</dimen>
+    <dimen name="primary_text_size">16sp</dimen>
+    <dimen name="secondary_text_size">14sp</dimen>
+    <dimen name="tertiary_text_size">12sp</dimen>
 
 </resources>
