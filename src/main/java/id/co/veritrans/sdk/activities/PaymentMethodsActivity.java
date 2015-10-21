@@ -27,8 +27,8 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         .OnOffsetChangedListener {
 
 
-    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
-    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
+    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
+    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.7f;
     private static final int ALPHA_ANIMATIONS_DURATION = 200;
 
     private boolean mIsTheTitleVisible = false;
