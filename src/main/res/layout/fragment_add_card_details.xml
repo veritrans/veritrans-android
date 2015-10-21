@@ -1,0 +1,99 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            tools:context="id.co.veritrans.sdk.fragments.AddCardDetailsFragment">
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/sixteen_dp">
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_card_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/et_cardNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="0123456789 "
+                android:hint="@string/hint_card_number"
+                android:inputType="number"
+                android:maxLength="19"
+                android:singleLine="true"
+                android:textColorHint="@color/colorAccent"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/til_card_no"
+            >
+
+
+            <EditText
+                android:id="@+id/et_holder_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_name_on_card"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:textColorHint="@color/colorAccent"/>
+        </android.support.design.widget.TextInputLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:gravity="center_vertical"
+                      android:orientation="horizontal"
+                      android:weightSum="1"
+                      android:paddingBottom="8dp"
+                      android:id="@+id/expiry_date_layout"
+                      android:layout_below="@id/til_user_name">
+        <Spinner
+            android:id="@+id/sp_exp_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            android:layout_weight="0.5"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_gravity="bottom"/>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/cvv_til"
+                android:layout_weight="0.5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <EditText
+                    android:id="@+id/et_cvv2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_cvv"
+                    android:maxLength="3"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColorHint="@color/colorAccent"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+        <CheckBox android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/cb_store_card"
+                  android:text="@string/save_card_message"
+                  android:layout_below="@id/expiry_date_layout"
+                  android:layout_marginTop="16dp"
+                  android:layout_marginBottom="16dp"
+            />
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_below="@id/cb_store_card"
+
+            >
+        <Button android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_height"
+                android:text="@string/pay_now"
+                android:background="@drawable/blue_button_selector"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
