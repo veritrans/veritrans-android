@@ -1,5 +1,36 @@
 <resources>
     <string name="app_name">VeritransSdk</string>
+    <!--user detail-->
+    <string name="hint_full_name">Full name</string>
+    <string name="hint_email">Email</string>
+    <string name="next">Next</string>
+    <string name="hint_phone_number">Phone number</string>
+    <string name="validation_full_name_empty">Please enter full name</string>
+    <string name="validation_email_empty">Please enter email</string>
+    <string name="validation_email_invalid">Please enter valid email</string>
+    <string name="validation_phone_no_empty">Please enter phone number.</string>
+    <string name="validation_phone_no_invalid">Please enter valid phone number</string>
+
+    <!-- User Address -->
+    <string name="title_user_details">User Details</string>
+    <string name="hint_address">Address</string>
+    <string name="hint_city">City</string>
+    <string name="hint_zip_code">Zipcode</string>
+    <string name="hint_country">Country</string>
+    <string name="billing_address">Billing Address</string>
+    <string name="title_shipping_billing_address"><![CDATA[Shipping & Billing address]]></string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="shipping_cb_message">Same as billing address</string>
+    <string name="validation_billingaddress_empty">Please enter billing address</string>
+    <string name="validation_billingcity_empty">Please enter billing city</string>
+    <string name="validation_billingzipcode_empty">Please enter billing zipcode</string>
+    <string name="validation_billingcountry_empty">Please enter billing country</string>
+    <string name="validation_billingzipcode_invalid">Please enter valid zipcode</string>
+    <string name="validation_shippingaddress_empty">Please enter shipping address</string>
+    <string name="validation_shippingcity_empty">Please enter shipping address</string>
+    <string name="validation_shippingzipcode_empty">Please enter valid shipping zipcode</string>
+    <string name="validation_shippingcountry_empty">Please enter shipping country</string>
+    <string name="validation_shippingzipcode_invalid">Please enter valid shipping zipcode</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

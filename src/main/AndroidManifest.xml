@@ -8,6 +8,8 @@
 
         <activity
             android:name=".activities.UserDetailsActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
 
 
