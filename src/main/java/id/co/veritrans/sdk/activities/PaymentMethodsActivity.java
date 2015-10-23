@@ -78,7 +78,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         PaymentMethodsAdapter paymentMethodsAdapter = new
-                PaymentMethodsAdapter(getApplicationContext(), data);
+                PaymentMethodsAdapter(this, data);
         mRecyclerView.setAdapter(paymentMethodsAdapter);
     }
 

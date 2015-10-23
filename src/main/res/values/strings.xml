@@ -64,9 +64,16 @@
     </string-array>
     <!--add credicard-->
     <string name="hint_name_on_card">Name on the card</string>
-    <string name="hint_card_number">Card Name</string>
+    <string name="hint_card_number">Card Number</string>
     <string name="hint_cvv">CVV</string>
     <string name="save_card_message">Save this card for future use</string>
     <string name="pay_now">Pay now</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
+    <string name="hint_expiry_date">Expiry(mm/yy)</string>
+    <string name="validation_message_card_number">Please enter card number</string>
+    <string name="validation_message_invalid_card_no">Please enter valid card number</string>
+    <string name="validation_message_cvv">Please enter cvv.</string>
+    <string name="validation_message_invalid_cvv">Please enter valid cvv</string>
+    <string name="validation_message_empty_expiry_date">Please enter expiry date</string>
+    <string name="message_cvv">3 digits printed on back of card</string>
 </resources>

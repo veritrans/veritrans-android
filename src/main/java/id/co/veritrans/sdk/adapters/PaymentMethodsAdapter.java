@@ -1,16 +1,18 @@
 package id.co.veritrans.sdk.adapters;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
+import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -24,12 +26,12 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
     private static final String TAG = PaymentMethodsAdapter.class.getSimpleName();
 
-    private static Context mContext;
+    private static Activity context;
     private ArrayList<PaymentMethodsModel> data = null;
 
 
-    public PaymentMethodsAdapter(Context mContext, ArrayList<PaymentMethodsModel> data) {
-        this.mContext = mContext;
+    public PaymentMethodsAdapter(Activity mContext, ArrayList<PaymentMethodsModel> data) {
+        this.context = mContext;
         this.data = data;
         Logger.d(TAG, "setting adapter");
 
@@ -80,8 +82,32 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(mContext, "clicked on " + getAdapterPosition(), Toast.LENGTH_SHORT)
-                    .show();
+            /*Toast.makeText(context, "clicked on " + getAdapterPosition(), Toast.LENGTH_SHORT)
+                    .show();*/
+            switch (getAdapterPosition()){
+                case Constants.PAYMENT_METHOD_OFFERS:
+                    break;
+                case Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT:
+                    Intent intent = new Intent(context, CreditDebitCardFlowActivity.class);
+                    context.startActivity(intent);
+                    break;
+                case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
+                    break;
+                case Constants.PAYMENT_METHOD_CIMB_CLICKS:
+                    break;
+                case Constants.PAYMENT_METHOD_EPAY_BRI:
+                    break;
+                case Constants.PAYMENT_METHOD_BBM_MONEY:
+                    break;
+                case Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU:
+                    break;
+                case Constants.PAYMENT_METHOD_MANDIRI_ECASH:
+                    break;
+                case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
+                    break;
+                case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
+                    break;
+            }
         }
     }
 

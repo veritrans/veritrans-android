@@ -12,22 +12,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
-                android:id="@+id/et_cardNo"
+                android:id="@+id/et_card_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:digits="0123456789 "
                 android:hint="@string/hint_card_number"
                 android:inputType="number"
                 android:maxLength="19"
-                android:singleLine="true"
-                android:textColorHint="@color/colorAccent"/>
+                android:singleLine="true"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/til_card_no"
-            >
+            android:layout_marginTop="@dimen/eight_dp">
 
 
             <EditText
@@ -36,50 +35,67 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_name_on_card"
                 android:maxLength="50"
-                android:singleLine="true"
-                android:textColorHint="@color/colorAccent"/>
+                android:singleLine="true"/>
         </android.support.design.widget.TextInputLayout>
-        <LinearLayout android:layout_width="match_parent"
+        <LinearLayout android:id="@+id/expiry_date_layout"
+                      android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:gravity="center_vertical"
+                      android:layout_below="@id/til_user_name"
+                      android:layout_marginTop="@dimen/eight_dp"
                       android:orientation="horizontal"
-                      android:weightSum="1"
-                      android:paddingBottom="8dp"
-                      android:id="@+id/expiry_date_layout"
-                      android:layout_below="@id/til_user_name">
-        <Spinner
-            android:id="@+id/sp_exp_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
-            android:layout_weight="0.5"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:layout_gravity="bottom"/>
+                      android:paddingBottom="@dimen/eight_dp"
+                      android:weightSum="1">
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/cvv_til"
-                android:layout_weight="0.5"
+                android:id="@+id/exp_til"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5">
                 <EditText
-                    android:id="@+id/et_cvv2"
+                    android:id="@+id/et_exp_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_cvv"
-                    android:maxLength="3"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    android:textColorHint="@color/colorAccent"/>
+                    android:layout_gravity="bottom"
+                    android:maxLength="5"
+                    android:hint="@string/hint_expiry_date"
+                    android:inputType="number"/>
             </android.support.design.widget.TextInputLayout>
+            <RelativeLayout android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5">
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/cvv_til"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    >
+                    <EditText
+                        android:id="@+id/et_cvv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_cvv"
+                        android:paddingRight="32dp"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:singleLine="true"/>
+
+                </android.support.design.widget.TextInputLayout>
+                <ImageView android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_alignParentRight="true"
+                           android:padding="8dp"
+                           android:id="@+id/question_img"
+                           android:src="@drawable/ic_cvvinfo"
+
+                    />
+            </RelativeLayout>
         </LinearLayout>
-        <CheckBox android:layout_width="match_parent"
+        <CheckBox android:id="@+id/cb_store_card"
+                  android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:id="@+id/cb_store_card"
-                  android:text="@string/save_card_message"
                   android:layout_below="@id/expiry_date_layout"
-                  android:layout_marginTop="16dp"
                   android:layout_marginBottom="16dp"
+                  android:layout_marginTop="16dp"
+                  android:text="@string/save_card_message"
             />
         <RelativeLayout android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -87,12 +103,14 @@
                         android:layout_below="@id/cb_store_card"
 
             >
-        <Button android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_height"
-                android:text="@string/pay_now"
-                android:background="@drawable/blue_button_selector"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
+            <Button android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:id="@+id/btn_pay_now"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/blue_button_selector"
+                    android:text="@string/pay_now"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
                 />
         </RelativeLayout>
     </RelativeLayout>
