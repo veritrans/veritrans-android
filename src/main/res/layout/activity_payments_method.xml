@@ -11,14 +11,14 @@
         >
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/main.appbar"
+            android:id="@+id/main_appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             >
 
             <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/main.collapsing"
+                android:id="@+id/main_collapsing"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -26,7 +26,7 @@
 
 
                 <FrameLayout
-                    android:id="@+id/main.framelayout.title"
+                    android:id="@+id/main_framelayout_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom|center_horizontal"
@@ -36,7 +36,7 @@
                     >
 
                     <LinearLayout
-                        android:id="@+id/main.linearlayout.title"
+                        android:id="@+id/main_linearlayout_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|left"
@@ -45,24 +45,26 @@
                         android:orientation="vertical"
                         >
 
-                        <TextView
+                        <id.co.veritrans.sdk.widgets.TextViewFont
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_gravity="left"
                             android:text="@string/payable_amount"
-                            android:textColor="@color/white"
+                            android:textColor="@color/white_little_transparent"
                             android:textSize="@dimen/secondary_text_size"
+                            app:font="@string/font_open_sans_regular"
                             />
 
-                        <TextView
+                        <id.co.veritrans.sdk.widgets.TextViewFont
+                            android:id="@+id/text_amount_expanded"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_gravity="left"
                             android:layout_marginTop="4dp"
                             android:text="amount here"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/header_text_size"
-                            android:textStyle="bold"
+                            app:font="@string/font_open_sans_regular"
                             />
 
                     </LinearLayout>
@@ -78,11 +80,11 @@
 
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/main.toolbar"
+            android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:layout_anchor="@id/main.framelayout.title"
+            app:layout_anchor="@id/main_framelayout_title"
             app:theme="@style/ThemeOverlay.AppCompat.Dark"
             app:title=""
             >
@@ -94,24 +96,26 @@
                 android:orientation="vertical"
                 >
 
-                <TextView
-                    android:id="@+id/main.textview.title"
+                <id.co.veritrans.sdk.widgets.TextViewFont
+                    android:id="@+id/main_textview_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:text="@string/select_payment_method"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/header_text_size"
+                    android:textSize="@dimen/primary_text_size"
+                    app:font="@string/font_open_sans_regular"
                     />
 
-                <TextView
-                    android:id="@+id/main.textview.subtitle"
+                <id.co.veritrans.sdk.widgets.TextViewFont
+                    android:id="@+id/main_textview_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:text="amount here"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/secondary_text_size"
+                    app:font="@string/font_open_sans_regular"
                     />
 
             </LinearLayout>

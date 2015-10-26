@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -83,14 +84,24 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
         @Override
         public void onClick(View view) {
-            /*Toast.makeText(sActivity, "clicked on " + getAdapterPosition(), Toast.LENGTH_SHORT)
-                    .show();*/
-            switch (getAdapterPosition()){
-                case Constants.PAYMENT_METHOD_OFFERS:
-                    break;
+
+            switch (getAdapterPosition()) {
+
                 case Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT:
                     Intent intent = new Intent(sActivity, CreditDebitCardFlowActivity.class);
                     sActivity.startActivity(intent);
+                    break;
+
+                case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
+                    Intent startBankPayment = new Intent(sActivity, BankTransferActivity.class);
+                    sActivity.startActivity(startBankPayment);
+                    break;
+
+                default:
+                    showMessage();
+
+                /*
+                case Constants.PAYMENT_METHOD_OFFERS:
                     break;
                 case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
                     break;
@@ -106,12 +117,19 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                     break;
                 case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
                     break;
-                case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
-                    Intent startBankPayment = new Intent(sActivity, BankTransferActivity.class);
-                    sActivity.startActivity(startBankPayment);
+                case Constants.PAYMENT_METHOD_INDOMARET:
                     break;
+            */
+
             }
         }
+
+
+        public void showMessage() {
+            Toast.makeText(sActivity.getApplicationContext(),
+                    "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 }

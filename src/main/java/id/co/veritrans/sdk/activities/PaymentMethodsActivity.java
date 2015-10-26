@@ -11,14 +11,17 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.PaymentMethodsAdapter;
+import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
+import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
+import id.co.veritrans.sdk.utilities.Utils;
+import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
  * Created by shivam on 10/16/15.
@@ -39,10 +42,12 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
     //Views
     private Toolbar mToolbar = null;
-    private TextView mSubTitle;
-    private LinearLayout mTitleContainer;
-    private AppBarLayout mAppBarLayout;
-    private FrameLayout mFrameParallax;
+    private TextViewFont mSubTitle = null;
+    private TextViewFont mTextViewAmountExpanded = null;
+    private TextViewFont mTitle = null;
+    private LinearLayout mTitleContainer = null;
+    private AppBarLayout mAppBarLayout = null;
+    private FrameLayout mFrameParallax = null;
     private RecyclerView mRecyclerView = null;
 
 
@@ -68,9 +73,9 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         //hide subtitle
         startAlphaAnimation(mSubTitle, 0, View.INVISIBLE);
 
-
         initParallaxValues();
 
+        bindDataToView();
 
         // setUp recyclerView
         initialiseAdapterData();
@@ -83,13 +88,30 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     }
 
 
+    private void bindDataToView(){
+
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if( veritransSDK != null){
+            mSubTitle.setText(Constants.CURRENCY_PREFIX + " "
+                    + Utils.getFormattedAmount(veritransSDK.getAmount()));
+            mTextViewAmountExpanded.setText(Constants.CURRENCY_PREFIX + " "
+                    + Utils.getFormattedAmount(veritransSDK.getAmount()));
+        }
+
+    }
+
     private void bindActivity() {
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_payment_methods);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mSubTitle = (TextView) findViewById(R.id.main_textview_subtitle);
+        mTitle = (TextViewFont) findViewById(R.id.main_textview_title);
+        mSubTitle = (TextViewFont) findViewById(R.id.main_textview_subtitle);
+        mTextViewAmountExpanded = (TextViewFont) findViewById(R.id.text_amount_expanded);
+
         mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
         mFrameParallax = (FrameLayout) findViewById(R.id.main_framelayout_title);
+
     }
 
 
@@ -132,6 +154,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             if (mIsTheTitleContainerVisible) {
                 startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 mIsTheTitleContainerVisible = false;
+    //            startTranslateAnimation(false);
             }
 
         } else {
@@ -139,6 +162,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             if (!mIsTheTitleContainerVisible) {
                 startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
                 mIsTheTitleContainerVisible = true;
+  //              startTranslateAnimation(true);
             }
         }
     }
@@ -153,6 +177,14 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         v.startAnimation(alphaAnimation);
     }
 
+   /* public void startTranslateAnimation(boolean makeViewLarge) {
+        if (makeViewLarge) {
+            Animation animation = new ScaleAnimation(0, 480, 0, 0);
+            animation.setDuration(ALPHA_ANIMATIONS_DURATION);
+            mTitle.startAnimation(animation);
+        }
+    }
+*/
 
     /**
      * initialize adapter data model by dummy values.
@@ -163,7 +195,8 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         Logger.d(TAG, "there are total " + names.length + " payment methods available.");
 
         for (int i = 0; i < names.length; i++) {
-            PaymentMethodsModel model = new PaymentMethodsModel(names[i], R.drawable.ic_launcher);
+            PaymentMethodsModel model = new PaymentMethodsModel(names[i], R.drawable.ic_launcher,
+                    Constants.PAYMENT_METHOD_NOT_SELECTED);
             data.add(model);
         }
 

@@ -7,8 +7,9 @@ public class PaymentMethodsModel {
 
     private String name;
     private int imageId;
+    private int paymentType;
 
-    public PaymentMethodsModel(String name, int imageId) {
+    public PaymentMethodsModel(String name, int imageId, int paymentType) {
         this.imageId = imageId;
         this.name = name;
     }
