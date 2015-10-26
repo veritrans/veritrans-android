@@ -16,7 +16,7 @@ import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
-import id.co.veritrans.sdk.model.UserDetail;
+import id.co.veritrans.sdk.models.UserDetail;
 
 public class UserDetailFragment extends Fragment {
 

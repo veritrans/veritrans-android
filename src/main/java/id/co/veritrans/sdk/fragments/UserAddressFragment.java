@@ -23,8 +23,8 @@ import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
-import id.co.veritrans.sdk.model.UserAddress;
-import id.co.veritrans.sdk.model.UserDetail;
+import id.co.veritrans.sdk.models.UserAddress;
+import id.co.veritrans.sdk.models.UserDetail;
 
 public class UserAddressFragment extends Fragment {
 

@@ -18,8 +18,8 @@ import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.fragments.UserAddressFragment;
 import id.co.veritrans.sdk.fragments.UserDetailFragment;
-import id.co.veritrans.sdk.model.UserAddress;
-import id.co.veritrans.sdk.model.UserDetail;
+import id.co.veritrans.sdk.models.UserAddress;
+import id.co.veritrans.sdk.models.UserDetail;
 
 public class UserDetailsActivity extends AppCompatActivity {
     @Override
