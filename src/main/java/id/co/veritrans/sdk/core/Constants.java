@@ -18,8 +18,10 @@ public class Constants {
     public static final int PAYMENT_METHOD_INDOSAT_DOMPETKU = 6;
     public static final int PAYMENT_METHOD_MANDIRI_ECASH = 7;
 
-    public static final int PAYMENT_METHOD_MANDIRI_BILL_PAYMENT = 8;
-    public static final int PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER = 9;
+    public static final int PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER = 8;
+    public static final int PAYMENT_METHOD_MANDIRI_BILL_PAYMENT = 9;
+    public static final int PAYMENT_METHOD_INDOMARET = 10;
+
 
     public static final String TAG = "VeritransSDK";
 
@@ -39,4 +41,5 @@ public class Constants {
 
 
     public static final String DIR_APP = "VeritransData";
+    public static final String CURRENCY_PREFIX = "Rp";
 }

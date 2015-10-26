@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import id.co.veritrans.sdk.activities.PaymentMethodsActivity;
-import id.co.veritrans.sdk.activities.UserDetailsActivity;
 
 /**
  * Created by shivam on 10/20/15.
@@ -88,7 +87,7 @@ public class VeritransBuilder {
                 veritransSDK.setIsRunning(true);
 
                 if (useUi) {
-                    mActivity.startActivity(new Intent(mActivity, UserDetailsActivity.class));
+                    mActivity.startActivity(new Intent(mActivity, PaymentMethodsActivity.class));
                 }
                 return veritransSDK;
             }
