@@ -76,4 +76,9 @@
     <string name="validation_message_invalid_cvv">Please enter valid cvv</string>
     <string name="validation_message_empty_expiry_date">Please enter expiry date</string>
     <string name="message_cvv">3 digits printed on back of card</string>
+
+    <string name="no_network">Network unavailable</string>
+    <string name="no_network_msg">Network not available! Please try later.</string>
+    <string name="ok">OK</string>
+
 </resources>
