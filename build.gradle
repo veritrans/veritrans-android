@@ -27,4 +27,6 @@ dependencies {
 
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'io.reactivex:rxandroid:0.24.0'
+
 }
