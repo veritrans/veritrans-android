@@ -66,7 +66,14 @@ public class VeritransSDK {
         return typefaceOpenSansBold;
     }
 
+
+    /**
+     * Returns instance of veritrans sdk.
+     * @return
+     */
     public static VeritransSDK getVeritransSDK() {
+        // created to get access of already created instance of sdk.
+        // This instance contains information about transaction.
         return sVeritransSDK;
     }
 
@@ -85,5 +92,17 @@ public class VeritransSDK {
 
     public void enableLog(boolean enableLog) {
         this.sIsLogEnabled = enableLog;
+    }
+
+    public String getOrderId() {
+        return sOrderId;
+    }
+
+    public  double getAmount() {
+        return sAmount;
+    }
+
+    public  int getPaymentMethod() {
+        return sPaymentMethod;
     }
 }
