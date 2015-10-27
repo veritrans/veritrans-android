@@ -49,13 +49,13 @@ public class TextViewFont extends TextView {
             if (typefaceAssetPath != null) {
 
                 if (typefaceAssetPath.equalsIgnoreCase(getResources().getString(R.string
-                        .font_roboto_light))) {
-                    setTypeface(baseApplication.getTypefaceRobotoLight());
+                        .font_open_sans_semibold))) {
+                    setTypeface(baseApplication.getTypefaceOpenSansSemiBold());
                 } else if (typefaceAssetPath.equalsIgnoreCase(getResources().getString(R.string
-                        .font_roboto_bold))) {
-                    setTypeface(baseApplication.getTypefaceRobotoBold());
+                        .font_open_sans_bold))) {
+                    setTypeface(baseApplication.getTypefaceOpenSansBold());
                 } else {
-                    setTypeface(baseApplication.getTypefaceRobotoRegular());
+                    setTypeface(baseApplication.getTypefaceOpenSansRegular());
                 }
 
             }

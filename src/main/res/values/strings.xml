@@ -39,10 +39,9 @@
 
 
     <!-- Font names -->
-    <string name="font_roboto_regular">roboto_regular</string>
-    <string name="font_roboto_bold">roboto_bold</string>
-    <string name="font_roboto_light">roboto_light</string>
-
+    <string name="font_open_sans_regular">open_sans_regular</string>
+    <string name="font_open_sans_bold">open_sans_bold</string>
+    <string name="font_open_sans_semibold">open_sans_semi_bold</string>
 
 
     <!-- name of payment methods -->
@@ -77,6 +76,10 @@
     <string name="validation_message_empty_expiry_date">Please enter expiry date</string>
     <string name="message_cvv">3 digits printed on back of card</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="no_network">Network unavailable</string>
+    <string name="no_network_msg">Network not available! Please try later.</string>
+    <string name="ok">OK</string>
 </resources>

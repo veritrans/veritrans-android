@@ -22,7 +22,7 @@
         android:layout_toRightOf="@id/img_payment_method_icon"
         android:paddingLeft="@dimen/sixteen_dp"
         android:text="demo"
-        app:font="@string/font_roboto_regular"
+        app:font="@string/font_open_sans_regular"
         />
 
 </RelativeLayout>

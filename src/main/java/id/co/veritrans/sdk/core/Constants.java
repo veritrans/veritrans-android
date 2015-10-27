@@ -18,8 +18,10 @@ public class Constants {
     public static final int PAYMENT_METHOD_INDOSAT_DOMPETKU = 6;
     public static final int PAYMENT_METHOD_MANDIRI_ECASH = 7;
 
-    public static final int PAYMENT_METHOD_MANDIRI_BILL_PAYMENT = 8;
-    public static final int PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER = 9;
+    public static final int PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER = 8;
+    public static final int PAYMENT_METHOD_MANDIRI_BILL_PAYMENT = 9;
+    public static final int PAYMENT_METHOD_INDOMARET = 10;
+
 
     public static final String TAG = "VeritransSDK";
 
@@ -33,5 +35,14 @@ public class Constants {
     public static final String EMAIL_PATTERN ="^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+
     public static final float CARD_ASPECT_RATIO = 0.555f;
+
+
+    public static final String BASE_URL_FOR_DEBUG = "http://api.sandbox.veritrans.co.id/v2/";
+    public static final String BASE_URL_FOR_RELEASE = "http://api.sandbox.veritrans.co.id/v2/";
+
+
+    public static final String DIR_APP = "VeritransData";
+    public static final String CURRENCY_PREFIX = "Rp";
 }

@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.BankTransferActivity;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -26,12 +28,12 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
     private static final String TAG = PaymentMethodsAdapter.class.getSimpleName();
 
-    private static Activity context;
+    private static Activity sActivity;
     private ArrayList<PaymentMethodsModel> data = null;
 
 
-    public PaymentMethodsAdapter(Activity mContext, ArrayList<PaymentMethodsModel> data) {
-        this.context = mContext;
+    public PaymentMethodsAdapter(Activity activity, ArrayList<PaymentMethodsModel> data) {
+        this.sActivity = activity;
         this.data = data;
         Logger.d(TAG, "setting adapter");
 
@@ -82,14 +84,24 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
         @Override
         public void onClick(View view) {
-            /*Toast.makeText(context, "clicked on " + getAdapterPosition(), Toast.LENGTH_SHORT)
-                    .show();*/
-            switch (getAdapterPosition()){
-                case Constants.PAYMENT_METHOD_OFFERS:
-                    break;
+
+            switch (getAdapterPosition()) {
+
                 case Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT:
-                    Intent intent = new Intent(context, CreditDebitCardFlowActivity.class);
-                    context.startActivity(intent);
+                    Intent intent = new Intent(sActivity, CreditDebitCardFlowActivity.class);
+                    sActivity.startActivity(intent);
+                    break;
+
+                case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
+                    Intent startBankPayment = new Intent(sActivity, BankTransferActivity.class);
+                    sActivity.startActivity(startBankPayment);
+                    break;
+
+                default:
+                    showMessage();
+
+                /*
+                case Constants.PAYMENT_METHOD_OFFERS:
                     break;
                 case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
                     break;
@@ -105,10 +117,19 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                     break;
                 case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
                     break;
-                case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
+                case Constants.PAYMENT_METHOD_INDOMARET:
                     break;
+            */
+
             }
         }
+
+
+        public void showMessage() {
+            Toast.makeText(sActivity.getApplicationContext(),
+                    "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 }

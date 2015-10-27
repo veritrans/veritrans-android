@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="id.co.veritrans.sdk" >
+<manifest package="id.co.veritrans.sdk"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name" >
+        android:label="@string/app_name">
         <activity
             android:name=".activities.UserDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
             android:name=".activities.PaymentMethodsActivity"
-            android:theme="@style/VeritransAppTheme" />
-        <activity android:name=".activities.CreditDebitCardFlowActivity"
-                  android:theme="@style/VeritransAppTheme"
-            >
-        </activity>
+            android:theme="@style/VeritransAppTheme"/>
+        <activity
+            android:name=".activities.CreditDebitCardFlowActivity"
+            android:theme="@style/VeritransAppTheme"
+            />
+
+        <activity
+            android:name=".activities.BankTransferActivity"
+            android:theme="@style/VeritransAppTheme"
+            />
+
     </application>
 
 </manifest>
