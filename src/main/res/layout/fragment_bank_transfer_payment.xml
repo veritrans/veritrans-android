@@ -1,7 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/sixteen_dp">
+
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:text="@string/virtual_account_number"
+            android:textColor="@color/light_gray"
+            android:textSize="@dimen/primary_text_size"
+            app:font="@string/font_open_sans_regular"
+            android:paddingTop="@dimen/sixteen_dp"
+            />
+
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/text_virtual_account_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/eight_dp"
+            android:text="@string/virtual_account_number"
+            android:textColor="@color/black"
+            android:textSize="@dimen/big_text"
+            app:font="@string/font_open_sans_regular"
+            />
+
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/text_validaty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/faint_yellow"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:text="Valid Until : 10 September 2015, 16:00"
+            android:textColor="@color/black"
+            android:textSize="@dimen/primary_text_size"
+            app:font="@string/font_open_sans_regular"
+            />
+
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/text_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:background="@color/faint_pink"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/sixteen_dp"
+            android:text="Valid Until : 10 September 2015, 16:00"
+            android:textColor="@color/black"
+            android:textSize="@dimen/primary_text_size"
+            app:font="@string/font_open_sans_regular"
+            />
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:background="@drawable/ripple_white_background"
+            android:clickable="true"
+            android:paddingBottom="@dimen/eight_dp"
+            android:paddingTop="@dimen/eight_dp"
+            android:text="@string/see_instruction"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/primary_text_size"
+            app:font="@string/font_open_sans_semibold"
+            />
+
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

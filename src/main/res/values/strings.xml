@@ -98,5 +98,6 @@
     <string name="confirm_payment">Confirm Payment</string>
     <string name="complete_payment_at_atm">Complete Payment At ATM</string>
     <string name="done">Done</string>
+    <string name="virtual_account_number">Virtual Account Number</string>
 
 </resources>
