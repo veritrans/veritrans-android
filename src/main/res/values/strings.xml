@@ -76,4 +76,7 @@
     <string name="validation_message_invalid_cvv">Please enter valid cvv</string>
     <string name="validation_message_empty_expiry_date">Please enter expiry date</string>
     <string name="message_cvv">3 digits printed on back of card</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
