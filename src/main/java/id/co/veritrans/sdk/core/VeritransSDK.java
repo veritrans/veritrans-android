@@ -54,21 +54,22 @@ public class VeritransSDK {
     }
 
 
-    public static Typeface getTypefaceOpenSansRegular() {
+    public Typeface getTypefaceOpenSansRegular() {
         return typefaceOpenSansRegular;
     }
 
-    public static Typeface getTypefaceOpenSansSemiBold() {
+    public Typeface getTypefaceOpenSansSemiBold() {
         return typefaceOpenSansSemiBold;
     }
 
-    public static Typeface getTypefaceOpenSansBold() {
+    public Typeface getTypefaceOpenSansBold() {
         return typefaceOpenSansBold;
     }
 
 
     /**
      * Returns instance of veritrans sdk.
+     *
      * @return
      */
     public static VeritransSDK getVeritransSDK() {
@@ -98,11 +99,11 @@ public class VeritransSDK {
         return sOrderId;
     }
 
-    public  double getAmount() {
+    public double getAmount() {
         return sAmount;
     }
 
-    public  int getPaymentMethod() {
+    public int getPaymentMethod() {
         return sPaymentMethod;
     }
 }
