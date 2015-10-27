@@ -80,4 +80,23 @@
     <string name="no_network_msg">Network not available! Please try later.</string>
     <string name="ok">OK</string>
 
+
+    <!-- Permata VA Bank Transfer-->
+    <string name="virtual_account">Virtual Account</string>
+    <string name="order_id">Order ID</string>
+    <string name="amount">Amount</string>
+    <string name="hint_email_optional">Email Address (Optional)</string>
+    <string name="email_instruction">we\'ll send payment instruction to mail.</string>
+    <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
+    <string name="bank_atm_transfer_step1">1.        Click the Confirm Payment button.</string>
+    <string name="bank_atm_transfer_step2">2.        You will receive an unique account number and instructions on how to pay
+        (You can receive instructions via email if you input your mail address above).</string>
+
+    <string name="bank_atm_transfer_step3">3.        Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
+    <string name="bank_atm_transfer_step4">4.        Once payment is complete, you will receive a confirmation email.</string>
+    <string name="see_instruction">see instruction</string>
+    <string name="confirm_payment">Confirm Payment</string>
+    <string name="complete_payment_at_atm">Complete Payment At ATM</string>
+    <string name="done">Done</string>
+
 </resources>
