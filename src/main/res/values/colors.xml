@@ -13,4 +13,8 @@
     <color name="faint_yellow">#FFF3CD</color>
     <color name="faint_pink">#FFE0E0</color>
     <color name="faint_white">#9AD7F9</color>
+
+    <color name="dark_gray">#757575</color>
+
+
 </resources>

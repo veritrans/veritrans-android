@@ -107,4 +107,35 @@
     <string name="tab_permata_alto">Permata/Alto</string>
     <string name="payment_instrution">Payment Instruction</string>
 
+    <!-- Mandiri bank transfer Instruction-->
+    <string name="instruction">Instructions</string>
+    <string name="mandiri_instruction_step1">1  Enter Your PIN.</string>
+    <string name="mandiri_instruction_step2">2  On the main menu, Choose \'others\'.</string>
+    <string name="mandiri_instruction_step3">3  Choose Transfer.</string>
+    <string name="mandiri_instruction_step4">4  Choose \'Online Transfer\'.</string>
+    <string name="mandiri_instruction_step5">5  Enter the number 013 (code 013 and 16-digit account number).</string>
+    <string name="mandiri_instruction_step6">6  The reference number can be left blank and then choose correct.</string>
+
+
+
+    <!-- bca/ prima bank transfer Instruction-->
+    <string name="bca_instruction_step1">1  Enter Your PIN.</string>
+    <string name="bca_instruction_step2">2  On the main menu, Choose \'Other Transaction\'.</string>
+    <string name="bca_instruction_step3">3  Choose \'Transfer\'.</string>
+    <string name="bca_instruction_step4">4  Choose \'Other Bank Account\'.</string>
+    <string name="bca_instruction_step5">5  Enter the number 013 (Bank Permata) and choose \'Correct\'.</string>
+    <string name="bca_instruction_step6">6  Enter full amount to be paid (if the amount entered is not the same as the invoiced amount, the transaction will be declined).</string>
+    <string name="bca_instruction_step7">7  Enter 16 digits payment Account No. and press \'Correct\'.</string>
+
+
+    <!-- Permata/Alto bank transfer Instruction-->
+    <string name="permata_instruction_step1">1  Enter Your PIN.</string>
+    <string name="permata_instruction_step2">2  On the main menu, Choose \'Other Transaction\'.</string>
+    <string name="permata_instruction_step3">3  Choose \'Payment\'.</string>
+    <string name="permata_instruction_step4">4  Choose \'Other Payment\'.</string>
+    <string name="permata_instruction_step5">5  Choose \'Virtual Account\'.</string>
+    <string name="permata_instruction_step6">6  Enter 16 digits payment Account No. and press \'Correct\'.</string>
+    <string name="permata_instruction_step7">7  Transaction information will appear on the payment confirmation page. If the information is right, press \'Correct\'.</string>
+
+
 </resources>
