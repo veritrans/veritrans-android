@@ -145,8 +145,6 @@
 
         </RelativeLayout>
 
-
-
         <Button android:layout_width="wrap_content"
                 android:layout_height="@dimen/btn_height"
                 android:layout_alignParentBottom="true"
