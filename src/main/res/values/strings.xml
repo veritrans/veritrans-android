@@ -102,5 +102,9 @@
     <string name="payment_pending">Payment Pending !</string>
     <string name="transaction_time">Transaction Time</string>
     <string name="payment_type">Payment Type</string>
+    <string name="tab_mandiri">Mandiri/ATM Bersana</string>
+    <string name="tab_bca_prima">BCA/Prima</string>
+    <string name="tab_permata_alto">Permata/Alto</string>
+    <string name="payment_instrution">Payment Instruction</string>
 
 </resources>

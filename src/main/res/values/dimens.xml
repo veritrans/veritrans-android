@@ -15,6 +15,7 @@
     <dimen name="sixtyfour_dp">64dp</dimen>
     <dimen name="eighty_dp">80dp</dimen>
     <dimen name="fiftyfour_dp">54dp</dimen>
+    <dimen name="tool_bar_height">56dp</dimen>
 
 
     <!-- text size-->
@@ -23,5 +24,8 @@
     <dimen name="primary_text_size">16sp</dimen>
     <dimen name="secondary_text_size">14sp</dimen>
     <dimen name="tertiary_text_size">12sp</dimen>
+
+
+
 
 </resources>

@@ -97,6 +97,7 @@
 
 
         <id.co.veritrans.sdk.widgets.TextViewFont
+           android:id="@+id/text_see_instruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/twenty_four_dp"
