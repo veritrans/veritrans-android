@@ -99,5 +99,8 @@
     <string name="complete_payment_at_atm">Complete Payment At ATM</string>
     <string name="done">Done</string>
     <string name="virtual_account_number">Virtual Account Number</string>
+    <string name="payment_pending">Payment Pending !</string>
+    <string name="transaction_time">Transaction Time</string>
+    <string name="payment_type">Payment Type</string>
 
 </resources>
