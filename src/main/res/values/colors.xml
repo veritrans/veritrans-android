@@ -7,6 +7,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>
+    <color name="card_background_color">#1768a9</color>
     <color name="white_little_transparent">#ACD6FA</color>
     <color name="light_gray">#757575</color>
     <color name="faint_gray">#d3d3d3</color>

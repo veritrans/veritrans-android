@@ -76,6 +76,9 @@
     <string name="validation_message_empty_expiry_date">Please enter expiry date</string>
     <string name="message_cvv">3 digits printed on back of card</string>
 
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="no_network">Network unavailable</string>
     <string name="no_network_msg">Network not available! Please try later.</string>
     <string name="ok">OK</string>
@@ -136,6 +139,5 @@
     <string name="permata_instruction_step5">5  Choose \'Virtual Account\'.</string>
     <string name="permata_instruction_step6">6  Enter 16 digits payment Account No. and press \'Correct\'.</string>
     <string name="permata_instruction_step7">7  Transaction information will appear on the payment confirmation page. If the information is right, press \'Correct\'.</string>
-
 
 </resources>

@@ -36,6 +36,9 @@ public class Constants {
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 
+    public static final float CARD_ASPECT_RATIO = 0.555f;
+
+
     public static final String BASE_URL_FOR_DEBUG = "http://api.sandbox.veritrans.co.id/v2/";
     public static final String BASE_URL_FOR_RELEASE = "http://api.sandbox.veritrans.co.id/v2/";
 
