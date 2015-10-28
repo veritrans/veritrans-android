@@ -5,11 +5,12 @@ import java.io.Serializable;
 /**
  * Created by chetan on 27/10/15.
  */
-public class CardDetail implements Serializable{
+public class CardDetail implements Serializable {
     private String cardHolderName;
     private String cardNumber;
     private String expiryDate;
     private String cardType;
+    private String bankName;
 
     public String getCardHolderName() {
         return cardHolderName;
@@ -41,5 +42,13 @@ public class CardDetail implements Serializable{
 
     public void setCardType(String cardType) {
         this.cardType = cardType;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 }

@@ -82,4 +82,6 @@
     <string name="no_network">Network unavailable</string>
     <string name="no_network_msg">Network not available! Please try later.</string>
     <string name="ok">OK</string>
+    <string name="enter_cvv">Enter cvv</string>
+    <string name="valid_thru">Valid Thru</string>
 </resources>

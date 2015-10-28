@@ -15,6 +15,7 @@ import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
+import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.models.CardDetail;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 
@@ -51,6 +52,23 @@ public class SavedCardFragment extends Fragment {
 
         CardPagerAdapter cardPagerAdapter = new CardPagerAdapter(getChildFragmentManager(),cardDetails);
         savedCardPager.setAdapter(cardPagerAdapter);
+        savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                SdkUtil.hideKeyboard(getActivity());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+
+            }
+        });
         savedCardPager.setPageMargin(-50);
         savedCardPager.setHorizontalFadingEdgeEnabled(true);
         savedCardPager.setFadingEdgeLength(30);
@@ -65,6 +83,8 @@ public class SavedCardFragment extends Fragment {
             CardDetail cardDetail = new CardDetail();
             cardDetail.setCardHolderName("James Anderson");
             cardDetail.setCardNumber("1234 XXXX XXXX 432" + i);
+            cardDetail.setBankName("Bank Permata");
+            cardDetail.setExpiryDate("XX/12");
             cardDetails.add(cardDetail);
         }
     }

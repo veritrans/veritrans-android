@@ -2,21 +2,40 @@ package id.co.veritrans.sdk.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
+import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.models.CardDetail;
+import id.co.veritrans.sdk.utilities.FlipAnimation;
+import id.co.veritrans.sdk.widgets.TextViewFont;
 
 public class CardDetailFragment extends Fragment {
 
     private static final String ARG_PARAM = "card_detail";
     private CardDetail cardDetails;
+    private RelativeLayout rootLayout;
+    private RelativeLayout cardContainerBack;
+    private RelativeLayout cardContainerFront;
+    private TextViewFont bankNameTv;
+    private TextViewFont cardNoTv;
+    private TextViewFont expTv;
+    private ImageView cardTypeIv;
+    private ImageView cvvCircle1;
+    private ImageView cvvCircle2;
+    private ImageView cvvCircle3;
+    private EditText cvvEt;
+
     public static CardDetailFragment newInstance(CardDetail cardDetails) {
         CardDetailFragment fragment = new CardDetailFragment();
         Bundle args = new Bundle();
@@ -37,21 +56,101 @@ public class CardDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(getArguments()!=null){
-           cardDetails = (CardDetail) getArguments().getSerializable(ARG_PARAM);
+        if (getArguments() != null) {
+            cardDetails = (CardDetail) getArguments().getSerializable(ARG_PARAM);
         }
         View view = inflater.inflate(R.layout.fragment_card_detail, container, false);
-        LinearLayout cardContainer = (LinearLayout) view.findViewById(R.id.card_container);
+        initialiseViews(view);
+
+        return view;
+    }
+
+    private void initialiseViews(View view) {
+        cardContainerFront = (RelativeLayout) view.findViewById(R.id.card_container_front_side);
+        cardContainerBack = (RelativeLayout) view.findViewById(R.id.card_container_back_side);
+        rootLayout = (RelativeLayout) view.findViewById(R.id.root_layout);
         float cardWidth = ((CreditDebitCardFlowActivity) getActivity()).getScreenWidth();
-        cardWidth = cardWidth - getResources().getDimension(R.dimen.sixteen_dp)*getResources().getDisplayMetrics().density;
+        cardWidth = cardWidth - getResources().getDimension(R.dimen.sixteen_dp) * getResources().getDisplayMetrics().density;
         float cardHeight = cardWidth * Constants.CARD_ASPECT_RATIO;
         Logger.i("card width:" + cardWidth + ",height:" + cardHeight);
-        LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams((int)cardWidth,(int)cardHeight);
+        RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams((int) cardWidth, (int) cardHeight);
         Logger.i("card width:" + parms.width + ",height:" + parms.height);
-  //      int margin = (int) (getResources().getDimension(R.dimen.sixteen_dp)*getResources().getDisplayMetrics().density);
-//        parms.setMargins(margin,0,margin,0);
-        cardContainer.setLayoutParams(parms);
-        cardContainer.invalidate();
-        return view;
+        cardContainerFront.setLayoutParams(parms);
+        cardContainerBack.setLayoutParams(parms);
+        cardContainerBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flipCard();
+            }
+        });
+        cardContainerFront.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flipCard();
+            }
+        });
+        bankNameTv = (TextViewFont) view.findViewById(R.id.text_bank_name);
+        cardNoTv = (TextViewFont) view.findViewById(R.id.text_card_number);
+        expTv = (TextViewFont) view.findViewById(R.id.text_exp_date);
+        cardTypeIv = (ImageView) view.findViewById(R.id.image_card_type);
+        cvvCircle1 = (ImageView) view.findViewById(R.id.image_cvv1);
+        cvvCircle2 = (ImageView) view.findViewById(R.id.image_cvv2);
+        cvvCircle3 = (ImageView) view.findViewById(R.id.image_cvv3);
+        cvvEt = (EditText) view.findViewById(R.id.et_cvv);
+        cvvEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int length = cvvEt.getText().toString().trim().length();
+                switch (length) {
+                    case 0:
+                        cvvCircle1.setImageResource(R.drawable.hollow_circle);
+                        cvvCircle2.setImageResource(R.drawable.hollow_circle);
+                        cvvCircle3.setImageResource(R.drawable.hollow_circle);
+                        break;
+                    case 1:
+                        cvvCircle1.setImageResource(R.drawable.cvv_circle);
+                        cvvCircle2.setImageResource(R.drawable.hollow_circle);
+                        cvvCircle3.setImageResource(R.drawable.hollow_circle);
+                        break;
+                    case 2:
+                        cvvCircle1.setImageResource(R.drawable.cvv_circle);
+                        cvvCircle2.setImageResource(R.drawable.cvv_circle);
+                        cvvCircle3.setImageResource(R.drawable.hollow_circle);
+                        break;
+                    case 3:
+                        cvvCircle1.setImageResource(R.drawable.cvv_circle);
+                        cvvCircle2.setImageResource(R.drawable.cvv_circle);
+                        cvvCircle3.setImageResource(R.drawable.cvv_circle);
+                        break;
+                }
+
+            }
+        });
+        bankNameTv.setText(cardDetails.getBankName());
+        cardNoTv.setText(cardDetails.getCardNumber());
+        expTv.setText(cardDetails.getExpiryDate());
+
+    }
+
+    private void flipCard() {
+
+        FlipAnimation flipAnimation = new FlipAnimation(cardContainerFront, cardContainerBack);
+
+        if (cardContainerFront.getVisibility() == View.GONE) {
+            flipAnimation.reverse();
+        } else {
+            SdkUtil.hideKeyboard(getActivity());
+        }
+        rootLayout.startAnimation(flipAnimation);
     }
 }
