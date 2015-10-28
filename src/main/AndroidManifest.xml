@@ -23,6 +23,11 @@
             android:theme="@style/VeritransAppTheme"
             />
 
+        <activity
+            android:name=".activities.BankTransferInstructionActivity"
+            android:theme="@style/VeritransAppTheme"
+            />
+
     </application>
 
 </manifest>
