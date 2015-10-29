@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.fragments.InstructionBCAFragment;
@@ -33,9 +34,26 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
         initializeViews();
     }
 
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+            if( item.getItemId() ==  android.R.id.home){
+                //close activity on click of cross button.
+                finish();
+            }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initializeViews() {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setNavigationIcon(R.drawable.ic_close);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mTabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager_bank_instruction);
         mToolbar.setTitle(getResources().getString(R.string.payment_instrution));
