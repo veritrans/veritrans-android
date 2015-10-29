@@ -52,4 +52,53 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity {
     public Toolbar getToolbar() {
         return toolbar;
     }
+
+
+/*
+
+    //card_number=4811111111111114
+    // &card_cvv=123
+    // &card_exp_month=12
+    // &card_exp_year=2020
+    // &client_key=VT-client-Lre_JFh5klhfGefF
+    // &secure=true
+    // &gross_amount=10000
+    // &bank=bni
+    // &two_click=false
+
+    TokenRequestModel tokenRequestModel =
+            new TokenRequestModel("4811111111111114", 123, 12, 2020, veritransSDK
+                    .getClientKey());
+
+
+                // to enable 3ds transaction
+                tokenRequestModel.setBank("bni");
+                tokenRequestModel.setGrossAmount(1000);
+                tokenRequestModel.setSecure(true);
+                tokenRequestModel.setTwoClick(false);
+
+
+    veritransSDK.getToken(BankTransferActivity.this, tokenRequestModel, new
+    TokenCallBack() {
+
+        @Override
+        public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {
+
+            Toast.makeText(getApplicationContext(), "onSuccess of get Token",
+                    Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onFailure(String errorMessage) {
+
+            Toast.makeText(getApplicationContext(), "onFailure of get Token",
+                    Toast.LENGTH_SHORT).show();
+
+        }
+    });
+
+*/
+
+
 }
