@@ -143,4 +143,14 @@
     <string name="permata_instruction_step5">5  Choose \'Virtual Account\'.</string>
     <string name="permata_instruction_step6">6  Enter 16 digits payment Account No. and press \'Correct\'.</string>
     <string name="permata_instruction_step7">7  Transaction information will appear on the payment confirmation page. If the information is right, press \'Correct\'.</string>
+    <string name="add_card_message">You can also pay with a new card from here</string>
+    <string name="saved_card">Saved card</string>
+    <string name="card_details">Card details</string>
+    <string name="retry">Retry</string>
+    <string name="coming_soon">Coming soon!!</string>
+    <string name="successful">Successful</string>
+    <string name="unsuccessful">Unsuccessful</string>
+    <string name="payment_successful">Payment Successful :)</string>
+    <string name="payment_unsuccessful_msg">Payment gateway error</string>
+    <string name="payment_unsuccessful">Payment unsuccessful :(</string>
 </resources>

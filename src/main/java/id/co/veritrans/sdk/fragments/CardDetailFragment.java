@@ -3,10 +3,12 @@ package id.co.veritrans.sdk.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -35,6 +37,7 @@ public class CardDetailFragment extends Fragment {
     private ImageView cvvCircle2;
     private ImageView cvvCircle3;
     private EditText cvvEt;
+    private Button payNowBt;
 
     public static CardDetailFragment newInstance(CardDetail cardDetails) {
         CardDetailFragment fragment = new CardDetailFragment();
@@ -59,6 +62,8 @@ public class CardDetailFragment extends Fragment {
         if (getArguments() != null) {
             cardDetails = (CardDetail) getArguments().getSerializable(ARG_PARAM);
         }
+        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.card_details));
+        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         View view = inflater.inflate(R.layout.fragment_card_detail, container, false);
         initialiseViews(view);
 
@@ -139,17 +144,37 @@ public class CardDetailFragment extends Fragment {
         bankNameTv.setText(cardDetails.getBankName());
         cardNoTv.setText(cardDetails.getCardNumber());
         expTv.setText(cardDetails.getExpiryDate());
+        payNowBt = (Button) view.findViewById(R.id.btn_pay_now);
+        payNowBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SdkUtil.hideKeyboard(getActivity());
+                final String cvv = cvvEt.getText().toString().trim();
+                if (TextUtils.isEmpty(cvv)) {
+                    SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_cvv));
+                    return;
+                } else if (cvv.length() < 3) {
+                    SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_invalid_cvv));
+                    return;
+                }
+                //TODO  transaction process here
+                cardTransactionProcess(cvv);
+            }
+        });
 
+    }
+
+    private void cardTransactionProcess(String cvv) {
+        WebviewFragment webviewFragment = WebviewFragment.newInstance("https://www.google.co.in");
+        ((CreditDebitCardFlowActivity) getActivity()).replaceFragment(webviewFragment,true,false);
     }
 
     private void flipCard() {
 
         FlipAnimation flipAnimation = new FlipAnimation(cardContainerFront, cardContainerBack);
-
+        SdkUtil.hideKeyboard(getActivity());
         if (cardContainerFront.getVisibility() == View.GONE) {
             flipAnimation.reverse();
-        } else {
-            SdkUtil.hideKeyboard(getActivity());
         }
         rootLayout.startAnimation(flipAnimation);
     }

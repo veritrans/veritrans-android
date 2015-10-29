@@ -1,21 +1,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               tools:context="id.co.veritrans.sdk.fragments.SavedCardFragment">
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:orientation="vertical"
                   android:background="@color/colorPrimary"
+                  android:orientation="vertical"
                   android:paddingTop="@dimen/sixteen_dp"
 
         >
         <android.support.v4.view.ViewPager
             android:id="@+id/saved_card_pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
 
             android:layout_weight="1"
             />
@@ -24,10 +24,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/sixteen_dp"
-            app:radius="4dp"
             app:fillColor="@android:color/white"
             app:pageColor="@color/colorSecondary"
+            app:radius="4dp"
             app:strokeColor="@color/colorSecondary"
             />
+
     </LinearLayout>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/sixteen_dp">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_add_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_plus_action"/>
+        <ImageView android:id="@+id/image_arrow"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentBottom="true"
+                   android:layout_toLeftOf="@id/btn_add_card"
+                   android:padding="@dimen/sixteen_dp"
+                   android:src="@drawable/curve_arrow"
+            />
+        <id.co.veritrans.sdk.widgets.TextViewFont android:id="@+id/text_card_number"
+                                                  android:layout_width="270dp"
+                                                  android:layout_height="wrap_content"
+                                                  android:layout_above="@id/image_arrow"
+                                                  android:layout_centerHorizontal="true"
+                                                  android:gravity="center"
+                                                  android:text="@string/add_card_message"
+                                                  android:textColor="@color/light_gray"
+                                                  android:textSize="@dimen/primary_text_size"
+                                                  app:font="@string/font_open_sans_semibold"
+
+            />
+
+
+    </RelativeLayout>
 </LinearLayout>

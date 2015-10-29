@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 public class SavedCardFragment extends Fragment {
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
+    private FloatingActionButton addCardBt;
 
     public static SavedCardFragment newInstance() {
         SavedCardFragment fragment = new SavedCardFragment();
@@ -41,7 +43,22 @@ public class SavedCardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_saved_card, container, false);
+        ((CreditDebitCardFlowActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.saved_card));
+        ((CreditDebitCardFlowActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        bindViews(view);
+        return view;
+    }
+
+    private void bindViews(View view) {
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
+        addCardBt = (FloatingActionButton)view.findViewById(R.id.btn_add_card);
+        addCardBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
+                ((CreditDebitCardFlowActivity) getActivity()).replaceFragment(addCardDetailsFragment,true,false);
+            }
+        });
         float cardWidth = ((CreditDebitCardFlowActivity) getActivity()).getScreenWidth();
         float cardHeight = cardWidth * Constants.CARD_ASPECT_RATIO;
         Logger.i("card width:" + cardWidth + ",height:" + cardHeight);
@@ -49,7 +66,6 @@ public class SavedCardFragment extends Fragment {
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
         createDummyCards();
-
         CardPagerAdapter cardPagerAdapter = new CardPagerAdapter(getChildFragmentManager(),cardDetails);
         savedCardPager.setAdapter(cardPagerAdapter);
         savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -66,26 +82,23 @@ public class SavedCardFragment extends Fragment {
             @Override
             public void onPageScrollStateChanged(int state) {
 
-
             }
         });
-        savedCardPager.setPageMargin(-50);
-        savedCardPager.setHorizontalFadingEdgeEnabled(true);
-        savedCardPager.setFadingEdgeLength(30);
-        /*savedCardPager.setPageMargin(16);
-        savedCardPager.setClipChildren(false);*/
+
         circlePageIndicator.setViewPager(savedCardPager);
-        return view;
     }
+
     ArrayList<CardDetail>cardDetails = new ArrayList<>();
     private void createDummyCards() {
-        for(int i= 0;i<4;i++){
-            CardDetail cardDetail = new CardDetail();
-            cardDetail.setCardHolderName("James Anderson");
-            cardDetail.setCardNumber("1234 XXXX XXXX 432" + i);
-            cardDetail.setBankName("Bank Permata");
-            cardDetail.setExpiryDate("XX/12");
-            cardDetails.add(cardDetail);
+        if(cardDetails.isEmpty()) {
+            for (int i = 0; i < 4; i++) {
+                CardDetail cardDetail = new CardDetail();
+                cardDetail.setCardHolderName("James Anderson");
+                cardDetail.setCardNumber("1234 XXXX XXXX 432" + i);
+                cardDetail.setBankName("Bank Permata");
+                cardDetail.setExpiryDate("XX/12");
+                cardDetails.add(cardDetail);
+            }
         }
     }
 }

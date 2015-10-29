@@ -147,6 +147,7 @@
 
         <Button android:layout_width="wrap_content"
                 android:layout_height="@dimen/btn_height"
+                android:id="@+id/btn_pay_now"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/colorPrimary"
