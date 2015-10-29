@@ -5,6 +5,7 @@ import id.co.veritrans.sdk.models.PermataBankTransferResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionCancelResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
+import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Headers;
@@ -24,7 +25,7 @@ public interface VeritranceApiInterface {
     @POST("/charge/")
     Observable<PermataBankTransferResponse> paymentUsingPermataBank(@Header("Authorization")
                                                                     String authorization,
-                                                                    PermataBankTransfer
+                                                                    @Body PermataBankTransfer
                                                                             permataBankTransfer);
 
 
