@@ -7,20 +7,17 @@ package id.co.veritrans.sdk.utilities;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 
 import id.co.veritrans.sdk.core.Constants;
@@ -159,7 +156,6 @@ public class Utils {
     }
 
 
-
     public static long startDownload(String uri, Activity activity, DownloadManager
             downloadManager, String directoryName) {
 
@@ -200,4 +196,21 @@ public class Utils {
     }
 
 
+    public static String calculateBase64(final String data) {
+
+        try {
+
+            final byte[] authBytes = data.getBytes("UTF-8");
+            final String encoded = Base64.encodeToString(authBytes, Base64.DEFAULT);
+
+            Logger.i("base64 of "+data+" : becomes : "+encoded);
+
+            return encoded;
+
+        } catch (UnsupportedEncodingException ex) {
+            Logger.e("" + ex.getMessage());
+        }
+
+        return null;
+    }
 }
