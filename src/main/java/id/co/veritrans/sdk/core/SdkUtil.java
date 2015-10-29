@@ -5,15 +5,20 @@ import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import id.co.veritrans.sdk.widgets.VeritransLoadingDialog;
+
 /**
  * Created by chetan on 19/10/15.
  */
 public class SdkUtil {
+
+    private static VeritransLoadingDialog progressDialog;
 
     public static boolean isEmailValid(String email) {
         Logger.i("email:"+email);
@@ -78,5 +83,33 @@ public class SdkUtil {
         boolean isvalid = (sum % 10 == 0);
         Logger.i("isValid:" + isvalid);
         return isvalid;
+    }
+
+    public static void showProgressDialog(Context context, boolean isCancelable) {
+        hideProgressDialog();
+        if (context != null) {
+            try {
+                progressDialog = new VeritransLoadingDialog(context);
+                progressDialog.setCanceledOnTouchOutside(true);
+                progressDialog.setCancelable(isCancelable);
+                progressDialog.show();
+            } catch (WindowManager.BadTokenException e) {
+
+            }
+        }
+
+    }
+    public static VeritransLoadingDialog getProgressDialog(){
+        return progressDialog;
+    }
+    public static void hideProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+
+            try {
+                progressDialog.dismiss();
+            } catch (IllegalArgumentException e) {
+            }
+            progressDialog = null;
+        }
     }
 }
