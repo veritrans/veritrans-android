@@ -89,17 +89,7 @@ public class UserAddressFragment extends Fragment {
                 validateAndSaveAddress();
             }
         });
-       /* cbShippingAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (cbShippingAddress.isChecked()) {
-                    cbShippingAddress.setChecked(false);
-                    shippingAddressContainer.setVisibility(View.VISIBLE);
-                } else {
-                    shippingAddressContainer.setVisibility(View.GONE);
-                }
-            }
-        });*/
+
         cbShippingAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
