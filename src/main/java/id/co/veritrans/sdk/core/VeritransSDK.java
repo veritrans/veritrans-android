@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
+import id.co.veritrans.sdk.callbacks.PermataBankTransferStatus;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
+import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.TokenRequestModel;
 
 /**
@@ -144,6 +146,13 @@ public class VeritransSDK {
      */
     public void getToken(Activity activity, TokenRequestModel tokenRequestModel, TokenCallBack tokenCallBack){
         TransactionHandler.getToken(activity, tokenRequestModel, tokenCallBack);
+    }
+
+
+    public void paymentUsingPermataBank(Activity activity,
+                                        PermataBankTransfer permataBankTransfer,
+                                        PermataBankTransferStatus permataBankTransferStatus){
+        TransactionHandler.paymentUsingPermataBank(activity, permataBankTransfer, permataBankTransferStatus);
     }
 
 }
