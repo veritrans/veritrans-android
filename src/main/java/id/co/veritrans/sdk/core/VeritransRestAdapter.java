@@ -57,7 +57,6 @@ class VeritransRestAdapter {
 
                 if (BuildConfig.DEBUG) {
                     builder.setEndpoint(Constants.BASE_URL_FOR_DEBUG);
-                    builder.setLogLevel(RestAdapter.LogLevel.FULL);
                     restAdapter = builder.build();
                     restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
 
