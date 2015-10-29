@@ -22,7 +22,7 @@ import retrofit.converter.GsonConverter;
 /**
  * Created by chetan on 16/10/15.
  */
- class VeritransRestAdapter {
+class VeritransRestAdapter {
 
     private static final String TAG = VeritransRestAdapter.class.getName();
     private static VeritranceApiInterface sVeritranceApiInterface;
@@ -30,13 +30,13 @@ import retrofit.converter.GsonConverter;
     /**
      * It will return instance of VeritranceApiInterface using that we can execute api calls.
      *
-     * @param activity reference of activity in which we want to show dialog.
-     * @param showNetworkNotAvailableDialog boolean , whether to show network not available dialog or not.
-     *
+     * @param activity                      reference of activity in which we want to show dialog.
+     * @param showNetworkNotAvailableDialog boolean , whether to show network not available
+     *                                      dialog or not.
      * @return
      */
     public static VeritranceApiInterface getApiClient(final Activity activity,
-                                                   boolean showNetworkNotAvailableDialog) {
+                                                      boolean showNetworkNotAvailableDialog) {
         if (Utils.isNetworkAvailable(activity)) {
 
             if (sVeritranceApiInterface == null) {
@@ -49,6 +49,7 @@ import retrofit.converter.GsonConverter;
 
                 RestAdapter.Builder builder = new RestAdapter.Builder()
                         .setConverter(new GsonConverter(gson))
+                        .setLogLevel(RestAdapter.LogLevel.FULL)
                         .setClient(new OkClient(okHttpClient));
 
                 RestAdapter restAdapter;
@@ -56,8 +57,10 @@ import retrofit.converter.GsonConverter;
 
                 if (BuildConfig.DEBUG) {
                     builder.setEndpoint(Constants.BASE_URL_FOR_DEBUG);
+                    builder.setLogLevel(RestAdapter.LogLevel.FULL);
                     restAdapter = builder.build();
                     restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
+
                 } else {
                     builder.setEndpoint(Constants.BASE_URL_FOR_RELEASE);
                     restAdapter = builder.build();
