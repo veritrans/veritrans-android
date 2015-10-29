@@ -45,4 +45,9 @@ public class Constants {
 
     public static final String DIR_APP = "VeritransData";
     public static final String CURRENCY_PREFIX = "Rp";
+
+    public static final String ERROR_EMPTY_RESPONSE = "failed to retrieve response from server.";
+    public static final String ERROR_SDK_IS_NOT_INITIALIZED = "sdk is not initialized.";
+    public static final String ERROR_INVALID_DATA_SUPPLIED = "Invalid data supplied to sdk.";
+
 }
