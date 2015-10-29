@@ -22,7 +22,7 @@ import retrofit.converter.GsonConverter;
 /**
  * Created by chetan on 16/10/15.
  */
-public class VeritransRestAdapter {
+ class VeritransRestAdapter {
 
     private static final String TAG = VeritransRestAdapter.class.getName();
     private static VeritranceApiInterface sVeritranceApiInterface;
