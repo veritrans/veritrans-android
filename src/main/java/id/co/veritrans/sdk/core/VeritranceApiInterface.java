@@ -20,8 +20,7 @@ import rx.Observable;
 public interface VeritranceApiInterface {
 
 
-    @Headers({"Content-Type: application/json",
-            "Accept: application/json"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
     Observable<PermataBankTransferResponse> paymentUsingPermataBank(@Header("Authorization")
                                                                     String authorization,
