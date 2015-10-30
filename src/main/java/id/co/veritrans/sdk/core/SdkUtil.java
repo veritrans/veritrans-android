@@ -22,9 +22,9 @@ public class SdkUtil {
 
     public static boolean isEmailValid(String email) {
         Logger.i("email:" + email);
-        if (!TextUtils.isEmpty(email)) {
+        if ( !TextUtils.isEmpty(email) ) {
             Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(email);
+            Matcher matcher = pattern.matcher(email.trim());
             Logger.i("matcher:" + matcher.matches());
             return matcher.matches();
         } else {
