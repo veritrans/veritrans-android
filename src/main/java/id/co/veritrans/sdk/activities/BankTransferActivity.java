@@ -54,6 +54,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     private ArrayList<BillingAddress> mBillingAddressArrayList = new ArrayList<>();
     private ArrayList<ShippingAddress> mShippingAddressArrayList = new ArrayList<>();
     private CustomerDetails mCustomerDetails = null;
+    private BankTransferFragment bankTransferFragment = null;
 
 
     @Override
@@ -75,8 +76,10 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        bankTransferFragment = new BankTransferFragment();
+
         fragmentTransaction.add(R.id.bank_transfer_container,
-                new BankTransferFragment(), HOME_FRAGMENT);
+                bankTransferFragment, HOME_FRAGMENT);
         fragmentTransaction.addToBackStack(HOME_FRAGMENT);
         fragmentTransaction.commit();
 
@@ -141,9 +144,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         if (v.getId() == R.id.btn_confirm_payment) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
-
-                performTrsansaction();
-
+                  performTrsansaction();
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
                 setUpTransactionStatusFragment();
             } else {
@@ -268,8 +269,6 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
         if (veritransSDK != null) {
 
-            SdkUtil.showProgressDialog(BankTransferActivity.this, false);
-
             // bank name
             BankTransfer bankTransfer = new BankTransfer();
             bankTransfer.setBank("permata");
@@ -278,6 +277,20 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
             TransactionDetails transactionDetails = new TransactionDetails();
             transactionDetails.setGrossAmount("" + mVeritransSDK.getAmount());
             transactionDetails.setOrderId(mVeritransSDK.getOrderId());
+
+
+            // for sending instruction on email only if email-Id is entered.
+            if( bankTransferFragment != null && !bankTransferFragment.isDetached()) {
+                String emailId  = bankTransferFragment.getEmailId();
+                if( !TextUtils.isEmpty(emailId) && SdkUtil.isEmailValid(emailId)) {
+                    mCustomerDetails.setEmail(emailId.trim());
+                }else if(!TextUtils.isEmpty(emailId) && emailId.trim().length() > 0){
+                    SdkUtil.showSnackbar(BankTransferActivity.this, Constants.ERROR_INVALID_EMAIL_ID);
+                    return;
+                }
+            }
+
+            SdkUtil.showProgressDialog(BankTransferActivity.this, false);
 
 
             final PermataBankTransfer permataBankTransfer =
@@ -292,7 +305,6 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                         @Override
                         public void onSuccess(PermataBankTransferResponse
                                                       permataBankTransferResponse) {
-
 
                             SdkUtil.hideProgressDialog();
 
