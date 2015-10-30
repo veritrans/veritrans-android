@@ -11,7 +11,7 @@ public class TransactionDetails {
      * orderId : 10938011
      */
 
-    @SerializedName("grossAmount")
+    @SerializedName("gross_amount")
     private String grossAmount;
 
     @SerializedName("order_id")
