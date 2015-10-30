@@ -32,7 +32,7 @@ class TransactionManager {
 
             if (apiInterface != null) {
 
-                Observable<TokenDetailsResponse> observable = null;
+                Observable<TokenDetailsResponse> observable;
 
                 if (tokenRequestModel.isSecure()) {
                     observable = apiInterface.get3DSToken(tokenRequestModel.getCardNumber(),
@@ -64,7 +64,7 @@ class TransactionManager {
                             @Override
                             public void onError(Throwable throwable) {
 
-                                Logger.e("token response: status code ", "" +
+                                Logger.e("error while getting token : ", "" +
                                         throwable.getMessage());
                                 callBack.onFailure(throwable.getMessage());
                             }
@@ -103,8 +103,8 @@ class TransactionManager {
     }
 
 
-    public static void paymentUsingPermataBank(Activity activity, PermataBankTransfer
-            permataBankTransfer,  final PermataBankTransferStatus callBack) {
+    public static void paymentUsingPermataBank(final Activity activity, final PermataBankTransfer
+            permataBankTransfer, final PermataBankTransferStatus callBack) {
 
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
@@ -131,21 +131,20 @@ class TransactionManager {
 
                                 @Override
                                 public void onCompleted() {
-
                                 }
 
                                 @Override
-                                public void onError(Throwable e) {
-
+                                public void onError(Throwable throwable) {
+                                    Logger.e("bank Transfer transaction error ", "" +
+                                            throwable.getMessage());
+                                    callBack.onFailure(throwable.getMessage());
                                 }
 
                                 @Override
                                 public void onNext(PermataBankTransferResponse
                                                            permataBankTransferResponse) {
 
-
                                     if (permataBankTransferResponse != null) {
-
 
                                         Logger.d("permata bank transfer response: virtual account" +
                                                 " number ", "" +
@@ -168,12 +167,15 @@ class TransactionManager {
                                                 "" + permataBankTransferResponse
                                                         .getTransaction_status());
 
-                                        if( permataBankTransferResponse.getStatus_code().trim().equalsIgnoreCase("200")
-                                                || permataBankTransferResponse.getStatus_code().trim().equalsIgnoreCase("201")) {
+                                        if (permataBankTransferResponse.getStatus_code().trim()
+                                                .equalsIgnoreCase("200")
+                                                || permataBankTransferResponse.getStatus_code()
+                                                .trim().equalsIgnoreCase("201")) {
 
                                             callBack.onSuccess(permataBankTransferResponse);
-                                        }else  {
-                                            callBack.onFailure(permataBankTransferResponse.getStatus_message());
+                                        } else {
+                                            callBack.onFailure(permataBankTransferResponse
+                                                    .getStatus_message());
                                         }
 
                                     } else {
@@ -190,6 +192,5 @@ class TransactionManager {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
         }
     }
-
 
 }
