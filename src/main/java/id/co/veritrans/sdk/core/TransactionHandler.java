@@ -2,8 +2,10 @@ package id.co.veritrans.sdk.core;
 
 import android.app.Activity;
 
+import id.co.veritrans.sdk.callbacks.CardPaymentCallback;
 import id.co.veritrans.sdk.callbacks.PermataBankTransferStatus;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
+import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.TokenRequestModel;
 
@@ -34,10 +36,10 @@ class TransactionHandler {
         if (activity != null && permataBankTransfer != null && permataBankTransferCallBack != null) {
             TransactionManager.paymentUsingPermataBank(activity, permataBankTransfer, permataBankTransferCallBack);
         } else {
-            Logger.e(INVALID_DATA_SUPPLIED);
+            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
     }
 
-
-
+    public static void paymentUsingCard(Activity activity, CardTransfer cardTransfer, CardPaymentCallback cardPaymentCallback) {
+    }
 }

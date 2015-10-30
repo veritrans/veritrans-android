@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.widgets.VeritransLoadingDialog;
 
 /**
@@ -110,6 +111,18 @@ public class SdkUtil {
             } catch (IllegalArgumentException e) {
             }
             progressDialog = null;
+        }
+    }
+
+    public static void showApiFailedMessage(Activity activity,String errorMessage) {
+        try {
+            if (!TextUtils.isEmpty(errorMessage) && errorMessage.contains(Constants.RETROFIT_NETWORK_MESSAGE)) {
+                SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+            } else {
+                SdkUtil.showSnackbar(activity, activity.getString(R.string.api_fail_message));
+            }
+        } catch (NullPointerException e){
+            Logger.i("Nullpointer:"+e.getMessage());
         }
     }
 }

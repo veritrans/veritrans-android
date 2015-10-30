@@ -2,8 +2,11 @@ package id.co.veritrans.sdk.core;
 
 import android.app.Activity;
 
+import id.co.veritrans.sdk.callbacks.CardPaymentCallback;
 import id.co.veritrans.sdk.callbacks.PermataBankTransferStatus;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
+import id.co.veritrans.sdk.models.CardPaymentResponse;
+import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.PermataBankTransferResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
@@ -19,7 +22,6 @@ import rx.schedulers.Schedulers;
  */
 class TransactionManager {
 
-
     public static void getToken(Activity activity, TokenRequestModel tokenRequestModel, final
     TokenCallBack callBack) {
 
@@ -28,7 +30,6 @@ class TransactionManager {
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
                     VeritransRestAdapter.getApiClient(activity, true);
-
 
             if (apiInterface != null) {
 
@@ -49,7 +50,6 @@ class TransactionManager {
                                     .getCardExpiryYear(),
                             tokenRequestModel.getClientKey());
                 }
-
 
                 observable.subscribeOn(Schedulers
                         .io())
@@ -102,7 +102,6 @@ class TransactionManager {
 
     }
 
-
     public static void paymentUsingPermataBank(final Activity activity, final PermataBankTransfer
             permataBankTransfer, final PermataBankTransferStatus callBack) {
 
@@ -111,7 +110,6 @@ class TransactionManager {
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
                     VeritransRestAdapter.getApiClient(activity, true);
-
 
             if (apiInterface != null) {
 
@@ -157,7 +155,6 @@ class TransactionManager {
                                         Logger.d("permata bank transfer response: status code ",
                                                 "" + permataBankTransferResponse.getStatus_code());
 
-
                                         Logger.d("permata bank transfer response: transaction Id ",
                                                 "" + permataBankTransferResponse
                                                         .getTransaction_id());
@@ -193,4 +190,68 @@ class TransactionManager {
         }
     }
 
+    public static void paymentUsingCard(Activity activity, CardTransfer cardTransfer, final CardPaymentCallback cardPaymentCallback) {
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                Observable<CardPaymentResponse> observable = null;
+
+                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
+                if (serverKey != null) {
+
+                    String authorization = "Basic " + serverKey;
+                    observable = apiInterface.paymentUsingCard(authorization,
+                            cardTransfer);
+
+                    observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<CardPaymentResponse>() {
+                                @Override
+                                public void onCompleted() {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Logger.e("card Transfer transaction error ", "" +
+                                            e.getMessage());
+                                    cardPaymentCallback.onFailure(e.getMessage());
+                                }
+
+                                @Override
+                                public void onNext(CardPaymentResponse cardPaymentResponse) {
+                                    if (cardPaymentResponse != null) {
+
+                                        if (cardPaymentResponse.getStatusCode().trim()
+                                                .equalsIgnoreCase("200")
+                                                || cardPaymentResponse.getStatusCode()
+                                                .trim().equalsIgnoreCase("201")) {
+
+                                            cardPaymentCallback.onSuccess(cardPaymentResponse);
+                                        } else {
+                                            cardPaymentCallback.onFailure(cardPaymentResponse
+                                                    .getStatusMessage());
+                                        }
+
+                                    } else {
+                                        cardPaymentCallback.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                    }
+                                }
+
+                            });
+                } else {
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                }
+            }
+
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+        }
+    }
 }

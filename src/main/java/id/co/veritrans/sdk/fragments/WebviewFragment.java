@@ -15,6 +15,7 @@ import android.widget.Button;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
+import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 
@@ -93,6 +94,7 @@ public class WebviewFragment extends Fragment {
             }
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);*/
+
             view.loadUrl(url);
             return true;
         }
@@ -101,6 +103,10 @@ public class WebviewFragment extends Fragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             SdkUtil.hideProgressDialog();
+            if(url.contains(Constants.CALLBACK_STRING)){
+                AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
+                ((CreditDebitCardFlowActivity)getActivity()).replaceFragment(addCardDetailsFragment,true,false);
+            }
         }
 
         @Override

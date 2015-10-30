@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
+import id.co.veritrans.sdk.callbacks.CardPaymentCallback;
 import id.co.veritrans.sdk.callbacks.PermataBankTransferStatus;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
+import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.TokenRequestModel;
 
@@ -145,14 +147,31 @@ public class VeritransSDK {
      * @param tokenRequestModel
      */
     public void getToken(Activity activity, TokenRequestModel tokenRequestModel, TokenCallBack tokenCallBack){
-        TransactionHandler.getToken(activity, tokenRequestModel, tokenCallBack);
+        if (activity != null && tokenRequestModel != null && tokenCallBack != null) {
+            TransactionManager.getToken(activity, tokenRequestModel, tokenCallBack);
+        } else {
+            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+        }
     }
-
 
     public void paymentUsingPermataBank(Activity activity,
                                         PermataBankTransfer permataBankTransfer,
                                         PermataBankTransferStatus permataBankTransferStatus){
-        TransactionHandler.paymentUsingPermataBank(activity, permataBankTransfer, permataBankTransferStatus);
+        //TransactionHandler.paymentUsingPermataBank(activity, permataBankTransfer, permataBankTransferStatus);
+        if (activity != null && permataBankTransfer != null && permataBankTransferStatus != null) {
+            TransactionManager.paymentUsingPermataBank(activity, permataBankTransfer, permataBankTransferStatus);
+        } else {
+            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+        }
+    }
+
+    public void paymentUsingCard(Activity activity,CardTransfer cardTransfer,CardPaymentCallback cardPaymentCallback
+    ){
+        if(activity!=null&&cardTransfer!=null && cardPaymentCallback!=null) {
+            TransactionManager.paymentUsingCard(activity, cardTransfer, cardPaymentCallback);
+        } else {
+            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+        }
     }
 
 }

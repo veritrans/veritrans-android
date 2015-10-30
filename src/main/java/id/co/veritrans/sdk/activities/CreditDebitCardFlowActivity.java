@@ -10,21 +10,42 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MenuItem;
 
+import java.io.IOException;
+
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.callbacks.CardPaymentCallback;
+import id.co.veritrans.sdk.callbacks.TokenCallBack;
+import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.StorageDataHandler;
+import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.SavedCardFragment;
 import id.co.veritrans.sdk.fragments.WebviewFragment;
+import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.TokenRequestModel;
+import id.co.veritrans.sdk.models.UserDetail;
 
 public class CreditDebitCardFlowActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private float cardWidth;
     private String currentFragmentName;
     private FragmentManager fragmentManager;
     private Fragment currentFragment;
+    private VeritransSDK veritransSDK;
+    private float cardWidth;
+    private UserDetail userDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+        try {
+             userDetail = (UserDetail) storageDataHandler.readObject(this, Constants.USER_DETAILS);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         setContentView(R.layout.activity_credit_debit_card_flow);
+        veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -110,6 +131,22 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity {
                 super.onBackPressed();
             }
         }
+    }
+
+    public void getToken(TokenRequestModel tokenRequestModel,TokenCallBack tokenCallBack){
+        veritransSDK.getToken(CreditDebitCardFlowActivity.this, tokenRequestModel,tokenCallBack);
+    }
+
+    public void payUsingCard(CardTransfer cardTransfer,CardPaymentCallback cardPaymentCallback){
+        veritransSDK.paymentUsingCard(this,cardTransfer,cardPaymentCallback);
+    }
+
+    public VeritransSDK getVeritransSDK() {
+        return veritransSDK;
+    }
+
+    public UserDetail getUserDetail() {
+        return userDetail;
     }
 }
 

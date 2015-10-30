@@ -6,9 +6,7 @@
             tools:context="id.co.veritrans.sdk.fragments.UserDetailFragment">
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="@dimen/sixteen_dp"
-        >
+                    android:padding="@dimen/sixteen_dp">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/full_name_til"
@@ -63,19 +61,14 @@
         <RelativeLayout android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/phone_til"
-                        android:layout_alignParentBottom="true"
-            >
+                        android:layout_alignParentBottom="true">
         <Button android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_height"
                 android:id="@+id/btn_next"
                 android:text="@string/next"
                 android:background="@drawable/blue_button_selector"
                 android:textColor="@android:color/white"
-                android:layout_alignParentBottom="true"
-
-            />
+                android:layout_alignParentBottom="true"/>
         </RelativeLayout>
     </RelativeLayout>
-
-
 </ScrollView>

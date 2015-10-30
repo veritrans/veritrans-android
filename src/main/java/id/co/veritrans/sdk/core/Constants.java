@@ -50,4 +50,9 @@ public class Constants {
     public static final String ERROR_SDK_IS_NOT_INITIALIZED = "sdk is not initialized.";
     public static final String ERROR_INVALID_DATA_SUPPLIED = "Invalid data supplied to sdk.";
 
+    public static final int MONTH_COUNT = 12;
+    public static final CharSequence RETROFIT_NETWORK_MESSAGE = "Unable to resolve host";
+    public static final CharSequence CALLBACK_STRING = "/token/callback/";
+    public static final String WEBURL = "weburl";
+    public static final String BANK_NAME = "bni";
 }

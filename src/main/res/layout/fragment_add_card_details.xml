@@ -100,9 +100,7 @@
         <RelativeLayout android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_below="@id/cb_store_card"
-
-            >
+                        android:layout_below="@id/cb_store_card">
             <Button android:layout_width="match_parent"
                     android:layout_height="@dimen/btn_height"
                     android:id="@+id/btn_pay_now"

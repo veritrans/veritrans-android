@@ -153,4 +153,6 @@
     <string name="payment_successful">Payment Successful :)</string>
     <string name="payment_unsuccessful_msg">Payment gateway error</string>
     <string name="payment_unsuccessful">Payment unsuccessful :(</string>
+    <string name="validation_message_invalid_expiry_date">Please enter valid expiry date</string>
+    <string name="api_fail_message">Something went wrong. Please try later.</string>
 </resources>

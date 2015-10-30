@@ -5,6 +5,20 @@ package id.co.veritrans.sdk.models;
  */
 public class BillingAddress {
 
+    public BillingAddress(String first_name, String last_name, String address, String city, String postal_code, String phone, String country_code) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.address = address;
+        this.city = city;
+        this.postal_code = postal_code;
+        this.phone = phone;
+        this.country_code = country_code;
+    }
+
+    public BillingAddress() {
+
+    }
+
     private String first_name;
     private String last_name;
     private String address;
