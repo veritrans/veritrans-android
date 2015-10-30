@@ -8,30 +8,38 @@ import java.util.ArrayList;
 /**
  * Created by shivam on 10/26/15.
  */
-public class PermataBankTransfer extends TransactionModel{
+public class CardTransfer extends TransactionModel{
 
-
-    public static final String PAYMENT_TYPE = "bank_transfer";
+    public static final String PAYMENT_TYPE = "credit_card";
 
     /**
-     * payment_type : bank_transfer
-     * bank_transfer : {"bank":"permata"}
-     * transaction_details : {"gross_amount":"100","order_id":"10938011"}
+     * {
+     "payment_type":"credit_card",
+     "credit_card":{
+     "token_id":"481111-1114-7fd8c06e-a612-4f0b-a6d4-4fa2b8918c39",
+     "bank": "bni",
+     "save_token_id":"true"
+     },
+     "transaction_details":{
+     "gross_amount":10000,
+     "order_id":"10938033"
+     }
+     }
      */
 
 
-    @SerializedName("bank_transfer")
-    private BankTransfer bankTransfer;
+    @SerializedName("credit_card")
+    private CardPaymentDetails cardPaymentDetails;
 
 
-    public PermataBankTransfer(BankTransfer bankTransfer, TransactionDetails transactionDetails,
-                               ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
-                                       billingAddresses, ArrayList<ShippingAddress>
-                                       shippingAddresses, CustomerDetails customerDetails) {
+    public CardTransfer(CardPaymentDetails cardPaymentDetails, TransactionDetails transactionDetails,
+                        ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
+                                billingAddresses, ArrayList<ShippingAddress>
+                                shippingAddresses, CustomerDetails customerDetails) {
 
         this.paymentType = PAYMENT_TYPE;
 
-        this.bankTransfer = bankTransfer;
+        this.cardPaymentDetails = cardPaymentDetails;
         this.transactionDetails = transactionDetails;
         this.itemDetails = itemDetails;
         this.billingAddresses = billingAddresses;
@@ -44,8 +52,8 @@ public class PermataBankTransfer extends TransactionModel{
         return paymentType;
     }
 
-    public BankTransfer getBankTransfer() {
-        return bankTransfer;
+    public CardPaymentDetails getCardPaymentDetails() {
+        return cardPaymentDetails;
     }
 
     public TransactionDetails getTransactionDetails() {
@@ -67,4 +75,5 @@ public class PermataBankTransfer extends TransactionModel{
     public CustomerDetails getCustomerDetails() {
         return customerDetails;
     }
+
 }

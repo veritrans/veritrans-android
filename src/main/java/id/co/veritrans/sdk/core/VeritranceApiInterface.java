@@ -1,5 +1,7 @@
 package id.co.veritrans.sdk.core;
 
+import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.CardTransferResponse;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.PermataBankTransferResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
@@ -67,5 +69,14 @@ public interface VeritranceApiInterface {
     @POST("/{id}/status/")
     Observable<TransactionStatusResponse> transactionStatus(
             @Header("Authorization") String authorization, @Path("id") String transactionId);
+
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<CardTransferResponse> paymentUsingCard(@Header("Authorization")
+                                                                    String authorization,
+                                                                    @Body CardTransfer
+                                                                            cardTransfer);
+
 
 }

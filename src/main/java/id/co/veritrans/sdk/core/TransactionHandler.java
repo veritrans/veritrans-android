@@ -24,7 +24,7 @@ class TransactionHandler {
             TransactionManager.getToken(activity, tokenRequestModel, tokenCallBack);
 
         } else {
-            Logger.e(INVALID_DATA_SUPPLIED);
+            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
     }
 
@@ -36,6 +36,8 @@ class TransactionHandler {
         } else {
             Logger.e(INVALID_DATA_SUPPLIED);
         }
-
     }
+
+
+
 }
