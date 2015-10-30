@@ -90,7 +90,7 @@
 
     <!-- Permata VA Bank Transfer-->
     <string name="virtual_account">Virtual Account</string>
-    <string name="order_id">Order ID</string>
+    <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
     <string name="hint_email_optional">Email Address (Optional)</string>
     <string name="email_instruction">we\'ll send payment instruction to mail.</string>
@@ -107,8 +107,8 @@
     <string name="done">Done</string>
     <string name="virtual_account_number">Virtual Account Number</string>
     <string name="payment_pending">Payment Pending !</string>
-    <string name="transaction_time">Transaction Time</string>
-    <string name="payment_type">Payment Type</string>
+    <string name="transactionTime">Transaction Time</string>
+    <string name="paymentType">Payment Type</string>
     <string name="tab_mandiri">Mandiri/ATM Bersana</string>
     <string name="tab_bca_prima">BCA/Prima</string>
     <string name="tab_permata_alto">Permata/Alto</string>

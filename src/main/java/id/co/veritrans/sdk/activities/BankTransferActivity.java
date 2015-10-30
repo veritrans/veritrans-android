@@ -42,6 +42,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
     public static final String STATUS_FRAGMENT = "transaction_status";
+    public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public String currentFragment = "home";
 
     private TextViewFont mTextViewOrderId = null;
@@ -55,6 +56,8 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     private ArrayList<ShippingAddress> mShippingAddressArrayList = new ArrayList<>();
     private CustomerDetails mCustomerDetails = null;
     private BankTransferFragment bankTransferFragment = null;
+
+    private PermataBankTransferResponse mPermataBankTransferResponse = null;
 
 
     @Override
@@ -143,9 +146,15 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         if (v.getId() == R.id.btn_confirm_payment) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
-                  performTrsansaction();
+                performTrsansaction();
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
-                setUpTransactionStatusFragment();
+
+                if (mPermataBankTransferResponse != null) {
+                    setUpTransactionStatusFragment(mPermataBankTransferResponse);
+                } else {
+                    SdkUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
+                    onBackPressed();
+                }
             } else {
                 onBackPressed();
             }
@@ -154,37 +163,48 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-    private void setUpTransactionStatusFragment() {
+    private void setUpTransactionStatusFragment(final PermataBankTransferResponse
+                                                        permataBankTransferResponse) {
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        // setup transaction status fragment
-        fragmentTransaction.replace(R.id.bank_transfer_container,
-                new BankTransactionStatusFragment(), STATUS_FRAGMENT);
-        fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
-        fragmentTransaction.commit();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+            BankTransactionStatusFragment bankTransactionStatusFragment =
+                    BankTransactionStatusFragment.newInstance(permataBankTransferResponse);
 
-        currentFragment = STATUS_FRAGMENT;
-        mButtonConfirmPayment.setText(R.string.done);
+            // setup transaction status fragment
+            fragmentTransaction.replace(R.id.bank_transfer_container,
+                    bankTransactionStatusFragment, STATUS_FRAGMENT);
+
+            fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
+            fragmentTransaction.commit();
+
+            currentFragment = STATUS_FRAGMENT;
+            mButtonConfirmPayment.setText(R.string.done);
+
     }
 
 
     private void setUpTransactionFragment(final PermataBankTransferResponse
                                                   permataBankTransferResponse) {
-        // setup transaction fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        BankTransferPaymentFragment bankTransferPaymentFragment =
-                BankTransferPaymentFragment.newInstance(permataBankTransferResponse);
+        if( permataBankTransferResponse != null ) {
+            // setup transaction fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            BankTransferPaymentFragment bankTransferPaymentFragment =
+                    BankTransferPaymentFragment.newInstance(permataBankTransferResponse);
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment
-                , PAYMENT_FRAGMENT);
-        fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
-        fragmentTransaction.commit();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment
+                    , PAYMENT_FRAGMENT);
+            fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
+            fragmentTransaction.commit();
 
-        currentFragment = PAYMENT_FRAGMENT;
-        mButtonConfirmPayment.setText(R.string.complete_payment_at_atm);
+            currentFragment = PAYMENT_FRAGMENT;
+            mButtonConfirmPayment.setText(R.string.complete_payment_at_atm);
+        }else {
+            SdkUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
+            onBackPressed();
+        }
     }
 
 
@@ -201,7 +221,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
                 if (userAddresses != null && !userAddresses.isEmpty()) {
 
-                    Logger.i("Found " + userAddresses.size()+" user addresses.");
+                    Logger.i("Found " + userAddresses.size() + " user addresses.");
 
                     mCustomerDetails = new CustomerDetails();
                     mCustomerDetails.setPhone(userDetail.getPhoneNumber());
@@ -216,7 +236,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                     extractUserAddress(userDetail, userAddresses);
                 }
 
-            }else {
+            } else {
                 SdkUtil.showSnackbar(BankTransferActivity.this, "User details not available.");
                 finish();
             }
@@ -227,7 +247,6 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         }
 
     }
-
 
 
     private void extractUserAddress(UserDetail userDetail, ArrayList<UserAddress> userAddresses) {
@@ -279,12 +298,13 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
 
             // for sending instruction on email only if email-Id is entered.
-            if( bankTransferFragment != null && !bankTransferFragment.isDetached()) {
-                String emailId  = bankTransferFragment.getEmailId();
-                if( !TextUtils.isEmpty(emailId) && SdkUtil.isEmailValid(emailId)) {
+            if (bankTransferFragment != null && !bankTransferFragment.isDetached()) {
+                String emailId = bankTransferFragment.getEmailId();
+                if (!TextUtils.isEmpty(emailId) && SdkUtil.isEmailValid(emailId)) {
                     mCustomerDetails.setEmail(emailId.trim());
-                }else if(!TextUtils.isEmpty(emailId) && emailId.trim().length() > 0){
-                    SdkUtil.showSnackbar(BankTransferActivity.this, Constants.ERROR_INVALID_EMAIL_ID);
+                } else if (!TextUtils.isEmpty(emailId) && emailId.trim().length() > 0) {
+                    SdkUtil.showSnackbar(BankTransferActivity.this, Constants
+                            .ERROR_INVALID_EMAIL_ID);
                     return;
                 }
             }
@@ -308,6 +328,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                             SdkUtil.hideProgressDialog();
 
                             if (permataBankTransferResponse != null) {
+                                mPermataBankTransferResponse = permataBankTransferResponse;
                                 setUpTransactionFragment(permataBankTransferResponse);
                             } else {
                                 onBackPressed();

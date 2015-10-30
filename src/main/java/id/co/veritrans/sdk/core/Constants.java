@@ -71,4 +71,8 @@ public class Constants {
 
 
     public static final String ERROR_INVALID_EMAIL_ID = "Invalid email Id.";
+
+    public static final String SUCCESS_CODE_200 = "200";
+    public static final String SUCCESS_CODE_201 = "201";
+
 }

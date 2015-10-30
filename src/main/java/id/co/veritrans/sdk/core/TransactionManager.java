@@ -19,7 +19,6 @@ import rx.schedulers.Schedulers;
  */
 class TransactionManager {
 
-    public static final String SUCCESS_CODE = "200";
 
     public static void getToken(Activity activity, TokenRequestModel tokenRequestModel, final
     TokenCallBack callBack) {
@@ -80,7 +79,7 @@ class TransactionManager {
                                     }
 
                                     if (tokenDetailsResponse.getStatusCode().trim()
-                                            .equalsIgnoreCase(SUCCESS_CODE)) {
+                                            .equalsIgnoreCase(Constants.SUCCESS_CODE_200)) {
                                         callBack.onSuccess(tokenDetailsResponse);
                                     } else {
                                         callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE);
@@ -154,15 +153,15 @@ class TransactionManager {
                                             displayPermataBankResponse(permataBankTransferResponse);
                                         }
 
-                                        if (permataBankTransferResponse.getStatus_code().trim()
-                                                .equalsIgnoreCase(SUCCESS_CODE)
-                                                || permataBankTransferResponse.getStatus_code()
-                                                .trim().equalsIgnoreCase("201")) {
+                                        if (permataBankTransferResponse.getStatusCode().trim()
+                                                .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
+                                                || permataBankTransferResponse.getStatusCode()
+                                                .trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
 
                                             callBack.onSuccess(permataBankTransferResponse);
                                         } else {
                                             callBack.onFailure(permataBankTransferResponse
-                                                    .getStatus_message());
+                                                    .getStatusMessage());
                                         }
 
                                     } else {
@@ -206,24 +205,24 @@ class TransactionManager {
                                                            permataBankTransferResponse) {
         Logger.d("permata bank transfer response: virtual account" +
                 " number ", "" +
-                permataBankTransferResponse.getPermata_va_number());
+                permataBankTransferResponse.getPermataVANumber());
 
         Logger.d("permata bank transfer response: status message " +
                 "", "" +
-                permataBankTransferResponse.getStatus_message());
+                permataBankTransferResponse.getStatusMessage());
 
         Logger.d("permata bank transfer response: status code ",
-                "" + permataBankTransferResponse.getStatus_code());
+                "" + permataBankTransferResponse.getStatusCode());
 
 
         Logger.d("permata bank transfer response: transaction Id ",
                 "" + permataBankTransferResponse
-                        .getTransaction_id());
+                        .getTransactionId());
 
         Logger.d("permata bank transfer response: transaction " +
                         "status ",
                 "" + permataBankTransferResponse
-                        .getTransaction_status());
+                        .getTransactionStatus());
     }
 
 }
