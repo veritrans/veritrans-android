@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
+import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -46,8 +47,12 @@ public class BankTransferFragment extends Fragment {
             public void onClick(View v) {
 
                 if (getActivity() != null) {
-                    getActivity().startActivity(new Intent(getActivity(),
-                            BankTransferInstructionActivity.class));
+
+                    Intent intent = new Intent(getActivity(),
+                            BankTransferInstructionActivity.class);
+                    intent.putExtra(Constants.POSITION, 0);
+                    getActivity().startActivity(intent);
+
                 }
             }
         });

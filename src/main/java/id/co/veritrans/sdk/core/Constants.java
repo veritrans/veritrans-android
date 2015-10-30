@@ -24,6 +24,8 @@ public class Constants {
 
 
     public static final String TAG = "VeritransSDK";
+    public static final String POSITION = "position";
+
 
     public static final int PHONE_NUMBER_LENGTH = 10;
     public static final String USER_DETAILS = "user_details";
