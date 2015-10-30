@@ -68,4 +68,5 @@ public class Constants {
     public static final String ERROR_UNABLE_TO_CONNECT = "failed to connect to server.";
 
 
+    public static final String ERROR_INVALID_EMAIL_ID = "Invalid email Id.";
 }
