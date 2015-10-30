@@ -1,39 +1,43 @@
 package id.co.veritrans.sdk.models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by shivam on 10/29/15.
  */
 public class TransactionDetails {
-
-
     /**
-     * gross_amount : 100
-     * order_id : 10938011
+     * grossAmount : 100
+     * orderId : 10938011
      */
-    public TransactionDetails() {
+
+    @SerializedName("gross_amount")
+    private String grossAmount;
+
+    @SerializedName("order_id")
+    private String orderId;
+    public TransactionDetails( ) {
 
     }
-    public TransactionDetails(String gross_amount, String order_id) {
-        this.gross_amount = gross_amount;
-        this.order_id = order_id;
+    public TransactionDetails(String grossAmount, String orderId) {
+        this.grossAmount = grossAmount;
+        this.orderId = orderId;
     }
 
-    private String gross_amount;
-    private String order_id;
-
-    public void setGross_amount(String gross_amount) {
-        this.gross_amount = gross_amount;
+    public void setGrossAmount(String grossAmount) {
+        this.grossAmount = grossAmount;
     }
 
-    public void setOrder_id(String order_id) {
-        this.order_id = order_id;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
-    public String getGross_amount() {
-        return gross_amount;
+    public String getGrossAmount() {
+        return grossAmount;
     }
 
-    public String getOrder_id() {
-        return order_id;
+    public String getOrderId() {
+        return orderId;
     }
+
 }

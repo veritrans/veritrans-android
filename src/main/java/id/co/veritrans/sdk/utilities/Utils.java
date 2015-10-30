@@ -19,6 +19,9 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -203,7 +206,7 @@ public class Utils {
             final byte[] authBytes = data.getBytes("UTF-8");
             final String encoded = Base64.encodeToString(authBytes, Base64.DEFAULT);
 
-            Logger.i("base64 of "+data+" : becomes : "+encoded);
+            Logger.i("base64 of " + data + " : becomes : " + encoded);
 
             return encoded;
 
@@ -213,4 +216,92 @@ public class Utils {
 
         return null;
     }
+
+
+    //10 September 2015, 16:00
+    public static String getValidityTime(String transactionTime) {
+
+        if (transactionTime != null) {
+
+            //2015-10-30 20:32:51
+            String data[] = transactionTime.split(" ");
+            if (data != null && data.length > 1) {
+
+                try {
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(data[0]));
+                    calendar.add(Calendar.DATE, 1);
+                    String date = simpleDateFormat.format(calendar.getTime());
+
+                    String splitedDate[] = date.split("-");
+                    String month = getMonth(Integer.parseInt(splitedDate[1]));
+
+                    String validityTime = ""+splitedDate[2]+" "+month+" "+splitedDate[0]+", "+data[1];
+
+                    Logger.i("after parsing validity date becomes : " + date);
+                    Logger.i("month is : " + month);
+                    Logger.i("validity time is : " + validityTime);
+
+                    return validityTime;
+
+                } catch (ParseException ex) {
+                    Logger.e("Error while parsing date : " + ex.getMessage());
+                }
+
+            }
+
+        }
+
+        return transactionTime;
+    }
+
+
+    public static String getMonth(int monthValue) {
+
+        switch (monthValue) {
+
+            case 1:
+                return "January";
+
+            case 2:
+                return "February";
+
+            case 3:
+                return "March";
+
+            case 4:
+                return "April";
+
+            case 5:
+                return "May";
+
+            case 6:
+                return "June";
+
+            case 7:
+                return "July";
+
+            case 8:
+                return "August";
+
+            case 9:
+                return "September";
+
+            case 10:
+                return "October";
+
+            case 11:
+                return "November";
+
+            case 12:
+                return "December";
+
+            default:
+                return "Invalid Month";
+        }
+
+    }
+
+
 }

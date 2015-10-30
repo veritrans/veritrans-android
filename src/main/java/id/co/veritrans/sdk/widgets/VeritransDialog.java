@@ -12,64 +12,81 @@ import android.widget.TextView;
 
 import id.co.veritrans.sdk.R;
 
-public class VeritransDialog extends android.app.Dialog{
-    String title;
-    String message;
-    TextView titleTextView;
-    TextView messageTextView;
-    Button buttonAccept;
-    Button buttonCancel;
-    View.OnClickListener onAcceptButtonClickListener;
-    View.OnClickListener onCancelButtonClickListener;
-    Context context;
-    String positiveButtonText;
-    String negativeButtonText;
-    ImageView titleImage;
-    Drawable drawable;
+public class VeritransDialog extends android.app.Dialog {
+
+    private String title;
+    private String message;
+    private TextViewFont titleTextView;
+    private TextViewFont messageTextView;
+    private Button buttonAccept;
+    private Button buttonCancel;
+    private View.OnClickListener onAcceptButtonClickListener;
+    private View.OnClickListener onCancelButtonClickListener;
+    private Context context;
+    private String positiveButtonText;
+    private String negativeButtonText;
+    private ImageView titleImage;
+    private Drawable drawable;
+
     public VeritransDialog(Context context, String title, String message, String positiveButtonText,
                            String negativeButtonText) {
+
         super(context, R.style.TransperentTheme);
+
         this.title = title;
         this.context = context;
         this.message = message;
         this.positiveButtonText = positiveButtonText;
         this.negativeButtonText = negativeButtonText;
     }
-    public VeritransDialog(Context context, Drawable titleDrawable, String message, String positiveButtonText,
+
+    public VeritransDialog(Context context, Drawable titleDrawable, String message, String
+            positiveButtonText,
                            String negativeButtonText) {
         super(context, R.style.TransperentTheme);
+
         this.drawable = titleDrawable;
         this.context = context;
         this.message = message;
         this.positiveButtonText = positiveButtonText;
         this.negativeButtonText = negativeButtonText;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.dialog_layout);
-        this.titleTextView = (TextView)findViewById(R.id.title_tv);
-        this.titleImage = (ImageView)findViewById(R.id.title_image);
-        this.messageTextView = (TextView)findViewById(R.id.message_tv);
-        if(title == null) {
+
+        this.titleTextView = (TextViewFont) findViewById(R.id.title_tv);
+        this.titleImage = (ImageView) findViewById(R.id.title_image);
+        this.messageTextView = (TextViewFont) findViewById(R.id.message_tv);
+
+        if (title == null) {
             titleImage.setImageDrawable(drawable);
-           titleImage.setVisibility(View.VISIBLE);
+            titleImage.setVisibility(View.VISIBLE);
             titleTextView.setVisibility(View.GONE);
         } else {
             titleTextView.setVisibility(View.VISIBLE);
             titleImage.setVisibility(View.GONE);
             setTitle(title);
         }
+
         setMessage(message);
+
         this.buttonAccept = (Button) findViewById(R.id.btn_accept);
         this.buttonCancel = (Button) findViewById(R.id.btn_cancel);
-        if(TextUtils.isEmpty(positiveButtonText)){
+
+
+        if (TextUtils.isEmpty(positiveButtonText)) {
             this.buttonAccept.setVisibility(View.GONE);
         } else {
             this.buttonAccept.setText(positiveButtonText);
         }
-        if(TextUtils.isEmpty(negativeButtonText)){
+
+        if (TextUtils.isEmpty(negativeButtonText)) {
             this.buttonCancel.setVisibility(View.GONE);
         } else {
             this.buttonCancel.setText(negativeButtonText);
@@ -81,7 +98,7 @@ public class VeritransDialog extends android.app.Dialog{
             @Override
             public void onClick(View v) {
                 dismiss();
-                if(onAcceptButtonClickListener != null)
+                if (onAcceptButtonClickListener != null)
                     onAcceptButtonClickListener.onClick(v);
             }
         });
@@ -91,16 +108,16 @@ public class VeritransDialog extends android.app.Dialog{
             @Override
             public void onClick(View v) {
                 dismiss();
-                if(onCancelButtonClickListener != null)
+                if (onCancelButtonClickListener != null)
                     onCancelButtonClickListener.onClick(v);
             }
         });
     }
 
     private void setMessage(String message) {
-        if(TextUtils.isEmpty(message))
+        if (TextUtils.isEmpty(message))
             messageTextView.setVisibility(View.GONE);
-        else{
+        else {
             messageTextView.setVisibility(View.VISIBLE);
             messageTextView.setText(message);
         }
@@ -112,21 +129,20 @@ public class VeritransDialog extends android.app.Dialog{
 
     public void setTitle(String title) {
         this.title = title;
-        if(TextUtils.isEmpty(title))
+        if (TextUtils.isEmpty(title))
             titleTextView.setVisibility(View.GONE);
-        else{
+        else {
             titleTextView.setVisibility(View.VISIBLE);
             titleTextView.setText(title);
         }
     }
 
 
-
     public TextView getTitleTextView() {
         return titleTextView;
     }
 
-    public void setTitleTextView(TextView titleTextView) {
+    public void setTitleTextView(TextViewFont titleTextView) {
         this.titleTextView = titleTextView;
     }
 
@@ -149,16 +165,15 @@ public class VeritransDialog extends android.app.Dialog{
     public void setOnAcceptButtonClickListener(
             View.OnClickListener onAcceptButtonClickListener) {
         this.onAcceptButtonClickListener = onAcceptButtonClickListener;
-        if(buttonAccept != null)
+        if (buttonAccept != null)
             buttonAccept.setOnClickListener(onAcceptButtonClickListener);
     }
 
     public void setOnCancelButtonClickListener(
             View.OnClickListener onCancelButtonClickListener) {
         this.onCancelButtonClickListener = onCancelButtonClickListener;
-        if(buttonCancel != null)
+        if (buttonCancel != null)
             buttonCancel.setOnClickListener(onAcceptButtonClickListener);
     }
-
 
 }

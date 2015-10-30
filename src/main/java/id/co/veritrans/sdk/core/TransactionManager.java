@@ -25,7 +25,7 @@ class TransactionManager {
     public static void getToken(Activity activity, TokenRequestModel tokenRequestModel, final
     TokenCallBack callBack) {
 
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
@@ -74,29 +74,32 @@ class TransactionManager {
 
                                 if (tokenDetailsResponse != null) {
 
-                                    Logger.d("token response: status code ", "" +
-                                            tokenDetailsResponse.getStatusCode());
-                                    Logger.d("token response: status message ", "" +
-                                            tokenDetailsResponse.getStatusMessage());
-                                    Logger.d("token response: token Id ", "" + tokenDetailsResponse
-                                            .getTokenId());
-                                    Logger.d("token response: redirect url ", "" +
-                                            tokenDetailsResponse.getRedirectUrl());
-                                    Logger.d("token response: bank ", "" + tokenDetailsResponse
-                                            .getBank());
+                                    if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        displayTokenResponse(tokenDetailsResponse);
+                                    }
 
-                                    callBack.onSuccess(tokenDetailsResponse);
+                                    if (tokenDetailsResponse.getStatusCode().trim()
+                                            .equalsIgnoreCase(Constants.SUCCESS_CODE_200)) {
+                                        callBack.onSuccess(tokenDetailsResponse);
+                                    } else {
+                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                    }
 
                                 } else {
                                     callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                    Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                 }
 
                             }
                         });
 
+            } else {
+                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
             }
 
         } else {
+            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
         }
 
@@ -105,7 +108,7 @@ class TransactionManager {
     public static void paymentUsingPermataBank(final Activity activity, final PermataBankTransfer
             permataBankTransfer, final PermataBankTransferStatus callBack) {
 
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
@@ -144,51 +147,44 @@ class TransactionManager {
 
                                     if (permataBankTransferResponse != null) {
 
-                                        Logger.d("permata bank transfer response: virtual account" +
-                                                " number ", "" +
-                                                permataBankTransferResponse.getPermata_va_number());
 
-                                        Logger.d("permata bank transfer response: status message " +
-                                                "", "" +
-                                                permataBankTransferResponse.getStatus_message());
+                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                            displayPermataBankResponse(permataBankTransferResponse);
+                                        }
 
-                                        Logger.d("permata bank transfer response: status code ",
-                                                "" + permataBankTransferResponse.getStatus_code());
-
-                                        Logger.d("permata bank transfer response: transaction Id ",
-                                                "" + permataBankTransferResponse
-                                                        .getTransaction_id());
-
-                                        Logger.d("permata bank transfer response: transaction " +
-                                                        "status ",
-                                                "" + permataBankTransferResponse
-                                                        .getTransaction_status());
-
-                                        if (permataBankTransferResponse.getStatus_code().trim()
-                                                .equalsIgnoreCase("200")
-                                                || permataBankTransferResponse.getStatus_code()
-                                                .trim().equalsIgnoreCase("201")) {
+                                        if (permataBankTransferResponse.getStatusCode().trim()
+                                                .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
+                                                || permataBankTransferResponse.getStatusCode()
+                                                .trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
 
                                             callBack.onSuccess(permataBankTransferResponse);
                                         } else {
                                             callBack.onFailure(permataBankTransferResponse
-                                                    .getStatus_message());
+                                                    .getStatusMessage());
                                         }
 
                                     } else {
                                         callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                     }
+
                                 }
                             });
                 } else {
                     Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED);
                 }
+            } else {
+                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
             }
 
         } else {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
         }
     }
+
 
     public static void paymentUsingCard(Activity activity, CardTransfer cardTransfer, final CardPaymentCallback cardPaymentCallback) {
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
@@ -253,5 +249,44 @@ class TransactionManager {
         } else {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
         }
+    }
+
+
+    private static void displayTokenResponse(TokenDetailsResponse tokenDetailsResponse) {
+        Logger.d("token response: status code ", "" +
+                tokenDetailsResponse.getStatusCode());
+        Logger.d("token response: status message ", "" +
+                tokenDetailsResponse.getStatusMessage());
+        Logger.d("token response: token Id ", "" + tokenDetailsResponse
+                .getTokenId());
+        Logger.d("token response: redirect url ", "" +
+                tokenDetailsResponse.getRedirectUrl());
+        Logger.d("token response: bank ", "" + tokenDetailsResponse
+                .getBank());
+    }
+
+
+    private static void displayPermataBankResponse(PermataBankTransferResponse
+                                                           permataBankTransferResponse) {
+        Logger.d("permata bank transfer response: virtual account" +
+                " number ", "" +
+                permataBankTransferResponse.getPermataVANumber());
+
+        Logger.d("permata bank transfer response: status message " +
+                "", "" +
+                permataBankTransferResponse.getStatusMessage());
+
+        Logger.d("permata bank transfer response: status code ",
+                "" + permataBankTransferResponse.getStatusCode());
+
+
+        Logger.d("permata bank transfer response: transaction Id ",
+                "" + permataBankTransferResponse
+                        .getTransactionId());
+
+        Logger.d("permata bank transfer response: transaction " +
+                        "status ",
+                "" + permataBankTransferResponse
+                        .getTransactionStatus());
     }
 }

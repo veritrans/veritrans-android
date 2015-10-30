@@ -57,7 +57,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
                                 android:layout_gravity="left"
-                                android:text="@string/order_id"
+                                android:text="@string/orderId"
                                 android:textColor="@color/white_little_transparent"
                                 android:textSize="@dimen/secondary_text_size"
                                 app:font="@string/font_open_sans_regular"

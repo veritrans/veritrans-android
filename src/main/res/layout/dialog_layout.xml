@@ -1,70 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#55000000"
                 android:padding="32dp">
 
     <LinearLayout
         android:id="@+id/contentDialog"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:background="@android:color/white"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:background="@android:color/white"
         android:orientation="vertical"
         android:padding="16dp">
-        <RelativeLayout android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
             >
-            <TextView
+
+            <id.co.veritrans.sdk.widgets.TextViewFont
                 android:id="@+id/title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
                 android:text=""
-                android:textSize="16sp"
                 android:textColor="@android:color/black"
+                android:textSize="@dimen/primary_text_size"
+                android:visibility="visible"
+                app:font="@string/font_open_sans_semibold"
                 />
-            <ImageView android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:id="@+id/title_image"
-                       android:layout_centerHorizontal="true"
-                       android:visibility="gone"
+
+            <ImageView
+                android:id="@+id/title_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
 
                 />
         </RelativeLayout>
-        <TextView
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/message_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/message_tv"
-            android:textColor="@android:color/black"
-            android:textSize="16dp"
-
             android:layout_marginBottom="16dp"
+            android:textColor="@color/faint_gray"
+            android:textSize="@dimen/secondary_text_size"
+            app:font="@string/font_open_sans_regular"
             />
 
         />
+
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:gravity="right">
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:background="@drawable/transperent_button"
-                android:text="cancel"/>
+                android:text="cancel"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/secondary_text_size"
+                />
+
             <Button
                 android:id="@+id/btn_accept"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:background="@drawable/transperent_button"
-                android:text="accept"/>
+                android:text="accept"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/secondary_text_size"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -22,11 +22,11 @@ public class SdkUtil {
     private static VeritransLoadingDialog progressDialog;
 
     public static boolean isEmailValid(String email) {
-        Logger.i("email:"+email);
-        if (!TextUtils.isEmpty(email)) {
-            Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN,Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(email);
-            Logger.i("matcher:"+matcher.matches());
+        Logger.i("email:" + email);
+        if ( !TextUtils.isEmpty(email) ) {
+            Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(email.trim());
+            Logger.i("matcher:" + matcher.matches());
             return matcher.matches();
         } else {
             return false;
@@ -48,7 +48,8 @@ public class SdkUtil {
     public static void showSnackbar(Activity activity, String message) {
 
         try {
-            Snackbar.make(activity.getWindow().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+            Snackbar.make(activity.getWindow().findViewById(android.R.id.content), message,
+                    Snackbar.LENGTH_LONG)
                     .show();
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -59,10 +60,11 @@ public class SdkUtil {
         try {
             View view = activity.getCurrentFocus();
             if (view != null) {
-                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context
+                        .INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
@@ -86,33 +88,46 @@ public class SdkUtil {
         return isvalid;
     }
 
-    public static void showProgressDialog(Context context, boolean isCancelable) {
+    public static void showProgressDialog(Activity activity, boolean isCancelable) {
+
         hideProgressDialog();
-        if (context != null) {
+
+        if (activity != null) {
             try {
-                progressDialog = new VeritransLoadingDialog(context);
+                progressDialog = new VeritransLoadingDialog(activity);
                 progressDialog.setCanceledOnTouchOutside(true);
                 progressDialog.setCancelable(isCancelable);
                 progressDialog.show();
-            } catch (WindowManager.BadTokenException e) {
-
+            } catch (WindowManager.BadTokenException ex) {
+                Logger.e("error while creating progress dialog : " + ex.getMessage());
+            }catch (NullPointerException ex){
+                Logger.e("error while creating progress dialog : " + ex.getMessage());
             }
+        } else {
+            Logger.e("error while creating progress dialog : Context cann't be null.");
         }
 
     }
-    public static VeritransLoadingDialog getProgressDialog(){
+
+    public static VeritransLoadingDialog getProgressDialog() {
         return progressDialog;
     }
+
     public static void hideProgressDialog() {
+
         if (progressDialog != null && progressDialog.isShowing()) {
 
             try {
                 progressDialog.dismiss();
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException ex) {
+                Logger.e("error while hiding progress dialog : " + ex.getMessage());
+            } catch (NullPointerException ex) {
+                Logger.e("error while hiding progress dialog : " + ex.getMessage());
             }
             progressDialog = null;
         }
     }
+
 
     public static void showApiFailedMessage(Activity activity,String errorMessage) {
         try {

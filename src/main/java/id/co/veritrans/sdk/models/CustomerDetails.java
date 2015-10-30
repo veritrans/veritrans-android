@@ -13,6 +13,10 @@ public class CustomerDetails {
         this.phone = phone;
     }
 
+    public CustomerDetails() {
+
+    }
+
     @SerializedName("first_name")
     private String firstName;
     @SerializedName("last_name")

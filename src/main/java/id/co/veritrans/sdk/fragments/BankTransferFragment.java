@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
+import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -18,6 +20,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class BankTransferFragment extends Fragment {
 
     private TextViewFont mTextViewSeeInstruction = null;
+    private EditText mEditTextEmailId = null;
 
 
     @Nullable
@@ -27,24 +30,39 @@ public class BankTransferFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_bank_transfer, container, false);
 
+        initializeViews(view);
+
+        return view;
+    }
+
+    private void initializeViews(View view) {
 
         mTextViewSeeInstruction = (TextViewFont)
                 view.findViewById(R.id.text_see_instruction);
+
+        mEditTextEmailId = (EditText) view.findViewById(R.id.et_email);
 
         mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (getActivity() != null) {
-                    getActivity().startActivity(new Intent(getActivity(),
-                            BankTransferInstructionActivity.class));
+
+                    Intent intent = new Intent(getActivity(),
+                            BankTransferInstructionActivity.class);
+                    intent.putExtra(Constants.POSITION, 0);
+                    getActivity().startActivity(intent);
+
                 }
             }
         });
-
-
-        return view;
     }
 
-
+    public String getEmailId() {
+        if (mEditTextEmailId != null) {
+            return mEditTextEmailId.getText().toString();
+        } else {
+            return null;
+        }
+    }
 }

@@ -90,7 +90,7 @@
 
     <!-- Permata VA Bank Transfer-->
     <string name="virtual_account">Virtual Account</string>
-    <string name="order_id">Order ID</string>
+    <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
     <string name="hint_email_optional">Email Address (Optional)</string>
     <string name="email_instruction">we\'ll send payment instruction to mail.</string>
@@ -107,8 +107,8 @@
     <string name="done">Done</string>
     <string name="virtual_account_number">Virtual Account Number</string>
     <string name="payment_pending">Payment Pending !</string>
-    <string name="transaction_time">Transaction Time</string>
-    <string name="payment_type">Payment Type</string>
+    <string name="transactionTime">Transaction Time</string>
+    <string name="paymentType">Payment Type</string>
     <string name="tab_mandiri">Mandiri/ATM Bersana</string>
     <string name="tab_bca_prima">BCA/Prima</string>
     <string name="tab_permata_alto">Permata/Alto</string>
@@ -143,6 +143,10 @@
     <string name="permata_instruction_step5">5  Choose \'Virtual Account\'.</string>
     <string name="permata_instruction_step6">6  Enter 16 digits payment Account No. and press \'Correct\'.</string>
     <string name="permata_instruction_step7">7  Transaction information will appear on the payment confirmation page. If the information is right, press \'Correct\'.</string>
+    <string name="bank_transfer_dummy_text">* Subject to preferred bank\'s transfer fee and a minimum transaction of Rp50,000, - for bank mandiri</string>
+
+
+    <!--credit card -->
     <string name="add_card_message">You can also pay with a new card from here</string>
     <string name="saved_card">Saved card</string>
     <string name="card_details">Card details</string>
@@ -155,4 +159,7 @@
     <string name="payment_unsuccessful">Payment unsuccessful :(</string>
     <string name="validation_message_invalid_expiry_date">Please enter valid expiry date</string>
     <string name="api_fail_message">Something went wrong. Please try later.</string>
+
+
+
 </resources>
