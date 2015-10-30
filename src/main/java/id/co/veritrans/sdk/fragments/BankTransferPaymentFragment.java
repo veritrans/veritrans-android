@@ -61,7 +61,6 @@ public class BankTransferPaymentFragment extends Fragment {
             mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse.getStatus_message());
         }
 
-
         mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

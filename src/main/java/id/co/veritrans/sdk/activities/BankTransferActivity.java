@@ -80,7 +80,6 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
         fragmentTransaction.add(R.id.bank_transfer_container,
                 bankTransferFragment, HOME_FRAGMENT);
-        fragmentTransaction.addToBackStack(HOME_FRAGMENT);
         fragmentTransaction.commit();
 
         currentFragment = HOME_FRAGMENT;

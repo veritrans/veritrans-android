@@ -101,7 +101,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/twenty_four_dp"
-            android:background="@drawable/ripple_white_background"
             android:clickable="true"
             android:paddingBottom="@dimen/eight_dp"
             android:paddingTop="@dimen/eight_dp"
