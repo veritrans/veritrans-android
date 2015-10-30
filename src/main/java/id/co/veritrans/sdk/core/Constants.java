@@ -39,8 +39,8 @@ public class Constants {
     public static final float CARD_ASPECT_RATIO = 0.555f;
 
 
-    public static final String BASE_URL_FOR_DEBUG = "http://api.sandbox.veritrans.co.id/v2/";
-    public static final String BASE_URL_FOR_RELEASE = "http://api.sandbox.veritrans.co.id/v2/";
+    public static final String BASE_URL_FOR_DEBUG = "https://api.sandbox.veritrans.co.id/v2/";
+    public static final String BASE_URL_FOR_RELEASE = "https://api.sandbox.veritrans.co.id/v2/";
 
 
     public static final String DIR_APP = "VeritransData";
