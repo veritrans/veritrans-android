@@ -153,4 +153,5 @@
     <string name="payment_successful">Payment Successful :)</string>
     <string name="payment_unsuccessful_msg">Payment gateway error</string>
     <string name="payment_unsuccessful">Payment unsuccessful :(</string>
+    <string name="bank_transfer_dummy_text">* Subject to preferred bank\'s transfer fee and a minimum transaction of Rp50,000, - for bank mandiri</string>
 </resources>
