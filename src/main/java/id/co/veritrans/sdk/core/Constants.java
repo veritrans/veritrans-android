@@ -46,8 +46,26 @@ public class Constants {
     public static final String DIR_APP = "VeritransData";
     public static final String CURRENCY_PREFIX = "Rp";
 
+    /**
+     * When server returns empty response body for any api request.
+     */
     public static final String ERROR_EMPTY_RESPONSE = "failed to retrieve response from server.";
+
+    /**
+     * If trying to create api request before initializing sdk.
+     */
     public static final String ERROR_SDK_IS_NOT_INITIALIZED = "sdk is not initialized.";
+
+    /**
+     * If passed unexpected parameter to any method.
+     */
     public static final String ERROR_INVALID_DATA_SUPPLIED = "Invalid data supplied to sdk.";
+
+
+    /**
+     * When failed to create api request, probably because of no network connection.
+     */
+    public static final String ERROR_UNABLE_TO_CONNECT = "failed to connect to server.";
+
 
 }
