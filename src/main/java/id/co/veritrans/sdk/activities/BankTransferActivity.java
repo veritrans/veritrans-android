@@ -18,6 +18,7 @@ import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.PermataBankTransferStatus;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
+import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
@@ -140,69 +141,14 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
 
-
-                VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-
-                if (veritransSDK != null) {
-
-                    // bank name
-                    BankTransfer bankTransfer = new BankTransfer();
-                    bankTransfer.setBank("permata");
-
-                    //transaction details
-                    TransactionDetails transactionDetails = new TransactionDetails();
-                    transactionDetails.setGross_amount("" + mVeritransSDK.getAmount());
-                    transactionDetails.setOrder_id(mVeritransSDK.getOrderId());
-
-
-                    final PermataBankTransfer permataBankTransfer =
-                            new PermataBankTransfer(bankTransfer, transactionDetails, null,
-                                    mBillingAddressArrayList, mShippingAddressArrayList,
-                                    mCustomerDetails);
-
-
-                    veritransSDK.paymentUsingPermataBank(BankTransferActivity.this,
-                            permataBankTransfer, new PermataBankTransferStatus() {
-
-
-                                @Override
-                                public void onSuccess(PermataBankTransferResponse
-                                                              permataBankTransferResponse) {
-
-                                    Toast.makeText(getApplicationContext(), "in OnSuccess of bank" +
-                                                    " transfer",
-                                            Toast.LENGTH_SHORT).show();
-
-                                    if (permataBankTransferResponse != null) {
-                                        setUpTransactionFragment(permataBankTransferResponse);
-                                    } else {
-                                        onBackPressed();
-                                    }
-
-                                }
-
-
-                                @Override
-                                public void onFailure(String errorMessage) {
-                                    Toast.makeText(getApplicationContext(), "in OnFailure of bank" +
-                                                    " transfer",
-                                            Toast.LENGTH_SHORT).show();
-
-                                }
-                            });
-
-
-                } else {
-                    Toast.makeText(getApplicationContext(), Constants.ERROR_SDK_IS_NOT_INITIALIZED,
-                            Toast.LENGTH_SHORT).show();
-                    finish();
-                }
+                performTrsansaction();
 
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
                 setUpTransactionStatusFragment();
             } else {
                 onBackPressed();
             }
+
         }
     }
 
@@ -299,6 +245,72 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         }
 
     }
+
+
+    private void performTrsansaction() {
+
+
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+
+            SdkUtil.showProgressDialog(BankTransferActivity.this, false);
+
+            // bank name
+            BankTransfer bankTransfer = new BankTransfer();
+            bankTransfer.setBank("permata");
+
+            //transaction details
+            TransactionDetails transactionDetails = new TransactionDetails();
+            transactionDetails.setGross_amount("" + mVeritransSDK.getAmount());
+            transactionDetails.setOrder_id(mVeritransSDK.getOrderId());
+
+
+            final PermataBankTransfer permataBankTransfer =
+                    new PermataBankTransfer(bankTransfer, transactionDetails, null,
+                            mBillingAddressArrayList, mShippingAddressArrayList,
+                            mCustomerDetails);
+
+            veritransSDK.paymentUsingPermataBank(BankTransferActivity.this,
+                    permataBankTransfer, new PermataBankTransferStatus() {
+
+
+                        @Override
+                        public void onSuccess(PermataBankTransferResponse
+                                                      permataBankTransferResponse) {
+
+                            Toast.makeText(getApplicationContext(), "in OnSuccess of bank" +
+                                            " transfer",
+                                    Toast.LENGTH_SHORT).show();
+
+                            if (permataBankTransferResponse != null) {
+                                setUpTransactionFragment(permataBankTransferResponse);
+                            } else {
+                                onBackPressed();
+                            }
+
+
+                            SdkUtil.hideProgressDialog();
+
+                        }
+
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Toast.makeText(getApplicationContext(), "in OnFailure of bank" +
+                                            " transfer",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
+
+        } else {
+            Toast.makeText(getApplicationContext(), Constants.ERROR_SDK_IS_NOT_INITIALIZED,
+                    Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+    }
+
 }
-
-
