@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,8 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     private TextViewFont mTextViewOrderId = null;
     private TextViewFont mTextViewAmount = null;
     private Button mButtonConfirmPayment = null;
+    private AppBarLayout mAppBarLayout = null;
+
 
     private VeritransSDK mVeritransSDK = null;
     private Toolbar mToolbar = null;
@@ -122,7 +125,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         mTextViewAmount = (TextViewFont) findViewById(R.id.text_amount);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
         //setup tool bar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
@@ -146,8 +149,12 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         if (v.getId() == R.id.btn_confirm_payment) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
+                mAppBarLayout.setExpanded(true);
                 performTrsansaction();
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
+
+                mAppBarLayout.setExpanded(true);
+
 
                 if (mPermataBankTransferResponse != null) {
                     setUpTransactionStatusFragment(mPermataBankTransferResponse);
