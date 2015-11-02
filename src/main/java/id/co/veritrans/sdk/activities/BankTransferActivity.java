@@ -149,12 +149,11 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         if (v.getId() == R.id.btn_confirm_payment) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
-                mAppBarLayout.setExpanded(true);
+
                 performTrsansaction();
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
 
                 mAppBarLayout.setExpanded(true);
-
 
                 if (mPermataBankTransferResponse != null) {
                     setUpTransactionStatusFragment(mPermataBankTransferResponse);
@@ -336,6 +335,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
                             if (permataBankTransferResponse != null) {
                                 mPermataBankTransferResponse = permataBankTransferResponse;
+                                mAppBarLayout.setExpanded(true);
                                 setUpTransactionFragment(permataBankTransferResponse);
                             } else {
                                 onBackPressed();

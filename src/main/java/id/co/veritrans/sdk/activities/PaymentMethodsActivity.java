@@ -88,15 +88,16 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     }
 
 
-    private void bindDataToView(){
+    private void bindDataToView() {
 
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
-        if( veritransSDK != null){
-            mSubTitle.setText(Constants.CURRENCY_PREFIX + " "
-                    + Utils.getFormattedAmount(veritransSDK.getAmount()));
-            mTextViewAmountExpanded.setText(Constants.CURRENCY_PREFIX + " "
-                    + Utils.getFormattedAmount(veritransSDK.getAmount()));
+        if (veritransSDK != null) {
+            String amount = Constants.CURRENCY_PREFIX + " "
+                    + Utils.getFormattedAmount(veritransSDK.getAmount());
+
+            mSubTitle.setText(amount);
+            mTextViewAmountExpanded.setText(amount);
         }
 
     }
@@ -154,7 +155,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             if (mIsTheTitleContainerVisible) {
                 startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 mIsTheTitleContainerVisible = false;
-    //            startTranslateAnimation(false);
+                //            startTranslateAnimation(false);
             }
 
         } else {
@@ -162,7 +163,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             if (!mIsTheTitleContainerVisible) {
                 startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
                 mIsTheTitleContainerVisible = true;
-  //              startTranslateAnimation(true);
+                //              startTranslateAnimation(true);
             }
         }
     }
@@ -194,7 +195,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         String[] names = getResources().getStringArray(R.array.payment_methods);
         Logger.d(TAG, "there are total " + names.length + " payment methods available.");
 
-        int [] paymentImageList = getImageList();
+        int[] paymentImageList = getImageList();
 
         for (int i = 0; i < names.length; i++) {
             PaymentMethodsModel model = new PaymentMethodsModel(names[i], paymentImageList[i],
@@ -205,9 +206,9 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     }
 
 
-    private int[] getImageList(){
+    private int[] getImageList() {
 
-        int [] paymentImageList = new int[11];
+        int[] paymentImageList = new int[11];
 
         paymentImageList[0] = R.drawable.ic_offers;
         paymentImageList[1] = R.drawable.ic_launcher; // credit - debit
@@ -223,7 +224,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
         return paymentImageList;
     }
-
 
 
     @Override
