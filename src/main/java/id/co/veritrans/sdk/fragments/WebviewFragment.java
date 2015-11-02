@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.fragments;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,10 +12,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
@@ -27,8 +26,8 @@ public class WebviewFragment extends Fragment {
 
     private String webUrl;
     public WebView webView;
-    private Button sucBt;
-    private Button unsucBt;
+    /*private Button sucBt;
+    private Button unsucBt;*/
 
     public static WebviewFragment newInstance(String url ) {
         WebviewFragment fragment = new WebviewFragment();
@@ -57,7 +56,7 @@ public class WebviewFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_webview, container, false);
         webView = (WebView)view.findViewById(R.id.webview);
-        sucBt = (Button)view.findViewById(R.id.btn_success);
+       /* sucBt = (Button)view.findViewById(R.id.btn_success);
         unsucBt = (Button)view.findViewById(R.id.btn_unsuccess);
         sucBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +69,7 @@ public class WebviewFragment extends Fragment {
             public void onClick(View v) {
                 trnsUnsuc(v);
             }
-        });
+        });*/
         initwebview();
         webView.loadUrl(webUrl);
         return view;
@@ -104,8 +103,9 @@ public class WebviewFragment extends Fragment {
             super.onPageFinished(view, url);
             SdkUtil.hideProgressDialog();
             if(url.contains(Constants.CALLBACK_STRING)){
-                AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
-                ((CreditDebitCardFlowActivity)getActivity()).replaceFragment(addCardDetailsFragment,true,false);
+                Intent returnIntent = new Intent();
+                getActivity().setResult(getActivity().RESULT_OK,returnIntent);
+                getActivity().finish();
             }
         }
 
@@ -122,12 +122,12 @@ public class WebviewFragment extends Fragment {
         }
     }
 
-    public void trnsSuc(View view){
+   /* public void trnsSuc(View view){
         PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(true);
         ((CreditDebitCardFlowActivity) getActivity()).replaceFragment(paymentTransactionStatusFragment,true,false);
     }
     public void trnsUnsuc(View view){
         PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(false);
         ((CreditDebitCardFlowActivity) getActivity()).replaceFragment(paymentTransactionStatusFragment,true,false);
-    }
+    }*/
 }

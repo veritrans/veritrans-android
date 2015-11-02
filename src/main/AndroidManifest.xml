@@ -22,7 +22,10 @@
         <activity
             android:name=".activities.BankTransferInstructionActivity"
             android:theme="@style/VeritransAppTheme" />
-        <activity android:name=".activities.PaymentWebActivity" >
+        <activity android:name=".activities.PaymentWebActivity"
+                  android:theme="@style/VeritransAppTheme">
+
+
         </activity>
     </application>
 

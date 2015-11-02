@@ -14,13 +14,17 @@ import java.util.ArrayList;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.adapters.CardPagerAdapter;
+import id.co.veritrans.sdk.callbacks.TokenCallBack;
+import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.models.CardDetail;
+import id.co.veritrans.sdk.models.TokenDetailsResponse;
+import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 
-public class SavedCardFragment extends Fragment {
+public class SavedCardFragment extends Fragment implements TokenCallBack,TransactionCallback {
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
@@ -71,7 +75,6 @@ public class SavedCardFragment extends Fragment {
         savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -84,7 +87,6 @@ public class SavedCardFragment extends Fragment {
 
             }
         });
-
         circlePageIndicator.setViewPager(savedCardPager);
     }
 
@@ -94,11 +96,30 @@ public class SavedCardFragment extends Fragment {
             for (int i = 0; i < 4; i++) {
                 CardDetail cardDetail = new CardDetail();
                 cardDetail.setCardHolderName("James Anderson");
-                cardDetail.setCardNumber("1234 XXXX XXXX 432" + i);
+                cardDetail.setCardNumber("4811 1111 1111 1114");
                 cardDetail.setBankName("Bank Permata");
                 cardDetail.setExpiryDate("XX/12");
                 cardDetails.add(cardDetail);
             }
         }
+    }
+
+    public void paymentUsingCard(CardDetail cardDetail) {
+
+    }
+
+    @Override
+    public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {
+
+    }
+
+    @Override
+    public void onFailure(String errorMessage) {
+
+    }
+
+    @Override
+    public void onSuccess(TransactionResponse transactionResponse) {
+
     }
 }

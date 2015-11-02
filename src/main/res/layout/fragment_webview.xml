@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
     </WebView>
-    <Button android:layout_width="150dp"
+<!--    <Button android:layout_width="150dp"
             android:layout_height="@dimen/btn_height"
             android:text="@string/successful"
             android:id="@+id/btn_success"
@@ -22,5 +22,5 @@
             android:layout_toRightOf="@id/btn_success"
             android:id="@+id/btn_unsuccess"
 
-        ></Button>
+        ></Button>-->
 </RelativeLayout>

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.models.PermataBankTransferResponse;
+import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -18,7 +18,7 @@ public class BankTransactionStatusFragment extends Fragment {
 
 
     public static final String PERMATA = "Permata";
-    private static PermataBankTransferResponse sPermataBankTransferResponse = null;
+    private static TransactionResponse sPermataBankTransferResponse = null;
 
     private TextViewFont mTextViewAmount = null;
     private TextViewFont mTextViewOrderId = null;
@@ -26,7 +26,7 @@ public class BankTransactionStatusFragment extends Fragment {
     private TextViewFont mTextViewBankName = null;
 
 
-    public static BankTransactionStatusFragment newInstance(PermataBankTransferResponse
+    public static BankTransactionStatusFragment newInstance(TransactionResponse
                                                                   permataBankTransferResponse) {
         sPermataBankTransferResponse = permataBankTransferResponse;
         BankTransactionStatusFragment fragment = new BankTransactionStatusFragment();
@@ -53,7 +53,7 @@ public class BankTransactionStatusFragment extends Fragment {
     private void initializeViews(View view){
         mTextViewAmount = (TextViewFont) view.findViewById(R.id.text_amount);
         mTextViewOrderId = (TextViewFont) view.findViewById(R.id.text_order_id);
-        mTextViewBankName = (TextViewFont) view.findViewById(R.id.text_order_type);
+        mTextViewBankName = (TextViewFont) view.findViewById(R.id.text_payment_type);
         mTextViewTransactionTime = (TextViewFont) view.findViewById(R.id.text_transaction_time);
     }
 

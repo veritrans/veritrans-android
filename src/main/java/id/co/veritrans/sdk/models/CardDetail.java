@@ -11,6 +11,7 @@ public class CardDetail implements Serializable {
     private String expiryDate;
     private String cardType;
     private String bankName;
+    private String cvv;
 
     public String getCardHolderName() {
         return cardHolderName;
@@ -50,5 +51,17 @@ public class CardDetail implements Serializable {
 
     public void setBankName(String bankName) {
         this.bankName = bankName;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
+    }
+
+    public void getFormatedCardNumber(){
+
     }
 }

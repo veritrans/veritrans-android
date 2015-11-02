@@ -46,7 +46,7 @@ public class PaymentWebActivity extends AppCompatActivity {
 
             if (!fragmentPopped) { //fragment not in back stack, create it.
                 FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.card_container, fragment, backStateName);
+                ft.replace(R.id.webview_container, fragment, backStateName);
                 if (addToBackStack) ft.addToBackStack(backStateName);
                 ft.commit();
                 currentFragmentName = backStateName;

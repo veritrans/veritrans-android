@@ -25,7 +25,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class CardDetailFragment extends Fragment {
 
     private static final String ARG_PARAM = "card_detail";
-    private CardDetail cardDetails;
+    private CardDetail cardDetail;
     private RelativeLayout rootLayout;
     private RelativeLayout cardContainerBack;
     private RelativeLayout cardContainerFront;
@@ -60,7 +60,7 @@ public class CardDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (getArguments() != null) {
-            cardDetails = (CardDetail) getArguments().getSerializable(ARG_PARAM);
+            cardDetail = (CardDetail) getArguments().getSerializable(ARG_PARAM);
         }
         ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.card_details));
         ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -141,9 +141,9 @@ public class CardDetailFragment extends Fragment {
 
             }
         });
-        bankNameTv.setText(cardDetails.getBankName());
-        cardNoTv.setText(cardDetails.getCardNumber());
-        expTv.setText(cardDetails.getExpiryDate());
+        bankNameTv.setText(cardDetail.getBankName());
+        cardNoTv.setText(cardDetail.getCardNumber());
+        expTv.setText(cardDetail.getExpiryDate());
         payNowBt = (Button) view.findViewById(R.id.btn_pay_now);
         payNowBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,8 +165,8 @@ public class CardDetailFragment extends Fragment {
     }
 
     private void cardTransactionProcess(String cvv) {
-        WebviewFragment webviewFragment = WebviewFragment.newInstance("https://www.google.co.in");
-        ((CreditDebitCardFlowActivity) getActivity()).replaceFragment(webviewFragment,true,false);
+        cardDetail.setCvv(cvv);
+       // ((SavedCardFragment)getParentFragment()).paymentUsingCard(cardDetail);
     }
 
     private void flipCard() {

@@ -1,11 +1,10 @@
 package id.co.veritrans.sdk.core;
 
-import id.co.veritrans.sdk.models.CardPaymentResponse;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
-import id.co.veritrans.sdk.models.PermataBankTransferResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionCancelResponse;
+import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -24,7 +23,7 @@ public interface VeritranceApiInterface {
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<PermataBankTransferResponse> paymentUsingPermataBank(@Header("Authorization")
+    Observable<TransactionResponse> paymentUsingPermataBank(@Header("Authorization")
                                                                     String authorization,
                                                                     @Body PermataBankTransfer
                                                                             permataBankTransfer);
@@ -73,7 +72,7 @@ public interface VeritranceApiInterface {
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<CardPaymentResponse> paymentUsingCard(@Header("Authorization")
+    Observable<TransactionResponse> paymentUsingCard(@Header("Authorization")
                                                                     String authorization,
                                                                     @Body CardTransfer
                                                                             cardTransfer);

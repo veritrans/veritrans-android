@@ -78,5 +78,6 @@ public class Constants {
     public static final String SUCCESS_CODE_200 = "200";
     public static final String SUCCESS_CODE_201 = "201";
 
+    public static final String CREDIT_CARD = "credit_card";
 }
 
