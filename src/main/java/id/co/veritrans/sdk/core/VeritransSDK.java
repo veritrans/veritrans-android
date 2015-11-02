@@ -9,7 +9,7 @@ import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
-import id.co.veritrans.sdk.models.TokenRequestModel;
+import id.co.veritrans.sdk.models.CardTokenRequest;
 
 /**
  * Created by shivam on 10/19/15.
@@ -143,11 +143,11 @@ public class VeritransSDK {
 
     /**
      * @param activity
-     * @param tokenRequestModel
+     * @param cardTokenRequest
      */
-    public void getToken(Activity activity, TokenRequestModel tokenRequestModel, TokenCallBack tokenCallBack){
-        if (activity != null && tokenRequestModel != null && tokenCallBack != null) {
-            TransactionManager.getToken(activity, tokenRequestModel, tokenCallBack);
+    public void getToken(Activity activity, CardTokenRequest cardTokenRequest, TokenCallBack tokenCallBack){
+        if (activity != null && cardTokenRequest != null && tokenCallBack != null) {
+            TransactionManager.getToken(activity, cardTokenRequest, tokenCallBack);
         } else {
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }

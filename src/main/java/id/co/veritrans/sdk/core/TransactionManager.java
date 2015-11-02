@@ -7,7 +7,7 @@ import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
-import id.co.veritrans.sdk.models.TokenRequestModel;
+import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
 import rx.Observable;
@@ -20,7 +20,7 @@ import rx.schedulers.Schedulers;
  */
 class TransactionManager {
 
-    public static void getToken(Activity activity, TokenRequestModel tokenRequestModel, final
+    public static void getToken(Activity activity, CardTokenRequest cardTokenRequest, final
     TokenCallBack callBack) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
@@ -33,20 +33,20 @@ class TransactionManager {
 
                 Observable<TokenDetailsResponse> observable;
 
-                if (tokenRequestModel.isSecure()) {
-                    observable = apiInterface.get3DSToken(tokenRequestModel.getCardNumber(),
-                            tokenRequestModel.getCardCVV(),
-                            tokenRequestModel.getCardExpiryMonth(), tokenRequestModel
+                if (cardTokenRequest.isSecure()) {
+                    observable = apiInterface.get3DSToken(cardTokenRequest.getCardNumber(),
+                            cardTokenRequest.getCardCVV(),
+                            cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
                                     .getCardExpiryYear(),
-                            tokenRequestModel.getClientKey(), tokenRequestModel.getBank(),
-                            tokenRequestModel.isSecure(), tokenRequestModel.isTwoClick(),
-                            tokenRequestModel.getGrossAmount());
+                            cardTokenRequest.getClientKey(), cardTokenRequest.getBank(),
+                            cardTokenRequest.isSecure(), cardTokenRequest.isTwoClick(),
+                            cardTokenRequest.getGrossAmount());
                 } else {
-                    observable = apiInterface.getToken(tokenRequestModel.getCardNumber(),
-                            tokenRequestModel.getCardCVV(),
-                            tokenRequestModel.getCardExpiryMonth(), tokenRequestModel
+                    observable = apiInterface.getToken(cardTokenRequest.getCardNumber(),
+                            cardTokenRequest.getCardCVV(),
+                            cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
                                     .getCardExpiryYear(),
-                            tokenRequestModel.getClientKey());
+                            cardTokenRequest.getClientKey());
                 }
 
                 observable.subscribeOn(Schedulers

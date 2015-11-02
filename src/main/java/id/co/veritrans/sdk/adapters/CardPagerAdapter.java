@@ -8,14 +8,15 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.fragments.CardDetailFragment;
 import id.co.veritrans.sdk.models.CardDetail;
+import id.co.veritrans.sdk.models.CardTokenRequest;
 
 /**
  * Created by chetan on 27/10/15.
  */
 public class CardPagerAdapter extends FragmentPagerAdapter {
-    private ArrayList<CardDetail> cardDetails;
+    private ArrayList<CardTokenRequest> cardDetails;
 
-    public CardPagerAdapter(FragmentManager fm, ArrayList<CardDetail> cardDetails) {
+    public CardPagerAdapter(FragmentManager fm, ArrayList<CardTokenRequest> cardDetails) {
         super(fm);
         this.cardDetails = cardDetails;
     }

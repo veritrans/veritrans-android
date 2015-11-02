@@ -18,14 +18,14 @@ import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
-import id.co.veritrans.sdk.models.CardDetail;
+import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.utilities.FlipAnimation;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 public class CardDetailFragment extends Fragment {
 
     private static final String ARG_PARAM = "card_detail";
-    private CardDetail cardDetail;
+    private CardTokenRequest cardDetail;
     private RelativeLayout rootLayout;
     private RelativeLayout cardContainerBack;
     private RelativeLayout cardContainerFront;
@@ -39,7 +39,7 @@ public class CardDetailFragment extends Fragment {
     private EditText cvvEt;
     private Button payNowBt;
 
-    public static CardDetailFragment newInstance(CardDetail cardDetails) {
+    public static CardDetailFragment newInstance(CardTokenRequest cardDetails) {
         CardDetailFragment fragment = new CardDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM, cardDetails);
@@ -60,7 +60,7 @@ public class CardDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (getArguments() != null) {
-            cardDetail = (CardDetail) getArguments().getSerializable(ARG_PARAM);
+            cardDetail = (CardTokenRequest) getArguments().getSerializable(ARG_PARAM);
         }
         ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.card_details));
         ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -141,9 +141,9 @@ public class CardDetailFragment extends Fragment {
 
             }
         });
-        bankNameTv.setText(cardDetail.getBankName());
-        cardNoTv.setText(cardDetail.getCardNumber());
-        expTv.setText(cardDetail.getExpiryDate());
+        bankNameTv.setText(cardDetail.getBank());
+        cardNoTv.setText(cardDetail.getFormatedCardNumber());
+        expTv.setText(cardDetail.getFormatedExpiryDate());
         payNowBt = (Button) view.findViewById(R.id.btn_pay_now);
         payNowBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +165,12 @@ public class CardDetailFragment extends Fragment {
     }
 
     private void cardTransactionProcess(String cvv) {
-        cardDetail.setCvv(cvv);
+        try {
+            cardDetail.setCardCVV(Integer.parseInt(cvv));
+            ((CreditDebitCardFlowActivity)getActivity()).getToken(cardDetail);
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        }
        // ((SavedCardFragment)getParentFragment()).paymentUsingCard(cardDetail);
     }
 

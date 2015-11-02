@@ -14,20 +14,19 @@ import java.util.ArrayList;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.adapters.CardPagerAdapter;
-import id.co.veritrans.sdk.callbacks.TokenCallBack;
-import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
+import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.CardDetail;
-import id.co.veritrans.sdk.models.TokenDetailsResponse;
-import id.co.veritrans.sdk.models.TransactionResponse;
+import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 
-public class SavedCardFragment extends Fragment implements TokenCallBack,TransactionCallback {
+public class SavedCardFragment extends Fragment {
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
+    private VeritransSDK veritransSDK;
 
     public static SavedCardFragment newInstance() {
         SavedCardFragment fragment = new SavedCardFragment();
@@ -41,6 +40,7 @@ public class SavedCardFragment extends Fragment implements TokenCallBack,Transac
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        veritransSDK = VeritransSDK.getVeritransSDK();
     }
 
     @Override
@@ -90,36 +90,23 @@ public class SavedCardFragment extends Fragment implements TokenCallBack,Transac
         circlePageIndicator.setViewPager(savedCardPager);
     }
 
-    ArrayList<CardDetail>cardDetails = new ArrayList<>();
+    ArrayList<CardTokenRequest>cardDetails = new ArrayList<>();
     private void createDummyCards() {
         if(cardDetails.isEmpty()) {
             for (int i = 0; i < 4; i++) {
-                CardDetail cardDetail = new CardDetail();
+                CardTokenRequest cardTokenRequest = new CardTokenRequest("4811111111111114",0,12,20,veritransSDK.getClientKey());
+                cardTokenRequest.setBank("Permata");
+                /*CardDetail cardDetail = new CardDetail();
                 cardDetail.setCardHolderName("James Anderson");
                 cardDetail.setCardNumber("4811 1111 1111 1114");
                 cardDetail.setBankName("Bank Permata");
-                cardDetail.setExpiryDate("XX/12");
-                cardDetails.add(cardDetail);
+                cardDetail.setExpiryDate("XX/12");*/
+                cardDetails.add(cardTokenRequest);
             }
         }
     }
 
     public void paymentUsingCard(CardDetail cardDetail) {
-
-    }
-
-    @Override
-    public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {
-
-    }
-
-    @Override
-    public void onFailure(String errorMessage) {
-
-    }
-
-    @Override
-    public void onSuccess(TransactionResponse transactionResponse) {
 
     }
 }
