@@ -126,11 +126,11 @@ public class AddCardDetailsFragment extends Fragment implements TokenCallBack, T
                                 BillingAddress billingAddress;
                                 billingAddress = new BillingAddress();
                                 billingAddress.setCity(userAddress.getCity());
-                                billingAddress.setFirst_name(userDetail.getUserFullName());
-                                billingAddress.setLast_name("");
+                                billingAddress.setFirstName(userDetail.getUserFullName());
+                                billingAddress.setLastName("");
                                 billingAddress.setPhone(userDetail.getPhoneNumber());
-                                billingAddress.setCountry_code(userAddress.getCountry());
-                                billingAddress.setPostal_code(userAddress.getZipcode());
+                                billingAddress.setCountryCode(userAddress.getCountry());
+                                billingAddress.setPostalCode(userAddress.getZipcode());
                                 billingAddresses.add(billingAddress);
                             }
 

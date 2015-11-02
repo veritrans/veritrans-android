@@ -1,5 +1,7 @@
 package id.co.veritrans.sdk.models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by shivam on 10/26/15.
  */
@@ -7,22 +9,30 @@ public class TokenDetailsResponse {
 
 
     /**
-     * status_message : OK, success request new token
+     * statusMessage : OK, success request new token
      * bank : bni
-     * status_code : 200
-     * token_id : 481111-1114-0452c0cb-3199-4081-82ba-2e05b378c0ca
-     * redirect_url : https://api.sandbox.veritrans.co
+     * statusCode : 200
+     * tokenId : 481111-1114-0452c0cb-3199-4081-82ba-2e05b378c0ca
+     * redirectUrl : https://api.sandbox.veritrans.co
      * .id/v2/token/redirect/481111-1114-0452c0cb-3199-4081-82ba-2e05b378c0ca
      */
 
-    private String status_message;
+
+    @SerializedName("status_message")
+    private String statusMessage;
     private String bank;
-    private String status_code;
-    private String token_id;
-    private String redirect_url;
+
+    @SerializedName("status_code")
+    private String statusCode;
+
+    @SerializedName("token_id")
+    private String tokenId;
+
+    @SerializedName("redirect_url")
+    private String redirectUrl;
 
     public void setStatusMessage(String status_message) {
-        this.status_message = status_message;
+        this.statusMessage = status_message;
     }
 
     public void setBank(String bank) {
@@ -30,19 +40,19 @@ public class TokenDetailsResponse {
     }
 
     public void setStatusCode(String status_code) {
-        this.status_code = status_code;
+        this.statusCode = status_code;
     }
 
     public void setTokenId(String token_id) {
-        this.token_id = token_id;
+        this.tokenId = token_id;
     }
 
     public void setRedirectUrl(String redirect_url) {
-        this.redirect_url = redirect_url;
+        this.redirectUrl = redirect_url;
     }
 
     public String getStatusMessage() {
-        return status_message;
+        return statusMessage;
     }
 
     public String getBank() {
@@ -50,14 +60,14 @@ public class TokenDetailsResponse {
     }
 
     public String getStatusCode() {
-        return status_code;
+        return statusCode;
     }
 
     public String getTokenId() {
-        return token_id;
+        return tokenId;
     }
 
     public String getRedirectUrl() {
-        return redirect_url;
+        return redirectUrl;
     }
 }

@@ -1,46 +1,60 @@
 package id.co.veritrans.sdk.models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by shivam on 10/29/15.
  */
 public class BillingAddress {
 
-    public BillingAddress(String first_name, String last_name, String address, String city, String postal_code, String phone, String country_code) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.address = address;
-        this.city = city;
-        this.postal_code = postal_code;
-        this.phone = phone;
-        this.country_code = country_code;
-    }
+    @SerializedName("first_name")
+    private String firstName;
+
+    @SerializedName("last_name")
+    private String lastName;
+
+    private String address;
+    private String city;
+
+    @SerializedName("postal_code")
+    private String postalCode;
+    private String phone;
+
+    @SerializedName("country_code")
+    private String countryCode;
+
 
     public BillingAddress() {
 
     }
 
-    private String first_name;
-    private String last_name;
-    private String address;
-    private String city;
-    private String postal_code;
-    private String phone;
-    private String country_code;
 
-    public String getFirst_name() {
-        return first_name;
+    public BillingAddress(String firstName, String lastName, String address, String city, String
+            postalCode, String phone, String countryCode) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.phone = phone;
+        this.countryCode = countryCode;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getAddress() {
@@ -59,12 +73,12 @@ public class BillingAddress {
         this.city = city;
     }
 
-    public String getPostal_code() {
-        return postal_code;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostal_code(String postal_code) {
-        this.postal_code = postal_code;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getPhone() {
@@ -75,11 +89,11 @@ public class BillingAddress {
         this.phone = phone;
     }
 
-    public String getCountry_code() {
-        return country_code;
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    public void setCountry_code(String country_code) {
-        this.country_code = country_code;
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 }

@@ -17,6 +17,7 @@ public class MandiriClickPayModel {
 
     @SerializedName("card_number")
     private String cardNumber;
+
     private String input3;
     private String input2;
     private String input1;

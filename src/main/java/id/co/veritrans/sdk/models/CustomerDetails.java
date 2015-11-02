@@ -6,6 +6,22 @@ import com.google.gson.annotations.SerializedName;
  * Created by shivam on 10/29/15.
  */
 public class CustomerDetails {
+
+    @SerializedName("first_name")
+    private String firstName;
+
+    @SerializedName("last_name")
+
+    private String lastName;
+    private String email;
+    private String phone;
+
+
+    public CustomerDetails() {
+
+    }
+
+
     public CustomerDetails(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -13,16 +29,6 @@ public class CustomerDetails {
         this.phone = phone;
     }
 
-    public CustomerDetails() {
-
-    }
-
-    @SerializedName("first_name")
-    private String firstName;
-    @SerializedName("last_name")
-    private String lastName;
-    private String email;
-    private String phone;
 
     public String getFirstName() {
         return firstName;
