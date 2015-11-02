@@ -194,13 +194,37 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         String[] names = getResources().getStringArray(R.array.payment_methods);
         Logger.d(TAG, "there are total " + names.length + " payment methods available.");
 
+        int [] paymentImageList = getImageList();
+
         for (int i = 0; i < names.length; i++) {
-            PaymentMethodsModel model = new PaymentMethodsModel(names[i], R.drawable.ic_launcher,
+            PaymentMethodsModel model = new PaymentMethodsModel(names[i], paymentImageList[i],
                     Constants.PAYMENT_METHOD_NOT_SELECTED);
             data.add(model);
         }
 
     }
+
+
+    private int[] getImageList(){
+
+        int [] paymentImageList = new int[11];
+
+        paymentImageList[0] = R.drawable.ic_offers;
+        paymentImageList[1] = R.drawable.ic_launcher; // credit - debit
+        paymentImageList[2] = R.drawable.ic_mandiri;
+        paymentImageList[3] = R.drawable.ic_cimb;
+        paymentImageList[4] = R.drawable.ic_epay;
+        paymentImageList[5] = R.drawable.ic_bbm;
+        paymentImageList[6] = R.drawable.ic_launcher; // indosat dompetku
+        paymentImageList[7] = R.drawable.ic_launcher; // mandiri e-Cash
+        paymentImageList[8] = R.drawable.ic_banktransfer;
+        paymentImageList[9] = R.drawable.ic_launcher; // mandiri bill payment
+        paymentImageList[10] = R.drawable.ic_indomaret;
+
+        return paymentImageList;
+    }
+
+
 
     @Override
     protected void onDestroy() {
