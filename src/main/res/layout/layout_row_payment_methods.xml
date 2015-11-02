@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="?android:selectableItemBackground">
 
 
@@ -10,6 +10,8 @@
         android:id="@+id/img_payment_method_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/sixteen_dp"
         android:src="@drawable/ic_launcher"/>
 
 
@@ -20,9 +22,21 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/img_payment_method_icon"
-        android:paddingLeft="@dimen/sixteen_dp"
+        android:padding="@dimen/sixteen_dp"
         android:text="demo"
         app:font="@string/font_open_sans_regular"
+        />
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignBottom="@id/text_payment_method_name"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/img_payment_method_icon"
+        android:background="@color/gray_divider"
+        android:layout_marginLeft="@dimen/eight_dp"
         />
 
 </RelativeLayout>
