@@ -39,6 +39,7 @@ public class TransactionResponse implements Serializable {
     private String savedTokenId;
     @SerializedName("masked_card")
     private String maskedCard;
+
     @SerializedName("order_id")
     private String orderId;
     @SerializedName("gross_amount")
@@ -49,6 +50,7 @@ public class TransactionResponse implements Serializable {
     private String transactionTime;
     @SerializedName("transaction_status")
     private String transactionStatus;
+
     @SerializedName("fraud_status")
     private String fraudStatus;
     @SerializedName("saved_token_id_expired_at")
@@ -59,8 +61,11 @@ public class TransactionResponse implements Serializable {
     private boolean secureToken;
     @SerializedName("permata_va_number")
     private String permataVANumber;
+
     private String bank;
     private String eci;
+
+
 
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;

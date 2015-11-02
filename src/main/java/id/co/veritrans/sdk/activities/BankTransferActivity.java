@@ -264,21 +264,21 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
             if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_BILLING) {
                 BillingAddress billingAddress = new BillingAddress();
                 billingAddress.setCity(userAddress.getCity());
-                billingAddress.setFirst_name(userDetail.getUserFullName());
-                billingAddress.setLast_name("");
+                billingAddress.setFirstName(userDetail.getUserFullName());
+                billingAddress.setLastName("");
                 billingAddress.setPhone(userDetail.getPhoneNumber());
-                billingAddress.setCountry_code(userAddress.getCountry());
-                billingAddress.setPostal_code(userAddress.getZipcode());
+                billingAddress.setCountryCode(userAddress.getCountry());
+                billingAddress.setPostalCode(userAddress.getZipcode());
                 mBillingAddressArrayList.add(billingAddress);
             } else {
 
                 ShippingAddress shippingAddress = new ShippingAddress();
                 shippingAddress.setCity(userAddress.getCity());
-                shippingAddress.setFirst_name(userDetail.getUserFullName());
-                shippingAddress.setLast_name("");
+                shippingAddress.setFirstName(userDetail.getUserFullName());
+                shippingAddress.setLastName("");
                 shippingAddress.setPhone(userDetail.getPhoneNumber());
-                shippingAddress.setCountry_code(userAddress.getCountry());
-                shippingAddress.setPostal_code(userAddress.getZipcode());
+                shippingAddress.setCountryCode(userAddress.getCountry());
+                shippingAddress.setPostalCode(userAddress.getZipcode());
                 mShippingAddressArrayList.add(shippingAddress);
 
             }

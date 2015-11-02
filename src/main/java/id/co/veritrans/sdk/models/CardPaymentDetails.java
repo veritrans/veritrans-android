@@ -19,8 +19,10 @@ public class CardPaymentDetails{
      */
 
     private String bank;
+
     @SerializedName("token_id")
     private String tokenId;
+
     @SerializedName("save_token_id")
     private boolean saveTokenId;
 

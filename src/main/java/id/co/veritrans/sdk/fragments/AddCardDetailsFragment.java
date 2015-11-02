@@ -73,6 +73,7 @@ public class AddCardDetailsFragment extends Fragment {
 
 
 
+
     private void bindViews(View view) {
         etCardHolderName = (EditText) view.findViewById(R.id.et_holder_name);
         etCardNo = (EditText) view.findViewById(R.id.et_card_no);

@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
-import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
+import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 
@@ -35,7 +36,6 @@ public class VeritransSDK {
     private static boolean isRunning = false;
     private static String sServerKey = null;
     private static String sClientKey = null;
-
 
 
     private VeritransSDK() {
@@ -136,7 +136,7 @@ public class VeritransSDK {
     }
 
 
-    protected Activity getActivity(){
+    protected Activity getActivity() {
         return sActivity;
     }
 
@@ -155,19 +155,36 @@ public class VeritransSDK {
 
     public void paymentUsingPermataBank(Activity activity,
                                         PermataBankTransfer permataBankTransfer,
-                                        TransactionCallback permataBankTransferStatus){
-        //TransactionHandler.paymentUsingPermataBank(activity, permataBankTransfer, permataBankTransferStatus);
+                                        TransactionCallback permataBankTransferStatus) {
+        //TransactionHandler.paymentUsingPermataBank(activity, permataBankTransfer,
+        // permataBankTransferStatus);
         if (activity != null && permataBankTransfer != null && permataBankTransferStatus != null) {
-            TransactionManager.paymentUsingPermataBank(activity, permataBankTransfer, permataBankTransferStatus);
+            TransactionManager.paymentUsingPermataBank(activity, permataBankTransfer,
+                    permataBankTransferStatus);
         } else {
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
     }
 
-    public void paymentUsingCard(Activity activity,CardTransfer cardTransfer,TransactionCallback cardPaymentTransactionCallback
-    ){
-        if(activity!=null&&cardTransfer!=null && cardPaymentTransactionCallback !=null) {
-            TransactionManager.paymentUsingCard(activity, cardTransfer, cardPaymentTransactionCallback);
+    public void paymentUsingCard(Activity activity, CardTransfer cardTransfer,
+                                 TransactionCallback cardPaymentTransactionCallback
+    ) {
+        if (activity != null && cardTransfer != null && cardPaymentTransactionCallback != null) {
+            TransactionManager.paymentUsingCard(activity, cardTransfer,
+                    cardPaymentTransactionCallback);
+        } else {
+            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+        }
+    }
+
+
+    public void paymentUsingMandiriClickPay(Activity activity,
+                                            MandiriClickPayRequestModel mandiriClickPayRequestModel,
+                                 TransactionCallback cardPaymentTransactionCallback
+    ) {
+        if (activity != null && mandiriClickPayRequestModel != null && cardPaymentTransactionCallback != null) {
+            TransactionManager.paymentUsingMandiriClickPay(activity, mandiriClickPayRequestModel,
+                    cardPaymentTransactionCallback);
         } else {
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
