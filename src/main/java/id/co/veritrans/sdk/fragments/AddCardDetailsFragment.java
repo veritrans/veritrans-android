@@ -22,28 +22,30 @@ import java.util.Date;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.activities.PaymentWebActivity;
-import id.co.veritrans.sdk.callbacks.CardPaymentCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
+import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
-import id.co.veritrans.sdk.models.CardPaymentResponse;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.ShippingAddress;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TokenRequestModel;
 import id.co.veritrans.sdk.models.TransactionDetails;
+import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.UserAddress;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
-public class AddCardDetailsFragment extends Fragment implements TokenCallBack {
+public class AddCardDetailsFragment extends Fragment implements TokenCallBack, TransactionCallback {
 
     private static final int PAYMENT_WEB_INTENT = 100;
+    private static final int GET_TOKEN = 50;
+    private static final int PAY_USING_CARD = 51;
     private EditText etCardHolderName;
     private EditText etCardNo;
     private EditText etCvv;
@@ -63,6 +65,8 @@ public class AddCardDetailsFragment extends Fragment implements TokenCallBack {
     private TokenDetailsResponse tokenDetailsResponse;
     private VeritransSDK veritransSDK;
     private UserDetail userDetail;
+    private int currentApiCallNumber;
+
     public static AddCardDetailsFragment newInstance() {
         AddCardDetailsFragment fragment = new AddCardDetailsFragment();
         return fragment;
@@ -97,6 +101,56 @@ public class AddCardDetailsFragment extends Fragment implements TokenCallBack {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
+        if (resultCode == getActivity().RESULT_OK) {
+            if (requestCode == PAYMENT_WEB_INTENT) {
+                SdkUtil.showProgressDialog(getActivity(), false);
+                if (tokenDetailsResponse != null) {
+                    CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
+                            userDetail.getEmail(), userDetail.getPhoneNumber());
+
+                    ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
+                    TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.getAmount(), veritransSDK.getOrderId());
+                    if (userAddresses != null && !userAddresses.isEmpty()) {
+                        ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
+                        ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
+
+                        for (int i = 0; i < userAddresses.size(); i++) {
+                            UserAddress userAddress = userAddresses.get(i);
+
+                            if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_BILLING) {
+
+                                BillingAddress billingAddress;
+                                billingAddress = new BillingAddress();
+                                billingAddress.setCity(userAddress.getCity());
+                                billingAddress.setFirst_name(userDetail.getUserFullName());
+                                billingAddress.setLast_name("");
+                                billingAddress.setPhone(userDetail.getPhoneNumber());
+                                billingAddress.setCountry_code(userAddress.getCountry());
+                                billingAddress.setPostal_code(userAddress.getZipcode());
+                                billingAddresses.add(billingAddress);
+                            }
+
+                        }
+
+                        CardPaymentDetails cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
+                                tokenDetailsResponse.getTokenId(), cbStoreCard.isChecked());
+                        try {
+                            CardTransfer cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails, null, billingAddresses, null, customerDetails);
+                            ((CreditDebitCardFlowActivity) getActivity()).payUsingCard(cardTransfer, this);
+                            currentApiCallNumber = PAY_USING_CARD;
+                        }catch (NullPointerException e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void bindViews(View view) {
         etCardHolderName = (EditText) view.findViewById(R.id.et_holder_name);
         etCardNo = (EditText) view.findViewById(R.id.et_card_no);
@@ -120,10 +174,17 @@ public class AddCardDetailsFragment extends Fragment implements TokenCallBack {
                             expMonth, expYear,
                             veritransSDK.getClientKey());
                     tokenRequestModel.setSecure(true);
+                    tokenRequestModel.setGrossAmount(veritransSDK.getAmount());
+
                     //tokenRequestModel.setTwoClick(true);
                     //make payment
                     SdkUtil.showProgressDialog(getActivity(), false);
-                    ((CreditDebitCardFlowActivity) getActivity()).getToken(tokenRequestModel, AddCardDetailsFragment.this);
+                    try {
+                        ((CreditDebitCardFlowActivity) getActivity()).getToken(tokenRequestModel, AddCardDetailsFragment.this);
+                        currentApiCallNumber = GET_TOKEN;
+                    } catch (NullPointerException e) {
+
+                    }
 
                 }
             }
@@ -296,7 +357,7 @@ public class AddCardDetailsFragment extends Fragment implements TokenCallBack {
         }
         return true;
     }
-
+    //onSuccess for get token
     @Override
     public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {
         Logger.i("token suc:" + tokenDetailsResponse.getTokenId());
@@ -306,9 +367,7 @@ public class AddCardDetailsFragment extends Fragment implements TokenCallBack {
         }
         SdkUtil.hideProgressDialog();
         if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
-                /*WebviewFragment webviewFragment = WebviewFragment.newInstance(tokenDetailsResponse.getRedirectUrl());
-                ((CreditDebitCardFlowActivity) getActivity()).replaceFragment(webviewFragment, true, false);
-                isTokenCallInitiated = true;*/
+
             Intent intentPaymentWeb = new Intent(getActivity(), PaymentWebActivity.class);
             intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
             startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
@@ -316,7 +375,7 @@ public class AddCardDetailsFragment extends Fragment implements TokenCallBack {
         }
 
     }
-
+    //onfailure for both token and transaction api call
     @Override
     public void onFailure(String errorMessage) {
         Logger.i("token fail" + errorMessage);
@@ -324,59 +383,30 @@ public class AddCardDetailsFragment extends Fragment implements TokenCallBack {
             return;
         }
         SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(getActivity(), errorMessage);
-
+        switch (currentApiCallNumber){
+            case GET_TOKEN:
+                SdkUtil.showApiFailedMessage(getActivity(), errorMessage);
+                break;
+            case PAY_USING_CARD:
+                PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(null);
+                ((CreditDebitCardFlowActivity) getActivity()).replaceFragment(paymentTransactionStatusFragment, true, false);
+                ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
+                break;
+        }
     }
 
+    //onSuccess for transaction api call
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
-        if (requestCode == PAYMENT_WEB_INTENT) {
-            if (tokenDetailsResponse != null) {
-                CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(),"",
-                        userDetail.getEmail(),userDetail.getPhoneNumber());
-
-                ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-                TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.getAmount(), veritransSDK.getOrderId());
-                if (userAddresses != null && !userAddresses.isEmpty()) {
-                    ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
-                    ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
-
-                    for (int i = 0; i < userAddresses.size(); i++) {
-                        UserAddress userAddress = userAddresses.get(i);
-
-                        if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_BILLING) {
-
-                            BillingAddress billingAddress;
-                            billingAddress = new BillingAddress();
-                            billingAddress.setCity(userAddress.getCity());
-                            billingAddress.setFirst_name(userDetail.getUserFullName());
-                            billingAddress.setLast_name("");
-                            billingAddress.setPhone(userDetail.getPhoneNumber());
-                            billingAddress.setCountry_code(userAddress.getCountry());
-                            billingAddress.setPostal_code(userAddress.getZipcode());
-                            billingAddresses.add(billingAddress);
-                        }
-
-                    }
-
-                    CardPaymentDetails cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
-                            tokenDetailsResponse.getTokenId(), cbStoreCard.isChecked());
-                    CardTransfer cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails, null,billingAddresses,null,customerDetails);
-                    ((CreditDebitCardFlowActivity) getActivity()).payUsingCard(cardTransfer, new CardPaymentCallback() {
-                        @Override
-                        public void onSuccess(CardPaymentResponse cardPaymentResponse) {
-                            
-                        }
-
-                        @Override
-                        public void onFailure(String errorMessage) {
-
-                        }
-                    });
-                }
-            }
+    public void onSuccess(TransactionResponse cardPaymentResponse) {
+        SdkUtil.hideProgressDialog();
+        Logger.i("cardPaymentResponse:"+cardPaymentResponse.getStatusCode());
+        if (cardPaymentResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_200 )||
+                cardPaymentResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+            PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
+            ((CreditDebitCardFlowActivity) getActivity()).replaceFragment(paymentTransactionStatusFragment, true, false);
+            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
         }
     }
 }

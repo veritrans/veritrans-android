@@ -2,15 +2,13 @@ package id.co.veritrans.sdk.core;
 
 import android.app.Activity;
 
-import id.co.veritrans.sdk.callbacks.CardPaymentCallback;
-import id.co.veritrans.sdk.callbacks.PermataBankTransferStatus;
+import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
-import id.co.veritrans.sdk.models.CardPaymentResponse;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
-import id.co.veritrans.sdk.models.PermataBankTransferResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TokenRequestModel;
+import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
 import rx.Observable;
 import rx.Observer;
@@ -106,7 +104,7 @@ class TransactionManager {
     }
 
     public static void paymentUsingPermataBank(final Activity activity, final PermataBankTransfer
-            permataBankTransfer, final PermataBankTransferStatus callBack) {
+            permataBankTransfer, final TransactionCallback callBack) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
@@ -116,7 +114,7 @@ class TransactionManager {
 
             if (apiInterface != null) {
 
-                Observable<PermataBankTransferResponse> observable = null;
+                Observable<TransactionResponse> observable = null;
 
                 String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
                 if (serverKey != null) {
@@ -128,7 +126,7 @@ class TransactionManager {
                     observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<PermataBankTransferResponse>() {
+                            .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
@@ -142,7 +140,7 @@ class TransactionManager {
                                 }
 
                                 @Override
-                                public void onNext(PermataBankTransferResponse
+                                public void onNext(TransactionResponse
                                                            permataBankTransferResponse) {
 
                                     if (permataBankTransferResponse != null) {
@@ -186,7 +184,7 @@ class TransactionManager {
     }
 
 
-    public static void paymentUsingCard(Activity activity, CardTransfer cardTransfer, final CardPaymentCallback cardPaymentCallback) {
+    public static void paymentUsingCard(Activity activity, CardTransfer cardTransfer, final TransactionCallback cardPaymentTransactionCallback) {
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
@@ -195,7 +193,7 @@ class TransactionManager {
 
             if (apiInterface != null) {
 
-                Observable<CardPaymentResponse> observable = null;
+                Observable<TransactionResponse> observable = null;
 
                 String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
                 if (serverKey != null) {
@@ -207,7 +205,7 @@ class TransactionManager {
                     observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<CardPaymentResponse>() {
+                            .subscribe(new Observer<TransactionResponse>() {
                                 @Override
                                 public void onCompleted() {
 
@@ -217,26 +215,29 @@ class TransactionManager {
                                 public void onError(Throwable e) {
                                     Logger.e("card Transfer transaction error ", "" +
                                             e.getMessage());
-                                    cardPaymentCallback.onFailure(e.getMessage());
+                                    cardPaymentTransactionCallback.onFailure(e.getMessage());
                                 }
 
                                 @Override
-                                public void onNext(CardPaymentResponse cardPaymentResponse) {
+                                public void onNext(TransactionResponse cardPaymentResponse) {
+                                    Logger.i("@ onNext cardPayment:"+cardPaymentResponse);
                                     if (cardPaymentResponse != null) {
 
                                         if (cardPaymentResponse.getStatusCode().trim()
                                                 .equalsIgnoreCase("200")
                                                 || cardPaymentResponse.getStatusCode()
                                                 .trim().equalsIgnoreCase("201")) {
-
-                                            cardPaymentCallback.onSuccess(cardPaymentResponse);
+                                            Logger.i("@ onNext cardPayment:"+cardPaymentResponse);
+                                            cardPaymentTransactionCallback.onSuccess(cardPaymentResponse);
                                         } else {
-                                            cardPaymentCallback.onFailure(cardPaymentResponse
+                                            Logger.i("@ onNext cardPayment fail"+cardPaymentResponse.getStatusCode());
+                                            cardPaymentTransactionCallback.onFailure(cardPaymentResponse
                                                     .getStatusMessage());
                                         }
 
                                     } else {
-                                        cardPaymentCallback.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                        Logger.i("@ onNext cardPayment fail null");
+                                        cardPaymentTransactionCallback.onFailure(Constants.ERROR_EMPTY_RESPONSE);
                                     }
                                 }
 
@@ -266,7 +267,7 @@ class TransactionManager {
     }
 
 
-    private static void displayPermataBankResponse(PermataBankTransferResponse
+    private static void displayPermataBankResponse(TransactionResponse
                                                            permataBankTransferResponse) {
         Logger.d("permata bank transfer response: virtual account" +
                 " number ", "" +

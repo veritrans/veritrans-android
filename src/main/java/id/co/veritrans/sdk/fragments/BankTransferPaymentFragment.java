@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
 import id.co.veritrans.sdk.core.Constants;
-import id.co.veritrans.sdk.models.PermataBankTransferResponse;
+import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
@@ -21,14 +21,14 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class BankTransferPaymentFragment extends Fragment {
 
     public static final String VALID_UNTILL = "Valid Untill : ";
-    private static PermataBankTransferResponse sPermataBankTransferResponse = null;
+    private static TransactionResponse sPermataBankTransferResponse = null;
 
     private TextViewFont mTextViewVirtualAccountNumber = null;
     private TextViewFont mTextViewSeeInstruction = null;
     private TextViewFont mTextViewValidity = null;
 
 
-    public static BankTransferPaymentFragment newInstance(PermataBankTransferResponse
+    public static BankTransferPaymentFragment newInstance(TransactionResponse
                                                                   permataBankTransferResponse) {
         sPermataBankTransferResponse = permataBankTransferResponse;
         BankTransferPaymentFragment fragment = new BankTransferPaymentFragment();

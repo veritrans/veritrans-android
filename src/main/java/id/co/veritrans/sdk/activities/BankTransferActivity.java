@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.callbacks.PermataBankTransferStatus;
+import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
@@ -27,9 +27,9 @@ import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
-import id.co.veritrans.sdk.models.PermataBankTransferResponse;
 import id.co.veritrans.sdk.models.ShippingAddress;
 import id.co.veritrans.sdk.models.TransactionDetails;
+import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.UserAddress;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -57,7 +57,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     private CustomerDetails mCustomerDetails = null;
     private BankTransferFragment bankTransferFragment = null;
 
-    private PermataBankTransferResponse mPermataBankTransferResponse = null;
+    private TransactionResponse mPermataBankTransferResponse = null;
 
 
     @Override
@@ -163,7 +163,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-    private void setUpTransactionStatusFragment(final PermataBankTransferResponse
+    private void setUpTransactionStatusFragment(final TransactionResponse
                                                         permataBankTransferResponse) {
 
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -185,7 +185,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-    private void setUpTransactionFragment(final PermataBankTransferResponse
+    private void setUpTransactionFragment(final TransactionResponse
                                                   permataBankTransferResponse) {
         if( permataBankTransferResponse != null ) {
             // setup transaction fragment
@@ -318,11 +318,11 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                             mCustomerDetails);
 
             veritransSDK.paymentUsingPermataBank(BankTransferActivity.this,
-                    permataBankTransfer, new PermataBankTransferStatus() {
+                    permataBankTransfer, new TransactionCallback() {
 
 
                         @Override
-                        public void onSuccess(PermataBankTransferResponse
+                        public void onSuccess(TransactionResponse
                                                       permataBankTransferResponse) {
 
                             SdkUtil.hideProgressDialog();

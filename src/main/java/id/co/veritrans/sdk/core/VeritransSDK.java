@@ -5,8 +5,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
-import id.co.veritrans.sdk.callbacks.CardPaymentCallback;
-import id.co.veritrans.sdk.callbacks.PermataBankTransferStatus;
+import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
@@ -156,7 +155,7 @@ public class VeritransSDK {
 
     public void paymentUsingPermataBank(Activity activity,
                                         PermataBankTransfer permataBankTransfer,
-                                        PermataBankTransferStatus permataBankTransferStatus){
+                                        TransactionCallback permataBankTransferStatus){
         //TransactionHandler.paymentUsingPermataBank(activity, permataBankTransfer, permataBankTransferStatus);
         if (activity != null && permataBankTransfer != null && permataBankTransferStatus != null) {
             TransactionManager.paymentUsingPermataBank(activity, permataBankTransfer, permataBankTransferStatus);
@@ -165,10 +164,10 @@ public class VeritransSDK {
         }
     }
 
-    public void paymentUsingCard(Activity activity,CardTransfer cardTransfer,CardPaymentCallback cardPaymentCallback
+    public void paymentUsingCard(Activity activity,CardTransfer cardTransfer,TransactionCallback cardPaymentTransactionCallback
     ){
-        if(activity!=null&&cardTransfer!=null && cardPaymentCallback!=null) {
-            TransactionManager.paymentUsingCard(activity, cardTransfer, cardPaymentCallback);
+        if(activity!=null&&cardTransfer!=null && cardPaymentTransactionCallback !=null) {
+            TransactionManager.paymentUsingCard(activity, cardTransfer, cardPaymentTransactionCallback);
         } else {
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
