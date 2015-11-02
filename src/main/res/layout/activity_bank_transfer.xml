@@ -148,7 +148,7 @@
             <FrameLayout
                 android:id="@+id/bank_transfer_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 />
 
@@ -176,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/virtual_account"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/primary_text_size"
+                    android:textSize="@dimen/header_text_size"
                     app:font="@string/font_open_sans_regular"
                     />
 

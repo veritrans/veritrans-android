@@ -16,6 +16,7 @@
     <color name="faint_white">#9AD7F9</color>
 
     <color name="dark_gray">#757575</color>
+    <color name="gray_divider">#E0E0E0</color>
 
 
 </resources>
