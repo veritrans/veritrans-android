@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class MandiriBillPayTransferModel extends TransactionModel{
 
 
-    public static final String PAYMENT_TYPE = "bank_transfer";
+    public static final String PAYMENT_TYPE = "echannel";
 
     /**
      * payment_type : bank_transfer
@@ -20,11 +20,11 @@ public class MandiriBillPayTransferModel extends TransactionModel{
      */
 
 
-    @SerializedName("bank_transfer")
-    private BankTransfer bankTransfer;
+    @SerializedName("echannel")
+    private BillInfoModel billInfoModel;
 
 
-    public MandiriBillPayTransferModel(BankTransfer bankTransfer, TransactionDetails
+    public MandiriBillPayTransferModel(BillInfoModel billInfoModel, TransactionDetails
             transactionDetails,
                                        ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
                                                billingAddresses, ArrayList<ShippingAddress>
@@ -32,7 +32,7 @@ public class MandiriBillPayTransferModel extends TransactionModel{
 
         this.paymentType = PAYMENT_TYPE;
 
-        this.bankTransfer = bankTransfer;
+        this.billInfoModel = billInfoModel;
         this.transactionDetails = transactionDetails;
         this.itemDetails = itemDetails;
         this.billingAddresses = billingAddresses;
@@ -45,9 +45,6 @@ public class MandiriBillPayTransferModel extends TransactionModel{
         return paymentType;
     }
 
-    public BankTransfer getBankTransfer() {
-        return bankTransfer;
-    }
 
     public TransactionDetails getTransactionDetails() {
         return transactionDetails;
@@ -67,5 +64,9 @@ public class MandiriBillPayTransferModel extends TransactionModel{
 
     public CustomerDetails getCustomerDetails() {
         return customerDetails;
+    }
+
+    public BillInfoModel getBillInfoModel() {
+        return billInfoModel;
     }
 }
