@@ -121,7 +121,7 @@
                     android:text="@string/select_payment_method"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/header_text_size"
-                    app:font="@string/font_open_sans_regular"
+                    app:font="@string/font_open_sans_bold"
                     />
 
                 <id.co.veritrans.sdk.widgets.TextViewFont
