@@ -7,6 +7,7 @@
         android:id="@+id/progress_wheel"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:background="@drawable/loading_background"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:padding="5dp"

@@ -36,7 +36,7 @@ public class VeritransSDK {
     private static boolean isRunning = false;
     private static String sServerKey = null;
     private static String sClientKey = null;
-
+    private static int currentPaymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
 
     private VeritransSDK() {
     }
@@ -170,6 +170,7 @@ public class VeritransSDK {
                                  TransactionCallback cardPaymentTransactionCallback
     ) {
         if (activity != null && cardTransfer != null && cardPaymentTransactionCallback != null) {
+            setCurrentPaymentMethod(Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT);
             TransactionManager.paymentUsingCard(activity, cardTransfer,
                     cardPaymentTransactionCallback);
         } else {
@@ -180,9 +181,9 @@ public class VeritransSDK {
 
     public void paymentUsingMandiriClickPay(Activity activity,
                                             MandiriClickPayRequestModel mandiriClickPayRequestModel,
-                                 TransactionCallback cardPaymentTransactionCallback
-    ) {
+                                 TransactionCallback cardPaymentTransactionCallback) {
         if (activity != null && mandiriClickPayRequestModel != null && cardPaymentTransactionCallback != null) {
+            setCurrentPaymentMethod(Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY);
             TransactionManager.paymentUsingMandiriClickPay(activity, mandiriClickPayRequestModel,
                     cardPaymentTransactionCallback);
         } else {
@@ -190,4 +191,11 @@ public class VeritransSDK {
         }
     }
 
+    public int getCurrentPaymentMethod() {
+        return currentPaymentMethod;
+    }
+
+    private void setCurrentPaymentMethod(int currentPaymentMethod) {
+        VeritransSDK.currentPaymentMethod = currentPaymentMethod;
+    }
 }

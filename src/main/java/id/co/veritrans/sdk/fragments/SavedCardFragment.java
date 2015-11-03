@@ -93,9 +93,10 @@ public class SavedCardFragment extends Fragment {
     ArrayList<CardTokenRequest>cardDetails = new ArrayList<>();
     private void createDummyCards() {
         if(cardDetails.isEmpty()) {
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 2; i++) {
                 CardTokenRequest cardTokenRequest = new CardTokenRequest("4811111111111114",0,12,20,veritransSDK.getClientKey());
                 cardTokenRequest.setBank("Permata");
+                cardTokenRequest.setSecure(true);
                 /*CardDetail cardDetail = new CardDetail();
                 cardDetail.setCardHolderName("James Anderson");
                 cardDetail.setCardNumber("4811 1111 1111 1114");

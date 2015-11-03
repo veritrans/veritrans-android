@@ -162,6 +162,7 @@
     <string name="title_payment_failed">Payment Failed</string>
     <string name="title_payment_successful">Payment Successful</string>
     <string name="credit_card">Credit Card</string>
+    <string name="card_details_error_message">Card details not found.</string>
 
 
 </resources>
