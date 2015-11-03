@@ -22,6 +22,8 @@ public class VeritransBuilder {
     protected boolean useUi = true;
     protected Activity mActivity = null;
     protected boolean enableLog = true;
+    protected String cardClickType = Constants.CARD_CLICK_TYPE_NONE;
+    protected boolean isSecureCard = true;
 
     /**
      * It  will initialize an data required to sdk.
@@ -113,4 +115,8 @@ public class VeritransBuilder {
         return null;
     }
 
+    public void setCardPaymentInfo(String clickType,boolean isSecureCard) {
+        this.cardClickType = clickType;
+        this.isSecureCard = isSecureCard;
+    }
 }

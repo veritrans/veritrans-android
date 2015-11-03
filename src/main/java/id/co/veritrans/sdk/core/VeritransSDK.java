@@ -7,10 +7,10 @@ import android.graphics.Typeface;
 
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
+import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
-import id.co.veritrans.sdk.models.CardTokenRequest;
 
 /**
  * Created by shivam on 10/19/15.
@@ -37,10 +37,11 @@ public class VeritransSDK {
     private static String sServerKey = null;
     private static String sClientKey = null;
     private static int currentPaymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
+    private static boolean isSecureCard = true;
+    private static String cardClickType;
 
     private VeritransSDK() {
     }
-
 
     protected static VeritransSDK getInstance(VeritransBuilder veritransBuilder) {
 
@@ -53,7 +54,8 @@ public class VeritransSDK {
             sIsLogEnabled = veritransBuilder.enableLog;
             sServerKey = veritransBuilder.serverKey;
             sClientKey = veritransBuilder.clientKey;
-
+            isSecureCard = veritransBuilder.isSecureCard;
+            cardClickType = veritransBuilder.cardClickType;
             initializeFonts();
             return sVeritransSDK;
         } else {
@@ -69,7 +71,6 @@ public class VeritransSDK {
                 FONTS_OPEN_SANS_SEMI_BOLD_TTF);
     }
 
-
     public Typeface getTypefaceOpenSansRegular() {
         return typefaceOpenSansRegular;
     }
@@ -81,7 +82,6 @@ public class VeritransSDK {
     public Typeface getTypefaceOpenSansBold() {
         return typefaceOpenSansBold;
     }
-
 
     /**
      * Returns instance of veritrans sdk.
@@ -101,7 +101,6 @@ public class VeritransSDK {
     protected static void setIsRunning(boolean isRunning) {
         VeritransSDK.isRunning = isRunning;
     }
-
 
     public boolean isLogEnabled() {
         return sIsLogEnabled;
@@ -135,17 +134,15 @@ public class VeritransSDK {
         return sClientKey;
     }
 
-
     protected Activity getActivity() {
         return sActivity;
     }
-
 
     /**
      * @param activity
      * @param cardTokenRequest
      */
-    public void getToken(Activity activity, CardTokenRequest cardTokenRequest, TokenCallBack tokenCallBack){
+    public void getToken(Activity activity, CardTokenRequest cardTokenRequest, TokenCallBack tokenCallBack) {
         if (activity != null && cardTokenRequest != null && tokenCallBack != null) {
             TransactionManager.getToken(activity, cardTokenRequest, tokenCallBack);
         } else {
@@ -178,10 +175,9 @@ public class VeritransSDK {
         }
     }
 
-
     public void paymentUsingMandiriClickPay(Activity activity,
                                             MandiriClickPayRequestModel mandiriClickPayRequestModel,
-                                 TransactionCallback cardPaymentTransactionCallback) {
+                                            TransactionCallback cardPaymentTransactionCallback) {
         if (activity != null && mandiriClickPayRequestModel != null && cardPaymentTransactionCallback != null) {
             setCurrentPaymentMethod(Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY);
             TransactionManager.paymentUsingMandiriClickPay(activity, mandiriClickPayRequestModel,
@@ -197,5 +193,13 @@ public class VeritransSDK {
 
     private void setCurrentPaymentMethod(int currentPaymentMethod) {
         VeritransSDK.currentPaymentMethod = currentPaymentMethod;
+    }
+
+    public static String getCardClickType() {
+        return cardClickType;
+    }
+
+    public static boolean isSecureCard() {
+        return isSecureCard;
     }
 }
