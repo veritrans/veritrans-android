@@ -7,10 +7,11 @@ import android.graphics.Typeface;
 
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
+import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
-import id.co.veritrans.sdk.models.CardTokenRequest;
 
 /**
  * Created by shivam on 10/19/15.
@@ -145,7 +146,8 @@ public class VeritransSDK {
      * @param activity
      * @param cardTokenRequest
      */
-    public void getToken(Activity activity, CardTokenRequest cardTokenRequest, TokenCallBack tokenCallBack){
+    public void getToken(Activity activity, CardTokenRequest cardTokenRequest, TokenCallBack
+            tokenCallBack) {
         if (activity != null && cardTokenRequest != null && tokenCallBack != null) {
             TransactionManager.getToken(activity, cardTokenRequest, tokenCallBack);
         } else {
@@ -156,8 +158,6 @@ public class VeritransSDK {
     public void paymentUsingPermataBank(Activity activity,
                                         PermataBankTransfer permataBankTransfer,
                                         TransactionCallback permataBankTransferStatus) {
-        //TransactionHandler.paymentUsingPermataBank(activity, permataBankTransfer,
-        // permataBankTransferStatus);
         if (activity != null && permataBankTransfer != null && permataBankTransferStatus != null) {
             TransactionManager.paymentUsingPermataBank(activity, permataBankTransfer,
                     permataBankTransferStatus);
@@ -180,14 +180,34 @@ public class VeritransSDK {
 
     public void paymentUsingMandiriClickPay(Activity activity,
                                             MandiriClickPayRequestModel mandiriClickPayRequestModel,
-                                 TransactionCallback cardPaymentTransactionCallback
+                                            TransactionCallback cardPaymentTransactionCallback
     ) {
-        if (activity != null && mandiriClickPayRequestModel != null && cardPaymentTransactionCallback != null) {
+        if (activity != null && mandiriClickPayRequestModel != null &&
+                cardPaymentTransactionCallback != null) {
             TransactionManager.paymentUsingMandiriClickPay(activity, mandiriClickPayRequestModel,
                     cardPaymentTransactionCallback);
         } else {
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
     }
+
+
+    public void paymentUsingMandiriBillPay(Activity activity,
+                                           MandiriBillPayTransferModel mandiriBillPayTransferModel,
+                                           TransactionCallback mandiriBillPayTransferStatus) {
+        if (activity != null && mandiriBillPayTransferModel != null && mandiriBillPayTransferStatus != null) {
+
+            if(mandiriBillPayTransferModel.getBillInfoModel() != null
+                    && mandiriBillPayTransferModel.getItemDetails() != null) {
+                TransactionManager.paymentUsingMandiriBillPay(activity, mandiriBillPayTransferModel,
+                        mandiriBillPayTransferStatus);
+            }else{
+                Logger.e("Error: both bill info and item details are necessary.");
+            }
+        } else {
+            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+        }
+    }
+
 
 }
