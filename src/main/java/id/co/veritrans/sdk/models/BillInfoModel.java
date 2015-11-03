@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by shivam on 11/3/15.
  */
-public class MandiriBillPaymentModel {
+public class BillInfoModel {
 
 
     @SerializedName("bill_info1")
