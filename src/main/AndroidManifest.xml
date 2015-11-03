@@ -23,10 +23,12 @@
             android:name=".activities.BankTransferInstructionActivity"
             android:theme="@style/VeritransAppTheme" />
         <activity android:name=".activities.PaymentWebActivity"
-                  android:theme="@style/VeritransAppTheme">
+                  android:theme="@style/VeritransAppTheme"/>
 
 
-        </activity>
+        <activity android:name=".activities.MandiriClickPayActivity"
+                  android:theme="@style/VeritransAppTheme"/>
+
     </application>
 
 </manifest>
