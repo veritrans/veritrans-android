@@ -98,7 +98,7 @@ public class AddCardDetailsFragment extends Fragment {
                             expMonth, expYear,
                             veritransSDK.getClientKey());
                     cardTokenRequest.setIsSaved(cbStoreCard.isChecked());
-                    cardTokenRequest.setSecure(true);
+                    cardTokenRequest.setSecure(veritransSDK.isSecureCard());
                     cardTokenRequest.setGrossAmount(veritransSDK.getAmount());
 
                     //tokenRequestModel.setTwoClick(true);

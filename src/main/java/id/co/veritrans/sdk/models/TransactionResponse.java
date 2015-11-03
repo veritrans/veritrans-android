@@ -65,8 +65,6 @@ public class TransactionResponse implements Serializable {
     private String bank;
     private String eci;
 
-
-
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;
     }
@@ -144,7 +142,7 @@ public class TransactionResponse implements Serializable {
     }
 
     public String getSavedTokenId() {
-        return savedTokenId;
+        return TextUtils.isEmpty(savedTokenId) ? "" : savedTokenId;
     }
 
     public String getMaskedCard() {
@@ -160,7 +158,7 @@ public class TransactionResponse implements Serializable {
     }
 
     public String getPaymentType() {
-        return TextUtils.isEmpty(paymentType) ? "" :paymentType;
+        return TextUtils.isEmpty(paymentType) ? "" : paymentType;
     }
 
     public String getTransactionTime() {
