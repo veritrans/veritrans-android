@@ -71,6 +71,7 @@
     <string name="hint_expiry_date">Expiry(mm/yy)</string>
     <string name="validation_message_card_number">Please enter card number</string>
     <string name="validation_message_invalid_card_no">Please enter valid card number</string>
+    <string name="validation_message_invalid_token_no">Challenge token must be 6 characters.</string>
     <string name="validation_message_cvv">Please enter cvv.</string>
     <string name="validation_message_invalid_cvv">Please enter valid cvv</string>
     <string name="validation_message_empty_expiry_date">Please enter expiry date</string>
@@ -101,7 +102,7 @@
 
     <string name="bank_atm_transfer_step3">3.        Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
     <string name="bank_atm_transfer_step4">4.        Once payment is complete, you will receive a confirmation email.</string>
-    <string name="see_instruction">see instruction</string>
+    <string name="see_instruction">see instructions</string>
     <string name="confirm_payment">Confirm Payment</string>
     <string name="complete_payment_at_atm">Complete Payment At ATM</string>
     <string name="done">Done</string>
@@ -162,6 +163,13 @@
     <string name="title_payment_failed">Payment Failed</string>
     <string name="title_payment_successful">Payment Successful</string>
     <string name="credit_card">Credit Card</string>
+    <string name="appli">APPLI</string>
+    <string name="input_1">Input 1</string>
+    <string name="input_2">Input 2</string>
+    <string name="input_3">Input 3</string>
+    <string name="mandiri_click_pay">Mandiri Clickpay</string>
+    <string name="hint_mandiri_debit_card_no">Mandiri Debit Card Number</string>
+    <string name="hint_challenge_token">Challenge Token</string>
 
 
 </resources>
