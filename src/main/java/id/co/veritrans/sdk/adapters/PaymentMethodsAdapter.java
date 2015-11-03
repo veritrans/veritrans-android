@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferActivity;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
+import id.co.veritrans.sdk.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
@@ -97,13 +98,16 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                     sActivity.startActivity(startBankPayment);
                     break;
 
+                case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
+                    Intent startMandiriClickpay = new Intent(sActivity, MandiriClickPayActivity.class);
+                    sActivity.startActivity(startMandiriClickpay);
+                    break;
+
                 default:
                     showMessage();
 
                 /*
                 case Constants.PAYMENT_METHOD_OFFERS:
-                    break;
-                case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
                     break;
                 case Constants.PAYMENT_METHOD_CIMB_CLICKS:
                     break;
