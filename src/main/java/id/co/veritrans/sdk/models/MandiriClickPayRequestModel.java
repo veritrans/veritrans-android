@@ -30,8 +30,6 @@ public class MandiriClickPayRequestModel extends TransactionModel {
      * transaction_details : {"gross_amount":"100","order_id":"10938011"}
      */
 
-    private TransactionDetails transactionDetails;
-
 
     public MandiriClickPayRequestModel(MandiriClickPayModel mandiriClickPayModel, TransactionDetails transactionDetails,
                                ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
