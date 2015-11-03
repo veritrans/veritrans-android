@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -140,4 +141,19 @@ public class SdkUtil {
             Logger.i("Nullpointer:"+e.getMessage());
         }
     }
+
+    /**
+     * It will generate random 5 digit number. It is used as input3 in mandiri click pay.
+     * @return
+     */
+    public static int generateRandomNumber(){
+        int number = 0;
+        int high = 99999;
+        int low = 10000;
+
+        Random random = new Random();
+        number = random.nextInt(high-low) + low;
+        return number;
+    }
+
 }

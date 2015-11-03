@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.core;
 
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
@@ -89,6 +90,16 @@ public interface VeritranceApiInterface {
                                                             @Body MandiriClickPayRequestModel
                                                                     mandiriClickPayRequestModel);
 
+
+
+
+    //mandiri bill pay
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingMandiriBillPay(@Header("Authorization")
+                                                            String authorization,
+                                                            @Body MandiriBillPayTransferModel
+                                                                    mandiriBillPayTransferModel);
 
 
 }

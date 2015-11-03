@@ -59,7 +59,6 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     private ArrayList<ShippingAddress> mShippingAddressArrayList = new ArrayList<>();
     private CustomerDetails mCustomerDetails = null;
     private BankTransferFragment bankTransferFragment = null;
-
     private TransactionResponse mPermataBankTransferResponse = null;
 
 
@@ -298,9 +297,8 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
             bankTransfer.setBank("permata");
 
             //transaction details
-            TransactionDetails transactionDetails = new TransactionDetails();
-            transactionDetails.setGrossAmount("" + mVeritransSDK.getAmount());
-            transactionDetails.setOrderId(mVeritransSDK.getOrderId());
+            TransactionDetails transactionDetails =
+                    new TransactionDetails("" + mVeritransSDK.getAmount(), mVeritransSDK.getOrderId());
 
 
             // for sending instruction on email only if email-Id is entered.

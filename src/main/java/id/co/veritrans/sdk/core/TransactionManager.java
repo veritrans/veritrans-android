@@ -5,6 +5,7 @@ import android.app.Activity;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
@@ -339,7 +340,85 @@ class TransactionManager {
 
 
 
+    public static void paymentUsingMandiriBillPay(Activity activity, MandiriBillPayTransferModel
+            mandiriBillPayTransferModel, final TransactionCallback callBack) {
 
+            final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+            if (veritransSDK != null) {
+                VeritranceApiInterface apiInterface =
+                        VeritransRestAdapter.getApiClient(activity, true);
+
+                if (apiInterface != null) {
+
+                    Observable<TransactionResponse> observable = null;
+
+                    String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
+                    if (serverKey != null) {
+
+                        String authorization = "Basic " + serverKey;
+                        observable = apiInterface.paymentUsingMandiriBillPay(authorization,
+                                mandiriBillPayTransferModel);
+
+                        observable.subscribeOn(Schedulers
+                                .io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Observer<TransactionResponse>() {
+
+                                    @Override
+                                    public void onCompleted() {
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable throwable) {
+                                        Logger.e("mandiri bill pay transaction error ", "" +
+                                                throwable.getMessage());
+                                        callBack.onFailure(throwable.getMessage());
+                                    }
+
+                                    @Override
+                                    public void onNext(TransactionResponse
+                                                               permataBankTransferResponse) {
+
+                                        if (permataBankTransferResponse != null) {
+
+
+                                            if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                                displayResponse(permataBankTransferResponse);
+                                            }
+
+                                            if (permataBankTransferResponse.getStatusCode().trim()
+                                                    .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
+                                                    || permataBankTransferResponse.getStatusCode()
+                                                    .trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+
+                                                callBack.onSuccess(permataBankTransferResponse);
+                                            } else {
+                                                callBack.onFailure(permataBankTransferResponse
+                                                        .getStatusMessage());
+                                            }
+
+                                        } else {
+                                            callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                            Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                        }
+
+                                    }
+                                });
+                    } else {
+                        Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                        callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    }
+                } else {
+                    callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT);
+                    Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                }
+
+            } else {
+                Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+                callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            }
+        }
 
 
 
@@ -380,4 +459,6 @@ class TransactionManager {
                 "" + transferResponse
                         .getTransactionStatus());
     }
+
+
 }

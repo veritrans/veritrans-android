@@ -65,6 +65,16 @@ public class TransactionResponse implements Serializable {
     private String bank;
     private String eci;
 
+
+
+    //for mandiri bill pay
+    @SerializedName("bill_key")
+    private String billKey;
+    @SerializedName("biller_code")
+    private String billCode;
+
+
+
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;
     }

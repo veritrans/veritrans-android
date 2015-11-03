@@ -75,6 +75,8 @@ public class Constants {
      */
     public static final String ERROR_UNABLE_TO_CONNECT = "failed to connect to server.";
     public static final String ERROR_INVALID_EMAIL_ID = "Invalid email Id.";
+    public static final String ERROR_SOMETHING_WENT_WRONG = "Please try later, Something went wrong!";
+
     public static final String SUCCESS_CODE_200 = "200";
     public static final String SUCCESS_CODE_201 = "201";
 
