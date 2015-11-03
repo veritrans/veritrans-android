@@ -12,13 +12,24 @@
                   android:paddingTop="@dimen/sixteen_dp"
 
         >
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+            <id.co.veritrans.sdk.widgets.TextViewFont android:layout_width="wrap_content"
+                                                      android:layout_height="wrap_content"
+                                                      android:layout_centerInParent="true"
+                                                      android:text="@string/no_saved_cards"
+                                                      android:textColor="@android:color/white"
+                                                      android:textSize="@dimen/header_text_size"
+                                                      android:id="@+id/text_empty_saved_cards"
+                                                      android:visibility="gone"
+                />
         <android.support.v4.view.ViewPager
             android:id="@+id/saved_card_pager"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-
             android:layout_weight="1"
             />
+        </RelativeLayout>
         <id.co.veritrans.sdk.widgets.CirclePageIndicator
             android:id="@+id/indicator"
             android:layout_width="match_parent"
@@ -28,6 +39,7 @@
             app:pageColor="@color/colorSecondary"
             app:radius="4dp"
             app:strokeColor="@color/colorSecondary"
+            app:font="@string/font_open_sans_semibold"
             />
 
     </LinearLayout>

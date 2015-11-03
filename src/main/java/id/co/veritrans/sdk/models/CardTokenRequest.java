@@ -2,6 +2,8 @@ package id.co.veritrans.sdk.models;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 
 /**
@@ -32,7 +34,7 @@ public class CardTokenRequest implements Serializable {
     private boolean isSaved = false;
     private String cardHolderName;
     private String cardType;
-
+    private String savedTokenId;
     public CardTokenRequest(String cardNumber, int cardCVV,
                             int cardExpiryMonth, int cardExpiryYear, String clientKey) {
 
@@ -135,7 +137,7 @@ public class CardTokenRequest implements Serializable {
 
         if(!TextUtils.isEmpty(cardNumber) && cardNumber.length() == 16){
           //  startString = cardNumber.substring(0,3);
-            endString = cardNumber.substring(12, 15);
+            endString = cardNumber.substring(12, 16);
         }
             return "xxxx-xxxx-xxxx-"+endString;
     }
@@ -156,5 +158,25 @@ public class CardTokenRequest implements Serializable {
         this.cardCVV = cardCVV;
     }
 
+    public String getSavedTokenId() {
+        return savedTokenId;
+    }
 
+    public void setSavedTokenId(String savedTokenId) {
+        this.savedTokenId = savedTokenId;
+    }
+
+    public void setClientKey(String clientKey) {
+        this.clientKey = clientKey;
+    }
+
+    public String getString() {
+        try {
+            Gson gson = new Gson();
+            return gson.toJson(this);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            return "";
+        }
+    }
 }

@@ -163,6 +163,7 @@
     <string name="title_payment_successful">Payment Successful</string>
     <string name="credit_card">Credit Card</string>
     <string name="card_details_error_message">Card details not found.</string>
+    <string name="no_saved_cards">No saved cards found.</string>
 
 
 </resources>
