@@ -97,34 +97,42 @@ public class PaymentTransactionStatusFragment extends Fragment {
 
         if (transactionResponse != null) {
 
-            if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
-                    transactionResponse.getStatusCode().
-                            equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+            try {
+                Logger.i("transactionstatus:" + transactionResponse.getString());
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            if (transactionResponse != null) {
+                if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
 
-                setUiForSuccess();
+                        transactionResponse.getStatusCode().
+                                equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+
+                    setUiForSuccess();
+                } else {
+                    setUiForFailure();
+                }
+
+                transactionTimeTextViewFont.setText(transactionResponse.getTransactionTime());
+                setPaymentType();
+
             } else {
                 setUiForFailure();
             }
 
-            transactionTimeTextViewFont.setText(transactionResponse.getTransactionTime());
-            setPaymentType();
-
-        } else {
-            setUiForFailure();
-        }
-
-        amountTextViewFont.setText("" + veritrans.getAmount());
-        orderIdTextViewFont.setText("" + veritrans.getOrderId());
-        actionBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isSuccessful) {
-                    getActivity().finish();
-                } else {
-                    getActivity().finish();
+            amountTextViewFont.setText("" + veritrans.getAmount());
+            orderIdTextViewFont.setText("" + veritrans.getOrderId());
+            actionBt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isSuccessful) {
+                        getActivity().finish();
+                    } else {
+                        getActivity().finish();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void setUiForFailure() {

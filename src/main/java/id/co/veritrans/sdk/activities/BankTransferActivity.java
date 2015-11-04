@@ -409,7 +409,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                     }
 
                     @Override
-                    public void onFailure(String errorMessage) {
+                    public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
 
                         try {
 
@@ -454,9 +454,8 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                         }
 
                     }
-
-                    @Override
-                    public void onFailure(String errorMessage) {
+                        @Override
+                        public void onFailure(String errorMessage,TransactionResponse transactionResponse) {
 
                         try {
 

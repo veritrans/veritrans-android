@@ -172,7 +172,7 @@ public class VeritransSDK {
             TransactionManager.getToken(activity, cardTokenRequest, tokenCallBack);
         } else {
             if (tokenCallBack != null) {
-                tokenCallBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+                tokenCallBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
             }
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
@@ -188,7 +188,7 @@ public class VeritransSDK {
                     permataBankTransferStatus);
         } else {
             if (permataBankTransferStatus != null) {
-                permataBankTransferStatus.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+                permataBankTransferStatus.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
             }
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
@@ -205,7 +205,7 @@ public class VeritransSDK {
         } else {
 
             if (cardPaymentTransactionCallback != null) {
-                cardPaymentTransactionCallback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+                cardPaymentTransactionCallback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED,  null);
             }
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
@@ -225,7 +225,7 @@ public class VeritransSDK {
         } else {
 
             if (cardPaymentTransactionCallback != null) {
-                cardPaymentTransactionCallback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+                cardPaymentTransactionCallback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
             }
 
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
@@ -247,7 +247,7 @@ public class VeritransSDK {
                         mandiriBillPayTransferStatus);
 
             } else {
-                mandiriBillPayTransferStatus.onFailure(BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY);
+                mandiriBillPayTransferStatus.onFailure(BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY, null);
                 Logger.e("Error: " + BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY);
             }
         } else {

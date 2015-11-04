@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.models;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -64,7 +65,6 @@ public class TransactionResponse implements Serializable {
 
     private String bank;
     private String eci;
-
 
 
     //for mandiri bill pay
@@ -231,5 +231,14 @@ public class TransactionResponse implements Serializable {
 
     public void setCompanyCode(String companyCode) {
         this.companyCode = companyCode;
+    }
+
+    public String getString() {
+        try {
+            Gson gson = new Gson();
+            return gson.toJson(this);
+        } catch (NullPointerException e) {
+            return "";
+        }
     }
 }

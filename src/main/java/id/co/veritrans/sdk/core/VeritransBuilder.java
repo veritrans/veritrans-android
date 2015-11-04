@@ -146,7 +146,8 @@ public class VeritransBuilder {
      * @param clickType  use click type from Constants.
      * @param isSecureCard
      */
-    public void setCardPaymentInfo(String clickType, boolean isSecureCard) {
+    public void setCardPaymentInfo(String clickType,boolean isSecureCard) {
+        Logger.i("clicktype:"+clickType+",isSecured:"+isSecureCard);
         this.cardClickType = clickType;
         this.isSecureCard = isSecureCard;
     }
