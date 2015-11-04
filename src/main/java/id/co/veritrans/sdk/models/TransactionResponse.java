@@ -68,11 +68,17 @@ public class TransactionResponse implements Serializable {
 
 
     //for mandiri bill pay
+    /**
+     * bill number/code
+     */
     @SerializedName("bill_key")
-    private String billKey;
-    @SerializedName("biller_code")
-    private String billCode;
+    private String paymentCode;
 
+    /**
+     * company or biller code.
+     */
+    @SerializedName("biller_code")
+    private String companyCode;
 
 
     public void setStatusCode(String statusCode) {
@@ -209,5 +215,21 @@ public class TransactionResponse implements Serializable {
 
     public void setPermataVANumber(String permataVANumber) {
         this.permataVANumber = permataVANumber;
+    }
+
+    public String getPaymentCode() {
+        return paymentCode;
+    }
+
+    public void setPaymentCode(String paymentCode) {
+        this.paymentCode = paymentCode;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
     }
 }
