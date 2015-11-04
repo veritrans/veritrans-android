@@ -91,6 +91,9 @@
 
     <!-- Permata VA Bank Transfer-->
     <string name="virtual_account">Virtual Account</string>
+    <string name="bank_transfer">Bank Transfer</string>
+    <string name="mandiri_bill_payment">Mandiri Bill Payment</string>
+
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
     <string name="hint_email_optional">Email Address (Optional)</string>
@@ -173,7 +176,8 @@
     <string name="mandiri_click_pay">Mandiri Clickpay</string>
     <string name="hint_mandiri_debit_card_no">Mandiri Debit Card Number</string>
     <string name="hint_challenge_token">Challenge Token</string>
-
+    <string name="company_code">Company Code</string>
+    <string name="bill_code">Billpay Code</string>
 
 
 </resources>
