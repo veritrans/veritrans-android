@@ -95,7 +95,16 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
                 case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
                     Intent startBankPayment = new Intent(sActivity, BankTransferActivity.class);
+                    startBankPayment.putExtra(Constants.POSITION,
+                            Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER);
                     sActivity.startActivity(startBankPayment);
+                    break;
+
+                case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
+                    Intent startMandiriBillpay = new Intent(sActivity, BankTransferActivity.class);
+                    startMandiriBillpay.putExtra(Constants.POSITION,
+                            Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
+                    sActivity.startActivity(startMandiriBillpay);
                     break;
 
                 case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
