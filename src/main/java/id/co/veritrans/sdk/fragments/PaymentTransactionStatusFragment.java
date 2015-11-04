@@ -22,36 +22,42 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class PaymentTransactionStatusFragment extends Fragment {
 
     private static final String TRANSACTION_RESPONSE_PARAM = "transaction_response_param";
-    private Button actionBt;
-    private ImageView paymentIv;
-    private TextViewFont paymentStatusTv;
-    private TextViewFont paymentMessageTv;
-    private TextViewFont amountTextViewFont;
-    private TextViewFont orderIdTextViewFont;
-    private TextViewFont transactionTimeTextViewFont;
-    private TextViewFont paymentTypeTextViewFont;
     private VeritransSDK veritrans;
     private TransactionResponse transactionResponse;
     private boolean isSuccessful;
 
-    public static PaymentTransactionStatusFragment newInstance(TransactionResponse transactionResponse) {
-        Logger.i("payment status get instance called");
-        PaymentTransactionStatusFragment fragment = new PaymentTransactionStatusFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(TRANSACTION_RESPONSE_PARAM,transactionResponse);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    // views
+    private Button actionBt = null;
+    private ImageView paymentIv = null;
+    private TextViewFont paymentStatusTv = null;
+    private TextViewFont paymentMessageTv = null;
+    private TextViewFont amountTextViewFont = null;
+    private TextViewFont orderIdTextViewFont = null;
+    private TextViewFont transactionTimeTextViewFont = null;
+    private TextViewFont paymentTypeTextViewFont = null;
+
 
     public PaymentTransactionStatusFragment() {
         // Required empty public constructor
     }
 
+    public static PaymentTransactionStatusFragment newInstance(TransactionResponse
+                                                                       transactionResponse) {
+        Logger.i("payment status get instance called");
+        PaymentTransactionStatusFragment fragment = new PaymentTransactionStatusFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(TRANSACTION_RESPONSE_PARAM, transactionResponse);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            transactionResponse = (TransactionResponse) getArguments().getSerializable(TRANSACTION_RESPONSE_PARAM);
+            transactionResponse = (TransactionResponse) getArguments().getSerializable
+                    (TRANSACTION_RESPONSE_PARAM);
         }
     }
 
@@ -59,8 +65,23 @@ public class PaymentTransactionStatusFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_payment_transaction_status, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_payment_transaction_status, container,
+                false);
         veritrans = VeritransSDK.getVeritransSDK();
+
+        return view;
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        initializeViews(view);
+        bindDataToView();
+    }
+
+
+    private void initializeViews(View view) {
         amountTextViewFont = (TextViewFont) view.findViewById(R.id.text_amount);
         orderIdTextViewFont = (TextViewFont) view.findViewById(R.id.text_order_id);
         transactionTimeTextViewFont = (TextViewFont) view.findViewById(R.id.text_transaction_time);
@@ -69,59 +90,86 @@ public class PaymentTransactionStatusFragment extends Fragment {
         paymentIv = (ImageView) view.findViewById(R.id.image_payment);
         paymentStatusTv = (TextViewFont) view.findViewById(R.id.text_payment_status);
         paymentMessageTv = (TextViewFont) view.findViewById(R.id.text_payment_message);
-        if(transactionResponse !=null) {
+    }
+
+
+    private void bindDataToView() {
+
+        if (transactionResponse != null) {
+
             if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
-                    transactionResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
-                isSuccessful = true;
-                actionBt.setText(getString(R.string.done));
-                paymentIv.setImageResource(R.drawable.ic_successful);
-                paymentStatusTv.setText(getString(R.string.payment_successful));
-                paymentMessageTv.setVisibility(View.GONE);
+                    transactionResponse.getStatusCode().
+                            equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+
+                setUiForSuccess();
             } else {
-                isSuccessful = false;
-                actionBt.setText(getString(R.string.retry));
-                paymentIv.setImageResource(R.drawable.ic_failure);
-                paymentStatusTv.setText(getString(R.string.payment_unsuccessful));
-                paymentMessageTv.setVisibility(View.VISIBLE);
+                setUiForFailure();
             }
+
             transactionTimeTextViewFont.setText(transactionResponse.getTransactionTime());
-            //set card type
-            if(transactionResponse.getPaymentType().equalsIgnoreCase(Constants.CREDIT_CARD)){
-                paymentTypeTextViewFont.setText(getString(R.string.credit_card));
-            }
+            setPaymentType();
+
         } else {
-            isSuccessful = false;
-            actionBt.setText(getString(R.string.retry));
-            paymentIv.setImageResource(R.drawable.ic_failure);
-            paymentStatusTv.setText(getString(R.string.payment_unsuccessful));
-            paymentMessageTv.setVisibility(View.VISIBLE);
+            setUiForFailure();
         }
+
         amountTextViewFont.setText("" + veritrans.getAmount());
-        orderIdTextViewFont.setText(""+veritrans.getOrderId());
+        orderIdTextViewFont.setText("" + veritrans.getOrderId());
         actionBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isSuccessful) {
                     getActivity().finish();
                 } else {
-                    //SdkUtil.showSnackbar(getActivity(), getString(R.string.coming_soon));
-                   // retryTransaction();
                     getActivity().finish();
                 }
             }
         });
-
-        return view;
     }
 
-    /*private void retryTransaction() {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        switch (veritransSDK.getCurrentPaymentMethod()){
-            case Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT :
-                ((CreditDebitCardFlowActivity)getActivity()).getToken();
-                break;
+    private void setUiForFailure() {
+        isSuccessful = false;
+        actionBt.setText(getString(R.string.retry));
+        paymentIv.setImageResource(R.drawable.ic_failure);
+        paymentStatusTv.setText(getString(R.string.payment_unsuccessful));
+        paymentMessageTv.setVisibility(View.VISIBLE);
+    }
+
+    private void setUiForSuccess() {
+        isSuccessful = true;
+        actionBt.setText(getString(R.string.done));
+        paymentIv.setImageResource(R.drawable.ic_successful);
+        paymentStatusTv.setText(getString(R.string.payment_successful));
+        paymentMessageTv.setVisibility(View.GONE);
+    }
+
+
+    private void setPaymentType() {
+
+        if (veritrans != null) {
+
+            switch (veritrans.getPaymentMethod()) {
+
+                case Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT:
+                    paymentTypeTextViewFont.setText(getString(R.string.credit_card));
+                    break;
+
+                case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
+                    paymentTypeTextViewFont.setText(getString(R.string.mandiri_bill_payment));
+                    break;
+
+                case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
+                    paymentTypeTextViewFont.setText(getString(R.string.virtual_account));
+                    break;
+
+                case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
+                    paymentTypeTextViewFont.setText(getString(R.string.mandiri_click_pay));
+                    break;
+
+                //todo add payment type as per requirement.
+            }
+
         }
 
-    }*/
-
+    }
 }
