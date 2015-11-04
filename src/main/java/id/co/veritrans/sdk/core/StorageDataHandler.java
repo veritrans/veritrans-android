@@ -45,7 +45,6 @@ public class StorageDataHandler {
         }
     }
 
-
     /**
      * This method reads object from given file, it looks for file on internal storage.
      * <p> To write data use {@link #writeObject(android.content.Context, String, Object)} .<p>

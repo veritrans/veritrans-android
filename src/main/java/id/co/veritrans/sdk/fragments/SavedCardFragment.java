@@ -76,6 +76,7 @@ public class SavedCardFragment extends Fragment {
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
         cardDetails = ((CreditDebitCardFlowActivity)getActivity()).getCreditCards();
+
         if(cardDetails != null ) {
             CardPagerAdapter cardPagerAdapter = new CardPagerAdapter(getChildFragmentManager(), cardDetails);
             savedCardPager.setAdapter(cardPagerAdapter);

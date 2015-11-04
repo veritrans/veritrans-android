@@ -69,6 +69,11 @@ public class PaymentTransactionStatusFragment extends Fragment {
         paymentIv = (ImageView) view.findViewById(R.id.image_payment);
         paymentStatusTv = (TextViewFont) view.findViewById(R.id.text_payment_status);
         paymentMessageTv = (TextViewFont) view.findViewById(R.id.text_payment_message);
+        try{
+            Logger.i("transactionstatus:"+transactionResponse.getString());
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
         if(transactionResponse !=null) {
             if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
                     transactionResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
@@ -83,6 +88,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 paymentIv.setImageResource(R.drawable.ic_failure);
                 paymentStatusTv.setText(getString(R.string.payment_unsuccessful));
                 paymentMessageTv.setVisibility(View.VISIBLE);
+                paymentMessageTv.setText(transactionResponse.getStatusMessage());
             }
             transactionTimeTextViewFont.setText(transactionResponse.getTransactionTime());
             //set card type

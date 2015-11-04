@@ -35,6 +35,7 @@ public class CardTokenRequest implements Serializable {
     private String cardHolderName;
     private String cardType;
     private String savedTokenId;
+
     public CardTokenRequest(String cardNumber, int cardCVV,
                             int cardExpiryMonth, int cardExpiryYear, String clientKey) {
 
@@ -44,6 +45,17 @@ public class CardTokenRequest implements Serializable {
         this.cardExpiryYear = cardExpiryYear;
         this.clientKey = clientKey;
     }
+
+    //card_cvv, token_id, two_click, bank, secure, gross_amount
+   /* public CardTokenRequest(int cardCVV, String token, boolean isTwoClick, boolean isSecure, String bank, double grossAmount) {
+
+        this.cardCVV = cardCVV;
+        this.savedTokenId = token;
+        this.twoClick = isTwoClick;
+        this.secure = isSecure;
+        this.bank = bank;
+        this.grossAmount = grossAmount;
+    }*/
 
     public String getCardNumber() {
         return cardNumber;
@@ -133,17 +145,17 @@ public class CardTokenRequest implements Serializable {
 
     public String getFormatedCardNumber() {
         //String startString = "";
-        String endString  = "";
+        String endString = "";
 
-        if(!TextUtils.isEmpty(cardNumber) && cardNumber.length() == 16){
-          //  startString = cardNumber.substring(0,3);
+        if (!TextUtils.isEmpty(cardNumber) && cardNumber.length() == 16) {
+            //  startString = cardNumber.substring(0,3);
             endString = cardNumber.substring(12, 16);
         }
-            return "xxxx-xxxx-xxxx-"+endString;
+        return "xxxx-xxxx-xxxx-" + endString;
     }
 
     public String getFormatedExpiryDate() {
-        if(getCardExpiryYear()>0) {
+        if (getCardExpiryYear() > 0) {
             return "XX/" + getCardExpiryYear();
 
         }
@@ -174,7 +186,7 @@ public class CardTokenRequest implements Serializable {
         try {
             Gson gson = new Gson();
             return gson.toJson(this);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
             return "";
         }

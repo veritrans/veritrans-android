@@ -55,6 +55,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     private CardTransfer cardTransfer;
     private StorageDataHandler storageDataHandler;
     private ArrayList<CardTokenRequest> creditCards = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +77,6 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
         replaceFragment(savedCardFragment, true, false);
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -109,7 +108,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     public void getToken(CardTokenRequest cardTokenRequest) {
         SdkUtil.showProgressDialog(this, false);
         this.cardTokenRequest = cardTokenRequest;
-        this.cardTokenRequest.setSavedTokenId("");
+        //this.cardTokenRequest.setSavedTokenId("");
         veritransSDK.getToken(CreditDebitCardFlowActivity.this, this.cardTokenRequest, this);
     }
 
@@ -125,55 +124,68 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
     public void payUsingCard() {
         SdkUtil.showProgressDialog(this, false);
-        if (tokenDetailsResponse != null) {
-            CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
-                    userDetail.getEmail(), userDetail.getPhoneNumber());
+        CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
+                userDetail.getEmail(), userDetail.getPhoneNumber());
 
-            ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-            TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.getAmount(),
-                    veritransSDK.getOrderId());
-            if (userAddresses != null && !userAddresses.isEmpty()) {
-                ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
-                ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
+        ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
+        TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.getAmount(),
+                veritransSDK.getOrderId());
+        if (userAddresses != null && !userAddresses.isEmpty()) {
+            ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
+            ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
 
-                for (int i = 0; i < userAddresses.size(); i++) {
-                    UserAddress userAddress = userAddresses.get(i);
-                    if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_BILLING ||
-                            userAddress.getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
-                        BillingAddress billingAddress;
-                        billingAddress = new BillingAddress();
-                        billingAddress.setCity(userAddress.getCity());
-                        billingAddress.setFirstName(userDetail.getUserFullName());
-                        billingAddress.setLastName("");
-                        billingAddress.setPhone(userDetail.getPhoneNumber());
-                        billingAddress.setCountryCode(userAddress.getCountry());
-                        billingAddress.setPostalCode(userAddress.getZipcode());
-                        billingAddresses.add(billingAddress);
-                    }
-                    if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING ||
-                            userAddress.getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
-                        ShippingAddress shippingAddress;
-                        shippingAddress = new ShippingAddress();
-                        shippingAddress.setCity(userAddress.getCity());
-                        shippingAddress.setFirstName(userDetail.getUserFullName());
-                        shippingAddress.setLastName("");
-                        shippingAddress.setPhone(userDetail.getPhoneNumber());
-                        shippingAddress.setCountryCode(userAddress.getCountry());
-                        shippingAddress.setPostalCode(userAddress.getZipcode());
-                        shippingAddresses.add(shippingAddress);
-                    }
-
+            for (int i = 0; i < userAddresses.size(); i++) {
+                UserAddress userAddress = userAddresses.get(i);
+                if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_BILLING ||
+                        userAddress.getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
+                    BillingAddress billingAddress;
+                    billingAddress = new BillingAddress();
+                    billingAddress.setCity(userAddress.getCity());
+                    billingAddress.setFirstName(userDetail.getUserFullName());
+                    billingAddress.setLastName("");
+                    billingAddress.setPhone(userDetail.getPhoneNumber());
+                    billingAddress.setCountryCode(userAddress.getCountry());
+                    billingAddress.setPostalCode(userAddress.getZipcode());
+                    billingAddresses.add(billingAddress);
+                }
+                if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING ||
+                        userAddress.getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
+                    ShippingAddress shippingAddress;
+                    shippingAddress = new ShippingAddress();
+                    shippingAddress.setCity(userAddress.getCity());
+                    shippingAddress.setFirstName(userDetail.getUserFullName());
+                    shippingAddress.setLastName("");
+                    shippingAddress.setPhone(userDetail.getPhoneNumber());
+                    shippingAddress.setCountryCode(userAddress.getCountry());
+                    shippingAddress.setPostalCode(userAddress.getZipcode());
+                    shippingAddresses.add(shippingAddress);
                 }
 
-                CardPaymentDetails cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
+            }
+
+            CardPaymentDetails cardPaymentDetails = null;
+            try {
+                Logger.i("savetokenid:"+cardTokenRequest.getSavedTokenId());
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
+            //for one click
+            if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK) &&
+                    !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
+                cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
+                        cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved());
+            } else if (tokenDetailsResponse != null) {
+                cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
                         tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved());
-                try {
-                    cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails,
-                            null, billingAddresses, shippingAddresses, customerDetails);
-                    currentApiCallNumber = PAY_USING_CARD;
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+            } else {
+                return;
+            }
+            try {
+                cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails,
+                        null, billingAddresses, shippingAddresses, customerDetails);
+                currentApiCallNumber = PAY_USING_CARD;
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
         }
         veritransSDK.paymentUsingCard(this, this.cardTransfer, this);
@@ -235,8 +247,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {
         SdkUtil.hideProgressDialog();
         this.tokenDetailsResponse = tokenDetailsResponse;
-        Logger.i("token suc:" + tokenDetailsResponse.getTokenId()+","+veritransSDK.isSecureCard());
-        if(veritransSDK.isSecureCard()) {
+        Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + "," + veritransSDK.isSecureCard());
+        if (veritransSDK.isSecureCard()) {
             if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
                 Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
                 intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
@@ -248,9 +260,14 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
     }
 
+    @Override
+    public void onFailure(String errorMessage, TokenDetailsResponse tokenDetailsResponse) {
+        
+    }
+
     //onfailure for both token and transaction api call
     @Override
-    public void onFailure(String errorMessage) {
+    public void onFailure(String errorMessage,TransactionResponse transactionResponse) {
         Logger.i("token fail" + errorMessage);
         SdkUtil.hideProgressDialog();
         switch (currentApiCallNumber) {
@@ -258,7 +275,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 SdkUtil.showApiFailedMessage(this, errorMessage);
                 break;
             case PAY_USING_CARD:
-                PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(null);
+                PaymentTransactionStatusFragment paymentTransactionStatusFragment =
+                        PaymentTransactionStatusFragment.newInstance(transactionResponse);
                 replaceFragment(paymentTransactionStatusFragment, true, false);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
@@ -278,32 +296,34 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             replaceFragment(paymentTransactionStatusFragment, true, false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
-            int position = -1;
-            if(!creditCards.isEmpty()) {
-                for (int i = 0;i < creditCards.size();i++){
-                    CardTokenRequest card = creditCards.get(i);
-                    if(card.getCardNumber().equalsIgnoreCase(cardTokenRequest.getCardNumber())){
-                        position = i;
-                        break;
+            if(cardTokenRequest.isSaved()) {
+                if (!creditCards.isEmpty()) {
+                    int position = -1;
+                    for (int i = 0; i < creditCards.size(); i++) {
+                        CardTokenRequest card = creditCards.get(i);
+                        if (card.getCardNumber().equalsIgnoreCase(cardTokenRequest.getCardNumber())) {
+                            position = i;
+                            break;
+                        }
+                    }
+                    if (position >= 0) {
+                        creditCards.remove(position);
                     }
                 }
-                if(position>=0){
-                    creditCards.remove(position);
+                cardTokenRequest.setCardCVV(0);
+                cardTokenRequest.setClientKey("");
+                cardTokenRequest.setGrossAmount(0);
+                if (cardTokenRequest.isSaved() && !TextUtils.isEmpty(cardPaymentResponse.getSavedTokenId())) {
+                    cardTokenRequest.setSavedTokenId(cardPaymentResponse.getSavedTokenId());
+                }
+                Logger.i("Card:" + cardTokenRequest.getString());
+                creditCards.add(cardTokenRequest);
+                try {
+                    storageDataHandler.writeObject(this, Constants.USERS_SAVED_CARD, creditCards);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-            cardTokenRequest.setCardCVV(0);
-            cardTokenRequest.setClientKey("");
-            if(cardTokenRequest.isSaved()){
-                cardTokenRequest.setSavedTokenId(cardPaymentResponse.getSavedTokenId());
-            }
-            Logger.i("Card:" + cardTokenRequest.getString());
-            creditCards.add(cardTokenRequest);
-            try {
-                storageDataHandler.writeObject(this,Constants.USERS_SAVED_CARD,creditCards);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
         }
     }
 
@@ -320,8 +340,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
     public ArrayList<CardTokenRequest> getCreditCards() {
         try {
-            ArrayList<CardTokenRequest>cards = (ArrayList<CardTokenRequest>) storageDataHandler.readObject(this, Constants.USERS_SAVED_CARD);
-            if(cards!=null){
+            ArrayList<CardTokenRequest> cards = (ArrayList<CardTokenRequest>) storageDataHandler.readObject(this, Constants.USERS_SAVED_CARD);
+            if (cards != null) {
                 creditCards.clear();
                 creditCards.addAll(cards);
             }
@@ -331,5 +351,19 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             e.printStackTrace();
         }
         return creditCards;
+    }
+
+    public void oneClickPayment(CardTokenRequest cardDetail) {
+        this.cardTokenRequest = cardDetail;
+        payUsingCard();
+    }
+
+    public void twoClickPayment(CardTokenRequest cardDetail) {
+        SdkUtil.showProgressDialog(this,false);
+        this.cardTokenRequest = cardDetail;
+        this.cardTokenRequest.setTwoClick(true);
+        this.cardTokenRequest.setClientKey(veritransSDK.getClientKey());
+        veritransSDK.getToken(CreditDebitCardFlowActivity.this, this.cardTokenRequest, this);
+        //getToken(cardDetail);
     }
 }

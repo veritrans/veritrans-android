@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.models;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -209,5 +210,13 @@ public class TransactionResponse implements Serializable {
 
     public void setPermataVANumber(String permataVANumber) {
         this.permataVANumber = permataVANumber;
+    }
+    public String getString(){
+        try {
+            Gson gson = new Gson();
+            return gson.toJson(this);
+        }catch (NullPointerException e){
+            return "";
+        }
     }
 }

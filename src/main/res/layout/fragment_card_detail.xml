@@ -32,8 +32,15 @@
                                                   android:text="xxxx xxxx xxxx 1234"
                                                   android:textColor="@android:color/white"
                                                   android:textSize="@dimen/secondary_text_size"
-                                                  app:font="@string/font_open_sans_semibold"
-
+                                                  app:font="@string/font_open_sans_semibold"/>
+        <Button android:layout_width="wrap_content"
+                android:layout_height="@dimen/btn_height"
+                android:id="@+id/btn_pay_now_front"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/colorPrimary"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:text="@string/pay_now"
             />
         <LinearLayout android:id="@+id/validation_layout"
                       android:layout_width="match_parent"

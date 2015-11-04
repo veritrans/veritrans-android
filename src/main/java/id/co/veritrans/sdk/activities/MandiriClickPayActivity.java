@@ -215,7 +215,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                 mandiriClickPayRequestModel, new TransactionCallback() {
 
             @Override
-            public void onFailure(String errorMessage) {
+            public void onFailure(String errorMessage,TransactionResponse transactionResponse) {
                 Toast.makeText(getApplicationContext(), "failed : " + errorMessage, Toast
                         .LENGTH_SHORT).show();
             }

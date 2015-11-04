@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
+import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.utilities.FlipAnimation;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -38,6 +40,8 @@ public class CardDetailFragment extends Fragment {
     private ImageView cvvCircle3;
     private EditText cvvEt;
     private Button payNowBt;
+    private Button payNowFrontBt;
+    private VeritransSDK veritransSDK;
 
     public static CardDetailFragment newInstance(CardTokenRequest cardDetails) {
         CardDetailFragment fragment = new CardDetailFragment();
@@ -54,6 +58,7 @@ public class CardDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        veritransSDK = VeritransSDK.getVeritransSDK();
     }
 
     @Override
@@ -62,6 +67,8 @@ public class CardDetailFragment extends Fragment {
         if (getArguments() != null) {
             cardDetail = (CardTokenRequest) getArguments().getSerializable(ARG_PARAM);
         }
+        cardDetail.setGrossAmount(veritransSDK.getAmount());
+        Logger.i("cardDetail:"+cardDetail.getString());
         ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.card_details));
         ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         View view = inflater.inflate(R.layout.fragment_card_detail, container, false);
@@ -161,26 +168,73 @@ public class CardDetailFragment extends Fragment {
                 cardTransactionProcess(cvv);
             }
         });
+        payNowFrontBt = (Button) view.findViewById(R.id.btn_pay_now_front);
+        payNowFrontBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardTransactionProcess("");
+            }
+        });
+        Logger.i("veritransSDK.getCardClickType()"+veritransSDK.getCardClickType());
+        if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
+            payNowFrontBt.setVisibility(View.VISIBLE);
+        } else {
+            payNowFrontBt.setVisibility(View.GONE);
+        }
 
     }
 
     private void cardTransactionProcess(String cvv) {
         try {
             cardDetail.setCardCVV(Integer.parseInt(cvv));
-            ((CreditDebitCardFlowActivity)getActivity()).getToken(cardDetail);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-       // ((SavedCardFragment)getParentFragment()).paymentUsingCard(cardDetail);
+            if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
+                ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(cardDetail);
+            } else if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_TWO_CLICK)) {
+                ((CreditDebitCardFlowActivity) getActivity()).twoClickPayment(cardDetail);
+            } else {
+                ((CreditDebitCardFlowActivity) getActivity()).getToken(cardDetail);
+            }
+
+        // ((SavedCardFragment)getParentFragment()).paymentUsingCard(cardDetail);
     }
 
     private void flipCard() {
-
+        if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
+            return;
+        }
         FlipAnimation flipAnimation = new FlipAnimation(cardContainerFront, cardContainerBack);
         SdkUtil.hideKeyboard(getActivity());
         if (cardContainerFront.getVisibility() == View.GONE) {
             flipAnimation.reverse();
+            //SdkUtil.hideKeyboard(getActivity());
+        } else {
+
         }
+        flipAnimation.setAnimationListener(new Animation.AnimationListener() {
+                                               @Override
+                                               public void onAnimationStart(Animation animation) {
+
+                                               }
+
+                                               @Override
+                                               public void onAnimationEnd(Animation animation) {
+                                                   if (cardContainerFront.getVisibility() == View.VISIBLE) {
+                                                        SdkUtil.hideKeyboard(getActivity());
+                                                   } else {
+                                                       cvvEt.requestFocus();
+                                                   }
+                                               }
+
+                                               @Override
+                                               public void onAnimationRepeat(Animation animation) {
+
+                                               }
+                                           }
+
+        );
         rootLayout.startAnimation(flipAnimation);
     }
 }

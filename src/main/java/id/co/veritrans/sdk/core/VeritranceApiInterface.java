@@ -40,7 +40,19 @@ public interface VeritranceApiInterface {
                                       @Query("card_exp_year") int cardExpiryYear,
                                       @Query("client_key") String clientKey);
 
-
+    /**
+     *
+     * card_cvv, token_id, two_click, bank, secure, gross_amount
+     */
+    @GET("/token/")
+    Observable<TokenDetailsResponse> getTokenTwoClick(
+                                              @Query("card_cvv") int cardCVV,
+                                              @Query("token_id") String tokenId,
+                                              @Query("two_click") boolean twoClick,
+                                              @Query("secure") boolean secure,
+                                              @Query("gross_amount") double grossAmount,
+                                              @Query("bank") String bank,
+                                              @Query("client_key") String clientKey);
     @GET("/token/")
     Observable<TokenDetailsResponse> get3DSToken(@Query("card_number") String cardNumber,
                                          @Query("card_cvv") int cardCVV,

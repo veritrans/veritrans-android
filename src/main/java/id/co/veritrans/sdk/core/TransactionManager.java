@@ -34,8 +34,16 @@ class TransactionManager {
             if (apiInterface != null) {
 
                 Observable<TokenDetailsResponse> observable;
-
-                if (cardTokenRequest.isSecure()) {
+                if(cardTokenRequest.isTwoClick()){
+                    observable = apiInterface.getTokenTwoClick(
+                            cardTokenRequest.getCardCVV(),
+                            cardTokenRequest.getSavedTokenId(),
+                            cardTokenRequest.isTwoClick(),
+                            cardTokenRequest.isSecure(),
+                            cardTokenRequest.getGrossAmount(),
+                            cardTokenRequest.getBank(),
+                            cardTokenRequest.getClientKey());
+                } else if (cardTokenRequest.isSecure()) {
                     observable = apiInterface.get3DSToken(cardTokenRequest.getCardNumber(),
                             cardTokenRequest.getCardCVV(),
                             cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
@@ -66,7 +74,7 @@ class TransactionManager {
 
                                 Logger.e("error while getting token : ", "" +
                                         throwable.getMessage());
-                                callBack.onFailure(throwable.getMessage());
+                                callBack.onFailure(throwable.getMessage(),null);
                             }
 
                             @Override
@@ -82,11 +90,11 @@ class TransactionManager {
                                             .equalsIgnoreCase(Constants.SUCCESS_CODE_200)) {
                                         callBack.onSuccess(tokenDetailsResponse);
                                     } else {
-                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,tokenDetailsResponse);
                                     }
 
                                 } else {
-                                    callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                    callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,null);
                                     Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                 }
 
@@ -94,12 +102,12 @@ class TransactionManager {
                         });
 
             } else {
-                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT);
+                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT,null);
                 Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
             }
 
         } else {
-            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED,null);
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
         }
 
@@ -138,7 +146,7 @@ class TransactionManager {
                                 public void onError(Throwable throwable) {
                                     Logger.e("bank Transfer transaction error ", "" +
                                             throwable.getMessage());
-                                    callBack.onFailure(throwable.getMessage());
+                                    callBack.onFailure(throwable.getMessage(),null);
                                 }
 
                                 @Override
@@ -160,11 +168,11 @@ class TransactionManager {
                                             callBack.onSuccess(permataBankTransferResponse);
                                         } else {
                                             callBack.onFailure(permataBankTransferResponse
-                                                    .getStatusMessage());
+                                                    .getStatusMessage(),permataBankTransferResponse);
                                         }
 
                                     } else {
-                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,null);
                                         Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                     }
 
@@ -172,16 +180,16 @@ class TransactionManager {
                             });
                 } else {
                     Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
-                    callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED,null);
                 }
             } else {
-                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT);
+                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT,null);
                 Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
             }
 
         } else {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED,null);
         }
     }
 
@@ -217,7 +225,7 @@ class TransactionManager {
                                 public void onError(Throwable e) {
                                     Logger.e("card Transfer transaction error ", "" +
                                             e.getMessage());
-                                    cardPaymentTransactionCallback.onFailure(e.getMessage());
+                                    cardPaymentTransactionCallback.onFailure(e.getMessage(),null);
                                 }
 
                                 @Override
@@ -234,12 +242,12 @@ class TransactionManager {
                                         } else {
                                             Logger.i("@ onNext cardPayment fail"+cardPaymentResponse.getStatusCode());
                                             cardPaymentTransactionCallback.onFailure(cardPaymentResponse
-                                                    .getStatusMessage());
+                                                    .getStatusMessage(),cardPaymentResponse);
                                         }
 
                                     } else {
                                         Logger.i("@ onNext cardPayment fail null");
-                                        cardPaymentTransactionCallback.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                        cardPaymentTransactionCallback.onFailure(Constants.ERROR_EMPTY_RESPONSE,null);
                                     }
                                 }
 
@@ -290,7 +298,7 @@ class TransactionManager {
                                 public void onError(Throwable throwable) {
                                     Logger.e("bank Transfer transaction error ", "" +
                                             throwable.getMessage());
-                                    callBack.onFailure(throwable.getMessage());
+                                    callBack.onFailure(throwable.getMessage(),null);
                                 }
 
                                 @Override
@@ -312,28 +320,28 @@ class TransactionManager {
                                             callBack.onSuccess(mandiriTransferResponse);
                                         } else {
                                             callBack.onFailure(mandiriTransferResponse
-                                                    .getStatusMessage());
+                                                    .getStatusMessage(),mandiriTransferResponse);
                                         }
 
                                     } else {
-                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE);
-                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,null);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE,null);
                                     }
 
                                 }
                             });
                 } else {
                     Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
-                    callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED,null);
                 }
             } else {
-                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT);
+                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT,null);
                 Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
             }
 
         } else {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED,null);
         }
     }
 
@@ -373,7 +381,7 @@ class TransactionManager {
                                     public void onError(Throwable throwable) {
                                         Logger.e("mandiri bill pay transaction error ", "" +
                                                 throwable.getMessage());
-                                        callBack.onFailure(throwable.getMessage());
+                                        callBack.onFailure(throwable.getMessage(),null);
                                     }
 
                                     @Override
@@ -395,11 +403,11 @@ class TransactionManager {
                                                 callBack.onSuccess(permataBankTransferResponse);
                                             } else {
                                                 callBack.onFailure(permataBankTransferResponse
-                                                        .getStatusMessage());
+                                                        .getStatusMessage(),permataBankTransferResponse);
                                             }
 
                                         } else {
-                                            callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                            callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,null);
                                             Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                         }
 
@@ -407,16 +415,16 @@ class TransactionManager {
                                 });
                     } else {
                         Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
-                        callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                        callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED,null);
                     }
                 } else {
-                    callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT);
+                    callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT,null);
                     Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
                 }
 
             } else {
                 Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-                callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+                callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED,null);
             }
         }
 
