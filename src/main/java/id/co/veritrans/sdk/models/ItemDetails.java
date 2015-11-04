@@ -10,6 +10,16 @@ public class ItemDetails {
     private double quantity;
     private String name;
 
+    public ItemDetails() {
+    }
+
+    public ItemDetails(String id, double price, double quantity, String name) {
+        this.id = id;
+        this.price = price;
+        this.quantity = quantity;
+        this.name = name;
+    }
+
     public String getId() {
         return id;
     }
