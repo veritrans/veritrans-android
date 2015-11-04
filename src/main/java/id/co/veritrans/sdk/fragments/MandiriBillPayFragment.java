@@ -21,7 +21,9 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class MandiriBillPayFragment extends Fragment {
 
     public static final String VALID_UNTILL = "Valid Untill : ";
-    private static TransactionResponse sPermataBankTransferResponse = null;
+    private TransactionResponse mTransactionResponse = null;
+
+    private static final String DATA = "data";
 
     private TextViewFont mTextViewCompanyCode = null;
     private TextViewFont mTextViewBillpayCode = null;
@@ -31,8 +33,10 @@ public class MandiriBillPayFragment extends Fragment {
 
     public static MandiriBillPayFragment newInstance(TransactionResponse
                                                                   permataBankTransferResponse) {
-        sPermataBankTransferResponse = permataBankTransferResponse;
+
         MandiriBillPayFragment fragment = new MandiriBillPayFragment();
+        Bundle data = new Bundle();
+        data.putSerializable(DATA, permataBankTransferResponse);
         return fragment;
     }
 
@@ -42,8 +46,12 @@ public class MandiriBillPayFragment extends Fragment {
             savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_mandiri_bill_pay, container, false);
-        initializeViews(view);
 
+
+        if(getArguments() != null) {
+            mTransactionResponse = (TransactionResponse) getArguments().getSerializable(DATA);
+            initializeViews(view);
+        }
         return view;
     }
 
@@ -56,21 +64,21 @@ public class MandiriBillPayFragment extends Fragment {
         mTextViewValidity = (TextViewFont) view.findViewById(R.id.text_validaty);
 
 
-        if (sPermataBankTransferResponse != null) {
-            if (sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
-                    sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201)
+        if (mTransactionResponse != null) {
+            if (mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
+                    mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201)
                     )
-                mTextViewCompanyCode.setText(sPermataBankTransferResponse
+                mTextViewCompanyCode.setText(mTransactionResponse
                         .getCompanyCode());
 
-            mTextViewBillpayCode.setText(sPermataBankTransferResponse
+            mTextViewBillpayCode.setText(mTransactionResponse
                     .getPaymentCode());
 
             mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime
-                    (sPermataBankTransferResponse.getTransactionTime()));
+                    (mTransactionResponse.getTransactionTime()));
 
         } else {
-            mTextViewCompanyCode.setText(sPermataBankTransferResponse.getCompanyCode());
+            mTextViewCompanyCode.setText(mTransactionResponse.getCompanyCode());
         }
 
         mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
