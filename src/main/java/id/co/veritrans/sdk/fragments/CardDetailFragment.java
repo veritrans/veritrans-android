@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -68,7 +70,7 @@ public class CardDetailFragment extends Fragment {
             cardDetail = (CardTokenRequest) getArguments().getSerializable(ARG_PARAM);
         }
         cardDetail.setGrossAmount(veritransSDK.getAmount());
-        Logger.i("cardDetail:"+cardDetail.getString());
+        Logger.i("cardDetail:" + cardDetail.getString());
         ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.card_details));
         ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         View view = inflater.inflate(R.layout.fragment_card_detail, container, false);
@@ -175,7 +177,7 @@ public class CardDetailFragment extends Fragment {
                 cardTransactionProcess("");
             }
         });
-        Logger.i("veritransSDK.getCardClickType()"+veritransSDK.getCardClickType());
+        Logger.i("veritransSDK.getCardClickType()" + veritransSDK.getCardClickType());
         if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
             payNowFrontBt.setVisibility(View.VISIBLE);
         } else {
@@ -190,13 +192,14 @@ public class CardDetailFragment extends Fragment {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-            if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
-                ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(cardDetail);
-            } else if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_TWO_CLICK)) {
-                ((CreditDebitCardFlowActivity) getActivity()).twoClickPayment(cardDetail);
-            } else {
-                ((CreditDebitCardFlowActivity) getActivity()).getToken(cardDetail);
-            }
+        if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
+            ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(cardDetail);
+        } else if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_TWO_CLICK)) {
+            ((CreditDebitCardFlowActivity) getActivity()).twoClickPayment(cardDetail);
+        } else {
+            cardDetail.setClientKey(veritransSDK.getClientKey());
+            ((CreditDebitCardFlowActivity) getActivity()).getToken(cardDetail);
+        }
 
         // ((SavedCardFragment)getParentFragment()).paymentUsingCard(cardDetail);
     }
@@ -205,7 +208,28 @@ public class CardDetailFragment extends Fragment {
         if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
             return;
         }
+       /* Animation scaleDown = new ScaleAnimation(
+                1f, 0.5f, // Start and end values for the X axis scaling
+                1f, 0.5f, // Start and end values for the Y axis scaling
+                Animation.RELATIVE_TO_PARENT, 0.5f, // Pivot point of X scaling
+                Animation.RELATIVE_TO_PARENT, 0.5f); // Pivot point of Y scaling*/
+        //Animation scaleDown = new ScaleAnimation(1.0f,0.5f,1.0f,0.5f);
+        Animation scaleDown = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_down);
+        scaleDown.setDuration(350);
+        /*Animation scaleUp = new ScaleAnimation(
+                1f, 1f, // Start and end values for the X axis scaling
+                1f, 1f, // Start and end values for the Y axis scaling
+                Animation.RELATIVE_TO_SELF, 1f, // Pivot point of X scaling
+                Animation.RELATIVE_TO_SELF, 1f); // Pivot point of Y scaling*/
+        //Animation scaleUp = new ScaleAnimation(0.5f,1.0f,0.5f,1.0f);
+        Animation scaleUp = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_up);
+
+        scaleUp.setDuration(350);
+        scaleUp.setStartOffset(350);
+        //rootLayout.startAnimation(scaleDown);
+
         FlipAnimation flipAnimation = new FlipAnimation(cardContainerFront, cardContainerBack);
+        flipAnimation.setStartOffset(100);
         SdkUtil.hideKeyboard(getActivity());
         if (cardContainerFront.getVisibility() == View.GONE) {
             flipAnimation.reverse();
@@ -222,9 +246,9 @@ public class CardDetailFragment extends Fragment {
                                                @Override
                                                public void onAnimationEnd(Animation animation) {
                                                    if (cardContainerFront.getVisibility() == View.VISIBLE) {
-                                                        SdkUtil.hideKeyboard(getActivity());
+                                                       SdkUtil.hideKeyboard(getActivity());
                                                    } else {
-                                                       cvvEt.requestFocus();
+                                                       SdkUtil.showKeyboard(getActivity(), cvvEt);
                                                    }
                                                }
 
@@ -235,6 +259,15 @@ public class CardDetailFragment extends Fragment {
                                            }
 
         );
-        rootLayout.startAnimation(flipAnimation);
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.setDuration(700);
+
+        animationSet.addAnimation(scaleDown);
+        animationSet.addAnimation(flipAnimation);
+        animationSet.addAnimation(scaleUp);
+        rootLayout.startAnimation(animationSet);
+        // rootLayout.startAnimation(scaleDown);
+
+        //rootLayout.startAnimation(flipAnimation);
     }
 }
