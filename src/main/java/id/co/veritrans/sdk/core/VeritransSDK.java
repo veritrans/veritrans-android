@@ -2,17 +2,16 @@ package id.co.veritrans.sdk.core;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
+import android.util.Log;
 
-import java.util.ArrayList;
-
+import id.co.veritrans.sdk.activities.PaymentMethodsActivity;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
-import id.co.veritrans.sdk.models.BillInfoModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
-import id.co.veritrans.sdk.models.ItemDetails;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
@@ -27,8 +26,10 @@ public class VeritransSDK {
     private static final String FONTS_OPEN_SANS_SEMI_BOLD_TTF = "fonts/open_sans_semibold.ttf";
     public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
             "details are necessary.";
+
+    private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
+
     private static Context sContext = null;
-    private static Activity sActivity = null;
 
     private static Typeface typefaceOpenSansRegular = null;
     private static Typeface typefaceOpenSansSemiBold = null;
@@ -37,17 +38,11 @@ public class VeritransSDK {
     private static VeritransSDK sVeritransSDK = new VeritransSDK();
     private static boolean sIsLogEnabled = true;
 
-    private static String sOrderId = null;
-    private static double sAmount = 0.0;
-    private static int paymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
-    private static boolean isRunning = false;
+    private boolean isRunning = false;
     private static String sServerKey = null;
     private static String sClientKey = null;
-    private static boolean isSecureCard = true;
-    private static String cardClickType;
 
-    private static BillInfoModel sBillInfoModel = null;
-    private static ArrayList<ItemDetails> sItemDetails = new ArrayList();
+    private TransactionRequest mTransactionRequest = null;
 
 
     private VeritransSDK() {
@@ -56,27 +51,10 @@ public class VeritransSDK {
     protected static VeritransSDK getInstance(VeritransBuilder veritransBuilder) {
 
         if (veritransBuilder != null) {
-            sActivity = veritransBuilder.mActivity;
             sContext = veritransBuilder.context;
-            sOrderId = veritransBuilder.orderId;
-            sAmount = veritransBuilder.amount;
-            paymentMethod = veritransBuilder.paymentMethod;
             sIsLogEnabled = veritransBuilder.enableLog;
             sServerKey = veritransBuilder.serverKey;
             sClientKey = veritransBuilder.clientKey;
-            isSecureCard = veritransBuilder.isSecureCard;
-            cardClickType = veritransBuilder.cardClickType;
-
-            sItemDetails.clear();
-            sBillInfoModel = null;
-
-            if (veritransBuilder.mBillInfoModel != null) {
-                sBillInfoModel = veritransBuilder.mBillInfoModel;
-            }
-
-            if (veritransBuilder.mItemDetails != null) {
-                sItemDetails.addAll(veritransBuilder.mItemDetails);
-            }
 
             initializeFonts();
             return sVeritransSDK;
@@ -111,38 +89,26 @@ public class VeritransSDK {
      * @return
      */
     public static VeritransSDK getVeritransSDK() {
-        // created to get access of already created instance of sdk.
-        // This instance contains information about transaction.
-        return sVeritransSDK;
+
+        if (sServerKey != null && sContext != null && sClientKey != null) {
+            // created to get access of already created instance of sdk.
+            // This instance contains information about transaction.
+            return sVeritransSDK;
+        }
+
+        Log.e(Constants.TAG, Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+        return null;
     }
 
-    public static boolean isRunning() {
+    public boolean isRunning() {
         return isRunning;
     }
 
-    protected static void setIsRunning(boolean isRunning) {
-        VeritransSDK.isRunning = isRunning;
-    }
 
     public boolean isLogEnabled() {
         return sIsLogEnabled;
     }
 
-    public void enableLog(boolean enableLog) {
-        this.sIsLogEnabled = enableLog;
-    }
-
-    public String getOrderId() {
-        return sOrderId;
-    }
-
-    public double getAmount() {
-        return sAmount;
-    }
-
-    public int getPaymentMethod() {
-        return paymentMethod;
-    }
 
     public Context getContext() {
         return sContext;
@@ -157,7 +123,11 @@ public class VeritransSDK {
     }
 
     protected Activity getActivity() {
-        return sActivity;
+        if (mTransactionRequest != null) {
+            return mTransactionRequest.getActivity();
+        }
+
+        return null;
     }
 
     /**
@@ -178,100 +148,144 @@ public class VeritransSDK {
         }
     }
 
-    public void paymentUsingPermataBank(Activity activity,
-                                        PermataBankTransfer permataBankTransfer,
+    public void paymentUsingPermataBank(Activity activity, PermataBankTransfer permataBankTransfer,
                                         TransactionCallback permataBankTransferStatus) {
-        if (activity != null && permataBankTransfer != null && permataBankTransferStatus != null) {
 
-            paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
-            TransactionManager.paymentUsingPermataBank(activity, permataBankTransfer,
+
+        if (mTransactionRequest != null && activity != null
+                && permataBankTransfer != null && permataBankTransferStatus != null) {
+
+            mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
+            mTransactionRequest.activity = activity;
+
+            TransactionManager.paymentUsingPermataBank(mTransactionRequest.getActivity(),
+                    permataBankTransfer,
                     permataBankTransferStatus);
         } else {
-            if (permataBankTransferStatus != null) {
-                permataBankTransferStatus.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
-            }
-            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+
+            showError(mTransactionRequest, permataBankTransferStatus);
         }
     }
+
 
     public void paymentUsingCard(Activity activity, CardTransfer cardTransfer,
                                  TransactionCallback cardPaymentTransactionCallback
     ) {
-        if (activity != null && cardTransfer != null && cardPaymentTransactionCallback != null) {
 
-            paymentMethod = Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT;
-            TransactionManager.paymentUsingCard(activity, cardTransfer,
+        if (mTransactionRequest != null && activity != null
+                && cardTransfer != null && cardPaymentTransactionCallback != null) {
+
+            mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT;
+            mTransactionRequest.activity = activity;
+
+            TransactionManager.paymentUsingCard(mTransactionRequest.getActivity(), cardTransfer,
                     cardPaymentTransactionCallback);
         } else {
 
-            if (cardPaymentTransactionCallback != null) {
-                cardPaymentTransactionCallback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED,  null);
-            }
-            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+            showError(mTransactionRequest, cardPaymentTransactionCallback);
         }
     }
 
-    public void paymentUsingMandiriClickPay(Activity activity,
-                                            MandiriClickPayRequestModel mandiriClickPayRequestModel,
+    public void paymentUsingMandiriClickPay(Activity activity, MandiriClickPayRequestModel
+            mandiriClickPayRequestModel,
                                             TransactionCallback cardPaymentTransactionCallback) {
-        if (activity != null && mandiriClickPayRequestModel != null &&
-                cardPaymentTransactionCallback != null) {
 
-            paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
+        if (mTransactionRequest != null && activity != null
+                && mandiriClickPayRequestModel != null && cardPaymentTransactionCallback != null) {
 
+            mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
+            mTransactionRequest.activity = activity;
 
-            TransactionManager.paymentUsingMandiriClickPay(activity, mandiriClickPayRequestModel,
-                    cardPaymentTransactionCallback);
+            TransactionManager.paymentUsingMandiriClickPay(mTransactionRequest.getActivity(),
+                    mandiriClickPayRequestModel, cardPaymentTransactionCallback);
         } else {
 
-            if (cardPaymentTransactionCallback != null) {
-                cardPaymentTransactionCallback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
-            }
-
-            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+            showError(mTransactionRequest, cardPaymentTransactionCallback);
         }
     }
 
-    public void paymentUsingMandiriBillPay(Activity activity,
-                                           MandiriBillPayTransferModel mandiriBillPayTransferModel,
+    public void paymentUsingMandiriBillPay(Activity activity, MandiriBillPayTransferModel
+            mandiriBillPayTransferModel,
                                            TransactionCallback mandiriBillPayTransferStatus) {
-        if (activity != null && mandiriBillPayTransferModel != null &&
-                mandiriBillPayTransferStatus != null) {
+
+        if (mTransactionRequest != null && activity != null
+                && mandiriBillPayTransferModel != null && mandiriBillPayTransferStatus != null) {
 
             if (mandiriBillPayTransferModel.getBillInfoModel() != null
                     && mandiriBillPayTransferModel.getItemDetails() != null) {
 
-                paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
+                mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
+                mTransactionRequest.activity = activity;
 
-                TransactionManager.paymentUsingMandiriBillPay(activity, mandiriBillPayTransferModel,
-                        mandiriBillPayTransferStatus);
+                TransactionManager.paymentUsingMandiriBillPay(mTransactionRequest.getActivity(),
+                        mandiriBillPayTransferModel, mandiriBillPayTransferStatus);
 
             } else {
-                mandiriBillPayTransferStatus.onFailure(BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY, null);
+                mandiriBillPayTransferStatus.onFailure(BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY,
+                        null);
                 Logger.e("Error: " + BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY);
             }
         } else {
-            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+
+            showError(mTransactionRequest, mandiriBillPayTransferStatus);
+
         }
     }
 
 
-    public static String getCardClickType() {
-        return cardClickType;
-    }
-
-    public static boolean isSecureCard() {
-        return isSecureCard;
+    public TransactionRequest getTransactionRequest() {
+        return mTransactionRequest;
     }
 
 
-    public BillInfoModel getBillInfoModel() {
-        return sBillInfoModel;
+    public void setTransactionRequest(TransactionRequest transactionRequest) {
+
+
+        if (getTransactionRequest() == null && !isRunning) {
+
+            if (transactionRequest != null && transactionRequest.getActivity() != null) {
+                mTransactionRequest = transactionRequest;
+                if (transactionRequest.isUiEnabled()) {
+
+                    if (transactionRequest.getPaymentMethod() == Constants
+                            .PAYMENT_METHOD_NOT_SELECTED) {
+
+                        Intent paymentMethods = new Intent(transactionRequest.getActivity(),
+                                PaymentMethodsActivity.class);
+                        transactionRequest.getActivity().startActivity(paymentMethods);
+                    } else {
+
+                        // start specific activity depending  on payment type.
+                    }
+
+                } else {
+                    //do nothing wait for user to choose payment method.
+                }
+
+            } else {
+                Logger.e(ADD_TRANSACTION_DETAILS);
+            }
+
+        } else {
+            Logger.e(Constants.ERROR_ALREADY_RUNNING);
+        }
+
+
     }
 
-    public ArrayList<ItemDetails> getItemDetails() {
-        return sItemDetails;
-    }
 
+    private void showError(TransactionRequest transactionRequest,
+                           TransactionCallback permataBankTransferStatus) {
+
+        if (permataBankTransferStatus != null) {
+            permataBankTransferStatus.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+        }
+
+        if (transactionRequest == null) {
+            Logger.e(ADD_TRANSACTION_DETAILS);
+        }
+
+        Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+    }
 
 }
