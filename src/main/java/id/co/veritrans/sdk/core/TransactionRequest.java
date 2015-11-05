@@ -30,7 +30,7 @@ public class TransactionRequest {
 
     private ArrayList<ItemDetails> itemDetails = new ArrayList();
 
-    private Activity activity = null;
+    protected Activity activity = null;
 
     private boolean useUi = true;
 
@@ -51,11 +51,22 @@ public class TransactionRequest {
 
 
     public void setBillInfoModel(BillInfoModel billInfoModel) {
-        this.billInfoModel = billInfoModel;
+
+        if(VeritransSDK.getVeritransSDK() != null && !VeritransSDK.getVeritransSDK().isRunning()) {
+            this.billInfoModel = billInfoModel;
+        }else {
+            Logger.e("can/'t change values at this moment , transaction is already initialized."  );
+        }
     }
 
     public void setItemDetails(ArrayList<ItemDetails> itemDetails) {
-        this.itemDetails = itemDetails;
+
+        if(VeritransSDK.getVeritransSDK() != null && !VeritransSDK.getVeritransSDK().isRunning()) {
+            this.itemDetails = itemDetails;
+        }else {
+            Logger.e("can/'t change values at this moment , transaction is already initialized."  );
+        }
+
     }
 
 
