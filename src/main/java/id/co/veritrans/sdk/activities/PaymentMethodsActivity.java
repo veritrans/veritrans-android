@@ -94,7 +94,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
         if (veritransSDK != null) {
             String amount = Constants.CURRENCY_PREFIX + " "
-                    + Utils.getFormattedAmount(veritransSDK.getAmount());
+                    + Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount());
 
             mSubTitle.setText(amount);
             mTextViewAmountExpanded.setText(amount);

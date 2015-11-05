@@ -92,7 +92,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
     private void bindDataToView() {
         mTextViewInput1.setText("");
-        mTextViewInput2.setText("" + mVeritransSDK.getAmount());
+        mTextViewInput2.setText("" + mVeritransSDK.getTransactionRequest().getAmount());
         mTextViewInput3.setText("" + SdkUtil.generateRandomNumber());
     }
 
@@ -203,7 +203,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
         //transaction details
         TransactionDetails transactionDetails =
-                new TransactionDetails( "" + amount, mVeritransSDK.getOrderId());
+                new TransactionDetails( "" + amount, mVeritransSDK.getTransactionRequest().getOrderId());
 
         MandiriClickPayRequestModel mandiriClickPayRequestModel =
                 new MandiriClickPayRequestModel(mandiriClickPayModel, transactionDetails, null,

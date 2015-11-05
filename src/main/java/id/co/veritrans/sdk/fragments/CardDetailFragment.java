@@ -67,7 +67,7 @@ public class CardDetailFragment extends Fragment {
         if (getArguments() != null) {
             cardDetail = (CardTokenRequest) getArguments().getSerializable(ARG_PARAM);
         }
-        cardDetail.setGrossAmount(veritransSDK.getAmount());
+        cardDetail.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
         Logger.i("cardDetail:"+cardDetail.getString());
         ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.card_details));
         ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -175,8 +175,9 @@ public class CardDetailFragment extends Fragment {
                 cardTransactionProcess("");
             }
         });
-        Logger.i("veritransSDK.getCardClickType()"+veritransSDK.getCardClickType());
-        if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
+        Logger.i("veritransSDK.getCardClickType()"+veritransSDK.getTransactionRequest().getCardClickType());
+        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants
+                .CARD_CLICK_TYPE_ONE_CLICK)) {
             payNowFrontBt.setVisibility(View.VISIBLE);
         } else {
             payNowFrontBt.setVisibility(View.GONE);
@@ -190,9 +191,9 @@ public class CardDetailFragment extends Fragment {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-            if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
+            if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
                 ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(cardDetail);
-            } else if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_TWO_CLICK)) {
+            } else if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_TWO_CLICK)) {
                 ((CreditDebitCardFlowActivity) getActivity()).twoClickPayment(cardDetail);
             } else {
                 ((CreditDebitCardFlowActivity) getActivity()).getToken(cardDetail);
@@ -202,7 +203,7 @@ public class CardDetailFragment extends Fragment {
     }
 
     private void flipCard() {
-        if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
+        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
             return;
         }
         FlipAnimation flipAnimation = new FlipAnimation(cardContainerFront, cardContainerBack);

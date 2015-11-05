@@ -114,7 +114,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
     public void getToken() {
         if (cardTokenRequest != null) {
-            this.cardTokenRequest.setGrossAmount(veritransSDK.getAmount());
+            this.cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
             SdkUtil.showProgressDialog(this, false);
             veritransSDK.getToken(CreditDebitCardFlowActivity.this, this.cardTokenRequest, this);
         } else {
@@ -128,8 +128,9 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 userDetail.getEmail(), userDetail.getPhoneNumber());
 
         ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-        TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.getAmount(),
-                veritransSDK.getOrderId());
+        TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.
+                getTransactionRequest().getAmount(),
+                veritransSDK.getTransactionRequest().getOrderId());
         if (userAddresses != null && !userAddresses.isEmpty()) {
             ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
             ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
@@ -170,7 +171,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 e.printStackTrace();
             }
             //for one click
-            if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK) &&
+            if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK) &&
                     !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
                 cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
                         cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved());
@@ -247,8 +248,9 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {
         SdkUtil.hideProgressDialog();
         this.tokenDetailsResponse = tokenDetailsResponse;
-        Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + "," + veritransSDK.isSecureCard());
-        if (veritransSDK.isSecureCard()) {
+        Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
+                + veritransSDK.getTransactionRequest().isSecureCard());
+        if (veritransSDK.getTransactionRequest().isSecureCard()) {
             if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
                 Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
                 intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());

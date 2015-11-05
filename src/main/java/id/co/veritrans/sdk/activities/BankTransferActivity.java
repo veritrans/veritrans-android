@@ -157,8 +157,8 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
         if (mVeritransSDK != null) {
 
-            mTextViewAmount.setText(Constants.CURRENCY_PREFIX + " " + mVeritransSDK.getAmount());
-            mTextViewOrderId.setText(" " + mVeritransSDK.getOrderId());
+            mTextViewAmount.setText(Constants.CURRENCY_PREFIX + " " + mVeritransSDK.getTransactionRequest().getAmount());
+            mTextViewOrderId.setText(" " + mVeritransSDK.getTransactionRequest().getOrderId());
             mButtonConfirmPayment.setTypeface(mVeritransSDK.getTypefaceOpenSansSemiBold());
             mButtonConfirmPayment.setOnClickListener(this);
 
@@ -359,8 +359,8 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
             //transaction details
             TransactionDetails transactionDetails =
-                    new TransactionDetails("" + mVeritransSDK.getAmount(), mVeritransSDK
-                            .getOrderId());
+                    new TransactionDetails("" + mVeritransSDK.getTransactionRequest().getAmount(),
+                            mVeritransSDK.getTransactionRequest().getOrderId());
 
             SdkUtil.showProgressDialog(BankTransferActivity.this, false);
 
@@ -430,14 +430,13 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
 
         final MandiriBillPayTransferModel mandiriBillPayTransferModel =
-                new MandiriBillPayTransferModel(veritransSDK.getBillInfoModel(),
-                        transactionDetails, veritransSDK.getItemDetails(),
+                new MandiriBillPayTransferModel(veritransSDK.getTransactionRequest().getBillInfoModel(),
+                        transactionDetails, veritransSDK.getTransactionRequest().getItemDetails(),
                         mBillingAddressArrayList, mShippingAddressArrayList,
                         mCustomerDetails);
 
 
-        veritransSDK.paymentUsingMandiriBillPay(BankTransferActivity.this,
-                mandiriBillPayTransferModel, new TransactionCallback() {
+        veritransSDK.paymentUsingMandiriBillPay(BankTransferActivity.this, mandiriBillPayTransferModel, new TransactionCallback() {
 
                     @Override
                     public void onSuccess(TransactionResponse
