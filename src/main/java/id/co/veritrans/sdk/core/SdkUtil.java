@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -154,6 +155,11 @@ public class SdkUtil {
         Random random = new Random();
         number = random.nextInt(high-low) + low;
         return number;
+    }
+
+    public static void  showKeyboard(Activity activity,EditText editText){
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
 }
