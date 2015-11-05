@@ -13,6 +13,7 @@ import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
+import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 
@@ -151,17 +152,19 @@ public class VeritransSDK {
         }
     }
 
-    public void paymentUsingPermataBank(Activity activity, PermataBankTransfer permataBankTransfer,
+    public void paymentUsingPermataBank(Activity activity,
                                         TransactionCallback permataBankTransferStatus) {
 
         isRunning = true;
 
         if (mTransactionRequest != null && activity != null
-                && permataBankTransfer != null && permataBankTransferStatus != null) {
+                && permataBankTransferStatus != null) {
 
             mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
             mTransactionRequest.activity = activity;
 
+            PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel
+                    (mTransactionRequest);
             TransactionManager.paymentUsingPermataBank(mTransactionRequest.getActivity(),
                     permataBankTransfer,
                     permataBankTransferStatus);
@@ -192,17 +195,22 @@ public class VeritransSDK {
         }
     }
 
-    public void paymentUsingMandiriClickPay(Activity activity, MandiriClickPayRequestModel
-            mandiriClickPayRequestModel,
-                                            TransactionCallback cardPaymentTransactionCallback) {
+    public void paymentUsingMandiriClickPay(Activity activity, MandiriClickPayModel
+            mandiriClickPayModel, TransactionCallback cardPaymentTransactionCallback) {
 
         isRunning = true;
 
         if (mTransactionRequest != null && activity != null
-                && mandiriClickPayRequestModel != null && cardPaymentTransactionCallback != null) {
+                && mandiriClickPayModel != null && cardPaymentTransactionCallback != null) {
 
             mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
             mTransactionRequest.activity = activity;
+
+
+            MandiriClickPayRequestModel mandiriClickPayRequestModel =
+                    SdkUtil.getMandiriClickPayRequestModel(mTransactionRequest,
+                            mandiriClickPayModel);
+
 
             TransactionManager.paymentUsingMandiriClickPay(mTransactionRequest.getActivity(),
                     mandiriClickPayRequestModel, cardPaymentTransactionCallback);
@@ -213,20 +221,22 @@ public class VeritransSDK {
         }
     }
 
-    public void paymentUsingMandiriBillPay(Activity activity, MandiriBillPayTransferModel
-            mandiriBillPayTransferModel,
+    public void paymentUsingMandiriBillPay(Activity activity,
                                            TransactionCallback mandiriBillPayTransferStatus) {
 
         isRunning = true;
 
         if (mTransactionRequest != null && activity != null
-                && mandiriBillPayTransferModel != null && mandiriBillPayTransferStatus != null) {
+                && mandiriBillPayTransferStatus != null) {
 
-            if (mandiriBillPayTransferModel.getBillInfoModel() != null
-                    && mandiriBillPayTransferModel.getItemDetails() != null) {
+            if (mTransactionRequest.getBillInfoModel() != null
+                    && mTransactionRequest.getItemDetails() != null) {
 
                 mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
                 mTransactionRequest.activity = activity;
+
+                MandiriBillPayTransferModel mandiriBillPayTransferModel =
+                        SdkUtil.getMandiriBillPayModel(mTransactionRequest);
 
                 TransactionManager.paymentUsingMandiriBillPay(mTransactionRequest.getActivity(),
                         mandiriBillPayTransferModel, mandiriBillPayTransferStatus);
