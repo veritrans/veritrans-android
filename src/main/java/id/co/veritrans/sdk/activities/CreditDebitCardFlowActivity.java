@@ -25,7 +25,6 @@ import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.SavedCardFragment;
-import id.co.veritrans.sdk.fragments.WebviewFragment;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTokenRequest;
@@ -93,7 +92,12 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
         } else {
-            if (currentFragmentName.equalsIgnoreCase(WebviewFragment.class.getName())) {
+            if (currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class.getName())) {
+                finish();
+            } else {
+                super.onBackPressed();
+            }
+            /*if (currentFragmentName.equalsIgnoreCase(WebviewFragment.class.getName())) {
                 if (((WebviewFragment) currentFragment).webView.canGoBack()) {
                     ((WebviewFragment) currentFragment).webviewBackPressed();
                 } else {
@@ -101,7 +105,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 }
             } else {
                 super.onBackPressed();
-            }
+            }*/
         }
     }
 
@@ -166,8 +170,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
             CardPaymentDetails cardPaymentDetails = null;
             try {
-                Logger.i("savetokenid:"+cardTokenRequest.getSavedTokenId());
-            }catch (NullPointerException e){
+                Logger.i("savetokenid:" + cardTokenRequest.getSavedTokenId());
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
             //for one click
@@ -264,26 +268,19 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
     @Override
     public void onFailure(String errorMessage, TokenDetailsResponse tokenDetailsResponse) {
-        
+        SdkUtil.hideProgressDialog();
+        SdkUtil.showApiFailedMessage(this, errorMessage);
     }
 
     //onfailure for both token and transaction api call
     @Override
-    public void onFailure(String errorMessage,TransactionResponse transactionResponse) {
-        Logger.i("token fail" + errorMessage);
-        SdkUtil.hideProgressDialog();
-        switch (currentApiCallNumber) {
-            case GET_TOKEN:
-                SdkUtil.showApiFailedMessage(this, errorMessage);
-                break;
-            case PAY_USING_CARD:
-                PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                        PaymentTransactionStatusFragment.newInstance(transactionResponse);
-                replaceFragment(paymentTransactionStatusFragment, true, false);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
-                break;
-        }
+    public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+        PaymentTransactionStatusFragment paymentTransactionStatusFragment =
+                PaymentTransactionStatusFragment.newInstance(transactionResponse);
+        replaceFragment(paymentTransactionStatusFragment, true, false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
+
     }
 
     //onSuccess for transaction api call
@@ -298,7 +295,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             replaceFragment(paymentTransactionStatusFragment, true, false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
-            if(cardTokenRequest.isSaved()) {
+            if (cardTokenRequest.isSaved()) {
                 if (!creditCards.isEmpty()) {
                     int position = -1;
                     for (int i = 0; i < creditCards.size(); i++) {
@@ -361,7 +358,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     }
 
     public void twoClickPayment(CardTokenRequest cardDetail) {
-        SdkUtil.showProgressDialog(this,false);
+        SdkUtil.showProgressDialog(this, false);
         this.cardTokenRequest = cardDetail;
         this.cardTokenRequest.setTwoClick(true);
         this.cardTokenRequest.setClientKey(veritransSDK.getClientKey());

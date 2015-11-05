@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -173,7 +174,6 @@ public class SdkUtil {
         number = random.nextInt(high - low) + low;
         return number;
     }
-
 
     protected static MandiriBillPayTransferModel getMandiriBillPayModel(TransactionRequest
                                                                                 request) {
@@ -376,5 +376,10 @@ public class SdkUtil {
         return billingAddress;
     }
 
+
+    public static void  showKeyboard(Activity activity,EditText editText){
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+    }
 
 }
