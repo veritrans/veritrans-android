@@ -52,7 +52,7 @@ public class TransactionRequest {
 
     public void setBillInfoModel(BillInfoModel billInfoModel) {
 
-        if(VeritransSDK.getVeritransSDK() != null && !VeritransSDK.getVeritransSDK().isRunning()) {
+        if( !VeritransSDK.getVeritransSDK().isRunning()) {
             this.billInfoModel = billInfoModel;
         }else {
             Logger.e("can/'t change values at this moment , transaction is already initialized."  );
@@ -61,7 +61,7 @@ public class TransactionRequest {
 
     public void setItemDetails(ArrayList<ItemDetails> itemDetails) {
 
-        if(VeritransSDK.getVeritransSDK() != null && !VeritransSDK.getVeritransSDK().isRunning()) {
+        if(!VeritransSDK.getVeritransSDK().isRunning()) {
             this.itemDetails = itemDetails;
         }else {
             Logger.e("can/'t change values at this moment , transaction is already initialized."  );
