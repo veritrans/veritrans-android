@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
+import java.util.ArrayList;
+
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
+import id.co.veritrans.sdk.models.BillInfoModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.ItemDetails;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
@@ -21,6 +25,8 @@ public class VeritransSDK {
     private static final String FONTS_OPEN_SANS_BOLD_TTF = "fonts/open_sans_bold.ttf";
     private static final String FONTS_OPEN_SANS_REGULAR_TTF = "fonts/open_sans_regular.ttf";
     private static final String FONTS_OPEN_SANS_SEMI_BOLD_TTF = "fonts/open_sans_semibold.ttf";
+    public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
+            "details are necessary.";
     private static Context sContext = null;
     private static Activity sActivity = null;
 
@@ -33,13 +39,16 @@ public class VeritransSDK {
 
     private static String sOrderId = null;
     private static double sAmount = 0.0;
-    private static int sPaymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
+    private static int paymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
     private static boolean isRunning = false;
     private static String sServerKey = null;
     private static String sClientKey = null;
-    private static int currentPaymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
     private static boolean isSecureCard = true;
     private static String cardClickType;
+
+    private static BillInfoModel sBillInfoModel = null;
+    private static ArrayList<ItemDetails> sItemDetails = new ArrayList();
+
 
     private VeritransSDK() {
     }
@@ -51,12 +60,24 @@ public class VeritransSDK {
             sContext = veritransBuilder.context;
             sOrderId = veritransBuilder.orderId;
             sAmount = veritransBuilder.amount;
-            sPaymentMethod = veritransBuilder.paymentMethod;
+            paymentMethod = veritransBuilder.paymentMethod;
             sIsLogEnabled = veritransBuilder.enableLog;
             sServerKey = veritransBuilder.serverKey;
             sClientKey = veritransBuilder.clientKey;
             isSecureCard = veritransBuilder.isSecureCard;
             cardClickType = veritransBuilder.cardClickType;
+
+            sItemDetails.clear();
+            sBillInfoModel = null;
+
+            if (veritransBuilder.mBillInfoModel != null) {
+                sBillInfoModel = veritransBuilder.mBillInfoModel;
+            }
+
+            if (veritransBuilder.mItemDetails != null) {
+                sItemDetails.addAll(veritransBuilder.mItemDetails);
+            }
+
             initializeFonts();
             return sVeritransSDK;
         } else {
@@ -120,7 +141,7 @@ public class VeritransSDK {
     }
 
     public int getPaymentMethod() {
-        return sPaymentMethod;
+        return paymentMethod;
     }
 
     public Context getContext() {
@@ -150,6 +171,9 @@ public class VeritransSDK {
         if (activity != null && cardTokenRequest != null && tokenCallBack != null) {
             TransactionManager.getToken(activity, cardTokenRequest, tokenCallBack);
         } else {
+            if (tokenCallBack != null) {
+                tokenCallBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            }
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
     }
@@ -158,9 +182,14 @@ public class VeritransSDK {
                                         PermataBankTransfer permataBankTransfer,
                                         TransactionCallback permataBankTransferStatus) {
         if (activity != null && permataBankTransfer != null && permataBankTransferStatus != null) {
+
+            paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
             TransactionManager.paymentUsingPermataBank(activity, permataBankTransfer,
                     permataBankTransferStatus);
         } else {
+            if (permataBankTransferStatus != null) {
+                permataBankTransferStatus.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            }
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
     }
@@ -169,22 +198,36 @@ public class VeritransSDK {
                                  TransactionCallback cardPaymentTransactionCallback
     ) {
         if (activity != null && cardTransfer != null && cardPaymentTransactionCallback != null) {
-            setCurrentPaymentMethod(Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT);
+
+            paymentMethod = Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT;
             TransactionManager.paymentUsingCard(activity, cardTransfer,
                     cardPaymentTransactionCallback);
         } else {
+
+            if (cardPaymentTransactionCallback != null) {
+                cardPaymentTransactionCallback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED,  null);
+            }
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
     }
 
     public void paymentUsingMandiriClickPay(Activity activity,
-                                           MandiriClickPayRequestModel mandiriClickPayRequestModel,
+                                            MandiriClickPayRequestModel mandiriClickPayRequestModel,
                                             TransactionCallback cardPaymentTransactionCallback) {
         if (activity != null && mandiriClickPayRequestModel != null &&
                 cardPaymentTransactionCallback != null) {
+
+            paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
+
+
             TransactionManager.paymentUsingMandiriClickPay(activity, mandiriClickPayRequestModel,
                     cardPaymentTransactionCallback);
         } else {
+
+            if (cardPaymentTransactionCallback != null) {
+                cardPaymentTransactionCallback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            }
+
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
     }
@@ -192,27 +235,26 @@ public class VeritransSDK {
     public void paymentUsingMandiriBillPay(Activity activity,
                                            MandiriBillPayTransferModel mandiriBillPayTransferModel,
                                            TransactionCallback mandiriBillPayTransferStatus) {
-        if (activity != null && mandiriBillPayTransferModel != null && mandiriBillPayTransferStatus != null) {
+        if (activity != null && mandiriBillPayTransferModel != null &&
+                mandiriBillPayTransferStatus != null) {
 
-            if(mandiriBillPayTransferModel.getBillInfoModel() != null
+            if (mandiriBillPayTransferModel.getBillInfoModel() != null
                     && mandiriBillPayTransferModel.getItemDetails() != null) {
+
+                paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
+
                 TransactionManager.paymentUsingMandiriBillPay(activity, mandiriBillPayTransferModel,
                         mandiriBillPayTransferStatus);
-            }else{
-                Logger.e("Error: both bill info and item details are necessary.");
+
+            } else {
+                mandiriBillPayTransferStatus.onFailure(BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY, null);
+                Logger.e("Error: " + BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY);
             }
         } else {
             Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
         }
     }
 
-    public int getCurrentPaymentMethod() {
-        return currentPaymentMethod;
-    }
-
-    private void setCurrentPaymentMethod(int currentPaymentMethod) {
-        VeritransSDK.currentPaymentMethod = currentPaymentMethod;
-    }
 
     public static String getCardClickType() {
         return cardClickType;
@@ -221,11 +263,15 @@ public class VeritransSDK {
     public static boolean isSecureCard() {
         return isSecureCard;
     }
+
+
+    public BillInfoModel getBillInfoModel() {
+        return sBillInfoModel;
+    }
+
+    public ArrayList<ItemDetails> getItemDetails() {
+        return sItemDetails;
+    }
+
+
 }
-
-
-
-
-
-
-

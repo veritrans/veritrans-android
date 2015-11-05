@@ -80,10 +80,11 @@ public class Constants {
     public static final String SUCCESS_CODE_200 = "200";
     public static final String SUCCESS_CODE_201 = "201";
 
-    public static final String CREDIT_CARD = "credit_card";
     public static final String CARD_CLICK_TYPE_NONE = "normal";
     public static final String CARD_CLICK_TYPE_ONE_CLICK = "one_click";
     public static final String CARD_CLICK_TYPE_TWO_CLICK = "two_click";
     public static final String USERS_SAVED_CARD = "users_saved_card";
+
+
 }
 

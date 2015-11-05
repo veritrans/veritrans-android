@@ -67,13 +67,18 @@ public class TransactionResponse implements Serializable {
     private String eci;
 
 
-
     //for mandiri bill pay
+    /**
+     * bill number/code
+     */
     @SerializedName("bill_key")
-    private String billKey;
-    @SerializedName("biller_code")
-    private String billCode;
+    private String paymentCode;
 
+    /**
+     * company or biller code.
+     */
+    @SerializedName("biller_code")
+    private String companyCode;
 
 
     public void setStatusCode(String statusCode) {
@@ -211,11 +216,28 @@ public class TransactionResponse implements Serializable {
     public void setPermataVANumber(String permataVANumber) {
         this.permataVANumber = permataVANumber;
     }
-    public String getString(){
+
+    public String getPaymentCode() {
+        return paymentCode;
+    }
+
+    public void setPaymentCode(String paymentCode) {
+        this.paymentCode = paymentCode;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getString() {
         try {
             Gson gson = new Gson();
             return gson.toJson(this);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return "";
         }
     }

@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.ArrayList;
+
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
+import id.co.veritrans.sdk.models.BillInfoModel;
+import id.co.veritrans.sdk.models.ItemDetails;
 
 /**
  * Created by shivam on 10/20/15.
@@ -24,6 +28,9 @@ public class VeritransBuilder {
     protected boolean enableLog = true;
     protected String cardClickType = Constants.CARD_CLICK_TYPE_NONE;
     protected boolean isSecureCard = true;
+
+    protected BillInfoModel mBillInfoModel = null;
+    protected ArrayList<ItemDetails> mItemDetails = null;
 
     /**
      * It  will initialize an data required to sdk.
@@ -91,6 +98,24 @@ public class VeritransBuilder {
 
 
     /**
+     * Set Bill information , It is used in case of Mandiri Bill Payment.
+     * @param billInfoModel
+     */
+    public  void setBillInfoModel(BillInfoModel billInfoModel) {
+        mBillInfoModel = billInfoModel;
+    }
+
+    /**
+     * holds detail about items purchased by user.
+     *
+     * @param itemDetails
+     */
+    public void setItemDetails(ArrayList<ItemDetails> itemDetails) {
+        mItemDetails = itemDetails;
+    }
+
+
+    /**
      * This method will start payment flow if you have set useUi field to true.
      *
      * @return it returns fully initialized object of veritrans sdk.
@@ -115,9 +140,16 @@ public class VeritransBuilder {
         return null;
     }
 
+    /**
+     * It is used in case of payment using credit card.
+     *
+     * @param clickType  use click type from Constants.
+     * @param isSecureCard
+     */
     public void setCardPaymentInfo(String clickType,boolean isSecureCard) {
         Logger.i("clicktype:"+clickType+",isSecured:"+isSecureCard);
         this.cardClickType = clickType;
         this.isSecureCard = isSecureCard;
     }
+
 }
