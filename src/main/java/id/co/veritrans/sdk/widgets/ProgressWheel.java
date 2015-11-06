@@ -373,8 +373,8 @@ public class ProgressWheel extends View {
             }
 
             float distance =
-                    (float) Math.cos((timeStartGrowing / barSpinCycleTime + 1) * Math.PI) / 2 + 0
-            .5f;
+                    (float) Math.cos((timeStartGrowing / barSpinCycleTime + 1) * Math.PI) / 2 +
+                            0.5f;
             float destLength = (barMaxLength - barLength);
 
             if (barGrowingFromFront) {
