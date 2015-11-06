@@ -7,6 +7,8 @@ import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
@@ -15,6 +17,7 @@ import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
+import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 
 /**
@@ -41,7 +44,7 @@ public class VeritransSDK {
     private static String sClientKey = null;
     protected boolean isRunning = false;
     private TransactionRequest mTransactionRequest = null;
-
+    private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
 
     private VeritransSDK() {
     }
@@ -118,6 +121,14 @@ public class VeritransSDK {
 
     public String getClientKey() {
         return sClientKey;
+    }
+
+    public ArrayList<PaymentMethodsModel> getSelectedPaymentMethods() {
+        return selectedPaymentMethods;
+    }
+
+    public void setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
+        this.selectedPaymentMethods = selectedPaymentMethods;
     }
 
     protected Activity getActivity() {

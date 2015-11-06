@@ -59,7 +59,6 @@
         <item>Bank Transfer</item>
         <item>Mandiri Bill Payment</item>
         <item>Indomaret</item>
-
     </string-array>
     <!--add credicard-->
     <string name="hint_name_on_card">Name on the card</string>
