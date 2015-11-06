@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.core.Constants;
-import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.utilities.Utils;
@@ -46,7 +45,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private AppBarLayout mAppBarLayout = null;
     private FrameLayout mFrameParallax = null;
     private RecyclerView mRecyclerView = null;
-
+    private VeritransSDK veritransSDK;
     public static void startAlphaAnimation(View v, long duration, int visibility) {
         AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
                 ? new AlphaAnimation(0f, 1f)
@@ -61,6 +60,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments_method);
+        veritransSDK = VeritransSDK.getVeritransSDK();
         setUpPaymentMethods();
     }
 
@@ -185,7 +185,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
      */
     private void initialiseAdapterData() {
 
-        String[] names = getResources().getStringArray(R.array.payment_methods);
+        /*String[] names = getResources().getStringArray(R.array.payment_methods);
         Logger.d(TAG, "there are total " + names.length + " payment methods available.");
 
         int[] paymentImageList = getImageList();
@@ -194,8 +194,15 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             PaymentMethodsModel model = new PaymentMethodsModel(names[i], paymentImageList[i],
                     Constants.PAYMENT_METHOD_NOT_SELECTED);
             data.add(model);
-        }
+        }*/
 
+        data.clear();
+        for(PaymentMethodsModel paymentMethodsModel:veritransSDK.getSelectedPaymentMethods()){
+
+            if(paymentMethodsModel.isSelected()){
+                data.add(paymentMethodsModel);
+            }
+        }
     }
 
 

@@ -7,7 +7,9 @@ import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.util.Log;
 
-import id.co.veritrans.sdk.activities.PaymentMethodsActivity;
+import java.util.ArrayList;
+
+import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.models.CardTokenRequest;
@@ -15,6 +17,7 @@ import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
+import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 
 /**
@@ -41,7 +44,7 @@ public class VeritransSDK {
     private static String sClientKey = null;
     protected boolean isRunning = false;
     private TransactionRequest mTransactionRequest = null;
-
+    private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
 
     private VeritransSDK() {
     }
@@ -118,6 +121,14 @@ public class VeritransSDK {
 
     public String getClientKey() {
         return sClientKey;
+    }
+
+    public ArrayList<PaymentMethodsModel> getSelectedPaymentMethods() {
+        return selectedPaymentMethods;
+    }
+
+    public void setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
+        this.selectedPaymentMethods = selectedPaymentMethods;
     }
 
     protected Activity getActivity() {
@@ -271,9 +282,9 @@ public class VeritransSDK {
                     if (transactionRequest.getPaymentMethod() == Constants
                             .PAYMENT_METHOD_NOT_SELECTED) {
 
-                        Intent paymentMethods = new Intent(transactionRequest.getActivity(),
-                                PaymentMethodsActivity.class);
-                        transactionRequest.getActivity().startActivity(paymentMethods);
+                        Intent userDeatilIntent = new Intent(transactionRequest.getActivity(),
+                                UserDetailsActivity.class);
+                        transactionRequest.getActivity().startActivity(userDeatilIntent);
                     } else {
                         // start specific activity depending  on payment type.
                     }

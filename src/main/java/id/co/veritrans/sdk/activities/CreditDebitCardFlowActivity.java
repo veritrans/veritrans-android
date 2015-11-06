@@ -316,6 +316,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 cardTokenRequest.setCardCVV(0);
                 cardTokenRequest.setClientKey("");
                 cardTokenRequest.setGrossAmount(0);
+                cardTokenRequest.setBank(Constants.BANK_NAME);
                 if (cardTokenRequest.isSaved() && !TextUtils.isEmpty(cardPaymentResponse
                         .getSavedTokenId())) {
                     cardTokenRequest.setSavedTokenId(cardPaymentResponse.getSavedTokenId());

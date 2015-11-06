@@ -8,7 +8,7 @@ public class PaymentMethodsModel {
     private String name;
     private int imageId;
     private int paymentType;
-
+    private boolean isSelected;
     public PaymentMethodsModel(String name, int imageId, int paymentType) {
         this.imageId = imageId;
         this.name = name;
@@ -20,5 +20,13 @@ public class PaymentMethodsModel {
 
     public int getImageId() {
         return imageId;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 }
