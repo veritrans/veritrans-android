@@ -162,7 +162,6 @@
     <string name="api_fail_message">Something went wrong. Please try later.</string>
     <string name="title_payment_failed">Payment Failed</string>
     <string name="title_payment_successful">Payment Successful</string>
-    <string name="credit_card">Credit Card</string>
     <string name="card_details_error_message">Card details not found.</string>
     <string name="no_saved_cards">No saved cards found.</string>
 
@@ -176,6 +175,17 @@
     <string name="company_code">Company Code</string>
     <string name="bill_code">Billpay Code</string>
     <string name="processing_payment">Processing Payment</string>
+
+
+    <string name="credit_card">Credit/Debit Card</string>
+    <string name="mandiri_clickpay">Mandiri Clickpay</string>
+    <string name="cimb_clicks">CIMB Clicks</string>
+    <string name="epay_bri">ePay BRI</string>
+    <string name="bbm_money">BBM Money</string>
+    <string name="indosat_dompetku">Indosat Dompetku</string>
+    <string name="mandiri_e_cash">Mandiri e-Cash</string>
+    <string name="indomaret">Indomaret</string>
+    <string name="offers">Offers</string>
 
 
 </resources>
