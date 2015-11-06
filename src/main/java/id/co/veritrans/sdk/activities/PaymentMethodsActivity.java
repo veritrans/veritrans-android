@@ -46,6 +46,8 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private AppBarLayout mAppBarLayout = null;
     private FrameLayout mFrameParallax = null;
     private RecyclerView mRecyclerView = null;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
+
 
     public static void startAlphaAnimation(View v, long duration, int visibility) {
         AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
@@ -74,7 +76,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         mAppBarLayout.addOnOffsetChangedListener(this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         //hide subtitle
         startAlphaAnimation(mSubTitle, 0, View.INVISIBLE);
@@ -117,7 +118,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
         mFrameParallax = (FrameLayout) findViewById(R.id.main_framelayout_title);
-
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
     }
 
     private void initParallaxValues() {

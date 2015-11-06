@@ -7,7 +7,7 @@ import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.util.Log;
 
-import id.co.veritrans.sdk.activities.PaymentMethodsActivity;
+import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.models.CardTokenRequest;
@@ -271,9 +271,11 @@ public class VeritransSDK {
                     if (transactionRequest.getPaymentMethod() == Constants
                             .PAYMENT_METHOD_NOT_SELECTED) {
 
-                        Intent paymentMethods = new Intent(transactionRequest.getActivity(),
-                                PaymentMethodsActivity.class);
-                        transactionRequest.getActivity().startActivity(paymentMethods);
+                        Intent userDetailsIntent = new Intent(transactionRequest.getActivity(),
+                                UserDetailsActivity.class);
+                        transactionRequest.getActivity().startActivity(userDetailsIntent);
+
+
                     } else {
                         // start specific activity depending  on payment type.
                     }

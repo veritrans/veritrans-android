@@ -129,6 +129,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     }
 
     public void payUsingCard() {
+
         SdkUtil.showProgressDialog(this, false);
         CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
                 userDetail.getEmail(), userDetail.getPhoneNumber());
@@ -275,9 +276,11 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         SdkUtil.showApiFailedMessage(this, errorMessage);
     }
 
-    //onfailure for both token and transaction api call
+    //onfailure for transaction api call
     @Override
     public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+
+        SdkUtil.hideProgressDialog();
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
         replaceFragment(paymentTransactionStatusFragment, true, false);
