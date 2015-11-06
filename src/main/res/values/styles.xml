@@ -29,4 +29,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
+
+    <style name="ScrollTheme">
+    </style>
 </resources>
