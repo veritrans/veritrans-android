@@ -264,26 +264,6 @@ public class VeritransSDK {
 
             if (transactionRequest != null && transactionRequest.getActivity() != null) {
                 mTransactionRequest = transactionRequest;
-
-
-                if (transactionRequest.isUiEnabled()) {
-
-                    if (transactionRequest.getPaymentMethod() == Constants
-                            .PAYMENT_METHOD_NOT_SELECTED) {
-
-                        Intent userDetailsIntent = new Intent(transactionRequest.getActivity(),
-                                UserDetailsActivity.class);
-                        transactionRequest.getActivity().startActivity(userDetailsIntent);
-
-
-                    } else {
-                        // start specific activity depending  on payment type.
-                    }
-
-                } else {
-                    //do nothing wait for user to choose payment method.
-                }
-
             } else {
                 Logger.e(ADD_TRANSACTION_DETAILS);
             }
@@ -307,6 +287,33 @@ public class VeritransSDK {
         }
 
         Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+    }
+
+
+    public void startPaymentUiFlow() {
+
+        if (mTransactionRequest != null && !isRunning) {
+
+            if (mTransactionRequest.getPaymentMethod() == Constants
+                    .PAYMENT_METHOD_NOT_SELECTED) {
+
+                mTransactionRequest.enableUi(true);
+                Intent userDetailsIntent = new Intent(mTransactionRequest.getActivity(),
+                        UserDetailsActivity.class);
+                mTransactionRequest.getActivity().startActivity(userDetailsIntent);
+
+            } else {
+                // start specific activity depending  on payment type.
+            }
+
+        } else {
+
+            if(mTransactionRequest == null ) {
+                Logger.e(ADD_TRANSACTION_DETAILS);
+            }else {
+                Logger.e(Constants.ERROR_ALREADY_RUNNING);
+            }
+        }
     }
 
 }

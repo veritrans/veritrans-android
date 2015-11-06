@@ -142,11 +142,11 @@ public class TransactionRequest {
      *
      * @param enableUi
      */
-    public void enableUi(boolean enableUi) {
+    protected void enableUi(boolean enableUi) {
         this.useUi = enableUi;
     }
 
-    public boolean isUiEnabled() {
+    protected boolean isUiEnabled() {
         return useUi;
     }
 
