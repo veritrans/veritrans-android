@@ -12,7 +12,7 @@ import id.co.veritrans.sdk.R;
 /**
  * Created by shivam on 10/28/15.
  */
-public class InstructionMandiriFragment extends Fragment{
+public class InstructionMandiriFragment extends Fragment {
 
 
     @Nullable

@@ -11,7 +11,7 @@ public class Logger {
     public static void d(String tag, String message) {
         if (VeritransSDK.getVeritransSDK() != null
                 && VeritransSDK.getVeritransSDK().isLogEnabled()) {
-            Log.d(""+tag, "" + message);
+            Log.d("" + tag, "" + message);
         }
     }
 

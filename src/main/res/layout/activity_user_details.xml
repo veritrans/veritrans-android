@@ -5,12 +5,15 @@
               android:orientation="vertical"
               tools:context=".UserDetailsActivity">
 
-    <include layout="@layout/layout_toolbar"
-             android:id="@+id/toolbar"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar"
         />
-    <RelativeLayout android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/user_detail_container"
+
+    <RelativeLayout
+        android:id="@+id/user_detail_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         ></RelativeLayout>
 
 

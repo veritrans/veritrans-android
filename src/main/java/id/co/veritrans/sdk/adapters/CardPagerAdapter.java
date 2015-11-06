@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.fragments.CardDetailFragment;
-import id.co.veritrans.sdk.models.CardDetail;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 
 /**
@@ -23,7 +22,7 @@ public class CardPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return  CardDetailFragment.newInstance(cardDetails.get(position));
+        return CardDetailFragment.newInstance(cardDetails.get(position));
     }
 
     @Override

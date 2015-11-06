@@ -103,7 +103,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 e.printStackTrace();
             }
             if (transactionResponse != null) {
-                if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
+                if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants
+                        .SUCCESS_CODE_200) ||
 
                         transactionResponse.getStatusCode().
                                 equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
@@ -120,8 +121,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 setUiForFailure();
             }
 
-            amountTextViewFont.setText("" + veritrans.getAmount());
-            orderIdTextViewFont.setText("" + veritrans.getOrderId());
+            amountTextViewFont.setText("" + veritrans.getTransactionRequest().getAmount());
+            orderIdTextViewFont.setText("" + veritrans.getTransactionRequest().getOrderId());
             actionBt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -156,7 +157,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
 
         if (veritrans != null) {
 
-            switch (veritrans.getPaymentMethod()) {
+            switch (veritrans.getTransactionRequest().getPaymentMethod()) {
 
                 case Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT:
                     paymentTypeTextViewFont.setText(getString(R.string.credit_card));

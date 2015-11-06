@@ -19,11 +19,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_horizontal"
+            android:paddingTop="@dimen/sixteen_dp"
             android:text="@string/virtual_account_number"
             android:textColor="@color/light_gray"
             android:textSize="@dimen/primary_text_size"
             app:font="@string/font_open_sans_regular"
-            android:paddingTop="@dimen/sixteen_dp"
             />
 
 
@@ -46,10 +46,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/sixteen_dp"
             android:background="@color/faint_yellow"
             android:gravity="left"
             android:padding="@dimen/sixteen_dp"
-            android:layout_marginTop="@dimen/sixteen_dp"
             android:text="Valid Until : 10 September 2015, 16:00"
             android:textColor="@color/black"
             android:textSize="@dimen/primary_text_size"
@@ -73,7 +73,7 @@
             />
 
         <id.co.veritrans.sdk.widgets.TextViewFont
-           android:id="@+id/text_see_instruction"
+            android:id="@+id/text_see_instruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/twenty_four_dp"

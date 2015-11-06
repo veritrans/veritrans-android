@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-             >
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+    >
 
 
     <android.support.design.widget.CoordinatorLayout
@@ -138,14 +138,12 @@
         </android.support.design.widget.AppBarLayout>
 
 
-
-            <FrameLayout
-                android:id="@+id/bank_transfer_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                />
-
+        <FrameLayout
+            android:id="@+id/bank_transfer_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
 
 
         <android.support.v7.widget.Toolbar
@@ -185,10 +183,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/eight_dp"
         android:layout_marginBottom="@dimen/eight_dp"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/eight_dp"
         android:background="@drawable/blue_button_selector"
         android:text="@string/confirm_payment"
         android:textAllCaps="true"

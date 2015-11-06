@@ -1,166 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/root_layout"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    android:id="@+id/root_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    >
+
+    <RelativeLayout
+        android:id="@+id/card_container_front_side"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/shape_card"
+        android:clickable="true"
+        android:padding="@dimen/sixteen_dp"
+        android:visibility="visible">
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/text_bank_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="Bank name"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/header_text_size"
+            app:font="@string/font_open_sans_semibold"
+
+            />
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/text_card_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_bank_name"
+            android:gravity="left"
+            android:text="xxxx xxxx xxxx 1234"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/secondary_text_size"
+            app:font="@string/font_open_sans_semibold"/>
+
+        <Button
+            android:id="@+id/btn_pay_now_front"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btn_height"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:text="@string/pay_now"
+            android:textColor="@color/colorPrimary"
+            />
+
+        <LinearLayout
+            android:id="@+id/validation_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            >
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-    >
-    <RelativeLayout android:id="@+id/card_container_front_side"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/shape_card"
-                    android:clickable="true"
-                    android:padding="@dimen/sixteen_dp"
-                    android:visibility="visible">
-        <id.co.veritrans.sdk.widgets.TextViewFont android:id="@+id/text_bank_name"
-                                                  android:layout_width="match_parent"
-                                                  android:layout_height="wrap_content"
-                                                  android:gravity="left"
-                                                  android:text="Bank name"
-                                                  android:textColor="@android:color/white"
-                                                  android:textSize="@dimen/header_text_size"
-                                                  app:font="@string/font_open_sans_semibold"
-
-            />
-        <id.co.veritrans.sdk.widgets.TextViewFont android:id="@+id/text_card_number"
-                                                  android:layout_width="match_parent"
-                                                  android:layout_height="wrap_content"
-                                                  android:layout_below="@id/text_bank_name"
-                                                  android:gravity="left"
-                                                  android:text="xxxx xxxx xxxx 1234"
-                                                  android:textColor="@android:color/white"
-                                                  android:textSize="@dimen/secondary_text_size"
-                                                  app:font="@string/font_open_sans_semibold"/>
-        <Button android:layout_width="wrap_content"
-                android:layout_height="@dimen/btn_height"
-                android:id="@+id/btn_pay_now_front"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/colorPrimary"
-                android:paddingRight="@dimen/sixteen_dp"
-                android:paddingLeft="@dimen/sixteen_dp"
-                android:text="@string/pay_now"
-            />
-        <LinearLayout android:id="@+id/validation_layout"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_alignParentBottom="true"
-                      android:orientation="horizontal"
-                      android:weightSum="1"
-            >
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:layout_weight="0.2"
-                          android:orientation="vertical"
+                android:layout_weight="0.2"
+                android:orientation="vertical"
                 >
-                <id.co.veritrans.sdk.widgets.TextViewFont android:layout_width="match_parent"
-                                                          android:layout_height="wrap_content"
-                                                          android:gravity="left"
 
-                                                          android:text="@string/valid_thru"
-                                                          android:textColor="@android:color/white"
-                                                          android:textSize="@dimen/primary_text_size"
-                                                          app:font="@string/font_open_sans_regular"
+                <id.co.veritrans.sdk.widgets.TextViewFont
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+
+                    android:text="@string/valid_thru"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/primary_text_size"
+                    app:font="@string/font_open_sans_regular"
 
                     />
-                <id.co.veritrans.sdk.widgets.TextViewFont android:id="@+id/text_exp_date"
-                                                          android:layout_width="match_parent"
-                                                          android:layout_height="wrap_content"
-                                                          android:layout_below="@id/text_bank_name"
-                                                          android:gravity="left"
-                                                          android:text="xx/12"
-                                                          android:textColor="@android:color/white"
-                                                          android:textSize="@dimen/primary_text_size"
-                                                          app:font="@string/font_open_sans_regular"
+
+                <id.co.veritrans.sdk.widgets.TextViewFont
+                    android:id="@+id/text_exp_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text_bank_name"
+                    android:gravity="left"
+                    android:text="xx/12"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/primary_text_size"
+                    app:font="@string/font_open_sans_regular"
 
                     />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="match_parent"
-                          android:layout_weight="0.8"
-                          android:gravity="right"
-                          android:orientation="vertical"
-                >
-                <ImageView android:id="@+id/image_card_type"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_gravity="right"
 
-                           android:src="@drawable/ic_visa"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:gravity="right"
+                android:orientation="vertical"
+                >
+
+                <ImageView
+                    android:id="@+id/image_card_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+
+                    android:src="@drawable/ic_visa"
                     />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-    <RelativeLayout android:id="@+id/card_container_back_side"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/shape_card"
-                    android:clickable="true"
-                    android:orientation="vertical"
-                    android:padding="@dimen/sixteen_dp"
-                    android:visibility="gone">
-        <id.co.veritrans.sdk.widgets.TextViewFont android:id="@+id/tv_enter_cvv"
-                                                  android:layout_width="match_parent"
-                                                  android:layout_height="wrap_content"
 
-                                                  android:gravity="center"
-                                                  android:text="@string/enter_cvv"
-                                                  android:textColor="@android:color/white"
-                                                  android:textSize="@dimen/big_text"
-                                                  app:font="@string/font_open_sans_regular"/>
-        <RelativeLayout android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_centerInParent="true"
+    <RelativeLayout
+        android:id="@+id/card_container_back_side"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/shape_card"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:padding="@dimen/sixteen_dp"
+        android:visibility="gone">
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/tv_enter_cvv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center"
+            android:text="@string/enter_cvv"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/big_text"
+            app:font="@string/font_open_sans_regular"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             >
-            <EditText android:id="@+id/et_cvv"
-                      android:layout_width="100dp"
-                      android:inputType="phone"
-                      android:maxLength="3"
-                      android:background="@android:color/transparent"
-                      android:cursorVisible="false"
-                      android:textColor="@color/card_background_color"
-                      android:layout_height="wrap_content"
-                />
-            <ImageView android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:id="@+id/image_cvv2"
-                       android:layout_centerHorizontal="true"
-                       android:paddingRight="12dp"
-                       android:src="@drawable/hollow_circle"
-                />
-            <ImageView android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:id="@+id/image_cvv1"
-                       android:layout_toLeftOf="@id/image_cvv2"
-                       android:paddingRight="12dp"
-                       android:src="@drawable/hollow_circle"
+
+            <EditText
+                android:id="@+id/et_cvv"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:cursorVisible="false"
+                android:inputType="phone"
+                android:maxLength="3"
+                android:textColor="@color/card_background_color"
                 />
 
-            <ImageView android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:id="@+id/image_cvv3"
-                       android:layout_toRightOf="@id/image_cvv2"
-                       android:src="@drawable/hollow_circle"
+            <ImageView
+                android:id="@+id/image_cvv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:paddingRight="12dp"
+                android:src="@drawable/hollow_circle"
                 />
-            <View android:layout_width="100dp"
-                  android:layout_height="1dp"
-                  android:layout_marginTop="16dp"
-                  android:layout_below="@id/image_cvv2"
-                  android:background="@android:color/white"></View>
+
+            <ImageView
+                android:id="@+id/image_cvv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/image_cvv2"
+                android:paddingRight="12dp"
+                android:src="@drawable/hollow_circle"
+                />
+
+            <ImageView
+                android:id="@+id/image_cvv3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/image_cvv2"
+                android:src="@drawable/hollow_circle"
+                />
+
+            <View
+                android:layout_width="100dp"
+                android:layout_height="1dp"
+                android:layout_below="@id/image_cvv2"
+                android:layout_marginTop="16dp"
+                android:background="@android:color/white"></View>
 
         </RelativeLayout>
 
-        <Button android:layout_width="wrap_content"
-                android:layout_height="@dimen/btn_height"
-                android:id="@+id/btn_pay_now"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/colorPrimary"
-                android:paddingRight="@dimen/thirtytwo_dp"
-                android:paddingLeft="@dimen/thirtytwo_dp"
-                android:text="@string/pay_now"
+        <Button
+            android:id="@+id/btn_pay_now"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btn_height"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:paddingLeft="@dimen/thirtytwo_dp"
+            android:paddingRight="@dimen/thirtytwo_dp"
+            android:text="@string/pay_now"
+            android:textColor="@color/colorPrimary"
             />
     </RelativeLayout>
 </RelativeLayout>

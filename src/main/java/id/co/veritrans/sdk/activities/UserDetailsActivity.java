@@ -31,15 +31,16 @@ public class UserDetailsActivity extends AppCompatActivity {
     public void checkUserDetails() {
         StorageDataHandler storageDataHandler = new StorageDataHandler();
         try {
-            UserDetail userDetail = (UserDetail) storageDataHandler.readObject(this, Constants.USER_DETAILS);
-            if(userDetail!=null && !TextUtils.isEmpty(userDetail.getUserFullName())){
+            UserDetail userDetail = (UserDetail) storageDataHandler.readObject(this, Constants
+                    .USER_DETAILS);
+            if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
                 //TODO check user have address filled
                 //if no take user to select address
 
-                ArrayList<UserAddress>userAddresses = userDetail.getUserAddresses();
-                if(userAddresses != null && !userAddresses.isEmpty()){
+                ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
+                if (userAddresses != null && !userAddresses.isEmpty()) {
                     Log.i("UserdetailActivity", "userAddresses:" + userAddresses.size());
-                    Intent paymentOptionIntent = new Intent(this,PaymentMethodsActivity.class);
+                    Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
                     startActivity(paymentOptionIntent);
                     finish();
                 } else {

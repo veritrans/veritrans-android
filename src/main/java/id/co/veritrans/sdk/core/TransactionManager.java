@@ -2,18 +2,19 @@ package id.co.veritrans.sdk.core;
 
 import android.app.Activity;
 
-import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
+import id.co.veritrans.sdk.callbacks.TransactionCallback;
+import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
-import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -21,6 +22,9 @@ import rx.schedulers.Schedulers;
  * Created by shivam on 10/29/15.
  */
 class TransactionManager {
+
+    private static Subscription mSubscription = null;
+
 
     public static void getToken(Activity activity, CardTokenRequest cardTokenRequest, final
     TokenCallBack callBack) {
@@ -34,7 +38,8 @@ class TransactionManager {
             if (apiInterface != null) {
 
                 Observable<TokenDetailsResponse> observable;
-                if(cardTokenRequest.isTwoClick()){
+
+                if (cardTokenRequest.isTwoClick()) {
                     observable = apiInterface.getTokenTwoClick(
                             cardTokenRequest.getCardCVV(),
                             cardTokenRequest.getSavedTokenId(),
@@ -59,7 +64,7 @@ class TransactionManager {
                             cardTokenRequest.getClientKey());
                 }
 
-                observable.subscribeOn(Schedulers
+                mSubscription = observable.subscribeOn(Schedulers
                         .io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<TokenDetailsResponse>() {
@@ -67,6 +72,11 @@ class TransactionManager {
                             @Override
                             public void onCompleted() {
 
+                                if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+                                    mSubscription.unsubscribe();
+                                }
+
+                                releaseResources();
                             }
 
                             @Override
@@ -74,7 +84,7 @@ class TransactionManager {
 
                                 Logger.e("error while getting token : ", "" +
                                         throwable.getMessage());
-                                callBack.onFailure(throwable.getMessage(),null);
+                                callBack.onFailure(throwable.getMessage(), null);
                             }
 
                             @Override
@@ -90,11 +100,12 @@ class TransactionManager {
                                             .equalsIgnoreCase(Constants.SUCCESS_CODE_200)) {
                                         callBack.onSuccess(tokenDetailsResponse);
                                     } else {
-                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,tokenDetailsResponse);
+                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,
+                                                tokenDetailsResponse);
                                     }
 
                                 } else {
-                                    callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,null);
+                                    callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
                                     Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                 }
 
@@ -102,13 +113,15 @@ class TransactionManager {
                         });
 
             } else {
-                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT,null);
+                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
                 Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
             }
 
         } else {
-            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED,null);
+            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
         }
 
     }
@@ -133,20 +146,27 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingPermataBank(authorization,
                             permataBankTransfer);
 
-                    observable.subscribeOn(Schedulers
+                    mSubscription = observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
+
+                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+                                        mSubscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
+
                                 }
 
                                 @Override
                                 public void onError(Throwable throwable) {
                                     Logger.e("bank Transfer transaction error ", "" +
                                             throwable.getMessage());
-                                    callBack.onFailure(throwable.getMessage(),null);
+                                    callBack.onFailure(throwable.getMessage(), null);
                                 }
 
                                 @Override
@@ -163,16 +183,18 @@ class TransactionManager {
                                         if (permataBankTransferResponse.getStatusCode().trim()
                                                 .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
                                                 || permataBankTransferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+                                                .trim().equalsIgnoreCase(Constants
+                                                        .SUCCESS_CODE_201)) {
 
                                             callBack.onSuccess(permataBankTransferResponse);
                                         } else {
                                             callBack.onFailure(permataBankTransferResponse
-                                                    .getStatusMessage(),permataBankTransferResponse);
+                                                            .getStatusMessage(),
+                                                    permataBankTransferResponse);
                                         }
 
                                     } else {
-                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,null);
+                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
                                         Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                     }
 
@@ -180,21 +202,25 @@ class TransactionManager {
                             });
                 } else {
                     Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
-                    callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED,null);
+                    callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
                 }
             } else {
-                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT,null);
+                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
                 Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
             }
 
         } else {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED,null);
+            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            releaseResources();
         }
     }
 
 
-    public static void paymentUsingCard(Activity activity, CardTransfer cardTransfer, final TransactionCallback cardPaymentTransactionCallback) {
+    public static void paymentUsingCard(Activity activity, CardTransfer cardTransfer, final
+    TransactionCallback cardPaymentTransactionCallback) {
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
@@ -212,60 +238,71 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingCard(authorization,
                             cardTransfer);
 
-                    observable.subscribeOn(Schedulers
+                    mSubscription = observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
                                 @Override
                                 public void onCompleted() {
 
+                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+                                        mSubscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onError(Throwable e) {
                                     Logger.e("card Transfer transaction error ", "" +
                                             e.getMessage());
-                                    cardPaymentTransactionCallback.onFailure(e.getMessage(),null);
+                                    cardPaymentTransactionCallback.onFailure(e.getMessage(), null);
                                 }
 
                                 @Override
                                 public void onNext(TransactionResponse cardPaymentResponse) {
-                                    Logger.i("@ onNext cardPayment:"+cardPaymentResponse);
+                                    Logger.i("@ onNext cardPayment:" + cardPaymentResponse);
                                     if (cardPaymentResponse != null) {
 
                                         if (cardPaymentResponse.getStatusCode().trim()
                                                 .equalsIgnoreCase("200")
                                                 || cardPaymentResponse.getStatusCode()
                                                 .trim().equalsIgnoreCase("201")) {
-                                            Logger.i("@ onNext cardPayment:"+cardPaymentResponse);
-                                            cardPaymentTransactionCallback.onSuccess(cardPaymentResponse);
+                                            Logger.i("@ onNext cardPayment:" + cardPaymentResponse);
+                                            cardPaymentTransactionCallback.onSuccess
+                                                    (cardPaymentResponse);
                                         } else {
-                                            Logger.i("@ onNext cardPayment fail"+cardPaymentResponse.getStatusCode());
-                                            cardPaymentTransactionCallback.onFailure(cardPaymentResponse
-                                                    .getStatusMessage(),cardPaymentResponse);
+                                            Logger.i("@ onNext cardPayment fail" +
+                                                    cardPaymentResponse.getStatusCode());
+                                            cardPaymentTransactionCallback.onFailure
+                                                    (cardPaymentResponse
+                                                            .getStatusMessage(),
+                                                            cardPaymentResponse);
                                         }
 
                                     } else {
                                         Logger.i("@ onNext cardPayment fail null");
-                                        cardPaymentTransactionCallback.onFailure(Constants.ERROR_EMPTY_RESPONSE,null);
+                                        cardPaymentTransactionCallback.onFailure(Constants
+                                                .ERROR_EMPTY_RESPONSE, null);
                                     }
                                 }
 
                             });
                 } else {
                     Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    releaseResources();
                 }
             }
 
         } else {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
         }
     }
 
 
-
-
-    public static void paymentUsingMandiriClickPay(final Activity activity, final MandiriClickPayRequestModel
+    public static void paymentUsingMandiriClickPay(final Activity activity, final
+    MandiriClickPayRequestModel
             mandiriClickPayRequestModel, final TransactionCallback callBack) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
@@ -285,20 +322,27 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingMandiriClickPay(authorization,
                             mandiriClickPayRequestModel);
 
-                    observable.subscribeOn(Schedulers
+                    mSubscription = observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
+
+                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+                                        mSubscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
+
                                 }
 
                                 @Override
                                 public void onError(Throwable throwable) {
                                     Logger.e("bank Transfer transaction error ", "" +
                                             throwable.getMessage());
-                                    callBack.onFailure(throwable.getMessage(),null);
+                                    callBack.onFailure(throwable.getMessage(), null);
                                 }
 
                                 @Override
@@ -315,119 +359,132 @@ class TransactionManager {
                                         if (mandiriTransferResponse.getStatusCode().trim()
                                                 .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
                                                 || mandiriTransferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+                                                .trim().equalsIgnoreCase(Constants
+                                                        .SUCCESS_CODE_201)) {
 
                                             callBack.onSuccess(mandiriTransferResponse);
                                         } else {
                                             callBack.onFailure(mandiriTransferResponse
-                                                    .getStatusMessage(),mandiriTransferResponse);
+                                                    .getStatusMessage(), mandiriTransferResponse);
                                         }
 
                                     } else {
-                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,null);
-                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE,null);
+                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE, null);
                                     }
 
                                 }
                             });
                 } else {
                     Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
-                    callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED,null);
+                    callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
                 }
             } else {
-                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT,null);
+                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
                 Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
             }
 
         } else {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED,null);
+            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            releaseResources();
         }
     }
-
-
 
 
     public static void paymentUsingMandiriBillPay(Activity activity, MandiriBillPayTransferModel
             mandiriBillPayTransferModel, final TransactionCallback callBack) {
 
-            final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
-            if (veritransSDK != null) {
-                VeritranceApiInterface apiInterface =
-                        VeritransRestAdapter.getApiClient(activity, true);
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getApiClient(activity, true);
 
-                if (apiInterface != null) {
+            if (apiInterface != null) {
 
-                    Observable<TransactionResponse> observable = null;
+                Observable<TransactionResponse> observable = null;
 
-                    String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
-                    if (serverKey != null) {
+                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
+                if (serverKey != null) {
 
-                        String authorization = "Basic " + serverKey;
-                        observable = apiInterface.paymentUsingMandiriBillPay(authorization,
-                                mandiriBillPayTransferModel);
+                    String authorization = "Basic " + serverKey;
+                    observable = apiInterface.paymentUsingMandiriBillPay(authorization,
+                            mandiriBillPayTransferModel);
 
-                        observable.subscribeOn(Schedulers
-                                .io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Observer<TransactionResponse>() {
+                    mSubscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<TransactionResponse>() {
 
-                                    @Override
-                                    public void onCompleted() {
+                                @Override
+                                public void onCompleted() {
+
+                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+                                        mSubscription.unsubscribe();
                                     }
 
-                                    @Override
-                                    public void onError(Throwable throwable) {
-                                        Logger.e("mandiri bill pay transaction error ", "" +
-                                                throwable.getMessage());
-                                        callBack.onFailure(throwable.getMessage(),null);
-                                    }
+                                    releaseResources();
 
-                                    @Override
-                                    public void onNext(TransactionResponse
-                                                               permataBankTransferResponse) {
+                                }
 
-                                        if (permataBankTransferResponse != null) {
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    Logger.e("mandiri bill pay transaction error ", "" +
+                                            throwable.getMessage());
+                                    callBack.onFailure(throwable.getMessage(), null);
+                                }
+
+                                @Override
+                                public void onNext(TransactionResponse
+                                                           permataBankTransferResponse) {
+
+                                    if (permataBankTransferResponse != null) {
 
 
-                                            if (veritransSDK != null && veritransSDK.isLogEnabled()) {
-                                                displayResponse(permataBankTransferResponse);
-                                            }
-
-                                            if (permataBankTransferResponse.getStatusCode().trim()
-                                                    .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
-                                                    || permataBankTransferResponse.getStatusCode()
-                                                    .trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
-
-                                                callBack.onSuccess(permataBankTransferResponse);
-                                            } else {
-                                                callBack.onFailure(permataBankTransferResponse
-                                                        .getStatusMessage(),permataBankTransferResponse);
-                                            }
-
-                                        } else {
-                                            callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,null);
-                                            Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                            displayResponse(permataBankTransferResponse);
                                         }
 
+                                        if (permataBankTransferResponse.getStatusCode().trim()
+                                                .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
+                                                || permataBankTransferResponse.getStatusCode()
+                                                .trim().equalsIgnoreCase(Constants
+                                                        .SUCCESS_CODE_201)) {
+
+                                            callBack.onSuccess(permataBankTransferResponse);
+                                        } else {
+                                            callBack.onFailure(permataBankTransferResponse
+                                                            .getStatusMessage(),
+                                                    permataBankTransferResponse);
+                                        }
+
+                                    } else {
+                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                     }
-                                });
-                    } else {
-                        Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
-                        callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED,null);
-                    }
+
+                                }
+                            });
                 } else {
-                    callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT,null);
-                    Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callBack.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
                 }
-
             } else {
-                Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-                callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED,null);
+                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
             }
-        }
 
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            releaseResources();
+        }
+    }
 
 
     private static void displayTokenResponse(TokenDetailsResponse tokenDetailsResponse) {
@@ -468,5 +525,11 @@ class TransactionManager {
                         .getTransactionStatus());
     }
 
+
+    private static void releaseResources() {
+        if (VeritransSDK.getVeritransSDK() != null) {
+            VeritransSDK.getVeritransSDK().isRunning = false;
+        }
+    }
 
 }

@@ -80,133 +80,132 @@ public class TransactionResponse implements Serializable {
     @SerializedName("biller_code")
     private String companyCode;
 
+    public String getStatusCode() {
+        return statusCode;
+    }
 
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;
-    }
-
-    public void setStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public void setSavedTokenId(String savedTokenId) {
-        this.savedTokenId = savedTokenId;
-    }
-
-    public void setMaskedCard(String maskedCard) {
-        this.maskedCard = maskedCard;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public void setGrossAmount(String grossAmount) {
-        this.grossAmount = grossAmount;
-    }
-
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
-    }
-
-    public void setTransactionTime(String transactionTime) {
-        this.transactionTime = transactionTime;
-    }
-
-    public void setTransactionStatus(String transactionStatus) {
-        this.transactionStatus = transactionStatus;
-    }
-
-    public void setFraudStatus(String fraudStatus) {
-        this.fraudStatus = fraudStatus;
-    }
-
-    public void setSavedTokenIdExpiredAt(String savedTokenIdExpiredAt) {
-        this.savedTokenIdExpiredAt = savedTokenIdExpiredAt;
-    }
-
-    public void setApprovalCode(String approvalCode) {
-        this.approvalCode = approvalCode;
-    }
-
-    public void setSecureToken(boolean secureToken) {
-        this.secureToken = secureToken;
-    }
-
-    public void setBank(String bank) {
-        this.bank = bank;
-    }
-
-    public void setEci(String eci) {
-        this.eci = eci;
-    }
-
-    public String getStatusCode() {
-        return statusCode;
     }
 
     public String getStatusMessage() {
         return statusMessage;
     }
 
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
+    }
+
     public String getTransactionId() {
         return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 
     public String getSavedTokenId() {
         return TextUtils.isEmpty(savedTokenId) ? "" : savedTokenId;
     }
 
+    public void setSavedTokenId(String savedTokenId) {
+        this.savedTokenId = savedTokenId;
+    }
+
     public String getMaskedCard() {
         return maskedCard;
+    }
+
+    public void setMaskedCard(String maskedCard) {
+        this.maskedCard = maskedCard;
     }
 
     public String getOrderId() {
         return orderId;
     }
 
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     public String getGrossAmount() {
         return grossAmount;
+    }
+
+    public void setGrossAmount(String grossAmount) {
+        this.grossAmount = grossAmount;
     }
 
     public String getPaymentType() {
         return TextUtils.isEmpty(paymentType) ? "" : paymentType;
     }
 
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
     public String getTransactionTime() {
         return TextUtils.isEmpty(transactionTime) ? "" : transactionTime;
+    }
+
+    public void setTransactionTime(String transactionTime) {
+        this.transactionTime = transactionTime;
     }
 
     public String getTransactionStatus() {
         return transactionStatus;
     }
 
+    public void setTransactionStatus(String transactionStatus) {
+        this.transactionStatus = transactionStatus;
+    }
+
     public String getFraudStatus() {
         return fraudStatus;
+    }
+
+    public void setFraudStatus(String fraudStatus) {
+        this.fraudStatus = fraudStatus;
     }
 
     public String getSavedTokenIdExpiredAt() {
         return savedTokenIdExpiredAt;
     }
 
+    public void setSavedTokenIdExpiredAt(String savedTokenIdExpiredAt) {
+        this.savedTokenIdExpiredAt = savedTokenIdExpiredAt;
+    }
+
     public String getApprovalCode() {
         return approvalCode;
+    }
+
+    public void setApprovalCode(String approvalCode) {
+        this.approvalCode = approvalCode;
     }
 
     public boolean isSecureToken() {
         return secureToken;
     }
 
+    public void setSecureToken(boolean secureToken) {
+        this.secureToken = secureToken;
+    }
+
     public String getBank() {
         return bank;
     }
 
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
     public String getEci() {
         return eci;
+    }
+
+    public void setEci(String eci) {
+        this.eci = eci;
     }
 
     public String getPermataVANumber() {

@@ -18,16 +18,16 @@ public class TransactionCancelResponse {
     @SerializedName("status_code")
     private String statusCode;
 
-    public void setStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
-    }
-
     public void setStatus_code(String status_code) {
         this.statusCode = status_code;
     }
 
     public String getStatusMessage() {
         return statusMessage;
+    }
+
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
     }
 
     public String getStatusCode() {

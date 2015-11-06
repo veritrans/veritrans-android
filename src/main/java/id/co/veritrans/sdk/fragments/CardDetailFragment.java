@@ -45,16 +45,16 @@ public class CardDetailFragment extends Fragment {
     private Button payNowFrontBt;
     private VeritransSDK veritransSDK;
 
+    public CardDetailFragment() {
+
+    }
+
     public static CardDetailFragment newInstance(CardTokenRequest cardDetails) {
         CardDetailFragment fragment = new CardDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM, cardDetails);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public CardDetailFragment() {
-
     }
 
     @Override
@@ -69,10 +69,13 @@ public class CardDetailFragment extends Fragment {
         if (getArguments() != null) {
             cardDetail = (CardTokenRequest) getArguments().getSerializable(ARG_PARAM);
         }
-        cardDetail.setGrossAmount(veritransSDK.getAmount());
+        cardDetail.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
         Logger.i("cardDetail:" + cardDetail.getString());
-        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.card_details));
-        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
+                .string.card_details));
+        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar()
+                .setDisplayHomeAsUpEnabled(true);
         View view = inflater.inflate(R.layout.fragment_card_detail, container, false);
         initialiseViews(view);
 
@@ -84,10 +87,12 @@ public class CardDetailFragment extends Fragment {
         cardContainerBack = (RelativeLayout) view.findViewById(R.id.card_container_back_side);
         rootLayout = (RelativeLayout) view.findViewById(R.id.root_layout);
         float cardWidth = ((CreditDebitCardFlowActivity) getActivity()).getScreenWidth();
-        cardWidth = cardWidth - getResources().getDimension(R.dimen.sixteen_dp) * getResources().getDisplayMetrics().density;
+        cardWidth = cardWidth - getResources().getDimension(R.dimen.sixteen_dp) * getResources()
+                .getDisplayMetrics().density;
         float cardHeight = cardWidth * Constants.CARD_ASPECT_RATIO;
         Logger.i("card width:" + cardWidth + ",height:" + cardHeight);
-        RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams((int) cardWidth, (int) cardHeight);
+        RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams((int) cardWidth,
+                (int) cardHeight);
         Logger.i("card width:" + parms.width + ",height:" + parms.height);
         cardContainerFront.setLayoutParams(parms);
         cardContainerBack.setLayoutParams(parms);
@@ -163,7 +168,8 @@ public class CardDetailFragment extends Fragment {
                     SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_cvv));
                     return;
                 } else if (cvv.length() < 3) {
-                    SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_invalid_cvv));
+                    SdkUtil.showSnackbar(getActivity(), getString(R.string
+                            .validation_message_invalid_cvv));
                     return;
                 }
                 //TODO  transaction process here
@@ -177,8 +183,11 @@ public class CardDetailFragment extends Fragment {
                 cardTransactionProcess("");
             }
         });
-        Logger.i("veritransSDK.getCardClickType()" + veritransSDK.getCardClickType());
-        if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
+
+        Logger.i("veritransSDK.getCardClickType()" + veritransSDK.getTransactionRequest()
+                .getCardClickType());
+        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants
+                .CARD_CLICK_TYPE_ONE_CLICK)) {
             payNowFrontBt.setVisibility(View.VISIBLE);
         } else {
             payNowFrontBt.setVisibility(View.GONE);
@@ -192,12 +201,13 @@ public class CardDetailFragment extends Fragment {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
+        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants
+                .CARD_CLICK_TYPE_ONE_CLICK)) {
             ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(cardDetail);
-        } else if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_TWO_CLICK)) {
+        } else if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
+                (Constants.CARD_CLICK_TYPE_TWO_CLICK)) {
             ((CreditDebitCardFlowActivity) getActivity()).twoClickPayment(cardDetail);
         } else {
-            cardDetail.setClientKey(veritransSDK.getClientKey());
             ((CreditDebitCardFlowActivity) getActivity()).getToken(cardDetail);
         }
 
@@ -205,7 +215,8 @@ public class CardDetailFragment extends Fragment {
     }
 
     private void flipCard() {
-        if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK)) {
+        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants
+                .CARD_CLICK_TYPE_ONE_CLICK)) {
             return;
         }
        /* Animation scaleDown = new ScaleAnimation(
@@ -246,7 +257,8 @@ public class CardDetailFragment extends Fragment {
 
                                                @Override
                                                public void onAnimationEnd(Animation animation) {
-                                                   if (cardContainerFront.getVisibility() == View.VISIBLE) {
+                                                   if (cardContainerFront.getVisibility() == View
+                                                           .VISIBLE) {
                                                        SdkUtil.hideKeyboard(getActivity());
                                                    } else {
                                                        SdkUtil.showKeyboard(getActivity(), cvvEt);

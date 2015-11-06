@@ -6,11 +6,10 @@ import java.util.ArrayList;
 
 /**
  * Created by shivam on 10/30/15.
- *
+ * <p/>
  * Global model class for payment transaction.
- *
  */
- class TransactionModel {
+class TransactionModel {
 
     /**
      * payment_type : bank_transfer

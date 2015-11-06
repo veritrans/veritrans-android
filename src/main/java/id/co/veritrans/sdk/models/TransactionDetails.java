@@ -16,19 +16,13 @@ public class TransactionDetails {
 
     @SerializedName("order_id")
     private String orderId;
-    public TransactionDetails( ) {
+
+    public TransactionDetails() {
 
     }
+
     public TransactionDetails(String grossAmount, String orderId) {
         this.grossAmount = grossAmount;
-        this.orderId = orderId;
-    }
-
-    public void setGrossAmount(String grossAmount) {
-        this.grossAmount = grossAmount;
-    }
-
-    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
@@ -36,8 +30,16 @@ public class TransactionDetails {
         return grossAmount;
     }
 
+    public void setGrossAmount(String grossAmount) {
+        this.grossAmount = grossAmount;
+    }
+
     public String getOrderId() {
         return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
 }

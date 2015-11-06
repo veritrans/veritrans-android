@@ -4,9 +4,11 @@
             android:layout_height="match_parent"
             android:fillViewport="true"
             tools:context="id.co.veritrans.sdk.fragments.UserDetailFragment">
-    <RelativeLayout android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/sixteen_dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/sixteen_dp">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/full_name_til"
@@ -41,6 +43,7 @@
                 android:singleLine="true"
                 android:textColorHint="@color/colorAccent"/>
         </android.support.design.widget.TextInputLayout>
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/phone_til"
             android:layout_width="match_parent"
@@ -58,17 +61,21 @@
                 android:singleLine="true"
                 android:textColorHint="@color/colorAccent"/>
         </android.support.design.widget.TextInputLayout>
-        <RelativeLayout android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/phone_til"
-                        android:layout_alignParentBottom="true">
-        <Button android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_height"
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/phone_til">
+
+            <Button
                 android:id="@+id/btn_next"
-                android:text="@string/next"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_height"
+                android:layout_alignParentBottom="true"
                 android:background="@drawable/blue_button_selector"
-                android:textColor="@android:color/white"
-                android:layout_alignParentBottom="true"/>
+                android:text="@string/next"
+                android:textColor="@android:color/white"/>
         </RelativeLayout>
     </RelativeLayout>
 </ScrollView>

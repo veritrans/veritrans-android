@@ -34,11 +34,11 @@
             android:layout_marginTop="@dimen/sixteen_dp">
 
             <EditText
-                android:inputType="number"
                 android:id="@+id/et_challenge_token"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_challenge_token"
+                android:inputType="number"
                 android:maxLength="6"
                 android:singleLine="true"/>
         </android.support.design.widget.TextInputLayout>
@@ -48,13 +48,13 @@
             android:id="@+id/text_see_instruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/sixteen_dp"
             android:paddingBottom="@dimen/eight_dp"
+            android:paddingTop="@dimen/sixteen_dp"
             android:text="@string/see_instruction"
-            android:textColor="@color/colorPrimary"
             android:textAllCaps="true"
-            app:font="@string/font_open_sans_semibold"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/secondary_text_size"
+            app:font="@string/font_open_sans_semibold"
             />
 
     </LinearLayout>

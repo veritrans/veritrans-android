@@ -23,43 +23,43 @@ public class MandiriClickPayModel {
     private String input1;
     private String token;
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public void setInput3(String input3) {
-        this.input3 = input3;
-    }
-
-    public void setInput2(String input2) {
-        this.input2 = input2;
-    }
-
-    public void setInput1(String input1) {
-        this.input1 = input1;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public String getCardNumber() {
         return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     public String getInput3() {
         return input3;
     }
 
+    public void setInput3(String input3) {
+        this.input3 = input3;
+    }
+
     public String getInput2() {
         return input2;
+    }
+
+    public void setInput2(String input2) {
+        this.input2 = input2;
     }
 
     public String getInput1() {
         return input1;
     }
 
+    public void setInput1(String input1) {
+        this.input1 = input1;
+    }
+
     public String getToken() {
         return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

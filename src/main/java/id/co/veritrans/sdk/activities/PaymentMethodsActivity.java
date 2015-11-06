@@ -33,13 +33,10 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.7f;
     private static final int ALPHA_ANIMATIONS_DURATION = 200;
-
+    private static final String TAG = PaymentMethodsActivity.class.getSimpleName();
     private boolean mIsTheTitleVisible = false;
     private boolean mIsTheTitleContainerVisible = true;
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
-    private static final String TAG = PaymentMethodsActivity.class.getSimpleName();
-
-
     //Views
     private Toolbar mToolbar = null;
     private TextViewFont mSubTitle = null;
@@ -50,6 +47,15 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private FrameLayout mFrameParallax = null;
     private RecyclerView mRecyclerView = null;
 
+    public static void startAlphaAnimation(View v, long duration, int visibility) {
+        AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
+                ? new AlphaAnimation(0f, 1f)
+                : new AlphaAnimation(1f, 0f);
+
+        alphaAnimation.setDuration(duration);
+        alphaAnimation.setFillAfter(true);
+        v.startAnimation(alphaAnimation);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,14 +93,13 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         mRecyclerView.setAdapter(paymentMethodsAdapter);
     }
 
-
     private void bindDataToView() {
 
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
             String amount = Constants.CURRENCY_PREFIX + " "
-                    + Utils.getFormattedAmount(veritransSDK.getAmount());
+                    + Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount());
 
             mSubTitle.setText(amount);
             mTextViewAmountExpanded.setText(amount);
@@ -115,7 +120,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
     }
 
-
     private void initParallaxValues() {
         CollapsingToolbarLayout.LayoutParams petBackgroundLp =
                 (CollapsingToolbarLayout.LayoutParams) mFrameParallax.getLayoutParams();
@@ -131,7 +135,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         handleAlphaOnTitle(percentage);
         handleToolbarTitleVisibility(percentage);
     }
-
 
     private void handleToolbarTitleVisibility(float percentage) {
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
@@ -166,16 +169,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
                 //              startTranslateAnimation(true);
             }
         }
-    }
-
-    public static void startAlphaAnimation(View v, long duration, int visibility) {
-        AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
-                ? new AlphaAnimation(0f, 1f)
-                : new AlphaAnimation(1f, 0f);
-
-        alphaAnimation.setDuration(duration);
-        alphaAnimation.setFillAfter(true);
-        v.startAnimation(alphaAnimation);
     }
 
    /* public void startTranslateAnimation(boolean makeViewLarge) {

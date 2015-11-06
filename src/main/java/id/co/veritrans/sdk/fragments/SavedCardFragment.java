@@ -27,17 +27,17 @@ public class SavedCardFragment extends Fragment {
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
     private VeritransSDK veritransSDK;
-    private ArrayList<CardTokenRequest>cardDetails = new ArrayList<>();
+    private ArrayList<CardTokenRequest> cardDetails = new ArrayList<>();
 
     private TextViewFont emptyCardsTextViewFont;
+
+    public SavedCardFragment() {
+
+    }
 
     public static SavedCardFragment newInstance() {
         SavedCardFragment fragment = new SavedCardFragment();
         return fragment;
-    }
-
-    public SavedCardFragment() {
-
     }
 
     @Override
@@ -53,36 +53,43 @@ public class SavedCardFragment extends Fragment {
 
         emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
 
-        ((CreditDebitCardFlowActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.saved_card));
-        ((CreditDebitCardFlowActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
+                .string.saved_card));
+        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar()
+                .setDisplayHomeAsUpEnabled(true);
         bindViews(view);
         return view;
     }
 
     private void bindViews(View view) {
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
-        addCardBt = (FloatingActionButton)view.findViewById(R.id.btn_add_card);
+        addCardBt = (FloatingActionButton) view.findViewById(R.id.btn_add_card);
         addCardBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
-                ((CreditDebitCardFlowActivity) getActivity()).replaceFragment(addCardDetailsFragment, true, false);
+                AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
+                        .newInstance();
+                ((CreditDebitCardFlowActivity) getActivity()).replaceFragment
+                        (addCardDetailsFragment, true, false);
             }
         });
         float cardWidth = ((CreditDebitCardFlowActivity) getActivity()).getScreenWidth();
         float cardHeight = cardWidth * Constants.CARD_ASPECT_RATIO;
         Logger.i("card width:" + cardWidth + ",height:" + cardHeight);
-        RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(int)cardHeight);
+        RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(ViewGroup
+                .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-        cardDetails = ((CreditDebitCardFlowActivity)getActivity()).getCreditCards();
+        cardDetails = ((CreditDebitCardFlowActivity) getActivity()).getCreditCards();
 
-        if(cardDetails != null ) {
-            CardPagerAdapter cardPagerAdapter = new CardPagerAdapter(getChildFragmentManager(), cardDetails);
+        if (cardDetails != null) {
+            CardPagerAdapter cardPagerAdapter = new CardPagerAdapter(getChildFragmentManager(),
+                    cardDetails);
             savedCardPager.setAdapter(cardPagerAdapter);
             savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                public void onPageScrolled(int position, float positionOffset, int
+                        positionOffsetPixels) {
                 }
 
                 @Override
@@ -96,9 +103,9 @@ public class SavedCardFragment extends Fragment {
                 }
             });
             circlePageIndicator.setViewPager(savedCardPager);
-            if(cardDetails.isEmpty()){
+            if (cardDetails.isEmpty()) {
                 emptyCardsTextViewFont.setVisibility(View.VISIBLE);
-               // addCardBt.performClick();
+                // addCardBt.performClick();
             } else {
                 emptyCardsTextViewFont.setVisibility(View.GONE);
             }
@@ -111,7 +118,8 @@ public class SavedCardFragment extends Fragment {
     /*private void createDummyCards() {
         if(cardDetails.isEmpty()) {
             for (int i = 0; i < 2; i++) {
-                CardTokenRequest cardTokenRequest = new CardTokenRequest("4811111111111114",0,12,20,veritransSDK.getClientKey());
+                CardTokenRequest cardTokenRequest = new CardTokenRequest("4811111111111114",0,12,
+                20,veritransSDK.getClientKey());
                 cardTokenRequest.setBank("Permata");
                 cardTokenRequest.setSecure(true);
                 *//*CardDetail cardDetail = new CardDetail();

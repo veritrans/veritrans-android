@@ -34,8 +34,8 @@ public class Constants {
     public static final int ADDRESS_TYPE_BILLING = 1;
     public static final int ADDRESS_TYPE_SHIPPING = 2;
     public static final int ADDRESS_TYPE_BOTH = 3;
-    public static final String EMAIL_PATTERN ="^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 
     public static final float CARD_ASPECT_RATIO = 0.555f;
@@ -75,7 +75,9 @@ public class Constants {
      */
     public static final String ERROR_UNABLE_TO_CONNECT = "failed to connect to server.";
     public static final String ERROR_INVALID_EMAIL_ID = "Invalid email Id.";
-    public static final String ERROR_SOMETHING_WENT_WRONG = "Please try later, Something went wrong!";
+    public static final String ERROR_SOMETHING_WENT_WRONG = "Please try later, Something went " +
+            "wrong!";
+    public static final String ERROR_ALREADY_RUNNING = "Already Running!";
 
     public static final String SUCCESS_CODE_200 = "200";
     public static final String SUCCESS_CODE_201 = "201";

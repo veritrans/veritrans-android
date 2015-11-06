@@ -5,8 +5,6 @@ import android.text.TextUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.models.UserAddress;
-
 /**
  * Created by chetan on 19/10/15.
  */

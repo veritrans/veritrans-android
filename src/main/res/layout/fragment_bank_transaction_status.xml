@@ -36,16 +36,16 @@
 
 
         <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/text_payment_error_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_payment_error_message"
-            android:visibility="gone"
             android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/ic_error_info"
             android:gravity="center"
             android:text="@string/payment_unsuccessful_msg"
             android:textColor="@color/light_gray"
-            android:drawableLeft="@drawable/ic_error_info"
             android:textSize="@dimen/secondary_text_size"
+            android:visibility="gone"
             app:font="@string/font_open_sans_semibold"/>
 
 

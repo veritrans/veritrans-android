@@ -32,7 +32,7 @@
     <string name="validation_shippingcountry_empty">Please enter shipping country</string>
     <string name="validation_shippingzipcode_invalid">Please enter valid shipping zipcode</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="pay_with">Pay With</string>
     <string name="payable_amount">Payable Amount</string>
     <string name="select_payment_method">Select Payment Method</string>
@@ -88,7 +88,6 @@
     <string name="valid_thru">Valid Thru</string>
 
 
-
     <!-- Permata VA Bank Transfer-->
     <string name="virtual_account">Virtual Account</string>
     <string name="bank_transfer">Bank Transfer</string>
@@ -126,7 +125,6 @@
     <string name="mandiri_instruction_step4">4  Choose \'Online Transfer\'.</string>
     <string name="mandiri_instruction_step5">5  Enter the number 013 (code 013 and 16-digit account number).</string>
     <string name="mandiri_instruction_step6">6  The reference number can be left blank and then choose correct.</string>
-
 
 
     <!-- bca/ prima bank transfer Instruction-->

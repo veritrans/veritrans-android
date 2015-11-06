@@ -60,7 +60,7 @@ public class StorageDataHandler {
             ClassNotFoundException, IOException {
 
         if (context == null || key == null) {
-            Log.e(TAG +" Error ", "invalid input to Storage handler.");
+            Log.e(TAG + " Error ", "invalid input to Storage handler.");
             return null;
         } else {
             final FileInputStream fileInputStream = context.openFileInput(key);

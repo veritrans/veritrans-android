@@ -26,46 +26,44 @@ public interface VeritranceApiInterface {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
     Observable<TransactionResponse> paymentUsingPermataBank(@Header("Authorization")
-                                                                    String authorization,
-                                                                    @Body PermataBankTransfer
-                                                                            permataBankTransfer);
+                                                            String authorization,
+                                                            @Body PermataBankTransfer
+                                                                    permataBankTransfer);
 
 
     //token?card_number=4811111111111114&card_cvv=123&card_exp_month=06&card_exp_year=2020
     // &client_key=VT-client-Lre_JFh5klhfGefF
     @GET("/token/")
     Observable<TokenDetailsResponse> getToken(@Query("card_number") String cardNumber,
-                                      @Query("card_cvv") int cardCVV,
-                                      @Query("card_exp_month") int cardExpiryMonth,
-                                      @Query("card_exp_year") int cardExpiryYear,
-                                      @Query("client_key") String clientKey);
+                                              @Query("card_cvv") int cardCVV,
+                                              @Query("card_exp_month") int cardExpiryMonth,
+                                              @Query("card_exp_year") int cardExpiryYear,
+                                              @Query("client_key") String clientKey);
 
     /**
-     *
      * card_cvv, token_id, two_click, bank, secure, gross_amount
      */
     @GET("/token/")
     Observable<TokenDetailsResponse> getTokenTwoClick(
-                                              @Query("card_cvv") int cardCVV,
-                                              @Query("token_id") String tokenId,
-                                              @Query("two_click") boolean twoClick,
-                                              @Query("secure") boolean secure,
-                                              @Query("gross_amount") double grossAmount,
-                                              @Query("bank") String bank,
-                                              @Query("client_key") String clientKey);
+            @Query("card_cvv") int cardCVV,
+            @Query("token_id") String tokenId,
+            @Query("two_click") boolean twoClick,
+            @Query("secure") boolean secure,
+            @Query("gross_amount") double grossAmount,
+            @Query("bank") String bank,
+            @Query("client_key") String clientKey);
+
     @GET("/token/")
     Observable<TokenDetailsResponse> get3DSToken(@Query("card_number") String cardNumber,
-                                         @Query("card_cvv") int cardCVV,
-                                         @Query("card_exp_month") int cardExpiryMonth,
-                                         @Query("card_exp_year") int cardExpiryYear,
-                                         @Query("client_key") String clientKey,
-                                         @Query("bank") String bank,
-                                         @Query("secure") boolean secure,
-                                         @Query("two_click") boolean twoClick,
-                                         @Query("gross_amount") double grossAmount
+                                                 @Query("card_cvv") int cardCVV,
+                                                 @Query("card_exp_month") int cardExpiryMonth,
+                                                 @Query("card_exp_year") int cardExpiryYear,
+                                                 @Query("client_key") String clientKey,
+                                                 @Query("bank") String bank,
+                                                 @Query("secure") boolean secure,
+                                                 @Query("two_click") boolean twoClick,
+                                                 @Query("gross_amount") double grossAmount
     );
-
-
 
 
     //http://api.sandbox.veritrans.co.id/v2/10938010/cancel/
@@ -87,31 +85,26 @@ public interface VeritranceApiInterface {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
     Observable<TransactionResponse> paymentUsingCard(@Header("Authorization")
-                                                                    String authorization,
-                                                                    @Body CardTransfer
-                                                                            cardTransfer);
-
-
-
+                                                     String authorization,
+                                                     @Body CardTransfer
+                                                             cardTransfer);
 
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
     Observable<TransactionResponse> paymentUsingMandiriClickPay(@Header("Authorization")
-                                                            String authorization,
-                                                            @Body MandiriClickPayRequestModel
-                                                                    mandiriClickPayRequestModel);
-
-
+                                                                String authorization,
+                                                                @Body MandiriClickPayRequestModel
+                                                                        mandiriClickPayRequestModel);
 
 
     //mandiri bill pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
     Observable<TransactionResponse> paymentUsingMandiriBillPay(@Header("Authorization")
-                                                            String authorization,
-                                                            @Body MandiriBillPayTransferModel
-                                                                    mandiriBillPayTransferModel);
+                                                               String authorization,
+                                                               @Body MandiriBillPayTransferModel
+                                                                       mandiriBillPayTransferModel);
 
 
 }

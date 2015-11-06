@@ -11,26 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
-import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
-import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.MandiriClickPayFragment;
-import id.co.veritrans.sdk.models.BillingAddress;
-import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
-import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
-import id.co.veritrans.sdk.models.ShippingAddress;
-import id.co.veritrans.sdk.models.TransactionDetails;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import id.co.veritrans.sdk.models.UserAddress;
-import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -47,10 +35,6 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
     private TextViewFont mTextViewInput2 = null;
     private TextViewFont mTextViewInput3 = null;
     private VeritransSDK mVeritransSDK = null;
-
-    private ArrayList<BillingAddress> mBillingAddressArrayList = new ArrayList<>();
-    private ArrayList<ShippingAddress> mShippingAddressArrayList = new ArrayList<>();
-    private CustomerDetails mCustomerDetails = null;
 
 
     @Override
@@ -92,7 +76,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
     private void bindDataToView() {
         mTextViewInput1.setText("");
-        mTextViewInput2.setText("" + mVeritransSDK.getAmount());
+        mTextViewInput2.setText("" + mVeritransSDK.getTransactionRequest().getAmount());
         mTextViewInput3.setText("" + SdkUtil.generateRandomNumber());
     }
 
@@ -157,18 +141,17 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
             String challengeToken = mMandiriClickPayFragment.getChallengeToken();
             String debitCardNumber = mMandiriClickPayFragment.getDebitCardNumber();
 
-            if ( !TextUtils.isEmpty(challengeToken) && !TextUtils.isEmpty(debitCardNumber)) {
+            if (!TextUtils.isEmpty(challengeToken) && !TextUtils.isEmpty(debitCardNumber)) {
 
                 debitCardNumber = debitCardNumber.replace(" ", "");
 
                 if (debitCardNumber.length() < 16 || !SdkUtil.isValidCardNumber(debitCardNumber)) {
                     SdkUtil.showSnackbar(MandiriClickPayActivity.this,
                             getString(R.string.validation_message_invalid_card_no));
-                }else if ( challengeToken.trim().length() != 6 ){
+                } else if (challengeToken.trim().length() != 6) {
                     SdkUtil.showSnackbar(MandiriClickPayActivity.this,
                             getString(R.string.validation_message_invalid_token_no));
-                }
-                else {
+                } else {
 
                     MandiriClickPayModel mandiriClickPayModel = new MandiriClickPayModel();
                     mandiriClickPayModel.setCardNumber(debitCardNumber);
@@ -198,107 +181,26 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
     private void makeTransaction(MandiriClickPayModel mandiriClickPayModel) {
 
-        getUserDetails();
-        int amount = 100;
-
-        //transaction details
-        TransactionDetails transactionDetails =
-                new TransactionDetails( "" + amount, mVeritransSDK.getOrderId());
-
-        MandiriClickPayRequestModel mandiriClickPayRequestModel =
-                new MandiriClickPayRequestModel(mandiriClickPayModel, transactionDetails, null,
-                        mBillingAddressArrayList, mShippingAddressArrayList,
-                        mCustomerDetails);
-
 
         mVeritransSDK.paymentUsingMandiriClickPay(MandiriClickPayActivity.this,
-                mandiriClickPayRequestModel, new TransactionCallback() {
+                mandiriClickPayModel, new TransactionCallback() {
 
-            @Override
-            public void onFailure(String errorMessage,TransactionResponse transactionResponse) {
-                Toast.makeText(getApplicationContext(), "failed : " + errorMessage, Toast
-                        .LENGTH_SHORT).show();
-            }
+                    @Override
+                    public void onFailure(String errorMessage, TransactionResponse
+                            transactionResponse) {
+                        Toast.makeText(getApplicationContext(), "failed : " + errorMessage, Toast
+                                .LENGTH_SHORT).show();
+                    }
 
-            @Override
-            public void onSuccess(TransactionResponse transactionResponse) {
-                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onSuccess(TransactionResponse transactionResponse) {
+                        Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
 
 
     }
 
-
-    private void getUserDetails() {
-
-        UserDetail userDetail = null;
-
-        try {
-            userDetail = (UserDetail) StorageDataHandler.readObject(getApplicationContext(),
-                    Constants.USER_DETAILS);
-
-            if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
-
-                ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-                if (userAddresses != null && !userAddresses.isEmpty()) {
-
-                    Logger.i("Found " + userAddresses.size() + " user addresses.");
-
-                    mCustomerDetails = new CustomerDetails();
-                    mCustomerDetails.setPhone(userDetail.getPhoneNumber());
-                    mCustomerDetails.setFirstName(userDetail.getUserFullName());
-                    mCustomerDetails.setLastName(" ");
-                    mCustomerDetails.setEmail("");
-
-                    //add email which is entered in editText
-                    //mCustomerDetails.setEmail(userDetail.getEmail());
-
-
-                    extractUserAddress(userDetail, userAddresses);
-                }
-
-            } else {
-                SdkUtil.showSnackbar(MandiriClickPayActivity.this, "User details not available.");
-                finish();
-            }
-        } catch (ClassNotFoundException ex) {
-            Logger.e("Error while fetching user details : " + ex.getMessage());
-        } catch (IOException ex) {
-            Logger.e("Error while fetching user details : " + ex.getMessage());
-        }
-    }
-
-
-    private void extractUserAddress(UserDetail userDetail, ArrayList<UserAddress> userAddresses) {
-
-        for (int i = 0; i < userAddresses.size(); i++) {
-
-            UserAddress userAddress = userAddresses.get(i);
-
-            if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_BILLING) {
-                BillingAddress billingAddress = new BillingAddress();
-                billingAddress.setCity(userAddress.getCity());
-                billingAddress.setFirstName(userDetail.getUserFullName());
-                billingAddress.setLastName("");
-                billingAddress.setPhone(userDetail.getPhoneNumber());
-                billingAddress.setCountryCode(userAddress.getCountry());
-                billingAddress.setPostalCode(userAddress.getZipcode());
-                mBillingAddressArrayList.add(billingAddress);
-            } else {
-
-                ShippingAddress shippingAddress = new ShippingAddress();
-                shippingAddress.setCity(userAddress.getCity());
-                shippingAddress.setFirstName(userDetail.getUserFullName());
-                shippingAddress.setLastName("");
-                shippingAddress.setPhone(userDetail.getPhoneNumber());
-                shippingAddress.setCountryCode(userAddress.getCountry());
-                shippingAddress.setPostalCode(userAddress.getZipcode());
-                mShippingAddressArrayList.add(shippingAddress);
-
-            }
-
-        }
-    }
 
 }

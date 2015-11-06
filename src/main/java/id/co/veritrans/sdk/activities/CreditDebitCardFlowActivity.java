@@ -37,7 +37,8 @@ import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.UserAddress;
 import id.co.veritrans.sdk.models.UserDetail;
 
-public class CreditDebitCardFlowActivity extends AppCompatActivity implements TokenCallBack, TransactionCallback {
+public class CreditDebitCardFlowActivity extends AppCompatActivity implements TokenCallBack,
+        TransactionCallback {
     private static final int PAYMENT_WEB_INTENT = 100;
     private static final int GET_TOKEN = 50;
     private static final int PAY_USING_CARD = 51;
@@ -92,7 +93,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
         } else {
-            if (currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class.getName())) {
+            if (currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class
+                    .getName())) {
                 finish();
             } else {
                 super.onBackPressed();
@@ -118,7 +120,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
     public void getToken() {
         if (cardTokenRequest != null) {
-            this.cardTokenRequest.setGrossAmount(veritransSDK.getAmount());
+            this.cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
             SdkUtil.showProgressDialog(this, false);
             veritransSDK.getToken(CreditDebitCardFlowActivity.this, this.cardTokenRequest, this);
         } else {
@@ -132,8 +134,9 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 userDetail.getEmail(), userDetail.getPhoneNumber());
 
         ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-        TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.getAmount(),
-                veritransSDK.getOrderId());
+        TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.
+                getTransactionRequest().getAmount(),
+                veritransSDK.getTransactionRequest().getOrderId());
         if (userAddresses != null && !userAddresses.isEmpty()) {
             ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
             ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
@@ -174,7 +177,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 e.printStackTrace();
             }
             //for one click
-            if (veritransSDK.getCardClickType().equalsIgnoreCase(Constants.CARD_CLICK_TYPE_ONE_CLICK) &&
+            if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
+                    (Constants.CARD_CLICK_TYPE_ONE_CLICK) &&
                     !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
                 cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
                         cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved());
@@ -251,8 +255,9 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {
         SdkUtil.hideProgressDialog();
         this.tokenDetailsResponse = tokenDetailsResponse;
-        Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + "," + veritransSDK.isSecureCard());
-        if (veritransSDK.isSecureCard()) {
+        Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
+                + veritransSDK.getTransactionRequest().isSecureCard());
+        if (veritransSDK.getTransactionRequest().isSecureCard()) {
             if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
                 Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
                 intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
@@ -298,7 +303,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                     int position = -1;
                     for (int i = 0; i < creditCards.size(); i++) {
                         CardTokenRequest card = creditCards.get(i);
-                        if (card.getCardNumber().equalsIgnoreCase(cardTokenRequest.getCardNumber())) {
+                        if (card.getCardNumber().equalsIgnoreCase(cardTokenRequest.getCardNumber
+                                ())) {
                             position = i;
                             break;
                         }
@@ -310,7 +316,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 cardTokenRequest.setCardCVV(0);
                 cardTokenRequest.setClientKey("");
                 cardTokenRequest.setGrossAmount(0);
-                if (cardTokenRequest.isSaved() && !TextUtils.isEmpty(cardPaymentResponse.getSavedTokenId())) {
+                if (cardTokenRequest.isSaved() && !TextUtils.isEmpty(cardPaymentResponse
+                        .getSavedTokenId())) {
                     cardTokenRequest.setSavedTokenId(cardPaymentResponse.getSavedTokenId());
                 }
                 Logger.i("Card:" + cardTokenRequest.getString());
@@ -337,7 +344,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
     public ArrayList<CardTokenRequest> getCreditCards() {
         try {
-            ArrayList<CardTokenRequest> cards = (ArrayList<CardTokenRequest>) storageDataHandler.readObject(this, Constants.USERS_SAVED_CARD);
+            ArrayList<CardTokenRequest> cards = (ArrayList<CardTokenRequest>) storageDataHandler
+                    .readObject(this, Constants.USERS_SAVED_CARD);
             if (cards != null) {
                 creditCards.clear();
                 creditCards.addAll(cards);
