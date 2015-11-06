@@ -47,7 +47,8 @@ public class CardTokenRequest implements Serializable {
     }
 
     //card_cvv, token_id, two_click, bank, secure, gross_amount
-   /* public CardTokenRequest(int cardCVV, String token, boolean isTwoClick, boolean isSecure, String bank, double grossAmount) {
+   /* public CardTokenRequest(int cardCVV, String token, boolean isTwoClick, boolean isSecure,
+   String bank, double grossAmount) {
 
         this.cardCVV = cardCVV;
         this.savedTokenId = token;
@@ -61,8 +62,16 @@ public class CardTokenRequest implements Serializable {
         return cardNumber;
     }
 
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
     public int getCardCVV() {
         return cardCVV;
+    }
+
+    public void setCardCVV(int cardCVV) {
+        this.cardCVV = cardCVV;
     }
 
     public int getCardExpiryMonth() {
@@ -75,6 +84,10 @@ public class CardTokenRequest implements Serializable {
 
     public String getClientKey() {
         return clientKey;
+    }
+
+    public void setClientKey(String clientKey) {
+        this.clientKey = clientKey;
     }
 
     /**
@@ -162,24 +175,12 @@ public class CardTokenRequest implements Serializable {
         return "XX/XX";
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public void setCardCVV(int cardCVV) {
-        this.cardCVV = cardCVV;
-    }
-
     public String getSavedTokenId() {
         return savedTokenId;
     }
 
     public void setSavedTokenId(String savedTokenId) {
         this.savedTokenId = savedTokenId;
-    }
-
-    public void setClientKey(String clientKey) {
-        this.clientKey = clientKey;
     }
 
     public String getString() {

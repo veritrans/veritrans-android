@@ -56,13 +56,16 @@ public class BankTransferPaymentFragment extends Fragment {
 
 
         if (sPermataBankTransferResponse != null) {
-            if (sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
-                    sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201)
+            if (sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(Constants
+                    .SUCCESS_CODE_200) ||
+                    sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase
+                            (Constants.SUCCESS_CODE_201)
                     )
                 mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse
                         .getPermataVANumber());
 
-                mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime(sPermataBankTransferResponse.getTransactionTime()));
+            mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime
+                    (sPermataBankTransferResponse.getTransactionTime()));
 
         } else {
             mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse.getStatusMessage());

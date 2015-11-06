@@ -5,12 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="id.co.veritrans.sdk.activities.PaymentWebActivity">
-    <include android:id="@+id/toolbar"
-             layout="@layout/layout_toolbar"
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar"
         />
-    <RelativeLayout android:id="@+id/webview_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/toolbar"
+
+    <RelativeLayout
+        android:id="@+id/webview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
         ></RelativeLayout>
 </RelativeLayout>

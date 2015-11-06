@@ -103,7 +103,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 e.printStackTrace();
             }
             if (transactionResponse != null) {
-                if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
+                if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants
+                        .SUCCESS_CODE_200) ||
 
                         transactionResponse.getStatusCode().
                                 equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {

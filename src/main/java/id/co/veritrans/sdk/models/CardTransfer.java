@@ -8,23 +8,23 @@ import java.util.ArrayList;
 /**
  * Created by shivam on 10/26/15.
  */
-public class CardTransfer extends TransactionModel{
+public class CardTransfer extends TransactionModel {
 
     public static final String PAYMENT_TYPE = "credit_card";
 
     /**
      * {
-     "payment_type":"credit_card",
-     "credit_card":{
-     "token_id":"481111-1114-7fd8c06e-a612-4f0b-a6d4-4fa2b8918c39",
-     "bank": "bni",
-     "save_token_id":"true"
-     },
-     "transaction_details":{
-     "gross_amount":10000,
-     "order_id":"10938033"
-     }
-     }
+     * "payment_type":"credit_card",
+     * "credit_card":{
+     * "token_id":"481111-1114-7fd8c06e-a612-4f0b-a6d4-4fa2b8918c39",
+     * "bank": "bni",
+     * "save_token_id":"true"
+     * },
+     * "transaction_details":{
+     * "gross_amount":10000,
+     * "order_id":"10938033"
+     * }
+     * }
      */
 
 
@@ -32,7 +32,8 @@ public class CardTransfer extends TransactionModel{
     private CardPaymentDetails cardPaymentDetails;
 
 
-    public CardTransfer(CardPaymentDetails cardPaymentDetails, TransactionDetails transactionDetails,
+    public CardTransfer(CardPaymentDetails cardPaymentDetails, TransactionDetails
+            transactionDetails,
                         ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
                                 billingAddresses, ArrayList<ShippingAddress>
                                 shippingAddresses, CustomerDetails customerDetails) {

@@ -141,7 +141,8 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
         if (mVeritransSDK != null) {
 
-            mTextViewAmount.setText(Constants.CURRENCY_PREFIX + " " + mVeritransSDK.getTransactionRequest().getAmount());
+            mTextViewAmount.setText(Constants.CURRENCY_PREFIX + " " + mVeritransSDK
+                    .getTransactionRequest().getAmount());
             mTextViewOrderId.setText(" " + mVeritransSDK.getTransactionRequest().getOrderId());
             mButtonConfirmPayment.setTypeface(mVeritransSDK.getTypefaceOpenSansSemiBold());
             mButtonConfirmPayment.setOnClickListener(this);
@@ -250,9 +251,6 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-
-
-
     private void performTrsansaction() {
 
 
@@ -300,35 +298,35 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         veritransSDK.paymentUsingPermataBank(BankTransferActivity.this, new TransactionCallback() {
 
 
-                    @Override
-                    public void onSuccess(TransactionResponse
-                                                  permataBankTransferResponse) {
+            @Override
+            public void onSuccess(TransactionResponse
+                                          permataBankTransferResponse) {
 
-                        SdkUtil.hideProgressDialog();
+                SdkUtil.hideProgressDialog();
 
-                        if (permataBankTransferResponse != null) {
-                            mTransactionResponse = permataBankTransferResponse;
-                            mAppBarLayout.setExpanded(true);
-                            setUpTransactionFragment(permataBankTransferResponse);
-                        } else {
-                            onBackPressed();
-                        }
+                if (permataBankTransferResponse != null) {
+                    mTransactionResponse = permataBankTransferResponse;
+                    mAppBarLayout.setExpanded(true);
+                    setUpTransactionFragment(permataBankTransferResponse);
+                } else {
+                    onBackPressed();
+                }
 
-                    }
+            }
 
-                    @Override
-                    public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+            @Override
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
 
-                        try {
+                try {
 
-                            SdkUtil.hideProgressDialog();
-                            SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+                    SdkUtil.hideProgressDialog();
+                    SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
 
-                        } catch (NullPointerException ex) {
-                            Logger.e("transaction error is " + errorMessage);
-                        }
-                    }
-                });
+                } catch (NullPointerException ex) {
+                    Logger.e("transaction error is " + errorMessage);
+                }
+            }
+        });
     }
 
 
@@ -337,36 +335,38 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         // bank name
 
 
-        veritransSDK.paymentUsingMandiriBillPay(BankTransferActivity.this,  new TransactionCallback() {
+        veritransSDK.paymentUsingMandiriBillPay(BankTransferActivity.this, new
+                TransactionCallback() {
 
-                    @Override
-                    public void onSuccess(TransactionResponse
-                                                  mandiriBillPayTransferResponse) {
+            @Override
+            public void onSuccess(TransactionResponse
+                                          mandiriBillPayTransferResponse) {
 
-                        SdkUtil.hideProgressDialog();
+                SdkUtil.hideProgressDialog();
 
-                        if (mandiriBillPayTransferResponse != null) {
-                            mTransactionResponse = mandiriBillPayTransferResponse;
-                            mAppBarLayout.setExpanded(true);
-                            setUpTransactionFragment(mandiriBillPayTransferResponse);
-                        } else {
-                            onBackPressed();
-                        }
+                if (mandiriBillPayTransferResponse != null) {
+                    mTransactionResponse = mandiriBillPayTransferResponse;
+                    mAppBarLayout.setExpanded(true);
+                    setUpTransactionFragment(mandiriBillPayTransferResponse);
+                } else {
+                    onBackPressed();
+                }
 
-                    }
-                        @Override
-                        public void onFailure(String errorMessage,TransactionResponse transactionResponse) {
+            }
 
-                        try {
+            @Override
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
 
-                            SdkUtil.hideProgressDialog();
-                            SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+                try {
 
-                        } catch (NullPointerException ex) {
-                            Logger.e("transaction error is " + errorMessage);
-                        }
-                    }
-                });
+                    SdkUtil.hideProgressDialog();
+                    SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+
+                } catch (NullPointerException ex) {
+                    Logger.e("transaction error is " + errorMessage);
+                }
+            }
+        });
     }
 
     public int getPosition() {
@@ -375,8 +375,8 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
     public void activateRetry() {
 
-            if( mButtonConfirmPayment != null ){
-                mButtonConfirmPayment.setText(getResources().getString(R.string.retry));
-            }
+        if (mButtonConfirmPayment != null) {
+            mButtonConfirmPayment.setText(getResources().getString(R.string.retry));
+        }
     }
 }

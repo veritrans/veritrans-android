@@ -237,7 +237,8 @@ public class Utils {
                     String splitedDate[] = date.split("-");
                     String month = getMonth(Integer.parseInt(splitedDate[1]));
 
-                    String validityTime = ""+splitedDate[2]+" "+month+" "+splitedDate[0]+", "+data[1];
+                    String validityTime = "" + splitedDate[2] + " " + month + " " +
+                            splitedDate[0] + ", " + data[1];
 
                     Logger.i("after parsing validity date becomes : " + date);
                     Logger.i("month is : " + month);

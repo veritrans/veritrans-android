@@ -15,32 +15,24 @@ import id.co.veritrans.sdk.models.ShippingAddress;
  */
 public class TransactionRequest {
 
-    public static final String ERROR_MESSAGE = "can/'t change values at this moment , transaction is " +
+    public static final String ERROR_MESSAGE = "can/'t change values at this moment , transaction" +
+            " is " +
             "already initialized.";
-    private String orderId = null;
-
-    private double amount = 0.0;
-
     /**
      * payment method using which user wants to perform transaction.
      * use payment methods from {@link id.co.veritrans.sdk.core.Constants}
      */
     protected int paymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
-
+    protected Activity activity = null;
+    private String orderId = null;
+    private double amount = 0.0;
     private boolean isSecureCard = true;
-
     private String cardClickType;
-
     private BillInfoModel billInfoModel = null;
-
     private ArrayList<ItemDetails> itemDetails = new ArrayList();
     private ArrayList<BillingAddress> mBillingAddressArrayList = new ArrayList<>();
     private ArrayList<ShippingAddress> mShippingAddressArrayList = new ArrayList<>();
     private CustomerDetails mCustomerDetails = null;
-
-
-    protected Activity activity = null;
-
     private boolean useUi = true;
 
 
@@ -57,32 +49,20 @@ public class TransactionRequest {
         }
     }
 
+    public CustomerDetails getCustomerDetails() {
+        return mCustomerDetails;
+    }
 
-    public void setBillInfoModel(BillInfoModel billInfoModel) {
-
+    public void setCustomerDetails(CustomerDetails customerDetails) {
         if (!VeritransSDK.getVeritransSDK().isRunning()) {
-            this.billInfoModel = billInfoModel;
+            mCustomerDetails = customerDetails;
         } else {
             Logger.e(ERROR_MESSAGE);
         }
     }
 
-    public void setItemDetails(ArrayList<ItemDetails> itemDetails) {
-
-        if (!VeritransSDK.getVeritransSDK().isRunning()) {
-            this.itemDetails = itemDetails;
-        } else {
-            Logger.e(ERROR_MESSAGE);
-        }
-    }
-
-
-    public void setShippingAddressArrayList(ArrayList<ShippingAddress> shippingAddressArrayList) {
-        if (!VeritransSDK.getVeritransSDK().isRunning()) {
-            mShippingAddressArrayList = shippingAddressArrayList;
-        } else {
-            Logger.e(ERROR_MESSAGE);
-        }
+    public ArrayList<BillingAddress> getBillingAddressArrayList() {
+        return mBillingAddressArrayList;
     }
 
     public void setBillingAddressArrayList(ArrayList<BillingAddress> billingAddressArrayList) {
@@ -93,30 +73,17 @@ public class TransactionRequest {
         }
     }
 
-
-    public void setCustomerDetails(CustomerDetails customerDetails) {
-        if (!VeritransSDK.getVeritransSDK().isRunning()) {
-            mCustomerDetails = customerDetails;
-        } else {
-            Logger.e(ERROR_MESSAGE);
-        }
-    }
-
-
-    public CustomerDetails getCustomerDetails() {
-        return mCustomerDetails;
-    }
-
-
-    public ArrayList<BillingAddress> getBillingAddressArrayList() {
-        return mBillingAddressArrayList;
-    }
-
-
     public ArrayList<ShippingAddress> getShippingAddressArrayList() {
         return mShippingAddressArrayList;
     }
 
+    public void setShippingAddressArrayList(ArrayList<ShippingAddress> shippingAddressArrayList) {
+        if (!VeritransSDK.getVeritransSDK().isRunning()) {
+            mShippingAddressArrayList = shippingAddressArrayList;
+        } else {
+            Logger.e(ERROR_MESSAGE);
+        }
+    }
 
     public String getOrderId() {
         return orderId;
@@ -142,8 +109,26 @@ public class TransactionRequest {
         return billInfoModel;
     }
 
+    public void setBillInfoModel(BillInfoModel billInfoModel) {
+
+        if (!VeritransSDK.getVeritransSDK().isRunning()) {
+            this.billInfoModel = billInfoModel;
+        } else {
+            Logger.e(ERROR_MESSAGE);
+        }
+    }
+
     public ArrayList<ItemDetails> getItemDetails() {
         return itemDetails;
+    }
+
+    public void setItemDetails(ArrayList<ItemDetails> itemDetails) {
+
+        if (!VeritransSDK.getVeritransSDK().isRunning()) {
+            this.itemDetails = itemDetails;
+        } else {
+            Logger.e(ERROR_MESSAGE);
+        }
     }
 
     public Activity getActivity() {

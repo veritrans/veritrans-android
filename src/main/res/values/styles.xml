@@ -23,6 +23,7 @@
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
     </style>
+
     <style name="TransperentTheme" parent="VeritransAppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="windowActionBar">false</item>

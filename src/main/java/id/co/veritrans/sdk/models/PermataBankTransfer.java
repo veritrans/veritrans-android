@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by shivam on 10/26/15.
  */
-public class PermataBankTransfer extends TransactionModel{
+public class PermataBankTransfer extends TransactionModel {
 
 
     public static final String PAYMENT_TYPE = "bank_transfer";

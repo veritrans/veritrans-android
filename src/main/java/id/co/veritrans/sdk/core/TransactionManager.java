@@ -23,8 +23,7 @@ import rx.schedulers.Schedulers;
  */
 class TransactionManager {
 
-    private static  Subscription mSubscription = null;
-
+    private static Subscription mSubscription = null;
 
 
     public static void getToken(Activity activity, CardTokenRequest cardTokenRequest, final
@@ -73,7 +72,7 @@ class TransactionManager {
                             @Override
                             public void onCompleted() {
 
-                                if ( mSubscription != null && !mSubscription.isUnsubscribed()){
+                                if (mSubscription != null && !mSubscription.isUnsubscribed()) {
                                     mSubscription.unsubscribe();
                                 }
 
@@ -246,7 +245,7 @@ class TransactionManager {
                                 @Override
                                 public void onCompleted() {
 
-                                    if ( mSubscription != null && !mSubscription.isUnsubscribed()){
+                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
                                         mSubscription.unsubscribe();
                                     }
 
@@ -277,7 +276,8 @@ class TransactionManager {
                                                     cardPaymentResponse.getStatusCode());
                                             cardPaymentTransactionCallback.onFailure
                                                     (cardPaymentResponse
-                                                    .getStatusMessage(), cardPaymentResponse);
+                                                            .getStatusMessage(),
+                                                            cardPaymentResponse);
                                         }
 
                                     } else {
@@ -322,7 +322,7 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingMandiriClickPay(authorization,
                             mandiriClickPayRequestModel);
 
-                    mSubscription  = observable.subscribeOn(Schedulers
+                    mSubscription = observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
@@ -330,7 +330,7 @@ class TransactionManager {
                                 @Override
                                 public void onCompleted() {
 
-                                    if ( mSubscription != null && !mSubscription.isUnsubscribed()){
+                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
                                         mSubscription.unsubscribe();
                                     }
 
@@ -422,7 +422,7 @@ class TransactionManager {
                                 @Override
                                 public void onCompleted() {
 
-                                    if ( mSubscription != null && !mSubscription.isUnsubscribed()){
+                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
                                         mSubscription.unsubscribe();
                                     }
 
@@ -457,7 +457,7 @@ class TransactionManager {
                                             callBack.onSuccess(permataBankTransferResponse);
                                         } else {
                                             callBack.onFailure(permataBankTransferResponse
-                                                    .getStatusMessage(),
+                                                            .getStatusMessage(),
                                                     permataBankTransferResponse);
                                         }
 
@@ -526,8 +526,7 @@ class TransactionManager {
     }
 
 
-
-    private static void releaseResources(){
+    private static void releaseResources() {
         if (VeritransSDK.getVeritransSDK() != null) {
             VeritransSDK.getVeritransSDK().isRunning = false;
         }

@@ -108,7 +108,8 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                     break;
 
                 case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
-                    Intent startMandiriClickpay = new Intent(sActivity, MandiriClickPayActivity.class);
+                    Intent startMandiriClickpay = new Intent(sActivity, MandiriClickPayActivity
+                            .class);
                     sActivity.startActivity(startMandiriClickpay);
                     break;
 

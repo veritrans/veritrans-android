@@ -103,7 +103,7 @@ public class BankTransactionStatusFragment extends Fragment {
 
             } else if (mPermataBankTransferResponse.getStatusCode().equalsIgnoreCase(Constants
                     .SUCCESS_CODE_200) || mPermataBankTransferResponse.getStatusCode().
-                            equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+                    equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
 
                 setUiForSuccess();
             } else {

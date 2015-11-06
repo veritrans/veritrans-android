@@ -21,10 +21,8 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class MandiriBillPayFragment extends Fragment {
 
     public static final String VALID_UNTILL = "Valid Untill : ";
-    private TransactionResponse mTransactionResponse = null;
-
     private static final String DATA = "data";
-
+    private TransactionResponse mTransactionResponse = null;
     private TextViewFont mTextViewCompanyCode = null;
     private TextViewFont mTextViewBillpayCode = null;
     private TextViewFont mTextViewSeeInstruction = null;
@@ -32,7 +30,7 @@ public class MandiriBillPayFragment extends Fragment {
 
 
     public static MandiriBillPayFragment newInstance(TransactionResponse
-                                                                  permataBankTransferResponse) {
+                                                             permataBankTransferResponse) {
 
         MandiriBillPayFragment fragment = new MandiriBillPayFragment();
         Bundle data = new Bundle();
@@ -48,7 +46,7 @@ public class MandiriBillPayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mandiri_bill_pay, container, false);
 
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             mTransactionResponse = (TransactionResponse) getArguments().getSerializable(DATA);
             initializeViews(view);
         }
@@ -65,8 +63,10 @@ public class MandiriBillPayFragment extends Fragment {
 
 
         if (mTransactionResponse != null) {
-            if (mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
-                    mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201)
+            if (mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants
+                    .SUCCESS_CODE_200) ||
+                    mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants
+                            .SUCCESS_CODE_201)
                     )
                 mTextViewCompanyCode.setText(mTransactionResponse
                         .getCompanyCode());

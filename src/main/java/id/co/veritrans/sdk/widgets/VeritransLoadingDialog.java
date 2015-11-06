@@ -17,6 +17,7 @@ public class VeritransLoadingDialog extends Dialog {
     public VeritransLoadingDialog(Context context) {
         super(context);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -31,10 +31,11 @@ public class MandiriClickPayRequestModel extends TransactionModel {
      */
 
 
-    public MandiriClickPayRequestModel(MandiriClickPayModel mandiriClickPayModel, TransactionDetails transactionDetails,
-                               ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
-                                       billingAddresses, ArrayList<ShippingAddress>
-                                       shippingAddresses, CustomerDetails customerDetails) {
+    public MandiriClickPayRequestModel(MandiriClickPayModel mandiriClickPayModel,
+                                       TransactionDetails transactionDetails,
+                                       ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
+                                               billingAddresses, ArrayList<ShippingAddress>
+                                               shippingAddresses, CustomerDetails customerDetails) {
 
         this.paymentType = PAYMENT_TYPE;
         this.mandiriClickPayModel = mandiriClickPayModel;
@@ -46,7 +47,7 @@ public class MandiriClickPayRequestModel extends TransactionModel {
     }
 
 
-    public  String getPaymentType() {
+    public String getPaymentType() {
         return PAYMENT_TYPE;
     }
 

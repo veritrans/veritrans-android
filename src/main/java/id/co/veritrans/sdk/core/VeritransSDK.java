@@ -22,12 +22,11 @@ import id.co.veritrans.sdk.models.PermataBankTransfer;
  */
 public class VeritransSDK {
 
+    public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
+            "details are necessary.";
     private static final String FONTS_OPEN_SANS_BOLD_TTF = "fonts/open_sans_bold.ttf";
     private static final String FONTS_OPEN_SANS_REGULAR_TTF = "fonts/open_sans_regular.ttf";
     private static final String FONTS_OPEN_SANS_SEMI_BOLD_TTF = "fonts/open_sans_semibold.ttf";
-    public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
-            "details are necessary.";
-
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
 
     private static Context sContext = null;
@@ -38,11 +37,9 @@ public class VeritransSDK {
 
     private static VeritransSDK sVeritransSDK = new VeritransSDK();
     private static boolean sIsLogEnabled = true;
-
-    protected boolean isRunning = false;
     private static String sServerKey = null;
     private static String sClientKey = null;
-
+    protected boolean isRunning = false;
     private TransactionRequest mTransactionRequest = null;
 
 
@@ -72,18 +69,6 @@ public class VeritransSDK {
                 FONTS_OPEN_SANS_SEMI_BOLD_TTF);
     }
 
-    public Typeface getTypefaceOpenSansRegular() {
-        return typefaceOpenSansRegular;
-    }
-
-    public Typeface getTypefaceOpenSansSemiBold() {
-        return typefaceOpenSansSemiBold;
-    }
-
-    public Typeface getTypefaceOpenSansBold() {
-        return typefaceOpenSansBold;
-    }
-
     /**
      * Returns instance of veritrans sdk.
      *
@@ -99,6 +84,18 @@ public class VeritransSDK {
 
         Log.e(Constants.TAG, Constants.ERROR_SDK_IS_NOT_INITIALIZED);
         return null;
+    }
+
+    public Typeface getTypefaceOpenSansRegular() {
+        return typefaceOpenSansRegular;
+    }
+
+    public Typeface getTypefaceOpenSansSemiBold() {
+        return typefaceOpenSansSemiBold;
+    }
+
+    public Typeface getTypefaceOpenSansBold() {
+        return typefaceOpenSansBold;
     }
 
     public boolean isRunning() {

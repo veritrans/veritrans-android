@@ -21,6 +21,7 @@ public class PaymentWebActivity extends AppCompatActivity {
     private VeritransSDK veritransSDK;
     private RelativeLayout webviewContainer;
     private String webUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +61,9 @@ public class PaymentWebActivity extends AppCompatActivity {
         if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
         } else {
-            if(currentFragmentName.equalsIgnoreCase(WebviewFragment.class.getName())){
-                if(((WebviewFragment)currentFragment).webView.canGoBack()){
-                    ((WebviewFragment)currentFragment).webviewBackPressed();
+            if (currentFragmentName.equalsIgnoreCase(WebviewFragment.class.getName())) {
+                if (((WebviewFragment) currentFragment).webView.canGoBack()) {
+                    ((WebviewFragment) currentFragment).webviewBackPressed();
                 } else {
                     super.onBackPressed();
                 }

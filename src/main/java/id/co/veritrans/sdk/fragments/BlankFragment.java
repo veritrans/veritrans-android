@@ -1,9 +1,9 @@
 package id.co.veritrans.sdk.fragments;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +30,10 @@ public class BlankFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    public BlankFragment() {
+        // Required empty public constructor
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -46,10 +50,6 @@ public class BlankFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public BlankFragment() {
-        // Required empty public constructor
     }
 
     @Override

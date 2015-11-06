@@ -4,7 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
 
-
     <!-- dimensions-->
     <dimen name="four_dp">4dp</dimen>
     <dimen name="eight_dp">8dp</dimen>
@@ -25,8 +24,6 @@
     <dimen name="secondary_text_size">14sp</dimen>
     <dimen name="tertiary_text_size">12sp</dimen>
     <dimen name="thirtytwo_dp">32dp</dimen>
-
-
 
 
 </resources>

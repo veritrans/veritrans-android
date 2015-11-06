@@ -45,16 +45,16 @@ public class CardDetailFragment extends Fragment {
     private Button payNowFrontBt;
     private VeritransSDK veritransSDK;
 
+    public CardDetailFragment() {
+
+    }
+
     public static CardDetailFragment newInstance(CardTokenRequest cardDetails) {
         CardDetailFragment fragment = new CardDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM, cardDetails);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public CardDetailFragment() {
-
     }
 
     @Override

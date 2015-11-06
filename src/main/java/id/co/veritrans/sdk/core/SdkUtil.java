@@ -377,8 +377,9 @@ public class SdkUtil {
     }
 
 
-    public static void  showKeyboard(Activity activity,EditText editText){
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+    public static void showKeyboard(Activity activity, EditText editText) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context
+                .INPUT_METHOD_SERVICE);
         imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 

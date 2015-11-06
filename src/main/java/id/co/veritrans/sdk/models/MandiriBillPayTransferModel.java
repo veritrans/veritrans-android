@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by shivam on 10/26/15.
  */
-public class MandiriBillPayTransferModel extends TransactionModel{
+public class MandiriBillPayTransferModel extends TransactionModel {
 
 
     public static final String PAYMENT_TYPE = "echannel";

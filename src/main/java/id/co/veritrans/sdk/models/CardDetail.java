@@ -61,7 +61,7 @@ public class CardDetail implements Serializable {
         this.cvv = cvv;
     }
 
-    public void getFormatedCardNumber(){
+    public void getFormatedCardNumber() {
 
     }
 }

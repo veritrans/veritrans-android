@@ -34,7 +34,7 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bank_transfer_instruction);
         initializeViews();
 
-        if( getIntent() != null ) {
+        if (getIntent() != null) {
             int position = getIntent().getIntExtra(Constants.POSITION, 0);
             mViewPager.setCurrentItem(position);
         }
@@ -42,14 +42,13 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-            if( item.getItemId() ==  android.R.id.home){
-                //close activity on click of cross button.
-                finish();
-            }
+        if (item.getItemId() == android.R.id.home) {
+            //close activity on click of cross button.
+            finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }

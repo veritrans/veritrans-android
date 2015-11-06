@@ -22,10 +22,10 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class MandiriClickPayFragment extends Fragment {
 
 
+    private static final String DUMMY_CARD_NUMBER = "4811111111111114";
     private EditText mEditTextDebitCardNumber = null;
     private EditText mEditTextChallengeToken = null;
     private TextViewFont mTextViewSeeInstruction = null;
-    private static final String DUMMY_CARD_NUMBER = "4811111111111114";
 
     @Nullable
     @Override
@@ -70,7 +70,8 @@ public class MandiriClickPayFragment extends Fragment {
                 if (test.length() > 0 && (test.length() % 5) == 0) {
                     char c = test.charAt(test.length() - 1);
                     // Only if its a digit where there should be a space we insert a space
-                    if (Character.isDigit(c) && TextUtils.split(test.toString(), String.valueOf(space)).length <= 3) {
+                    if (Character.isDigit(c) && TextUtils.split(test.toString(), String.valueOf
+                            (space)).length <= 3) {
                         test.insert(test.length() - 1, String.valueOf(space));
                     }
                 }
@@ -81,23 +82,23 @@ public class MandiriClickPayFragment extends Fragment {
 
         mEditTextDebitCardNumber.addTextChangedListener(textWatcher);
 
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             mEditTextDebitCardNumber.setText(DUMMY_CARD_NUMBER);
         }
 
     }
 
 
-    public String getChallengeToken(){
-        if( mEditTextChallengeToken != null ){
+    public String getChallengeToken() {
+        if (mEditTextChallengeToken != null) {
             return mEditTextChallengeToken.getText().toString();
         }
         return null;
     }
 
 
-    public String getDebitCardNumber(){
-        if( mEditTextDebitCardNumber != null ){
+    public String getDebitCardNumber() {
+        if (mEditTextDebitCardNumber != null) {
             return mEditTextDebitCardNumber.getText().toString();
         }
         return null;

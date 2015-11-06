@@ -41,22 +41,20 @@ public class UserAddressFragment extends Fragment {
     private Button btnNext;
 
 
-
-
+    public UserAddressFragment() {
+        // Required empty public constructor
+    }
 
     public static UserAddressFragment newInstance() {
         UserAddressFragment fragment = new UserAddressFragment();
         return fragment;
     }
 
-    public UserAddressFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((UserDetailsActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.title_shipping_billing_address));
+        ((UserDetailsActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string
+                .title_shipping_billing_address));
 
 
     }
@@ -65,24 +63,25 @@ public class UserAddressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_user_address, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_address, container, false);
         findViews(view);
 
         return view;
     }
 
     private void findViews(View view) {
-        etAddress = (EditText)view.findViewById( R.id.et_address );
-        etCity = (EditText)view.findViewById( R.id.et_city );
-        etZipcode = (EditText)view.findViewById( R.id.et_zipcode );
-        etCountry = (EditText)view.findViewById( R.id.et_country );
-        cbShippingAddress = (CheckBox)view.findViewById( R.id.cb_shipping_address );
-        shippingAddressContainer = (RelativeLayout)view.findViewById( R.id.shipping_address_container );
-        etShippingAddress = (EditText)view.findViewById( R.id.et_shipping_address );
-        etShippingCity = (EditText)view.findViewById( R.id.et_shipping_city );
-        etShippingZipcode = (EditText)view.findViewById( R.id.et_shipping_zipcode );
-        etShippingCountry = (EditText)view.findViewById( R.id.et_shipping_country );
-        btnNext = (Button)view.findViewById( R.id.btn_next );
+        etAddress = (EditText) view.findViewById(R.id.et_address);
+        etCity = (EditText) view.findViewById(R.id.et_city);
+        etZipcode = (EditText) view.findViewById(R.id.et_zipcode);
+        etCountry = (EditText) view.findViewById(R.id.et_country);
+        cbShippingAddress = (CheckBox) view.findViewById(R.id.cb_shipping_address);
+        shippingAddressContainer = (RelativeLayout) view.findViewById(R.id
+                .shipping_address_container);
+        etShippingAddress = (EditText) view.findViewById(R.id.et_shipping_address);
+        etShippingCity = (EditText) view.findViewById(R.id.et_shipping_city);
+        etShippingZipcode = (EditText) view.findViewById(R.id.et_shipping_zipcode);
+        etShippingCountry = (EditText) view.findViewById(R.id.et_shipping_country);
+        btnNext = (Button) view.findViewById(R.id.btn_next);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +92,7 @@ public class UserAddressFragment extends Fragment {
         cbShippingAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     shippingAddressContainer.setVisibility(View.GONE);
                 } else {
                     shippingAddressContainer.setVisibility(View.VISIBLE);
@@ -107,16 +106,17 @@ public class UserAddressFragment extends Fragment {
         StorageDataHandler storageDataHandler = new StorageDataHandler();
         UserDetail userDetail = null;
         try {
-            userDetail = (UserDetail) storageDataHandler.readObject(getActivity(), Constants.USER_DETAILS);
+            userDetail = (UserDetail) storageDataHandler.readObject(getActivity(), Constants
+                    .USER_DETAILS);
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try{
+        try {
             Logger.i("userDetails:" + userDetail.getUserFullName());
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
         ArrayList<UserAddress> userAddresses = new ArrayList<>();
@@ -129,45 +129,54 @@ public class UserAddressFragment extends Fragment {
         String shippingZipcode = etShippingZipcode.getText().toString().trim();
         String shippingCountry = etShippingCountry.getText().toString().trim();
 
-        if(TextUtils.isEmpty(billingAddress)){
-            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_billingaddress_empty));
+        if (TextUtils.isEmpty(billingAddress)) {
+            SdkUtil.showSnackbar(getActivity(), getString(R.string
+                    .validation_billingaddress_empty));
             etAddress.requestFocus();
             return;
-        } else if(TextUtils.isEmpty(billingCity)){
-            SdkUtil.showSnackbar(getActivity(),getString(R.string.validation_billingcity_empty));
+        } else if (TextUtils.isEmpty(billingCity)) {
+            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_billingcity_empty));
             etCity.requestFocus();
             return;
-        } else if(TextUtils.isEmpty(zipcode)){
-            SdkUtil.showSnackbar(getActivity(),getString(R.string.validation_billingzipcode_empty));
+        } else if (TextUtils.isEmpty(zipcode)) {
+            SdkUtil.showSnackbar(getActivity(), getString(R.string
+                    .validation_billingzipcode_empty));
             etZipcode.requestFocus();
             return;
-        } else if(zipcode.length() < Constants.ZIPCODE_LENGTH){
-            SdkUtil.showSnackbar(getActivity(),getString(R.string.validation_billingzipcode_invalid));
+        } else if (zipcode.length() < Constants.ZIPCODE_LENGTH) {
+            SdkUtil.showSnackbar(getActivity(), getString(R.string
+                    .validation_billingzipcode_invalid));
             etZipcode.requestFocus();
             return;
-        } else if(TextUtils.isEmpty(country)){
-            SdkUtil.showSnackbar(getActivity(),getString(R.string.validation_billingcountry_empty));
+        } else if (TextUtils.isEmpty(country)) {
+            SdkUtil.showSnackbar(getActivity(), getString(R.string
+                    .validation_billingcountry_empty));
             etCountry.requestFocus();
             return;
-        } else if(!cbShippingAddress.isChecked()) {
+        } else if (!cbShippingAddress.isChecked()) {
             if (TextUtils.isEmpty(shippingAddress)) {
-                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_shippingaddress_empty));
+                SdkUtil.showSnackbar(getActivity(), getString(R.string
+                        .validation_shippingaddress_empty));
                 etShippingAddress.requestFocus();
                 return;
             } else if (TextUtils.isEmpty(shippingCity)) {
-                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_shippingcity_empty));
+                SdkUtil.showSnackbar(getActivity(), getString(R.string
+                        .validation_shippingcity_empty));
                 etShippingCity.requestFocus();
                 return;
             } else if (TextUtils.isEmpty(shippingZipcode)) {
-                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_shippingzipcode_empty));
+                SdkUtil.showSnackbar(getActivity(), getString(R.string
+                        .validation_shippingzipcode_empty));
                 etShippingZipcode.requestFocus();
                 return;
             } else if (shippingZipcode.length() < Constants.ZIPCODE_LENGTH) {
-                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_shippingzipcode_invalid));
+                SdkUtil.showSnackbar(getActivity(), getString(R.string
+                        .validation_shippingzipcode_invalid));
                 etShippingZipcode.requestFocus();
                 return;
             } else if (TextUtils.isEmpty(shippingCountry)) {
-                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_shippingcountry_empty));
+                SdkUtil.showSnackbar(getActivity(), getString(R.string
+                        .validation_shippingcountry_empty));
                 etShippingCountry.requestFocus();
                 return;
             }
@@ -179,7 +188,8 @@ public class UserAddressFragment extends Fragment {
             shippingUserAddress.setAddressType(Constants.ADDRESS_TYPE_SHIPPING);
             userAddresses.add(shippingUserAddress);
            /* try {
-                storageDataHandler.writeObject(getActivity(), Constants.USER_ADDRESS_DETAILS, shippingUserAddress);
+                storageDataHandler.writeObject(getActivity(), Constants.USER_ADDRESS_DETAILS,
+                shippingUserAddress);
             } catch (IOException e) {
                 e.printStackTrace();
             }*/
@@ -189,7 +199,7 @@ public class UserAddressFragment extends Fragment {
         billingUserAddress.setCity(billingCity);
         billingUserAddress.setCountry(country);
         billingUserAddress.setZipcode(zipcode);
-        if(cbShippingAddress.isChecked()){
+        if (cbShippingAddress.isChecked()) {
             billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BOTH);
         } else {
             billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BILLING);
@@ -197,7 +207,7 @@ public class UserAddressFragment extends Fragment {
         userAddresses.add(billingUserAddress);
 
         try {
-            if(userDetail == null){
+            if (userDetail == null) {
                 userDetail = new UserDetail();
             }
             userDetail.setUserAddresses(userAddresses);

@@ -31,43 +31,43 @@ public class TokenDetailsResponse {
     @SerializedName("redirect_url")
     private String redirectUrl;
 
-    public void setStatusMessage(String status_message) {
-        this.statusMessage = status_message;
-    }
-
-    public void setBank(String bank) {
-        this.bank = bank;
-    }
-
-    public void setStatusCode(String status_code) {
-        this.statusCode = status_code;
-    }
-
-    public void setTokenId(String token_id) {
-        this.tokenId = token_id;
-    }
-
-    public void setRedirectUrl(String redirect_url) {
-        this.redirectUrl = redirect_url;
-    }
-
     public String getStatusMessage() {
         return statusMessage;
+    }
+
+    public void setStatusMessage(String status_message) {
+        this.statusMessage = status_message;
     }
 
     public String getBank() {
         return bank;
     }
 
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
     public String getStatusCode() {
         return statusCode;
+    }
+
+    public void setStatusCode(String status_code) {
+        this.statusCode = status_code;
     }
 
     public String getTokenId() {
         return tokenId;
     }
 
+    public void setTokenId(String token_id) {
+        this.tokenId = token_id;
+    }
+
     public String getRedirectUrl() {
         return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirect_url) {
+        this.redirectUrl = redirect_url;
     }
 }
