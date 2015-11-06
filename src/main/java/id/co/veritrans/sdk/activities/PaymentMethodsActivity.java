@@ -211,7 +211,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         paymentImageList[4] = R.drawable.ic_epay;
         paymentImageList[5] = R.drawable.ic_bbm;
         paymentImageList[6] = R.drawable.ic_indosat;
-        paymentImageList[7] = R.drawable.ic_launcher; // mandiri e-Cash
+        paymentImageList[7] = R.drawable.ic_mandiri_e_cash; // mandiri e-Cash
         paymentImageList[8] = R.drawable.ic_banktransfer;
         paymentImageList[9] = R.drawable.ic_mandiri_bill_payment;
         paymentImageList[10] = R.drawable.ic_indomaret;
