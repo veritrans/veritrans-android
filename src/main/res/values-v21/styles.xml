@@ -5,8 +5,9 @@
     <style name="VeritransAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item> 
         <item name="colorPrimaryDark">@color/colorSecondary</item> 
-        <item name="colorControlHighlight">@color/colorSecondary</item> 
+        <item name="colorControlHighlight">@color/colorPrimary</item> 
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentOverlay">@null</item>
 
     </style>
 
