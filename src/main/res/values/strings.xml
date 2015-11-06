@@ -175,6 +175,7 @@
     <string name="hint_challenge_token">Challenge Token</string>
     <string name="company_code">Company Code</string>
     <string name="bill_code">Billpay Code</string>
+    <string name="processing_payment">Processing Payment</string>
 
 
 </resources>

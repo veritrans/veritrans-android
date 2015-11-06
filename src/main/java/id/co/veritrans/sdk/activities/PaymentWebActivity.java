@@ -29,6 +29,8 @@ public class PaymentWebActivity extends AppCompatActivity {
         webUrl = getIntent().getStringExtra(Constants.WEBURL);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         fragmentManager = getSupportFragmentManager();
+        toolbar.setTitle(R.string.processing_payment);
+
         setSupportActionBar(toolbar);
         WebviewFragment webviewFragment = WebviewFragment.newInstance(webUrl);
         replaceFragment(webviewFragment, true, false);
