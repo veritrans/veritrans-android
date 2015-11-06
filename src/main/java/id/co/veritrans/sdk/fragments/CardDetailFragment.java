@@ -226,7 +226,7 @@ public class CardDetailFragment extends Fragment {
                 Animation.RELATIVE_TO_PARENT, 0.5f); // Pivot point of Y scaling*/
         //Animation scaleDown = new ScaleAnimation(1.0f,0.5f,1.0f,0.5f);
         Animation scaleDown = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_down);
-        scaleDown.setDuration(350);
+        scaleDown.setDuration(150);
         /*Animation scaleUp = new ScaleAnimation(
                 1f, 1f, // Start and end values for the X axis scaling
                 1f, 1f, // Start and end values for the Y axis scaling
@@ -235,12 +235,13 @@ public class CardDetailFragment extends Fragment {
         //Animation scaleUp = new ScaleAnimation(0.5f,1.0f,0.5f,1.0f);
         Animation scaleUp = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_up);
 
-        scaleUp.setDuration(350);
-        scaleUp.setStartOffset(350);
+        scaleUp.setDuration(150);
+        scaleUp.setStartOffset(150);
         //rootLayout.startAnimation(scaleDown);
 
         FlipAnimation flipAnimation = new FlipAnimation(cardContainerFront, cardContainerBack);
         flipAnimation.setStartOffset(100);
+        flipAnimation.setDuration(200);
         SdkUtil.hideKeyboard(getActivity());
         if (cardContainerFront.getVisibility() == View.GONE) {
             flipAnimation.reverse();
@@ -272,8 +273,7 @@ public class CardDetailFragment extends Fragment {
 
         );
         AnimationSet animationSet = new AnimationSet(true);
-        animationSet.setDuration(700);
-
+        animationSet.setDuration(300);
         animationSet.addAnimation(scaleDown);
         animationSet.addAnimation(flipAnimation);
         animationSet.addAnimation(scaleUp);
