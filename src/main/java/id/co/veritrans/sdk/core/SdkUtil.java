@@ -115,6 +115,7 @@ public class SdkUtil {
                 progressDialog = new VeritransLoadingDialog(activity);
                 progressDialog.setCanceledOnTouchOutside(true);
                 progressDialog.setCancelable(isCancelable);
+                progressDialog.setTitle("Demo");
                 progressDialog.show();
             } catch (WindowManager.BadTokenException ex) {
                 Logger.e("error while creating progress dialog : " + ex.getMessage());

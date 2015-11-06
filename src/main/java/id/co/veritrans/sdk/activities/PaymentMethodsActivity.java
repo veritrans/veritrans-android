@@ -205,15 +205,15 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         int[] paymentImageList = new int[11];
 
         paymentImageList[0] = R.drawable.ic_offers;
-        paymentImageList[1] = R.drawable.ic_launcher; // credit - debit
+        paymentImageList[1] = R.drawable.ic_credit;
         paymentImageList[2] = R.drawable.ic_mandiri;
         paymentImageList[3] = R.drawable.ic_cimb;
         paymentImageList[4] = R.drawable.ic_epay;
         paymentImageList[5] = R.drawable.ic_bbm;
-        paymentImageList[6] = R.drawable.ic_launcher; // indosat dompetku
+        paymentImageList[6] = R.drawable.ic_indosat;
         paymentImageList[7] = R.drawable.ic_launcher; // mandiri e-Cash
         paymentImageList[8] = R.drawable.ic_banktransfer;
-        paymentImageList[9] = R.drawable.ic_launcher; // mandiri bill payment
+        paymentImageList[9] = R.drawable.ic_mandiri_bill_payment;
         paymentImageList[10] = R.drawable.ic_indomaret;
 
         return paymentImageList;
