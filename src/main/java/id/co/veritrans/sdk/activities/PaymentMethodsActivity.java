@@ -13,13 +13,18 @@ import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.StorageDataHandler;
+import id.co.veritrans.sdk.core.TransactionRequest;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
+import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
@@ -47,6 +52,8 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private FrameLayout mFrameParallax = null;
     private RecyclerView mRecyclerView = null;
     private VeritransSDK veritransSDK;
+    private StorageDataHandler storageDataHandler;
+
     public static void startAlphaAnimation(View v, long duration, int visibility) {
         AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
                 ? new AlphaAnimation(0f, 1f)
@@ -61,7 +68,21 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments_method);
+        storageDataHandler = new StorageDataHandler();
+
+        UserDetail userDetail = null;
+        try {
+            userDetail = (UserDetail) storageDataHandler.readObject(this, Constants.USER_DETAILS);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         veritransSDK = VeritransSDK.getVeritransSDK();
+        TransactionRequest transactionRequest = veritransSDK.getTransactionRequest();
+        CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
+                userDetail.getEmail(), userDetail.getPhoneNumber());
+        transactionRequest.setCustomerDetails(customerDetails);
         setUpPaymentMethods();
     }
 

@@ -142,6 +142,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         paymentIv.setImageResource(R.drawable.ic_failure);
         paymentStatusTv.setText(getString(R.string.payment_unsuccessful));
         paymentMessageTv.setVisibility(View.VISIBLE);
+        paymentMessageTv.setText(transactionResponse.getStatusMessage());
     }
 
     private void setUiForSuccess() {

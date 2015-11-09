@@ -12,6 +12,7 @@ import android.widget.EditText;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -41,7 +42,12 @@ public class BankTransferFragment extends Fragment {
                 view.findViewById(R.id.text_see_instruction);
 
         mEditTextEmailId = (EditText) view.findViewById(R.id.et_email);
-
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        try {
+            mEditTextEmailId.setText(veritransSDK.getTransactionRequest().getCustomerDetails().getEmail());
+        }catch (NullPointerException e ){
+            e.printStackTrace();
+        }
         mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

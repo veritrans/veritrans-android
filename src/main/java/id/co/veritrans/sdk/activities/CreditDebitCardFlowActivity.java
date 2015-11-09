@@ -11,6 +11,8 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     private CardTransfer cardTransfer;
     private StorageDataHandler storageDataHandler;
     private ArrayList<CardTokenRequest> creditCards = new ArrayList<>();
-
+    private RelativeLayout processingLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             e.printStackTrace();
         }
         setContentView(R.layout.activity_credit_debit_card_flow);
+        processingLayout = (RelativeLayout)findViewById(R.id.processing_layout);
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -112,7 +115,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     }
 
     public void getToken(CardTokenRequest cardTokenRequest) {
-        SdkUtil.showProgressDialog(this, false);
+        SdkUtil.showProgressDialog(this,getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardTokenRequest;
         //this.cardTokenRequest.setSavedTokenId("");
         veritransSDK.getToken(CreditDebitCardFlowActivity.this, this.cardTokenRequest, this);
@@ -129,8 +132,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     }
 
     public void payUsingCard() {
-
-        SdkUtil.showProgressDialog(this, false);
+        SdkUtil.showProgressDialog(this,getString(R.string.processing_payment), false);
+        processingLayout.setVisibility(View.VISIBLE);
         CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
                 userDetail.getEmail(), userDetail.getPhoneNumber());
 
@@ -187,15 +190,14 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
                         tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved());
             } else {
+                SdkUtil.hideProgressDialog();
+                processingLayout.setVisibility(View.GONE);
                 return;
             }
-            try {
-                cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails,
-                        null, billingAddresses, shippingAddresses, customerDetails);
-                currentApiCallNumber = PAY_USING_CARD;
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
+            cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails,
+                    null, billingAddresses, shippingAddresses, customerDetails);
+            currentApiCallNumber = PAY_USING_CARD;
+
         }
         veritransSDK.paymentUsingCard(this, this.cardTransfer, this);
     }
@@ -254,11 +256,12 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     //onSuccess for get token
     @Override
     public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {
-        SdkUtil.hideProgressDialog();
+
         this.tokenDetailsResponse = tokenDetailsResponse;
         Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
                 + veritransSDK.getTransactionRequest().isSecureCard());
         if (veritransSDK.getTransactionRequest().isSecureCard()) {
+            SdkUtil.hideProgressDialog();
             if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
                 Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
                 intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
@@ -285,6 +288,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
         replaceFragment(paymentTransactionStatusFragment, true, false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        processingLayout.setVisibility(View.GONE);
         getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
 
     }
@@ -301,6 +305,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             replaceFragment(paymentTransactionStatusFragment, true, false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
+            processingLayout.setVisibility(View.GONE);
             if (cardTokenRequest.isSaved()) {
                 if (!creditCards.isEmpty()) {
                     int position = -1;
@@ -368,7 +373,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     }
 
     public void twoClickPayment(CardTokenRequest cardDetail) {
-        SdkUtil.showProgressDialog(this, false);
+        SdkUtil.showProgressDialog(this,getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardDetail;
         this.cardTokenRequest.setTwoClick(true);
         this.cardTokenRequest.setClientKey(veritransSDK.getClientKey());

@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:wheel="http://schemas.android.com/apk/res-auto"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-    <id.co.veritrans.sdk.widgets.ProgressWheel
-        android:id="@+id/progress_wheel"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/eight_dp"
         android:background="@drawable/loading_background"
-        android:padding="5dp"
-        wheel:matProg_barColor="@color/colorPrimary"
-        wheel:matProg_progressIndeterminate="true"
-        />
+        >
+        <id.co.veritrans.sdk.widgets.ProgressWheel
+            android:id="@+id/progress_wheel"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            wheel:matProg_barColor="@color/colorPrimary"
+            wheel:matProg_progressIndeterminate="true"
+            />
+        <id.co.veritrans.sdk.widgets.TextViewFont android:layout_width="wrap_content"
+                                                  android:layout_height="wrap_content"
+                                                  android:layout_toRightOf="@+id/progress_wheel"
+                                                  android:text="@string/loading"
+                                                  android:paddingLeft="8dp"
+                                                  android:visibility="gone"
+                                                  app:font="@string/font_open_sans_regular"
+                                                  android:textColor="@color/colorPrimary"
+                                                  android:id="@+id/text_loading_message"
+                                                  android:layout_centerVertical="true"
+
+            />
+    </RelativeLayout>
 </RelativeLayout>

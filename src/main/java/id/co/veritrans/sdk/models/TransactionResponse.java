@@ -66,7 +66,6 @@ public class TransactionResponse implements Serializable {
     private String bank;
     private String eci;
 
-
     //for mandiri bill pay
     /**
      * bill number/code
@@ -89,7 +88,7 @@ public class TransactionResponse implements Serializable {
     }
 
     public String getStatusMessage() {
-        return statusMessage;
+        return TextUtils.isEmpty(statusMessage) ? "" : statusMessage;
     }
 
     public void setStatusMessage(String statusMessage) {

@@ -115,7 +115,26 @@ public class SdkUtil {
                 progressDialog = new VeritransLoadingDialog(activity);
                 progressDialog.setCanceledOnTouchOutside(true);
                 progressDialog.setCancelable(isCancelable);
-                progressDialog.setTitle("Demo");
+                progressDialog.show();
+            } catch (WindowManager.BadTokenException ex) {
+                Logger.e("error while creating progress dialog : " + ex.getMessage());
+            } catch (NullPointerException ex) {
+                Logger.e("error while creating progress dialog : " + ex.getMessage());
+            }
+        } else {
+            Logger.e("error while creating progress dialog : Context cann't be null.");
+        }
+
+    }
+    public static void showProgressDialog(Activity activity,String message, boolean isCancelable) {
+
+        hideProgressDialog();
+
+        if (activity != null) {
+            try {
+                progressDialog = new VeritransLoadingDialog(activity,message);
+                progressDialog.setCanceledOnTouchOutside(true);
+                progressDialog.setCancelable(isCancelable);
                 progressDialog.show();
             } catch (WindowManager.BadTokenException ex) {
                 Logger.e("error while creating progress dialog : " + ex.getMessage());

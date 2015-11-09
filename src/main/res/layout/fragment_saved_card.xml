@@ -56,12 +56,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/sixteen_dp">
+        android:layout_margin="@dimen/sixteen_dp"
+        >
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/btn_add_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_plus_action"/>
