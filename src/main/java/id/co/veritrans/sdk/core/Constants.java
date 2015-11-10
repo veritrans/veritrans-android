@@ -87,6 +87,6 @@ public class Constants {
     public static final String CARD_CLICK_TYPE_TWO_CLICK = "two_click";
     public static final String USERS_SAVED_CARD = "users_saved_card";
 
-
+    public static final String BANK_DETAILS = "bank_details";
 }
 

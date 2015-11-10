@@ -24,6 +24,7 @@
                                                   android:layout_toRightOf="@+id/progress_wheel"
                                                   android:text="@string/loading"
                                                   android:paddingLeft="8dp"
+                                                  android:paddingRight="@dimen/sixteen_dp"
                                                   android:visibility="gone"
                                                   app:font="@string/font_open_sans_regular"
                                                   android:textColor="@color/colorPrimary"

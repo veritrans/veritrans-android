@@ -48,7 +48,7 @@ class TransactionManager {
                             cardTokenRequest.getGrossAmount(),
                             cardTokenRequest.getBank(),
                             cardTokenRequest.getClientKey());
-                } else if (cardTokenRequest.isSecure()) {
+                } else {
                     observable = apiInterface.get3DSToken(cardTokenRequest.getCardNumber(),
                             cardTokenRequest.getCardCVV(),
                             cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
@@ -56,13 +56,14 @@ class TransactionManager {
                             cardTokenRequest.getClientKey(), cardTokenRequest.getBank(),
                             cardTokenRequest.isSecure(), cardTokenRequest.isTwoClick(),
                             cardTokenRequest.getGrossAmount());
-                } else {
+                } /*else {
                     observable = apiInterface.getToken(cardTokenRequest.getCardNumber(),
                             cardTokenRequest.getCardCVV(),
                             cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
                                     .getCardExpiryYear(),
-                            cardTokenRequest.getClientKey());
-                }
+                            cardTokenRequest.getClientKey(),
+                            );
+                }*/
 
                 mSubscription = observable.subscribeOn(Schedulers
                         .io())
@@ -233,7 +234,11 @@ class TransactionManager {
 
                 String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
                 if (serverKey != null) {
-
+                    try {
+                        Logger.i("serverkey:" + serverKey + "," + cardTransfer.getString());
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
                     String authorization = "Basic " + serverKey;
                     observable = apiInterface.paymentUsingCard(authorization,
                             cardTransfer);
@@ -244,7 +249,7 @@ class TransactionManager {
                             .subscribe(new Observer<TransactionResponse>() {
                                 @Override
                                 public void onCompleted() {
-
+                                    Logger.i("onComplete");
                                     if (mSubscription != null && !mSubscription.isUnsubscribed()) {
                                         mSubscription.unsubscribe();
                                     }

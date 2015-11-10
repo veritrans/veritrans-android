@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -23,6 +24,7 @@ import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.models.BankDetail;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
@@ -45,6 +47,7 @@ public class AddCardDetailsFragment extends Fragment {
     private int expYear;
     private VeritransSDK veritransSDK;
     private UserDetail userDetail;
+    private ArrayList<BankDetail> bankDetails;
 
     public AddCardDetailsFragment() {
         // Required empty public constructor
@@ -60,6 +63,7 @@ public class AddCardDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         veritransSDK = ((CreditDebitCardFlowActivity) getActivity()).getVeritransSDK();
         userDetail = ((CreditDebitCardFlowActivity) getActivity()).getUserDetail();
+        bankDetails = ((CreditDebitCardFlowActivity) getActivity()).getBankDetails();
     }
 
     @Override
@@ -100,6 +104,17 @@ public class AddCardDetailsFragment extends Fragment {
                     cardTokenRequest.setSecure(veritransSDK.getTransactionRequest().isSecureCard());
                     cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest()
                             .getAmount());
+                    if(bankDetails!=null && !bankDetails.isEmpty()){
+                        String firstSix = cardNumber.substring(0,6);
+                        for(BankDetail bankDetail:bankDetails){
+                            //Logger.i("firstsix:"+firstSix+","+bankDetail.getIssuing_bank());
+                            if(bankDetail.getBin().equalsIgnoreCase(firstSix)){
+                                cardTokenRequest.setBank(bankDetail.getIssuing_bank());
+                                cardTokenRequest.setCardType(bankDetail.getCard_association());
+                                break;
+                            }
+                        }
+                    }
 
                     //tokenRequestModel.setTwoClick(true);
                     //make payment

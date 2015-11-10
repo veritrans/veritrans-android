@@ -14,8 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
@@ -27,6 +31,8 @@ import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.SavedCardFragment;
+import id.co.veritrans.sdk.models.BankDetail;
+import id.co.veritrans.sdk.models.BankDetailArray;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTokenRequest;
@@ -38,6 +44,10 @@ import id.co.veritrans.sdk.models.TransactionDetails;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.UserAddress;
 import id.co.veritrans.sdk.models.UserDetail;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class CreditDebitCardFlowActivity extends AppCompatActivity implements TokenCallBack,
         TransactionCallback {
@@ -58,11 +68,15 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     private StorageDataHandler storageDataHandler;
     private ArrayList<CardTokenRequest> creditCards = new ArrayList<>();
     private RelativeLayout processingLayout;
+    private ArrayList<BankDetail> bankDetails;
+    private Subscription subscription;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_credit_debit_card_flow);
         storageDataHandler = new StorageDataHandler();
-        getCreditCards();
+        //getCreditCards();
         try {
             userDetail = (UserDetail) storageDataHandler.readObject(this, Constants.USER_DETAILS);
         } catch (ClassNotFoundException e) {
@@ -70,8 +84,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setContentView(R.layout.activity_credit_debit_card_flow);
-        processingLayout = (RelativeLayout)findViewById(R.id.processing_layout);
+        //getBankDetails();
+        processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -79,6 +93,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         calculateScreenWidth();
         SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
         replaceFragment(savedCardFragment, true, false);
+        readBankDetails();
     }
 
     @Override
@@ -115,9 +130,9 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     }
 
     public void getToken(CardTokenRequest cardTokenRequest) {
-        SdkUtil.showProgressDialog(this,getString(R.string.processing_payment), false);
+        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardTokenRequest;
-        //this.cardTokenRequest.setSavedTokenId("");
+        Logger.i("isSecure:"+this.cardTokenRequest.isSecure());
         veritransSDK.getToken(CreditDebitCardFlowActivity.this, this.cardTokenRequest, this);
     }
 
@@ -132,7 +147,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     }
 
     public void payUsingCard() {
-        SdkUtil.showProgressDialog(this,getString(R.string.processing_payment), false);
+        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
         CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
                 userDetail.getEmail(), userDetail.getPhoneNumber());
@@ -187,6 +202,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
                         cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved());
             } else if (tokenDetailsResponse != null) {
+                Logger.i("tokenDetailsResponse.getTokenId():"+tokenDetailsResponse.getTokenId());
                 cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
                         tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved());
             } else {
@@ -373,11 +389,103 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     }
 
     public void twoClickPayment(CardTokenRequest cardDetail) {
-        SdkUtil.showProgressDialog(this,getString(R.string.processing_payment), false);
+        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardDetail;
         this.cardTokenRequest.setTwoClick(true);
         this.cardTokenRequest.setClientKey(veritransSDK.getClientKey());
         veritransSDK.getToken(CreditDebitCardFlowActivity.this, this.cardTokenRequest, this);
         //getToken(cardDetail);
+    }
+
+    public ArrayList<BankDetail> getBankDetails() {
+        if (bankDetails != null && !bankDetails.isEmpty()) {
+            return bankDetails;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
+    }
+
+    private void readBankDetails() {
+
+        if (bankDetails == null || bankDetails.isEmpty()) {
+            rx.Observable<List<BankDetail>> banksObservable = rx.Observable.create(
+                    new rx.Observable.OnSubscribe<List<BankDetail>>() {
+                        @Override
+                        public void call(Subscriber<? super List<BankDetail>> sub) {
+                            ArrayList<BankDetail> bankDetails = new ArrayList<BankDetail>();
+                            try {
+                                bankDetails = (ArrayList<BankDetail>) storageDataHandler.readObject(
+                                        CreditDebitCardFlowActivity.this, Constants.BANK_DETAILS);
+                                Logger.i("bankDetails:" + bankDetails.size());
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
+                            }
+                            if (bankDetails.isEmpty()) {
+                                String json = null;
+                                try {
+                                    InputStream is = CreditDebitCardFlowActivity.this.getAssets().open("bank_details.json");
+                                    int size = is.available();
+                                    byte[] buffer = new byte[size];
+                                    is.read(buffer);
+                                    is.close();
+                                    json = new String(buffer, "UTF-8");
+                                    Logger.i("json:" + json);
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
+
+                                }
+
+                                try {
+                                    Gson gson = new Gson();
+                                    bankDetails = gson.fromJson(json, BankDetailArray.class).getBankDetails();
+                                    Logger.i("bankDetails:" + bankDetails.size());
+                                    storageDataHandler.writeObject(CreditDebitCardFlowActivity.this, Constants.BANK_DETAILS, bankDetails);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (NullPointerException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                            sub.onNext(bankDetails);
+                            sub.onCompleted();
+                        }
+                    }
+            );
+            // bankDetails = SdkUtil.loadBankDetailJsonFromAsset(this).getBankDetails();
+            Subscriber<List<BankDetail>> subscriber = new Subscriber<List<BankDetail>>() {
+
+                @Override
+                public void onCompleted() {
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Logger.i("error:" + e.getMessage());
+                }
+
+                @Override
+                public void onNext(List<BankDetail> bankDetails) {
+                    CreditDebitCardFlowActivity.this.bankDetails = (ArrayList<BankDetail>) bankDetails;
+                    Logger.i("bankdetail getter onnext"+bankDetails.size());
+                }
+            };
+            subscription = banksObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(subscriber);
+
+        }
     }
 }

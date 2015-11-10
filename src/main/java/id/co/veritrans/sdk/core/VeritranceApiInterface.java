@@ -38,7 +38,10 @@ public interface VeritranceApiInterface {
                                               @Query("card_cvv") int cardCVV,
                                               @Query("card_exp_month") int cardExpiryMonth,
                                               @Query("card_exp_year") int cardExpiryYear,
-                                              @Query("client_key") String clientKey);
+                                              @Query("client_key") String clientKey,
+                                              @Query("gross_amount") double grossAmount,
+                                              @Query("bank") String bank
+                                              );
 
     /**
      * card_cvv, token_id, two_click, bank, secure, gross_amount

@@ -12,23 +12,27 @@
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
             android:name=".activities.PaymentMethodsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
         <activity
             android:name=".activities.CreditDebitCardFlowActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
         <activity
             android:name=".activities.BankTransferActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
         <activity
             android:name=".activities.BankTransferInstructionActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
         <activity
             android:name=".activities.PaymentWebActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
-
-
         <activity
             android:name=".activities.MandiriClickPayActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
 
     </application>

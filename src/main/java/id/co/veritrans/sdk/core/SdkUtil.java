@@ -126,13 +126,14 @@ public class SdkUtil {
         }
 
     }
-    public static void showProgressDialog(Activity activity,String message, boolean isCancelable) {
+
+    public static void showProgressDialog(Activity activity, String message, boolean isCancelable) {
 
         hideProgressDialog();
 
         if (activity != null) {
             try {
-                progressDialog = new VeritransLoadingDialog(activity,message);
+                progressDialog = new VeritransLoadingDialog(activity, message);
                 progressDialog.setCanceledOnTouchOutside(true);
                 progressDialog.setCancelable(isCancelable);
                 progressDialog.show();
@@ -165,7 +166,6 @@ public class SdkUtil {
             progressDialog = null;
         }
     }
-
 
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
@@ -214,7 +214,6 @@ public class SdkUtil {
         return model;
     }
 
-
     protected static MandiriClickPayRequestModel getMandiriClickPayRequestModel(TransactionRequest
                                                                                         request,
                                                                                 MandiriClickPayModel mandiriClickPayModel) {
@@ -235,9 +234,7 @@ public class SdkUtil {
         return model;
     }
 
-
     protected static PermataBankTransfer getPermataBankModel(TransactionRequest request) {
-
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
@@ -261,7 +258,6 @@ public class SdkUtil {
 
     }
 
-
     public static CardTransfer getCardTransferModel(TransactionRequest request,
                                                     CardPaymentDetails cardPaymentDetails) {
 
@@ -282,15 +278,12 @@ public class SdkUtil {
         return model;
     }
 
-
     protected static TransactionRequest initializeUserInfo(TransactionRequest transactionRequest) {
-
 
         transactionRequest = getUserDetails(transactionRequest);
 
         return transactionRequest;
     }
-
 
     private static TransactionRequest getUserDetails(TransactionRequest request) {
 
@@ -334,7 +327,6 @@ public class SdkUtil {
         return request;
     }
 
-
     private static TransactionRequest extractUserAddress(UserDetail userDetail,
                                                          ArrayList<UserAddress> userAddresses,
                                                          TransactionRequest request) {
@@ -369,7 +361,6 @@ public class SdkUtil {
         return request;
     }
 
-
     @NonNull
     private static ShippingAddress getShippingAddress(UserDetail userDetail, UserAddress
             userAddress) {
@@ -396,11 +387,16 @@ public class SdkUtil {
         return billingAddress;
     }
 
-
     public static void showKeyboard(Activity activity, EditText editText) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context
                 .INPUT_METHOD_SERVICE);
         imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
+   /* public static BankDetailArray loadBankDetailJsonFromAsset(final Activity activity) {
+
+
+
+
+    }*/
 }

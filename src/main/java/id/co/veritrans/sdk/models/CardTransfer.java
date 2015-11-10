@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.models;
 
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -75,6 +76,17 @@ public class CardTransfer extends TransactionModel {
 
     public CustomerDetails getCustomerDetails() {
         return customerDetails;
+    }
+
+    public String getString(){
+        String json = "";
+        try {
+            Gson gson = new Gson();
+            json = gson.toJson(this);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        return json;
     }
 
 }
