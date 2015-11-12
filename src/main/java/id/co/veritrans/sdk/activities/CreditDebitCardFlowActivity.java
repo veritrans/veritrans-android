@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -215,7 +216,10 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             currentApiCallNumber = PAY_USING_CARD;
 
         }
-        veritransSDK.paymentUsingCard(this, this.cardTransfer, this);
+
+                veritransSDK.paymentUsingCard(this, this.cardTransfer, this);
+
+
     }
 
     public VeritransSDK getVeritransSDK() {
@@ -284,7 +288,13 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
             }
         } else {
-            payUsingCard();
+            SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+            Handler handlerTimer = new Handler();
+            handlerTimer.postDelayed(new Runnable() {
+                public void run() {
+                    payUsingCard();
+                }
+            }, 500);
         }
 
     }

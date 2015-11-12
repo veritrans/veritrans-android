@@ -73,9 +73,9 @@ class TransactionManager {
                             @Override
                             public void onCompleted() {
 
-                                if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+                                /*if (mSubscription != null && !mSubscription.isUnsubscribed()) {
                                     mSubscription.unsubscribe();
-                                }
+                                }*/
 
                                 releaseResources();
                             }
@@ -109,7 +109,9 @@ class TransactionManager {
                                     callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
                                     Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                 }
-
+                                if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+                                    mSubscription.unsubscribe();
+                                }
                             }
                         });
 

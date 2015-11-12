@@ -72,10 +72,10 @@ public class CardDetailFragment extends Fragment {
         cardDetail.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
         Logger.i("cardDetail:" + cardDetail.getString());
 
-        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
+        /*((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
                 .string.card_details));
         ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar()
-                .setDisplayHomeAsUpEnabled(true);
+                .setDisplayHomeAsUpEnabled(true);*/
         View view = inflater.inflate(R.layout.fragment_card_detail, container, false);
         initialiseViews(view);
 

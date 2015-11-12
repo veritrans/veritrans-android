@@ -85,12 +85,12 @@ public class AddCardDetailsFragment extends Fragment {
         questionImg = (ImageView) view.findViewById(R.id.question_img);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
 
-        /*if (veritransSDK.isLogEnabled()) {
+        if (veritransSDK.isLogEnabled()) {
             etExpiryDate.setText("12/20");
             etCardNo.setText("4811 1111 1111 1114");
             etCardHolderName.setText("Chetan");
             etCvv.setText("123");
-        }*/
+        }
         payNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -53,12 +53,22 @@ public class SavedCardFragment extends Fragment {
 
         emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
 
-        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
-                .string.saved_card));
-        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar()
-                .setDisplayHomeAsUpEnabled(true);
+
         bindViews(view);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
+                    .string.saved_card));
+            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar()
+                    .setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     private void bindViews(View view) {
