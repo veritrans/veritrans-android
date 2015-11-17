@@ -9,9 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +23,7 @@ import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.utilities.Utils;
+import id.co.veritrans.sdk.widgets.HeaderView;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -39,35 +37,29 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.7f;
     private static final int ALPHA_ANIMATIONS_DURATION = 200;
     private static final String TAG = PaymentMethodsActivity.class.getSimpleName();
-    private boolean mIsTheTitleVisible = false;
-    private boolean mIsTheTitleContainerVisible = true;
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
+
+
     //Views
-    private Toolbar mToolbar = null;
-    private TextViewFont mSubTitle = null;
-    private TextViewFont mTextViewAmountExpanded = null;
-    private TextViewFont mTitle = null;
-    private LinearLayout mTitleContainer = null;
+    private Toolbar toolbar = null;
     private AppBarLayout mAppBarLayout = null;
-    private FrameLayout mFrameParallax = null;
     private RecyclerView mRecyclerView = null;
-    private VeritransSDK veritransSDK;
-    private StorageDataHandler storageDataHandler;
+    private VeritransSDK veritransSDK = null;
+    private StorageDataHandler storageDataHandler= null;
 
-    public static void startAlphaAnimation(View v, long duration, int visibility) {
-        AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
-                ? new AlphaAnimation(0f, 1f)
-                : new AlphaAnimation(1f, 0f);
+    private HeaderView toolbarHeaderView = null;
+    private HeaderView floatHeaderView = null;
+    private TextViewFont headerTextView = null;
+    private boolean isHideToolbarView = false;
+    private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
-        alphaAnimation.setDuration(duration);
-        alphaAnimation.setFillAfter(true);
-        v.startAnimation(alphaAnimation);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_payments_method);
+
         storageDataHandler = new StorageDataHandler();
 
         UserDetail userDetail = null;
@@ -78,6 +70,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         veritransSDK = VeritransSDK.getVeritransSDK();
         TransactionRequest transactionRequest = veritransSDK.getTransactionRequest();
         CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
@@ -92,15 +85,11 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         bindActivity();
 
         //setup tool bar
-        mToolbar.setTitle("");
         mAppBarLayout.addOnOffsetChangedListener(this);
-        setSupportActionBar(mToolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //hide subtitle
-        startAlphaAnimation(mSubTitle, 0, View.INVISIBLE);
-
-        initParallaxValues();
 
         bindDataToView();
 
@@ -122,100 +111,33 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             String amount = Constants.CURRENCY_PREFIX + " "
                     + Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount());
 
-            mSubTitle.setText(amount);
-            mTextViewAmountExpanded.setText(amount);
+            collapsingToolbarLayout.setTitle(" ");
+            toolbarHeaderView.bindTo("Payable Amount", ""+amount);
+            floatHeaderView.bindTo("Payable Amount", ""+amount);
+            mAppBarLayout.addOnOffsetChangedListener(this);
+
         }
 
     }
 
     private void bindActivity() {
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_payment_methods);
-        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mTitle = (TextViewFont) findViewById(R.id.main_textview_title);
-        mSubTitle = (TextViewFont) findViewById(R.id.main_textview_subtitle);
-        mTextViewAmountExpanded = (TextViewFont) findViewById(R.id.text_amount_expanded);
-
-        mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
-        mFrameParallax = (FrameLayout) findViewById(R.id.main_framelayout_title);
-       // mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+        toolbarHeaderView = (HeaderView) findViewById(R.id.toolbar_header_view);
+        floatHeaderView = (HeaderView) findViewById(R.id.float_header_view);
+        headerTextView = (TextViewFont) findViewById(R.id.title_header);
     }
 
-    private void initParallaxValues() {
-        CollapsingToolbarLayout.LayoutParams petBackgroundLp =
-                (CollapsingToolbarLayout.LayoutParams) mFrameParallax.getLayoutParams();
-        petBackgroundLp.setParallaxMultiplier(0.7f);
-        mFrameParallax.setLayoutParams(petBackgroundLp);
-    }
 
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-        int maxScroll = appBarLayout.getTotalScrollRange();
-        float percentage = (float) Math.abs(offset) / (float) maxScroll;
 
-        handleAlphaOnTitle(percentage);
-        handleToolbarTitleVisibility(percentage);
-    }
-
-    private void handleToolbarTitleVisibility(float percentage) {
-        if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
-
-            if (!mIsTheTitleVisible) {
-                startAlphaAnimation(mSubTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
-                mIsTheTitleVisible = true;
-            }
-
-        } else {
-
-            if (mIsTheTitleVisible) {
-                startAlphaAnimation(mSubTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
-                mIsTheTitleVisible = false;
-            }
-        }
-    }
-
-    private void handleAlphaOnTitle(float percentage) {
-        if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
-            if (mIsTheTitleContainerVisible) {
-                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
-                mIsTheTitleContainerVisible = false;
-                //            startTranslateAnimation(false);
-            }
-
-        } else {
-
-            if (!mIsTheTitleContainerVisible) {
-                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
-                mIsTheTitleContainerVisible = true;
-                //              startTranslateAnimation(true);
-            }
-        }
-    }
-
-   /* public void startTranslateAnimation(boolean makeViewLarge) {
-        if (makeViewLarge) {
-            Animation animation = new ScaleAnimation(0, 480, 0, 0);
-            animation.setDuration(ALPHA_ANIMATIONS_DURATION);
-            mTitle.startAnimation(animation);
-        }
-    }
-*/
 
     /**
      * initialize adapter data model by dummy values.
      */
     private void initialiseAdapterData() {
-
-        /*String[] names = getResources().getStringArray(R.array.payment_methods);
-        Logger.d(TAG, "there are total " + names.length + " payment methods available.");
-
-        int[] paymentImageList = getImageList();
-
-        for (int i = 0; i < names.length; i++) {
-            PaymentMethodsModel model = new PaymentMethodsModel(names[i], paymentImageList[i],
-                    Constants.PAYMENT_METHOD_NOT_SELECTED);
-            data.add(model);
-        }*/
 
         data.clear();
         for(PaymentMethodsModel paymentMethodsModel:veritransSDK.getSelectedPaymentMethods()){
@@ -224,26 +146,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
                 data.add(paymentMethodsModel);
             }
         }
-    }
-
-
-    private int[] getImageList() {
-
-        int[] paymentImageList = new int[11];
-
-        paymentImageList[0] = R.drawable.ic_offers;
-        paymentImageList[1] = R.drawable.ic_credit;
-        paymentImageList[2] = R.drawable.ic_mandiri;
-        paymentImageList[3] = R.drawable.ic_cimb;
-        paymentImageList[4] = R.drawable.ic_epay;
-        paymentImageList[5] = R.drawable.ic_bbm;
-        paymentImageList[6] = R.drawable.ic_indosat;
-        paymentImageList[7] = R.drawable.ic_mandiri_e_cash; // mandiri e-Cash
-        paymentImageList[8] = R.drawable.ic_banktransfer;
-        paymentImageList[9] = R.drawable.ic_mandiri_bill_payment;
-        paymentImageList[10] = R.drawable.ic_indomaret;
-
-        return paymentImageList;
     }
 
 
@@ -261,5 +163,27 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+
+        int maxScroll = appBarLayout.getTotalScrollRange();
+        float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
+
+        headerTextView.setAlpha(1 - percentage);
+
+        if (percentage == 1f && isHideToolbarView) {
+            toolbarHeaderView.setVisibility(View.VISIBLE);
+            headerTextView.setVisibility(View.GONE);
+            isHideToolbarView = !isHideToolbarView;
+        } else if (percentage < 1f && !isHideToolbarView) {
+            toolbarHeaderView.setVisibility(View.GONE);
+            headerTextView.setVisibility(View.VISIBLE);
+            isHideToolbarView = !isHideToolbarView;
+        }
+
+
     }
 }
