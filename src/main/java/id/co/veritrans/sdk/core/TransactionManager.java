@@ -24,6 +24,7 @@ import rx.schedulers.Schedulers;
 class TransactionManager {
 
     private static Subscription mSubscription = null;
+    private static Subscription cardPaymentSubscription = null;
 
 
     public static void getToken(Activity activity, CardTokenRequest cardTokenRequest, final
@@ -245,15 +246,15 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingCard(authorization,
                             cardTransfer);
 
-                    mSubscription = observable.subscribeOn(Schedulers
+                    cardPaymentSubscription = observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
                                 @Override
                                 public void onCompleted() {
                                     Logger.i("onComplete");
-                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-                                        mSubscription.unsubscribe();
+                                    if (cardPaymentSubscription != null && !cardPaymentSubscription.isUnsubscribed()) {
+                                        cardPaymentSubscription.unsubscribe();
                                     }
 
                                     releaseResources();

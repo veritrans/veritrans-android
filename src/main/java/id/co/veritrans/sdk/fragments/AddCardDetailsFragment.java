@@ -29,16 +29,16 @@ import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
-public class AddCardDetailsFragment extends Fragment {
+public class AddCardDetailsFragment extends Fragment implements View.OnFocusChangeListener {
     String lastExpDate = "";
-    private EditText etCardHolderName;
+    //private EditText etCardHolderName;
     private EditText etCardNo;
     private EditText etCvv;
     private EditText etExpiryDate;
     private CheckBox cbStoreCard;
     private ImageView questionImg;
     private Button payNowBtn;
-    private String username;
+    //private String username;
     private String cardNumber;
     private String cvv;
     private String expiryDate;
@@ -75,9 +75,8 @@ public class AddCardDetailsFragment extends Fragment {
         return view;
     }
 
-
     private void bindViews(View view) {
-        etCardHolderName = (EditText) view.findViewById(R.id.et_holder_name);
+        //etCardHolderName = (EditText) view.findViewById(R.id.et_holder_name);
         etCardNo = (EditText) view.findViewById(R.id.et_card_no);
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
@@ -88,7 +87,7 @@ public class AddCardDetailsFragment extends Fragment {
         if (veritransSDK.isLogEnabled()) {
             etExpiryDate.setText("12/20");
             etCardNo.setText("4811 1111 1111 1114");
-            etCardHolderName.setText("Chetan");
+            // etCardHolderName.setText("Chetan");
             etCvv.setText("123");
         }
         payNowBtn.setOnClickListener(new View.OnClickListener() {
@@ -104,11 +103,11 @@ public class AddCardDetailsFragment extends Fragment {
                     cardTokenRequest.setSecure(veritransSDK.getTransactionRequest().isSecureCard());
                     cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest()
                             .getAmount());
-                    if(bankDetails!=null && !bankDetails.isEmpty()){
-                        String firstSix = cardNumber.substring(0,6);
-                        for(BankDetail bankDetail:bankDetails){
+                    if (bankDetails != null && !bankDetails.isEmpty()) {
+                        String firstSix = cardNumber.substring(0, 6);
+                        for (BankDetail bankDetail : bankDetails) {
                             //Logger.i("firstsix:"+firstSix+","+bankDetail.getIssuing_bank());
-                            if(bankDetail.getBin().equalsIgnoreCase(firstSix)){
+                            if (bankDetail.getBin().equalsIgnoreCase(firstSix)) {
                                 cardTokenRequest.setBank(bankDetail.getIssuing_bank());
                                 cardTokenRequest.setCardType(bankDetail.getCard_association());
                                 break;
@@ -211,7 +210,7 @@ public class AddCardDetailsFragment extends Fragment {
 
     private boolean isValid() {
 
-        username = etCardHolderName.getText().toString().trim();
+        //username = etCardHolderName.getText().toString().trim();
         cardNumber = etCardNo.getText().toString().trim().replace(" ", "");
         expiryDate = etExpiryDate.getText().toString().trim();
         cvv = etCvv.getText().toString().trim();
@@ -232,12 +231,12 @@ public class AddCardDetailsFragment extends Fragment {
             SdkUtil.showSnackbar(getActivity(), getString(R.string
                     .validation_message_invalid_card_no));
             return false;
-        } else if (TextUtils.isEmpty(username)) {
+        } /*else if (TextUtils.isEmpty(username)) {
             SdkUtil.showSnackbar(getActivity(), getString(R.string
                     .validatation_message_card_holder_name));
-            etCardHolderName.requestFocus();
+           // etCardHolderName.requestFocus();
             return false;
-        } else if (TextUtils.isEmpty(expiryDate)) {
+        } */ else if (TextUtils.isEmpty(expiryDate)) {
             etExpiryDate.requestFocus();
             SdkUtil.showSnackbar(getActivity(), getString(R.string
                     .validation_message_empty_expiry_date));
@@ -305,4 +304,12 @@ public class AddCardDetailsFragment extends Fragment {
         return true;
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus) {
+            if (v == etCardNo || v == etExpiryDate || v == etCvv) {
+                isValid();
+            }
+        }
+    }
 }

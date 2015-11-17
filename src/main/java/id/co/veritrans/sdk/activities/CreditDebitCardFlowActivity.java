@@ -2,7 +2,6 @@ package id.co.veritrans.sdk.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,6 +29,7 @@ import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.fragments.AddCardDetailsFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.SavedCardFragment;
 import id.co.veritrans.sdk.models.BankDetail;
@@ -77,7 +77,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_debit_card_flow);
         storageDataHandler = new StorageDataHandler();
-        //getCreditCards();
+
         try {
             userDetail = (UserDetail) storageDataHandler.readObject(this, Constants.USER_DETAILS);
         } catch (ClassNotFoundException e) {
@@ -92,8 +92,15 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         calculateScreenWidth();
-        SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
-        replaceFragment(savedCardFragment, true, false);
+        if(getCreditCards() == null || getCreditCards().isEmpty()){
+            AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
+                    .newInstance();
+            replaceFragment
+                    (addCardDetailsFragment, true, false);
+        } else {
+            SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
+            replaceFragment(savedCardFragment, true, false);
+        }
         readBankDetails();
     }
 
@@ -289,12 +296,13 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             }
         } else {
             SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-            Handler handlerTimer = new Handler();
+            payUsingCard();
+            /*Handler handlerTimer = new Handler();
             handlerTimer.postDelayed(new Runnable() {
                 public void run() {
                     payUsingCard();
                 }
-            }, 500);
+            }, 500);*/
         }
 
     }
