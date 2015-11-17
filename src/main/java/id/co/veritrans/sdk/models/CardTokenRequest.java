@@ -164,7 +164,7 @@ public class CardTokenRequest implements Serializable {
             //  startString = cardNumber.substring(0,3);
             endString = cardNumber.substring(12, 16);
         }
-        return "xxxx-xxxx-xxxx-" + endString;
+        return "XXXX-XXXX-XXXX-" + endString;
     }
 
     public String getFormatedExpiryDate() {

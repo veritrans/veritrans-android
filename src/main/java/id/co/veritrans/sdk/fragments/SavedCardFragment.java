@@ -16,7 +16,6 @@ import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
-import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
@@ -104,7 +103,7 @@ public class SavedCardFragment extends Fragment {
 
                 @Override
                 public void onPageSelected(int position) {
-                    SdkUtil.hideKeyboard(getActivity());
+                    /*SdkUtil.hideKeyboard(getActivity());*/
                 }
 
                 @Override
@@ -115,6 +114,7 @@ public class SavedCardFragment extends Fragment {
             circlePageIndicator.setViewPager(savedCardPager);
             if (cardDetails.isEmpty()) {
                 emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+
                 // addCardBt.performClick();
             } else {
                 emptyCardsTextViewFont.setVisibility(View.GONE);
