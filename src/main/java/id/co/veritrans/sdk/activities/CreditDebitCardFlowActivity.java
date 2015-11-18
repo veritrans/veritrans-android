@@ -78,13 +78,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         setContentView(R.layout.activity_credit_debit_card_flow);
         storageDataHandler = new StorageDataHandler();
 
-        try {
-            userDetail = (UserDetail) storageDataHandler.readObject(this, Constants.USER_DETAILS);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         //getBankDetails();
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
         veritransSDK = VeritransSDK.getVeritransSDK();
@@ -144,7 +138,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         veritransSDK.getToken(CreditDebitCardFlowActivity.this, this.cardTokenRequest, this);
     }
 
-    public void getToken() {
+    /*public void getToken() {
         if (cardTokenRequest != null) {
             this.cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
             SdkUtil.showProgressDialog(this, false);
@@ -152,7 +146,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         } else {
             SdkUtil.showSnackbar(this, getString(R.string.card_details_error_message));
         }
-    }
+    }*/
 
     public void payUsingCard() {
         SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
@@ -365,12 +359,16 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 }
                 Logger.i("Card:" + cardTokenRequest.getString());
                 creditCards.add(cardTokenRequest);
-                try {
-                    storageDataHandler.writeObject(this, Constants.USERS_SAVED_CARD, creditCards);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                saveCreditCards();
             }
+        }
+    }
+
+    public void saveCreditCards() {
+        try {
+            storageDataHandler.writeObject(this, Constants.USERS_SAVED_CARD, creditCards);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -438,6 +436,14 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                     new rx.Observable.OnSubscribe<List<BankDetail>>() {
                         @Override
                         public void call(Subscriber<? super List<BankDetail>> sub) {
+                            try {
+                                userDetail = (UserDetail) storageDataHandler.readObject(CreditDebitCardFlowActivity.this,
+                                        Constants.USER_DETAILS);
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             ArrayList<BankDetail> bankDetails = new ArrayList<BankDetail>();
                             try {
                                 bankDetails = (ArrayList<BankDetail>) storageDataHandler.readObject(
@@ -506,4 +512,6 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
         }
     }
+
+
 }
