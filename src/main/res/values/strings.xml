@@ -187,6 +187,8 @@
     <string name="indomaret">Indomaret</string>
     <string name="offers">Offers</string>
     <string name="loading">Loading</string>
+    <string name="delete">Delete</string>
+    <string name="card_delete_message">Are you sure you want to delete card?</string>
 
 
 </resources>

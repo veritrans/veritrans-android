@@ -25,6 +25,7 @@ import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.utilities.FlipAnimation;
 import id.co.veritrans.sdk.widgets.TextViewFont;
+import id.co.veritrans.sdk.widgets.VeritransDialog;
 
 public class CardDetailFragment extends Fragment {
 
@@ -42,15 +43,17 @@ public class CardDetailFragment extends Fragment {
     private ImageView cvvCircle3;
     private EditText cvvEt;
     private Button payNowBt;
+    private Button deleteBt;
     private Button payNowFrontBt;
     private VeritransSDK veritransSDK;
-
+    private Fragment parentFragment;
     public CardDetailFragment() {
 
     }
 
-    public static CardDetailFragment newInstance(CardTokenRequest cardDetails) {
+    public static CardDetailFragment newInstance(CardTokenRequest cardDetails, Fragment parentFragment) {
         CardDetailFragment fragment = new CardDetailFragment();
+        fragment.parentFragment = parentFragment;
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM, cardDetails);
         fragment.setArguments(args);
@@ -192,6 +195,25 @@ public class CardDetailFragment extends Fragment {
         } else {
             payNowFrontBt.setVisibility(View.GONE);
         }
+        deleteBt = (Button) view.findViewById(R.id.btn_delete_card);
+        deleteBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VeritransDialog veritransDialog = new VeritransDialog(getActivity(),getString(R.string.delete)
+                        ,getString(R.string.card_delete_message),getString(android.R.string.yes),
+                        getString(android.R.string.no));
+                View.OnClickListener positiveClickListner = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(parentFragment!=null && parentFragment instanceof SavedCardFragment) {
+                            ((SavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getCardNumber());
+                        }
+                    }
+                };
+                veritransDialog.setOnAcceptButtonClickListener(positiveClickListner);
+                veritransDialog.show();
+            }
+        });
 
     }
 

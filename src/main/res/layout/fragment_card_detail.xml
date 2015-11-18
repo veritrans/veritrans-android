@@ -40,19 +40,31 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_semibold"/>
-
-        <Button
-            android:id="@+id/btn_pay_now_front"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/btn_height"
-            android:layout_alignParentRight="true"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:text="@string/pay_now"
-            android:layout_alignParentBottom="true"
-            android:textColor="@color/colorPrimary"
-            />
-
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_alignParentBottom="true"
+                      android:layout_alignParentRight="true"
+                      android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_delete_card"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/btn_height"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:text="@string/delete"
+                android:textColor="@color/colorPrimary"
+                />
+            <Button
+                android:id="@+id/btn_pay_now_front"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/btn_height"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:text="@string/pay_now"
+                android:textColor="@color/colorPrimary"
+                android:visibility="visible"
+                />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/validation_layout"
             android:layout_width="match_parent"
@@ -108,8 +120,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:visibility="gone"
                     android:src="@drawable/ic_visa"
+                    android:visibility="gone"
                     />
             </LinearLayout>
         </LinearLayout>
