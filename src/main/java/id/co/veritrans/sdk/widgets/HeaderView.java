@@ -71,4 +71,12 @@ public class HeaderView extends LinearLayout {
             tv.setText(text);
     }
 
+
+    public TextViewFont getTitleTextView() {
+        return title;
+    }
+
+    public TextViewFont getSubTitleTextView() {
+        return subTitle;
+    }
 }
