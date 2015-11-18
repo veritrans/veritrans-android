@@ -18,7 +18,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/main_collapsing"
             android:layout_width="match_parent"
-            android:layout_height="192dp"
+            android:layout_height="160dp"
             app:title=""
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="?attr/colorPrimary"
@@ -48,10 +48,12 @@
                     android:id="@+id/title_header"
                     android:textColor="@color/white"
                     android:text="@string/select_payment_method"
-                    android:layout_marginRight="16dp"
                     android:visibility="visible"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    app:font="@string/font_open_sans_bold"
+                    android:textSize="@dimen/header_text_size"
+                    />
 
                 <include
                     android:id="@+id/toolbar_header_view"
@@ -74,14 +76,14 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_payment_methods"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             />
 
 
     <include
         android:id="@+id/float_header_view"
-        layout="@layout/layout_tool_bar_titles"
+        layout="@layout/layout_tool_bar_floating_titles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="id.co.veritrans.sdk.widgets.ViewBehavior"

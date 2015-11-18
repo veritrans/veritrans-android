@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -35,8 +36,10 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.7f;
-    private static final int ALPHA_ANIMATIONS_DURATION = 200;
+    private static final float ALPHA = 0.6f;
     private static final String TAG = PaymentMethodsActivity.class.getSimpleName();
+    private static final float PERCENTAGE_TOTAL = 1f;
+    public static final String PAYABLE_AMOUNT = "Payable Amount";
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
 
 
@@ -45,7 +48,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private AppBarLayout mAppBarLayout = null;
     private RecyclerView mRecyclerView = null;
     private VeritransSDK veritransSDK = null;
-    private StorageDataHandler storageDataHandler= null;
+    private StorageDataHandler storageDataHandler = null;
 
     private HeaderView toolbarHeaderView = null;
     private HeaderView floatHeaderView = null;
@@ -112,8 +115,16 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
                     + Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount());
 
             collapsingToolbarLayout.setTitle(" ");
-            toolbarHeaderView.bindTo("Payable Amount", ""+amount);
-            floatHeaderView.bindTo("Payable Amount", ""+amount);
+            toolbarHeaderView.bindTo(PAYABLE_AMOUNT, "" + amount);
+            floatHeaderView.bindTo(PAYABLE_AMOUNT, "" + amount);
+
+            floatHeaderView.getSubTitleTextView().setAlpha(PERCENTAGE_TOTAL);
+            floatHeaderView.getTitleTextView().setAlpha(ALPHA);
+
+            /*toolbarHeaderView.getSubTitleTextView().setAlpha(ALPHA);
+            toolbarHeaderView.getTitleTextView().setAlpha(PERCENTAGE_TOTAL);
+            */
+
             mAppBarLayout.addOnOffsetChangedListener(this);
 
         }
@@ -132,17 +143,15 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     }
 
 
-
-
     /**
      * initialize adapter data model by dummy values.
      */
     private void initialiseAdapterData() {
 
         data.clear();
-        for(PaymentMethodsModel paymentMethodsModel:veritransSDK.getSelectedPaymentMethods()){
+        for (PaymentMethodsModel paymentMethodsModel : veritransSDK.getSelectedPaymentMethods()) {
 
-            if(paymentMethodsModel.isSelected()){
+            if (paymentMethodsModel.isSelected()) {
                 data.add(paymentMethodsModel);
             }
         }
@@ -158,9 +167,9 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-            if( item.getItemId() ==  android.R.id.home){
-                finish();
-            }
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -172,18 +181,156 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         int maxScroll = appBarLayout.getTotalScrollRange();
         float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
 
-        headerTextView.setAlpha(1 - percentage);
+        applyAlpha(percentage);
 
-        if (percentage == 1f && isHideToolbarView) {
+        if ( percentage == PERCENTAGE_TOTAL && isHideToolbarView ) {
             toolbarHeaderView.setVisibility(View.VISIBLE);
-            headerTextView.setVisibility(View.GONE);
             isHideToolbarView = !isHideToolbarView;
-        } else if (percentage < 1f && !isHideToolbarView) {
+        } else if (percentage < PERCENTAGE_TOTAL && !isHideToolbarView) {
             toolbarHeaderView.setVisibility(View.GONE);
-            headerTextView.setVisibility(View.VISIBLE);
             isHideToolbarView = !isHideToolbarView;
         }
 
+        // manage visibility for title TextView
+        /*if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
+            headerTextView.setVisibility(View.GONE);
+        } else {
+            headerTextView.setVisibility(View.VISIBLE);
+        }*/
 
+        if (percentage == PERCENTAGE_TOTAL) {
+            headerTextView.setVisibility(View.GONE);
+        } else {
+            headerTextView.setVisibility(View.VISIBLE);
+        }
+
+        //applySlidingEffect(percentage);
+
+    }
+
+    private void applyAlpha(float percentage) {
+        float constant = 0.5f;
+
+        headerTextView.setAlpha( PERCENTAGE_TOTAL - percentage);
+
+        if ( percentage >= constant) {
+
+            float alpha = ( percentage * ALPHA ) / constant;
+
+            if ( alpha > PERCENTAGE_TOTAL ) {
+                floatHeaderView.getTitleTextView().setAlpha(PERCENTAGE_TOTAL);
+                floatHeaderView.getTitleTextView().setPivotX(1);
+                floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 3.5f);
+                floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.5f);
+                floatHeaderView.invalidate();
+            } else {
+                floatHeaderView.getTitleTextView().setAlpha(alpha);
+                floatHeaderView.getTitleTextView().setPivotX(1);
+                floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 3.5f);
+                floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.5f);
+                floatHeaderView.invalidate();
+            }
+
+            alpha = ALPHA  / percentage ;
+
+            if ( alpha > PERCENTAGE_TOTAL ) {
+                floatHeaderView.getSubTitleTextView().setAlpha( PERCENTAGE_TOTAL );
+            } else if (alpha < ALPHA ){
+                floatHeaderView.getSubTitleTextView().setAlpha( ALPHA );
+            }else {
+                floatHeaderView.getSubTitleTextView().setAlpha( alpha );
+            }
+
+            // for 0.5 it is 1 , for 1 it 0.6
+
+        }else {
+
+            floatHeaderView.getTitleTextView().setAlpha(ALPHA);
+            floatHeaderView.getSubTitleTextView().setAlpha(PERCENTAGE_TOTAL);
+            floatHeaderView.getTitleTextView().setScaleX(1);
+            floatHeaderView.getTitleTextView().setScaleY(1);
+            floatHeaderView.invalidate();
+        }
+    }
+
+    private void applySlidingEffect(float percentage) {
+
+
+        if (percentage > 5) {
+
+            // manage title effect
+            if (percentage >= 0.9f) {
+                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 19.5f);
+                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP,
+                        14.5f);
+
+                floatHeaderView.getSubTitleTextView().setAlpha(0.6f);
+                floatHeaderView.getTitleTextView().setAlpha(1f);
+                floatHeaderView.invalidate();
+            } else if (percentage >= 0.8f) {
+                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
+                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            } else if (percentage >= 0.7f) {
+                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 18.5f);
+                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP,
+                        15.5f);
+
+                floatHeaderView.getSubTitleTextView().setAlpha(0.6f);
+                floatHeaderView.getTitleTextView().setAlpha(1);
+
+                floatHeaderView.invalidate();
+            } else if (percentage >= 0.6f) {
+                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f);
+                floatHeaderView.getSubTitleTextView().setAlpha(0.7f);
+                floatHeaderView.getTitleTextView().setAlpha(0.9f);
+
+            } else if (percentage >= 0.5f) {
+                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 17.5f);
+                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP,
+                        16.5f);
+
+                floatHeaderView.getSubTitleTextView().setAlpha(0.75f);
+                floatHeaderView.getTitleTextView().setAlpha(0.85f);
+                floatHeaderView.invalidate();
+            }
+        } else {
+
+            //for reverse effect
+            if (percentage <= 0.1f) {
+                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.5f);
+                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP,
+                        19.5f);
+
+                floatHeaderView.getSubTitleTextView().setAlpha(0.9f);
+                floatHeaderView.getTitleTextView().setAlpha(0.65f);
+                floatHeaderView.invalidate();
+            } else if (percentage <= 0.2f) {
+                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f);
+                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 19f);
+
+                floatHeaderView.getSubTitleTextView().setAlpha(0.85f);
+                floatHeaderView.getTitleTextView().setAlpha(0.75f);
+
+                floatHeaderView.invalidate();
+
+            } else if (percentage <= 0.3f) {
+                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.5f);
+                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
+
+                floatHeaderView.getSubTitleTextView().setAlpha(0.8f);
+                floatHeaderView.getTitleTextView().setAlpha(0.8f);
+                floatHeaderView.invalidate();
+
+            } else if (percentage <= 0.4f) {
+                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f);
+                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 17f);
+
+                floatHeaderView.getSubTitleTextView().setAlpha(0.75f);
+                floatHeaderView.getTitleTextView().setAlpha(0.8f);
+
+                floatHeaderView.invalidate();
+            }
+        }
     }
 }
