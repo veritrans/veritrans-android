@@ -14,15 +14,16 @@ import id.co.veritrans.sdk.models.CardTokenRequest;
  */
 public class CardPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<CardTokenRequest> cardDetails;
-
-    public CardPagerAdapter(FragmentManager fm, ArrayList<CardTokenRequest> cardDetails) {
+    private Fragment parentFragment;
+    public CardPagerAdapter(Fragment fragment, FragmentManager fm, ArrayList<CardTokenRequest> cardDetails) {
         super(fm);
         this.cardDetails = cardDetails;
+        parentFragment = fragment;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return CardDetailFragment.newInstance(cardDetails.get(position));
+        return CardDetailFragment.newInstance(cardDetails.get(position),parentFragment);
     }
 
     @Override
@@ -37,5 +38,9 @@ public class CardPagerAdapter extends FragmentPagerAdapter {
         } else {
             return 0;
         }
+    }
+
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

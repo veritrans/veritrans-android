@@ -26,7 +26,8 @@ public class SavedCardFragment extends Fragment {
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
     private VeritransSDK veritransSDK;
-    private ArrayList<CardTokenRequest> cardDetails = new ArrayList<>();
+    private ArrayList<CardTokenRequest> creditCards;
+    private CardPagerAdapter cardPagerAdapter;
 
     private TextViewFont emptyCardsTextViewFont;
 
@@ -89,11 +90,11 @@ public class SavedCardFragment extends Fragment {
                 .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-        cardDetails = ((CreditDebitCardFlowActivity) getActivity()).getCreditCards();
+        creditCards = ((CreditDebitCardFlowActivity) getActivity()).getCreditCards();
 
-        if (cardDetails != null) {
-            CardPagerAdapter cardPagerAdapter = new CardPagerAdapter(getChildFragmentManager(),
-                    cardDetails);
+        if (creditCards != null) {
+             cardPagerAdapter = new CardPagerAdapter(this,getChildFragmentManager(),
+                    creditCards);
             savedCardPager.setAdapter(cardPagerAdapter);
             savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
@@ -112,35 +113,40 @@ public class SavedCardFragment extends Fragment {
                 }
             });
             circlePageIndicator.setViewPager(savedCardPager);
-            if (cardDetails.isEmpty()) {
-                emptyCardsTextViewFont.setVisibility(View.VISIBLE);
-
-                // addCardBt.performClick();
-            } else {
-                emptyCardsTextViewFont.setVisibility(View.GONE);
-            }
+            showHideNoCardMessage();
         }
 
 
     }
 
-
-    /*private void createDummyCards() {
-        if(cardDetails.isEmpty()) {
-            for (int i = 0; i < 2; i++) {
-                CardTokenRequest cardTokenRequest = new CardTokenRequest("4811111111111114",0,12,
-                20,veritransSDK.getClientKey());
-                cardTokenRequest.setBank("Permata");
-                cardTokenRequest.setSecure(true);
-                *//*CardDetail cardDetail = new CardDetail();
-                cardDetail.setCardHolderName("James Anderson");
-                cardDetail.setCardNumber("4811 1111 1111 1114");
-                cardDetail.setBankName("Bank Permata");
-                cardDetail.setExpiryDate("XX/12");*//*
-                cardDetails.add(cardTokenRequest);
-            }
+    private void showHideNoCardMessage() {
+        if (creditCards.isEmpty()) {
+            emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+            //savedCardPager.setVisibility(View.GONE);
+        } else {
+            emptyCardsTextViewFont.setVisibility(View.GONE);
+            //savedCardPager.setVisibility(View.VISIBLE);
         }
-    }*/
+    }
 
+    public void deleteCreditCard(String cardNumber) {
 
+        if(creditCards!=null && !creditCards.isEmpty()){
+            int position  = -1;
+            for(int i =0; i < creditCards.size();i++){
+                if(creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)){
+                    position = i;
+                }
+            }
+            Logger.i("position to delete:"+position+",creditCard size:"+creditCards.size());
+            if(position >= 0){
+                creditCards.remove(position);
+                Logger.i("creditCard size:" + creditCards.size());
+            }
+            cardPagerAdapter.notifyDataSetChanged();
+            circlePageIndicator.notifyDataSetChanged();
+            showHideNoCardMessage();
+            ((CreditDebitCardFlowActivity)getActivity()).saveCreditCards();
+        }
+    }
 }

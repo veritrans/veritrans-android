@@ -57,7 +57,18 @@ public class AddCardDetailsFragment extends Fragment implements View.OnFocusChan
         AddCardDetailsFragment fragment = new AddCardDetailsFragment();
         return fragment;
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
+                    .string.card_details));
+            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar()
+                    .setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +94,9 @@ public class AddCardDetailsFragment extends Fragment implements View.OnFocusChan
         cbStoreCard = (CheckBox) view.findViewById(R.id.cb_store_card);
         questionImg = (ImageView) view.findViewById(R.id.question_img);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
-
+        etCardNo.setOnFocusChangeListener(this);
+        etCvv.setOnFocusChangeListener(this);
+        etExpiryDate.setOnFocusChangeListener(this);
         if (veritransSDK.isLogEnabled()) {
             etExpiryDate.setText("12/20");
             etCardNo.setText("4811 1111 1111 1114");
@@ -306,8 +319,10 @@ public class AddCardDetailsFragment extends Fragment implements View.OnFocusChan
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
+        Logger.i("onFocus change");
         if (!hasFocus) {
             if (v == etCardNo || v == etExpiryDate || v == etCvv) {
+                Logger.i("onFocus change has not focus");
                 isValid();
             }
         }
