@@ -52,7 +52,9 @@ public class ViewBehavior extends CoordinatorLayout.Behavior<HeaderView> {
 
         CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child
                 .getLayoutParams();
-        lp.leftMargin = (int) (percentage * mEndMargintLeft) + mStartMarginLeft;
+
+       // lp.leftMargin = (int) (percentage * mEndMargintLeft) + mStartMarginLeft ;
+
         lp.rightMargin = mMarginRight;
         child.setLayoutParams(lp);
 
