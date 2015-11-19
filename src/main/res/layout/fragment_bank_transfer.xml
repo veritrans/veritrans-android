@@ -33,10 +33,9 @@
         <id.co.veritrans.sdk.widgets.TextViewFont
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/eight_dp"
             android:text="@string/email_instruction"
             android:textColor="@color/light_gray"
-            android:textSize="@dimen/primary_text_size"
+            android:textSize="@dimen/tertiary_text_size"
             app:font="@string/font_open_sans_regular"
             />
 
@@ -57,7 +56,7 @@
             android:layout_marginTop="@dimen/twenty_four_dp"
             android:text="@string/bank_atm_transfer_step1"
             android:textColor="@color/black"
-            android:textSize="@dimen/primary_text_size"
+            android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
             />
 
@@ -68,7 +67,7 @@
             android:lineSpacingExtra="2dp"
             android:text="@string/bank_atm_transfer_step2"
             android:textColor="@color/black"
-            android:textSize="@dimen/primary_text_size"
+            android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
             />
 
@@ -80,7 +79,7 @@
             android:lineSpacingExtra="2dp"
             android:text="@string/bank_atm_transfer_step3"
             android:textColor="@color/black"
-            android:textSize="@dimen/primary_text_size"
+            android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
             />
 
@@ -92,7 +91,7 @@
             android:lineSpacingExtra="2dp"
             android:text="@string/bank_atm_transfer_step4"
             android:textColor="@color/black"
-            android:textSize="@dimen/primary_text_size"
+            android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
             />
 

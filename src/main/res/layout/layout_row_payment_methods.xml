@@ -18,17 +18,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_toRightOf="@id/img_payment_method_icon"
         >
 
         <id.co.veritrans.sdk.widgets.TextViewFont
             android:id="@+id/text_payment_method_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/sixteen_dp"
+            android:layout_height="match_parent"
+            android:gravity="center|left"
             android:text="demo"
+            android:textColor="@color/black"
             app:font="@string/font_open_sans_regular"
             />
 
@@ -37,7 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/eight_dp"
             android:background="@color/gray_divider"
             />
     </RelativeLayout>
