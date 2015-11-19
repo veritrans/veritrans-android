@@ -57,6 +57,7 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_close);
+        mToolbar.setTitle(getResources().getString(R.string.payment_instrution));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

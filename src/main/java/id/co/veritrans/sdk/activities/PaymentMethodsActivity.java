@@ -1,8 +1,10 @@
 package id.co.veritrans.sdk.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.TransactionRequest;
 import id.co.veritrans.sdk.core.VeritransSDK;
@@ -80,7 +83,42 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
                 userDetail.getEmail(), userDetail.getPhoneNumber());
         transactionRequest.setCustomerDetails(customerDetails);
         setUpPaymentMethods();
+
+
+        handleScrollingOfRecyclerView();
+
     }
+
+    private void handleScrollingOfRecyclerView() {
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView
+                        .getLayoutManager();
+                int lastPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+
+                Logger.d("last item position is " + lastPosition);
+                Logger.d("total items are " + mRecyclerView.getAdapter().getItemCount());
+
+
+                if (lastPosition  == mRecyclerView.getAdapter().getItemCount() - 1 ) {
+                    disableScrolling();
+                }
+            }
+        }, 200);
+    }
+
+
+    private void disableScrolling() {
+        //turn off scrolling
+        CoordinatorLayout.LayoutParams appBarLayoutParams = (CoordinatorLayout.LayoutParams)
+                mAppBarLayout.getLayoutParams();
+        appBarLayoutParams.setBehavior(null);
+        mAppBarLayout.setLayoutParams(appBarLayoutParams);
+    }
+
 
     private void setUpPaymentMethods() {
 
@@ -99,11 +137,14 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         // setUp recyclerView
         initialiseAdapterData();
         mRecyclerView.setHasFixedSize(true);
+
+
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         PaymentMethodsAdapter paymentMethodsAdapter = new
                 PaymentMethodsAdapter(this, data);
         mRecyclerView.setAdapter(paymentMethodsAdapter);
+
     }
 
     private void bindDataToView() {
@@ -183,7 +224,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
         applyAlpha(percentage);
 
-        if ( percentage == PERCENTAGE_TOTAL && isHideToolbarView ) {
+        if (percentage == PERCENTAGE_TOTAL && isHideToolbarView) {
             toolbarHeaderView.setVisibility(View.VISIBLE);
             isHideToolbarView = !isHideToolbarView;
         } else if (percentage < PERCENTAGE_TOTAL && !isHideToolbarView) {
@@ -191,12 +232,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             isHideToolbarView = !isHideToolbarView;
         }
 
-        // manage visibility for title TextView
-        /*if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
-            headerTextView.setVisibility(View.GONE);
-        } else {
-            headerTextView.setVisibility(View.VISIBLE);
-        }*/
 
         if (percentage == PERCENTAGE_TOTAL) {
             headerTextView.setVisibility(View.GONE);
@@ -209,41 +244,55 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     }
 
     private void applyAlpha(float percentage) {
-        float constant = 0.5f;
 
-        headerTextView.setAlpha( PERCENTAGE_TOTAL - percentage);
+        float constant = 0.2f;
 
-        if ( percentage >= constant) {
+        headerTextView.setAlpha(PERCENTAGE_TOTAL - (percentage + constant));
 
-            float alpha = ( percentage * ALPHA ) / constant;
+        if (percentage > constant) {
 
-            if ( alpha > PERCENTAGE_TOTAL ) {
-                floatHeaderView.getTitleTextView().setAlpha(PERCENTAGE_TOTAL);
+            float alpha = (percentage * ALPHA) / 0.5f;
+
+            if (percentage >= 0.95) {
+
+                floatHeaderView.getTitleTextView().setAlpha(1);
                 floatHeaderView.getTitleTextView().setPivotX(1);
-                floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 3.5f);
-                floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.5f);
+
+                floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 2.95f);
+                floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.1f);
                 floatHeaderView.invalidate();
+
+
             } else {
-                floatHeaderView.getTitleTextView().setAlpha(alpha);
+
+                if (alpha > ALPHA) {
+                    floatHeaderView.getTitleTextView().setAlpha(alpha);
+                }
+
                 floatHeaderView.getTitleTextView().setPivotX(1);
-                floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 3.5f);
-                floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.5f);
+                floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 2.95f);
+                floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.05f);
+
+                floatHeaderView.getSubTitleTextView().setPivotX(1);
+                floatHeaderView.getSubTitleTextView().setScaleX(1 - alpha / 4f);
+                floatHeaderView.getSubTitleTextView().setScaleY(1 - alpha / 4f);
+
                 floatHeaderView.invalidate();
             }
 
-            alpha = ALPHA  / percentage ;
+            alpha = ALPHA / percentage;
 
-            if ( alpha > PERCENTAGE_TOTAL ) {
-                floatHeaderView.getSubTitleTextView().setAlpha( PERCENTAGE_TOTAL );
-            } else if (alpha < ALPHA ){
-                floatHeaderView.getSubTitleTextView().setAlpha( ALPHA );
-            }else {
-                floatHeaderView.getSubTitleTextView().setAlpha( alpha );
+            if (alpha > PERCENTAGE_TOTAL) {
+                floatHeaderView.getSubTitleTextView().setAlpha(PERCENTAGE_TOTAL);
+            } else if (alpha < ALPHA) {
+                floatHeaderView.getSubTitleTextView().setAlpha(ALPHA);
+            } else {
+                floatHeaderView.getSubTitleTextView().setAlpha(alpha);
             }
 
             // for 0.5 it is 1 , for 1 it 0.6
 
-        }else {
+        } else {
 
             floatHeaderView.getTitleTextView().setAlpha(ALPHA);
             floatHeaderView.getSubTitleTextView().setAlpha(PERCENTAGE_TOTAL);
@@ -256,7 +305,8 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private void applySlidingEffect(float percentage) {
 
 
-        if (percentage > 5) {
+        if (percentage > 0.5) {
+
 
             // manage title effect
             if (percentage >= 0.9f) {
