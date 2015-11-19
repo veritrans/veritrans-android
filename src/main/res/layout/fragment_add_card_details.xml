@@ -95,7 +95,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <ImageView
-                    android:id="@+id/question_img"
+                    android:id="@+id/image_question"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -109,14 +109,24 @@
 
         <CheckBox
             android:id="@+id/cb_store_card"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/expiry_date_layout"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/save_card_message"
             />
-
+        <ImageView
+            android:id="@+id/image_question_save_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:src="@drawable/ic_cvvinfo"
+            android:layout_below="@id/expiry_date_layout"
+            android:layout_toRightOf="@id/cb_store_card"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
