@@ -74,7 +74,7 @@
     <string name="validation_message_cvv">Please enter cvv.</string>
     <string name="validation_message_invalid_cvv">Please enter valid cvv</string>
     <string name="validation_message_empty_expiry_date">Please enter expiry date</string>
-    <string name="message_cvv">3 digits printed on back of card</string>
+    <string name="message_cvv">CVV is 3 or 4 digit number printed at the back side of the card.</string>
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -189,6 +189,8 @@
     <string name="loading">Loading</string>
     <string name="delete">Delete</string>
     <string name="card_delete_message">Are you sure you want to delete card?</string>
+    <string name="message_save_card">Save your card for faster checkout process.</string>
+    <string name="got_it">Got it</string>
 
 
 </resources>
