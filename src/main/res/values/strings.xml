@@ -97,12 +97,12 @@
     <string name="hint_email_optional">Email Address (Optional)</string>
     <string name="email_instruction">we\'ll send payment instruction to mail.</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
-    <string name="bank_atm_transfer_step1">1.        Click the Confirm Payment button.</string>
-    <string name="bank_atm_transfer_step2">2.        You will receive an unique account number and instructions on how to pay
+    <string name="bank_atm_transfer_step1">1.\t Click the Confirm Payment button.</string>
+    <string name="bank_atm_transfer_step2">2.\t You will receive an unique account number and instructions on how to pay
         (You can receive instructions via email if you input your mail address above).</string>
 
-    <string name="bank_atm_transfer_step3">3.        Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
-    <string name="bank_atm_transfer_step4">4.        Once payment is complete, you will receive a confirmation email.</string>
+    <string name="bank_atm_transfer_step3">3.\t Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
+    <string name="bank_atm_transfer_step4">4.\t Once payment is complete, you will receive a confirmation email.</string>
     <string name="see_instruction">see instructions</string>
     <string name="confirm_payment">Confirm Payment</string>
     <string name="complete_payment_at_atm">Complete Payment At ATM</string>
@@ -118,32 +118,32 @@
 
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
-    <string name="mandiri_instruction_step1">1  Enter Your PIN.</string>
-    <string name="mandiri_instruction_step2">2  On the main menu, Choose \'others\'.</string>
-    <string name="mandiri_instruction_step3">3  Choose Transfer.</string>
-    <string name="mandiri_instruction_step4">4  Choose \'Online Transfer\'.</string>
-    <string name="mandiri_instruction_step5">5  Enter the number 013 (code 013 and 16-digit account number).</string>
-    <string name="mandiri_instruction_step6">6  The reference number can be left blank and then choose correct.</string>
+    <string name="mandiri_instruction_step1">1.\tEnter Your PIN.</string>
+    <string name="mandiri_instruction_step2">2.\tOn the main menu, Choose \'others\'.</string>
+    <string name="mandiri_instruction_step3">3.\tChoose Transfer.</string>
+    <string name="mandiri_instruction_step4">4.\tChoose \'Online Transfer\'.</string>
+    <string name="mandiri_instruction_step5">5.\tEnter the number 013 (code 013 and 16-digit account number).</string>
+    <string name="mandiri_instruction_step6">6.\tThe reference number can be left blank and then choose correct.</string>
 
 
     <!-- bca/ prima bank transfer Instruction-->
-    <string name="bca_instruction_step1">1  Enter Your PIN.</string>
-    <string name="bca_instruction_step2">2  On the main menu, Choose \'Other Transaction\'.</string>
-    <string name="bca_instruction_step3">3  Choose \'Transfer\'.</string>
-    <string name="bca_instruction_step4">4  Choose \'Other Bank Account\'.</string>
-    <string name="bca_instruction_step5">5  Enter the number 013 (Bank Permata) and choose \'Correct\'.</string>
-    <string name="bca_instruction_step6">6  Enter full amount to be paid (if the amount entered is not the same as the invoiced amount, the transaction will be declined).</string>
-    <string name="bca_instruction_step7">7  Enter 16 digits payment Account No. and press \'Correct\'.</string>
+    <string name="bca_instruction_step1">1.\tEnter Your PIN.</string>
+    <string name="bca_instruction_step2">2.\tOn the main menu, Choose \'Other Transaction\'.</string>
+    <string name="bca_instruction_step3">3.\tChoose \'Transfer\'.</string>
+    <string name="bca_instruction_step4">4.\tChoose \'Other Bank Account\'.</string>
+    <string name="bca_instruction_step5">5.\tEnter the number 013 (Bank Permata) and choose \'Correct\'.</string>
+    <string name="bca_instruction_step6">6.\tEnter full amount to be paid (if the amount entered is not the same as the invoiced amount, the transaction will be declined).</string>
+    <string name="bca_instruction_step7">7.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
 
 
     <!-- Permata/Alto bank transfer Instruction-->
-    <string name="permata_instruction_step1">1  Enter Your PIN.</string>
-    <string name="permata_instruction_step2">2  On the main menu, Choose \'Other Transaction\'.</string>
-    <string name="permata_instruction_step3">3  Choose \'Payment\'.</string>
-    <string name="permata_instruction_step4">4  Choose \'Other Payment\'.</string>
-    <string name="permata_instruction_step5">5  Choose \'Virtual Account\'.</string>
-    <string name="permata_instruction_step6">6  Enter 16 digits payment Account No. and press \'Correct\'.</string>
-    <string name="permata_instruction_step7">7  Transaction information will appear on the payment confirmation page. If the information is right, press \'Correct\'.</string>
+    <string name="permata_instruction_step1">1.\tEnter Your PIN.</string>
+    <string name="permata_instruction_step2">2.\tOn the main menu, Choose \'Other Transaction\'.</string>
+    <string name="permata_instruction_step3">3.\tChoose \'Payment\'.</string>
+    <string name="permata_instruction_step4">4.\tChoose \'Other Payment\'.</string>
+    <string name="permata_instruction_step5">5.\tChoose \'Virtual Account\'.</string>
+    <string name="permata_instruction_step6">6.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
+    <string name="permata_instruction_step7">7.\tTransaction information will appear on the payment confirmation page. If the information is right, press \'Correct\'.</string>
     <string name="bank_transfer_dummy_text">* Subject to preferred bank\'s transfer fee and a minimum transaction of Rp50,000, - for bank mandiri</string>
 
 
