@@ -181,7 +181,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         int maxScroll = appBarLayout.getTotalScrollRange();
         float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
 
-        applyAlpha(percentage);
+            applyAlpha(percentage);
 
         if ( percentage == PERCENTAGE_TOTAL && isHideToolbarView ) {
             toolbarHeaderView.setVisibility(View.VISIBLE);
@@ -191,12 +191,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             isHideToolbarView = !isHideToolbarView;
         }
 
-        // manage visibility for title TextView
-        /*if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
-            headerTextView.setVisibility(View.GONE);
-        } else {
-            headerTextView.setVisibility(View.VISIBLE);
-        }*/
 
         if (percentage == PERCENTAGE_TOTAL) {
             headerTextView.setVisibility(View.GONE);
@@ -209,25 +203,39 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     }
 
     private void applyAlpha(float percentage) {
-        float constant = 0.5f;
 
-        headerTextView.setAlpha( PERCENTAGE_TOTAL - percentage);
+        float constant = 0.2f;
 
-        if ( percentage >= constant) {
+        headerTextView.setAlpha( PERCENTAGE_TOTAL - (percentage + constant));
 
-            float alpha = ( percentage * ALPHA ) / constant;
+        if ( percentage > constant) {
 
-            if ( alpha > PERCENTAGE_TOTAL ) {
-                floatHeaderView.getTitleTextView().setAlpha(PERCENTAGE_TOTAL);
+            float alpha = ( percentage * ALPHA ) / 0.5f;
+
+            if ( percentage >= 0.95 ) {
+
+                floatHeaderView.getTitleTextView().setAlpha(1);
                 floatHeaderView.getTitleTextView().setPivotX(1);
-                floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 3.5f);
-                floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.5f);
+
+                floatHeaderView.getTitleTextView().setScaleX( 1 + alpha / 2.95f );
+                floatHeaderView.getTitleTextView().setScaleY( 1 + alpha / 3.1f );
                 floatHeaderView.invalidate();
+
+
             } else {
-                floatHeaderView.getTitleTextView().setAlpha(alpha);
+
+                if(alpha > ALPHA) {
+                    floatHeaderView.getTitleTextView().setAlpha( alpha);
+                }
+
                 floatHeaderView.getTitleTextView().setPivotX(1);
-                floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 3.5f);
-                floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.5f);
+                floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 2.95f);
+                floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.05f);
+
+                floatHeaderView.getSubTitleTextView().setPivotX(1);
+                floatHeaderView.getSubTitleTextView().setScaleX(1 - alpha / 4f);
+                floatHeaderView.getSubTitleTextView().setScaleY(1 - alpha / 4f);
+
                 floatHeaderView.invalidate();
             }
 
@@ -256,7 +264,9 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private void applySlidingEffect(float percentage) {
 
 
-        if (percentage > 5) {
+        if (percentage > 0.5) {
+
+
 
             // manage title effect
             if (percentage >= 0.9f) {

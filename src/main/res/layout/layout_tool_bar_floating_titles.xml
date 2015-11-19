@@ -18,6 +18,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/secondary_text_size"
         app:font="@string/font_open_sans_regular"
+        android:layout_marginTop="1.5dp"
         />
 
     <!-- Subtitle -->
