@@ -17,43 +17,45 @@
         android:clickable="true"
         android:padding="@dimen/sixteen_dp"
         android:visibility="visible">
-
         <id.co.veritrans.sdk.widgets.TextViewFont
             android:id="@+id/text_bank_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
+            android:textAllCaps="true"
             android:text="Bank name"
+            android:layout_marginRight="@dimen/thirtytwo_dp"
             android:textColor="@android:color/white"
             android:textSize="@dimen/header_text_size"
             app:font="@string/font_open_sans_semibold"
 
             />
-
+        <ImageView
+            android:id="@+id/image_delete_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingBottom="@dimen/sixteen_dp"
+            android:clickable="true"
+            android:src="@drawable/delete"
+            android:layout_alignParentRight="true"/>
         <id.co.veritrans.sdk.widgets.TextViewFont
             android:id="@+id/text_card_number"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_bank_name"
             android:gravity="left"
+            android:drawablePadding="@dimen/sixteen_dp"
             android:text="xxxx xxxx xxxx 1234"
             android:textColor="@android:color/white"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_semibold"/>
+            />
         <LinearLayout android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_alignParentBottom="true"
                       android:layout_alignParentRight="true"
                       android:orientation="horizontal">
-            <Button
-                android:id="@+id/btn_delete_card"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/btn_height"
-                android:paddingLeft="@dimen/sixteen_dp"
-                android:paddingRight="@dimen/sixteen_dp"
-                android:text="@string/delete"
-                android:textColor="@color/colorPrimary"
-                />
             <Button
                 android:id="@+id/btn_pay_now_front"
                 android:layout_width="wrap_content"
@@ -115,14 +117,14 @@
                 android:orientation="vertical"
                 >
 
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/image_card_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:src="@drawable/ic_visa"
                     android:visibility="gone"
-                    />
+                    />-->
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -137,18 +139,35 @@
         android:orientation="vertical"
         android:padding="@dimen/sixteen_dp"
         android:visibility="gone">
-
-        <id.co.veritrans.sdk.widgets.TextViewFont
-            android:id="@+id/tv_enter_cvv"
+        <RelativeLayout
+            android:id="@+id/enter_cv_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_card"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/sixteen_dp"
+            android:visibility="visible">
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/tv_enter_cvv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="@string/enter_cvv"
             android:textColor="@android:color/white"
             android:textSize="@dimen/big_text"
             app:font="@string/font_open_sans_regular"/>
-
+        <ImageView android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:paddingTop="@dimen/two_dp"
+                   android:id="@+id/image_questionmark"
+                   android:src="@drawable/card_question"
+                   android:paddingLeft="@dimen/eight_dp"
+                   android:layout_toRightOf="@id/tv_enter_cvv"
+                   android:clickable="true"/>
+            </RelativeLayout>
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
