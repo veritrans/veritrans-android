@@ -2,14 +2,33 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:background="@android:color/white"
               tools:context=".UserDetailsActivity">
 
-    <include
+    <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        layout="@layout/layout_toolbar"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        android:background="@color/colorPrimary"
+        app:theme="@style/ToolBarStyle"
+        >
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/title_header"
+            android:textColor="@android:color/white"
+            android:text="@string/title_user_details"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:font="@string/font_open_sans_regular"
+            android:textSize="@dimen/tool_bar_title_size"
+            />
+
+    </android.support.v7.widget.Toolbar>
+
 
     <RelativeLayout
         android:id="@+id/user_detail_container"

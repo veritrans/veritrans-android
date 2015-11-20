@@ -27,13 +27,27 @@
             android:layout_height="wrap_content"
             >
 
-            <include
+            <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                layout="@layout/layout_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/tool_bar_height"
+                android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                />
+                >
+
+                <id.co.veritrans.sdk.widgets.TextViewFont
+                    android:id="@+id/title_header"
+                    android:textColor="@android:color/white"
+                    android:text="@string/payment_instrution"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:font="@string/font_open_sans_regular"
+                    android:textSize="@dimen/tool_bar_title_size"
+                    />
+
+            </android.support.v7.widget.Toolbar>
+
+
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/instruction_tabs"
