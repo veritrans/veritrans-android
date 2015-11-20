@@ -78,9 +78,9 @@ class TransactionManager {
                             @Override
                             public void onCompleted() {
 
-                                /*if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+                                if (mSubscription != null && !mSubscription.isUnsubscribed()) {
                                     mSubscription.unsubscribe();
-                                }*/
+                                }
 
                                 releaseResources();
                             }
@@ -113,9 +113,6 @@ class TransactionManager {
                                 } else {
                                     callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
                                     Logger.e(Constants.ERROR_EMPTY_RESPONSE);
-                                }
-                                if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-                                    mSubscription.unsubscribe();
                                 }
                             }
                         });
@@ -551,9 +548,9 @@ class TransactionManager {
                                     callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
                                     Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                 }
-                                if (merchantSubscription != null && !merchantSubscription.isUnsubscribed()) {
+                                /*if (merchantSubscription != null && !merchantSubscription.isUnsubscribed()) {
                                     merchantSubscription.unsubscribe();
-                                }
+                                }*/
                             }
                         });
 

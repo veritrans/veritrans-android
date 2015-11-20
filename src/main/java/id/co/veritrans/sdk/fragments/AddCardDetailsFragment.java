@@ -104,10 +104,10 @@ public class AddCardDetailsFragment extends Fragment implements View.OnFocusChan
         etCvv.setOnFocusChangeListener(this);
         etExpiryDate.setOnFocusChangeListener(this);
         if (veritransSDK.isLogEnabled()) {
-            etExpiryDate.setText("12/20");
+            /*etExpiryDate.setText("12/20");
             etCardNo.setText("4811 1111 1111 1114");
             // etCardHolderName.setText("Chetan");
-            etCvv.setText("123");
+            etCvv.setText("123");*/
         }
         payNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
