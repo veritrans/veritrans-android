@@ -53,16 +53,13 @@ import rx.schedulers.Schedulers;
 public class CreditDebitCardFlowActivity extends AppCompatActivity implements TokenCallBack,
         TransactionCallback {
     private static final int PAYMENT_WEB_INTENT = 100;
-    private static final int GET_TOKEN = 50;
     private static final int PAY_USING_CARD = 51;
     private Toolbar toolbar;
     private String currentFragmentName;
     private FragmentManager fragmentManager;
-    private Fragment currentFragment;
     private VeritransSDK veritransSDK;
     private float cardWidth;
     private UserDetail userDetail;
-    private int currentApiCallNumber;
     private TokenDetailsResponse tokenDetailsResponse;
     private CardTokenRequest cardTokenRequest;
     private CardTransfer cardTransfer;
@@ -116,15 +113,6 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             } else {
                 super.onBackPressed();
             }
-            /*if (currentFragmentName.equalsIgnoreCase(WebviewFragment.class.getName())) {
-                if (((WebviewFragment) currentFragment).webView.canGoBack()) {
-                    ((WebviewFragment) currentFragment).webviewBackPressed();
-                } else {
-                    super.onBackPressed();
-                }
-            } else {
-                super.onBackPressed();
-            }*/
         }
     }
 
@@ -211,7 +199,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             }
             cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails,
                     null, billingAddresses, shippingAddresses, customerDetails);
-            currentApiCallNumber = PAY_USING_CARD;
+            //currentApiCallNumber = PAY_USING_CARD;
 
         }
 
@@ -266,7 +254,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 }
                 ft.commit();
                 currentFragmentName = backStateName;
-                currentFragment = fragment;
+                //currentFragment = fragment;
             }
         }
     }
@@ -288,12 +276,6 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         } else {
             SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
             payUsingCard();
-            /*Handler handlerTimer = new Handler();
-            handlerTimer.postDelayed(new Runnable() {
-                public void run() {
-                    payUsingCard();
-                }
-            }, 500);*/
         }
 
     }
@@ -407,7 +389,6 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         this.cardTokenRequest.setTwoClick(true);
         this.cardTokenRequest.setClientKey(veritransSDK.getClientKey());
         veritransSDK.getToken(CreditDebitCardFlowActivity.this, this.cardTokenRequest, this);
-        //getToken(cardDetail);
     }
 
     public ArrayList<BankDetail> getBankDetails() {
@@ -485,7 +466,6 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                         }
                     }
             );
-            // bankDetails = SdkUtil.loadBankDetailJsonFromAsset(this).getBankDetails();
             Subscriber<List<BankDetail>> subscriber = new Subscriber<List<BankDetail>>() {
 
                 @Override
@@ -509,6 +489,4 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
         }
     }
-
-
 }

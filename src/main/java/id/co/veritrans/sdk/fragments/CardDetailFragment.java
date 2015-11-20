@@ -229,7 +229,7 @@ public class CardDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image,null),
-                        getString(R.string.message_cvv), getString(android.R.string.ok), "");
+                        getString(R.string.message_cvv), getString(R.string.got_it), "");
                 veritransDialog.show();
             }
         });
