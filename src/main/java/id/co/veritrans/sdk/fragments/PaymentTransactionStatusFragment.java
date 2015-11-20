@@ -9,11 +9,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.IOException;
+
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.callbacks.UpdateTransactionCallBack;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
+import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.models.TransactionMerchant;
 import id.co.veritrans.sdk.models.TransactionResponse;
+import id.co.veritrans.sdk.models.TransactionUpdateMerchantResponse;
+import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -35,7 +42,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private TextViewFont orderIdTextViewFont = null;
     private TextViewFont transactionTimeTextViewFont = null;
     private TextViewFont paymentTypeTextViewFont = null;
-
+    private int count = 1;
 
     public PaymentTransactionStatusFragment() {
         // Required empty public constructor
@@ -51,13 +58,55 @@ public class PaymentTransactionStatusFragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             transactionResponse = (TransactionResponse) getArguments().getSerializable
                     (TRANSACTION_RESPONSE_PARAM);
+        }
+
+    }
+
+    public void updateMerchantServer() {
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+        UserDetail userDetail = null;
+        Logger.i("updateMerchantServer called");
+        try {
+            userDetail = (UserDetail) storageDataHandler.readObject(getActivity(),
+                    Constants.USER_DETAILS);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (transactionResponse != null) {
+            String email = "";
+            if (userDetail != null) {
+                email = userDetail.getEmail();
+            }
+            TransactionMerchant transactionMerchant = new TransactionMerchant(
+                    transactionResponse.getOrderId(), transactionResponse.getTransactionId(),
+                    transactionResponse.getGrossAmount(), transactionResponse.getPaymentType(), email,
+                    transactionResponse.getTransactionTime(),transactionResponse.getTransactionStatus());
+            UpdateTransactionCallBack updateTransactionCallBack = new UpdateTransactionCallBack() {
+                @Override
+                public void onSuccess(TransactionUpdateMerchantResponse transactionUpdateMerchantResponse) {
+                    Logger.i("Success");
+                }
+
+                @Override
+                public void onFailure(String errorMessage, TransactionUpdateMerchantResponse transactionUpdateMerchantResponse) {
+                    Logger.i("Failure");
+                    count++;
+                    if(count < 4) {
+                        updateMerchantServer();
+                    }
+                }
+            };
+            veritransSDK.updateTransactionStatusMerchant(getActivity().getApplication(),
+                    transactionMerchant, updateTransactionCallBack);
         }
     }
 
@@ -73,13 +122,11 @@ public class PaymentTransactionStatusFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initializeViews(view);
         bindDataToView();
     }
-
 
     private void initializeViews(View view) {
         amountTextViewFont = (TextViewFont) view.findViewById(R.id.text_amount);
@@ -91,7 +138,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
         paymentStatusTv = (TextViewFont) view.findViewById(R.id.text_payment_status);
         paymentMessageTv = (TextViewFont) view.findViewById(R.id.text_payment_message);
     }
-
 
     private void bindDataToView() {
 
@@ -110,6 +156,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
                                 equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
 
                     setUiForSuccess();
+                    updateMerchantServer();
                 } else {
                     setUiForFailure();
                 }
@@ -152,7 +199,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
         paymentStatusTv.setText(getString(R.string.payment_successful));
         paymentMessageTv.setVisibility(View.GONE);
     }
-
 
     private void setPaymentType() {
 

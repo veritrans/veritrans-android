@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
+import id.co.veritrans.sdk.callbacks.UpdateTransactionCallBack;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
@@ -19,6 +20,7 @@ import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
+import id.co.veritrans.sdk.models.TransactionMerchant;
 
 /**
  * Created by shivam on 10/19/15.
@@ -45,6 +47,7 @@ public class VeritransSDK {
     protected boolean isRunning = false;
     private TransactionRequest mTransactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
+    private String TRANSACTION_RESPONSE_NOT_AVAILABLE = "Transaction response not available.";
 
     private VeritransSDK() {
     }
@@ -263,6 +266,27 @@ public class VeritransSDK {
         }
     }
 
+    public void updateTransactionStatusMerchant(Context activity,
+                                           TransactionMerchant transactionMerchant,
+                                                UpdateTransactionCallBack callBack) {
+
+        isRunning = true;
+
+        if ( activity != null && callBack != null) {
+
+            if (transactionMerchant != null
+                    ) {
+                TransactionManager.transactionUpdateMerchant(activity,transactionMerchant,callBack);
+
+            } else {
+                isRunning = false;
+                callBack.onFailure(TRANSACTION_RESPONSE_NOT_AVAILABLE,null);
+                Logger.e("Error: " + TRANSACTION_RESPONSE_NOT_AVAILABLE);
+            }
+        } else {
+            isRunning = false;
+        }
+    }
 
     public TransactionRequest getTransactionRequest() {
         return mTransactionRequest;

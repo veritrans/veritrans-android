@@ -77,9 +77,6 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_debit_card_flow);
         storageDataHandler = new StorageDataHandler();
-
-
-        //getBankDetails();
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();

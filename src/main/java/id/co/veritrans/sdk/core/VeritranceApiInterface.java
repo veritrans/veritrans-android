@@ -6,8 +6,10 @@ import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionCancelResponse;
+import id.co.veritrans.sdk.models.TransactionMerchant;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
+import id.co.veritrans.sdk.models.TransactionUpdateMerchantResponse;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -109,5 +111,8 @@ public interface VeritranceApiInterface {
                                                                @Body MandiriBillPayTransferModel
                                                                        mandiriBillPayTransferModel);
 
-
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/purchase/")
+    Observable<TransactionUpdateMerchantResponse> updateTransactionStatusMerchant(
+                                                               @Body TransactionMerchant transactionMerchant);
 }
