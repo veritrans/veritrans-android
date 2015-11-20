@@ -1,3 +1,4 @@
+
 package id.co.veritrans.sdk.models;
 
 import com.google.gson.annotations.SerializedName;
