@@ -35,6 +35,7 @@ public class MandiriBillPayFragment extends Fragment {
         MandiriBillPayFragment fragment = new MandiriBillPayFragment();
         Bundle data = new Bundle();
         data.putSerializable(DATA, permataBankTransferResponse);
+        fragment.setArguments(data);
         return fragment;
     }
 
@@ -44,7 +45,6 @@ public class MandiriBillPayFragment extends Fragment {
             savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_mandiri_bill_pay, container, false);
-
 
         if (getArguments() != null) {
             mTransactionResponse = (TransactionResponse) getArguments().getSerializable(DATA);

@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.core.Constants;
-import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.TransactionRequest;
 import id.co.veritrans.sdk.core.VeritransSDK;
@@ -62,8 +60,8 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments_method);
 
         storageDataHandler = new StorageDataHandler();
@@ -82,14 +80,18 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
                 userDetail.getEmail(), userDetail.getPhoneNumber());
         transactionRequest.setCustomerDetails(customerDetails);
+
+
         setUpPaymentMethods();
-
-
-        handleScrollingOfRecyclerView();
 
     }
 
+
+    /**
+     * if recycler view fits within screen then it will disable the scrolling of it.
+     */
     private void handleScrollingOfRecyclerView() {
+        headerTextView.setAlpha(1);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -99,18 +101,19 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
                         .getLayoutManager();
                 int lastPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
 
-                Logger.d("last item position is " + lastPosition);
-                Logger.d("total items are " + mRecyclerView.getAdapter().getItemCount());
 
-
-                if (lastPosition  == mRecyclerView.getAdapter().getItemCount() - 1 ) {
+                  if (lastPosition == mRecyclerView.getAdapter().getItemCount() - 1) {
                     disableScrolling();
+                    headerTextView.setAlpha(1);
                 }
             }
         }, 200);
     }
 
 
+    /**
+     * Disable scrolling of recycler view.
+     */
     private void disableScrolling() {
         //turn off scrolling
         CoordinatorLayout.LayoutParams appBarLayoutParams = (CoordinatorLayout.LayoutParams)
@@ -131,19 +134,19 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         bindDataToView();
 
         // setUp recyclerView
         initialiseAdapterData();
-        mRecyclerView.setHasFixedSize(true);
-
-
-        mRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         PaymentMethodsAdapter paymentMethodsAdapter = new
                 PaymentMethodsAdapter(this, data);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(paymentMethodsAdapter);
+
+        // disable scrolling of recycler view if there is no need of it.
+        handleScrollingOfRecyclerView();
 
     }
 
@@ -158,16 +161,9 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             collapsingToolbarLayout.setTitle(" ");
             toolbarHeaderView.bindTo(PAYABLE_AMOUNT, "" + amount);
             floatHeaderView.bindTo(PAYABLE_AMOUNT, "" + amount);
-
             floatHeaderView.getSubTitleTextView().setAlpha(PERCENTAGE_TOTAL);
             floatHeaderView.getTitleTextView().setAlpha(ALPHA);
-
-            /*toolbarHeaderView.getSubTitleTextView().setAlpha(ALPHA);
-            toolbarHeaderView.getTitleTextView().setAlpha(PERCENTAGE_TOTAL);
-            */
-
             mAppBarLayout.addOnOffsetChangedListener(this);
-
         }
 
     }
@@ -188,7 +184,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
      * initialize adapter data model by dummy values.
      */
     private void initialiseAdapterData() {
-
         data.clear();
         for (PaymentMethodsModel paymentMethodsModel : veritransSDK.getSelectedPaymentMethods()) {
 
@@ -239,8 +234,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             headerTextView.setVisibility(View.VISIBLE);
         }
 
-        //applySlidingEffect(percentage);
-
     }
 
     private void applyAlpha(float percentage) {
@@ -290,8 +283,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
                 floatHeaderView.getSubTitleTextView().setAlpha(alpha);
             }
 
-            // for 0.5 it is 1 , for 1 it 0.6
-
         } else {
 
             floatHeaderView.getTitleTextView().setAlpha(ALPHA);
@@ -299,88 +290,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             floatHeaderView.getTitleTextView().setScaleX(1);
             floatHeaderView.getTitleTextView().setScaleY(1);
             floatHeaderView.invalidate();
-        }
-    }
-
-    private void applySlidingEffect(float percentage) {
-
-
-        if (percentage > 0.5) {
-
-
-            // manage title effect
-            if (percentage >= 0.9f) {
-                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 19.5f);
-                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                        14.5f);
-
-                floatHeaderView.getSubTitleTextView().setAlpha(0.6f);
-                floatHeaderView.getTitleTextView().setAlpha(1f);
-                floatHeaderView.invalidate();
-            } else if (percentage >= 0.8f) {
-                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
-                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            } else if (percentage >= 0.7f) {
-                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 18.5f);
-                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                        15.5f);
-
-                floatHeaderView.getSubTitleTextView().setAlpha(0.6f);
-                floatHeaderView.getTitleTextView().setAlpha(1);
-
-                floatHeaderView.invalidate();
-            } else if (percentage >= 0.6f) {
-                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f);
-                floatHeaderView.getSubTitleTextView().setAlpha(0.7f);
-                floatHeaderView.getTitleTextView().setAlpha(0.9f);
-
-            } else if (percentage >= 0.5f) {
-                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 17.5f);
-                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                        16.5f);
-
-                floatHeaderView.getSubTitleTextView().setAlpha(0.75f);
-                floatHeaderView.getTitleTextView().setAlpha(0.85f);
-                floatHeaderView.invalidate();
-            }
-        } else {
-
-            //for reverse effect
-            if (percentage <= 0.1f) {
-                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.5f);
-                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                        19.5f);
-
-                floatHeaderView.getSubTitleTextView().setAlpha(0.9f);
-                floatHeaderView.getTitleTextView().setAlpha(0.65f);
-                floatHeaderView.invalidate();
-            } else if (percentage <= 0.2f) {
-                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f);
-                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 19f);
-
-                floatHeaderView.getSubTitleTextView().setAlpha(0.85f);
-                floatHeaderView.getTitleTextView().setAlpha(0.75f);
-
-                floatHeaderView.invalidate();
-
-            } else if (percentage <= 0.3f) {
-                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.5f);
-                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
-
-                floatHeaderView.getSubTitleTextView().setAlpha(0.8f);
-                floatHeaderView.getTitleTextView().setAlpha(0.8f);
-                floatHeaderView.invalidate();
-
-            } else if (percentage <= 0.4f) {
-                floatHeaderView.getTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f);
-                floatHeaderView.getSubTitleTextView().setTextSize(TypedValue.COMPLEX_UNIT_SP, 17f);
-
-                floatHeaderView.getSubTitleTextView().setAlpha(0.75f);
-                floatHeaderView.getTitleTextView().setAlpha(0.8f);
-
-                floatHeaderView.invalidate();
-            }
         }
     }
 }
