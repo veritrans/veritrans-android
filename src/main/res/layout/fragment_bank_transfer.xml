@@ -39,8 +39,9 @@
             android:text="@string/email_instruction"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/tertiary_text_size"
+
             app:font="@string/font_open_sans_regular"
-            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/twenty_dp"
             android:paddingRight="@dimen/sixteen_dp"
             />
 

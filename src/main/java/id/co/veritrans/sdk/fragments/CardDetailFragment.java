@@ -242,6 +242,7 @@ public class CardDetailFragment extends Fragment {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        cardDetail.setClientKey(veritransSDK.getClientKey());
         if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants
                 .CARD_CLICK_TYPE_ONE_CLICK)) {
             ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(cardDetail);

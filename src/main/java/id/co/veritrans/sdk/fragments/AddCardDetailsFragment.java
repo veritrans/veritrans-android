@@ -30,7 +30,7 @@ import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
-public class AddCardDetailsFragment extends Fragment  {
+public class AddCardDetailsFragment extends Fragment {
     private String lastExpDate = "";
     private EditText etCardNo;
     private EditText etCvv;
@@ -102,7 +102,7 @@ public class AddCardDetailsFragment extends Fragment  {
                 Logger.i("onFocus change etCardNo");
                 if (!hasFocus) {
                     Logger.i("onFocus change not etCardNo");
-                 focusChange();
+                    focusChange();
                 } else {
                     Logger.i("onFocus change has focus etCardNo");
                 }
@@ -135,7 +135,7 @@ public class AddCardDetailsFragment extends Fragment  {
         cbStoreCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                isValid();
+                isValid(false);
             }
         });
         if (veritransSDK.isLogEnabled()) {
@@ -147,7 +147,7 @@ public class AddCardDetailsFragment extends Fragment  {
         payNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isValid()) {
+                if (isValid(true)) {
 
                     CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
                             .parseInt(cvv),
@@ -273,7 +273,7 @@ public class AddCardDetailsFragment extends Fragment  {
         );
     }
 
-    private boolean isValid() {
+    private boolean isValid(boolean isPayButtonClick) {
         cardNumber = etCardNo.getText().toString().trim().replace(" ", "");
         expiryDate = etExpiryDate.getText().toString().trim();
         cvv = etCvv.getText().toString().trim();
@@ -287,9 +287,12 @@ public class AddCardDetailsFragment extends Fragment  {
             Logger.i("expiry date issue");
         }
         if (TextUtils.isEmpty(cardNumber)) {
-            //SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_card_number));
-            //etCardNo.requestFocus();
-            etCardNo.setError(getString(R.string.validation_message_card_number));
+            if (isPayButtonClick) {
+                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_card_number));
+                // etCardNo.requestFocus();
+            } if(!etCardNo.hasFocus()) {
+                etCardNo.setError(getString(R.string.validation_message_card_number));
+            }
             /*etExpiryDate.clearFocus();
             etCvv.clearFocus();*/
             return false;
@@ -297,34 +300,49 @@ public class AddCardDetailsFragment extends Fragment  {
             /*etCardNo.requestFocus();
             etExpiryDate.clearFocus();
             etCvv.clearFocus();*/
-            etCardNo.setError(getString(R.string.validation_message_invalid_card_no));
-            /*SdkUtil.showSnackbar(getActivity(), getString(R.string
-                    .validation_message_invalid_card_no));*/
+            if(!etCardNo.hasFocus()) {
+                etCardNo.setError(getString(R.string.validation_message_invalid_card_no));
+            }
+            if (isPayButtonClick) {
+                SdkUtil.showSnackbar(getActivity(), getString(R.string
+                        .validation_message_invalid_card_no));
+            }
             return false;
         } else if (TextUtils.isEmpty(expiryDate)) {
             /*etCardNo.clearFocus();
             etCvv.clearFocus();
             etExpiryDate.requestFocus();*/
 
-            etExpiryDate.setError(getString(R.string.validation_message_empty_expiry_date));
-            /*SdkUtil.showSnackbar(getActivity(), getString(R.string
-                    .validation_message_empty_expiry_date));*/
+            if (isPayButtonClick) {
+                SdkUtil.showSnackbar(getActivity(), getString(R.string
+                        .validation_message_empty_expiry_date));
+            } if(!etExpiryDate.hasFocus()) {
+                etExpiryDate.setError(getString(R.string.validation_message_empty_expiry_date));
+            }
             return false;
         } else if (!expiryDate.contains("/")) {
             /*etCardNo.clearFocus();
             etCvv.clearFocus();
-            etExpiryDate.requestFocus();
-            SdkUtil.showSnackbar(getActivity(), getString(R.string
-                    .validation_message_invalid_expiry_date));*/
-            etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+            etExpiryDate.requestFocus();*/
+            if (isPayButtonClick) {
+                SdkUtil.showSnackbar(getActivity(), getString(R.string
+                        .validation_message_invalid_expiry_date));
+            }
+            if(!etExpiryDate.hasFocus()) {
+                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+            }
             return false;
         } else if (expDateArray == null || expDateArray.length != 2) {
             /*etCardNo.clearFocus();
             etCvv.clearFocus();
-            etExpiryDate.requestFocus();
-            SdkUtil.showSnackbar(getActivity(), getString(R.string
-                    .validation_message_invalid_expiry_date));*/
-            etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+            etExpiryDate.requestFocus();*/
+            if (isPayButtonClick) {
+                SdkUtil.showSnackbar(getActivity(), getString(R.string
+                        .validation_message_invalid_expiry_date));
+            }
+            if(!etExpiryDate.hasFocus()) {
+                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+            }
             return false;
         } else if (expDateArray != null && expDateArray.length == 2) {
             try {
@@ -332,10 +350,14 @@ public class AddCardDetailsFragment extends Fragment  {
             } catch (NumberFormatException e) {
                /* etCardNo.clearFocus();
                 etCvv.clearFocus();
-                etExpiryDate.requestFocus();
-                SdkUtil.showSnackbar(getActivity(), getString(R.string
-                        .validation_message_invalid_expiry_date));*/
-                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                etExpiryDate.requestFocus();*/
+                if (isPayButtonClick) {
+                    SdkUtil.showSnackbar(getActivity(), getString(R.string
+                            .validation_message_invalid_expiry_date));
+                }
+                if(!etExpiryDate.hasFocus()) {
+                    etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                }
                 return false;
             }
             try {
@@ -343,10 +365,14 @@ public class AddCardDetailsFragment extends Fragment  {
             } catch (NumberFormatException e) {
               /*  etCardNo.clearFocus();
                 etCvv.clearFocus();
-                etExpiryDate.requestFocus();
-                SdkUtil.showSnackbar(getActivity(), getString(R.string
-                        .validation_message_invalid_expiry_date));*/
-                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                etExpiryDate.requestFocus();*/
+                if (isPayButtonClick) {
+                    SdkUtil.showSnackbar(getActivity(), getString(R.string
+                            .validation_message_invalid_expiry_date));
+                }
+                if(!etExpiryDate.hasFocus()) {
+                    etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                }
                 return false;
             }
             Calendar calendar = Calendar.getInstance();
@@ -360,35 +386,50 @@ public class AddCardDetailsFragment extends Fragment  {
             if (expYear < currentYear) {
               /*  etCardNo.clearFocus();
                 etCvv.clearFocus();
-                etExpiryDate.requestFocus();
-                SdkUtil.showSnackbar(getActivity(), getString(R.string
-                        .validation_message_invalid_expiry_date));*/
-                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                etExpiryDate.requestFocus();*/
+                if (isPayButtonClick) {
+                    SdkUtil.showSnackbar(getActivity(), getString(R.string
+                            .validation_message_invalid_expiry_date));
+                }
+                if(!etExpiryDate.hasFocus()) {
+                    etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                }
                 return false;
             } else if (expYear == currentYear && currentMonth > expMonth) {
              /*   etCardNo.clearFocus();
                 etCvv.clearFocus();
-                etExpiryDate.requestFocus();
-                SdkUtil.showSnackbar(getActivity(), getString(R.string
-                        .validation_message_invalid_expiry_date));*/
-                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                etExpiryDate.requestFocus();*/
+                if (isPayButtonClick) {
+                    SdkUtil.showSnackbar(getActivity(), getString(R.string
+                            .validation_message_invalid_expiry_date));
+                }
+                if(!etExpiryDate.hasFocus()) {
+                    etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                }
                 return false;
             } else if (TextUtils.isEmpty(cvv)) {
                 /*etCardNo.clearFocus();
                 etCvv.requestFocus();
-                etExpiryDate.clearFocus();
-                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_cvv));*/
-                etCvv.setError(getString(R.string.validation_message_cvv));
+                etExpiryDate.clearFocus();*/
+                if (isPayButtonClick) {
+                    SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_cvv));
+                } if(!etCvv.hasFocus()) {
+                    etCvv.setError(getString(R.string.validation_message_cvv));
+                }
                 questionImg.setVisibility(View.GONE);
                 return false;
             } else {
                 if (cvv.length() < 3) {
                   /*  etCardNo.clearFocus();
                     etCvv.requestFocus();
-                    etExpiryDate.clearFocus();
-                    SdkUtil.showSnackbar(getActivity(), getString(R.string
-                            .validation_message_invalid_cvv));*/
-                    etCvv.setError(getString(R.string.validation_message_invalid_cvv));
+                    etExpiryDate.clearFocus();*/
+                    if (isPayButtonClick) {
+                        SdkUtil.showSnackbar(getActivity(), getString(R.string
+                                .validation_message_invalid_cvv));
+                    }
+                    if(!etCvv.hasFocus()) {
+                        etCvv.setError(getString(R.string.validation_message_invalid_cvv));
+                    }
                     questionImg.setVisibility(View.GONE);
                     return false;
                 }
@@ -401,10 +442,9 @@ public class AddCardDetailsFragment extends Fragment  {
         return true;
     }
 
-
     public void focusChange() {
-                Logger.i("onFocus change has not focus");
-                isValid();
+        Logger.i("onFocus change has not focus");
+        isValid(false);
     }
 
     private void setCardType() {

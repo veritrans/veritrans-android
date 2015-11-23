@@ -95,7 +95,7 @@
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
     <string name="hint_email_optional">Email Address (Optional)</string>
-    <string name="email_instruction">we\'ll send payment instruction to mail.</string>
+    <string name="email_instruction">We\'ll send payment instruction to mail.</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
     <string name="bank_atm_transfer_step1">1.\t Click the Confirm Payment button.</string>
     <string name="bank_atm_transfer_step2">2.\t You will receive an unique account number and instructions on how to pay
