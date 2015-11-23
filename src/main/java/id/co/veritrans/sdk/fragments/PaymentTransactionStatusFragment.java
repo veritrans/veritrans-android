@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import java.io.IOException;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
+import id.co.veritrans.sdk.activities.PaymentMethodsActivity;
 import id.co.veritrans.sdk.callbacks.UpdateTransactionCallBack;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -118,7 +120,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_payment_transaction_status, container,
                 false);
         veritrans = VeritransSDK.getVeritransSDK();
-
         return view;
     }
 
@@ -173,11 +174,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
             actionBt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isSuccessful) {
-                        getActivity().finish();
-                    } else {
-                        getActivity().finish();
-                    }
+                    ((CreditDebitCardFlowActivity) getActivity())
+                            .setResultCode(getActivity().RESULT_OK);
+                    ((CreditDebitCardFlowActivity) getActivity()).setResultAndFinish();
                 }
             });
         }
