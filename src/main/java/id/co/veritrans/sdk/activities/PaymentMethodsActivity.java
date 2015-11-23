@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.TransactionRequest;
 import id.co.veritrans.sdk.core.VeritransSDK;
@@ -290,6 +292,18 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             floatHeaderView.getTitleTextView().setScaleX(1);
             floatHeaderView.getTitleTextView().setScaleY(1);
             floatHeaderView.invalidate();
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Logger.d(TAG, "in onActivity result : request code is "+requestCode);
+
+        if(requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER_INTERNAL){
+            setResult(resultCode, data);
+            finish();
         }
     }
 }
