@@ -11,12 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="@dimen/sixteen_dp">
+        >
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/email_til"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             >
 
             <EditText
@@ -34,9 +37,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/email_instruction"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/dark_gray"
             android:textSize="@dimen/tertiary_text_size"
             app:font="@string/font_open_sans_regular"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             />
 
 
@@ -45,19 +50,26 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/twenty_four_dp"
             android:text="@string/atm_transfer_steps"
-            android:textColor="@color/light_gray"
-            android:textSize="@dimen/header_text_size"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/primary_text_size"
             app:font="@string/font_open_sans_regular"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             />
 
         <id.co.veritrans.sdk.widgets.TextViewFont
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/five_dp"
+            android:paddingBottom="@dimen/five_dp"
             android:text="@string/bank_atm_transfer_step1"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
+            android:background="@color/light_gray"
             />
 
         <id.co.veritrans.sdk.widgets.TextViewFont
@@ -69,6 +81,8 @@
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             />
 
 
@@ -81,7 +95,13 @@
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:background="@color/light_gray"
+            android:paddingTop="@dimen/five_dp"
+            android:paddingBottom="@dimen/five_dp"
             />
+
 
 
         <id.co.veritrans.sdk.widgets.TextViewFont
@@ -93,6 +113,8 @@
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             />
 
 
@@ -107,8 +129,10 @@
             android:text="@string/see_instruction"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/primary_text_size"
+            android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_semibold"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             />
 
     </LinearLayout>

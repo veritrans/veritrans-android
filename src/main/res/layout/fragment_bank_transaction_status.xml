@@ -44,7 +44,7 @@
             android:drawableLeft="@drawable/ic_error_info"
             android:gravity="center"
             android:text="@string/payment_unsuccessful_msg"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/dark_gray"
             android:textSize="@dimen/secondary_text_size"
             android:visibility="gone"
             app:font="@string/font_open_sans_semibold"/>
@@ -67,7 +67,7 @@
                     android:layout_weight="1"
                     android:gravity="left"
                     android:text="@string/amount"
-                    android:textColor="@color/light_gray"
+                    android:textColor="@color/dark_gray"
                     android:textSize="@dimen/secondary_text_size"
                     app:font="@string/font_open_sans_regular"
                     />
@@ -78,7 +78,7 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:text="@string/orderId"
-                    android:textColor="@color/light_gray"
+                    android:textColor="@color/dark_gray"
                     android:textSize="@dimen/secondary_text_size"
                     app:font="@string/font_open_sans_regular"
                     />
@@ -129,7 +129,7 @@
                     android:layout_weight="1"
                     android:gravity="left"
                     android:text="@string/transactionTime"
-                    android:textColor="@color/light_gray"
+                    android:textColor="@color/dark_gray"
                     android:textSize="@dimen/secondary_text_size"
                     app:font="@string/font_open_sans_regular"
                     />
@@ -140,7 +140,7 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:text="@string/paymentType"
-                    android:textColor="@color/light_gray"
+                    android:textColor="@color/dark_gray"
                     android:textSize="@dimen/secondary_text_size"
                     app:font="@string/font_open_sans_regular"
                     />

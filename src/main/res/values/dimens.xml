@@ -6,6 +6,7 @@
 
     <!-- dimensions-->
     <dimen name="four_dp">4dp</dimen>
+    <dimen name="five_dp">5dp</dimen>
     <dimen name="eight_dp">8dp</dimen>
     <dimen name="sixteen_dp">16dp</dimen>
     <dimen name="twenty_four_dp">24dp</dimen>
@@ -21,6 +22,8 @@
     <dimen name="big_text">22sp</dimen>
     <dimen name="header_text_size">20sp</dimen>
     <dimen name="primary_text_size">16sp</dimen>
+    <dimen name="tool_bar_title_size">18sp</dimen>
+
     <dimen name="secondary_text_size">14sp</dimen>
     <dimen name="tertiary_text_size">12sp</dimen>
     <dimen name="thirtytwo_dp">32dp</dimen>

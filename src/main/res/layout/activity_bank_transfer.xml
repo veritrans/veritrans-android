@@ -23,7 +23,7 @@
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/main_collapsing"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="125dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 >
 
@@ -39,7 +39,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/sixtyfour_dp"
                         android:orientation="vertical"
                         android:paddingLeft="@dimen/sixteen_dp"
@@ -47,91 +47,89 @@
                         >
 
 
-                        <RelativeLayout
+                        <TableLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:weightSum="3"
                             >
 
-                            <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
-                                android:layout_gravity="left"
-                                android:text="@string/orderId"
-                                android:textColor="@color/white_little_transparent"
-                                android:textSize="@dimen/secondary_text_size"
-                                app:font="@string/font_open_sans_regular"
-                                />
+                            <TableRow>
 
-                            <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_gravity="center_horizontal"
-                                android:text=":"
-                                android:textColor="@color/white_little_transparent"
-                                android:textSize="@dimen/primary_text_size"
-                                app:font="@string/font_open_sans_bold"
-                                />
+                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:layout_weight="0.3"
+                                    android:text="@string/orderId"
+                                    android:textColor="@color/white_little_transparent"
+                                    android:textSize="@dimen/secondary_text_size"
+                                    app:font="@string/font_open_sans_regular"
+                                    />
 
-                            <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:id="@+id/text_order_id"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_gravity="right"
-                                android:layout_marginTop="4dp"
-                                android:text="Order Id here"
-                                android:textColor="@android:color/white"
-                                android:textSize="@dimen/secondary_text_size"
-                                app:font="@string/font_open_sans_regular"
-                                />
+                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.3"
+                                    android:text=":"
+                                    android:textColor="@color/white_little_transparent"
+                                    android:textSize="@dimen/secondary_text_size"
+                                    app:font="@string/font_open_sans_bold"
+                                    />
 
-                        </RelativeLayout>
+                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                    android:id="@+id/text_order_id"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.5"
+                                    android:gravity="left"
+                                    android:text="Order Id here"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="@dimen/secondary_text_size"
+                                    app:font="@string/font_open_sans_regular"
+                                    />
 
-                        <RelativeLayout
-                            android:id="@+id/main_linearlayout_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/eight_dp"
-                            >
+                            </TableRow>
 
-                            <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
-                                android:layout_gravity="left"
-                                android:text="@string/amount"
-                                android:textColor="@color/white_little_transparent"
-                                android:textSize="@dimen/secondary_text_size"
-                                app:font="@string/font_open_sans_regular"
-                                />
+                            <TableRow
+                                android:layout_marginTop="@dimen/eight_dp"
+                                >
 
-                            <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_gravity="center_horizontal"
-                                android:text=":"
-                                android:textColor="@color/white_little_transparent"
-                                android:textSize="@dimen/primary_text_size"
-                                app:font="@string/font_open_sans_bold"
-                                />
+                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:layout_weight="0.3"
+                                    android:text="Amount "
+                                    android:textColor="@color/white_little_transparent"
+                                    android:textSize="@dimen/secondary_text_size"
+                                    app:font="@string/font_open_sans_regular"
+                                    />
 
-                            <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:id="@+id/text_amount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_gravity="right"
-                                android:text="Amount here"
-                                android:textColor="@android:color/white"
-                                android:textSize="@dimen/secondary_text_size"
-                                app:font="@string/font_open_sans_regular"
-                                />
+                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.3"
+                                    android:text=":"
+                                    android:textColor="@color/white_little_transparent"
+                                    android:textSize="@dimen/secondary_text_size"
+                                    app:font="@string/font_open_sans_bold"
+                                    />
 
-                        </RelativeLayout>
+                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                    android:id="@+id/text_amount"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:layout_weight="1.5"
+                                    android:text="Amount here"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="@dimen/secondary_text_size"
+                                    app:font="@string/font_open_sans_regular"
+                                    />
 
+                            </TableRow>
+
+                        </TableLayout>
                     </LinearLayout>
                 </FrameLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
@@ -168,8 +166,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/virtual_account"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/header_text_size"
-                    app:font="@string/font_open_sans_bold"
+                    android:textSize="@dimen/tool_bar_title_size"
+                    app:font="@string/font_open_sans_regular"
                     />
 
             </LinearLayout>

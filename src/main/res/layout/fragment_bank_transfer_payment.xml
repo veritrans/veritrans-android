@@ -20,10 +20,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_horizontal"
-            android:paddingTop="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/four_dp"
             android:text="@string/virtual_account_number"
-            android:textColor="@color/light_gray"
-            android:textSize="@dimen/primary_text_size"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
             />
 
@@ -37,7 +37,7 @@
             android:padding="@dimen/eight_dp"
             android:text="@string/virtual_account_number"
             android:textColor="@color/black"
-            android:textSize="@dimen/big_text"
+            android:textSize="@dimen/header_text_size"
             app:font="@string/font_open_sans_regular"
             />
 
@@ -47,13 +47,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/sixteen_dp"
+            android:layout_marginTop="20dp"
             android:background="@color/faint_yellow"
             android:gravity="left"
             android:padding="@dimen/sixteen_dp"
             android:text="Valid Until : 10 September 2015, 16:00"
             android:textColor="@color/black"
-            android:textSize="@dimen/primary_text_size"
+            android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
             />
 
@@ -69,7 +69,7 @@
             android:padding="@dimen/sixteen_dp"
             android:text="@string/bank_transfer_dummy_text"
             android:textColor="@color/black"
-            android:textSize="@dimen/primary_text_size"
+            android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
             />
 
@@ -79,12 +79,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/twenty_four_dp"
             android:clickable="true"
-            android:paddingBottom="@dimen/eight_dp"
             android:paddingTop="@dimen/eight_dp"
             android:text="@string/see_instruction"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/primary_text_size"
+            android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_semibold"
             />
 

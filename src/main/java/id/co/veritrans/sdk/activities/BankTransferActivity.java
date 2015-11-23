@@ -143,7 +143,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
             mTextViewAmount.setText(Constants.CURRENCY_PREFIX + " " + mVeritransSDK
                     .getTransactionRequest().getAmount());
-            mTextViewOrderId.setText(" " + mVeritransSDK.getTransactionRequest().getOrderId());
+            mTextViewOrderId.setText("" + mVeritransSDK.getTransactionRequest().getOrderId());
             mButtonConfirmPayment.setTypeface(mVeritransSDK.getTypefaceOpenSansSemiBold());
             mButtonConfirmPayment.setOnClickListener(this);
 
