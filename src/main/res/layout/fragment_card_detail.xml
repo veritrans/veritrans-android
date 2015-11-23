@@ -46,7 +46,7 @@
             android:layout_below="@id/text_bank_name"
             android:gravity="left"
             android:drawablePadding="@dimen/sixteen_dp"
-            android:text="xxxx xxxx xxxx 1234"
+            android:text="XXXX XXXX XXXX 1234"
             android:textColor="@android:color/white"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_semibold"/>
@@ -101,9 +101,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/text_bank_name"
                     android:gravity="left"
-                    android:text="xx/12"
+                    android:text="XX/12"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/primary_text_size"
+                    android:textSize="@dimen/secondary_text_size"
                     app:font="@string/font_open_sans_regular"
 
                     />
