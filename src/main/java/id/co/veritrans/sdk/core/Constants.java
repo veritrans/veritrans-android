@@ -97,5 +97,8 @@ public class Constants {
     public static final String CARD_TYPE_VISA = "VISA";
     public static final String CARD_TYPE_MASTERCARD = "MASTERCARD";
     public static final String SUCCESS = "SUCCESS";
+
+    //result code for payment transfer activities
+    public static final int RESULT_CODE_PAYMENT_TRANSFER = 5102;
 }
 
