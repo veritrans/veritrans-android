@@ -335,7 +335,8 @@ public class VeritransSDK {
                 mTransactionRequest.enableUi(true);
                 Intent userDetailsIntent = new Intent(mTransactionRequest.getActivity(),
                         UserDetailsActivity.class);
-                mTransactionRequest.getActivity().startActivity(userDetailsIntent);
+                mTransactionRequest.getActivity().startActivityForResult(userDetailsIntent,
+                        Constants.RESULT_CODE_PAYMENT_TRANSFER);
 
             } else {
                 // start specific activity depending  on payment type.
