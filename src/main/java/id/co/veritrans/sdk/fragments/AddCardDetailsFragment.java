@@ -287,7 +287,7 @@ public class AddCardDetailsFragment extends Fragment  {
             Logger.i("expiry date issue");
         }
         if (TextUtils.isEmpty(cardNumber)) {
-            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_card_number));
+            //SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_card_number));
             //etCardNo.requestFocus();
             etCardNo.setError(getString(R.string.validation_message_card_number));
             /*etExpiryDate.clearFocus();
