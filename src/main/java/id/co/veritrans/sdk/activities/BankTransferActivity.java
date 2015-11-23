@@ -53,6 +53,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
 
     private int position = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
+    private int RESULT_CODE = RESULT_CANCELED;
 
 
     @Override
@@ -76,7 +77,6 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         bindDataToView();
 
         setUpHomeFragment();
-
     }
 
     private void setUpHomeFragment() {
@@ -177,10 +177,12 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                 if (mTransactionResponse != null) {
                     setUpTransactionStatusFragment(mTransactionResponse);
                 } else {
+                    RESULT_CODE = RESULT_OK;
                     SdkUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
                     onBackPressed();
                 }
             } else {
+                RESULT_CODE = RESULT_OK;
                 onBackPressed();
             }
 
@@ -381,7 +383,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         Intent data = new Intent();
         data.putExtra(Constants.TRANSACTION_RESPONSE, mTransactionResponse);
         data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
-        setResult(RESULT_OK, data);
+        setResult(RESULT_CODE, data);
         finish();
     }
 }
