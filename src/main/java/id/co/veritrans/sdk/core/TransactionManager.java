@@ -1,20 +1,16 @@
 package id.co.veritrans.sdk.core;
 
 import android.app.Activity;
-import android.content.Context;
 
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
-import id.co.veritrans.sdk.callbacks.UpdateTransactionCallBack;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
-import id.co.veritrans.sdk.models.TransactionMerchant;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import id.co.veritrans.sdk.models.TransactionUpdateMerchantResponse;
 import id.co.veritrans.sdk.utilities.Utils;
 import rx.Observable;
 import rx.Observer;
@@ -494,79 +490,6 @@ class TransactionManager {
         }
     }
 
-    public static void transactionUpdateMerchant(Context activity, TransactionMerchant transactionMerchant,
-                                                 final UpdateTransactionCallBack callBack) {
-
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-
-        if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
-                    VeritransRestAdapter.getMerchantApiClient(activity, false);
-            Observable<TransactionUpdateMerchantResponse> observable = null;
-            if (apiInterface != null) {
-                observable = apiInterface.updateTransactionStatusMerchant(transactionMerchant);
-                merchantSubscription = observable.subscribeOn(Schedulers
-                        .io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<TransactionUpdateMerchantResponse>() {
-
-                            @Override
-                            public void onCompleted() {
-
-                                if (merchantSubscription != null && !merchantSubscription.isUnsubscribed()) {
-                                    merchantSubscription.unsubscribe();
-                                }
-                                releaseResources();
-                            }
-
-                            @Override
-                            public void onError(Throwable throwable) {
-
-                                Logger.e("error while getting token : ", "" +
-                                        throwable.getMessage());
-                                callBack.onFailure(throwable.getMessage(), null);
-                            }
-
-                            @Override
-                            public void onNext(TransactionUpdateMerchantResponse transactionUpdateMerchantResponse) {
-
-                                if (transactionUpdateMerchantResponse != null) {
-
-                                    /*if (veritransSDK != null && veritransSDK.isLogEnabled()) {
-
-                                    }*/
-
-                                    if (transactionUpdateMerchantResponse.getMessage().trim()
-                                            .equalsIgnoreCase(Constants.SUCCESS)) {
-                                        callBack.onSuccess(transactionUpdateMerchantResponse);
-                                    } else {
-                                        callBack.onFailure(transactionUpdateMerchantResponse.getError(),
-                                                transactionUpdateMerchantResponse);
-                                    }
-
-                                } else {
-                                    callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
-                                    Logger.e(Constants.ERROR_EMPTY_RESPONSE);
-                                }
-                                /*if (merchantSubscription != null && !merchantSubscription.isUnsubscribed()) {
-                                    merchantSubscription.unsubscribe();
-                                }*/
-                            }
-                        });
-
-            } else {
-                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
-                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
-                releaseResources();
-            }
-
-        } else {
-            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
-
-    }
 
     private static void displayTokenResponse(TokenDetailsResponse tokenDetailsResponse) {
         Logger.d("token response: status code ", "" +
