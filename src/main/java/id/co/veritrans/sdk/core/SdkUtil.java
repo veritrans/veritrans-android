@@ -393,10 +393,21 @@ public class SdkUtil {
         imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
-   /* public static BankDetailArray loadBankDetailJsonFromAsset(final Activity activity) {
 
+    protected static UserDetail getUserDetails(Context context){
 
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+            try {
+                UserDetail userDetail = (UserDetail) storageDataHandler.readObject(context, Constants
+                        .USER_DETAILS);
 
+                return userDetail;
 
-    }*/
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+    }
 }
