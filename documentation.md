@@ -13,15 +13,16 @@ include ':app',':veritranssdk'
 compile project(':veritranssdk')
 ```
 
-  Thats it you are ready to use VeritransSdk now.
+  That's it now you are ready to use VeritransSdk in your application.
 
-## Initialisation of veritransSdk
+## Initialization of VeritransSdk
 - Register to Veritrans Sandbox/Production account. [Click ](https://my.veritrans.co.id/register) here to register.
 - After successful login goto dashboard.
 - Now goto **Settings** -> **Access keys**
 - Get your ** Client key** and **Server key**.
 
 ```
+for example:
 public static final String VT_CLIENT_KEY = "VT-client-Lre_JFh5klhfGefF";
 public static final String VT_SERVER_KEY = "VT-server-pVDm2d9BT3TIbDls_UEmt8wE";
 ```
@@ -36,17 +37,17 @@ VeritransBuilder veritransBuilder = new
       mVeritransSDK = veritransBuilder.buildSDK();
 ```
 
-1.[Payment options](Payment options)
+1.[Payment options](Payment options)  
 - _Select option for payment and select available list of payments_
 
-2.[User detail screen](User detail screen)
+2.[User detail screen](User detail screen)  
 - _User details like name and contact info_
 
-3.[User address screen](User address screen)
-- _User billing and shipping address details_
+3.[User address screen](User address screen)   
+- _User billing and shipping address details_  
 
 4.[Select Payment Method](Select Payment Method)
-- _Choose the payment option from list_
+- _Choose the payment option from list_  
 
 5.[Credit card Flow](Credit card Flow)
 - _Saved cards with no saved cards_
@@ -56,64 +57,64 @@ VeritransBuilder veritransBuilder = new
 - _One click flow_
 - _Two click flow_
 
-6.[Bank transfer Flow](Bank transfer Flow)
+6.[Bank transfer Flow](Bank transfer Flow)  
 - _Bank transfer main screen_
 - _Bank transfer instruction screen_
 - _Bank transfer payment detail screen_
-- _Bank transfer payment status screen_
+- _Bank transfer payment status screen_  
 
-7.[Mandiri bill payment](Mandiri bill payment)
+7.[Mandiri bill payment](Mandiri bill payment)  
 - _Mandiri bill payment main screen_
 - _Mandiri bill payment instruction screen_
 - _Mandiri bill payment payment detail screen_
-- _Mandiri bill payment payment status screen_
+- _Mandiri bill payment payment status screen_  
 
 
 
 
 
-## Payment options
-[image insert]
+## Payment options  
+[image insert]  
 
 
-On this screen we can set some options required for testing purpose.
+On this screen we can set some options required for testing purpose.  
 
 * Set amount for payment (default is 100)
-* There are ** 3 types ** of flow for card payments
+* There are ** 3 types ** of flow for card payments  
 
-** 1. _One click_ **
-** 2. _Two click_**
-** 3. _Normal_**
+** 1. _One click_ **  
+** 2. _Two click_**  
+** 3. _Normal_**  
 We will go in detail about this flow ahead.
 
-For normal flow we can do secure and Insecure way.
+For normal flow we can do secure and Insecure way.  
 
 	Secure : With 3d secure validation.
 	Insecure : Without 3d secure validation.
 
-* **One click** and **two click** use **secure** flow only.
+* **One click** and **two click** use **secure** flow only.  
 
 * **Delete cards** - Tester can clear all the credit cards locally saved using this option.
 
 * List of payment option checkbox will show list of payment option on next screen.
 
-* On click of payment button new **_order id_** will be created and take user to user detail screen.
+* On click of payment button new **_order id_** will be created and take user to user detail screen.  
 
 ## User detail screen
-[image insert]
+[image insert]   
 On this screen we are taking user details like user full name, email and phone no.
 which used in future payment process, saving user detail in **_UserDetail_** class maintained in models folder of VeritransSdk.
 
 ## User address screen
-[image insert]
+[image insert]  
 Here we are taking user billing address and shipping address.
-User can have billing and shipping address or same.
+User can have billing and shipping address or same.   
 If user have different shipping and billing address, user have to unchecked the bottom checkbox.
 User addresses are maintained in **_UserAddress class_**. This class is entity of **_UserDetail class_**.
 
 To **fetch user details** from file system refer following code.
 
-```
+```  
  StorageDataHandler storageDataHandler = new StorageDataHandler();
 UserDetail userDetail = null;
 try {
@@ -128,67 +129,67 @@ try {
 
 To **write user details** to file system refer following code.
 
-```
+```  
 storageDataHandler.writeObject(getActivity(), Constants.USER_DETAILS, userDetail);
 ```
 
-Here ***Constant.USER_DETAIL*** is file name stored locally. UserDetail is serialized.
+Here ***Constant.USER_DETAIL*** is file name stored locally. UserDetail is serialized.   
 
 Refer UserDetailFragment class for further implementation of flow.
 
-## Select payment option
-[insert image]
-This is first screen of main flow. We are showing list of available payment mode. ***PaymentMehodActivity*** class holds the code for list.
+## Select payment option  
+[insert image]  
+This is first screen of main flow. We are showing list of available payment mode. ***PaymentMehodActivity*** class holds the code for list.   
 ## Credit card flow
 [image insert]
-### Add new card
-[image insert]
+### Add new card   
+[image insert]  
 
-We can add new card here
+We can add new card here  
 List of actions as follows
 - Take card details from user
-- Do validation of card detail
+- Do validation of card detail  
 - On successful validation adding bank name and card type from list of BNI available in asset folder of SDK.
-- Once we got all the details we are making api call for token,
+- Once we got all the details we are making api call for token,  
 *** VeritransSDK class *** contains all important methods required for payment transaction.
-Code to get VeritransSDK object
+Code to get VeritransSDK object  
 
-```
-VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+```  
+VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();  
 ```
 
  Mehod to get token
+```  
+veritransSDK.getToken(activity, cardTokenRequest, tokenCallBack);  
 ```
-veritransSDK.getToken(activity, cardTokenRequest, tokenCallBack);
-```
-***CardTokenRequest*** class contains card details required for getting token.
-***TokenCallBack*** interface contains two methods which gives onSuccess and onFailure methods.
-```
-@Override
-public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {
-}
+***CardTokenRequest*** class contains card details required for getting token.  
+***TokenCallBack*** interface contains two methods which gives onSuccess and onFailure methods.  
+```  
+@Override  
+public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {  
+}    
 
-@Override
-public void onFailure(String errorMessage, TokenDetailsResponse tokenDetailsResponse) {
+@Override  
+public void onFailure(String errorMessage, TokenDetailsResponse tokenDetailsResponse) {  
 }
-```
-On successful get token api call we get token id and other parameters in response.
+```  
+On successful get token api call we get token id and other parameters in response.  
 
 If secure flow is available then we will get redirect_url which will take user to browser for 3d secure validation.
 After successful validation we are making charge api call.
 
 For doing charge api call we have to call following function from VeritransSDK.
-```
+```  
  veritransSDK.paymentUsingCard(activity, cardTransfer, transactionCallback);
 ```
 In above code we have to supply ** _CardTransfer_ ** class object, and implemented interface TransactionCallback which have functions onSuccess and onFailure.
-```
+```  
 @Override
 public void onSuccess(TransactionResponse cardPaymentResponse) {
 	//write code after success
-}
+}  
 @Override
-public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+public void onFailure(String errorMessage, TransactionResponse transactionResponse) {    
 	//write code after failure
 }  ```
 When we do successful transaction, if user permits to save card we do saving of cards. In TransactionResponse we get ***saved_token_id*** which is used in future transaction.
@@ -197,21 +198,21 @@ try {
   storageDataHandler.writeObject(this, Constants.USERS_SAVED_CARD, creditCards)
 } catch (IOException e) {
 	e.printStackTrace();
-}
+}  
 ```
-## Payment status screen
-[insert image]
+## Payment status screen  
+[insert image]  
 
-To show status of payment call fragment ***PaymentTransactionStatusFragment*** and pass ***TransactionResponse*** object which we got in onSuccess or onFailure methods.
-At PaymentTransactionStatusFragment we are showing transaction related information or failure reasons and Retry option.
+To show status of payment call fragment ***PaymentTransactionStatusFragment*** and pass ***TransactionResponse*** object which we got in onSuccess or onFailure methods.  
+At PaymentTransactionStatusFragment we are showing transaction related information or failure reasons and Retry option.  
 
-## Saved card screen with saved cards
-[insert image]
+## Saved card screen with saved cards  
+[insert image]  
 
-When user completes successful transaction with permission to save cards we save credit card details(Not cvv).
+When user completes successful transaction with permission to save cards we save credit card details(Not cvv).  
 This saved cards are shown here. User can use this cards for future transactions.
 
-## One click flow
+## One click flow  
 * After initial transaction we save ***_saved_token_id***.
 * We use this ***saved_token_id*** for future transaction.
 ```{
@@ -232,7 +233,7 @@ This saved cards are shown here. User can use this cards for future transactions
 * Response for api call is same as normal transaction.
 * We can use this saved_token_id for all future transaction call.
 
-## Two click flow
+## Two click flow  
 * After initial transaction we save ***_saved_token_id***.
 * In future transactions we take cvv for saved card from view pager.
 * With the help of saved_token_id and card detail execute api call for getToken.
@@ -241,4 +242,52 @@ This saved cards are shown here. User can use this cards for future transactions
 * After success validation we are making charge api call.
 
 ## Bank transfer flow
+  ### 1) Using Core
+ 
+  To perform transaction using bank transfer method follow the steps given below:
+  * Create the instance of veritrans library using VeritransBuilder class.
+  * Create instance of TransactionRequest and add required fields like ItemDetail, 
+   shipping address etc.
+  * Then add Transaction details in previously retrieved veritrans object using 
+    ```
+    mVeritransSDK.setTransactionRequest(TransactionRequest);
+    ```
+  * Then execute Transaction using 
+    ```
+    mVeritransSDK.paymentUsingPermataBank(MainActivity.this, new TransactionCallback() {
+                        
+                        @Override
+                        public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+                            Log.d(" Transaction failed ", ""+errorMessage);
+                            // write your code here to take appropriate action 
+                        }
+
+                        @Override
+                        public void onSuccess(TransactionResponse transactionResponse) {
+                            Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
+                          // write your code here.
+                        }
+                    });
+    ```
+    * Take appropriate action in onFailure() and in onSuccess() of TransactionCallback.
+  
+  ### 2) Using Ui Flow
+ 
+  To perform transaction using bank transfer method follow the steps given below:
+  * Create the instance of veritrans library using VeritransBuilder class.
+  * Create instance of TransactionRequest and add required fields like ItemDetail, 
+   shipping address etc.
+  * Then add Transaction details in previously retrieved veritrans object using 
+    ```
+    mVeritransSDK.setTransactionRequest(TransactionRequest);
+    ```
+  * Then start default ui flow using 
+    ```
+                    mVeritransSDK.startPaymentUiFlow();
+    ```
+    it will start payment flow. 
+    * Select BankTransfer
+    * Take appropriate action in onFailure() and in onSuccess() of TransactionCallback.
+    
+
 ## Mandiri bill payment
