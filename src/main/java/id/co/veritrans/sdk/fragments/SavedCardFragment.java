@@ -49,13 +49,13 @@ public class SavedCardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_saved_card, container, false);
+        return inflater.inflate(R.layout.fragment_saved_card, container, false);
+    }
 
-        emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
-
-
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         bindViews(view);
-        return view;
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -72,6 +72,7 @@ public class SavedCardFragment extends Fragment {
     }
 
     private void bindViews(View view) {
+        emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
         addCardBt = (FloatingActionButton) view.findViewById(R.id.btn_add_card);
         addCardBt.setOnClickListener(new View.OnClickListener() {

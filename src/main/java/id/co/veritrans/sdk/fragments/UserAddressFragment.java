@@ -62,11 +62,13 @@ public class UserAddressFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_user_address, container, false);
-        findViews(view);
+        return inflater.inflate(R.layout.fragment_user_address, container, false);
+    }
 
-        return view;
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        findViews(view);
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void findViews(View view) {

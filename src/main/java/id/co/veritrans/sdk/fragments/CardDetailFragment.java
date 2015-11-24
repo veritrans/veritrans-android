@@ -65,25 +65,23 @@ public class CardDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         veritransSDK = VeritransSDK.getVeritransSDK();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
         if (getArguments() != null) {
             cardDetail = (CardTokenRequest) getArguments().getSerializable(ARG_PARAM);
         }
         cardDetail.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
         Logger.i("cardDetail:" + cardDetail.getString());
+    }
 
-        /*((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
-                .string.card_details));
-        ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar()
-                .setDisplayHomeAsUpEnabled(true);*/
-        View view = inflater.inflate(R.layout.fragment_card_detail, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_card_detail, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         initialiseViews(view);
-
-        return view;
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void initialiseViews(View view) {
