@@ -100,7 +100,7 @@ public class Constants {
 
     //result code for payment transfer activities
     public static final int RESULT_CODE_PAYMENT_TRANSFER = 5102;
-    public static final int RESULT_CODE_PAYMENT_TRANSFER_INTERNAL = 6102;
     public static final String TRANSACTION_RESPONSE = "transaction_response";
     public static final String TRANSACTION_ERROR_MESSAGE = "transaction_error";
+    public static final String EVENT_TRANSACTION_COMPLETE = "veritranse_transaction_complete";
 }
