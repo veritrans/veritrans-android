@@ -43,6 +43,7 @@ public class VeritransSDK {
     private static String sServerKey = null;
     private static String sClientKey = null;
     protected boolean isRunning = false;
+
     private TransactionRequest mTransactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
     private String TRANSACTION_RESPONSE_NOT_AVAILABLE = "Transaction response not available.";
@@ -65,6 +66,10 @@ public class VeritransSDK {
         }
     }
 
+
+    /***
+     * It will initialize all fonts that are available in sdk.
+     */
     private static void initializeFonts() {
         AssetManager assets = sContext.getAssets();
         typefaceOpenSansBold = Typeface.createFromAsset(assets, FONTS_OPEN_SANS_BOLD_TTF);
@@ -141,10 +146,11 @@ public class VeritransSDK {
     }
 
     /**
-     * @param activity
+     * It will execute an api request to retrieve a token.
+     *
+     * @param activity instance of an activity.
      * @param cardTokenRequest
      */
-
     public void getToken(Activity activity, CardTokenRequest cardTokenRequest, TokenCallBack
             tokenCallBack) {
 
@@ -161,6 +167,12 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will execute an transaction for permata bank .
+     *
+     * @param activity instance of an activity.
+     * @param permataBankTransferStatus instance of TransactionCallback.
+     */
     public void paymentUsingPermataBank(Activity activity,
                                         TransactionCallback permataBankTransferStatus) {
 
@@ -184,6 +196,12 @@ public class VeritransSDK {
     }
 
 
+    /**
+     * It will execute an transaction using credit card .
+     *
+     * @param activity instance of an activity.
+     * @param cardPaymentTransactionCallback  instance of TransactionCallback.
+     */
     public void paymentUsingCard(Activity activity, CardTransfer cardTransfer,
                                  TransactionCallback cardPaymentTransactionCallback
     ) {
@@ -204,13 +222,21 @@ public class VeritransSDK {
         }
     }
 
+
+    /**
+     * It will execute an transaction for mandiri click pay.
+     *
+     * @param activity
+     * @param mandiriClickPayModel information about mandiri clickpay
+     * @param paymentTransactionCallback TransactionCallback instance
+     */
     public void paymentUsingMandiriClickPay(Activity activity, MandiriClickPayModel
-            mandiriClickPayModel, TransactionCallback cardPaymentTransactionCallback) {
+            mandiriClickPayModel, TransactionCallback paymentTransactionCallback) {
 
         isRunning = true;
 
         if (mTransactionRequest != null && activity != null
-                && mandiriClickPayModel != null && cardPaymentTransactionCallback != null) {
+                && mandiriClickPayModel != null && paymentTransactionCallback != null) {
 
             mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
             mTransactionRequest.activity = activity;
@@ -222,14 +248,21 @@ public class VeritransSDK {
 
 
             TransactionManager.paymentUsingMandiriClickPay(mTransactionRequest.getActivity(),
-                    mandiriClickPayRequestModel, cardPaymentTransactionCallback);
+                    mandiriClickPayRequestModel, paymentTransactionCallback);
         } else {
 
             isRunning = false;
-            showError(mTransactionRequest, cardPaymentTransactionCallback);
+            showError(mTransactionRequest, paymentTransactionCallback);
         }
     }
 
+
+    /**
+     * It will execute an transaction for mandiri bill pay.
+     *
+     * @param activity
+     * @param mandiriBillPayTransferStatus TransactionCallback instance
+     */
     public void paymentUsingMandiriBillPay(Activity activity,
                                            TransactionCallback mandiriBillPayTransferStatus) {
 
@@ -265,12 +298,16 @@ public class VeritransSDK {
     }
 
 
-
     public TransactionRequest getTransactionRequest() {
         return mTransactionRequest;
     }
 
 
+    /**
+     * Set transaction information that you want to execute.
+     *
+     * @param transactionRequest
+     */
     public void setTransactionRequest(TransactionRequest transactionRequest) {
 
         if (!isRunning) {
@@ -303,6 +340,10 @@ public class VeritransSDK {
     }
 
 
+    /**
+     * This will start actual execution of transaction. if you have enabled an ui then it will start activity according to it.
+     *
+     */
     public void startPaymentUiFlow() {
 
         if (mTransactionRequest != null && !isRunning) {
@@ -322,9 +363,9 @@ public class VeritransSDK {
 
         } else {
 
-            if(mTransactionRequest == null ) {
+            if (mTransactionRequest == null) {
                 Logger.e(ADD_TRANSACTION_DETAILS);
-            }else {
+            } else {
                 Logger.e(Constants.ERROR_ALREADY_RUNNING);
             }
         }

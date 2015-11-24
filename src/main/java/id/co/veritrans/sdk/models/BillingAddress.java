@@ -3,6 +3,8 @@ package id.co.veritrans.sdk.models;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * It holds an information about billing address of user.
+ *
  * Created by shivam on 10/29/15.
  */
 public class BillingAddress {

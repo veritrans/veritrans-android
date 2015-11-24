@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.core;
 
 /**
+ * It contains all constant and sdk related static information.
  * Created by chetan on 16/10/15.
  */
 public class Constants {
