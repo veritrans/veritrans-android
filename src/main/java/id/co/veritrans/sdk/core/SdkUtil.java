@@ -76,6 +76,7 @@ public class SdkUtil {
 
     public static void hideKeyboard(Activity activity) {
         try {
+            Logger.i("hide keyboard");
             View view = activity.getCurrentFocus();
             if (view != null) {
                 InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context
@@ -388,9 +389,16 @@ public class SdkUtil {
     }
 
     public static void showKeyboard(Activity activity, EditText editText) {
+        Logger.i("show keyboard");
+        if(editText!=null) {
+            editText.requestFocus();
+            editText.setFocusable(true);
+            editText.setFocusableInTouchMode(true);
+        }
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context
                 .INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+
     }
 
    /* public static BankDetailArray loadBankDetailJsonFromAsset(final Activity activity) {
