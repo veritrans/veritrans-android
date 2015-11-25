@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.fragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -282,12 +283,14 @@ public class CardDetailFragment extends Fragment {
         FlipAnimation flipAnimation = new FlipAnimation(cardContainerFront, cardContainerBack);
         flipAnimation.setStartOffset(100);
         flipAnimation.setDuration(200);
-        SdkUtil.hideKeyboard(getActivity());
         if (cardContainerFront.getVisibility() == View.GONE) {
             flipAnimation.reverse();
-            //SdkUtil.hideKeyboard(getActivity());
+            /*if(cvvEt!=null) {
+                SdkUtil.showKeyboard(getActivity(), cvvEt);
+            }*/
+            SdkUtil.hideKeyboard(getActivity());
         } else {
-
+            //SdkUtil.showKeyboard(getActivity(),cvvEt);
         }
         flipAnimation.setAnimationListener(new Animation.AnimationListener() {
                                                @Override
@@ -297,12 +300,25 @@ public class CardDetailFragment extends Fragment {
 
                                                @Override
                                                public void onAnimationEnd(Animation animation) {
-                                                   if (cardContainerFront.getVisibility() == View
+                                                   /*if (cardContainerFront.getVisibility() == View
                                                            .VISIBLE) {
                                                        SdkUtil.hideKeyboard(getActivity());
                                                    } else {
                                                        SdkUtil.showKeyboard(getActivity(), cvvEt);
-                                                   }
+                                                   }*/
+                                                   Handler handler = new Handler();
+                                                   handler.postDelayed(new Runnable() {
+                                                       @Override
+                                                       public void run() {
+                                                           if (cardContainerFront.getVisibility() == View
+                                                                   .VISIBLE) {
+
+                                                               SdkUtil.hideKeyboard(getActivity());
+                                                           } else {
+                                                               SdkUtil.showKeyboard(getActivity(), cvvEt);
+                                                           }
+                                                       }
+                                                   },50);
                                                }
 
                                                @Override
