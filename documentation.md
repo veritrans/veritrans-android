@@ -39,7 +39,7 @@ VeritransBuilder veritransBuilder = new
 
 ## Table Of Content
 
-1.[Payment options](#Paymentoptions_77)  
+1.[Payment options](#demo)  
 - _Select option for payment and select available list of payments_
 
 2.[User detail screen](User detail screen)  
@@ -75,7 +75,10 @@ VeritransBuilder veritransBuilder = new
 
 
 
-## Payment-options  
+## Payment-options
+
+<p id="demo"/> 
+
 [image insert]  
 
 
