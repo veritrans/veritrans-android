@@ -9,19 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import java.io.IOException;
-
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
-import id.co.veritrans.sdk.callbacks.UpdateTransactionCallBack;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
-import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
-import id.co.veritrans.sdk.models.TransactionMerchant;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import id.co.veritrans.sdk.models.TransactionUpdateMerchantResponse;
-import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -69,47 +62,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         veritrans = VeritransSDK.getVeritransSDK();
     }
 
-    public void updateMerchantServer() {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
-        UserDetail userDetail = null;
-        Logger.i("updateMerchantServer called");
-        try {
-            userDetail = (UserDetail) storageDataHandler.readObject(getActivity(),
-                    Constants.USER_DETAILS);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (transactionResponse != null) {
-            String email = "";
-            if (userDetail != null) {
-                email = userDetail.getEmail();
-            }
-            TransactionMerchant transactionMerchant = new TransactionMerchant(
-                    transactionResponse.getOrderId(), transactionResponse.getTransactionId(),
-                    transactionResponse.getGrossAmount(), transactionResponse.getPaymentType(), email,
-                    transactionResponse.getTransactionTime(),transactionResponse.getTransactionStatus());
-            UpdateTransactionCallBack updateTransactionCallBack = new UpdateTransactionCallBack() {
-                @Override
-                public void onSuccess(TransactionUpdateMerchantResponse transactionUpdateMerchantResponse) {
-                    Logger.i("Success");
-                }
 
-                @Override
-                public void onFailure(String errorMessage, TransactionUpdateMerchantResponse transactionUpdateMerchantResponse) {
-                    Logger.i("Failure");
-                    count++;
-                    if(count < 4) {
-                        updateMerchantServer();
-                    }
-                }
-            };
-            veritransSDK.updateTransactionStatusMerchant(getActivity().getApplication(),
-                    transactionMerchant, updateTransactionCallBack);
-        }
-    }
 
     @Nullable
     @Override
@@ -152,7 +105,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
                                 equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
 
                     setUiForSuccess();
-                    updateMerchantServer();
+
                 } else {
                     setUiForFailure();
                 }

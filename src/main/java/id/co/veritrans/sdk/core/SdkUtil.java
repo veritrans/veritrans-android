@@ -33,24 +33,37 @@ import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.VeritransLoadingDialog;
 
 /**
+ *
+ * It contains utility methods required for sdk.
+ *
  * Created by chetan on 19/10/15.
  */
 public class SdkUtil {
 
     private static VeritransLoadingDialog progressDialog;
 
+    /**
+     * it will validate an given email-id.
+     *
+     * @param email
+     * @return true if given email-id is valid else returns false
+     */
     public static boolean isEmailValid(String email) {
-        Logger.i("email:" + email);
+
         if (!TextUtils.isEmpty(email)) {
             Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(email.trim());
-            Logger.i("matcher:" + matcher.matches());
             return matcher.matches();
         } else {
             return false;
         }
     }
 
+    /**
+     * it will validate an given phone number.
+     * @param phoneNo
+     * @return true if given phone number is valid else returns false
+     */
     public static boolean isPhoneNumberValid(String phoneNo) {
         if (!TextUtils.isEmpty(phoneNo)) {
             if (phoneNo.length() < Constants.PHONE_NUMBER_LENGTH) {
@@ -63,6 +76,11 @@ public class SdkUtil {
         }
     }
 
+    /**
+     * Show snack bar with given message.
+     * @param activity instance of an activity.
+     * @param message message to display on snackbar.
+     */
     public static void showSnackbar(Activity activity, String message) {
 
         try {
@@ -74,6 +92,11 @@ public class SdkUtil {
         }
     }
 
+
+    /**
+     * Utility method which will help to close the keyboard.
+     * @param activity
+     */
     public static void hideKeyboard(Activity activity) {
         try {
             Logger.i("hide keyboard");
@@ -88,6 +111,11 @@ public class SdkUtil {
         }
     }
 
+    /**
+     * it will validate an given card number.
+     * @param ccNumber
+     * @return true if given card number is valid else returns false.
+     */
     public static boolean isValidCardNumber(String ccNumber) {
         int sum = 0;
         boolean alternate = false;
@@ -107,6 +135,12 @@ public class SdkUtil {
         return isvalid;
     }
 
+    /**
+     * Displays an progress dialog.
+     *
+     * @param activity instance of an activity
+     * @param isCancelable set whether dialog is cancellable or not.
+     */
     public static void showProgressDialog(Activity activity, boolean isCancelable) {
 
         hideProgressDialog();
@@ -128,6 +162,14 @@ public class SdkUtil {
 
     }
 
+
+    /**
+     * Displays an progress dialog with an message.
+     *
+     * @param activity instance of an activity
+     * @param message message to display information about on going task.
+     * @param isCancelable set whether dialog is cancellable or not.
+     */
     public static void showProgressDialog(Activity activity, String message, boolean isCancelable) {
 
         hideProgressDialog();
@@ -149,10 +191,16 @@ public class SdkUtil {
 
     }
 
+    /**
+     * @return an instance of progress dialog if visible any else returns null.
+     */
     public static VeritransLoadingDialog getProgressDialog() {
         return progressDialog;
     }
 
+    /**
+     * It will close the progress dialog if visible any.
+     */
     public static void hideProgressDialog() {
 
         if (progressDialog != null && progressDialog.isShowing()) {
@@ -168,6 +216,11 @@ public class SdkUtil {
         }
     }
 
+    /**
+     * display snackbar with message about failed api call.
+     * @param activity
+     * @param errorMessage
+     */
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
             if (!TextUtils.isEmpty(errorMessage) && errorMessage.contains(Constants
@@ -196,6 +249,13 @@ public class SdkUtil {
         return number;
     }
 
+
+    /**
+     * helper method to extract {@link MandiriBillPayTransferModel} from {@link TransactionRequest}.
+     *
+     * @param request
+     * @return
+     */
     protected static MandiriBillPayTransferModel getMandiriBillPayModel(TransactionRequest
                                                                                 request) {
 
@@ -215,6 +275,12 @@ public class SdkUtil {
         return model;
     }
 
+
+    /**
+     * helper method to extract {@link MandiriClickPayModel} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
     protected static MandiriClickPayRequestModel getMandiriClickPayRequestModel(TransactionRequest
                                                                                         request,
                                                                                 MandiriClickPayModel mandiriClickPayModel) {
@@ -235,6 +301,12 @@ public class SdkUtil {
         return model;
     }
 
+
+    /**
+     * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
     protected static PermataBankTransfer getPermataBankModel(TransactionRequest request) {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
@@ -259,6 +331,11 @@ public class SdkUtil {
 
     }
 
+    /**
+     * helper method to extract {@link CardTransfer} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
     public static CardTransfer getCardTransferModel(TransactionRequest request,
                                                     CardPaymentDetails cardPaymentDetails) {
 
@@ -279,13 +356,22 @@ public class SdkUtil {
         return model;
     }
 
+
+    /**
+     * helper method to add {@link CustomerDetails} in {@link TransactionRequest}.
+     * @param transactionRequest
+     * @return transactionRequest with  {@link CustomerDetails}.
+     */
     protected static TransactionRequest initializeUserInfo(TransactionRequest transactionRequest) {
-
         transactionRequest = getUserDetails(transactionRequest);
-
         return transactionRequest;
     }
 
+    /**
+     * it extracts customer information from TransactionRequest.
+     * @param request instance of TransactionRequest
+     * @return
+     */
     private static TransactionRequest getUserDetails(TransactionRequest request) {
 
         UserDetail userDetail = null;
@@ -388,6 +474,11 @@ public class SdkUtil {
         return billingAddress;
     }
 
+    /**
+     * shows keyboard on screen forcefully.
+     * @param activity
+     * @param editText
+     */
     public static void showKeyboard(Activity activity, EditText editText) {
         Logger.i("show keyboard");
         if(editText!=null) {
@@ -401,10 +492,21 @@ public class SdkUtil {
 
     }
 
-   /* public static BankDetailArray loadBankDetailJsonFromAsset(final Activity activity) {
 
+    protected static UserDetail getUserDetails(Context context){
 
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+            try {
+                UserDetail userDetail = (UserDetail) storageDataHandler.readObject(context, Constants
+                        .USER_DETAILS);
 
+                return userDetail;
 
-    }*/
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+    }
 }

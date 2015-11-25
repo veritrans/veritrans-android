@@ -301,9 +301,19 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
         Logger.d(TAG, "in onActivity result : request code is "+requestCode);
 
-        if(requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER_INTERNAL){
-            setResult(resultCode, data);
-            finish();
+        if( requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER ){
+            Logger.d(TAG, "sending result back with code " + requestCode);
+
+            if(resultCode == RESULT_OK) {
+                data.setAction(Constants.EVENT_TRANSACTION_COMPLETE);
+                sendBroadcast(data);
+                finish();
+            }else {
+                //transaction failed.
+            }
+
+        }else {
+            Logger.d(TAG, "failed to send result back "+ requestCode);
         }
     }
 }

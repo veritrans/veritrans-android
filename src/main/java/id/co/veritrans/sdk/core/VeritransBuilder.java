@@ -5,7 +5,11 @@ import android.content.Context;
 /**
  * Created by shivam on 10/20/15.
  * <p/>
- * helper class to create object of veritrans sdk class.
+ * helper class to create object of veritrans sdk.
+ * </p>
+ * Call its constructor with activity , client_key and sever_key.
+ *</p>
+ * You can also enable or disable using {@link #enableLog(boolean)}
  */
 public class VeritransBuilder {
 

@@ -1,6 +1,9 @@
 package id.co.veritrans.sdk.models;
 
 /**
+ * It hold an information about purchased item, </p>like
+ * id, price etc.
+ *
  * Created by shivam on 10/29/15.
  */
 public class ItemDetails {
@@ -13,6 +16,13 @@ public class ItemDetails {
     public ItemDetails() {
     }
 
+    /**
+     *
+     * @param id unique id of the item.
+     * @param price price of the item.
+     * @param quantity number of items that is purchased.
+     * @param name name of the item.
+     */
     public ItemDetails(String id, double price, double quantity, String name) {
         this.id = id;
         this.price = price;
