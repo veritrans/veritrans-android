@@ -39,19 +39,19 @@ VeritransBuilder veritransBuilder = new
 
 ## Table Of Content
 
-1.[Payment options](#demo)  
+1.[Payment options](#payment_options)  
 - _Select option for payment and select available list of payments_
 
-2.[User detail screen](User detail screen)  
+2.[User detail screen](#user_detail_screen)  
 - _User details like name and contact info_
 
-3.[User address screen](User address screen)   
+3.[User address screen](#user_address_screen)   
 - _User billing and shipping address details_  
 
-4.[Select Payment Method](Select Payment Method)
+4.[Select Payment Method](select_payment_method)
 - _Choose the payment option from list_  
 
-5.[Credit card Flow](Credit card Flow)
+5.[Credit card Flow](credit_card_flow)
 - _Saved cards with no saved cards_
 - _Add new card_
 - _Payment status screen_
@@ -59,13 +59,13 @@ VeritransBuilder veritransBuilder = new
 - _One click flow_
 - _Two click flow_
 
-6.[Bank transfer Flow](Bank transfer Flow)  
+6.[Bank transfer Flow](bank_transfer_Flow)  
 - _Bank transfer main screen_
 - _Bank transfer instruction screen_
 - _Bank transfer payment detail screen_
 - _Bank transfer payment status screen_  
 
-7.[Mandiri bill payment](Mandiri bill payment)  
+7.[Mandiri bill payment](mandiri_bill_payment)  
 - _Mandiri bill payment main screen_
 - _Mandiri bill payment instruction screen_
 - _Mandiri bill payment payment detail screen_
@@ -76,8 +76,6 @@ VeritransBuilder veritransBuilder = new
 
 
 ## Payment-options
-
-<p id="demo"/> 
 
 [image insert]  
 
@@ -247,50 +245,50 @@ This saved cards are shown here. User can use this cards for future transactions
 * After success validation we are making charge api call.
 
 ## Bank transfer flow
-  ### 1) Using Core
- 
-  To perform transaction using bank transfer method follow the steps given below:
-  * Create the instance of veritrans library using VeritransBuilder class.
-  * Create instance of TransactionRequest and add required fields like item details, 
-   shipping address etc.
-  * Then add Transaction details in previously created veritrans object using 
+### 1) Using Core
+###### To perform transaction using bank transfer method follow the steps given below:
+* Create the instance of veritrans library using VeritransBuilder class.
+* Create instance of TransactionRequest and add required fields like item details, 
+shipping address etc.
+* Then add Transaction details in previously created veritrans object using 
+```
+mVeritransSDK.setTransactionRequest(TransactionRequest);
+```
+* Then execute Transaction using following method and add transaction callback to get response back.
     ```
-    mVeritransSDK.setTransactionRequest(TransactionRequest);
+        mVeritransSDK.paymentUsingPermataBank(MainActivity.this, new TransactionCallback() {
+                            
+                            @Override
+                            public void onFailure(String errorMessage, TransactionResponse        transactionResponse) {
+                                Log.d(" Transaction failed ", ""+errorMessage);
+                                // write your code here to take appropriate action 
+                            }
+    
+                            @Override
+                            public void onSuccess(TransactionResponse transactionResponse) {
+                                Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
+                              // write your code here.
+                            }
+                        });
     ```
-  * Then execute Transaction using following method and add transaction callback to get response back.
-    ```
-    mVeritransSDK.paymentUsingPermataBank(MainActivity.this, new TransactionCallback() {
-                        
-                        @Override
-                        public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-                            Log.d(" Transaction failed ", ""+errorMessage);
-                            // write your code here to take appropriate action 
-                        }
 
-                        @Override
-                        public void onSuccess(TransactionResponse transactionResponse) {
-                            Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
-                          // write your code here.
-                        }
-                    });
-    ```
-    * Take appropriate action in onFailure() or  onSuccess() of TransactionCallback.
+* Take appropriate action in onFailure() or  onSuccess() of TransactionCallback.
   
-  ### 2) Using Ui Flow
- 
-  To perform transaction using bank transfer method follow the steps given below:
-  * Create the instance of veritrans library using VeritransBuilder class.
-  * Create instance of TransactionRequest and add required fields like ItemDetail, 
+### 2) Using Ui Flow
+###### To perform transaction using bank transfer method follow the steps given below:
+* Create the instance of veritrans library using VeritransBuilder class.
+* Create instance of TransactionRequest and add required fields like ItemDetail, 
    shipping address etc.
-  * Then add Transaction details in previously created veritrans object using 
-    ```
+* Then add Transaction details in previously created veritrans object using 
+```
     mVeritransSDK.setTransactionRequest(TransactionRequest);
-    ```
-  * Then start default UI flow using 
-    ```
+```
+* Then start default UI flow using 
+```
                     mVeritransSDK.startPaymentUiFlow();
-    ```
-    It will start payment flow. 
+```
+It will start payment flow. 
+
 * If you haven't filled up the user details information then it will take you to the user details    screen. After filling up all required information it will take you to the "Select Payment Method" screen.
 * Select "Bank Transfer" from  avaible payments method. 
 * Fill up an email id in email address field if you want to receive payment instructions on your email id, This is an optional step.
@@ -303,17 +301,16 @@ This saved cards are shown here. User can use this cards for future transactions
 
 ## Mandiri bill payment
 
-  ### 1) Using Core
- 
-  To perform transaction using mandiri bill payment method follow the steps given below:
-  * Create the instance of veritrans library using VeritransBuilder class.
-  * Create instance of TransactionRequest and add required fields like item details, 
+### 1) Using Core
+###### To perform transaction using mandiri bill payment method follow the steps given below:
+* Create the instance of veritrans library using VeritransBuilder class.
+* Create instance of TransactionRequest and add required fields like item details, 
    shipping address etc.
-  * Then add Transaction details in previously created veritrans object using 
+* Then add Transaction details in previously created veritrans object using 
     ```
     mVeritransSDK.setTransactionRequest(TransactionRequest);
     ```
-  * Then execute Transaction using following method and add transaction callback to get response back
+* Then execute Transaction using following method and add transaction callback to get response back
   
     ```
     mVeritransSDK.paymentUsingMandiriBillPay(MainActivity.this, new TransactionCallback() {
@@ -331,20 +328,21 @@ This saved cards are shown here. User can use this cards for future transactions
                         }
                     });
     ```
-    * Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
+
+* Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
   
 
-  ### 2) Using Ui Flow
+### 2) Using Ui Flow
  
-  To perform transaction using mandiri bill payment method follow the steps given below:
-  * Create the instance of veritrans library using VeritransBuilder class.
-  * Create instance of TransactionRequest and add required fields like ItemDetail, 
+###### To perform transaction using mandiri bill payment method follow the steps given below:
+* Create the instance of veritrans library using VeritransBuilder class.
+* Create instance of TransactionRequest and add required fields like ItemDetail, 
    shipping address etc.
-  * Then add Transaction details in previously created  veritrans object using 
+* Then add Transaction details in previously created  veritrans object using 
     ```
     mVeritransSDK.setTransactionRequest(TransactionRequest);
     ```
-  * Then start default UI flow using 
+* Then start default UI flow using 
     ```
                     mVeritransSDK.startPaymentUiFlow();
     ```
