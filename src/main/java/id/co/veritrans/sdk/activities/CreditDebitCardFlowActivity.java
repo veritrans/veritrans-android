@@ -87,6 +87,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         calculateScreenWidth();
+        /*BlankFragment blankFragment = BlankFragment.newInstance();
+        replaceFragment(blankFragment,true,false);*/
         if(getCreditCards() == null || getCreditCards().isEmpty()){
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
                     .newInstance();

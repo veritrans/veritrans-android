@@ -36,5 +36,6 @@
     <dimen name="header_view_start_margin_bottom">14dp</dimen>
     <dimen name="two_dp">2dp</dimen>
     <dimen name="twenty_dp">20dp</dimen>
+    <dimen name="mb_corner_radius_2">4dp</dimen>
 
 </resources>

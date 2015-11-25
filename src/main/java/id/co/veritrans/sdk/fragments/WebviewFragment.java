@@ -23,11 +23,8 @@ public class WebviewFragment extends Fragment {
     private static final String URL_PARAM = "url_param";
     public WebView webView;
     private String webUrl;
-    /*private Button sucBt;
-    private Button unsucBt;*/
 
     public WebviewFragment() {
-        // Required empty public constructor
     }
 
     public static WebviewFragment newInstance(String url) {
@@ -50,32 +47,23 @@ public class WebviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_webview, container, false);
+        return inflater.inflate(R.layout.fragment_webview, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         webView = (WebView) view.findViewById(R.id.webview);
-       /* sucBt = (Button)view.findViewById(R.id.btn_success);
-        unsucBt = (Button)view.findViewById(R.id.btn_unsuccess);
-        sucBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                trnsSuc(v);
-            }
-        });
-        unsucBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                trnsUnsuc(v);
-            }
-        });*/
         initwebview();
         webView.loadUrl(webUrl);
-        return view;
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void initwebview() {
         SdkUtil.showProgressDialog(getActivity(), true);
-
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.setInitialScale(1);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
@@ -92,12 +80,6 @@ public class WebviewFragment extends Fragment {
     private class VeritransWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            /*if (Uri.parse(url).getHost().equals("URL_NAME")) {
-                return false;
-            }
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);*/
-
             view.loadUrl(url);
             return true;
         }
@@ -120,17 +102,4 @@ public class WebviewFragment extends Fragment {
             SdkUtil.showProgressDialog(getActivity(), false);
         }
     }
-
-   /* public void trnsSuc(View view){
-        PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-        PaymentTransactionStatusFragment.newInstance(true);
-        ((CreditDebitCardFlowActivity) getActivity()).replaceFragment
-        (paymentTransactionStatusFragment,true,false);
-    }
-    public void trnsUnsuc(View view){
-        PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-        PaymentTransactionStatusFragment.newInstance(false);
-        ((CreditDebitCardFlowActivity) getActivity()).replaceFragment
-        (paymentTransactionStatusFragment,true,false);
-    }*/
 }

@@ -42,7 +42,11 @@ public class UserDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_detail, container, false);
+        return inflater.inflate(R.layout.fragment_user_detail, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         ((UserDetailsActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string
                 .title_user_details));
         fullnameEt = (EditText) view.findViewById(R.id.et_full_name);
@@ -60,7 +64,7 @@ public class UserDetailFragment extends Fragment {
                 }
             }
         });
-        return view;
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void validateSaveData() throws IOException {

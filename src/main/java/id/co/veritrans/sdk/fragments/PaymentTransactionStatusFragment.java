@@ -59,7 +59,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
             transactionResponse = (TransactionResponse) getArguments().getSerializable
                     (TRANSACTION_RESPONSE_PARAM);
         }
-
+        veritrans = VeritransSDK.getVeritransSDK();
     }
 
 
@@ -68,11 +68,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_payment_transaction_status, container,
-                false);
-        veritrans = VeritransSDK.getVeritransSDK();
-        return view;
+        return inflater.inflate(R.layout.fragment_payment_transaction_status, container,false);
     }
 
     @Override
