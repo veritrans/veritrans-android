@@ -73,6 +73,13 @@ public class CardDetailFragment extends Fragment {
         Logger.i("cardDetail:" + cardDetail.getString());
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SdkUtil.hideKeyboard(getActivity());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

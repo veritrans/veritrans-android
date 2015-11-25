@@ -20,6 +20,7 @@ import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
+import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.TransactionRequest;
 import id.co.veritrans.sdk.core.VeritransSDK;
@@ -206,6 +207,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
+            SdkUtil.hideKeyboard(this);
             finish();
         }
 
