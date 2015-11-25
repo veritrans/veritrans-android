@@ -37,7 +37,9 @@ VeritransBuilder veritransBuilder = new
       mVeritransSDK = veritransBuilder.buildSDK();
 ```
 
-1.[Payment options](#Payment_options)  
+## Table Of Content
+
+1.[Payment options](#Paymentoptions_77)  
 - _Select option for payment and select available list of payments_
 
 2.[User detail screen](User detail screen)  
@@ -73,7 +75,7 @@ VeritransBuilder veritransBuilder = new
 
 
 
-## Payment options  <a id="Payment_options"></a>
+## Payment-options  
 [image insert]  
 
 
