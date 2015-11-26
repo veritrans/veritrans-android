@@ -16,6 +16,7 @@ import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
+ * Displays status information about mandiri bill pay's api call .
  * Created by shivam on 10/28/15.
  */
 public class MandiriBillPayFragment extends Fragment {
@@ -23,12 +24,22 @@ public class MandiriBillPayFragment extends Fragment {
     public static final String VALID_UNTILL = "Valid Untill : ";
     private static final String DATA = "data";
     private TransactionResponse mTransactionResponse = null;
+
+    //views
     private TextViewFont mTextViewCompanyCode = null;
     private TextViewFont mTextViewBillpayCode = null;
     private TextViewFont mTextViewSeeInstruction = null;
     private TextViewFont mTextViewValidity = null;
 
 
+    /**
+     * it creates new MandiriBillPayment object and set TransactionResponse object to it, so
+     * later it can
+     * be accessible using fragments getArgument().
+     *
+     * @param permataBankTransferResponse
+     * @return instance of MandiriBillPayFragment.
+     */
     public static MandiriBillPayFragment newInstance(TransactionResponse
                                                              permataBankTransferResponse) {
 
@@ -39,6 +50,7 @@ public class MandiriBillPayFragment extends Fragment {
         return fragment;
     }
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -48,11 +60,22 @@ public class MandiriBillPayFragment extends Fragment {
 
         if (getArguments() != null) {
             mTransactionResponse = (TransactionResponse) getArguments().getSerializable(DATA);
-            initializeViews(view);
         }
         return view;
     }
 
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        initializeViews(view);
+    }
+
+
+    /**
+     * initializes view and adds click listener for it.
+     *
+     * @param view
+     */
     private void initializeViews(View view) {
 
         mTextViewCompanyCode = (TextViewFont) view.findViewById(R.id.text_company_code);
@@ -89,6 +112,9 @@ public class MandiriBillPayFragment extends Fragment {
         });
     }
 
+    /**
+     * starts {@link BankTransferInstructionActivity} to show payment instruction.
+     */
     private void showInstruction() {
         Intent intent = new Intent(getActivity(),
                 BankTransferInstructionActivity.class);
