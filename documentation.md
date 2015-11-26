@@ -101,28 +101,32 @@ On this screen we can set some options required for testing purpose.
 **3. _Normal_**  
 We will go in detail about these flows ahead.
 
-* For **normal flow** we can do secure and Insecure way.  
+* For **normal flow** we can perform in two ways: secure and insecure.
 
     	Secure : With 3d secure validation.
 	    Insecure : Without 3d secure validation.
 
 * **One click** and **two click** use **secure** flow only.  
 
-* **Delete cards** - Tester can clear all the credit cards locally saved using this option.
-* You can customize List of payment option using given checkbox.
-* On click of payment button new **_order id_** will be created and take user to user detail screen if user details had already provided then it will take user to select payment option screen.  
+* **Delete cards** - Tester can clear all the credit cards saved locally using this option.
+* You can customize list of payment options using given checkboxes.
+* On click of payment button new **_order id_** will be created and user is taken to user details
+screen, if user details are already provided then it will take user to select payment option
+screen.
 
 ## User detail screen
 [image insert]   
-On this screen we are taking user details like user full name, email and phone no from user.
-which used in future payment process, saving user detail in **_UserDetail_** class maintained in models folder of VeritransSdk.
+On this screen we are taking user details like full name, email and phone no. from the user.
+These deatils are used in future for payment process, saving user details in **_UserDetail_** class
+maintained in models folder of VeritransSdk.
 
 ## User address screen
 [image insert]  
-Here we are taking user billing address and shipping address.
-User can have different billing and shipping address or same.   
-If user have different shipping and billing address, user have to unchecked the bottom checkbox.
-User addresses are maintained in **_UserAddress class_**. This class is entity of **_UserDetail class_**.
+Here we are taking user's billing address and shipping address.
+User can have either different billing and shipping address or same.
+If user have different shipping and billing address, user has to uncheck the checkbox.
+User's addresses are maintained in **_UserAddress_** class. This class is entity of
+**_UserDetail_** class.
 
 To **fetch user details** from file system refer following code.
 
@@ -163,8 +167,9 @@ This is first screen of main flow. We are showing list of available payment meth
 We can add new card here  
 List of actions as follows
 - Take card details from user
-- Do validation of card detail  
-- On successful validation adding bank name and card type from list of BNI available in asset folder of SDK.
+- Perform validation of card detail
+- On successful validation, adding bank name and card type from list of BNI available in asset
+folder of SDK.
 - Once we got all the details we are making api call for token
 
 ***VeritransSDK class*** contains all important methods required for payment transaction.
@@ -172,7 +177,7 @@ Code to get VeritransSDK object
 
     VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();  
 
-**Mehod to get token**
+**Method to get token**
 
     veritransSDK.getToken(activity, cardTokenRequest, tokenCallBack);  
 
@@ -201,7 +206,8 @@ For doing charge api call we have to call following function from VeritransSDK.
 
      veritransSDK.paymentUsingCard(activity, cardTransfer, transactionCallback);
 
-In above code we have to supply ** _CardTransfer_ ** class object, and implemented interface TransactionCallback which have functions onSuccess and onFailure.
+In above code we have to supply ** _CardTransfer_ ** class object, and implement the interface
+TransactionCallback which have functions onSuccess and onFailure.
 
     @Override
     public void onSuccess(TransactionResponse cardPaymentResponse) {
@@ -213,9 +219,10 @@ In above code we have to supply ** _CardTransfer_ ** class object, and implement
     }
 
     
-after successful transaction card information will be get saved if user permits. In TransactionResponse we get ***saved_token_id*** which is used in future transaction.
+after successful transaction card information will be saved if user permits. In
+TransactionResponse we get ***saved_token_id*** which is used for future transactions.
 ## Save Card Details
-To save card details use code given below:
+To save the card details use code given below:
 
     try {
       storageDataHandler.writeObject(this, Constants.USERS_SAVED_CARD, creditCards)
@@ -232,11 +239,12 @@ At PaymentTransactionStatusFragment we are showing transaction related informati
 ## Saved card screen with saved cards  
 [insert image]  
 
-When user completes successful transaction with permission to save cards we save credit card details(Not cvv).  
-This saved cards are shown here. User can use this cards for future transactions.
+When user completes transaction successfully with permission to save cards we save credit card
+details(Not cvv).
+This saved cards are shown here. User can use these cards for future transactions.
 
 ## One click flow  
-* After initial transaction we use  ***_saved_token_id*** for future transaction as follows 
+* After initial transaction we use  ***_saved_token_id*** for future transactions as follows
 
 ```
 
@@ -266,7 +274,7 @@ This saved cards are shown here. User can use this cards for future transactions
 * With the help of saved_token_id and card detail execute api call for getToken.
 * Gettoken api call gives new token_id,
 * If secure flow is available then we will get redirect_url which will take user to browser for 3d secure validation.
-* After successfull validation we are making charge api call.
+* After successful validation charge api is being called.
 
 ## Bank transfer flow
 ### 1) Using core flow
@@ -333,13 +341,17 @@ shipping address etc.
 
 It will start payment flow. 
 
-* If you haven't filled up the user details information then it will take you to the user details    screen. After filling up all required information it will take you to the "Select Payment Method" screen.
-* Select "Bank Transfer" from  avaible payments method. 
-* Fill up an email id in email address field if you want to receive payment instructions on your email id, This is an optional step.
-* Confirm payment by tapping of **CONFIRM PAYMENT** button.
-* It will start a **charge** api call for bank transfer.
-* After successfully completion of transaction, you will see an **Virtual Account Number** and its **expiry time**.
-* Then to get more information about transaction tap on **COMPLETE PAYMENT AT ATM** button.  
+* If you haven't filled up the user details information then the app will take you to the user
+details screen. After filling up all required information, "Select Payment
+ Method" screen is opened.
+* Select "Bank Transfer" from  available payment methods.
+* Fill up email id in email address field if you want to receive payment instructions on email id.
+(This is an optional step).
+* Confirm payment by tapping **CONFIRM PAYMENT** button.
+* It will initiate a **charge** api call for bank transfer.
+* After successfully completion of transaction, a **Virtual Account Number** and its **expiry
+time** is being displayed.
+* To get more information about transaction tap on **COMPLETE PAYMENT AT ATM** button.
 * Finally, select **Done** to finish the payment process or select **RETRY** in case of failure.
     
 
@@ -358,7 +370,8 @@ It will start payment flow.
 
 ```
 
-* Then execute Transaction using following method and add **TransactionCallback** to get response back
+* Now, execute Transaction using following method and add **TransactionCallback** to get response
+back
 
 ```
 
@@ -399,7 +412,7 @@ It will start payment flow.
            
 ```
 
-* Then start default UI flow using 
+* Now, start default UI flow using
 
 ```
 
@@ -408,11 +421,14 @@ It will start payment flow.
 
 ```
 
-* If you haven't filled up the user details information then it will take you to the user details    screen. After filling up all required information it will take you to the "Select Payment Method" screen.
-* Select "Mandiri Bill Payment" from  avaible payments method. 
-* Fill up an email id in email address field if you want to receive payment instructions details on your email id, This is an optional step.
-* Confirm payment by tapping of **CONFIRM PAYMENT** button.
-* It will start a **charge** api call for mandiri bill payment.
-* After successfully completion of transaction, you will see a **company code, bill code and validaty time**.
-* Then to get more information about transaction tap on **COMPLETE PAYMENT AT ATM** button.  
+* If you haven't filled up the user details information then it will take you to the user details
+ screen. After filling up all required information it will take you to the "Select Payment Method" screen.
+* Select "Mandiri Bill Payment" from  available payment methods.
+* Fill up an email id in email address field if you want to receive payment instructions details
+on email id. (This is an optional step).
+* Confirm payment by tapping **CONFIRM PAYMENT** button.
+* It will initiate a **charge** api call for mandiri bill payment.
+* After successful completion of transaction, a **company code, bill code and validaty time** is
+being displayed.
+* To get more information about transaction tap on **COMPLETE PAYMENT AT ATM** button.
 * Finally, select **Done** to finish the payment process or  **RETRY** in case of failure.
