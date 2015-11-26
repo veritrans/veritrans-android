@@ -16,6 +16,7 @@ import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.fragments.InstructionCIMBFragment;
 import id.co.veritrans.sdk.fragments.MandiriClickPayFragment;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.TransactionResponse;
@@ -24,13 +25,53 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 /**
  * Created by Ankit on 11/26/15.
  */
-public class CIMBClickPayActivity extends AppCompatActivity {
+public class CIMBClickPayActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private InstructionCIMBFragment mCIMBClickPayFragment = null;
+    private Button mButtonConfirmPayment = null;
+    private Toolbar mToolbar = null;
+    private VeritransSDK mVeritransSDK = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cimb_clickpay);
+
+        mVeritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (mVeritransSDK == null) {
+            SdkUtil.showSnackbar(CIMBClickPayActivity.this, Constants
+                    .ERROR_SDK_IS_NOT_INITIALIZED);
+            finish();
+        }
+
+
+        initializeViews();
+        setUpFragment();
+    }
+
+    private void initializeViews() {
+
+        mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
+        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mButtonConfirmPayment.setOnClickListener(this);
+    }
+
+    private void setUpFragment() {
+
+        // setup  fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        mCIMBClickPayFragment = new InstructionCIMBFragment();
+
+        fragmentTransaction.add(R.id.cimb_clickpay_container,
+                mCIMBClickPayFragment);
+        fragmentTransaction.commit();
     }
 
 
@@ -48,6 +89,11 @@ public class CIMBClickPayActivity extends AppCompatActivity {
             onBackPressed();
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
 
