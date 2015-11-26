@@ -6,12 +6,19 @@
 - Open **settings.gradle** file your application.
 - Add veritranssdk module to it using code given below:
 
+```
+   
         include ':app',':veritranssdk'
+        
+```
 
 - Open **build.gradle** file of app, add following line in it.
 
+```
+
         compile project(':veritranssdk')
 
+```
 
   That's it now you are ready to use VeritransSdk in your application.
 
@@ -22,11 +29,18 @@
 - Get your ** Client key** and **Server key**.
 
 for example:
-       
+
+```
+
            public static final String VT_CLIENT_KEY = "VT-client-Lre_JFh5klhfGefF";
            public static final String VT_SERVER_KEY = "VT-server-pVDm2d9BT3TIbDls_UEmt8wE";
 
+```
+
 - Initialise VeritransSdk as follows
+
+
+```
 
          VeritransBuilder veritransBuilder = new
                       VeritransBuilder(getApplicationContext(),
@@ -34,7 +48,8 @@ for example:
               veritransBuilder.enableLog(true);   // enable logs of sdk for debugging purpose.
             
          VeritransSDK  mVeritransSDK = veritransBuilder.buildSDK();
-
+        
+```    
 ---
 ## Table Of Content
 
@@ -84,7 +99,7 @@ On this screen we can set some options required for testing purpose.
 **1. _One click_**  
 **2. _Two click_**  
 **3. _Normal_**  
-We will go in detail about thos flows ahead.
+We will go in detail about these flows ahead.
 
 * For **normal flow** we can do secure and Insecure way.  
 
@@ -127,7 +142,9 @@ To **fetch user details** from file system refer following code.
 To **write user details** to file system refer following code.
 
 ```  
-storageDataHandler.writeObject(getActivity(), Constants.USER_DETAILS, userDetail);
+
+    storageDataHandler.writeObject(getActivity(), Constants.USER_DETAILS, userDetail);
+
 ```
 
 Here ***Constant.USER_DETAIL*** is file name stored locally. UserDetail is serialized.   
@@ -219,23 +236,26 @@ When user completes successful transaction with permission to save cards we save
 This saved cards are shown here. User can use this cards for future transactions.
 
 ## One click flow  
-* After initial transaction we use  ***_saved_token_id*** for future transaction as follows :
+* After initial transaction we use  ***_saved_token_id*** for future transaction as follows 
 
+```
 
-    {
-        // Required
-        "payment_type": "credit_card",
-        "credit_card": {
-            // New Token Generated from One Click Clicks Initial Charge Response saved_token_id
-            "token_id": "saved_token_id",
-            "bank": "bni"
-        },
-        // Required
-        "transaction_details": {
-            "order_id": "A87551",
-            "gross_amount": 145000
-        }
-    }
+            {
+                // Required
+                "payment_type": "credit_card",
+                "credit_card": {
+                    // New Token Generated from One Click Clicks Initial Charge Response saved_token_id
+                    "token_id": "saved_token_id",
+                    "bank": "bni"
+                },
+                // Required
+                "transaction_details": {
+                    "order_id": "A87551",
+                    "gross_amount": 145000
+                }
+            }
+
+```
 
 * Response for api call is same as normal transaction.
 * We can use this saved_token_id for all future transaction call.
@@ -256,11 +276,20 @@ This saved cards are shown here. User can use this cards for future transactions
 shipping address etc.
 * Then add Transaction details in previously created veritrans object using 
 
+```
+    
         mVeritransSDK.setTransactionRequest(TransactionRequest);
+
+
+```
     
 * Then execute Transaction using following method and add **TransactionCallback** to get response back.
 
-        mVeritransSDK.paymentUsingPermataBank(MainActivity.this, new TransactionCallback() {
+
+```
+
+  
+       mVeritransSDK.paymentUsingPermataBank(MainActivity.this, new TransactionCallback() {
                             
             @Override
             public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
@@ -275,6 +304,8 @@ shipping address etc.
                     }
         });
 
+      
+```
 
 * Take appropriate action in onFailure() or  onSuccess() of TransactionCallback.
   
@@ -285,11 +316,20 @@ shipping address etc.
    shipping address etc.
 * Then add Transaction details in previously created veritrans object using 
 
+```
+
         mVeritransSDK.setTransactionRequest(TransactionRequest);
+
+```
 
 * Then start default UI flow using 
 
+
+```
+
        mVeritransSDK.startPaymentUiFlow();
+
+```
 
 It will start payment flow. 
 
@@ -312,26 +352,33 @@ It will start payment flow.
    shipping address etc.
 * Then add Transaction details in previously created veritrans object using 
 
+```
 
         mVeritransSDK.setTransactionRequest(TransactionRequest);
 
-* Then execute Transaction using following method and add **TransactionCallback** to get response back
-  
+```
 
-    mVeritransSDK.paymentUsingMandiriBillPay(MainActivity.this, new TransactionCallback() {
+* Then execute Transaction using following method and add **TransactionCallback** to get response back
+
+```
+
+        mVeritransSDK.paymentUsingMandiriBillPay(MainActivity.this, new TransactionCallback() {
+   
                             
-        @Override
-        public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-                Log.d(" Transaction failed ", ""+errorMessage);
-                // write your code here to take appropriate action 
-            }
-    
             @Override
-            public void onSuccess(TransactionResponse transactionResponse) {
-                Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
-                // write your code here.
-            }
-    });
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+                    Log.d(" Transaction failed ", ""+errorMessage);
+                    // write your code here to take appropriate action 
+                }
+        
+                @Override
+                public void onSuccess(TransactionResponse transactionResponse) {
+                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
+                    // write your code here.
+                }
+        });
+        
+```
 
 
 * Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
@@ -345,13 +392,22 @@ It will start payment flow.
    shipping address etc.
 * Then add Transaction details in previously created  veritrans object using 
 
-        mVeritransSDK.setTransactionRequest(TransactionRequest);
+
+```
+
+           mVeritransSDK.setTransactionRequest(TransactionRequest);
+           
+```
 
 * Then start default UI flow using 
 
-                mVeritransSDK.startPaymentUiFlow();
+```
 
-    It will start payment flow. 
+            mVeritransSDK.startPaymentUiFlow();
+            //It will start payment flow. 
+
+```
+
 * If you haven't filled up the user details information then it will take you to the user details    screen. After filling up all required information it will take you to the "Select Payment Method" screen.
 * Select "Mandiri Bill Payment" from  avaible payments method. 
 * Fill up an email id in email address field if you want to receive payment instructions details on your email id, This is an optional step.
