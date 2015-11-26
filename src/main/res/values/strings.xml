@@ -136,6 +136,12 @@
     <string name="bca_instruction_step7">7.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
 
 
+    <!-- cimb transfer Instructions -->
+    <string name="cimb_instruction_step1">1.\tPlease make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
+    <string name="cimb_instruction_step2">2.\tTransaction will be cancelled if payment is not completed within 2 hours.</string>
+    <string name="cimb_instruction_step3">3.\tPlease make sure that there is no pop-up blocker on your browser.</string>
+
+
     <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">1.\tEnter Your PIN.</string>
     <string name="permata_instruction_step2">2.\tOn the main menu, Choose \'Other Transaction\'.</string>
