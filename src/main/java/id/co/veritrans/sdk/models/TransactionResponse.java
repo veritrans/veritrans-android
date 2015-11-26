@@ -63,6 +63,9 @@ public class TransactionResponse implements Serializable {
     @SerializedName("permata_va_number")
     private String permataVANumber;
 
+    @SerializedName("redirect_url")
+    private String redirectUrl;
+
     private String bank;
     private String eci;
 
@@ -238,5 +241,13 @@ public class TransactionResponse implements Serializable {
         } catch (NullPointerException e) {
             return "";
         }
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 }
