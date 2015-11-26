@@ -14,10 +14,12 @@ import android.widget.Toast;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.InstructionCIMBFragment;
 import id.co.veritrans.sdk.fragments.MandiriClickPayFragment;
+import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -92,8 +94,42 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_confirm_payment) {
+            mVeritransSDK.paymentUsingPermataBank(CIMBClickPayActivity.this, new TransactionCallback() {
 
+
+                @Override
+                public void onSuccess(TransactionResponse
+                                              permataBankTransferResponse) {
+
+                    SdkUtil.hideProgressDialog();
+
+                    if (permataBankTransferResponse != null) {
+                        mTransactionResponse = permataBankTransferResponse;
+                        mAppBarLayout.setExpanded(true);
+                        setUpTransactionFragment(permataBankTransferResponse);
+                    } else {
+                        onBackPressed();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+
+                    try {
+                        BankTransferActivity.this.errorMessage = errorMessage;
+                        mTransactionResponse = transactionResponse;
+
+                        SdkUtil.hideProgressDialog();
+                        SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+                    } catch (NullPointerException ex) {
+                        Logger.e("transaction error is " + errorMessage);
+                    }
+                }
+            });
+        }
     }
 }
 

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
+import id.co.veritrans.sdk.models.CIMBClickPayModel;
+import id.co.veritrans.sdk.models.CIMBClickPayRequestModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
@@ -296,6 +298,35 @@ public class VeritransSDK {
 
         }
     }
+
+    /**
+     * It will execute an transaction for CIMB click pay.
+     *
+     * @param activity
+     * @param paymentTransactionCallback TransactionCallback instance
+     */
+
+    public void paymentUsingCIMBClickPay(Activity activity, TransactionCallback
+            paymentTransactionCallback) {
+
+        isRunning = true;
+
+        if (mTransactionRequest != null && activity != null
+                && paymentTransactionCallback != null) {
+
+            mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CIMB_CLICKS;
+            mTransactionRequest.activity = activity;
+
+            CIMBClickPayModel cimbClickPayModel = SdkUtil.getCIMBClickPayModel(mTransactionRequest);
+            TransactionManager.paymentUsingCIMBPay(mTransactionRequest.getActivity(),
+                    cimbClickPayModel,
+                    paymentTransactionCallback);
+        } else {
+            isRunning = false;
+            showError(mTransactionRequest, paymentTransactionCallback);
+        }
+    }
+
 
 
     public TransactionRequest getTransactionRequest() {
