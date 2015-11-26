@@ -3,6 +3,8 @@ package id.co.veritrans.sdk.models;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * contains information related mandiri click pay.
+ *
  * Created by shivam on 11/2/15.
  */
 public class MandiriClickPayModel {

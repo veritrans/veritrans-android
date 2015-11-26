@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 /**
+ * model class to hold card information.
+ *
  * Created by shivam on 10/26/15.
  */
 public class CardTransfer extends TransactionModel {

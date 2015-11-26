@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import java.io.Serializable;
 
 /**
+ * model class hold information required to execute get token api call.
+ *
  * Created by shivam on 10/29/15.
  */
 

@@ -8,6 +8,8 @@ import java.util.ArrayList;
  * Created by shivam on 10/30/15.
  * <p/>
  * Global model class for payment transaction.
+ * contains information about product, billing address, shipping address, payment type and
+ * customer details.
  */
 class TransactionModel {
 

@@ -3,6 +3,10 @@ package id.co.veritrans.sdk.models;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ *
+ * model class to hold information about get Token api call.
+ * it contains  token id, redirect url (if any) etc.
+ *
  * Created by shivam on 10/26/15.
  */
 public class TokenDetailsResponse {

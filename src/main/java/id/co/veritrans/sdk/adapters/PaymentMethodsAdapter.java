@@ -21,6 +21,9 @@ import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
+ * adapter for payment methods recycler view.
+ * holds data of payment method's name and icon.
+ * <p/>
  * Created by shivam on 10/19/15.
  */
 public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAdapter
@@ -36,8 +39,6 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
     public PaymentMethodsAdapter(Activity activity, ArrayList<PaymentMethodsModel> data) {
         this.sActivity = activity;
         this.data = data;
-        Logger.d(TAG, "setting adapter");
-
     }
 
 
@@ -55,7 +56,6 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
     public void onBindViewHolder(PaymentViewHolder holder, int position) {
         holder.mImageView.setImageResource(data.get(position).getImageId());
         holder.name.setText(data.get(position).getName());
-
         Logger.d(TAG, "name is " + data.get(position).getName());
     }
 
@@ -71,7 +71,6 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
     public static class PaymentViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-
         TextViewFont name;
         ImageView mImageView;
 
@@ -83,22 +82,37 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
         }
 
 
+        /**
+         * starts payment flow, it compares name of that view to payment method to start
+         * particular payment flow.
+         *
+         * @param view
+         */
         @Override
         public void onClick(View view) {
+
             TextViewFont nameText = (TextViewFont) view.findViewById(R.id.text_payment_method_name);
-            if (nameText.getText().toString().trim().equalsIgnoreCase(sActivity.getResources()
+            String name = nameText.getText().toString().trim();
+
+            if (name.equalsIgnoreCase(sActivity.getResources()
                     .getString(R.string.credit_card))) {
+
                 Intent intent = new Intent(sActivity, CreditDebitCardFlowActivity.class);
                 sActivity.startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (nameText.getText().toString().trim().equalsIgnoreCase(sActivity
+
+            } else if (name.equalsIgnoreCase(sActivity
                     .getResources().getString(R.string.mandiri_bill_payment))) {
+
                 Intent startMandiriBillpay = new Intent(sActivity, BankTransferActivity.class);
                 startMandiriBillpay.putExtra(Constants.POSITION,
                         Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
+
                 sActivity.startActivityForResult(startMandiriBillpay, Constants
                         .RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (nameText.getText().toString().trim().equalsIgnoreCase(sActivity
+
+            } else if (name.equalsIgnoreCase(sActivity
                     .getResources().getString(R.string.bank_transfer))) {
+
                 Intent startBankPayment = new Intent(sActivity, BankTransferActivity.class);
                 startBankPayment.putExtra(Constants.POSITION,
                         Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER);
@@ -106,12 +120,14 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                 sActivity.startActivityForResult(startBankPayment,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
 
-            } else if (nameText.getText().toString().trim().equalsIgnoreCase(sActivity
+            } else if (name.equalsIgnoreCase(sActivity
                     .getResources().getString(R.string.mandiri_click_pay))) {
+
                 Intent startMandiriClickpay = new Intent(sActivity, MandiriClickPayActivity
                         .class);
                 sActivity.startActivityForResult(startMandiriClickpay,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
             } else {
                 showMessage();
             }

@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import id.co.veritrans.sdk.R;
 
 /**
+ * Displays instructions related to BCA/Prima
+ *
  * Created by shivam on 10/28/15.
  */
 public class InstructionBCAFragment extends Fragment {

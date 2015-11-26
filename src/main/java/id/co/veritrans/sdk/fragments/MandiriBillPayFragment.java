@@ -19,7 +19,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
  * Displays status information about mandiri bill pay's api call .
  * Created by shivam on 10/28/15.
  */
-public class MandiriBillPayFragment extends Fragment {
+public class MandiriBillPayFragment extends Fragment implements View.OnClickListener {
 
     public static final String VALID_UNTILL = "Valid Untill : ";
     private static final String DATA = "data";
@@ -104,12 +104,7 @@ public class MandiriBillPayFragment extends Fragment {
             mTextViewCompanyCode.setText(mTransactionResponse.getCompanyCode());
         }
 
-        mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showInstruction();
-            }
-        });
+        mTextViewSeeInstruction.setOnClickListener(this);
     }
 
     /**
@@ -122,4 +117,9 @@ public class MandiriBillPayFragment extends Fragment {
         getActivity().startActivity(intent);
     }
 
+    @Override
+    public void onClick(View view) {
+        //only one view has registered for onClick listener, there is no need of identifying view
+        showInstruction();
+    }
 }

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * It contains an extra information that you want to display on bill.
  * add your custom field and it's value in string format.
+ *
  * Created by shivam on 11/3/15.
  */
 public class BillInfoModel {
