@@ -154,8 +154,10 @@ public class VeritransSDK {
     public void getToken(Activity activity, CardTokenRequest cardTokenRequest, TokenCallBack
             tokenCallBack) {
 
-        isRunning = true;
+
         if (activity != null && cardTokenRequest != null && tokenCallBack != null) {
+
+            isRunning = true;
             TransactionManager.getToken(activity, cardTokenRequest, tokenCallBack);
 
         } else {
@@ -176,7 +178,6 @@ public class VeritransSDK {
     public void paymentUsingPermataBank(Activity activity,
                                         TransactionCallback permataBankTransferStatus) {
 
-        isRunning = true;
 
         if (mTransactionRequest != null && activity != null
                 && permataBankTransferStatus != null) {
@@ -184,8 +185,11 @@ public class VeritransSDK {
             mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
             mTransactionRequest.activity = activity;
 
+
             PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel
                     (mTransactionRequest);
+
+            isRunning = true;
             TransactionManager.paymentUsingPermataBank(mTransactionRequest.getActivity(),
                     permataBankTransfer,
                     permataBankTransferStatus);
@@ -206,7 +210,7 @@ public class VeritransSDK {
                                  TransactionCallback cardPaymentTransactionCallback
     ) {
 
-        isRunning = true;
+
 
         if (mTransactionRequest != null && activity != null
                 && cardTransfer != null && cardPaymentTransactionCallback != null) {
@@ -214,6 +218,7 @@ public class VeritransSDK {
             mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT;
             mTransactionRequest.activity = activity;
 
+            isRunning = true;
             TransactionManager.paymentUsingCard(mTransactionRequest.getActivity(), cardTransfer,
                     cardPaymentTransactionCallback);
         } else {
@@ -233,7 +238,6 @@ public class VeritransSDK {
     public void paymentUsingMandiriClickPay(Activity activity, MandiriClickPayModel
             mandiriClickPayModel, TransactionCallback paymentTransactionCallback) {
 
-        isRunning = true;
 
         if (mTransactionRequest != null && activity != null
                 && mandiriClickPayModel != null && paymentTransactionCallback != null) {
@@ -246,7 +250,7 @@ public class VeritransSDK {
                     SdkUtil.getMandiriClickPayRequestModel(mTransactionRequest,
                             mandiriClickPayModel);
 
-
+            isRunning = true;
             TransactionManager.paymentUsingMandiriClickPay(mTransactionRequest.getActivity(),
                     mandiriClickPayRequestModel, paymentTransactionCallback);
         } else {
@@ -266,7 +270,7 @@ public class VeritransSDK {
     public void paymentUsingMandiriBillPay(Activity activity,
                                            TransactionCallback mandiriBillPayTransferStatus) {
 
-        isRunning = true;
+
 
         if (mTransactionRequest != null && activity != null
                 && mandiriBillPayTransferStatus != null) {
@@ -280,6 +284,7 @@ public class VeritransSDK {
                 MandiriBillPayTransferModel mandiriBillPayTransferModel =
                         SdkUtil.getMandiriBillPayModel(mTransactionRequest);
 
+                isRunning = true;
                 TransactionManager.paymentUsingMandiriBillPay(mTransactionRequest.getActivity(),
                         mandiriBillPayTransferModel, mandiriBillPayTransferStatus);
 
@@ -314,6 +319,7 @@ public class VeritransSDK {
 
             if (transactionRequest != null && transactionRequest.getActivity() != null) {
                 mTransactionRequest = transactionRequest;
+                Logger.i("transaction info set");
             } else {
                 Logger.e(ADD_TRANSACTION_DETAILS);
             }
