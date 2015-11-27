@@ -19,6 +19,9 @@ import java.util.regex.Pattern;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
+import id.co.veritrans.sdk.models.CIMBClickPayModel;
+import id.co.veritrans.sdk.models.CIMBClickPayRequestModel;
+import id.co.veritrans.sdk.models.CIMBDescription;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
@@ -226,9 +229,13 @@ public class SdkUtil {
      */
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
-            if (!TextUtils.isEmpty(errorMessage) && errorMessage.contains(Constants
-                    .RETROFIT_NETWORK_MESSAGE)) {
-                SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+            if(!TextUtils.isEmpty(errorMessage)) {
+                if (errorMessage.contains(Constants
+                        .RETROFIT_NETWORK_MESSAGE)) {
+                    SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+                } else {
+                    SdkUtil.showSnackbar(activity, errorMessage);
+                }
             } else {
                 SdkUtil.showSnackbar(activity, activity.getString(R.string.api_fail_message));
             }
@@ -375,6 +382,32 @@ public class SdkUtil {
 
         return model;
 
+    }
+
+
+    /**
+     * helper method to extract {@link CIMBClickPayModel} from {@link TransactionRequest}.
+     * @return
+     */
+
+    protected static CIMBClickPayModel getCIMBClickPayModel(TransactionRequest request) {
+
+        CIMBDescription cimbDescription = new CIMBDescription("Any Description");
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+
+        CIMBClickPayModel model =
+                new CIMBClickPayModel(cimbDescription, transactionDetails, request.getItemDetails(),
+                        request.getBillingAddressArrayList(),
+                        request.getShippingAddressArrayList(),
+                        request.getCustomerDetails());
+        return model;
     }
 
 

@@ -6,12 +6,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.WebviewFragment;
+import id.co.veritrans.sdk.widgets.VeritransDialog;
 
 public class PaymentWebActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -60,19 +62,28 @@ public class PaymentWebActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (fragmentManager.getBackStackEntryCount() == 1) {
-            finish();
-        } else {
-            if (currentFragmentName.equalsIgnoreCase(WebviewFragment.class.getName())) {
-                if (((WebviewFragment) currentFragment).webView.canGoBack()) {
-                    ((WebviewFragment) currentFragment).webviewBackPressed();
+        VeritransDialog veritransDialog = new VeritransDialog(this,getString(R.string.cancel_transaction),
+                getString(R.string.cancel_transaction_message),getString(android.R.string.yes),getString(android.R.string.no));
+        veritransDialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fragmentManager.getBackStackEntryCount() == 1) {
+                    finish();
                 } else {
-                    super.onBackPressed();
+                    if (currentFragmentName.equalsIgnoreCase(WebviewFragment.class.getName())) {
+                        if (((WebviewFragment) currentFragment).webView.canGoBack()) {
+                            ((WebviewFragment) currentFragment).webviewBackPressed();
+                        } else {
+                            PaymentWebActivity.super.onBackPressed();
+                        }
+                    } else {
+                        PaymentWebActivity.super.onBackPressed();
+                    }
                 }
-            } else {
-                super.onBackPressed();
             }
-        }
+        });
+        veritransDialog.show();
+
     }
 
 }

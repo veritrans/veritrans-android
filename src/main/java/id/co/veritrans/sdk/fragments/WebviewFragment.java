@@ -92,6 +92,10 @@ public class WebviewFragment extends Fragment {
                 Intent returnIntent = new Intent();
                 getActivity().setResult(getActivity().RESULT_OK, returnIntent);
                 getActivity().finish();
+            } else if (url.contains(Constants.CALLBACK_URL)) {
+                Intent returnIntent = new Intent();
+                getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                getActivity().finish();
             }
         }
 

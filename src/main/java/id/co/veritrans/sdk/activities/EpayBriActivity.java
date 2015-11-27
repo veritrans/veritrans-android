@@ -11,10 +11,8 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -23,11 +21,11 @@ import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.InstructionEpayBriFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import id.co.veritrans.sdk.models.TransactionStatusResponse;
 
 public class EpayBriActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int PAYMENT_WEB_INTENT = 150;
+    private static int RESULT_CODE = RESULT_CANCELED;
     private Button btConfirmPayment = null;
     private Toolbar toolbar = null;
     private VeritransSDK veritransSDK = null;
@@ -35,6 +33,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
     private TransactionResponse transactionResponse;
     private FragmentManager fragmentManager;
     private String currentFragmentName = "";
+    private String errorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +63,8 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
     private void setUpFragment() {
 
         // setup  fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         instructionEpayBriFragment = new InstructionEpayBriFragment();
-        fragmentTransaction.add(R.id.bri_container_layout,
-                instructionEpayBriFragment);
-        fragmentTransaction.commit();
+        replaceFragment(instructionEpayBriFragment, true, false);
     }
 
     @Override
@@ -104,17 +99,15 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onFailure(String errorMessage, TransactionResponse
                             transactionResponse) {
-                        SdkUtil.hideKeyboard(EpayBriActivity.this);
-                        Toast.makeText(getApplicationContext(), "failed : " + errorMessage, Toast
-                                .LENGTH_SHORT).show();
-                        //TODO show message
+                        SdkUtil.hideProgressDialog();
+                        SdkUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
+                        EpayBriActivity.this.errorMessage = errorMessage;
+
                     }
 
                     @Override
                     public void onSuccess(TransactionResponse transactionResponse) {
-                        /*Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT)
-                                .show();*/
-                        SdkUtil.hideKeyboard(EpayBriActivity.this);
+                        SdkUtil.hideProgressDialog();
                         if (transactionResponse != null &&
                                 !TextUtils.isEmpty(transactionResponse.getRedirectUrl())) {
                             EpayBriActivity.this.transactionResponse = transactionResponse;
@@ -122,7 +115,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
                             intentPaymentWeb.putExtra(Constants.WEBURL, transactionResponse.getRedirectUrl());
                             startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
                         } else {
-                            //TODO show message
+                            SdkUtil.showApiFailedMessage(EpayBriActivity.this,getString(R.string.empty_transaction_response));
                         }
 
                     }
@@ -136,7 +129,11 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
         if (resultCode == RESULT_OK && transactionResponse != null &&
                 !TextUtils.isEmpty(transactionResponse.getTransactionId())) {
-            veritransSDK.getPaymentStatus(this, transactionResponse.getTransactionId(), new PaymentStatusCallback() {
+            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
+                    PaymentTransactionStatusFragment.newInstance(transactionResponse);
+            replaceFragment(paymentTransactionStatusFragment, true, false);
+            btConfirmPayment.setVisibility(View.GONE);
+            /*veritransSDK.getPaymentStatus(this, transactionResponse.getTransactionId(), new PaymentStatusCallback() {
                 @Override
                 public void onFailure(String errorMessage, TransactionStatusResponse transactionStatusResponse) {
                     PaymentTransactionStatusFragment paymentTransactionStatusFragment =
@@ -150,7 +147,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
                             PaymentTransactionStatusFragment.newInstance(transactionResponse);
                     replaceFragment(paymentTransactionStatusFragment, true, false);
                 }
-            });
+            });*/
         }
     }
 
@@ -169,7 +166,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
             if (!fragmentPopped) { //fragment not in back stack, create it.
                 Logger.i("fragment not in back stack, create it");
                 FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.card_container, fragment, backStateName);
+                ft.replace(R.id.bri_container_layout, fragment, backStateName);
                 if (addToBackStack) {
                     ft.addToBackStack(backStateName);
                 }
@@ -178,5 +175,17 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
                 //currentFragment = fragment;
             }
         }
+    }
+
+    public void setResultAndFinish(){
+        Intent data = new Intent();
+        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
+        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        setResult(RESULT_CODE, data);
+        finish();
+    }
+
+    public void setResultCode(int resultCode) {
+        this.RESULT_CODE = resultCode;
     }
 }

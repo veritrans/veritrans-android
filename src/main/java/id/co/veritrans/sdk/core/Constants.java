@@ -105,6 +105,8 @@ public class Constants {
 
     public static final CharSequence CALLBACK_STRING = "/token/callback/";
 
+    public static final CharSequence CALLBACK_URL ="https://hangout.betas.in/veritrans/api/paymentstatus";
+
     public static final String WEBURL = "weburl";
 
     public static final String BANK_NAME = "bni";
