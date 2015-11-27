@@ -1,20 +1,15 @@
 package id.co.veritrans.sdk.models;
 
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 
 /**
- *
- * model class to hold information bout Bank Transfer api call
- *
  * Created by shivam on 10/26/15.
  */
-public class PermataBankTransfer extends TransactionModel {
+public class EpayBriTransfer extends TransactionModel {
 
 
-    public static final String PAYMENT_TYPE = "bank_transfer";
+    public static final String PAYMENT_TYPE = "bri_epay";
 
     /**
      * payment_type : bank_transfer
@@ -23,18 +18,16 @@ public class PermataBankTransfer extends TransactionModel {
      */
 
 
-    @SerializedName("bank_transfer")
-    private BankTransfer bankTransfer;
 
 
-    public PermataBankTransfer(BankTransfer bankTransfer, TransactionDetails transactionDetails,
-                               ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
-                                       billingAddresses, ArrayList<ShippingAddress>
-                                       shippingAddresses, CustomerDetails customerDetails) {
+    public EpayBriTransfer( TransactionDetails transactionDetails,
+                           ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
+                                   billingAddresses, ArrayList<ShippingAddress>
+                                   shippingAddresses, CustomerDetails customerDetails) {
 
         this.paymentType = PAYMENT_TYPE;
 
-        this.bankTransfer = bankTransfer;
+
         this.transactionDetails = transactionDetails;
         this.itemDetails = itemDetails;
         this.billingAddresses = billingAddresses;
@@ -47,9 +40,7 @@ public class PermataBankTransfer extends TransactionModel {
         return paymentType;
     }
 
-    public BankTransfer getBankTransfer() {
-        return bankTransfer;
-    }
+
 
     public TransactionDetails getTransactionDetails() {
         return transactionDetails;

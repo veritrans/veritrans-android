@@ -35,6 +35,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
         <activity
+            android:name=".activities.EpayBriActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+        <activity
             android:name=".activities.CIMBClickPayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>

@@ -4,6 +4,9 @@ package id.co.veritrans.sdk.models;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * contains information about payment charge api call like,
+ * </p> status message, status code, transaction id, transaction status etc.
+ *
  * Created by shivam on 10/26/15.
  */
 public class TransactionStatusResponse {

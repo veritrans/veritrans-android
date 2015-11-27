@@ -17,15 +17,16 @@ import id.co.veritrans.sdk.fragments.InstructionMandiriFragment;
 import id.co.veritrans.sdk.fragments.InstructionPermataFragment;
 
 /**
+ * It display information related to mandiri bill pay , bank transfer and BCA/Prima transaction.
+ *
  * Created by shivam on 10/28/15.
  */
 public class BankTransferInstructionActivity extends AppCompatActivity {
 
-
+    private static final int PAGE_MARGIN = 20;
     private Toolbar mToolbar = null;
     private ViewPager mViewPager = null;
     private TabLayout mTabLayout = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,12 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * handles click of back arrow given on action bar.
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -53,6 +60,10 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * set up action bar, view pager and tabs.
+     */
     private void initializeViews() {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -71,10 +82,14 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
 
 
     private void setUpTabLayout() {
-      /*  mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_mandiri));
+
+        // on need to set names to tab just attach viewpager and then using
+        // adapters page title method it will take name for tab.
+
+        /* mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_mandiri));
         mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_bca_prima));
         mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_permata_alto));
-*/
+        */
 
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -85,27 +100,36 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
     }
 
 
+    /**
+     * set adapter to view pager and also adds page margin between view pages.
+     */
     private void setUpViewPager() {
-        mViewPager.setPageMargin(20);
+
+        mViewPager.setPageMargin(PAGE_MARGIN);
         InstructionFragmentPagerAdapter adapter = new InstructionFragmentPagerAdapter(
                 getSupportFragmentManager());
         mViewPager.setAdapter(adapter);
     }
 
 
+    /**
+     * adapter for view pager which will provide instruction fragment depending upon tab click
+     * and view pager swap position.
+     */
     public class InstructionFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
+        /**
+         * number of pages / tabs.
+         */
         private static final int NUMBER_OF_PAGES = 3;
 
         public InstructionFragmentPagerAdapter(FragmentManager fragmentManager) {

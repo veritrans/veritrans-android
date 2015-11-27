@@ -1,17 +1,21 @@
 package id.co.veritrans.sdk.core;
 
 import android.app.Activity;
+import android.text.TextUtils;
 
+import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
+import id.co.veritrans.sdk.models.TransactionStatusResponse;
 import id.co.veritrans.sdk.utilities.Utils;
 import rx.Observable;
 import rx.Observer;
@@ -26,8 +30,10 @@ import rx.schedulers.Schedulers;
  */
 class TransactionManager {
 
-    private static Subscription mSubscription = null;
+    private static Subscription subscription = null;
     private static Subscription cardPaymentSubscription = null;
+    private static Subscription paymentStatusSubscription = null;
+
 
     /**
      * it will execute an api call to get token from server, and after completion of request it
@@ -69,7 +75,7 @@ class TransactionManager {
                             cardTokenRequest.getGrossAmount());
                 }
 
-                mSubscription = observable.subscribeOn(Schedulers
+                subscription = observable.subscribeOn(Schedulers
                         .io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<TokenDetailsResponse>() {
@@ -77,8 +83,8 @@ class TransactionManager {
                             @Override
                             public void onCompleted() {
 
-                                if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-                                    mSubscription.unsubscribe();
+                                if (subscription != null && !subscription.isUnsubscribed()) {
+                                    subscription.unsubscribe();
                                 }
 
                                 releaseResources();
@@ -130,7 +136,6 @@ class TransactionManager {
 
     }
 
-
     /**
      * it will execute an api call to perform transaction using permata bank, and after
      * completion of request it
@@ -160,7 +165,7 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingPermataBank(authorization,
                             permataBankTransfer);
 
-                    mSubscription = observable.subscribeOn(Schedulers
+                    subscription = observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
@@ -168,8 +173,8 @@ class TransactionManager {
                                 @Override
                                 public void onCompleted() {
 
-                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-                                        mSubscription.unsubscribe();
+                                    if (subscription != null && !subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
                                     }
 
                                     releaseResources();
@@ -228,7 +233,6 @@ class TransactionManager {
             releaseResources();
         }
     }
-
 
     /**
      * it will execute an api call to perform transaction using credit card, and after
@@ -317,7 +321,6 @@ class TransactionManager {
         }
     }
 
-
     /**
      * it will execute an api call to perform transaction using mandiri click pay, and after
      * completion of request it
@@ -349,7 +352,7 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingMandiriClickPay(authorization,
                             mandiriClickPayRequestModel);
 
-                    mSubscription = observable.subscribeOn(Schedulers
+                    subscription = observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
@@ -357,8 +360,8 @@ class TransactionManager {
                                 @Override
                                 public void onCompleted() {
 
-                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-                                        mSubscription.unsubscribe();
+                                    if (subscription != null && !subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
                                     }
 
                                     releaseResources();
@@ -375,7 +378,6 @@ class TransactionManager {
                                                            mandiriTransferResponse) {
 
                                     if (mandiriTransferResponse != null) {
-
 
                                         if (veritransSDK != null && veritransSDK.isLogEnabled()) {
                                             displayResponse(mandiriTransferResponse);
@@ -418,7 +420,6 @@ class TransactionManager {
         }
     }
 
-
     /**
      * it will execute an api call to perform transaction using mandiri bill pay, and after
      * completion of request it
@@ -449,7 +450,7 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingMandiriBillPay(authorization,
                             mandiriBillPayTransferModel);
 
-                    mSubscription = observable.subscribeOn(Schedulers
+                    subscription = observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
@@ -457,8 +458,8 @@ class TransactionManager {
                                 @Override
                                 public void onCompleted() {
 
-                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-                                        mSubscription.unsubscribe();
+                                    if (subscription != null && !subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
                                     }
 
                                     releaseResources();
@@ -475,7 +476,6 @@ class TransactionManager {
                                                            permataBankTransferResponse) {
 
                                     if (permataBankTransferResponse != null) {
-
 
                                         if (veritransSDK != null && veritransSDK.isLogEnabled()) {
                                             displayResponse(permataBankTransferResponse);
@@ -519,6 +519,7 @@ class TransactionManager {
         }
     }
 
+
     public static void paymentUsingCIMBPay(Activity activity, CIMBClickPayModel cimbClickPayModel,
                                            final TransactionCallback callback) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
@@ -532,14 +533,14 @@ class TransactionManager {
                     String authorization = "Basic " + serverKey;
                     observable = apiInterface.paymentUsingCIMBClickPay(authorization,
                             cimbClickPayModel);
-                    mSubscription = observable.subscribeOn(Schedulers
+                    subscription = observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
                                 @Override
                                 public void onCompleted() {
-                                    if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-                                        mSubscription.unsubscribe();
+                                    if (subscription != null && !subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
                                     }
                                     releaseResources();
                                 }
@@ -601,7 +602,6 @@ class TransactionManager {
                 .getBank());
     }
 
-
     private static void displayResponse(TransactionResponse
                                                 transferResponse) {
         Logger.d("transfer response: virtual account" +
@@ -615,7 +615,6 @@ class TransactionManager {
         Logger.d(" transfer response: status code ",
                 "" + transferResponse.getStatusCode());
 
-
         Logger.d(" transfer response: transaction Id ",
                 "" + transferResponse
                         .getTransactionId());
@@ -626,10 +625,170 @@ class TransactionManager {
                         .getTransactionStatus());
     }
 
-
     private static void releaseResources() {
         if (VeritransSDK.getVeritransSDK() != null) {
             VeritransSDK.getVeritransSDK().isRunning = false;
         }
     }
+
+    public static void paymentUsingEpayBri(Activity activity, EpayBriTransfer epayBriTransfer, final TransactionCallback callback) {
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                Observable<TransactionResponse> observable = null;
+
+                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
+                if (serverKey != null) {
+
+                    String authorization = "Basic " + serverKey;
+                    observable = apiInterface.paymentUsingEpayBri(authorization,
+                            epayBriTransfer);
+
+                    subscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<TransactionResponse>() {
+
+                                @Override
+                                public void onCompleted() {
+
+                                    if (subscription != null && !subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
+
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    callback.onFailure(throwable.getMessage(), null);
+                                }
+
+                                @Override
+                                public void onNext(TransactionResponse
+                                                           epayBriTransferResponse) {
+
+                                    if (epayBriTransferResponse != null) {
+
+                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                            displayResponse(epayBriTransferResponse);
+                                        }
+
+                                        if (epayBriTransferResponse.getStatusCode().trim()
+                                                .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
+                                                || epayBriTransferResponse.getStatusCode()
+                                                .trim().equalsIgnoreCase(Constants
+                                                        .SUCCESS_CODE_201)) {
+
+                                            callback.onSuccess(epayBriTransferResponse);
+                                        } else {
+                                            callback.onFailure(epayBriTransferResponse
+                                                            .getStatusMessage(),
+                                                    epayBriTransferResponse);
+                                        }
+
+                                    } else {
+                                        callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                    }
+
+                                }
+                            });
+                } else {
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callback.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
+                }
+            } else {
+                callback.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            releaseResources();
+        }
+    }
+
+    public static void getPaymentStatus(Activity activity, String id, final PaymentStatusCallback callback) {
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                Observable<TransactionStatusResponse> observable = null;
+
+                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
+                if (serverKey != null) {
+
+                    String authorization = "Basic " + serverKey;
+                    observable = apiInterface.transactionStatus(authorization,
+                            id);
+
+                    paymentStatusSubscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<TransactionStatusResponse>() {
+
+                                @Override
+                                public void onCompleted() {
+                                    if (paymentStatusSubscription != null && !paymentStatusSubscription.isUnsubscribed()) {
+                                        paymentStatusSubscription.unsubscribe();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    callback.onFailure(e.getMessage(), null);
+                                }
+
+                                @Override
+                                public void onNext(TransactionStatusResponse transactionStatusResponse) {
+                                    if (transactionStatusResponse != null) {
+                                            if(TextUtils.isEmpty(transactionStatusResponse.getStatusCode())) {
+                                                if (transactionStatusResponse.getStatusCode()
+                                                        .equalsIgnoreCase(Constants.SUCCESS_CODE_200)||
+                                                    transactionStatusResponse.getStatusCode()
+                                                                .equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+                                                    callback.onSuccess(transactionStatusResponse);
+                                                }
+                                            } else {
+                                                callback.onFailure(Constants.ERROR_EMPTY_RESPONSE,
+                                                        transactionStatusResponse);
+                                            }
+                                    } else {
+                                        callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                    }
+                                }
+                            });
+
+                } else {
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callback.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
+                }
+            } else {
+                callback.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            releaseResources();
+        }
+    }
+
 }

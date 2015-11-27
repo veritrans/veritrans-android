@@ -1,6 +1,10 @@
 package id.co.veritrans.sdk.models;
 
 /**
+ *
+ * model class created for payment methods recycler view.
+ * it contains image resource Id, name of payment method etc.
+ *
  * Created by shivam on 10/19/15.
  */
 public class PaymentMethodsModel {

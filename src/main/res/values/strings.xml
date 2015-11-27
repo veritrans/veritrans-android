@@ -197,6 +197,22 @@
     <string name="card_delete_message">Are you sure you want to delete card?</string>
     <string name="message_save_card">Save your card for faster checkout process.</string>
     <string name="got_it">Got it</string>
+    <string name="bri_instruction_step1">1.Please make sure that you have a User ID for BRI e-Pay and
+        have registered for mTOKEN before going through with the payment
+    </string>
+    <string name="bri_instruction_step2">2.To obtain a User ID for BRI e-Pay, please register at the
+        nearest BRI ATM.
+    </string>
+    <string name="bri_instruction_step3">3.Please visit the nearest BRI branch office to register
+        the mTOKEN.
+    </string>
+    <string name="bri_instruction_step4">4.Payment via BRI e-Pay will be processed online and your
+        BRI bank account balance will be deducted automatically based on your total amount.
+    </string>
+    <string name="bri_instruction_step5">5.Your transaction will be cancelled if payment is not
+        completed within 2 hours.
+    </string>
+    <string name="empty_transaction_response">Payment failed! Please try again.</string>
 
 
 </resources>

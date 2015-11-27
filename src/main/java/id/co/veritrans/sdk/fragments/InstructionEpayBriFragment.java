@@ -9,19 +9,14 @@ import android.view.ViewGroup;
 
 import id.co.veritrans.sdk.R;
 
-/**
- * Displays instructions related to permata bank transfer.
- * <p/>
- * Created by shivam on 10/28/15.
- */
-public class InstructionPermataFragment extends Fragment {
+public class InstructionEpayBriFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_instruction_bca, container, false);
+        View view = inflater.inflate(R.layout.fragment_instruction_epay_bri, container, false);
         return view;
     }
 }

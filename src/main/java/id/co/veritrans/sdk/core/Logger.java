@@ -6,7 +6,7 @@ import android.util.Log;
  *
  * helper class to display log messages on logcat.</p>
  * you can also disable log message for example in release mode of your application using instance of
- * {@link VeritransBuilder}
+ * {@link VeritransBuilder#enableLog(boolean)}
  *
  * Created by shivam on 10/20/15.
  */

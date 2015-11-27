@@ -3,6 +3,8 @@ package id.co.veritrans.sdk.models;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * model class to hold information returned by CancelTransaction api call.
+ * contains status message and status code of cancel transaction api call.
  * Created by shivam on 10/26/15.
  */
 public class TransactionCancelResponse {

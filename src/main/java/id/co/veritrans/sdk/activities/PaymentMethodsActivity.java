@@ -32,6 +32,9 @@ import id.co.veritrans.sdk.widgets.HeaderView;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
+ *
+ * Displays list of available payment methods.
+ *
  * Created by shivam on 10/16/15.
  */
 public class PaymentMethodsActivity extends AppCompatActivity implements AppBarLayout
@@ -46,18 +49,17 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     public static final String PAYABLE_AMOUNT = "Payable Amount";
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
 
+    private VeritransSDK veritransSDK = null;
+    private StorageDataHandler storageDataHandler = null;
+    private boolean isHideToolbarView = false;
 
     //Views
     private Toolbar toolbar = null;
     private AppBarLayout mAppBarLayout = null;
     private RecyclerView mRecyclerView = null;
-    private VeritransSDK veritransSDK = null;
-    private StorageDataHandler storageDataHandler = null;
-
     private HeaderView toolbarHeaderView = null;
     private HeaderView floatHeaderView = null;
     private TextViewFont headerTextView = null;
-    private boolean isHideToolbarView = false;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
 
@@ -72,10 +74,10 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         UserDetail userDetail = null;
         try {
             userDetail = (UserDetail) storageDataHandler.readObject(this, Constants.USER_DETAILS);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
         veritransSDK = VeritransSDK.getVeritransSDK();
@@ -126,6 +128,9 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     }
 
 
+    /**
+     * bind views , initializes adapter and set it to recycler view.
+     */
     private void setUpPaymentMethods() {
 
         //initialize views
@@ -153,6 +158,9 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
     }
 
+    /**
+     * set data to view.
+     */
     private void bindDataToView() {
 
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
@@ -171,6 +179,9 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
     }
 
+    /**
+     * initialize views.
+     */
     private void bindActivity() {
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_payment_methods);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -298,6 +309,11 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     }
 
 
+    /**
+     *
+     * sends broadcast for transaction details.
+     *
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

@@ -1,6 +1,9 @@
 package id.co.veritrans.sdk.models;
 
 /**
+ *
+ * contains information about bank transfer.
+ *
  * Created by shivam on 10/29/15.
  */
 public class BankTransfer {

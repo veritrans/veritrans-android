@@ -25,6 +25,7 @@ import id.co.veritrans.sdk.models.CIMBDescription;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
+import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
@@ -226,9 +227,13 @@ public class SdkUtil {
      */
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
-            if (!TextUtils.isEmpty(errorMessage) && errorMessage.contains(Constants
-                    .RETROFIT_NETWORK_MESSAGE)) {
-                SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+            if(!TextUtils.isEmpty(errorMessage)) {
+                if (errorMessage.contains(Constants
+                        .RETROFIT_NETWORK_MESSAGE)) {
+                    SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+                } else {
+                    SdkUtil.showSnackbar(activity, errorMessage);
+                }
             } else {
                 SdkUtil.showSnackbar(activity, activity.getString(R.string.api_fail_message));
             }
@@ -522,6 +527,13 @@ public class SdkUtil {
     }
 
 
+    /**
+     *
+     * return user details if available else return null
+     *
+     * @param context
+     * @return UserDetail
+     */
     protected static UserDetail getUserDetails(Context context){
 
         StorageDataHandler storageDataHandler = new StorageDataHandler();
@@ -538,4 +550,31 @@ public class SdkUtil {
             }
             return null;
     }
+
+    /**
+     * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
+    protected static EpayBriTransfer getEpayBriBankModel(TransactionRequest request) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+
+
+        EpayBriTransfer model =
+                new EpayBriTransfer(transactionDetails, request.getItemDetails(),
+                        request.getBillingAddressArrayList(),
+                        request.getShippingAddressArrayList(),
+                        request.getCustomerDetails());
+        return model;
+
+    }
+
 }

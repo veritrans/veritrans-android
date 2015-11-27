@@ -11,12 +11,14 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
+import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CIMBClickPayRequestModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
@@ -35,19 +37,19 @@ public class VeritransSDK {
     private static final String FONTS_OPEN_SANS_SEMI_BOLD_TTF = "fonts/open_sans_semibold.ttf";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
 
-    private static Context sContext = null;
+    private static Context context = null;
 
     private static Typeface typefaceOpenSansRegular = null;
     private static Typeface typefaceOpenSansSemiBold = null;
     private static Typeface typefaceOpenSansBold = null;
 
-    private static VeritransSDK sVeritransSDK = new VeritransSDK();
-    private static boolean sIsLogEnabled = true;
-    private static String sServerKey = null;
-    private static String sClientKey = null;
+    private static VeritransSDK veritransSDK = new VeritransSDK();
+    private static boolean isLogEnabled = true;
+    private static String serverKey = null;
+    private static String clientKey = null;
     protected boolean isRunning = false;
 
-    private TransactionRequest mTransactionRequest = null;
+    private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
     private String TRANSACTION_RESPONSE_NOT_AVAILABLE = "Transaction response not available.";
 
@@ -57,13 +59,13 @@ public class VeritransSDK {
     protected static VeritransSDK getInstance(VeritransBuilder veritransBuilder) {
 
         if (veritransBuilder != null) {
-            sContext = veritransBuilder.context;
-            sIsLogEnabled = veritransBuilder.enableLog;
-            sServerKey = veritransBuilder.serverKey;
-            sClientKey = veritransBuilder.clientKey;
+            context = veritransBuilder.context;
+            isLogEnabled = veritransBuilder.enableLog;
+            serverKey = veritransBuilder.serverKey;
+            clientKey = veritransBuilder.clientKey;
 
             initializeFonts();
-            return sVeritransSDK;
+            return veritransSDK;
         } else {
             return null;
         }
@@ -74,7 +76,7 @@ public class VeritransSDK {
      * It will initialize all fonts that are available in sdk.
      */
     private static void initializeFonts() {
-        AssetManager assets = sContext.getAssets();
+        AssetManager assets = context.getAssets();
         typefaceOpenSansBold = Typeface.createFromAsset(assets, FONTS_OPEN_SANS_BOLD_TTF);
         typefaceOpenSansRegular = Typeface.createFromAsset(assets, FONTS_OPEN_SANS_REGULAR_TTF);
         typefaceOpenSansSemiBold = Typeface.createFromAsset(assets,
@@ -88,10 +90,10 @@ public class VeritransSDK {
      */
     public static VeritransSDK getVeritransSDK() {
 
-        if (sServerKey != null && sContext != null && sClientKey != null) {
+        if (serverKey != null && context != null && clientKey != null) {
             // created to get access of already created instance of sdk.
             // This instance contains information about transaction.
-            return sVeritransSDK;
+            return veritransSDK;
         }
 
         Log.e(Constants.TAG, Constants.ERROR_SDK_IS_NOT_INITIALIZED);
@@ -116,20 +118,20 @@ public class VeritransSDK {
 
 
     public boolean isLogEnabled() {
-        return sIsLogEnabled;
+        return isLogEnabled;
     }
 
 
     public Context getContext() {
-        return sContext;
+        return context;
     }
 
     public String getServerKey() {
-        return sServerKey;
+        return serverKey;
     }
 
     public String getClientKey() {
-        return sClientKey;
+        return clientKey;
     }
 
     public ArrayList<PaymentMethodsModel> getSelectedPaymentMethods() {
@@ -141,8 +143,8 @@ public class VeritransSDK {
     }
 
     protected Activity getActivity() {
-        if (mTransactionRequest != null) {
-            return mTransactionRequest.getActivity();
+        if (transactionRequest != null) {
+            return transactionRequest.getActivity();
         }
 
         return null;
@@ -157,8 +159,10 @@ public class VeritransSDK {
     public void getToken(Activity activity, CardTokenRequest cardTokenRequest, TokenCallBack
             tokenCallBack) {
 
-        isRunning = true;
+
         if (activity != null && cardTokenRequest != null && tokenCallBack != null) {
+
+            isRunning = true;
             TransactionManager.getToken(activity, cardTokenRequest, tokenCallBack);
 
         } else {
@@ -179,24 +183,27 @@ public class VeritransSDK {
     public void paymentUsingPermataBank(Activity activity,
                                         TransactionCallback permataBankTransferStatus) {
 
-        isRunning = true;
 
-        if (mTransactionRequest != null && activity != null
+        if (transactionRequest != null && activity != null
                 && permataBankTransferStatus != null) {
 
-            mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
-            mTransactionRequest.activity = activity;
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
+            transactionRequest.activity = activity;
 
-            PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel
-                    (mTransactionRequest);
-            TransactionManager.paymentUsingPermataBank(mTransactionRequest.getActivity(),
+
+            PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel(transactionRequest);
+
+            isRunning = true;
+            TransactionManager.paymentUsingPermataBank(transactionRequest.getActivity(),
                     permataBankTransfer,
                     permataBankTransferStatus);
         } else {
             isRunning = false;
-            showError(mTransactionRequest, permataBankTransferStatus);
+            showError(transactionRequest, permataBankTransferStatus);
         }
     }
+
+
 
 
     /**
@@ -209,19 +216,20 @@ public class VeritransSDK {
                                  TransactionCallback cardPaymentTransactionCallback
     ) {
 
-        isRunning = true;
 
-        if (mTransactionRequest != null && activity != null
+
+        if (transactionRequest != null && activity != null
                 && cardTransfer != null && cardPaymentTransactionCallback != null) {
 
-            mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT;
-            mTransactionRequest.activity = activity;
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT;
+            transactionRequest.activity = activity;
 
-            TransactionManager.paymentUsingCard(mTransactionRequest.getActivity(), cardTransfer,
+            isRunning = true;
+            TransactionManager.paymentUsingCard(transactionRequest.getActivity(), cardTransfer,
                     cardPaymentTransactionCallback);
         } else {
             isRunning = false;
-            showError(mTransactionRequest, cardPaymentTransactionCallback);
+            showError(transactionRequest, cardPaymentTransactionCallback);
         }
     }
 
@@ -236,26 +244,26 @@ public class VeritransSDK {
     public void paymentUsingMandiriClickPay(Activity activity, MandiriClickPayModel
             mandiriClickPayModel, TransactionCallback paymentTransactionCallback) {
 
-        isRunning = true;
 
-        if (mTransactionRequest != null && activity != null
+        if (transactionRequest != null && activity != null
                 && mandiriClickPayModel != null && paymentTransactionCallback != null) {
 
-            mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
-            mTransactionRequest.activity = activity;
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
+            transactionRequest.activity = activity;
 
 
             MandiriClickPayRequestModel mandiriClickPayRequestModel =
-                    SdkUtil.getMandiriClickPayRequestModel(mTransactionRequest,
+                    SdkUtil.getMandiriClickPayRequestModel(transactionRequest,
                             mandiriClickPayModel);
 
+            isRunning = true;
 
-            TransactionManager.paymentUsingMandiriClickPay(mTransactionRequest.getActivity(),
+            TransactionManager.paymentUsingMandiriClickPay(transactionRequest.getActivity(),
                     mandiriClickPayRequestModel, paymentTransactionCallback);
         } else {
 
             isRunning = false;
-            showError(mTransactionRequest, paymentTransactionCallback);
+            showError(transactionRequest, paymentTransactionCallback);
         }
     }
 
@@ -269,21 +277,22 @@ public class VeritransSDK {
     public void paymentUsingMandiriBillPay(Activity activity,
                                            TransactionCallback mandiriBillPayTransferStatus) {
 
-        isRunning = true;
 
-        if (mTransactionRequest != null && activity != null
+
+        if (transactionRequest != null && activity != null
                 && mandiriBillPayTransferStatus != null) {
 
-            if (mTransactionRequest.getBillInfoModel() != null
-                    && mTransactionRequest.getItemDetails() != null) {
+            if (transactionRequest.getBillInfoModel() != null
+                    && transactionRequest.getItemDetails() != null) {
 
-                mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
-                mTransactionRequest.activity = activity;
+                transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
+                transactionRequest.activity = activity;
 
                 MandiriBillPayTransferModel mandiriBillPayTransferModel =
-                        SdkUtil.getMandiriBillPayModel(mTransactionRequest);
+                        SdkUtil.getMandiriBillPayModel(transactionRequest);
 
-                TransactionManager.paymentUsingMandiriBillPay(mTransactionRequest.getActivity(),
+                isRunning = true;
+                TransactionManager.paymentUsingMandiriBillPay(transactionRequest.getActivity(),
                         mandiriBillPayTransferModel, mandiriBillPayTransferStatus);
 
             } else {
@@ -295,7 +304,7 @@ public class VeritransSDK {
             }
         } else {
             isRunning = false;
-            showError(mTransactionRequest, mandiriBillPayTransferStatus);
+            showError(transactionRequest, mandiriBillPayTransferStatus);
 
         }
     }
@@ -312,29 +321,29 @@ public class VeritransSDK {
 
 
 
-        if (mTransactionRequest != null && activity != null
+        if (transactionRequest != null && activity != null
                 && paymentTransactionCallback != null) {
 
-            mTransactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CIMB_CLICKS;
-            mTransactionRequest.activity = activity;
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CIMB_CLICKS;
+            transactionRequest.activity = activity;
 
-            CIMBClickPayModel cimbClickPayModel = SdkUtil.getCIMBClickPayModel(mTransactionRequest);
+            CIMBClickPayModel cimbClickPayModel = SdkUtil.getCIMBClickPayModel(transactionRequest);
 
             isRunning = true;
 
-            TransactionManager.paymentUsingCIMBPay(mTransactionRequest.getActivity(),
+            TransactionManager.paymentUsingCIMBPay(transactionRequest.getActivity(),
                     cimbClickPayModel,
                     paymentTransactionCallback);
         } else {
             isRunning = false;
-            showError(mTransactionRequest, paymentTransactionCallback);
+            showError(transactionRequest, paymentTransactionCallback);
         }
     }
 
 
 
     public TransactionRequest getTransactionRequest() {
-        return mTransactionRequest;
+        return transactionRequest;
     }
 
 
@@ -348,7 +357,7 @@ public class VeritransSDK {
         if (!isRunning) {
 
             if (transactionRequest != null && transactionRequest.getActivity() != null) {
-                mTransactionRequest = transactionRequest;
+                this.transactionRequest = transactionRequest;
             } else {
                 Logger.e(ADD_TRANSACTION_DETAILS);
             }
@@ -381,16 +390,16 @@ public class VeritransSDK {
      */
     public void startPaymentUiFlow() {
 
-        if (mTransactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning) {
 
-            if (mTransactionRequest.getPaymentMethod() == Constants
+            if (transactionRequest.getPaymentMethod() == Constants
                     .PAYMENT_METHOD_NOT_SELECTED) {
 
-                mTransactionRequest.enableUi(true);
+                transactionRequest.enableUi(true);
 
-                Intent userDetailsIntent = new Intent(mTransactionRequest.getActivity(),
+                Intent userDetailsIntent = new Intent(transactionRequest.getActivity(),
                         UserDetailsActivity.class);
-                mTransactionRequest.getActivity().startActivity(userDetailsIntent);
+                transactionRequest.getActivity().startActivity(userDetailsIntent);
 
             } else {
                 // start specific activity depending  on payment type.
@@ -398,11 +407,49 @@ public class VeritransSDK {
 
         } else {
 
-            if (mTransactionRequest == null) {
+            if (transactionRequest == null) {
                 Logger.e(ADD_TRANSACTION_DETAILS);
             } else {
                 Logger.e(Constants.ERROR_ALREADY_RUNNING);
             }
+        }
+    }
+
+    /**
+     * It will execute an transaction for epay bri .
+     *
+     * @param activity instance of an activity.
+     * @param eapyBriTransferStatus instance of TransactionCallback.
+     */
+    public void paymentUsingEpayBri(Activity activity,
+                                        TransactionCallback eapyBriTransferStatus) {
+
+
+
+        if (transactionRequest != null && activity != null
+                && eapyBriTransferStatus != null) {
+
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_EPAY_BRI;
+            transactionRequest.activity = activity;
+
+            /*PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel
+                    (transactionRequest);*/
+            EpayBriTransfer epayBriTransfer = SdkUtil.getEpayBriBankModel(transactionRequest);
+
+            isRunning = true;
+            TransactionManager.paymentUsingEpayBri(transactionRequest.getActivity(),
+                    epayBriTransfer,
+                    eapyBriTransferStatus);
+        } else {
+            isRunning = false;
+            showError(transactionRequest, eapyBriTransferStatus);
+        }
+    }
+
+    public void getPaymentStatus(Activity activity,String transactionId,PaymentStatusCallback
+            paymentStatusCallback){
+        if(TextUtils.isEmpty(transactionId)){
+            TransactionManager.getPaymentStatus(activity,transactionId,paymentStatusCallback);
         }
     }
 
