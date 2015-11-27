@@ -16,18 +16,30 @@ import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
+ * Displays status information about bank transfer's api call .
+ *
  * Created by shivam on 10/27/15.
  */
 public class BankTransferPaymentFragment extends Fragment {
 
+
     public static final String VALID_UNTILL = "Valid Untill : ";
     private static TransactionResponse sPermataBankTransferResponse = null;
 
+    //views
     private TextViewFont mTextViewVirtualAccountNumber = null;
     private TextViewFont mTextViewSeeInstruction = null;
     private TextViewFont mTextViewValidity = null;
 
 
+    /**
+     *
+     * it creates new BankTransferPaymentFragment object and set TransactionResponse object to it,
+     * so later it can be accessible using fragments getArgument().
+     *
+     *  @param permataBankTransferResponse
+     * @return instance of BankTransferPaymentFragment
+     */
     public static BankTransferPaymentFragment newInstance(TransactionResponse
                                                                   permataBankTransferResponse) {
         sPermataBankTransferResponse = permataBankTransferResponse;
@@ -35,17 +47,28 @@ public class BankTransferPaymentFragment extends Fragment {
         return fragment;
     }
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_bank_transfer_payment, container, false);
-        initializeViews(view);
-
         return view;
     }
 
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        initializeViews(view);
+    }
+
+
+    /**
+     * initializes view and adds click listener for it.
+     *
+     * @param view
+     */
     private void initializeViews(View view) {
 
         mTextViewVirtualAccountNumber = (TextViewFont)
@@ -53,7 +76,6 @@ public class BankTransferPaymentFragment extends Fragment {
 
         mTextViewSeeInstruction = (TextViewFont) view.findViewById(R.id.text_see_instruction);
         mTextViewValidity = (TextViewFont) view.findViewById(R.id.text_validaty);
-
 
         if (sPermataBankTransferResponse != null) {
             if (sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(Constants
@@ -79,6 +101,9 @@ public class BankTransferPaymentFragment extends Fragment {
         });
     }
 
+    /**
+     * starts {@link BankTransferInstructionActivity} to show payment instruction.
+     */
     private void showInstruction() {
         Intent intent = new Intent(getActivity(),
                 BankTransferInstructionActivity.class);

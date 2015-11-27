@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
+ * contains information about payment charge api call like,
+ * </p> status message, status code, transaction id, transaction status etc.
+ *
  * Created by chetan on 30/10/15.
  */
 public class TransactionResponse implements Serializable {

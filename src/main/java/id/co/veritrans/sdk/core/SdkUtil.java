@@ -498,6 +498,13 @@ public class SdkUtil {
     }
 
 
+    /**
+     *
+     * return user details if available else return null
+     *
+     * @param context
+     * @return UserDetail
+     */
     protected static UserDetail getUserDetails(Context context){
 
         StorageDataHandler storageDataHandler = new StorageDataHandler();

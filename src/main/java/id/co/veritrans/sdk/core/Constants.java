@@ -18,11 +18,10 @@ public class Constants {
 
     public static final int PAYMENT_METHOD_INDOSAT_DOMPETKU = 6;
     public static final int PAYMENT_METHOD_MANDIRI_ECASH = 7;
-
     public static final int PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER = 8;
+
     public static final int PAYMENT_METHOD_MANDIRI_BILL_PAYMENT = 9;
     public static final int PAYMENT_METHOD_INDOMARET = 10;
-
 
     public static final String TAG = "VeritransSDK";
     public static final String POSITION = "position";
@@ -32,9 +31,27 @@ public class Constants {
     public static final String USER_DETAILS = "user_details";
     public static final int ZIPCODE_LENGTH = 6;
     public static final String USER_ADDRESS_DETAILS = "user_address_details";
+
+
+    /**
+     * constant to indicate billing address
+     */
     public static final int ADDRESS_TYPE_BILLING = 1;
+    /**
+     * constant to indicate shipping address
+     */
     public static final int ADDRESS_TYPE_SHIPPING = 2;
+
+    /**
+     * constant to indicate that this address will be used for both billing and shipping purpose.
+     */
     public static final int ADDRESS_TYPE_BOTH = 3;
+
+
+
+    /**
+     *  regex for email id.
+     */
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
@@ -42,14 +59,25 @@ public class Constants {
     public static final float CARD_ASPECT_RATIO = 0.555f;
 
 
+    /**
+     * server end point when application is running in debug mode.
+     */
     public static final String BASE_URL_FOR_DEBUG = "https://api.sandbox.veritrans.co.id/v2/";
+
+    /**
+     * server end point when application is running in release version.
+     */
     public static final String BASE_URL_FOR_RELEASE = "https://api.sandbox.veritrans.co.id/v2/";
 
-    public static final String BASE_URL_MERCHANT_FOR_DEBUG = "https://hangout.betas.in/veritrans/api/";
-    public static final String BASE_URL_MERCHANT_FOR_RELEASE = "https://hangout.betas.in/veritrans/api/";
 
-
+    /**
+     * name of application directory
+     */
     public static final String DIR_APP = "VeritransData";
+
+    /**
+     * indonesian rupiah currency symbol
+     */
     public static final String CURRENCY_PREFIX = "Rp";
 
     /**
@@ -69,22 +97,46 @@ public class Constants {
 
 
     public static final int MONTH_COUNT = 12;
+
+    /**
+     * network error message
+     */
     public static final CharSequence RETROFIT_NETWORK_MESSAGE = "Unable to resolve host";
+
     public static final CharSequence CALLBACK_STRING = "/token/callback/";
+
     public static final CharSequence CALLBACK_URL ="https://hangout.betas.in/veritrans/api/paymentstatus";
+
     public static final String WEBURL = "weburl";
+
     public static final String BANK_NAME = "bni";
 
     /**
      * When failed to create api request, probably because of no network connection.
      */
     public static final String ERROR_UNABLE_TO_CONNECT = "failed to connect to server.";
+
+    /**
+     * error message for invalid email id.
+     */
     public static final String ERROR_INVALID_EMAIL_ID = "Invalid email Id.";
+
     public static final String ERROR_SOMETHING_WENT_WRONG = "Please try later, Something went " +
             "wrong!";
+
+    /**
+     * error message to show if trying to execute multiple payment/charge request simultaneously.
+     */
     public static final String ERROR_ALREADY_RUNNING = "Already Running!";
 
+    /**
+     * http success code 200
+     */
     public static final String SUCCESS_CODE_200 = "200";
+
+    /**
+     * http success code 201
+     */
     public static final String SUCCESS_CODE_201 = "201";
 
     public static final String CARD_CLICK_TYPE_NONE = "normal";
@@ -100,7 +152,9 @@ public class Constants {
     public static final String CARD_TYPE_MASTERCARD = "MASTERCARD";
     public static final String SUCCESS = "SUCCESS";
 
-    //result code for payment transfer activities
+    /**
+     * result code used for payment transfer activities
+     */
     public static final int RESULT_CODE_PAYMENT_TRANSFER = 5102;
     public static final String TRANSACTION_RESPONSE = "transaction_response";
     public static final String TRANSACTION_ERROR_MESSAGE = "transaction_error";

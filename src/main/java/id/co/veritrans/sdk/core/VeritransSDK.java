@@ -157,8 +157,10 @@ public class VeritransSDK {
     public void getToken(Activity activity, CardTokenRequest cardTokenRequest, TokenCallBack
             tokenCallBack) {
 
-        isRunning = true;
+
         if (activity != null && cardTokenRequest != null && tokenCallBack != null) {
+
+            isRunning = true;
             TransactionManager.getToken(activity, cardTokenRequest, tokenCallBack);
 
         } else {
@@ -179,7 +181,6 @@ public class VeritransSDK {
     public void paymentUsingPermataBank(Activity activity,
                                         TransactionCallback permataBankTransferStatus) {
 
-        isRunning = true;
 
         if (transactionRequest != null && activity != null
                 && permataBankTransferStatus != null) {
@@ -187,8 +188,10 @@ public class VeritransSDK {
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
             transactionRequest.activity = activity;
 
-            PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel
-                    (transactionRequest);
+
+            PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel(transactionRequest);
+
+            isRunning = true;
             TransactionManager.paymentUsingPermataBank(transactionRequest.getActivity(),
                     permataBankTransfer,
                     permataBankTransferStatus);
@@ -211,7 +214,7 @@ public class VeritransSDK {
                                  TransactionCallback cardPaymentTransactionCallback
     ) {
 
-        isRunning = true;
+
 
         if (transactionRequest != null && activity != null
                 && cardTransfer != null && cardPaymentTransactionCallback != null) {
@@ -219,6 +222,7 @@ public class VeritransSDK {
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT;
             transactionRequest.activity = activity;
 
+            isRunning = true;
             TransactionManager.paymentUsingCard(transactionRequest.getActivity(), cardTransfer,
                     cardPaymentTransactionCallback);
         } else {
@@ -238,7 +242,6 @@ public class VeritransSDK {
     public void paymentUsingMandiriClickPay(Activity activity, MandiriClickPayModel
             mandiriClickPayModel, TransactionCallback paymentTransactionCallback) {
 
-        isRunning = true;
 
         if (transactionRequest != null && activity != null
                 && mandiriClickPayModel != null && paymentTransactionCallback != null) {
@@ -251,6 +254,7 @@ public class VeritransSDK {
                     SdkUtil.getMandiriClickPayRequestModel(transactionRequest,
                             mandiriClickPayModel);
 
+            isRunning = true;
 
             TransactionManager.paymentUsingMandiriClickPay(transactionRequest.getActivity(),
                     mandiriClickPayRequestModel, paymentTransactionCallback);
@@ -271,7 +275,7 @@ public class VeritransSDK {
     public void paymentUsingMandiriBillPay(Activity activity,
                                            TransactionCallback mandiriBillPayTransferStatus) {
 
-        isRunning = true;
+
 
         if (transactionRequest != null && activity != null
                 && mandiriBillPayTransferStatus != null) {
@@ -285,6 +289,7 @@ public class VeritransSDK {
                 MandiriBillPayTransferModel mandiriBillPayTransferModel =
                         SdkUtil.getMandiriBillPayModel(transactionRequest);
 
+                isRunning = true;
                 TransactionManager.paymentUsingMandiriBillPay(transactionRequest.getActivity(),
                         mandiriBillPayTransferModel, mandiriBillPayTransferStatus);
 
@@ -385,7 +390,7 @@ public class VeritransSDK {
     public void paymentUsingEpayBri(Activity activity,
                                         TransactionCallback eapyBriTransferStatus) {
 
-        isRunning = true;
+
 
         if (transactionRequest != null && activity != null
                 && eapyBriTransferStatus != null) {
@@ -396,6 +401,8 @@ public class VeritransSDK {
             /*PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel
                     (transactionRequest);*/
             EpayBriTransfer epayBriTransfer = SdkUtil.getEpayBriBankModel(transactionRequest);
+
+            isRunning = true;
             TransactionManager.paymentUsingEpayBri(transactionRequest.getActivity(),
                     epayBriTransfer,
                     eapyBriTransferStatus);

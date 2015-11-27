@@ -3,6 +3,8 @@ package id.co.veritrans.sdk.models;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * holds information about amount and order Id
+ *
  * Created by shivam on 10/29/15.
  */
 public class TransactionDetails {
