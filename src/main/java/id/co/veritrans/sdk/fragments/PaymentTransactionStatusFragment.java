@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.CIMBClickPayActivity;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.activities.EpayBriActivity;
 import id.co.veritrans.sdk.core.Constants;
@@ -127,6 +128,11 @@ public class PaymentTransactionStatusFragment extends Fragment {
                         ((EpayBriActivity) getActivity())
                                 .setResultCode(getActivity().RESULT_OK);
                         ((EpayBriActivity) getActivity()).setResultAndFinish();
+                    } else if(getActivity().getClass().getName().equalsIgnoreCase(CIMBClickPayActivity
+                            .class.getName())) {
+                        ((CIMBClickPayActivity) getActivity())
+                                .setResultCode(getActivity().RESULT_OK);
+                        ((CIMBClickPayActivity) getActivity()).setResultAndFinish();
                     }
 
                 }

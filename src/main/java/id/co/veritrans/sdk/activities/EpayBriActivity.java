@@ -63,13 +63,8 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
     private void setUpFragment() {
 
         // setup  fragment
-        /*FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();*/
         instructionEpayBriFragment = new InstructionEpayBriFragment();
         replaceFragment(instructionEpayBriFragment, true, false);
-       /* fragmentTransaction.add(R.id.bri_container_layout,
-                instructionEpayBriFragment);
-        fragmentTransaction.commit();*/
     }
 
     @Override
