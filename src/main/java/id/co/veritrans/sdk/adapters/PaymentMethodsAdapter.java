@@ -13,7 +13,9 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferActivity;
+import id.co.veritrans.sdk.activities.CIMBClickPayActivity;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
+import id.co.veritrans.sdk.activities.EpayBriActivity;
 import id.co.veritrans.sdk.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -126,6 +128,19 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                 Intent startMandiriClickpay = new Intent(sActivity, MandiriClickPayActivity
                         .class);
                 sActivity.startActivityForResult(startMandiriClickpay,
+                        Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else if(nameText.getText().toString().trim().equalsIgnoreCase(sActivity
+                    .getResources().getString(R.string.epay_bri))){
+                Intent startMandiriClickpay = new Intent(sActivity, EpayBriActivity
+                        .class);
+                sActivity.startActivityForResult(startMandiriClickpay,
+                        Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (nameText.getText().toString().trim().equalsIgnoreCase(sActivity
+                    .getResources().getString(R.string.cimb_clicks))) {
+                Intent startCIMBClickpay = new Intent(sActivity, CIMBClickPayActivity
+                        .class);
+                sActivity.startActivityForResult(startCIMBClickpay,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
 
             } else {
