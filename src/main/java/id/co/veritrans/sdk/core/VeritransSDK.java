@@ -390,7 +390,7 @@ public class VeritransSDK {
     public void paymentUsingEpayBri(Activity activity,
                                         TransactionCallback eapyBriTransferStatus) {
 
-        isRunning = true;
+
 
         if (transactionRequest != null && activity != null
                 && eapyBriTransferStatus != null) {
@@ -401,6 +401,8 @@ public class VeritransSDK {
             /*PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel
                     (transactionRequest);*/
             EpayBriTransfer epayBriTransfer = SdkUtil.getEpayBriBankModel(transactionRequest);
+
+            isRunning = true;
             TransactionManager.paymentUsingEpayBri(transactionRequest.getActivity(),
                     epayBriTransfer,
                     eapyBriTransferStatus);
