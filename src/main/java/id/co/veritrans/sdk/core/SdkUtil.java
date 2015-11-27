@@ -224,9 +224,13 @@ public class SdkUtil {
      */
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
-            if (!TextUtils.isEmpty(errorMessage) && errorMessage.contains(Constants
-                    .RETROFIT_NETWORK_MESSAGE)) {
-                SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+            if(!TextUtils.isEmpty(errorMessage)) {
+                if (errorMessage.contains(Constants
+                        .RETROFIT_NETWORK_MESSAGE)) {
+                    SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+                } else {
+                    SdkUtil.showSnackbar(activity, errorMessage);
+                }
             } else {
                 SdkUtil.showSnackbar(activity, activity.getString(R.string.api_fail_message));
             }

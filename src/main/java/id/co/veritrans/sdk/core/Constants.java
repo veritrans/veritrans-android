@@ -71,6 +71,7 @@ public class Constants {
     public static final int MONTH_COUNT = 12;
     public static final CharSequence RETROFIT_NETWORK_MESSAGE = "Unable to resolve host";
     public static final CharSequence CALLBACK_STRING = "/token/callback/";
+    public static final CharSequence CALLBACK_URL ="https://hangout.betas.in/veritrans/api/paymentstatus";
     public static final String WEBURL = "weburl";
     public static final String BANK_NAME = "bni";
 
