@@ -632,5 +632,4 @@ class TransactionManager {
             VeritransSDK.getVeritransSDK().isRunning = false;
         }
     }
-
 }
