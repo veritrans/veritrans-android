@@ -23,6 +23,8 @@ import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
+import id.co.veritrans.sdk.models.IndosatDompetku;
+import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
@@ -331,6 +333,50 @@ public class SdkUtil {
         return model;
 
     }
+
+
+
+    /**
+     * helper method to extract {@link id.co.veritrans.sdk.models.IndosatDompetkuRequest} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
+    protected static IndosatDompetkuRequest getIndosatDompetkuRequestModel(TransactionRequest request, String msisdn) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        //if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        //}
+
+
+        IndosatDompetku indosatDompetku = null;
+
+        if( msisdn != null && !TextUtils.isEmpty(msisdn)){
+            indosatDompetku = new IndosatDompetku(msisdn.trim());
+        }
+
+
+        IndosatDompetkuRequest model =
+                new IndosatDompetkuRequest();
+
+                model.setCustomerDetails(request.getCustomerDetails(), request.getShippingAddressArrayList(), request.getBillingAddressArrayList());
+                model.setPaymentType("indosat_dompetku");
+
+        IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
+                .IndosatDompetkuEntity();
+            entity.setMsisdn(""+msisdn);
+
+                model.setIndosatDompetku(entity);
+                model.setItemDetails(request.getItemDetails());
+                model.setTransactionDetails(transactionDetails);
+
+        return model;
+
+    }
+
 
     /**
      * helper method to extract {@link CardTransfer} from {@link TransactionRequest}.

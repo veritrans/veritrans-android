@@ -4,99 +4,193 @@ package id.co.veritrans.sdk.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
- * model class to hold information bout Bank Transfer api call
+ * model class to hold information bout Indosat Dompetku api call
  *
- * Created by shivam on 10/26/15.
+ * Created by shivam on 11/26/15.
  */
-public class IndosatDompetkuRequest extends TransactionModel {
+public class IndosatDompetkuRequest{
 
-
-    public static final String PAYMENT_TYPE = "indosat_dompetku";
 
     /**
-     * payment_type : bank_transfer
-     * bank_transfer : {"bank":"permata"}
-     * transaction_details : {"gross_amount":"100","order_id":"10938011"}
-     *
-     *
-     * {
-     "payment_type" : "indosat_dompetku",
-
-     "transaction_details" : {"gross_amount":"100000","order_id":"5f5f870d812332"},
-
-     "item_details" : [ {
-     "id": "1388",
-     "price": 100000,
-     "quantity": 1,
-     "name": "Mie Ayam Original"
-     } ] ,
-
-     "customer_details":
-     {
-     "email":"shivam.gosavi340@gmail.com",
-     "first_name":"shivam",
-     "last_name":"s",
-     "phone":"081311874839"
-     },
-
-     "indosat_dompetku":
-     {
-     "msisdn":"081311874839"
-     }
-
-     }
-     *
+     * payment_type : indosat_dompetku
+     * transaction_details : {"order_id":"1388q","gross_amount":100000}
+     * item_details : [{"id":"1388","price":100000,"quantity":1,"name":"Mie Ayam Original"}]
+     * customer_details : {"email":"obet.supriadi@gmail.com","first_name":"Obet",
+     * "last_name":"Supriadi","phone":"081311874839"}
+     * indosat_dompetku : {"msisdn":"08123456789"}
      */
 
+    @SerializedName("payment_type")
+    private String paymentType;
+    /**
+     * order_id : 1388q
+     * gross_amount : 100000
+     */
+
+    @SerializedName("transaction_details")
+    private TransactionDetails transactionDetails;
+    /**
+     * email : obet.supriadi@gmail.com
+     * first_name : Obet
+     * last_name : Supriadi
+     * phone : 081311874839
+     */
+
+    @SerializedName("customer_details")
+    private CustomerDetailsEntity customerDetails;
+    /**
+     * msisdn : 08123456789
+     */
 
     @SerializedName("indosat_dompetku")
-    private BankTransfer bankTransfer;
+    private IndosatDompetkuEntity indosatDompetku;
+    /**
+     * id : 1388
+     * price : 100000
+     * quantity : 1
+     * name : Mie Ayam Original
+     */
 
+    @SerializedName("item_details")
+    private List<ItemDetails> itemDetails;
 
-    public IndosatDompetkuRequest(BankTransfer bankTransfer, TransactionDetails transactionDetails,
-                                  ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
-                                          billingAddresses, ArrayList<ShippingAddress>
-                                          shippingAddresses, CustomerDetails customerDetails) {
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
 
-        this.paymentType = PAYMENT_TYPE;
-
-        this.bankTransfer = bankTransfer;
+    public void setTransactionDetails(TransactionDetails transactionDetails) {
         this.transactionDetails = transactionDetails;
+    }
+
+    public void setCustomerDetails(CustomerDetails customerDetails, ArrayList<ShippingAddress> shippingAddresses, ArrayList<BillingAddress> billingAddresses) {
+
+        if(customerDetails != null) {
+
+            this.customerDetails = new CustomerDetailsEntity();
+            this.customerDetails.setPhone(customerDetails.getPhone());
+            this.customerDetails.setFirstName(customerDetails.getFirstName());
+            this.customerDetails.setLastName(customerDetails.getLastName());
+            this.customerDetails.setEmail(customerDetails.getEmail());
+
+            if( shippingAddresses != null) {
+                this.customerDetails.setShippingAddresses(shippingAddresses);
+            }
+
+            if( billingAddresses != null) {
+                this.customerDetails.setBillingAddresses(billingAddresses);
+            }
+        }
+    }
+
+    public void setIndosatDompetku(IndosatDompetkuEntity indosatDompetku) {
+        this.indosatDompetku = indosatDompetku;
+    }
+
+    public void setItemDetails(List<ItemDetails> itemDetails) {
         this.itemDetails = itemDetails;
-        this.billingAddresses = billingAddresses;
-        this.shippingAddresses = shippingAddresses;
-        this.customerDetails = customerDetails;
     }
 
-
-    public String getPayment_type() {
+    public String getPaymentType() {
         return paymentType;
-    }
-
-    public BankTransfer getBankTransfer() {
-        return bankTransfer;
     }
 
     public TransactionDetails getTransactionDetails() {
         return transactionDetails;
     }
 
-    public ArrayList<ItemDetails> getItemDetails() {
+    public CustomerDetailsEntity getCustomerDetails() {
+        return customerDetails;
+    }
+
+    public IndosatDompetkuEntity getIndosatDompetku() {
+        return indosatDompetku;
+    }
+
+    public List<ItemDetails> getItemDetails() {
         return itemDetails;
     }
 
-    public ArrayList<BillingAddress> getBillingAddresses() {
-        return billingAddresses;
+
+
+    public static class CustomerDetailsEntity {
+        private String email;
+        @SerializedName("first_name")
+        private String firstName;
+        @SerializedName("last_name")
+        private String lastName;
+        private String phone;
+
+        @SerializedName("billing_address")
+        ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
+
+        @SerializedName("shipping_address")
+        ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
+
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public ArrayList<BillingAddress> getBillingAddresses() {
+            return billingAddresses;
+        }
+
+        public void setBillingAddresses(ArrayList<BillingAddress> billingAddresses) {
+            this.billingAddresses = billingAddresses;
+        }
+
+        public ArrayList<ShippingAddress> getShippingAddresses() {
+            return shippingAddresses;
+        }
+
+        public void setShippingAddresses(ArrayList<ShippingAddress> shippingAddresses) {
+            this.shippingAddresses = shippingAddresses;
+        }
     }
 
-    public ArrayList<ShippingAddress> getShippingAddresses() {
-        return shippingAddresses;
+    public static class IndosatDompetkuEntity {
+        private String msisdn;
+
+        public void setMsisdn(String msisdn) {
+            this.msisdn = msisdn;
+        }
+
+        public String getMsisdn() {
+            return msisdn;
+        }
     }
 
-    public CustomerDetails getCustomerDetails() {
-        return customerDetails;
-    }
+
 }

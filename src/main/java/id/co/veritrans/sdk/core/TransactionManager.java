@@ -9,6 +9,7 @@ import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
+import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
@@ -517,47 +518,7 @@ class TransactionManager {
         }
     }
 
-    private static void displayTokenResponse(TokenDetailsResponse tokenDetailsResponse) {
-        Logger.d("token response: status code ", "" +
-                tokenDetailsResponse.getStatusCode());
-        Logger.d("token response: status message ", "" +
-                tokenDetailsResponse.getStatusMessage());
-        Logger.d("token response: token Id ", "" + tokenDetailsResponse
-                .getTokenId());
-        Logger.d("token response: redirect url ", "" +
-                tokenDetailsResponse.getRedirectUrl());
-        Logger.d("token response: bank ", "" + tokenDetailsResponse
-                .getBank());
-    }
 
-    private static void displayResponse(TransactionResponse
-                                                transferResponse) {
-        Logger.d("transfer response: virtual account" +
-                " number ", "" +
-                transferResponse.getPermataVANumber());
-
-        Logger.d(" transfer response: status message " +
-                "", "" +
-                transferResponse.getStatusMessage());
-
-        Logger.d(" transfer response: status code ",
-                "" + transferResponse.getStatusCode());
-
-        Logger.d(" transfer response: transaction Id ",
-                "" + transferResponse
-                        .getTransactionId());
-
-        Logger.d(" transfer response: transaction " +
-                        "status ",
-                "" + transferResponse
-                        .getTransactionStatus());
-    }
-
-    private static void releaseResources() {
-        if (VeritransSDK.getVeritransSDK() != null) {
-            VeritransSDK.getVeritransSDK().isRunning = false;
-        }
-    }
 
     public static void paymentUsingEpayBri(Activity activity, EpayBriTransfer epayBriTransfer, final TransactionCallback callback) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
@@ -716,6 +677,144 @@ class TransactionManager {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
             callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
             releaseResources();
+        }
+    }
+
+    public static void paymentUsingIndosatDompetku(final Activity activity, final IndosatDompetkuRequest
+            indosatDompetkuRequest, final TransactionCallback callback) {
+
+
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                Observable<TransactionResponse> observable = null;
+
+                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
+                if (serverKey != null) {
+
+                    String authorization = "Basic " + serverKey;
+                    observable = apiInterface.paymentUsingIndosatDompetku(authorization,
+                            indosatDompetkuRequest);
+
+                    subscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<TransactionResponse>() {
+
+                                @Override
+                                public void onCompleted() {
+
+                                    if (subscription != null && !subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
+
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    callback.onFailure(throwable.getMessage(), null);
+                                }
+
+                                @Override
+                                public void onNext(TransactionResponse
+                                                           permataBankTransferResponse) {
+
+                                    if (permataBankTransferResponse != null) {
+
+                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                            displayResponse(permataBankTransferResponse);
+                                        }
+
+                                        if (permataBankTransferResponse.getStatusCode().trim()
+                                                .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
+                                                || permataBankTransferResponse.getStatusCode()
+                                                .trim().equalsIgnoreCase(Constants
+                                                        .SUCCESS_CODE_201)) {
+
+                                            callback.onSuccess(permataBankTransferResponse);
+                                        } else {
+                                            callback.onFailure(permataBankTransferResponse
+                                                            .getStatusMessage(),
+                                                    permataBankTransferResponse);
+                                        }
+
+                                    } else {
+                                        callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                    }
+
+                                }
+                            });
+                } else {
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callback.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
+                }
+            } else {
+                callback.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            releaseResources();
+        }
+
+
+
+    }
+
+
+
+    private static void displayTokenResponse(TokenDetailsResponse tokenDetailsResponse) {
+        Logger.d("token response: status code ", "" +
+                tokenDetailsResponse.getStatusCode());
+        Logger.d("token response: status message ", "" +
+                tokenDetailsResponse.getStatusMessage());
+        Logger.d("token response: token Id ", "" + tokenDetailsResponse
+                .getTokenId());
+        Logger.d("token response: redirect url ", "" +
+                tokenDetailsResponse.getRedirectUrl());
+        Logger.d("token response: bank ", "" + tokenDetailsResponse
+                .getBank());
+    }
+
+    private static void displayResponse(TransactionResponse
+                                                transferResponse) {
+        Logger.d("transfer response: virtual account" +
+                " number ", "" +
+                transferResponse.getPermataVANumber());
+
+        Logger.d(" transfer response: status message " +
+                "", "" +
+                transferResponse.getStatusMessage());
+
+        Logger.d(" transfer response: status code ",
+                "" + transferResponse.getStatusCode());
+
+        Logger.d(" transfer response: transaction Id ",
+                "" + transferResponse
+                        .getTransactionId());
+
+        Logger.d(" transfer response: transaction " +
+                        "status ",
+                "" + transferResponse
+                        .getTransactionStatus());
+    }
+
+
+    private static void releaseResources() {
+        if (VeritransSDK.getVeritransSDK() != null) {
+            VeritransSDK.getVeritransSDK().isRunning = false;
         }
     }
 }

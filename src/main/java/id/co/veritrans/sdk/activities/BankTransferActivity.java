@@ -305,6 +305,9 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     /**
      * Performs the validation and if satisfies the required condition then it will either start
      * mandiri bill pay flow or bank transfer flow depending on selected payment method.
+     *
+     * {@see }
+     *
      */
     private void performTrsansaction() {
 

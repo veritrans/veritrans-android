@@ -17,6 +17,7 @@ import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
+import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
@@ -411,6 +412,37 @@ public class VeritransSDK {
             showError(transactionRequest, eapyBriTransferStatus);
         }
     }
+
+
+    /**
+     * It will execute an transaction for permata bank .
+     *
+     * @param activity instance of an activity.
+     * @param indosatTransferStatus instance of TransactionCallback.
+     */
+    public void paymentUsingIndosatDompetku(Activity activity,
+                                        TransactionCallback indosatTransferStatus, String msisdn) {
+
+
+        if (transactionRequest != null && activity != null
+                && indosatTransferStatus != null) {
+
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU;
+            transactionRequest.activity = activity;
+
+             IndosatDompetkuRequest indosatDompetkuRequest =
+                     SdkUtil.getIndosatDompetkuRequestModel(transactionRequest, msisdn);
+
+            isRunning = true;
+            TransactionManager.paymentUsingIndosatDompetku(transactionRequest.getActivity(),
+                    indosatDompetkuRequest,
+                    indosatTransferStatus);
+        } else {
+            isRunning = false;
+            showError(transactionRequest, indosatTransferStatus);
+        }
+    }
+
 
     public void getPaymentStatus(Activity activity,String transactionId,PaymentStatusCallback
             paymentStatusCallback){
