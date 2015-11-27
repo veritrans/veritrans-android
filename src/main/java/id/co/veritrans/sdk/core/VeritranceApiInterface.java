@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.core;
 
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
+import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
@@ -116,5 +117,15 @@ public interface VeritranceApiInterface {
                                                             String authorization,
                                                             @Body EpayBriTransfer
                                                                     epayBriTransfer);
+
+
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingIndosatDompetku(@Header("Authorization")
+                                                            String authorization,
+                                                            @Body IndosatDompetkuRequest
+                                                                    indosatDompetkuRequest);
+
 
 }
