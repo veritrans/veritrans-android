@@ -21,6 +21,7 @@ import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CIMBClickPayRequestModel;
+import id.co.veritrans.sdk.models.CIMBDescription;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
@@ -340,6 +341,7 @@ public class SdkUtil {
 
     protected static CIMBClickPayModel getCIMBClickPayModel(TransactionRequest request) {
 
+        CIMBDescription cimbDescription = new CIMBDescription("Any Description");
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
 
@@ -350,12 +352,11 @@ public class SdkUtil {
 
 
         CIMBClickPayModel model =
-                new CIMBClickPayModel(transactionDetails, request.getItemDetails(),
+                new CIMBClickPayModel(cimbDescription, transactionDetails, request.getItemDetails(),
                         request.getBillingAddressArrayList(),
                         request.getShippingAddressArrayList(),
                         request.getCustomerDetails());
         return model;
-
     }
 
 

@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,7 +18,9 @@ import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.fragments.BankTransferPaymentFragment;
 import id.co.veritrans.sdk.fragments.InstructionCIMBFragment;
+import id.co.veritrans.sdk.fragments.MandiriBillPayFragment;
 import id.co.veritrans.sdk.fragments.MandiriClickPayFragment;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
@@ -33,6 +36,10 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
     private Button mButtonConfirmPayment = null;
     private Toolbar mToolbar = null;
     private VeritransSDK mVeritransSDK = null;
+    private TransactionResponse mTransactionResponse = null;
+    private String errorMessage = null;
+    private int RESULT_CODE = RESULT_CANCELED;
+    private int position = Constants.PAYMENT_METHOD_CIMB_CLICKS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +86,10 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+//        super.onBackPressed();
+//        finish();
+
+//        setResultAndFinish();
     }
 
 
@@ -96,19 +105,21 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_confirm_payment) {
-            mVeritransSDK.paymentUsingPermataBank(CIMBClickPayActivity.this, new TransactionCallback() {
+
+            SdkUtil.showProgressDialog(CIMBClickPayActivity.this, false);
+
+            mVeritransSDK.paymentUsingCIMBClickPay(CIMBClickPayActivity.this, new TransactionCallback() {
 
 
                 @Override
                 public void onSuccess(TransactionResponse
-                                              permataBankTransferResponse) {
+                                              cimbClickPayTransferResponse) {
 
                     SdkUtil.hideProgressDialog();
-
-                    if (permataBankTransferResponse != null) {
-                        mTransactionResponse = permataBankTransferResponse;
-                        mAppBarLayout.setExpanded(true);
-                        setUpTransactionFragment(permataBankTransferResponse);
+//
+                    if (cimbClickPayTransferResponse != null) {
+                        mTransactionResponse = cimbClickPayTransferResponse;
+//                        setUpTransactionFragment(cimbClickPayTransferResponse);
                     } else {
                         onBackPressed();
                     }
@@ -119,11 +130,10 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
                 public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
 
                     try {
-                        BankTransferActivity.this.errorMessage = errorMessage;
+                        CIMBClickPayActivity.this.errorMessage = errorMessage;
                         mTransactionResponse = transactionResponse;
-
                         SdkUtil.hideProgressDialog();
-                        SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+                        SdkUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
                     } catch (NullPointerException ex) {
                         Logger.e("transaction error is " + errorMessage);
                     }
@@ -131,5 +141,7 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
             });
         }
     }
+
+
 }
 

@@ -309,7 +309,7 @@ public class VeritransSDK {
     public void paymentUsingCIMBClickPay(Activity activity, TransactionCallback
             paymentTransactionCallback) {
 
-        isRunning = true;
+
 
         if (mTransactionRequest != null && activity != null
                 && paymentTransactionCallback != null) {
@@ -318,6 +318,9 @@ public class VeritransSDK {
             mTransactionRequest.activity = activity;
 
             CIMBClickPayModel cimbClickPayModel = SdkUtil.getCIMBClickPayModel(mTransactionRequest);
+
+            isRunning = true;
+
             TransactionManager.paymentUsingCIMBPay(mTransactionRequest.getActivity(),
                     cimbClickPayModel,
                     paymentTransactionCallback);

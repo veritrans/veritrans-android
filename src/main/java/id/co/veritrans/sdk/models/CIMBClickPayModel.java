@@ -15,12 +15,13 @@ public class CIMBClickPayModel extends TransactionModel {
      * payment_type : cimb_clicks
      */
 
-    public CIMBClickPayModel(TransactionDetails transactionDetails,
+    public CIMBClickPayModel(CIMBDescription cimbDescription, TransactionDetails transactionDetails,
                                ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
                                        billingAddresses, ArrayList<ShippingAddress>
                                        shippingAddresses, CustomerDetails customerDetails) {
 
         this.paymentType = PAYMENT_TYPE;
+        this.cimbClicks = cimbDescription;
         this.transactionDetails = transactionDetails;
         this.itemDetails = itemDetails;
         this.billingAddresses = billingAddresses;
@@ -31,6 +32,10 @@ public class CIMBClickPayModel extends TransactionModel {
 
     public String getPayment_type() {
         return paymentType;
+    }
+
+    public CIMBDescription getCIMBDescription(){
+        return cimbClicks;
     }
 
     public TransactionDetails getTransactionDetails() {
