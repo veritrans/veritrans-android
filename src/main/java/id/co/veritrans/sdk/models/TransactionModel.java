@@ -23,6 +23,9 @@ class TransactionModel {
     @SerializedName("payment_type")
     String paymentType;
 
+    @SerializedName("cimb_clicks")
+    CIMBDescription cimbClicks;
+
     @SerializedName("transaction_details")
     TransactionDetails transactionDetails;
 

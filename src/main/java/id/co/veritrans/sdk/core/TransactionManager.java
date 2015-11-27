@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
+import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
@@ -32,6 +33,7 @@ class TransactionManager {
     private static Subscription subscription = null;
     private static Subscription cardPaymentSubscription = null;
     private static Subscription paymentStatusSubscription = null;
+
 
     /**
      * it will execute an api call to get token from server, and after completion of request it
@@ -517,6 +519,76 @@ class TransactionManager {
         }
     }
 
+
+    public static void paymentUsingCIMBPay(Activity activity, CIMBClickPayModel cimbClickPayModel,
+                                           final TransactionCallback callback) {
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getApiClient(activity, true);
+            if (apiInterface != null) {
+                Observable<TransactionResponse> observable = null;
+                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
+                if (serverKey != null) {
+                    String authorization = "Basic " + serverKey;
+                    observable = apiInterface.paymentUsingCIMBClickPay(authorization,
+                            cimbClickPayModel);
+                    subscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<TransactionResponse>() {
+                                @Override
+                                public void onCompleted() {
+                                    if (subscription != null && !subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
+                                    }
+                                    releaseResources();
+                                }
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    callback.onFailure(throwable.getMessage(), null);
+                                }
+                                @Override
+                                public void onNext(TransactionResponse cimbPayTransferResponse) {
+                                    if (cimbPayTransferResponse != null) {
+                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                            displayResponse(cimbPayTransferResponse);
+                                        }
+                                        if (cimbPayTransferResponse.getStatusCode().trim()
+                                                .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
+                                                || cimbPayTransferResponse.getStatusCode()
+                                                .trim().equalsIgnoreCase(Constants
+                                                        .SUCCESS_CODE_201)) {
+                                            callback.onSuccess(cimbPayTransferResponse);
+                                        } else {
+                                            callback.onFailure(cimbPayTransferResponse
+                                                            .getStatusMessage(),
+                                                    cimbPayTransferResponse);
+                                        }
+                                    } else {
+                                        callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                    }
+                                }
+                            });
+                } else {
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callback.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
+                }
+            } else {
+                callback.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            releaseResources();
+        }
+    }
+
+
     private static void displayTokenResponse(TokenDetailsResponse tokenDetailsResponse) {
         Logger.d("token response: status code ", "" +
                 tokenDetailsResponse.getStatusCode());
@@ -718,4 +790,5 @@ class TransactionManager {
             releaseResources();
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.core;
 
+import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
@@ -117,4 +118,11 @@ public interface VeritranceApiInterface {
                                                             @Body EpayBriTransfer
                                                                     epayBriTransfer);
 
+    //CIMB transaction flow
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingCIMBClickPay(@Header("Authorization")
+                                                        String authorization,
+                                                        @Body CIMBClickPayModel
+                                                                cimbClickPayModel);
 }
