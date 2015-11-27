@@ -213,6 +213,9 @@
         completed within 2 hours.
     </string>
     <string name="empty_transaction_response">Payment failed! Please try again.</string>
+    <string name="cancel_transaction">Cancel Transaction?</string>
+    <string name="cancel_transaction_message">Are you sure you want to cancel this transaction?
+    </string>
 
 
 </resources>
