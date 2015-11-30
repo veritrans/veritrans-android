@@ -38,7 +38,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
  * {@link BankTransferFragment} home fragment - an initial fragment which contains an instruction.
  * {@link MandiriBillPayFragment} - used to handle mandiri bill payment
  * {@link BankTransferPaymentFragment} - used to handle bank transfer
- * {@link BankTransactionStatusFragment} - used to display status of fragment.
+ * {@link BankTransactionStatusFragment} - used to display status of transaction.
  * <p/>
  * <p/>
  * <p/>
