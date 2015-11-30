@@ -218,9 +218,10 @@
     </string>
     <string name="indosat_instruction_step1">1.\tInput your registered indosat phone number.</string>
     <string name="indosat_instruction_step2">2.\tMake sure you have sufficient funds in your account.</string>
-    <string name="indosat_instruction_step3">3.\tClick 'Confirm Payment'.</string>
+    <string name="indosat_instruction_step3">3.\tClick \'Confirm Payment\'.</string>
     <string name="indosat_instruction_step4">4.\tYou will receive an USSD maessage from \nIndosat to complete transaction via Dompetku app.</string>
     <string name="indosat_instruction_step5">5.\tInput your PIN.</string>
     <string name="indosat_instruction_step6">6.\tPayment Complete.</string>
+    <string name="hint_indosat_phone_number">Indosat Phone Number</string>
 
 </resources>
