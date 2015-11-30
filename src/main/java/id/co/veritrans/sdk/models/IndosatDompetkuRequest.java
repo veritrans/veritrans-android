@@ -76,13 +76,13 @@ public class IndosatDompetkuRequest{
             this.customerDetails.setLastName(customerDetails.getLastName());
             this.customerDetails.setEmail(customerDetails.getEmail());
 
-            if( shippingAddresses != null) {
+            /*if( shippingAddresses != null) {
                 this.customerDetails.setShippingAddresses(shippingAddresses);
             }
 
             if( billingAddresses != null) {
                 this.customerDetails.setBillingAddresses(billingAddresses);
-            }
+            }*/
         }
     }
 
@@ -124,12 +124,12 @@ public class IndosatDompetkuRequest{
         private String lastName;
         private String phone;
 
-        @SerializedName("billing_address")
+       /* @SerializedName("billing_address")
         ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
 
         @SerializedName("shipping_address")
         ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
-
+*/
 
         public void setEmail(String email) {
             this.email = email;
@@ -163,7 +163,7 @@ public class IndosatDompetkuRequest{
             return phone;
         }
 
-        public ArrayList<BillingAddress> getBillingAddresses() {
+       /* public ArrayList<BillingAddress> getBillingAddresses() {
             return billingAddresses;
         }
 
@@ -177,7 +177,9 @@ public class IndosatDompetkuRequest{
 
         public void setShippingAddresses(ArrayList<ShippingAddress> shippingAddresses) {
             this.shippingAddresses = shippingAddresses;
-        }
+        }*/
+
+
     }
 
     public static class IndosatDompetkuEntity {
