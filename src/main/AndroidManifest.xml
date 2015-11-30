@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="id.co.veritrans.sdk"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    package="id.co.veritrans.sdk"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -40,6 +41,10 @@
             android:theme="@style/VeritransAppTheme"/>
         <activity
             android:name=".activities.CIMBClickPayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+        <activity
+            android:name=".activities.IndosatDompetkuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
 
