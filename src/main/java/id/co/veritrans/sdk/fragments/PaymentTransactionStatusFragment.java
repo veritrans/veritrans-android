@@ -13,6 +13,7 @@ import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CIMBClickPayActivity;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.activities.EpayBriActivity;
+import id.co.veritrans.sdk.activities.MandiriECashActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.VeritransSDK;
@@ -133,6 +134,12 @@ public class PaymentTransactionStatusFragment extends Fragment {
                         ((CIMBClickPayActivity) getActivity())
                                 .setResultCode(getActivity().RESULT_OK);
                         ((CIMBClickPayActivity) getActivity()).setResultAndFinish();
+                    } else if(getActivity().getClass().getName().equalsIgnoreCase
+                            (MandiriECashActivity
+                            .class.getName())) {
+                        ((MandiriECashActivity) getActivity())
+                                .setResultCode(getActivity().RESULT_OK);
+                        ((MandiriECashActivity) getActivity()).setResultAndFinish();
                     }
 
                 }
