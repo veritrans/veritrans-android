@@ -142,6 +142,17 @@
     <string name="cimb_instruction_step3">3.\tPlease make sure that there is no pop-up blocker on your browser.</string>
 
 
+    <!-- Mandiri E Cash transfer Instruction-->
+    <string name="mandiri__e_cash_instruction_step1">1.\tMake sure you have registered your mobile phone number for Mandiri e-cash.</string>
+    <string name="mandiri__e_cash_instruction_step2">2.\tClick \'Confirm Payment\'.</string>
+    <string name="mandiri__e_cash_instruction_step3">3.\tEnter your phone number and PIN.</string>
+    <string name="mandiri__e_cash_instruction_step4">4.\tPlease wait for an SMS from Mandiri e-cash that contains your One Time Password (OTP).</string>
+    <string name="mandiri__e_cash_instruction_step5">5.\tEnter the 6 digit OTP, then click
+        \'pay\' to make payment.</string>
+    <string name="mandiri__e_cash_instruction_step6">6.\tIf you haven\'t received the OTP or the
+        OTP has expired, click \'cancel\' and retry your transaction.</string>
+
+
     <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">1.\tEnter Your PIN.</string>
     <string name="permata_instruction_step2">2.\tOn the main menu, Choose \'Other Transaction\'.</string>
