@@ -282,7 +282,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         setSupportActionBar(mToolbar);
 
         BankTransactionStatusFragment bankTransactionStatusFragment =
-                BankTransactionStatusFragment.newInstance(transactionResponse);
+                BankTransactionStatusFragment.newInstance(transactionResponse, true);
 
         // setup transaction status fragment
         fragmentTransaction.replace(R.id.indosat_container,
