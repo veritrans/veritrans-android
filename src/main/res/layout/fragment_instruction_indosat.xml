@@ -35,7 +35,7 @@
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/five_dp"
-            android:text="@string/mandiri_instruction_step1"
+            android:text="@string/indosat_instruction_step1"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
@@ -48,39 +48,7 @@
             android:lineSpacingExtra="2dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:text="@string/mandiri_instruction_step2"
-            android:textColor="@color/black"
-
-            android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
-            />
-
-
-        <id.co.veritrans.sdk.widgets.TextViewFont
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/eight_dp"
-            android:background="@color/light_gray"
-            android:lineSpacingExtra="2dp"
-            android:paddingBottom="@dimen/five_dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:text="@string/mandiri_instruction_step3"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
-            />
-
-
-        <id.co.veritrans.sdk.widgets.TextViewFont
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/eight_dp"
-            android:lineSpacingExtra="2dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:text="@string/mandiri_instruction_step4"
+            android:text="@string/indosat_instruction_step2"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
@@ -97,7 +65,7 @@
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/five_dp"
-            android:text="@string/mandiri_instruction_step5"
+            android:text="@string/indosat_instruction_step3"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
@@ -111,7 +79,38 @@
             android:lineSpacingExtra="2dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:text="@string/mandiri_instruction_step6"
+            android:text="@string/indosat_instruction_step4"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            app:font="@string/font_open_sans_regular"
+            />
+
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:background="@color/light_gray"
+            android:lineSpacingExtra="2dp"
+            android:paddingBottom="@dimen/five_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/five_dp"
+            android:text="@string/indosat_instruction_step5"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            app:font="@string/font_open_sans_regular"
+            />
+
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:lineSpacingExtra="2dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:text="@string/indosat_instruction_step6"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_regular"
