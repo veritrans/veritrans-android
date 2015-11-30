@@ -3,23 +3,23 @@ package id.co.veritrans.sdk.models;
 import java.util.ArrayList;
 
 /**
- * Created by Ankit on 11/26/15.
+ * Created by Ankit on 11/30/15.
  */
-public class CIMBClickPayModel extends TransactionModel {
+public class MandiriECashModel extends TransactionModel {
 
-    public static final String PAYMENT_TYPE = "cimb_clicks";
+    public static final String PAYMENT_TYPE = "mandiri_ecash";
 
     /**
-     * payment_type : cimb_clicks
+     * payment_type : mandiri_ecash
      */
 
-    public CIMBClickPayModel(DescriptionModel cimbDescription, TransactionDetails transactionDetails,
-                               ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
-                                       billingAddresses, ArrayList<ShippingAddress>
-                                       shippingAddresses, CustomerDetails customerDetails) {
+    public MandiriECashModel(DescriptionModel description, TransactionDetails transactionDetails,
+                             ArrayList<ItemDetails> itemDetails, ArrayList<BillingAddress>
+                                     billingAddresses, ArrayList<ShippingAddress>
+                                     shippingAddresses, CustomerDetails customerDetails) {
 
         this.paymentType = PAYMENT_TYPE;
-        this.cimbClicks = cimbDescription;
+        this.cimbClicks = description;
         this.transactionDetails = transactionDetails;
         this.itemDetails = itemDetails;
         this.billingAddresses = billingAddresses;
@@ -32,7 +32,7 @@ public class CIMBClickPayModel extends TransactionModel {
         return paymentType;
     }
 
-    public DescriptionModel getCIMBDescription(){
+    public DescriptionModel getDescription(){
         return cimbClicks;
     }
 

@@ -20,7 +20,7 @@ import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
-import id.co.veritrans.sdk.models.CIMBDescription;
+import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
@@ -30,6 +30,7 @@ import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
+import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.ShippingAddress;
 import id.co.veritrans.sdk.models.TransactionDetails;
@@ -391,7 +392,7 @@ public class SdkUtil {
 
     protected static CIMBClickPayModel getCIMBClickPayModel(TransactionRequest request) {
 
-        CIMBDescription cimbDescription = new CIMBDescription("Any Description");
+        DescriptionModel cimbDescription = new DescriptionModel("Any Description"); //TODO...Description for transaction
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
 
@@ -409,6 +410,31 @@ public class SdkUtil {
         return model;
     }
 
+    /**
+     * helper method to extract {@link CIMBClickPayModel} from {@link TransactionRequest}.
+     * @return
+     */
+
+    protected static MandiriECashModel getMandiriECashModel(TransactionRequest request) {
+
+        DescriptionModel description = new DescriptionModel("Any Description");
+        //TODO...Description for transaction
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+
+        MandiriECashModel model =
+                new MandiriECashModel(description, transactionDetails, request.getItemDetails(),
+                        request.getBillingAddressArrayList(),
+                        request.getShippingAddressArrayList(),
+                        request.getCustomerDetails());
+        return model;
+    }
 
     /**
      * helper method to extract {@link CardTransfer} from {@link TransactionRequest}.

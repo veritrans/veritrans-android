@@ -24,7 +24,10 @@ class TransactionModel {
     String paymentType;
 
     @SerializedName("cimb_clicks")
-    CIMBDescription cimbClicks;
+    DescriptionModel cimbClicks;
+
+    @SerializedName("mandiri_ecash")
+    DescriptionModel mandiriECash;
 
     @SerializedName("transaction_details")
     TransactionDetails transactionDetails;

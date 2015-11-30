@@ -70,13 +70,8 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
     private void setUpFragment() {
 
         // setup  fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         mandiriECashFragment = new InstructionMandiriECashFragment();
-
-        fragmentTransaction.add(R.id.mandiri_e_cash_container,
-                mandiriECashFragment);
-        fragmentTransaction.commit();
+        replaceFragment(mandiriECashFragment, true, false);
     }
 
 
@@ -99,7 +94,93 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_confirm_payment) {
+            makeTransaction();
         }
+    }
+
+    private void makeTransaction(){
+        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        mVeritransSDK.paymentUsingMandiriECash(MandiriECashActivity.this, new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse transferResponse) {
+                SdkUtil.hideProgressDialog();
+
+                if (transferResponse != null &&
+                        !TextUtils.isEmpty(transferResponse.getRedirectUrl())) {
+                    MandiriECashActivity.this.transactionResponse = transferResponse;
+                    Intent intentPaymentWeb = new Intent(MandiriECashActivity.this, PaymentWebActivity.class);
+                    intentPaymentWeb.putExtra(Constants.WEBURL, transferResponse.getRedirectUrl());
+                    startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                } else {
+                    SdkUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string
+                            .empty_transaction_response));
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+
+                try {
+                    MandiriECashActivity.this.errorMessage = errorMessage;
+                    MandiriECashActivity.this.transactionResponse = transactionResponse;
+                    SdkUtil.hideProgressDialog();
+                    SdkUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+                } catch (NullPointerException ex) {
+                    SdkUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string.empty_transaction_response));
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
+        if (resultCode == RESULT_OK && transactionResponse != null &&
+                !TextUtils.isEmpty(transactionResponse.getTransactionId())) {
+            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
+                    PaymentTransactionStatusFragment.newInstance(transactionResponse);
+            replaceFragment(paymentTransactionStatusFragment, true, false);
+            buttonConfirmPayment.setVisibility(View.GONE);
+        }
+    }
+
+    public void replaceFragment(Fragment fragment, boolean addToBackStack, boolean clearBackStack) {
+        if (fragment != null) {
+            Logger.i("replace freagment");
+            boolean fragmentPopped = false;
+            String backStateName = fragment.getClass().getName();
+
+            if (clearBackStack) {
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            } else {
+                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
+            }
+
+            if (!fragmentPopped) { //fragment not in back stack, create it.
+                Logger.i("fragment not in back stack, create it");
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.mandiri_e_cash_container, fragment, backStateName);
+                if (addToBackStack) {
+                    ft.addToBackStack(backStateName);
+                }
+                ft.commit();
+                currentFragmentName = backStateName;
+            }
+        }
+    }
+
+    public void setResultAndFinish(){
+        Intent data = new Intent();
+        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
+        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        setResult(RESULT_CODE, data);
+        finish();
+    }
+
+    public void setResultCode(int resultCode) {
+        this.RESULT_CODE = resultCode;
     }
 }
 

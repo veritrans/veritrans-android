@@ -5,16 +5,16 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Ankit on 11/27/15.
  */
-public class CIMBDescription {
+public class DescriptionModel {
 
     @SerializedName("description")
     private String description;
 
-    public CIMBDescription() {
+    public DescriptionModel() {
 
     }
 
-    public CIMBDescription(String description) {
+    public DescriptionModel(String description) {
         this.description = description;
     }
 
