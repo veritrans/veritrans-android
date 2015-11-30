@@ -10,6 +10,7 @@ import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
+import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
@@ -546,10 +547,12 @@ class TransactionManager {
                                     }
                                     releaseResources();
                                 }
+
                                 @Override
                                 public void onError(Throwable throwable) {
                                     callback.onFailure(throwable.getMessage(), null);
                                 }
+
                                 @Override
                                 public void onNext(TransactionResponse cimbPayTransferResponse) {
                                     if (cimbPayTransferResponse != null) {
@@ -589,6 +592,7 @@ class TransactionManager {
             releaseResources();
         }
     }
+
 
     public static void paymentUsingMandiriECash(Activity activity, MandiriECashModel
             mandiriECashModel,
@@ -659,7 +663,11 @@ class TransactionManager {
         }
     }
 
-    public static void paymentUsingEpayBri(Activity activity, EpayBriTransfer epayBriTransfer, final TransactionCallback callback) {
+
+
+    public static void paymentUsingEpayBri(Activity activity, EpayBriTransfer epayBriTransfer,
+                                           final TransactionCallback callback) {
+
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
@@ -746,7 +754,8 @@ class TransactionManager {
         }
     }
 
-    public static void getPaymentStatus(Activity activity, String id, final PaymentStatusCallback callback) {
+    public static void getPaymentStatus(Activity activity, String id, final PaymentStatusCallback
+            callback) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
@@ -771,7 +780,8 @@ class TransactionManager {
 
                                 @Override
                                 public void onCompleted() {
-                                    if (paymentStatusSubscription != null && !paymentStatusSubscription.isUnsubscribed()) {
+                                    if (paymentStatusSubscription != null &&
+                                            !paymentStatusSubscription.isUnsubscribed()) {
                                         paymentStatusSubscription.unsubscribe();
                                     }
                                 }
@@ -782,19 +792,22 @@ class TransactionManager {
                                 }
 
                                 @Override
-                                public void onNext(TransactionStatusResponse transactionStatusResponse) {
+                                public void onNext(TransactionStatusResponse
+                                                           transactionStatusResponse) {
                                     if (transactionStatusResponse != null) {
-                                            if(TextUtils.isEmpty(transactionStatusResponse.getStatusCode())) {
-                                                if (transactionStatusResponse.getStatusCode()
-                                                        .equalsIgnoreCase(Constants.SUCCESS_CODE_200)||
+                                        if (TextUtils.isEmpty(transactionStatusResponse
+                                                .getStatusCode())) {
+                                            if (transactionStatusResponse.getStatusCode()
+                                                    .equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
                                                     transactionStatusResponse.getStatusCode()
-                                                                .equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
-                                                    callback.onSuccess(transactionStatusResponse);
-                                                }
-                                            } else {
-                                                callback.onFailure(Constants.ERROR_EMPTY_RESPONSE,
-                                                        transactionStatusResponse);
+                                                            .equalsIgnoreCase(Constants
+                                                                    .SUCCESS_CODE_201)) {
+                                                callback.onSuccess(transactionStatusResponse);
                                             }
+                                        } else {
+                                            callback.onFailure(Constants.ERROR_EMPTY_RESPONSE,
+                                                    transactionStatusResponse);
+                                        }
                                     } else {
                                         callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
                                     }
@@ -819,7 +832,8 @@ class TransactionManager {
         }
     }
 
-    public static void paymentUsingIndosatDompetku(final Activity activity, final IndosatDompetkuRequest
+    public static void paymentUsingIndosatDompetku(final Activity activity, final
+    IndosatDompetkuRequest
             indosatDompetkuRequest, final TransactionCallback callback) {
 
 
@@ -907,11 +921,97 @@ class TransactionManager {
             callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
             releaseResources();
         }
-
-
-
     }
 
+
+    public static void paymentUsingIndomaret(final Activity activity, final IndomaretRequestModel
+            indomaretRequestModel, final TransactionCallback callback) {
+
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                Observable<TransactionResponse> observable = null;
+
+                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
+                if (serverKey != null) {
+
+                    String authorization = "Basic " + serverKey;
+                    observable = apiInterface.paymentUsingIndomaret(authorization,
+                            indomaretRequestModel);
+
+                    subscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<TransactionResponse>() {
+
+                                @Override
+                                public void onCompleted() {
+
+                                    if (subscription != null && !subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
+
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    callback.onFailure(throwable.getMessage(), null);
+                                }
+
+                                @Override
+                                public void onNext(TransactionResponse
+                                                           indomaretTransferResponse) {
+
+                                    if (indomaretTransferResponse != null) {
+
+                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                            displayResponse(indomaretTransferResponse);
+                                        }
+
+                                        if (indomaretTransferResponse.getStatusCode().trim()
+                                                .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
+                                                || indomaretTransferResponse.getStatusCode()
+                                                .trim().equalsIgnoreCase(Constants
+                                                        .SUCCESS_CODE_201)) {
+
+                                            callback.onSuccess(indomaretTransferResponse);
+                                        } else {
+                                            callback.onFailure(indomaretTransferResponse
+                                                            .getStatusMessage(),
+                                                    indomaretTransferResponse);
+                                        }
+
+                                    } else {
+                                        callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                    }
+
+                                }
+                            });
+                } else {
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callback.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
+                }
+            } else {
+                callback.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            releaseResources();
+        }
+    }
 
 
     private static void displayTokenResponse(TokenDetailsResponse tokenDetailsResponse) {

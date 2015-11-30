@@ -25,6 +25,7 @@ import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
+import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetku;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
@@ -343,6 +344,37 @@ public class SdkUtil {
 
 
 
+
+    /**
+     * helper method to extract {@link id.co.veritrans.sdk.models.IndomaretRequestModel} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
+    protected static IndomaretRequestModel getIndomaretRequestModel(TransactionRequest request, IndomaretRequestModel.CstoreEntity cstoreEntity) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        IndomaretRequestModel model =
+                new IndomaretRequestModel();
+        model.setPaymentType("cstore");
+                        model.setItem_details(request.getItemDetails());
+                        model.setCustomerDetails(request.getCustomerDetails());
+                        model.setTransactionDetails(transactionDetails);
+                        model.setCstore(cstoreEntity);
+
+
+        return model;
+
+    }
+
+
+
     /**
      * helper method to extract {@link id.co.veritrans.sdk.models.IndosatDompetkuRequest} from {@link TransactionRequest}.
      * @param request
@@ -460,6 +492,12 @@ public class SdkUtil {
                         request.getCustomerDetails());
         return model;
     }
+
+
+
+
+
+
 
 
     /**

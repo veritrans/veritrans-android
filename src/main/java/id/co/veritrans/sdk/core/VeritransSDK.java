@@ -18,6 +18,7 @@ import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
+import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
@@ -506,8 +507,39 @@ public class VeritransSDK {
     public void getPaymentStatus(Activity activity,String transactionId,PaymentStatusCallback
             paymentStatusCallback){
         if(TextUtils.isEmpty(transactionId)){
-            TransactionManager.getPaymentStatus(activity,transactionId,paymentStatusCallback);
+            TransactionManager.getPaymentStatus(activity, transactionId, paymentStatusCallback);
         }
     }
+
+
+    /**
+     * It will execute an transaction for Indomaret .
+     *
+     * @param activity instance of an activity.
+     * @param indomaretCallback instance of TransactionCallback.
+     */
+    public void paymentUsingIndomaret(Activity activity,
+                                            TransactionCallback indomaretCallback, IndomaretRequestModel.CstoreEntity cstoreEntity) {
+
+
+        if (transactionRequest != null && activity != null
+                && indomaretCallback != null && cstoreEntity != null) {
+
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU;
+            transactionRequest.activity = activity;
+
+            IndomaretRequestModel indomaretRequestModel =
+                    SdkUtil.getIndomaretRequestModel(transactionRequest, cstoreEntity);
+
+            isRunning = true;
+            TransactionManager.paymentUsingIndomaret(transactionRequest.getActivity(),
+                    indomaretRequestModel,
+                    indomaretCallback);
+        } else {
+            isRunning = false;
+            showError(transactionRequest, indomaretCallback);
+        }
+    }
+
 
 }

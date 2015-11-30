@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.core;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
+import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
@@ -139,6 +140,7 @@ public interface VeritranceApiInterface {
                                                                 cimbClickPayModel);
 
 
+
     //Mandiri E Cash transaction flow
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
@@ -146,4 +148,13 @@ public interface VeritranceApiInterface {
                                                              String authorization,
                                                              @Body MandiriECashModel
                                                                      mandiriECashModel);
+
+    //indomaret payment
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingIndomaret(@Header("Authorization")
+                                                               String authorization,
+                                                               @Body IndomaretRequestModel
+                                                                       indomaretRequestModel);
 }
+

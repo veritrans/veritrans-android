@@ -38,7 +38,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
  * {@link BankTransferFragment} home fragment - an initial fragment which contains an instruction.
  * {@link MandiriBillPayFragment} - used to handle mandiri bill payment
  * {@link BankTransferPaymentFragment} - used to handle bank transfer
- * {@link BankTransactionStatusFragment} - used to display status of fragment.
+ * {@link BankTransactionStatusFragment} - used to display status of transaction.
  * <p/>
  * <p/>
  * <p/>
@@ -248,7 +248,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         setSupportActionBar(mToolbar);
 
         BankTransactionStatusFragment bankTransactionStatusFragment =
-                BankTransactionStatusFragment.newInstance(transactionResponse);
+                BankTransactionStatusFragment.newInstance(transactionResponse, false);
 
         // setup transaction status fragment
         fragmentTransaction.replace(R.id.bank_transfer_container,

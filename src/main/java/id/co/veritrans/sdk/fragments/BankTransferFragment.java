@@ -76,7 +76,7 @@ public class BankTransferFragment extends Fragment {
 
 
     /**
-     * create to give access to email id field from {@link id.co.veritrans.sdk.activities
+     * created to give access to email id field from {@link id.co.veritrans.sdk.activities
      * .BankTransferActivity}.
      *
      * @return

@@ -16,6 +16,7 @@ import id.co.veritrans.sdk.activities.BankTransferActivity;
 import id.co.veritrans.sdk.activities.CIMBClickPayActivity;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.activities.EpayBriActivity;
+import id.co.veritrans.sdk.activities.IndosatDompetkuActivity;
 import id.co.veritrans.sdk.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.activities.MandiriECashActivity;
 import id.co.veritrans.sdk.core.Constants;
@@ -144,12 +145,24 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                 sActivity.startActivityForResult(startCIMBClickpay,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
 
+
             } else if (nameText.getText().toString().trim().equalsIgnoreCase(sActivity
                     .getResources().getString(R.string.mandiri_e_cash))) {
                 Intent startMandiriECash = new Intent(sActivity, MandiriECashActivity.class);
                 sActivity.startActivityForResult(startMandiriECash,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            }else {
+            }
+
+            else if (name.equalsIgnoreCase(sActivity
+                    .getResources().getString(R.string.indosat_dompetku))) {
+
+                Intent startIndosatPaymentActivity = new Intent(sActivity, IndosatDompetkuActivity.class);
+
+                sActivity.startActivityForResult(startIndosatPaymentActivity,
+                        Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else {
+
                 showMessage();
             }
         }
