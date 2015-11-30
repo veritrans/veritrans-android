@@ -120,6 +120,7 @@ public class Constants {
      * error message for invalid email id.
      */
     public static final String ERROR_INVALID_EMAIL_ID = "Invalid email Id.";
+    public static final String ERROR_INVALID_PHONE_NUMBER = "Invalid Phone Number.";
 
     public static final String ERROR_SOMETHING_WENT_WRONG = "Please try later, Something went " +
             "wrong!";
