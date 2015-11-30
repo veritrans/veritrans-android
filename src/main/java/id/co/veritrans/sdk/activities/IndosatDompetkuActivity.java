@@ -285,7 +285,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
                 BankTransactionStatusFragment.newInstance(transactionResponse);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.bank_transfer_container,
+        fragmentTransaction.replace(R.id.indosat_container,
                 bankTransactionStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();
