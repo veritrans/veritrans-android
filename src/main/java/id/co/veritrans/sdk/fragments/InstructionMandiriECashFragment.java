@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import id.co.veritrans.sdk.R;
 
 /**
- * Created by shivam on 10/28/15.
+ * Created by Ankit on 11/30/15.
  */
 public class InstructionMandiriECashFragment extends Fragment {
 

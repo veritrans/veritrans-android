@@ -15,7 +15,6 @@ import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
-import id.co.veritrans.sdk.models.CIMBClickPayRequestModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
@@ -326,6 +325,30 @@ public class VeritransSDK {
                 && paymentTransactionCallback != null) {
 
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CIMB_CLICKS;
+            transactionRequest.activity = activity;
+
+            CIMBClickPayModel cimbClickPayModel = SdkUtil.getCIMBClickPayModel(transactionRequest);
+
+            isRunning = true;
+
+            TransactionManager.paymentUsingCIMBPay(transactionRequest.getActivity(),
+                    cimbClickPayModel,
+                    paymentTransactionCallback);
+        } else {
+            isRunning = false;
+            showError(transactionRequest, paymentTransactionCallback);
+        }
+    }
+
+    public void paymentUsingMandiriECash(Activity activity, TransactionCallback
+            paymentTransactionCallback) {
+
+
+
+        if (transactionRequest != null && activity != null
+                && paymentTransactionCallback != null) {
+
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_ECASH;
             transactionRequest.activity = activity;
 
             CIMBClickPayModel cimbClickPayModel = SdkUtil.getCIMBClickPayModel(transactionRequest);

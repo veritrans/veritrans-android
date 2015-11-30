@@ -20,7 +20,6 @@ import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
-import id.co.veritrans.sdk.models.CIMBClickPayRequestModel;
 import id.co.veritrans.sdk.models.CIMBDescription;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
