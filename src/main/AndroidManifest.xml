@@ -52,7 +52,10 @@
             android:name=".activities.IndosatDompetkuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
-
+        <activity
+            android:name=".activities.NotificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
     </application>
 
 </manifest>

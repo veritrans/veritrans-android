@@ -160,4 +160,17 @@ public class Constants {
     public static final String TRANSACTION_RESPONSE = "transaction_response";
     public static final String TRANSACTION_ERROR_MESSAGE = "transaction_error";
     public static final String EVENT_TRANSACTION_COMPLETE = "veritranse_transaction_complete";
+    public static final String PAYMENT_STATUS = "payment_status";
+
+    public static final String PAYMENT_EPAY_BRI = "bri_epay";
+    public static final String PAYMENT_BANK_TRANSFER = "bank_transfer";
+    public static final String PAYMENT_MANDIRI_BILL_PAYMENT = "echannel";
+    public static final String PAYMENT_MANDIRI_CLICKPAY="mandiri_clickpay";
+    public static final String PAYMENT_CIMB_CLICKS="cimb_clicks";
+    public static final String PAYMENT_BCA_CLICK="bca_klikpay";
+    public static final String PAYMENT_BBM_MONEY="bbm_money";
+    public static final String PAYMENT_INDOSAT_DOMPETKU = "indosat_dompetku";
+    public static final String PAYMENT_MANDIRI_ECASH = "mandiri_ecash";
+    public static final String PAYMENT_INDOMARET = "cstore";
+
 }
