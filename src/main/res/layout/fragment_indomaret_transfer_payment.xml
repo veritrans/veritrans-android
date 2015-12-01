@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/sixteen_dp">
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/text_validaty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@color/faint_yellow"
+            android:gravity="left"
+            android:padding="@dimen/sixteen_dp"
+            android:text="Valid Until : 10 September 2015, 16:00"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            app:font="@string/font_open_sans_regular"
+            />
+
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/text_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:background="@color/faint_pink"
+            android:gravity="left"
+            android:padding="@dimen/sixteen_dp"
+            android:text="@string/bank_transfer_dummy_text"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            app:font="@string/font_open_sans_regular"
+            />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
