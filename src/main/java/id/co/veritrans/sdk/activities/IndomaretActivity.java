@@ -78,6 +78,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         }
 
         initializeView();
+        bindDataToView();
         setUpHomeFragment();
     }
 
@@ -114,7 +115,6 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initializeView() {
-
         textViewOrderId = (TextViewFont) findViewById(R.id.text_order_id);
         textViewAmount = (TextViewFont) findViewById(R.id.text_amount);
         textViewTitle = (TextViewFont) findViewById(R.id.text_title);
@@ -123,12 +123,20 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         appBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
 
-
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
+    private void bindDataToView() {
+        if (veritransSDK != null) {
+            textViewAmount.setText(Constants.CURRENCY_PREFIX + " " + veritransSDK
+                    .getTransactionRequest().getAmount());
+            textViewOrderId.setText("" + veritransSDK.getTransactionRequest().getOrderId());
+            buttonConfirmPayment.setTypeface(veritransSDK.getTypefaceOpenSansSemiBold());
+            buttonConfirmPayment.setOnClickListener(this);
+        }
     }
 
 
