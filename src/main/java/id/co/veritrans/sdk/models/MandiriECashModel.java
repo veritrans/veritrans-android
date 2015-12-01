@@ -19,7 +19,7 @@ public class MandiriECashModel extends TransactionModel {
                                      shippingAddresses, CustomerDetails customerDetails) {
 
         this.paymentType = PAYMENT_TYPE;
-        this.cimbClicks = description;
+        this.mandiriECash = description;
         this.transactionDetails = transactionDetails;
         this.itemDetails = itemDetails;
         this.billingAddresses = billingAddresses;
@@ -33,7 +33,7 @@ public class MandiriECashModel extends TransactionModel {
     }
 
     public DescriptionModel getDescription(){
-        return cimbClicks;
+        return mandiriECash;
     }
 
     public TransactionDetails getTransactionDetails() {
