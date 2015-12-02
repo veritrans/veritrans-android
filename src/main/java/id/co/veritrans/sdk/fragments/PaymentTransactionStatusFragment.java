@@ -15,6 +15,7 @@ import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.activities.EpayBriActivity;
 import id.co.veritrans.sdk.activities.IndomaretActivity;
 import id.co.veritrans.sdk.activities.MandiriECashActivity;
+import id.co.veritrans.sdk.activities.NotificationActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.VeritransSDK;
@@ -161,57 +162,79 @@ public class PaymentTransactionStatusFragment extends Fragment {
         isSuccessful = true;
         actionBt.setText(getString(R.string.done));
         paymentMessageTv.setVisibility(View.GONE);
-        if (veritrans != null) {
-            switch (veritrans.getTransactionRequest().getPaymentMethod()) {
-                case Constants.PAYMENT_METHOD_EPAY_BRI:
-                    paymentIv.setImageResource(R.drawable.ic_pending);
-                    paymentStatusTv.setText(getString(R.string.payment_pending));
-                    break;
-                case Constants.PAYMENT_METHOD_CIMB_CLICKS:
-                    paymentIv.setImageResource(R.drawable.ic_pending);
-                    paymentStatusTv.setText(getString(R.string.payment_pending));
-                    break;
-                case Constants.PAYMENT_METHOD_MANDIRI_ECASH:
-                    paymentIv.setImageResource(R.drawable.ic_pending);
-                    paymentStatusTv.setText(getString(R.string.payment_pending));
-                    break;
-                default:
-                    paymentIv.setImageResource(R.drawable.ic_successful);
-                    paymentStatusTv.setText(getString(R.string.payment_successful));
-                    break;
+        if (getActivity().getClass().getName().equalsIgnoreCase(NotificationActivity.class.getName())) {
+            paymentIv.setImageResource(R.drawable.ic_successful);
+            paymentStatusTv.setText(getString(R.string.payment_successful));
+        } else {
+            if (veritrans != null) {
+                switch (veritrans.getTransactionRequest().getPaymentMethod()) {
+                    case Constants.PAYMENT_METHOD_EPAY_BRI:
+                        paymentIv.setImageResource(R.drawable.ic_pending);
+                        paymentStatusTv.setText(getString(R.string.payment_pending));
+                        break;
+                    case Constants.PAYMENT_METHOD_CIMB_CLICKS:
+                        paymentIv.setImageResource(R.drawable.ic_pending);
+                        paymentStatusTv.setText(getString(R.string.payment_pending));
+                        break;
+                    case Constants.PAYMENT_METHOD_MANDIRI_ECASH:
+                        paymentIv.setImageResource(R.drawable.ic_pending);
+                        paymentStatusTv.setText(getString(R.string.payment_pending));
+                        break;
+                    default:
+                        paymentIv.setImageResource(R.drawable.ic_successful);
+                        paymentStatusTv.setText(getString(R.string.payment_successful));
+                        break;
+                }
             }
         }
 
     }
 
     private void setPaymentType() {
-        if (veritrans != null) {
-            switch (veritrans.getTransactionRequest().getPaymentMethod()) {
-                case Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT:
-                    paymentTypeTextViewFont.setText(getString(R.string.credit_card));
-                    break;
-                case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
-                    paymentTypeTextViewFont.setText(getString(R.string.mandiri_bill_payment));
-                    break;
-                case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
-                    paymentTypeTextViewFont.setText(getString(R.string.virtual_account));
-                    break;
-                case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
-                    paymentTypeTextViewFont.setText(getString(R.string.mandiri_click_pay));
-                    break;
-                case Constants.PAYMENT_METHOD_EPAY_BRI:
-                    paymentTypeTextViewFont.setText(getString(R.string.epay_bri));
-                    break;
-                case Constants.PAYMENT_METHOD_CIMB_CLICKS:
-                    paymentTypeTextViewFont.setText(getString(R.string.cimb_clicks));
-                    break;
-                case Constants.PAYMENT_METHOD_MANDIRI_ECASH:
-                    paymentTypeTextViewFont.setText(getString(R.string.mandiri_e_cash));
-                    break;
-                //todo add payment type as per requirement.
+        if (getActivity().getClass().getName().equalsIgnoreCase(NotificationActivity.class.getName())) {
+            if(transactionResponse.getPaymentType().equalsIgnoreCase(Constants.PAYMENT_EPAY_BRI)){
+                paymentTypeTextViewFont.setText(getString(R.string.epay_bri));
+            } else if(transactionResponse.getPaymentType().equalsIgnoreCase(Constants.PAYMENT_MANDIRI_BILL_PAYMENT)){
+                paymentTypeTextViewFont.setText(getString(R.string.mandiri_bill_payment));
+            } else if(transactionResponse.getPaymentType().equalsIgnoreCase(Constants.PAYMENT_CIMB_CLICKS)){
+                paymentTypeTextViewFont.setText(getString(R.string.cimb_clicks));
+            } else if(transactionResponse.getPaymentType().equalsIgnoreCase(Constants.PAYMENT_MANDIRI_ECASH)){
+                paymentTypeTextViewFont.setText(getString(R.string.mandiri_e_cash));
+            } else if(transactionResponse.getPaymentType().equalsIgnoreCase(Constants.PAYMENT_MANDIRI_CLICKPAY)){
+                paymentTypeTextViewFont.setText(getString(R.string.mandiri_click_pay));
             }
 
+        } else {
+
+            if (veritrans != null) {
+                switch (veritrans.getTransactionRequest().getPaymentMethod()) {
+                    case Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT:
+                        paymentTypeTextViewFont.setText(getString(R.string.credit_card));
+                        break;
+                    case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
+                        paymentTypeTextViewFont.setText(getString(R.string.mandiri_bill_payment));
+                        break;
+                    case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
+                        paymentTypeTextViewFont.setText(getString(R.string.virtual_account));
+                        break;
+                    case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
+                        paymentTypeTextViewFont.setText(getString(R.string.mandiri_click_pay));
+                        break;
+                    case Constants.PAYMENT_METHOD_EPAY_BRI:
+                        paymentTypeTextViewFont.setText(getString(R.string.epay_bri));
+                        break;
+                    case Constants.PAYMENT_METHOD_CIMB_CLICKS:
+                        paymentTypeTextViewFont.setText(getString(R.string.cimb_clicks));
+                        break;
+                    case Constants.PAYMENT_METHOD_MANDIRI_ECASH:
+                        paymentTypeTextViewFont.setText(getString(R.string.mandiri_e_cash));
+                        break;
+                    //todo add payment type as per requirement.
+                }
+
+            }
         }
 
     }
+
 }

@@ -94,12 +94,19 @@ public class UserDetailFragment extends Fragment {
             phoneEt.requestFocus();
             return;
         }
-
-        UserDetail userDetail = new UserDetail();
+        UserDetail userDetail = null;
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+        try {
+            userDetail = (UserDetail) storageDataHandler.readObject(getActivity(), Constants.USER_DETAILS);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(userDetail == null) {
+            userDetail = new UserDetail();
+        }
         userDetail.setUserFullName(fullName);
         userDetail.setEmail(email);
         userDetail.setPhoneNumber(phoneNo);
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
         storageDataHandler.writeObject(getActivity(), Constants.USER_DETAILS, userDetail);
         UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
         ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);
