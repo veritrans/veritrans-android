@@ -10,8 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,9 +34,8 @@ import id.co.veritrans.sdk.widgets.HeaderView;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
- *
  * Displays list of available payment methods.
- *
+ * <p/>
  * Created by shivam on 10/16/15.
  */
 public class PaymentMethodsActivity extends AppCompatActivity implements AppBarLayout
@@ -61,6 +62,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private HeaderView floatHeaderView = null;
     private TextViewFont headerTextView = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
+    private TextViewFont textViewMeasureHeight = null;
 
 
     @Override
@@ -85,10 +87,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
                 userDetail.getEmail(), userDetail.getPhoneNumber());
         transactionRequest.setCustomerDetails(customerDetails);
-
-
         setUpPaymentMethods();
-
     }
 
 
@@ -104,10 +103,16 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             public void run() {
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView
                         .getLayoutManager();
-                int lastPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
 
+                int hiddenTextViewHeight = textViewMeasureHeight.getHeight();
+                int recyclerViewHieght = mRecyclerView.getMeasuredHeight();
+                int appBarHeight = mAppBarLayout.getHeight();
+                int exactHeightForCompare = hiddenTextViewHeight - appBarHeight;
 
-                  if (lastPosition == mRecyclerView.getAdapter().getItemCount() - 1) {
+                int oneRowHeight = dp2px(60);
+                int totalHeight = (mRecyclerView.getAdapter().getItemCount() - 1) * oneRowHeight;
+
+                if (totalHeight < exactHeightForCompare) {
                     disableScrolling();
                     headerTextView.setAlpha(1);
                 }
@@ -186,11 +191,11 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_payment_methods);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
-
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
         toolbarHeaderView = (HeaderView) findViewById(R.id.toolbar_header_view);
         floatHeaderView = (HeaderView) findViewById(R.id.float_header_view);
         headerTextView = (TextViewFont) findViewById(R.id.title_header);
+        textViewMeasureHeight = (TextViewFont) findViewById(R.id.textview_to_compare);
     }
 
 
@@ -310,28 +315,30 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
 
     /**
-     *
      * sends broadcast for transaction details.
-     *
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Logger.d(TAG, "in onActivity result : request code is "+requestCode);
+        Logger.d(TAG, "in onActivity result : request code is " + requestCode);
 
-        if( requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER ){
+        if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {
             Logger.d(TAG, "sending result back with code " + requestCode);
 
-            if(resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 data.setAction(Constants.EVENT_TRANSACTION_COMPLETE);
                 sendBroadcast(data);
                 finish();
-            }else {
+            } else {
                 //transaction failed.
             }
 
-        }else {
-            Logger.d(TAG, "failed to send result back "+ requestCode);
+        } else {
+            Logger.d(TAG, "failed to send result back " + requestCode);
         }
+    }
+
+    private int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 }

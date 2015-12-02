@@ -13,6 +13,7 @@ import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CIMBClickPayActivity;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.activities.EpayBriActivity;
+import id.co.veritrans.sdk.activities.IndomaretActivity;
 import id.co.veritrans.sdk.activities.MandiriECashActivity;
 import id.co.veritrans.sdk.activities.NotificationActivity;
 import id.co.veritrans.sdk.core.Constants;

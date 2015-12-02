@@ -94,6 +94,7 @@
 
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
+    <string name="transfer_amount">Transfer Amount</string>
     <string name="hint_email_optional">Email Address (Optional)</string>
     <string name="email_instruction">We\'ll send payment instruction to mail.</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
@@ -115,6 +116,7 @@
     <string name="tab_bca_prima">BCA/Prima</string>
     <string name="tab_permata_alto">Permata/Alto</string>
     <string name="payment_instrution">Payment Instruction</string>
+    <string name="payment_code">Payment Code</string>
 
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
@@ -151,6 +153,16 @@
         \'pay\' to make payment.</string>
     <string name="mandiri__e_cash_instruction_step6">6.\tIf you haven\'t received the OTP or the
         OTP has expired, click \'cancel\' and retry your transaction.</string>
+
+
+    <!-- Indomaret Instruction-->
+    <string name="indomaret_instruction_step1">1.\tAfter confirming your payment, we will issue you a unique Payment Code number.</string>
+    <string name="indomaret_instruction_step2">2.\tNote down your Payment Code and total amount.
+        Don\'t worry, we will also mail you a copy of the payment instructions.</string>
+    <string name="indomaret_instruction_step3">3.\tGo to an Indomaret store near you and provide the cashier with the Payment Code number.</string>
+    <string name="indomaret_instruction_step4">4.\tThe cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
+    <string name="indomaret_instruction_step5">5.\tConfirm the payment with the cashier.</string>
+    <string name="indomaret_instruction_step6">6.\tYour transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
 
 
     <!-- Permata/Alto bank transfer Instruction-->
