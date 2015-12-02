@@ -45,5 +45,30 @@
             app:font="@string/font_open_sans_regular"
             />
 
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:gravity="center_horizontal"
+            android:text="@string/payment_code"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/secondary_text_size"
+            app:font="@string/font_open_sans_regular"
+            />
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/text_payment_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/eight_dp"
+            android:text="@string/payment_code"
+            android:textColor="@color/black"
+            android:textSize="@dimen/header_text_size"
+            app:font="@string/font_open_sans_regular"
+            />
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

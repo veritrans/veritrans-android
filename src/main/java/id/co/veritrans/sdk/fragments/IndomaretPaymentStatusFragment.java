@@ -38,13 +38,6 @@ public class IndomaretPaymentStatusFragment extends Fragment {
     private static  final  String IS_FROM_INDOMARET = "indomaret";
     private boolean isFromIndomaret = false;
 
-    /**
-     * It creates new BankTransactionStatusFragment object and set TransactionResponse object to it,
-     * so later it can be accessible using fragments getArgument().
-     *
-     * @param transactionResponse
-     * @return instance of BankTransactionStatusFragment.
-     */
     public static IndomaretPaymentStatusFragment newInstance(TransactionResponse
                                                                     transactionResponse, boolean
             isFromIndomaret) {

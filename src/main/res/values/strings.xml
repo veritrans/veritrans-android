@@ -116,6 +116,7 @@
     <string name="tab_bca_prima">BCA/Prima</string>
     <string name="tab_permata_alto">Permata/Alto</string>
     <string name="payment_instrution">Payment Instruction</string>
+    <string name="payment_code">Payment Code</string>
 
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>

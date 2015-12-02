@@ -29,19 +29,13 @@ public class IndomaretPaymentFragment extends Fragment {
     //views
 
     private TextViewFont mTextViewValidity = null;
+    private TextViewFont mTextViewPaymentCode = null;
 
 
-    /**
-     *
-     * it creates new BankTransferPaymentFragment object and set TransactionResponse object to it,
-     * so later it can be accessible using fragments getArgument().
-     *
-     *  @param permataBankTransferResponse
-     * @return instance of BankTransferPaymentFragment
-     */
+
     public static IndomaretPaymentFragment newInstance(TransactionResponse
-                                                                  transactionResponse) {
-        transactionResponse = transactionResponse;
+                                                                  mTransactionResponse) {
+        transactionResponse = mTransactionResponse;
         IndomaretPaymentFragment fragment = new IndomaretPaymentFragment();
         return fragment;
     }
@@ -70,15 +64,17 @@ public class IndomaretPaymentFragment extends Fragment {
      */
     private void initializeViews(View view) {
         mTextViewValidity = (TextViewFont) view.findViewById(R.id.text_validaty);
+        mTextViewPaymentCode = (TextViewFont) view.findViewById(R.id.text_payment_code);
 
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants
-                    .SUCCESS_CODE_200) ||
-                    transactionResponse.getStatusCode().trim().equalsIgnoreCase
-                            (Constants.SUCCESS_CODE_201)
-                    )
+                    .SUCCESS_CODE_200) || transactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201))
             mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime
                     (transactionResponse.getTransactionTime()));
+
+            if (transactionResponse.getPaymentCodeIndomaret() != null)
+                mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeIndomaret());
+
         } else {
             //TODO..what to do here...
         }

@@ -108,7 +108,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
 
                   if (lastPosition == mRecyclerView.getAdapter().getItemCount() - 1) {
-                    disableScrolling();
+//                    disableScrolling();
                     headerTextView.setAlpha(1);
                 }
             }

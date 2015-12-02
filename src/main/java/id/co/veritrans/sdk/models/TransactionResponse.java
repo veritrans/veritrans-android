@@ -85,6 +85,13 @@ public class TransactionResponse implements Serializable {
     @SerializedName("biller_code")
     private String companyCode;
 
+
+    /**
+     * payment code for Indomaret
+     */
+    @SerializedName("payment_code")
+    private String paymentCodeIndomaret;
+
     public String getStatusCode() {
         return statusCode;
     }
@@ -252,5 +259,13 @@ public class TransactionResponse implements Serializable {
 
     public void setRedirectUrl(String redirectUrl) {
         this.redirectUrl = redirectUrl;
+    }
+
+    public String getPaymentCodeIndomaret() {
+        return paymentCodeIndomaret;
+    }
+
+    public void setPaymentCodeIndomaret(String paymentCodeIndomaret) {
+        this.paymentCodeIndomaret = paymentCodeIndomaret;
     }
 }
