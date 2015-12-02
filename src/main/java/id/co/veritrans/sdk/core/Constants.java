@@ -69,6 +69,14 @@ public class Constants {
      */
     public static final String BASE_URL_FOR_RELEASE = "https://api.sandbox.veritrans.co.id/v2/";
 
+    /**
+     * merchant server end point when application is running in debug mode.
+     */
+    public static final String BASE_URL_MERCHANT_FOR_DEBUG = "https://hangout.betas.in/veritrans/api/";
+    /**
+     * merchant server end point when application is running in release version.
+     */
+    public static final String BASE_URL_MERCHANT_FOR_RELEASE = "https://hangout.betas.in/veritrans/api/";
 
     /**
      * name of application directory
@@ -172,5 +180,5 @@ public class Constants {
     public static final String PAYMENT_INDOSAT_DOMPETKU = "indosat_dompetku";
     public static final String PAYMENT_MANDIRI_ECASH = "mandiri_ecash";
     public static final String PAYMENT_INDOMARET = "cstore";
-
+    public static final String PENDING = "pending";
 }

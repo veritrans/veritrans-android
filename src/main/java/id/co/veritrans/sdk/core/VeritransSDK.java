@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
@@ -26,6 +27,7 @@ import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
+import id.co.veritrans.sdk.models.UserDetail;
 
 /**
  * Created by shivam on 10/19/15.
@@ -47,7 +49,7 @@ public class VeritransSDK {
 
     private static VeritransSDK veritransSDK = new VeritransSDK();
     private static boolean isLogEnabled = true;
-    private static String serverKey = null;
+    /*private static String serverKey = null;*/
     private static String clientKey = null;
     protected boolean isRunning = false;
 
@@ -63,7 +65,7 @@ public class VeritransSDK {
         if (veritransBuilder != null) {
             context = veritransBuilder.context;
             isLogEnabled = veritransBuilder.enableLog;
-            serverKey = veritransBuilder.serverKey;
+            /*serverKey = veritransBuilder.serverKey;*/
             clientKey = veritransBuilder.clientKey;
 
             initializeFonts();
@@ -92,9 +94,12 @@ public class VeritransSDK {
      */
     public static VeritransSDK getVeritransSDK() {
 
-        if (serverKey != null && context != null && clientKey != null) {
+        /*if (serverKey != null && context != null && clientKey != null) {
             // created to get access of already created instance of sdk.
             // This instance contains information about transaction.
+            return veritransSDK;
+        }*/
+        if(context!=null){
             return veritransSDK;
         }
 
@@ -128,8 +133,24 @@ public class VeritransSDK {
         return context;
     }
 
-    public String getServerKey() {
-        return serverKey;
+    public String getMerchantToken(Context context) {
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+        UserDetail userDetail = null;
+        try {
+            userDetail = (UserDetail) storageDataHandler.readObject(context, Constants
+                    .USER_DETAILS);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return "";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+        String merchantToken = userDetail.getMerchantToken();
+        Logger.i("merchantToken:"+merchantToken);
+        return merchantToken;
+        //return serverKey;
     }
 
     public String getClientKey() {

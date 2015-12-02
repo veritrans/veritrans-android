@@ -19,7 +19,6 @@ import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
-import id.co.veritrans.sdk.utilities.Utils;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
@@ -36,7 +35,6 @@ class TransactionManager {
     private static Subscription subscription = null;
     private static Subscription cardPaymentSubscription = null;
     private static Subscription paymentStatusSubscription = null;
-
 
     /**
      * it will execute an api call to get token from server, and after completion of request it
@@ -155,17 +153,15 @@ class TransactionManager {
 
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
-                    VeritransRestAdapter.getApiClient(activity, true);
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
 
             if (apiInterface != null) {
-
                 Observable<TransactionResponse> observable = null;
 
-                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
-                if (serverKey != null) {
-
-                    String authorization = "Basic " + serverKey;
-                    observable = apiInterface.paymentUsingPermataBank(authorization,
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+                    observable = apiInterface.paymentUsingPermataBank(merchantToken,
                             permataBankTransfer);
 
                     subscription = observable.subscribeOn(Schedulers
@@ -253,17 +249,19 @@ class TransactionManager {
 
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
-                    VeritransRestAdapter.getApiClient(activity, true);
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
 
-                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
-                if (serverKey != null) {
+                //String serverKey = Utils.calculateBase64(veritransSDK.getMerchantToken());
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
 
-                    String authorization = "Basic " + serverKey;
-                    observable = apiInterface.paymentUsingCard(authorization,
+
+                    observable = apiInterface.paymentUsingCard(merchantToken,
                             cardTransfer);
 
                     cardPaymentSubscription = observable.subscribeOn(Schedulers
@@ -342,17 +340,15 @@ class TransactionManager {
 
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
-                    VeritransRestAdapter.getApiClient(activity, true);
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
-
-                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
-                if (serverKey != null) {
-
-                    String authorization = "Basic " + serverKey;
-                    observable = apiInterface.paymentUsingMandiriClickPay(authorization,
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+                    observable = apiInterface.paymentUsingMandiriClickPay(merchantToken,
                             mandiriClickPayRequestModel);
 
                     subscription = observable.subscribeOn(Schedulers
@@ -440,17 +436,17 @@ class TransactionManager {
 
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
-                    VeritransRestAdapter.getApiClient(activity, true);
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
 
-                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
-                if (serverKey != null) {
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
 
-                    String authorization = "Basic " + serverKey;
-                    observable = apiInterface.paymentUsingMandiriBillPay(authorization,
+                    observable = apiInterface.paymentUsingMandiriBillPay(merchantToken,
                             mandiriBillPayTransferModel);
 
                     subscription = observable.subscribeOn(Schedulers
@@ -522,19 +518,19 @@ class TransactionManager {
         }
     }
 
-
     public static void paymentUsingCIMBPay(Activity activity, CIMBClickPayModel cimbClickPayModel,
                                            final TransactionCallback callback) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
-                    VeritransRestAdapter.getApiClient(activity, true);
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
-                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
-                if (serverKey != null) {
-                    String authorization = "Basic " + serverKey;
-                    observable = apiInterface.paymentUsingCIMBClickPay(authorization,
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+
+                    observable = apiInterface.paymentUsingCIMBClickPay(merchantToken,
                             cimbClickPayModel);
                     subscription = observable.subscribeOn(Schedulers
                             .io())
@@ -593,20 +589,19 @@ class TransactionManager {
         }
     }
 
-
     public static void paymentUsingMandiriECash(Activity activity, MandiriECashModel
             mandiriECashModel,
-                                           final TransactionCallback callback) {
+                                                final TransactionCallback callback) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
-                    VeritransRestAdapter.getApiClient(activity, true);
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
-                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
-                if (serverKey != null) {
-                    String authorization = "Basic " + serverKey;
-                    observable = apiInterface.paymentUsingMandiriECash(authorization,
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+                    observable = apiInterface.paymentUsingMandiriECash(merchantToken,
                             mandiriECashModel);
                     subscription = observable.subscribeOn(Schedulers
                             .io())
@@ -619,10 +614,12 @@ class TransactionManager {
                                     }
                                     releaseResources();
                                 }
+
                                 @Override
                                 public void onError(Throwable throwable) {
                                     callback.onFailure(throwable.getMessage(), null);
                                 }
+
                                 @Override
                                 public void onNext(TransactionResponse transferResponse) {
                                     if (transferResponse != null) {
@@ -663,8 +660,6 @@ class TransactionManager {
         }
     }
 
-
-
     public static void paymentUsingEpayBri(Activity activity, EpayBriTransfer epayBriTransfer,
                                            final TransactionCallback callback) {
 
@@ -672,17 +667,16 @@ class TransactionManager {
 
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
-                    VeritransRestAdapter.getApiClient(activity, true);
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
 
-                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
-                if (serverKey != null) {
-
-                    String authorization = "Basic " + serverKey;
-                    observable = apiInterface.paymentUsingEpayBri(authorization,
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+                    observable = apiInterface.paymentUsingEpayBri(merchantToken,
                             epayBriTransfer);
 
                     subscription = observable.subscribeOn(Schedulers
@@ -760,19 +754,17 @@ class TransactionManager {
 
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
-                    VeritransRestAdapter.getApiClient(activity, true);
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionStatusResponse> observable = null;
 
-                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
-                if (serverKey != null) {
-
-                    String authorization = "Basic " + serverKey;
-                    observable = apiInterface.transactionStatus(authorization,
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+                    observable = apiInterface.transactionStatus(merchantToken,
                             id);
-
                     paymentStatusSubscription = observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -836,22 +828,21 @@ class TransactionManager {
     IndosatDompetkuRequest
             indosatDompetkuRequest, final TransactionCallback callback) {
 
-
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
-                    VeritransRestAdapter.getApiClient(activity, true);
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
 
-                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
-                if (serverKey != null) {
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
 
-                    String authorization = "Basic " + serverKey;
-                    observable = apiInterface.paymentUsingIndosatDompetku(authorization,
+                    observable = apiInterface.paymentUsingIndosatDompetku(merchantToken,
                             indosatDompetkuRequest);
 
                     subscription = observable.subscribeOn(Schedulers
@@ -923,7 +914,6 @@ class TransactionManager {
         }
     }
 
-
     public static void paymentUsingIndomaret(final Activity activity, final IndomaretRequestModel
             indomaretRequestModel, final TransactionCallback callback) {
 
@@ -931,17 +921,16 @@ class TransactionManager {
 
         if (veritransSDK != null) {
             VeritranceApiInterface apiInterface =
-                    VeritransRestAdapter.getApiClient(activity, true);
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
 
-                String serverKey = Utils.calculateBase64(veritransSDK.getServerKey());
-                if (serverKey != null) {
-
-                    String authorization = "Basic " + serverKey;
-                    observable = apiInterface.paymentUsingIndomaret(authorization,
+                    observable = apiInterface.paymentUsingIndomaret(merchantToken,
                             indomaretRequestModel);
 
                     subscription = observable.subscribeOn(Schedulers
@@ -1013,7 +1002,6 @@ class TransactionManager {
         }
     }
 
-
     private static void displayTokenResponse(TokenDetailsResponse tokenDetailsResponse) {
         Logger.d("token response: status code ", "" +
                 tokenDetailsResponse.getStatusCode());
@@ -1049,7 +1037,6 @@ class TransactionManager {
                 "" + transferResponse
                         .getTransactionStatus());
     }
-
 
     private static void releaseResources() {
         if (VeritransSDK.getVeritransSDK() != null) {

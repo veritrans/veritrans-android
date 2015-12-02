@@ -97,5 +97,65 @@ class VeritransRestAdapter {
 
     }
 
+    public static VeritranceApiInterface getMerchantApiClient(final Activity activity,
+                                                      boolean showNetworkNotAvailableDialog) {
+        if (Utils.isNetworkAvailable(activity)) {
 
+            if (sVeritranceApiInterface == null) {
+                OkHttpClient okHttpClient = new OkHttpClient();
+                okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+                Gson gson = new GsonBuilder()
+                        .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                        .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                        .create();
+
+                RestAdapter.Builder builder = new RestAdapter.Builder()
+                        .setConverter(new GsonConverter(gson))
+                        .setLogLevel(RestAdapter.LogLevel.FULL)
+                        .setClient(new OkClient(okHttpClient));
+
+                RestAdapter restAdapter;
+
+
+                if (BuildConfig.DEBUG) {
+                    builder.setEndpoint(Constants.BASE_URL_MERCHANT_FOR_DEBUG);
+                    restAdapter = builder.build();
+                    restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
+
+                } else {
+                    builder.setEndpoint(Constants.BASE_URL_MERCHANT_FOR_RELEASE);
+                    restAdapter = builder.build();
+                }
+
+
+                sVeritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
+            }
+
+            return sVeritranceApiInterface;
+
+        } else {
+
+            if (showNetworkNotAvailableDialog && activity != null) {
+                try {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            VeritransDialog dialog = new VeritransDialog(activity,
+                                    activity.getString(R.string.no_network),
+                                    activity.getString(R.string.no_network_msg),
+                                    activity.getString(R.string.ok), null);
+                            dialog.show();
+                        }
+                    });
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        return null;
+
+    }
 }
