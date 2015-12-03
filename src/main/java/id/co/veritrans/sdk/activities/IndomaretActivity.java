@@ -154,7 +154,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         if (view.getId() == R.id.btn_confirm_payment) {
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
 
-                performTrsansaction();
+                performTransaction();
 
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
 
@@ -218,7 +218,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void performTrsansaction() {
+    private void performTransaction() {
 
         SdkUtil.showProgressDialog(IndomaretActivity.this, false);
 
