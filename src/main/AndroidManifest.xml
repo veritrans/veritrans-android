@@ -61,6 +61,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
 
+
+        <activity
+            android:name=".activities.MandiriClickPayInstructionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+
+
     </application>
 
 </manifest>
