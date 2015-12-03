@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
@@ -20,6 +21,7 @@ public class NotificationActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private String currentFragmentName;
     private TransactionResponse transactionResponse;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,9 @@ public class NotificationActivity extends AppCompatActivity {
         transactionResponse = (TransactionResponse) getIntent().getSerializableExtra(Constants.PAYMENT_STATUS);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_notification);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getString(R.string.title_payment_status));
         setUpFragment();
     }
 
@@ -55,10 +60,10 @@ public class NotificationActivity extends AppCompatActivity {
             if (!fragmentPopped) { //fragment not in back stack, create it.
                 Logger.i("fragment not in back stack, create it");
                 FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.notification_container_layout, fragment, backStateName);
-                if (addToBackStack) {
+                ft.add(R.id.notification_container_layout, fragment, backStateName);
+                /*if (addToBackStack) {
                     ft.addToBackStack(backStateName);
-                }
+                }*/
                 ft.commit();
                 currentFragmentName = backStateName;
             }

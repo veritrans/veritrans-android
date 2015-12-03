@@ -25,7 +25,8 @@ import retrofit.converter.GsonConverter;
 class VeritransRestAdapter {
 
     private static final String TAG = VeritransRestAdapter.class.getName();
-    private static VeritranceApiInterface sVeritranceApiInterface;
+    private static VeritranceApiInterface veritranceApiInterface;
+    private static VeritranceApiInterface merchantVeritranceApiInterface;
 
     /**
      * It will return instance of VeritranceApiInterface using that we can execute api calls.
@@ -39,7 +40,7 @@ class VeritransRestAdapter {
                                                       boolean showNetworkNotAvailableDialog) {
         if (Utils.isNetworkAvailable(activity)) {
 
-            if (sVeritranceApiInterface == null) {
+            if (veritranceApiInterface == null) {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
                 Gson gson = new GsonBuilder()
@@ -66,10 +67,10 @@ class VeritransRestAdapter {
                 }
 
 
-                sVeritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
+                veritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
             }
 
-            return sVeritranceApiInterface;
+            return veritranceApiInterface;
 
         } else {
 
@@ -101,7 +102,7 @@ class VeritransRestAdapter {
                                                       boolean showNetworkNotAvailableDialog) {
         if (Utils.isNetworkAvailable(activity)) {
 
-            if (sVeritranceApiInterface == null) {
+            if (merchantVeritranceApiInterface == null) {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
                 Gson gson = new GsonBuilder()
@@ -128,10 +129,10 @@ class VeritransRestAdapter {
                 }
 
 
-                sVeritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
+                merchantVeritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
             }
 
-            return sVeritranceApiInterface;
+            return merchantVeritranceApiInterface;
 
         } else {
 

@@ -246,5 +246,6 @@
     <string name="indosat_instruction_step5">5.\tInput your PIN.</string>
     <string name="indosat_instruction_step6">6.\tPayment Complete.</string>
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
+    <string name="title_payment_status">Payment Status</string>
 
 </resources>
