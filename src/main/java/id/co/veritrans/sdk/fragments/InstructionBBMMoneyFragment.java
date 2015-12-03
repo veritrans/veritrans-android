@@ -24,7 +24,7 @@ import id.co.veritrans.sdk.core.Logger;
  */
 public class InstructionBBMMoneyFragment extends Fragment implements View.OnClickListener {
 
-    private static final String BBM_MONEY_PACKAGE = "com.monitise.client.android.bbmmoney";
+    public static final String BBM_MONEY_PACKAGE = "com.monitise.client.android.bbmmoney";
     private static final String MARKET_URL = "market://details?id=";
     private static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=";
     private LinearLayout layoutGetBBMMoneyApp = null;
@@ -50,7 +50,7 @@ public class InstructionBBMMoneyFragment extends Fragment implements View.OnClic
         layoutGetBBMMoneyApp.setOnClickListener(this);
     }
 
-    private boolean isBBMMoneyInstalled(String bbmUri) {
+    public boolean isBBMMoneyInstalled(String bbmUri) {
         boolean isInstalled = false;
         PackageManager pm = getActivity().getPackageManager();
         try {

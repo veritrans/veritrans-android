@@ -17,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
@@ -371,6 +372,23 @@ public class SdkUtil {
 
         return model;
 
+    }
+
+    protected static BBMMoneyRequestModel getBBMMoneyRequestModel(TransactionRequest request) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        BBMMoneyRequestModel model =
+                new BBMMoneyRequestModel();
+        model.setPaymentType("bbm_money");
+        model.setTransactionDetails(transactionDetails);
+        return model;
     }
 
 

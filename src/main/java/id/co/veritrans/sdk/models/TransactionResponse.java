@@ -91,6 +91,9 @@ public class TransactionResponse implements Serializable {
     @SerializedName("payment_code")
     private String paymentCodeIndomaret;
 
+    @SerializedName("permata_va_number")
+    private String paymentCodeBBMMoney;
+
     public TransactionResponse(String statusCode, String statusMessage, String transactionId,
                                String orderId, String grossAmount, String paymentType,
                                String transactionTime, String transactionStatus) {
@@ -279,5 +282,13 @@ public class TransactionResponse implements Serializable {
 
     public void setPaymentCodeIndomaret(String paymentCodeIndomaret) {
         this.paymentCodeIndomaret = paymentCodeIndomaret;
+    }
+
+    public String getPaymentCodeBBMMoney() {
+        return paymentCodeBBMMoney;
+    }
+
+    public void setPaymentCodeBBMMoney(String paymentCodeBBMMoney) {
+        this.paymentCodeBBMMoney = paymentCodeBBMMoney;
     }
 }

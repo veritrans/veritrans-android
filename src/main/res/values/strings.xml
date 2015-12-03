@@ -178,6 +178,9 @@
 
     <string name="get_bbm_money_app">Get BBM Money App</string>
 
+    <string name="title_bbm_not_found">BBM Money App not found!</string>
+    <string name="message_bbm_not_found">To continue payment, please install BBM Money App.</string>
+
 
     <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">1.\tEnter Your PIN.</string>
