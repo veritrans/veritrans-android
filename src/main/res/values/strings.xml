@@ -176,6 +176,8 @@
         then enter Payment Code into the \'Payment Code\' field.</string>
     <string name="bbm_money_instruction_step6">6.\tInput amount to be paid into \'Amount\'.</string>
 
+    <string name="get_bbm_money_app">Get BBM Money App</string>
+
 
     <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">1.\tEnter Your PIN.</string>

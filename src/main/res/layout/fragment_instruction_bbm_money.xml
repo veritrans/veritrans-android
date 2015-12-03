@@ -13,6 +13,37 @@
         android:orientation="vertical"
         >
 
+        <LinearLayout
+            android:id="@+id/layout_get_bbm__money_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <id.co.veritrans.sdk.widgets.TextViewFont
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/sixteen_dp"
+                android:gravity="center_horizontal"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:text="@string/get_bbm_money_app"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/twelve_dp"
+                app:font="@string/font_open_sans_regular"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/sixteen_dp"
+                android:src="@drawable/ic_googleplay"
+                />
+
+        </LinearLayout>
+
         <id.co.veritrans.sdk.widgets.TextViewFont
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
