@@ -46,7 +46,12 @@ public class MandiriClickPayModel {
     }
 
     public void setInput2(String input2) {
-        this.input2 = input2;
+        //required amount in integer format
+        if(input2 != null) {
+            this.input2 = ""+ (int) Double.parseDouble(input2);
+        }else {
+            this.input2 = input2;
+        }
     }
 
     public String getInput1() {
