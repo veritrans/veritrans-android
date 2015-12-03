@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
@@ -160,6 +159,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                     mandiriClickPayModel.setInput3(mTextViewInput3.getText().toString());
                     mandiriClickPayModel.setToken(challengeToken);
 
+                    SdkUtil.showProgressDialog(MandiriClickPayActivity.this, false);
                     makeTransaction(mandiriClickPayModel);
 
                 }
@@ -188,17 +188,14 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onFailure(String errorMessage, TransactionResponse
                             transactionResponse) {
-                        Toast.makeText(getApplicationContext(), "failed : " + errorMessage, Toast
-                                .LENGTH_SHORT).show();
+                        SdkUtil.hideProgressDialog();
                     }
 
                     @Override
                     public void onSuccess(TransactionResponse transactionResponse) {
-                        Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT)
-                                .show();
+                        SdkUtil.hideProgressDialog();
                     }
                 });
-
 
     }
 
