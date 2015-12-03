@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.MandiriClickPayActivity;
+import id.co.veritrans.sdk.activities.MandiriClickPayInstructionActivity;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -42,6 +44,25 @@ public class MandiriClickPayFragment extends Fragment {
         mEditTextDebitCardNumber = (EditText) view.findViewById(R.id.et_debit_card_no);
         mTextViewSeeInstruction = (TextViewFont) view.findViewById(R.id.text_see_instruction);
 
+        setTextWatcher();
+
+        if (BuildConfig.DEBUG) {
+            mEditTextDebitCardNumber.setText(DUMMY_CARD_NUMBER);
+        }
+
+
+        mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                getActivity().startActivity(new Intent(getActivity(), MandiriClickPayInstructionActivity.class));
+
+            }
+        });
+
+    }
+
+    private void setTextWatcher() {
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence text, int start, int count, int after) {
@@ -81,11 +102,6 @@ public class MandiriClickPayFragment extends Fragment {
 
 
         mEditTextDebitCardNumber.addTextChangedListener(textWatcher);
-
-        if (BuildConfig.DEBUG) {
-            mEditTextDebitCardNumber.setText(DUMMY_CARD_NUMBER);
-        }
-
     }
 
 
@@ -103,6 +119,5 @@ public class MandiriClickPayFragment extends Fragment {
         }
         return null;
     }
-
 
 }
