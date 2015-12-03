@@ -165,6 +165,18 @@
     <string name="indomaret_instruction_step6">6.\tYour transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
 
 
+    <!-- BBM Money Instruction-->
+    <string name="bbm_money_instruction_step1">1.\tPlease click \'Confirm Payment\'.</string>
+    <string name="bbm_money_instruction_step2">2.\tOpen or install the BBM™ Money app on your
+        smartphone.</string>
+    <string name="bbm_money_instruction_step3">3.\tMake sure you have enough balance in your BBM™ Money wallet.</string>
+    <string name="bbm_money_instruction_step4">4.\tLogin to your BBM™ Money account and select
+        \'Send To Company\'.</string>
+    <string name="bbm_money_instruction_step5">5.\tSelect \'Online Shopping\' as the biller and
+        then enter Payment Code into the \'Payment Code\' field.</string>
+    <string name="bbm_money_instruction_step6">6.\tInput amount to be paid into \'Amount\'.</string>
+
+
     <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">1.\tEnter Your PIN.</string>
     <string name="permata_instruction_step2">2.\tOn the main menu, Choose \'Other Transaction\'.</string>
