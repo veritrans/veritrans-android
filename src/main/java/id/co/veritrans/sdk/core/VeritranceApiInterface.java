@@ -29,7 +29,7 @@ public interface VeritranceApiInterface {
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingPermataBank(@Header("Authorization")
+    Observable<TransactionResponse> paymentUsingPermataBank(@Header("x-auth")
                                                             String authorization,
                                                             @Body PermataBankTransfer
                                                                     permataBankTransfer);
