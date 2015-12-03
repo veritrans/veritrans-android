@@ -181,4 +181,6 @@ public class Constants {
     public static final String PAYMENT_MANDIRI_ECASH = "mandiri_ecash";
     public static final String PAYMENT_INDOMARET = "cstore";
     public static final String PENDING = "pending";
+    public static final String VERITRANS_RESPONSE = "Android";
+    public static final String PAYMENT_RESPONSE = "payment_response";
 }

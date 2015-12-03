@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -69,6 +70,8 @@ public class WebviewFragment extends Fragment {
         }
         webView.setWebViewClient(new VeritransWebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
+        webView.addJavascriptInterface(new JsInterface(), Constants.VERITRANS_RESPONSE);
+       // webView.addJavascriptInterface(new WebAppInterface(getActivity()), "Android");
     }
 
     public void webviewBackPressed() {
@@ -92,11 +95,11 @@ public class WebviewFragment extends Fragment {
                 Intent returnIntent = new Intent();
                 getActivity().setResult(getActivity().RESULT_OK, returnIntent);
                 getActivity().finish();
-            } else if (url.contains(Constants.CALLBACK_URL)) {
+            } /*else if (url.contains(Constants.CALLBACK_URL)) {
                 Intent returnIntent = new Intent();
                 getActivity().setResult(getActivity().RESULT_OK, returnIntent);
                 getActivity().finish();
-            }
+            }*/
         }
 
         @Override
@@ -106,4 +109,34 @@ public class WebviewFragment extends Fragment {
             SdkUtil.showProgressDialog(getActivity(), false);
         }
     }
+
+
+    public class JsInterface {
+
+        @JavascriptInterface
+        public void paymentResponse(String data) {
+            Logger.i("paymentStatus:"+data);
+            Intent intent = new Intent();
+            intent.putExtra(Constants.PAYMENT_RESPONSE, data);
+            getActivity().setResult(getActivity().RESULT_OK, intent);
+            getActivity().finish();
+        }
+
+    }
+
+    /*public class WebAppInterface {
+        Context mContext;
+
+        *//** Instantiate the interface and set the context *//*
+        WebAppInterface(Context c) {
+            mContext = c;
+        }
+
+        *//** Show a toast from the web page *//*
+        @JavascriptInterface
+        public void showToast(String toast) {
+            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+        }
+    }*/
+
 }
