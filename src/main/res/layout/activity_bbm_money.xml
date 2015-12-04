@@ -9,7 +9,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_confirm_payment"
+        android:layout_above="@+id/layout_pay_with_bbm"
         >
 
         <android.support.design.widget.AppBarLayout
@@ -186,6 +186,56 @@
         android:background="@drawable/blue_button_selector"
         android:text="@string/confirm_payment"
         android:textAllCaps="true"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        />
+
+    <LinearLayout
+        android:id="@+id/layout_pay_with_bbm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/eight_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:background="@drawable/blue_button_selector"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/twelve_dp"
+        android:paddingTop="@dimen/twelve_dp"
+        android:visibility="gone"
+        >
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/bbm_btn_text1"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:gravity="center"
+            android:src="@drawable/ic_btn_bbm"
+            />
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/bbm_btn_text2"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>

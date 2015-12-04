@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import id.co.veritrans.sdk.R;
@@ -43,6 +44,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
     private Button buttonConfirmPayment = null;
     private AppBarLayout appBarLayout = null;
     private TextViewFont textViewTitle = null;
+    private LinearLayout layoutPayWithBBM = null;
 
     private VeritransSDK veritransSDK = null;
     private Toolbar toolbar = null;
@@ -119,6 +121,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+        layoutPayWithBBM = (LinearLayout) findViewById(R.id.layout_pay_with_bbm);
 
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
@@ -133,6 +136,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
             textViewOrderId.setText("" + veritransSDK.getTransactionRequest().getOrderId());
             buttonConfirmPayment.setTypeface(veritransSDK.getTypefaceOpenSansSemiBold());
             buttonConfirmPayment.setOnClickListener(this);
+            layoutPayWithBBM.setOnClickListener(this);
         }
     }
 
@@ -172,6 +176,10 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
                         getString(R.string.message_bbm_not_found), getString(R.string.got_it), "");
                 veritransDialog.show();
             }
+        }
+
+        if (view.getId() == R.id.layout_pay_with_bbm){
+            Logger.i("Pay with clicked");
         }
     }
 
@@ -224,6 +232,8 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         currentFragment = STATUS_FRAGMENT;
+        buttonConfirmPayment.setVisibility(View.VISIBLE);
+        layoutPayWithBBM.setVisibility(View.GONE);
         buttonConfirmPayment.setText(R.string.done);
 
         collapsingToolbarLayout.setVisibility(View.GONE);
@@ -250,7 +260,8 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
                     bbmMoneyPaymentFragment, PAYMENT_FRAGMENT);
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();
-            buttonConfirmPayment.setText("Pay With BBM Money"); //TODO... fix this with icon
+            buttonConfirmPayment.setVisibility(View.GONE);
+            layoutPayWithBBM.setVisibility(View.VISIBLE);
             currentFragment = PAYMENT_FRAGMENT;
         } else {
             SdkUtil.showSnackbar(BBMMoneyActivity.this, SOMETHING_WENT_WRONG);
