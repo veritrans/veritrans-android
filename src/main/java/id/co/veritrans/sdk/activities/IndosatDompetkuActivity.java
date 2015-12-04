@@ -31,7 +31,8 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
  * <p/>
  * <p/>
  * It has -
- * {@link id.co.veritrans.sdk.fragments.InstructionIndosatFragment} home fragment - an initial fragment which contains an instruction.
+ * {@link id.co.veritrans.sdk.fragments.InstructionIndosatFragment} home fragment - an initial
+ * fragment which contains an instruction.
  * {@link BankTransactionStatusFragment} - used to display status of transaction.
  * <p/>
  * <p/>
@@ -147,7 +148,8 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
             mTextViewTitle.setText(getResources().getString(R.string.indosat_dompetku));
 
         } else {
-            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, Constants
+                    .ERROR_SOMETHING_WENT_WRONG);
             Logger.e(IndosatDompetkuActivity.class.getSimpleName(), Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -182,22 +184,21 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
     }
 
 
-
-
     /**
      * Performs the validation and if satisfies the required condition then it will either start
      * indosat dompetku payment procedure.
      */
     private void performTrsansaction() {
 
-        if ( mIndosatFragment != null && !mIndosatFragment.isDetached()) {
+        if (mIndosatFragment != null && !mIndosatFragment.isDetached()) {
 
             phoneNumber = mIndosatFragment.getPhoneNumber();
 
-            if ( !TextUtils.isEmpty( phoneNumber ) && SdkUtil.isPhoneNumberValid(phoneNumber)) {
-                Logger.i("setting phone number "+phoneNumber);
-                mVeritransSDK.getTransactionRequest().getCustomerDetails().setPhone(phoneNumber.trim());
-            } else  {
+            if (!TextUtils.isEmpty(phoneNumber) && SdkUtil.isPhoneNumberValid(phoneNumber)) {
+                Logger.i("setting phone number " + phoneNumber);
+                mVeritransSDK.getTransactionRequest().getCustomerDetails().setPhone(phoneNumber
+                        .trim());
+            } else {
                 SdkUtil.showSnackbar(IndosatDompetkuActivity.this, Constants
                         .ERROR_INVALID_PHONE_NUMBER);
                 return;
@@ -209,8 +210,8 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
 
         if (veritransSDK != null) {
 
-                SdkUtil.showProgressDialog(IndosatDompetkuActivity.this, false);
-                transactionUsingIndosat(veritransSDK);
+            SdkUtil.showProgressDialog(IndosatDompetkuActivity.this, false);
+            transactionUsingIndosat(veritransSDK);
 
         } else {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
@@ -219,15 +220,14 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
     }
 
 
-
-
     /**
      * It execute mandiri bill payment transaction and in onSuccess() of callback method it will
-     * call {@link #setUpTransactionStatusFragment(TransactionResponse)}  to display appropriate message.
+     * call {@link #setUpTransactionStatusFragment(TransactionResponse)}  to display appropriate
+     * message.
      *
      * @param veritransSDK
      */
-    private void transactionUsingIndosat(final  VeritransSDK veritransSDK) {
+    private void transactionUsingIndosat(final VeritransSDK veritransSDK) {
 
         veritransSDK.paymentUsingIndosatDompetku(IndosatDompetkuActivity.this, new
                 TransactionCallback() {
@@ -237,13 +237,14 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
                                                   indosatTransferStatus) {
 
                         SdkUtil.hideProgressDialog();
+                        mTransactionResponse = indosatTransferStatus;
 
                         if (indosatTransferStatus != null) {
-                            mTransactionResponse = indosatTransferStatus;
                             setUpTransactionStatusFragment(indosatTransferStatus);
                         } else {
 
-                            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, SOMETHING_WENT_WRONG);
+                            SdkUtil.showSnackbar(IndosatDompetkuActivity.this,
+                                    SOMETHING_WENT_WRONG);
                             onBackPressed();
                         }
 
@@ -252,6 +253,9 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onFailure(String errorMessage, TransactionResponse
                             transactionResponse) {
+
+                        mTransactionResponse = transactionResponse;
+                        IndosatDompetkuActivity.this.errorMessage = errorMessage;
                         try {
                             SdkUtil.hideProgressDialog();
                             SdkUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
@@ -261,7 +265,6 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
                     }
                 }, phoneNumber);
     }
-
 
 
     /**
@@ -282,7 +285,8 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         setSupportActionBar(mToolbar);
 
         BankTransactionStatusFragment bankTransactionStatusFragment =
-                BankTransactionStatusFragment.newInstance(transactionResponse, true);
+                BankTransactionStatusFragment.newInstance(transactionResponse,
+                        Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU);
 
         // setup transaction status fragment
         fragmentTransaction.replace(R.id.indosat_container,
@@ -290,8 +294,6 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();
     }
-
-
 
 
     /**
