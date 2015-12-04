@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.MandiriClickPayFragment;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.TransactionResponse;
@@ -36,6 +38,18 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
     private VeritransSDK mVeritransSDK = null;
 
 
+    public static final String HOME_FRAGMENT = "home";
+    public static final String STATUS_FRAGMENT = "transaction_status";
+    public static final String SOMETHING_WENT_WRONG = "Something went wrong";
+    public String currentFragment = "home";
+
+
+    // for result
+    private TransactionResponse mTransactionResponse = null;
+    private String errorMessage = null;
+    private int RESULT_CODE = RESULT_CANCELED;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +67,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
         initializeViews();
         bindDataToView();
-        setUpFragment();
+        setUpHomeFragment();
 
     }
 
@@ -79,7 +93,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         mTextViewInput3.setText("" + SdkUtil.generateRandomNumber());
     }
 
-    private void setUpFragment() {
+    private void setUpHomeFragment() {
 
         // setup  fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -89,13 +103,14 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         fragmentTransaction.add(R.id.mandiri_clickpay_container,
                 mMandiriClickPayFragment);
         fragmentTransaction.commit();
+
+        currentFragment = HOME_FRAGMENT;
     }
 
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        setResultAndFinish();
     }
 
 
@@ -124,11 +139,29 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         }
     }
 
+    /**
+     * Handles the click of confirm payment button based on following 2 conditions.
+     * <p/>
+     * 1) if current fragment is home fragment then it will start payment execution.
+     * 2) if current fragment is status fragment  then it will send result back to {@link
+     * PaymentMethodsActivity}.
+     *
+     * @param view
+     */
     @Override
     public void onClick(View view) {
 
         if (view.getId() == R.id.btn_confirm_payment) {
-            validateInformation();
+
+            if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
+
+                validateInformation();
+
+            } else {
+                RESULT_CODE = RESULT_OK;
+                onBackPressed();
+
+            }
         }
     }
 
@@ -179,6 +212,12 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
     }
 
+    /**
+     * execute payment code and on success set status fragment to show payment information.
+     * and in onFailure displays error message.
+     *
+     * @param mandiriClickPayModel
+     */
     private void makeTransaction(MandiriClickPayModel mandiriClickPayModel) {
 
 
@@ -188,16 +227,84 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onFailure(String errorMessage, TransactionResponse
                             transactionResponse) {
+
+
+                        mTransactionResponse = transactionResponse;
+                        MandiriClickPayActivity.this.errorMessage = errorMessage;
+
                         SdkUtil.hideProgressDialog();
+                        if (errorMessage != null) {
+                            SdkUtil.showSnackbar(MandiriClickPayActivity.this, errorMessage);
+                        }
                     }
 
                     @Override
                     public void onSuccess(TransactionResponse transactionResponse) {
                         SdkUtil.hideProgressDialog();
+
+                        mTransactionResponse = transactionResponse;
+
+                        if (transactionResponse != null) {
+                            setUpTransactionStatusFragment(transactionResponse);
+                        } else {
+                            SdkUtil.showSnackbar(MandiriClickPayActivity.this,
+                                    SOMETHING_WENT_WRONG);
+                        }
+
                     }
                 });
 
     }
 
 
+    /**
+     * Displays status of transaction from {@link TransactionResponse} object.
+     *
+     * @param transactionResponse
+     */
+    private void setUpTransactionStatusFragment(final TransactionResponse
+                                                        transactionResponse) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        currentFragment = STATUS_FRAGMENT;
+        mButtonConfirmPayment.setText(R.string.done);
+
+        mToolbar.setNavigationIcon(R.drawable.ic_close);
+        setSupportActionBar(mToolbar);
+
+        BankTransactionStatusFragment bankTransactionStatusFragment =
+                BankTransactionStatusFragment.newInstance(transactionResponse,
+                        Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY);
+
+        // setup transaction status fragment
+        fragmentTransaction.replace(R.id.bank_transfer_container,
+                bankTransactionStatusFragment, STATUS_FRAGMENT);
+        fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
+        fragmentTransaction.commit();
+    }
+
+
+    /**
+     * send result back to  {@link PaymentMethodsActivity} and finish current activity.
+     */
+    private void setResultAndFinish() {
+        Intent data = new Intent();
+        data.putExtra(Constants.TRANSACTION_RESPONSE, mTransactionResponse);
+        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        setResult(RESULT_CODE, data);
+        finish();
+    }
+
+
+    /**
+     * in case of transaction failure it will change the text of confirm payment button to 'RETRY'
+     */
+    public void activateRetry() {
+
+        if (mButtonConfirmPayment != null) {
+            mButtonConfirmPayment.setText(getResources().getString(R.string.retry));
+        }
+    }
 }

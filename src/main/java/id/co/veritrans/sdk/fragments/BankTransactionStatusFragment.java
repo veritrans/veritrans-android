@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferActivity;
 import id.co.veritrans.sdk.activities.IndosatDompetkuActivity;
+import id.co.veritrans.sdk.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -24,7 +25,9 @@ public class BankTransactionStatusFragment extends Fragment {
     private static final String VIRTUAL_ACCOUNT = "Virtual Account";
     private static final String MANDIRI_BILL = "Mandiri Bill Payment";
 
+
     private static final String DATA = "data";
+    public static final String PENDING = "Pending";
 
     private TransactionResponse mPermataBankTransferResponse = null;
 
@@ -37,8 +40,8 @@ public class BankTransactionStatusFragment extends Fragment {
     private TextViewFont mTextViewFontTransactionStatus = null;
     private TextViewFont mTextViewFontPaymentErrorMessage = null;
     private ImageView mImageViewTransactionStatus = null;
-    private static  final  String IS_FROM_INDOSAT = "indosat";
-    private boolean isFromIndosat = false;
+    private static final String PAYMENT_TYPE = "payment_type";
+    private int mPaymentType = -1;
 
     /**
      * It creates new BankTransactionStatusFragment object and set TransactionResponse object to it,
@@ -48,11 +51,12 @@ public class BankTransactionStatusFragment extends Fragment {
      * @return instance of BankTransactionStatusFragment.
      */
     public static BankTransactionStatusFragment newInstance(TransactionResponse
-                                                                    transactionResponse, boolean isFromIndosat) {
+                                                                    transactionResponse,
+                                                            int paymentType) {
         BankTransactionStatusFragment fragment = new BankTransactionStatusFragment();
         Bundle data = new Bundle();
         data.putSerializable(DATA, transactionResponse);
-        data.putBoolean(IS_FROM_INDOSAT, isFromIndosat);
+        data.putInt(PAYMENT_TYPE, paymentType);
         fragment.setArguments(data);
         return fragment;
     }
@@ -75,7 +79,7 @@ public class BankTransactionStatusFragment extends Fragment {
         //retrieve data from bundle.
         Bundle data = getArguments();
         mPermataBankTransferResponse = (TransactionResponse) data.getSerializable(DATA);
-        isFromIndosat = data.getBoolean(IS_FROM_INDOSAT);
+        mPaymentType = data.getInt(PAYMENT_TYPE);
 
         initializeDataToView();
     }
@@ -108,17 +112,23 @@ public class BankTransactionStatusFragment extends Fragment {
 
         if (mPermataBankTransferResponse != null) {
 
-            if ( getActivity() != null ) {
+            if (getActivity() != null) {
 
-                if( !isFromIndosat ) {
-                    if (((BankTransferActivity) getActivity()).getPosition()
-                            == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
-                        mTextViewBankName.setText(MANDIRI_BILL);
-                    } else {
-                        mTextViewBankName.setText(VIRTUAL_ACCOUNT);
-                    }
-                }else {
-                    mTextViewBankName.setText(getActivity().getResources().getString(R.string.indosat_dompetku));
+                if (((BankTransferActivity) getActivity()).getPosition()
+                        == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
+                    mTextViewBankName.setText(MANDIRI_BILL);
+
+                } else if (((BankTransferActivity) getActivity()).getPosition()
+                        == Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER) {
+                    mTextViewBankName.setText(VIRTUAL_ACCOUNT);
+                } else if (((BankTransferActivity) getActivity()).getPosition()
+                        == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
+                    mTextViewBankName.setText(getActivity().getResources().getString(R.string
+                            .indosat_dompetku));
+                } else if (((BankTransferActivity) getActivity()).getPosition()
+                        == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY){
+                    mTextViewBankName.setText(getActivity().getResources().getString(R.string
+                            .mandiri_click_pay));
                 }
             }
 
@@ -126,7 +136,7 @@ public class BankTransactionStatusFragment extends Fragment {
             mTextViewOrderId.setText(mPermataBankTransferResponse.getOrderId());
             mTextViewAmount.setText(mPermataBankTransferResponse.getGrossAmount());
 
-            if (mPermataBankTransferResponse.getTransactionStatus().contains("Pending") ||
+            if (mPermataBankTransferResponse.getTransactionStatus().contains(PENDING) ||
                     mPermataBankTransferResponse.getTransactionStatus().contains("pending")) {
 
             } else if (mPermataBankTransferResponse.getStatusCode().equalsIgnoreCase(Constants
@@ -138,13 +148,15 @@ public class BankTransactionStatusFragment extends Fragment {
 
                 setUiForFailure();
 
-                if (getActivity() != null ) {
+                if (getActivity() != null) {
 
-                    if (isFromIndosat) {
-                        // change name of button to 'RETRY'
+                    // change name of button to 'RETRY'
+                    if (mPaymentType == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
                         ((IndosatDompetkuActivity) getActivity()).activateRetry();
-                    }else {
-                        // change name of button to 'RETRY'
+                    } else if (mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY){
+                        ((MandiriClickPayActivity) getActivity()).activateRetry();
+                    }
+                    else {
                         ((BankTransferActivity) getActivity()).activateRetry();
                     }
                 }
