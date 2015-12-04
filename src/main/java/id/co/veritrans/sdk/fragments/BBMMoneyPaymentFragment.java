@@ -22,6 +22,8 @@ public class BBMMoneyPaymentFragment extends Fragment {
     public static final String VALID_UNTILL = "Complete payment via BBM Money App before: ";
     private static TransactionResponse transactionResponse = null;
 
+    public String PERMATA_VA = null;
+
     //views
 
     private TextViewFont mTextViewValidity = null;
@@ -65,8 +67,10 @@ public class BBMMoneyPaymentFragment extends Fragment {
             mTextViewValidity.setText(VALID_UNTILL+"\n" + Utils.getValidityTime
                     (transactionResponse.getTransactionTime()));
 
-            if (transactionResponse.getPermataVANumber() != null)
+            if (transactionResponse.getPermataVANumber() != null){
                 mTextViewPaymentCode.setText(transactionResponse.getPermataVANumber());
+                PERMATA_VA = transactionResponse.getPermataVANumber();
+            }
 
         } else {
             //TODO..what to do here...

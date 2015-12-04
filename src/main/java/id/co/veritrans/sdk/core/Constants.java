@@ -181,4 +181,19 @@ public class Constants {
     public static final String PAYMENT_MANDIRI_ECASH = "mandiri_ecash";
     public static final String PAYMENT_INDOMARET = "cstore";
     public static final String PENDING = "pending";
+
+    //BBM App Installed or not
+    public static final String BBM_MONEY_PACKAGE = "com.monitise.client.android.bbmmoney";
+    public static final String MARKET_URL = "market://details?id=";
+    public static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=";
+
+    //BBM CallBack Urls
+    public static final String BBM_PREFIX_URL = "bbmmoney://api/payment/imp?data=";
+
+    public static final String CHECK_STATUS = "https://hangout.betas" +
+            ".in/veritrans/api/paymentstatus";
+    public static final String BEFORE_PAYMENT_ERROR = "https://hangout.betas" +
+            ".in/veritrans/api/paymentstatus";
+    public static final String USER_CANCEL = "https://hangout.betas" +
+            ".in/veritrans/api/paymentstatus";
 }

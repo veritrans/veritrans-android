@@ -1,6 +1,8 @@
 package id.co.veritrans.sdk.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -14,6 +16,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Timer;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
@@ -24,6 +33,8 @@ import id.co.veritrans.sdk.fragments.BBMMoneyPaymentFragment;
 import id.co.veritrans.sdk.fragments.BBMMoneyPaymentStatusFragment;
 import id.co.veritrans.sdk.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.fragments.InstructionBBMMoneyFragment;
+import id.co.veritrans.sdk.models.BBMCallBackUrl;
+import id.co.veritrans.sdk.models.BBMUrlEncodeJson;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
@@ -50,13 +61,13 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
     private Toolbar toolbar = null;
 
     private InstructionBBMMoneyFragment instructionBBMMoneyFragment = null;
+    private BBMMoneyPaymentFragment bbmMoneyPaymentFragment = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
     private int position = Constants.PAYMENT_METHOD_BBM_MONEY;
     private int RESULT_CODE = RESULT_CANCELED;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,8 +154,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_confirm_payment) {
-            if (instructionBBMMoneyFragment.isBBMMoneyInstalled(InstructionBBMMoneyFragment
-                    .BBM_MONEY_PACKAGE)) {
+            if (instructionBBMMoneyFragment.isBBMMoneyInstalled(Constants.BBM_MONEY_PACKAGE)) {
 
                 if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
 
@@ -156,8 +166,6 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
 
                     if (transactionResponse != null) {
 //                        setUpTransactionStatusFragment(transactionResponse);
-
-                        //Here open BBM Money App
 
                     } else {
                         RESULT_CODE = RESULT_OK;
@@ -178,8 +186,15 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
             }
         }
 
-        if (view.getId() == R.id.layout_pay_with_bbm){
-            Logger.i("Pay with clicked");
+        if (view.getId() == R.id.layout_pay_with_bbm) {
+            String encodedUrl = createEncodedUrl();
+            String feedUrl = Constants.BBM_PREFIX_URL + encodedUrl;
+
+            if (instructionBBMMoneyFragment.isBBMMoneyInstalled(Constants.BBM_MONEY_PACKAGE)) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(feedUrl)));
+            } else {
+                instructionBBMMoneyFragment.openPlayStore();
+            }
         }
     }
 
@@ -254,7 +269,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
             // setup transaction fragment
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            BBMMoneyPaymentFragment bbmMoneyPaymentFragment =
+            bbmMoneyPaymentFragment =
                     BBMMoneyPaymentFragment.newInstance(transactionResponse);
             fragmentTransaction.replace(R.id.bbm_money_container,
                     bbmMoneyPaymentFragment, PAYMENT_FRAGMENT);
@@ -286,5 +301,29 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
         setResult(RESULT_CODE, data);
         finish();
+    }
+
+    private String createEncodedUrl() {
+        String encodedUrl = null;
+        BBMCallBackUrl bbmCallBackUrl = new BBMCallBackUrl();
+        bbmCallBackUrl.setCheckStatus(Constants.CHECK_STATUS);
+        bbmCallBackUrl.setBeforePaymentError(Constants.BEFORE_PAYMENT_ERROR);
+        bbmCallBackUrl.setUserCancel(Constants.USER_CANCEL);
+
+        BBMUrlEncodeJson bbmUrlEncodeJson = new BBMUrlEncodeJson();
+        if (bbmMoneyPaymentFragment.PERMATA_VA != null) {
+            bbmUrlEncodeJson.setReference(bbmMoneyPaymentFragment.PERMATA_VA);
+        }
+        bbmUrlEncodeJson.setCallbackUrl(bbmCallBackUrl);
+        String jsonString = bbmUrlEncodeJson.getString();
+        Logger.i("JSON String: " + jsonString);
+
+        try {
+            encodedUrl = URLEncoder.encode(jsonString, "UTF-8");
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return encodedUrl;
     }
 }

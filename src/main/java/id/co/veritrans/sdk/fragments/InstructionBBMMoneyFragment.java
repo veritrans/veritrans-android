@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 
 /**
@@ -24,9 +25,7 @@ import id.co.veritrans.sdk.core.Logger;
  */
 public class InstructionBBMMoneyFragment extends Fragment implements View.OnClickListener {
 
-    public static final String BBM_MONEY_PACKAGE = "com.monitise.client.android.bbmmoney";
-    private static final String MARKET_URL = "market://details?id=";
-    private static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=";
+
     private LinearLayout layoutGetBBMMoneyApp = null;
 
     @Nullable
@@ -41,7 +40,7 @@ public class InstructionBBMMoneyFragment extends Fragment implements View.OnClic
 
     private void initialiseView(View view){
         layoutGetBBMMoneyApp = (LinearLayout) view.findViewById(R.id.layout_get_bbm__money_app);
-        if (isBBMMoneyInstalled(BBM_MONEY_PACKAGE)){
+        if (isBBMMoneyInstalled(Constants.BBM_MONEY_PACKAGE)){
             layoutGetBBMMoneyApp.setVisibility(View.GONE);
         } else {
             layoutGetBBMMoneyApp.setVisibility(View.VISIBLE);
@@ -63,11 +62,12 @@ public class InstructionBBMMoneyFragment extends Fragment implements View.OnClic
         return isInstalled;
     }
 
-    private void openPlayStore() {
+    public void openPlayStore() {
         try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URL + BBM_MONEY_PACKAGE)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.MARKET_URL +
+                    Constants.BBM_MONEY_PACKAGE)));
         } catch (ActivityNotFoundException activityNotFoundException) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_STORE_URL + BBM_MONEY_PACKAGE)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.PLAY_STORE_URL + Constants.BBM_MONEY_PACKAGE)));
         }
     }
 
