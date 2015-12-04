@@ -4,18 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import java.util.Timer;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
@@ -23,17 +19,11 @@ import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
-import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.BankTransferFragment;
-import id.co.veritrans.sdk.fragments.BankTransferPaymentFragment;
 import id.co.veritrans.sdk.fragments.IndomaretPaymentFragment;
 import id.co.veritrans.sdk.fragments.IndomaretPaymentStatusFragment;
 import id.co.veritrans.sdk.fragments.InstructionIndomaretFragment;
-import id.co.veritrans.sdk.fragments.InstructionMandiriECashFragment;
-import id.co.veritrans.sdk.fragments.MandiriBillPayFragment;
-import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
-import id.co.veritrans.sdk.models.TransactionDetails;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
@@ -154,7 +144,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         if (view.getId() == R.id.btn_confirm_payment) {
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
 
-                performTrsansaction();
+                performTransaction();
 
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
 
@@ -191,7 +181,6 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
                 IndomaretPaymentStatusFragment.newInstance(transactionResponse, false);
 
 
-
         // setup transaction status fragment
         fragmentTransaction.replace(R.id.indomaret_container,
                 indomaretPaymentStatusFragment, STATUS_FRAGMENT);
@@ -218,9 +207,10 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void performTrsansaction() {
+    private void performTransaction() {
 
-        SdkUtil.showProgressDialog(IndomaretActivity.this, false);
+        SdkUtil.showProgressDialog(IndomaretActivity.this, getString(R.string.processing_payment),
+                false);
 
         IndomaretRequestModel.CstoreEntity cstoreEntity = new IndomaretRequestModel.CstoreEntity();
         cstoreEntity.setMessage("demo_message");
@@ -251,7 +241,8 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
                     public void onFailure(String errorMessage, TransactionResponse
                             transactionResponse) {
 
-                        Toast.makeText(IndomaretActivity.this, "Transaction failed: " + errorMessage,
+                        Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
+                                        errorMessage,
                                 Toast.LENGTH_SHORT).show();
                         try {
                             IndomaretActivity.this.errorMessage = errorMessage;

@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
@@ -28,6 +30,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class MandiriClickPayActivity extends AppCompatActivity implements View.OnClickListener {
 
 
+    public static final String DENY = "202";
     private MandiriClickPayFragment mMandiriClickPayFragment = null;
     private Button mButtonConfirmPayment = null;
     private Toolbar mToolbar = null;
@@ -35,6 +38,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
     private TextViewFont mTextViewInput1 = null;
     private TextViewFont mTextViewInput2 = null;
     private TextViewFont mTextViewInput3 = null;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
     private VeritransSDK mVeritransSDK = null;
 
 
@@ -76,6 +80,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
         mTextViewInput1 = (TextViewFont) findViewById(R.id.text_input_1);
         mTextViewInput2 = (TextViewFont) findViewById(R.id.text_input_2);
         mTextViewInput3 = (TextViewFont) findViewById(R.id.text_input_3);
@@ -158,9 +163,12 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                 validateInformation();
 
             } else {
-                RESULT_CODE = RESULT_OK;
-                onBackPressed();
-
+                if(mButtonConfirmPayment.getText().toString().equalsIgnoreCase(getString(R.string.retry))) {
+                    finish();
+                }else {
+                    RESULT_CODE = RESULT_OK;
+                    onBackPressed();
+                }
             }
         }
     }
@@ -192,7 +200,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                     mandiriClickPayModel.setInput3(mTextViewInput3.getText().toString());
                     mandiriClickPayModel.setToken(challengeToken);
 
-                    SdkUtil.showProgressDialog(MandiriClickPayActivity.this, false);
+                    SdkUtil.showProgressDialog(MandiriClickPayActivity.this, getString(R.string.processing_payment), false);
                     makeTransaction(mandiriClickPayModel);
 
                 }
@@ -228,9 +236,17 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                     public void onFailure(String errorMessage, TransactionResponse
                             transactionResponse) {
 
-
                         mTransactionResponse = transactionResponse;
                         MandiriClickPayActivity.this.errorMessage = errorMessage;
+
+
+                        Logger.e("Error is ", "" + errorMessage);
+
+                        if (transactionResponse != null
+                                && transactionResponse.getStatusCode().contains(DENY)) {
+                            setUpTransactionStatusFragment(transactionResponse);
+                        }
+
 
                         SdkUtil.hideProgressDialog();
                         if (errorMessage != null) {
@@ -270,7 +286,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
-
+        mCollapsingToolbarLayout.setVisibility(View.GONE);
         mToolbar.setNavigationIcon(R.drawable.ic_close);
         setSupportActionBar(mToolbar);
 
@@ -279,7 +295,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                         Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.bank_transfer_container,
+        fragmentTransaction.replace(R.id.mandiri_clickpay_container,
                 bankTransactionStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();

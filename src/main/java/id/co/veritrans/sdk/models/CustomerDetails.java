@@ -3,7 +3,7 @@ package id.co.veritrans.sdk.models;
 import com.google.gson.annotations.SerializedName;
 
 /**
- *  It holds an information about user.
+ *  It holds an information about customer like name , email and phone.
  *
  * Created by shivam on 10/29/15.
  */

@@ -210,7 +210,8 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
 
         if (veritransSDK != null) {
 
-            SdkUtil.showProgressDialog(IndosatDompetkuActivity.this, false);
+            SdkUtil.showProgressDialog(IndosatDompetkuActivity.this, getString(R.string
+                    .processing_payment), false);
             transactionUsingIndosat(veritransSDK);
 
         } else {

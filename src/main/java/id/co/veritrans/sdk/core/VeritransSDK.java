@@ -17,6 +17,7 @@ import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
 import id.co.veritrans.sdk.callbacks.SavedCardCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
+import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
@@ -231,7 +232,6 @@ public class VeritransSDK {
     public void paymentUsingCard(Activity activity, CardTransfer cardTransfer,
                                  TransactionCallback cardPaymentTransactionCallback
     ) {
-
         if (transactionRequest != null && activity != null
                 && cardTransfer != null && cardPaymentTransactionCallback != null) {
 
@@ -286,8 +286,7 @@ public class VeritransSDK {
      */
     public void paymentUsingMandiriBillPay(Activity activity,
                                            TransactionCallback mandiriBillPayTransferStatus) {
-
-        if (transactionRequest != null && activity != null
+          if (transactionRequest != null && activity != null
                 && mandiriBillPayTransferStatus != null) {
 
             if (transactionRequest.getBillInfoModel() != null
@@ -451,7 +450,6 @@ public class VeritransSDK {
      */
     public void paymentUsingEpayBri(Activity activity,
                                     TransactionCallback eapyBriTransferStatus) {
-
         if (transactionRequest != null && activity != null
                 && eapyBriTransferStatus != null) {
 
@@ -480,7 +478,6 @@ public class VeritransSDK {
      */
     public void paymentUsingIndosatDompetku(Activity activity,
                                             TransactionCallback indosatTransferStatus, String msisdn) {
-
         if (transactionRequest != null && activity != null
                 && indosatTransferStatus != null) {
 
@@ -536,6 +533,7 @@ public class VeritransSDK {
     }
 
     /**
+     * <<<<<<< HEAD
      * It will fetch saved cards from merchant server.
      *
      * @param activity instance of an activity.
@@ -562,9 +560,34 @@ public class VeritransSDK {
         }
     }
 
-    public void deleteCard(Activity activity, CardTokenRequest creditCard,DeleteCardCallback deleteCardCallback) {
-        if(activity!=null && creditCard!=null){
-            TransactionManager.deleteCard(activity,creditCard,deleteCardCallback);
+    /**
+     * It will execute an transaction for BBMMoney.
+     *
+     * @param activity instance of an activity.
+     * @param callback instance of TransactionCallback.
+     */
+    public void paymentUsingBBMMoney(Activity activity,
+                                     TransactionCallback callback) {
+
+        if (transactionRequest != null && activity != null && callback != null) {
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_BBM_MONEY;
+            transactionRequest.activity = activity;
+
+            BBMMoneyRequestModel bbmMoneyRequestModel =
+                    SdkUtil.getBBMMoneyRequestModel(transactionRequest);
+
+            isRunning = true;
+            TransactionManager.paymentUsingBBMMoney(transactionRequest.getActivity(),
+                    bbmMoneyRequestModel, callback);
+        } else {
+            isRunning = false;
+            showError(transactionRequest, callback);
+        }
+    }
+
+    public void deleteCard(Activity activity, CardTokenRequest creditCard, DeleteCardCallback deleteCardCallback) {
+        if (activity != null && creditCard != null) {
+            TransactionManager.deleteCard(activity, creditCard, deleteCardCallback);
         }
     }
 }

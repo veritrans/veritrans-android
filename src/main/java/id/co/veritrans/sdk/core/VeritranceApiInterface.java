@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.core;
 
+import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
@@ -146,9 +147,10 @@ public interface VeritranceApiInterface {
     Observable<TransactionResponse> paymentUsingIndomaret(@Header("x-auth") String auth,
                                                           @Body IndomaretRequestModel
                                                                   indomaretRequestModel);
+
     //save cards or get cards
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/card/")
+   @Headers({"Content-Type: application/json", "Accept: application/json"})
+   @POST("/card/")
    Observable<CardResponse> saveCard(@Header("x-auth") String auth,
                                   @Body CardTokenRequest cardTokenRequest);
 
@@ -156,12 +158,16 @@ public interface VeritranceApiInterface {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("/card/")
     Observable<CardResponse> getCard(@Header("x-auth") String auth);
+
     //delete card
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/delete")
     Observable<DeleteCardResponse> deleteCard(@Header("x-auth")String auth, @Body CardTokenRequest cardTokenRequest);
 
-
-
-
+    //BBMMoney Payment
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingBBMMoney(@Header("x-auth") String auth,
+                                                          @Body BBMMoneyRequestModel
+                                                                  bbmMoneyRequestModel);
 }

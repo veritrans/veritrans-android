@@ -11,9 +11,8 @@ import id.co.veritrans.sdk.models.ItemDetails;
 import id.co.veritrans.sdk.models.ShippingAddress;
 
 /**
- *
  * It contains information about transaction like {@literal orderId}, {@literal amount}, itemDetails
- *
+ * <p/>
  * Created by shivam on 11/5/15.
  */
 public class TransactionRequest {
@@ -68,7 +67,7 @@ public class TransactionRequest {
     private ArrayList<ShippingAddress> mShippingAddressArrayList = new ArrayList<>();
 
     /**
-     *  contains details about customer
+     * contains details about customer
      */
     private CustomerDetails mCustomerDetails = null;
 
@@ -79,13 +78,13 @@ public class TransactionRequest {
 
 
     /**
-     * @param orderId order id of transaction.
-     * @param activity instance of activity.
-     * @param amount  amount to charge.
+     * @param orderId       order id of transaction.
+     * @param activity      instance of activity.
+     * @param amount        amount to charge.
      * @param paymentMethod payment method.
      */
-    public TransactionRequest(String orderId, Activity
-            activity, double amount, int paymentMethod) {
+    public TransactionRequest(Activity
+                                      activity, String orderId, double amount, int paymentMethod) {
 
         if (orderId != null && activity != null && amount > 0) {
             this.orderId = orderId;
@@ -96,6 +95,25 @@ public class TransactionRequest {
             Logger.e("Invalid transaction data.");
         }
     }
+
+    /**
+     * @param orderId       order id of transaction.
+     * @param activity      instance of activity.
+     * @param amount        amount to charge.
+     */
+    public TransactionRequest(Activity
+                                      activity, String orderId, double amount) {
+
+        if (orderId != null && activity != null && amount > 0) {
+            this.orderId = orderId;
+            this.amount = amount;
+            this.paymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
+            this.activity = activity;
+        } else {
+            Logger.e("Invalid transaction data.");
+        }
+    }
+
 
     public CustomerDetails getCustomerDetails() {
         return mCustomerDetails;
