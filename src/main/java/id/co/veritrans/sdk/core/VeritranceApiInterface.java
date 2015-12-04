@@ -28,16 +28,9 @@ import rx.Observable;
  */
 public interface VeritranceApiInterface {
 
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingPermataBank(@Header("Authorization")
-                                                            String authorization,
-                                                            @Body PermataBankTransfer
-                                                                    permataBankTransfer);
-
     //token?card_number=4811111111111114&card_cvv=123&card_exp_month=06&card_exp_year=2020
     // &client_key=VT-client-Lre_JFh5klhfGefF
-    @GET("/token/")
+   /* @GET("/token/")
     Observable<TokenDetailsResponse> getToken(@Query("card_number") String cardNumber,
                                               @Query("card_cvv") int cardCVV,
                                               @Query("card_exp_month") int cardExpiryMonth,
@@ -45,10 +38,11 @@ public interface VeritranceApiInterface {
                                               @Query("client_key") String clientKey,
                                               @Query("gross_amount") double grossAmount,
                                               @Query("bank") String bank
-    );
+    );*/
 
     /**
      * card_cvv, token_id, two_click, bank, secure, gross_amount
+     * this api call hit veritrans server
      */
     @GET("/token/")
     Observable<TokenDetailsResponse> getTokenTwoClick(
@@ -87,12 +81,21 @@ public interface VeritranceApiInterface {
     Observable<TransactionStatusResponse> transactionStatus(
             @Header("x-auth") String auth, @Path("id") String transactionId);
 
+    //bank transfer
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingPermataBank(@Header("x-auth")
+                                                            String authorization,
+                                                            @Body PermataBankTransfer
+                                                                    permataBankTransfer);
+    //debit card
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
     Observable<TransactionResponse> paymentUsingCard(
             @Header("x-auth") String auth, @Body CardTransfer
             cardTransfer);
 
+    //mandiri click pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
     Observable<TransactionResponse> paymentUsingMandiriClickPay(

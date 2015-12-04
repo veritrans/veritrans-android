@@ -248,7 +248,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         setSupportActionBar(mToolbar);
 
         BankTransactionStatusFragment bankTransactionStatusFragment =
-                BankTransactionStatusFragment.newInstance(transactionResponse, false);
+                BankTransactionStatusFragment.newInstance(transactionResponse, position);
 
         // setup transaction status fragment
         fragmentTransaction.replace(R.id.bank_transfer_container,
@@ -334,7 +334,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                     new TransactionDetails("" + mVeritransSDK.getTransactionRequest().getAmount(),
                             mVeritransSDK.getTransactionRequest().getOrderId());
 
-            SdkUtil.showProgressDialog(BankTransferActivity.this, false);
+            SdkUtil.showProgressDialog(BankTransferActivity.this, getString(R.string.processing_payment), false);
 
             if (position == Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER) {
                 bankTransferTransaction(veritransSDK);

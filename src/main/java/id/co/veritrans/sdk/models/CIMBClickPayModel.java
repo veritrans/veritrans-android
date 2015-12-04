@@ -2,12 +2,14 @@ package id.co.veritrans.sdk.models;
 
 import java.util.ArrayList;
 
+import id.co.veritrans.sdk.core.Constants;
+
 /**
  * Created by Ankit on 11/26/15.
  */
 public class CIMBClickPayModel extends TransactionModel {
 
-    public static final String PAYMENT_TYPE = "cimb_clicks";
+    public static final String PAYMENT_TYPE = Constants.PAYMENT_CIMB_CLICKS;
 
     /**
      * payment_type : cimb_clicks

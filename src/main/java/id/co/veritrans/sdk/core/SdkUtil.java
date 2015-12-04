@@ -331,7 +331,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank("permata");
+        bankTransfer.setBank(Constants.PAYMENT_PERMATA);
 
         PermataBankTransfer model =
                 new PermataBankTransfer(bankTransfer,
@@ -363,7 +363,7 @@ public class SdkUtil {
 
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
-        model.setPaymentType("cstore");
+        model.setPaymentType(Constants.PAYMENT_INDOMARET);
                         model.setItem_details(request.getItemDetails());
                         model.setCustomerDetails(request.getCustomerDetails());
                         model.setTransactionDetails(transactionDetails);
@@ -420,7 +420,7 @@ public class SdkUtil {
                 new IndosatDompetkuRequest();
 
                 model.setCustomerDetails(request.getCustomerDetails(), request.getShippingAddressArrayList(), request.getBillingAddressArrayList());
-                model.setPaymentType("indosat_dompetku");
+                model.setPaymentType(Constants.PAYMENT_INDOSAT_DOMPETKU);
 
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();

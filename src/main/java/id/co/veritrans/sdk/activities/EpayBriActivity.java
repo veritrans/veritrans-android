@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.gson.Gson;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
@@ -57,6 +59,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        btConfirmPayment.setVisibility(View.VISIBLE);
         btConfirmPayment.setOnClickListener(this);
     }
 
@@ -115,7 +118,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
                             intentPaymentWeb.putExtra(Constants.WEBURL, transactionResponse.getRedirectUrl());
                             startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
                         } else {
-                            SdkUtil.showApiFailedMessage(EpayBriActivity.this,getString(R.string.empty_transaction_response));
+                            SdkUtil.showApiFailedMessage(EpayBriActivity.this, getString(R.string.empty_transaction_response));
                         }
 
                     }
@@ -127,8 +130,13 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
-        if (resultCode == RESULT_OK && transactionResponse != null &&
-                !TextUtils.isEmpty(transactionResponse.getTransactionId())) {
+        if (resultCode == RESULT_OK && data!=null ) {
+            String responseStr = data.getStringExtra(Constants.PAYMENT_RESPONSE);
+            if(TextUtils.isEmpty(responseStr)){
+                return;
+            }
+            Gson gson = new Gson();
+            TransactionResponse transactionResponse = gson.fromJson(responseStr, TransactionResponse.class);
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponse);
             replaceFragment(paymentTransactionStatusFragment, true, false);

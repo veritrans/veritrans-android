@@ -85,6 +85,7 @@ class VeritransRestAdapter {
     public static VeritranceApiInterface getMerchantApiClient(final Activity activity, boolean
             showNetworkNotAvailableDialog) {
         if (Utils.isNetworkAvailable(activity)) {
+
             if (merchantVeritranceApiInterface == null) {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
@@ -108,6 +109,7 @@ class VeritransRestAdapter {
                 merchantVeritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
             }
             return merchantVeritranceApiInterface;
+
         } else {
             if (showNetworkNotAvailableDialog && activity != null) {
                 try {
