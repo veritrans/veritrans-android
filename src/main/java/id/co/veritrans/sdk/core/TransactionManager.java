@@ -97,10 +97,14 @@ class TransactionManager {
                                 Logger.e("error while getting token : ", "" +
                                         throwable.getMessage());
                                 callBack.onFailure(throwable.getMessage(), null);
+                                releaseResources();
                             }
 
                             @Override
                             public void onNext(TokenDetailsResponse tokenDetailsResponse) {
+
+
+                                releaseResources();
 
                                 if (tokenDetailsResponse != null) {
 
@@ -183,11 +187,15 @@ class TransactionManager {
                                 @Override
                                 public void onError(Throwable throwable) {
                                     callBack.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onNext(TransactionResponse
                                                            permataBankTransferResponse) {
+
+
+                                    releaseResources();
 
                                     if (permataBankTransferResponse != null) {
 
@@ -282,10 +290,14 @@ class TransactionManager {
                                 @Override
                                 public void onError(Throwable e) {
                                     cardPaymentTransactionCallback.onFailure(e.getMessage(), null);
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onNext(TransactionResponse cardPaymentResponse) {
+
+                                    releaseResources();
+
                                     if (cardPaymentResponse != null) {
 
                                         if (cardPaymentResponse.getStatusCode().trim()
@@ -370,11 +382,14 @@ class TransactionManager {
                                 @Override
                                 public void onError(Throwable throwable) {
                                     callBack.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onNext(TransactionResponse
                                                            mandiriTransferResponse) {
+
+                                    releaseResources();
 
                                     if (mandiriTransferResponse != null) {
 
@@ -468,11 +483,14 @@ class TransactionManager {
                                 @Override
                                 public void onError(Throwable throwable) {
                                     callBack.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onNext(TransactionResponse
                                                            permataBankTransferResponse) {
+
+                                    releaseResources();
 
                                     if (permataBankTransferResponse != null) {
 
@@ -547,10 +565,14 @@ class TransactionManager {
                                 @Override
                                 public void onError(Throwable throwable) {
                                     callback.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onNext(TransactionResponse cimbPayTransferResponse) {
+
+                                    releaseResources();
+
                                     if (cimbPayTransferResponse != null) {
                                         if (veritransSDK != null && veritransSDK.isLogEnabled()) {
                                             displayResponse(cimbPayTransferResponse);
@@ -618,10 +640,14 @@ class TransactionManager {
                                 @Override
                                 public void onError(Throwable throwable) {
                                     callback.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onNext(TransactionResponse transferResponse) {
+
+                                    releaseResources();
+
                                     if (transferResponse != null) {
                                         if (veritransSDK != null && veritransSDK.isLogEnabled()) {
                                             displayResponse(transferResponse);
@@ -698,11 +724,14 @@ class TransactionManager {
                                 @Override
                                 public void onError(Throwable throwable) {
                                     callback.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onNext(TransactionResponse
                                                            epayBriTransferResponse) {
+
+                                    releaseResources();
 
                                     if (epayBriTransferResponse != null) {
 
@@ -776,16 +805,21 @@ class TransactionManager {
                                             !paymentStatusSubscription.isUnsubscribed()) {
                                         paymentStatusSubscription.unsubscribe();
                                     }
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onError(Throwable e) {
                                     callback.onFailure(e.getMessage(), null);
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onNext(TransactionStatusResponse
                                                            transactionStatusResponse) {
+
+                                    releaseResources();
+
                                     if (transactionStatusResponse != null) {
                                         if (TextUtils.isEmpty(transactionStatusResponse
                                                 .getStatusCode())) {
@@ -864,11 +898,15 @@ class TransactionManager {
                                 @Override
                                 public void onError(Throwable throwable) {
                                     callback.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onNext(TransactionResponse
                                                            permataBankTransferResponse) {
+
+
+                                    releaseResources();
 
                                     if (permataBankTransferResponse != null) {
 
@@ -952,12 +990,15 @@ class TransactionManager {
                                 @Override
                                 public void onError(Throwable throwable) {
                                     callback.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onNext(TransactionResponse
                                                            indomaretTransferResponse) {
 
+
+                                    releaseResources();
                                     if (indomaretTransferResponse != null) {
 
                                         if (veritransSDK != null && veritransSDK.isLogEnabled()) {
