@@ -28,15 +28,16 @@ public class CardTokenRequest implements Serializable {
     private int cardCVV = 0;
     private int cardExpiryMonth = 0;
     private int cardExpiryYear = 0;
-    private String clientKey = null;
     private boolean secure = false;
     private boolean twoClick = false;
     private String bank = null;
-    private double grossAmount = 0.0;
-    private boolean isSaved = false;
-    private String cardHolderName;
     private String cardType;
     private String savedTokenId;
+    private double grossAmount = 0.0;
+    private boolean isSaved = false;
+    private String clientKey = null;
+    //private String cardHolderName;
+
 
     public CardTokenRequest(String cardNumber, int cardCVV,
                             int cardExpiryMonth, int cardExpiryYear, String clientKey) {
@@ -142,14 +143,14 @@ public class CardTokenRequest implements Serializable {
         this.isSaved = isSaved;
     }
 
-    public String getCardHolderName() {
+   /* public String getCardHolderName() {
         return cardHolderName;
     }
 
     public void setCardHolderName(String cardHolderName) {
         this.cardHolderName = cardHolderName;
     }
-
+*/
     public String getCardType() {
         return cardType;
     }

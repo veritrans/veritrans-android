@@ -255,5 +255,6 @@
     <string name="mandiri_click_pay_instruction_step7">7.\tPut the response code on your Mandiri token \n into the challenge token field.</string>
     <string name="for_three_seconds">for 3 seconds</string>
     <string name="title_payment_status">Payment Status</string>
+    <string name="payment_deny">Payment deny.</string>
 
 </resources>

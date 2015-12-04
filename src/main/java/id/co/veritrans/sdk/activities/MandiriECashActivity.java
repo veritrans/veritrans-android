@@ -12,15 +12,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.gson.Gson;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
-import id.co.veritrans.sdk.fragments.InstructionCIMBFragment;
 import id.co.veritrans.sdk.fragments.InstructionMandiriECashFragment;
-import id.co.veritrans.sdk.fragments.MandiriClickPayFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.models.TransactionResponse;
 
@@ -137,8 +137,13 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
-        if (resultCode == RESULT_OK && transactionResponse != null &&
-                !TextUtils.isEmpty(transactionResponse.getTransactionId())) {
+        if (resultCode == RESULT_OK && data != null ) {
+            String responseStr = data.getStringExtra(Constants.PAYMENT_RESPONSE);
+            if(TextUtils.isEmpty(responseStr)){
+                return;
+            }
+            Gson gson = new Gson();
+            TransactionResponse transactionResponse = gson.fromJson(responseStr, TransactionResponse.class);
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponse);
             replaceFragment(paymentTransactionStatusFragment, true, false);
