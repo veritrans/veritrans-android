@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
+import id.co.veritrans.sdk.callbacks.DeleteCardCallback;
 import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
+import id.co.veritrans.sdk.callbacks.SavedCardCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
@@ -75,7 +77,6 @@ public class VeritransSDK {
         }
     }
 
-
     /***
      * It will initialize all fonts that are available in sdk.
      */
@@ -99,7 +100,7 @@ public class VeritransSDK {
             // This instance contains information about transaction.
             return veritransSDK;
         }*/
-        if(context!=null){
+        if (context != null) {
             return veritransSDK;
         }
 
@@ -123,11 +124,9 @@ public class VeritransSDK {
         return isRunning;
     }
 
-
     public boolean isLogEnabled() {
         return isLogEnabled;
     }
-
 
     public Context getContext() {
         return context;
@@ -148,7 +147,7 @@ public class VeritransSDK {
             return "";
         }
         String merchantToken = userDetail.getMerchantToken();
-        Logger.i("merchantToken:"+merchantToken);
+        Logger.i("merchantToken:" + merchantToken);
         return merchantToken;
         //return serverKey;
     }
@@ -176,12 +175,11 @@ public class VeritransSDK {
     /**
      * It will execute an api request to retrieve a token.
      *
-     * @param activity instance of an activity.
+     * @param activity         instance of an activity.
      * @param cardTokenRequest
      */
     public void getToken(Activity activity, CardTokenRequest cardTokenRequest, TokenCallBack
             tokenCallBack) {
-
 
         if (activity != null && cardTokenRequest != null && tokenCallBack != null) {
 
@@ -200,19 +198,17 @@ public class VeritransSDK {
     /**
      * It will execute an transaction for permata bank .
      *
-     * @param activity instance of an activity.
+     * @param activity                  instance of an activity.
      * @param permataBankTransferStatus instance of TransactionCallback.
      */
     public void paymentUsingPermataBank(Activity activity,
                                         TransactionCallback permataBankTransferStatus) {
-
 
         if (transactionRequest != null && activity != null
                 && permataBankTransferStatus != null) {
 
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
             transactionRequest.activity = activity;
-
 
             PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel(transactionRequest);
 
@@ -226,20 +222,15 @@ public class VeritransSDK {
         }
     }
 
-
-
-
     /**
      * It will execute an transaction using credit card .
      *
-     * @param activity instance of an activity.
-     * @param cardPaymentTransactionCallback  instance of TransactionCallback.
+     * @param activity                       instance of an activity.
+     * @param cardPaymentTransactionCallback instance of TransactionCallback.
      */
     public void paymentUsingCard(Activity activity, CardTransfer cardTransfer,
                                  TransactionCallback cardPaymentTransactionCallback
     ) {
-
-
 
         if (transactionRequest != null && activity != null
                 && cardTransfer != null && cardPaymentTransactionCallback != null) {
@@ -256,24 +247,21 @@ public class VeritransSDK {
         }
     }
 
-
     /**
      * It will execute an transaction for mandiri click pay.
      *
      * @param activity
-     * @param mandiriClickPayModel information about mandiri clickpay
+     * @param mandiriClickPayModel       information about mandiri clickpay
      * @param paymentTransactionCallback TransactionCallback instance
      */
     public void paymentUsingMandiriClickPay(Activity activity, MandiriClickPayModel
             mandiriClickPayModel, TransactionCallback paymentTransactionCallback) {
-
 
         if (transactionRequest != null && activity != null
                 && mandiriClickPayModel != null && paymentTransactionCallback != null) {
 
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
             transactionRequest.activity = activity;
-
 
             MandiriClickPayRequestModel mandiriClickPayRequestModel =
                     SdkUtil.getMandiriClickPayRequestModel(transactionRequest,
@@ -290,7 +278,6 @@ public class VeritransSDK {
         }
     }
 
-
     /**
      * It will execute an transaction for mandiri bill pay.
      *
@@ -299,8 +286,6 @@ public class VeritransSDK {
      */
     public void paymentUsingMandiriBillPay(Activity activity,
                                            TransactionCallback mandiriBillPayTransferStatus) {
-
-
 
         if (transactionRequest != null && activity != null
                 && mandiriBillPayTransferStatus != null) {
@@ -368,7 +353,6 @@ public class VeritransSDK {
      * @param paymentTransactionCallback TransactionCallback instance
      */
 
-
     public void paymentUsingMandiriECash(Activity activity, TransactionCallback
             paymentTransactionCallback) {
         if (transactionRequest != null && activity != null
@@ -394,7 +378,6 @@ public class VeritransSDK {
         return transactionRequest;
     }
 
-
     /**
      * Set transaction information that you want to execute.
      *
@@ -416,7 +399,6 @@ public class VeritransSDK {
 
     }
 
-
     private void showError(TransactionRequest transactionRequest,
                            TransactionCallback permataBankTransferStatus) {
 
@@ -431,10 +413,8 @@ public class VeritransSDK {
         Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
     }
 
-
     /**
      * This will start actual execution of transaction. if you have enabled an ui then it will start activity according to it.
-     *
      */
     public void startPaymentUiFlow() {
 
@@ -466,13 +446,11 @@ public class VeritransSDK {
     /**
      * It will execute an transaction for epay bri .
      *
-     * @param activity instance of an activity.
+     * @param activity              instance of an activity.
      * @param eapyBriTransferStatus instance of TransactionCallback.
      */
     public void paymentUsingEpayBri(Activity activity,
-                                        TransactionCallback eapyBriTransferStatus) {
-
-
+                                    TransactionCallback eapyBriTransferStatus) {
 
         if (transactionRequest != null && activity != null
                 && eapyBriTransferStatus != null) {
@@ -494,16 +472,14 @@ public class VeritransSDK {
         }
     }
 
-
     /**
      * It will execute an transaction for permata bank .
      *
-     * @param activity instance of an activity.
+     * @param activity              instance of an activity.
      * @param indosatTransferStatus instance of TransactionCallback.
      */
     public void paymentUsingIndosatDompetku(Activity activity,
-                                        TransactionCallback indosatTransferStatus, String msisdn) {
-
+                                            TransactionCallback indosatTransferStatus, String msisdn) {
 
         if (transactionRequest != null && activity != null
                 && indosatTransferStatus != null) {
@@ -511,8 +487,8 @@ public class VeritransSDK {
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU;
             transactionRequest.activity = activity;
 
-             IndosatDompetkuRequest indosatDompetkuRequest =
-                     SdkUtil.getIndosatDompetkuRequestModel(transactionRequest, msisdn);
+            IndosatDompetkuRequest indosatDompetkuRequest =
+                    SdkUtil.getIndosatDompetkuRequestModel(transactionRequest, msisdn);
 
             isRunning = true;
             TransactionManager.paymentUsingIndosatDompetku(transactionRequest.getActivity(),
@@ -524,24 +500,21 @@ public class VeritransSDK {
         }
     }
 
-
-    public void getPaymentStatus(Activity activity,String transactionId,PaymentStatusCallback
-            paymentStatusCallback){
-        if(TextUtils.isEmpty(transactionId)){
+    public void getPaymentStatus(Activity activity, String transactionId, PaymentStatusCallback
+            paymentStatusCallback) {
+        if (TextUtils.isEmpty(transactionId)) {
             TransactionManager.getPaymentStatus(activity, transactionId, paymentStatusCallback);
         }
     }
 
-
     /**
      * It will execute an transaction for Indomaret .
      *
-     * @param activity instance of an activity.
+     * @param activity          instance of an activity.
      * @param indomaretCallback instance of TransactionCallback.
      */
     public void paymentUsingIndomaret(Activity activity,
-                                            TransactionCallback indomaretCallback, IndomaretRequestModel.CstoreEntity cstoreEntity) {
-
+                                      TransactionCallback indomaretCallback, IndomaretRequestModel.CstoreEntity cstoreEntity) {
 
         if (transactionRequest != null && activity != null
                 && indomaretCallback != null && cstoreEntity != null) {
@@ -562,5 +535,36 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will fetch saved cards from merchant server.
+     *
+     * @param activity instance of an activity.
+     * @param callback
+     */
+    public void getSavedCard(Activity activity,
+                             SavedCardCallback callback) {
+        if (activity != null) {
+            TransactionManager.getCards(activity, callback);
+        }
+    }
 
+    /**
+     * It will  save cards to merchant server.
+     *
+     * @param activity         instance of an activity.
+     * @param cardTokenRequest card details
+     * @param cardCallback
+     */
+    public void saveCards(Activity activity, CardTokenRequest cardTokenRequest,
+                          SavedCardCallback cardCallback) {
+        if (activity != null && cardTokenRequest != null && cardCallback != null) {
+            TransactionManager.saveCards(activity, cardTokenRequest, cardCallback);
+        }
+    }
+
+    public void deleteCard(Activity activity, CardTokenRequest creditCard,DeleteCardCallback deleteCardCallback) {
+        if(activity!=null && creditCard!=null){
+            TransactionManager.deleteCard(activity,creditCard,deleteCardCallback);
+        }
+    }
 }

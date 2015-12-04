@@ -3,12 +3,17 @@ package id.co.veritrans.sdk.core;
 import android.app.Activity;
 import android.text.TextUtils;
 
+import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.callbacks.DeleteCardCallback;
 import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
+import id.co.veritrans.sdk.callbacks.SavedCardCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
+import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
@@ -35,6 +40,8 @@ class TransactionManager {
     private static Subscription subscription = null;
     private static Subscription cardPaymentSubscription = null;
     private static Subscription paymentStatusSubscription = null;
+    private static Subscription cardSubscription = null;
+    private static Subscription deleteCardSubscription = null;
 
     /**
      * it will execute an api call to get token from server, and after completion of request it
@@ -102,7 +109,6 @@ class TransactionManager {
 
                             @Override
                             public void onNext(TokenDetailsResponse tokenDetailsResponse) {
-
 
                                 releaseResources();
 
@@ -194,7 +200,6 @@ class TransactionManager {
                                 public void onNext(TransactionResponse
                                                            permataBankTransferResponse) {
 
-
                                     releaseResources();
 
                                     if (permataBankTransferResponse != null) {
@@ -269,7 +274,6 @@ class TransactionManager {
                 String merchantToken = veritransSDK.getMerchantToken(activity);
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
-
 
                     observable = apiInterface.paymentUsingCard(merchantToken,
                             cardTransfer);
@@ -907,7 +911,6 @@ class TransactionManager {
                                 public void onNext(TransactionResponse
                                                            permataBankTransferResponse) {
 
-
                                     releaseResources();
 
                                     if (permataBankTransferResponse != null) {
@@ -999,7 +1002,6 @@ class TransactionManager {
                                 public void onNext(TransactionResponse
                                                            indomaretTransferResponse) {
 
-
                                     releaseResources();
                                     if (indomaretTransferResponse != null) {
 
@@ -1018,6 +1020,166 @@ class TransactionManager {
                                             callback.onFailure(indomaretTransferResponse
                                                             .getStatusMessage(),
                                                     indomaretTransferResponse);
+                                        }
+
+                                    } else {
+                                        callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                    }
+
+                                }
+                            });
+                } else {
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callback.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
+                }
+            } else {
+                callback.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            releaseResources();
+        }
+    }
+
+    public static void saveCards(final Activity activity, final CardTokenRequest cardTokenRequest,
+                                 final SavedCardCallback callback) {
+
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                Observable<CardResponse> observable = null;
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+
+                    observable = apiInterface.saveCard(merchantToken,
+                            cardTokenRequest);
+
+                    cardSubscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<CardResponse>() {
+
+                                @Override
+                                public void onCompleted() {
+
+                                    if (cardSubscription != null && !cardSubscription.isUnsubscribed()) {
+                                        cardSubscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
+
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    callback.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
+                                }
+
+                                @Override
+                                public void onNext(CardResponse cardResponse) {
+
+                                    releaseResources();
+                                    if (cardResponse != null) {
+
+                                        if (cardResponse.getMessage().equalsIgnoreCase(activity.getString(R.string.success))) {
+
+                                            callback.onSuccess(cardResponse);
+                                        } else {
+                                            callback.onFailure(cardResponse.getError(),
+                                                    cardResponse);
+                                        }
+
+                                    } else {
+                                        callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                    }
+
+                                }
+                            });
+                } else {
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callback.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
+                }
+            } else {
+                callback.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            releaseResources();
+        }
+    }
+
+    public static void getCards(final Activity activity,
+                                final SavedCardCallback callback) {
+
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                Observable<CardResponse> observable = null;
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+
+                    observable = apiInterface.getCard(merchantToken
+                            );
+
+                    cardSubscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<CardResponse>() {
+
+                                @Override
+                                public void onCompleted() {
+
+                                    if (cardSubscription != null && !cardSubscription.isUnsubscribed()) {
+                                        cardSubscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
+
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    callback.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
+                                }
+
+                                @Override
+                                public void onNext(CardResponse cardResponse) {
+
+                                    releaseResources();
+                                    if (cardResponse != null) {
+
+                                        if (cardResponse.getMessage().equalsIgnoreCase(activity.getString(R.string.success))) {
+
+                                            callback.onSuccess(cardResponse);
+                                        } else {
+                                            callback.onFailure(cardResponse.getError(),
+                                                    cardResponse);
                                         }
 
                                     } else {
@@ -1084,6 +1246,81 @@ class TransactionManager {
     private static void releaseResources() {
         if (VeritransSDK.getVeritransSDK() != null) {
             VeritransSDK.getVeritransSDK().isRunning = false;
+        }
+    }
+
+    public static void deleteCard(final Activity activity, CardTokenRequest creditCard, final DeleteCardCallback callback) {
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                Observable<DeleteCardResponse> observable = null;
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+
+                    observable = apiInterface.deleteCard(merchantToken,
+                            creditCard);
+
+                    deleteCardSubscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<DeleteCardResponse>() {
+
+                                @Override
+                                public void onCompleted() {
+
+                                    if (deleteCardSubscription != null && !deleteCardSubscription.isUnsubscribed()) {
+                                        deleteCardSubscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
+
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    callback.onFailure(throwable.getMessage());
+                                    releaseResources();
+                                }
+
+                                @Override
+                                public void onNext(DeleteCardResponse deleteCardResponse) {
+                                    releaseResources();
+                                    if (deleteCardResponse != null) {
+                                        if (deleteCardResponse.getMessage().equalsIgnoreCase(
+                                                activity.getString(R.string.success))) {
+                                            callback.onSuccess(deleteCardResponse);
+                                        } else {
+                                            callback.onFailure(deleteCardResponse.getError());
+                                        }
+
+                                    } else {
+                                        callback.onFailure(Constants.ERROR_EMPTY_RESPONSE);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                    }
+
+                                }
+                            });
+                } else {
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callback.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    releaseResources();
+                }
+            } else {
+                callback.onFailure(Constants.ERROR_UNABLE_TO_CONNECT);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
         }
     }
 }

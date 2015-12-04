@@ -24,20 +24,22 @@ public class CardTokenRequest implements Serializable {
     // &bank=bni
     // &two_click=false
 
-    private String cardNumber = null;
-    private int cardCVV = 0;
-    private int cardExpiryMonth = 0;
-    private int cardExpiryYear = 0;
-    private boolean secure = false;
-    private boolean twoClick = false;
+    private String cardNumber;
+    private int cardCVV ;
+    private int cardExpiryMonth;
+    private int cardExpiryYear;
+    private boolean secure ;
+    private boolean twoClick;
     private String bank = null;
     private String cardType;
     private String savedTokenId;
-    private double grossAmount = 0.0;
-    private boolean isSaved = false;
-    private String clientKey = null;
+    private double grossAmount;
+    private boolean isSaved;
+    private String clientKey;
     //private String cardHolderName;
 
+    public CardTokenRequest() {
+    }
 
     public CardTokenRequest(String cardNumber, int cardCVV,
                             int cardExpiryMonth, int cardExpiryYear, String clientKey) {

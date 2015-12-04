@@ -1,7 +1,10 @@
 package id.co.veritrans.sdk.core;
 
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
+import id.co.veritrans.sdk.models.CardResponse;
+import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
@@ -87,6 +90,7 @@ public interface VeritranceApiInterface {
                                                             String authorization,
                                                             @Body PermataBankTransfer
                                                                     permataBankTransfer);
+
     //debit card
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
@@ -98,9 +102,9 @@ public interface VeritranceApiInterface {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
     Observable<TransactionResponse> paymentUsingMandiriClickPay(
-                                                                @Header("x-auth") String auth
+            @Header("x-auth") String auth
             , @Body MandiriClickPayRequestModel
-                                                                        mandiriClickPayRequestModel);
+                    mandiriClickPayRequestModel);
 
     //mandiri bill pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -142,5 +146,22 @@ public interface VeritranceApiInterface {
     Observable<TransactionResponse> paymentUsingIndomaret(@Header("x-auth") String auth,
                                                           @Body IndomaretRequestModel
                                                                   indomaretRequestModel);
-}
+    //save cards or get cards
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/card/")
+   Observable<CardResponse> saveCard(@Header("x-auth") String auth,
+                                  @Body CardTokenRequest cardTokenRequest);
 
+    //save cards or get cards
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("/card/")
+    Observable<CardResponse> getCard(@Header("x-auth") String auth);
+    //delete card
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/card/delete")
+    Observable<DeleteCardResponse> deleteCard(@Header("x-auth")String auth, @Body CardTokenRequest cardTokenRequest);
+
+
+
+
+}
