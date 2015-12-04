@@ -65,8 +65,8 @@ public class BBMMoneyPaymentFragment extends Fragment {
             mTextViewValidity.setText(VALID_UNTILL+"\n" + Utils.getValidityTime
                     (transactionResponse.getTransactionTime()));
 
-            if (transactionResponse.getPaymentCodeBBMMoney() != null)
-                mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeBBMMoney());
+            if (transactionResponse.getPermataVANumber() != null)
+                mTextViewPaymentCode.setText(transactionResponse.getPermataVANumber());
 
         } else {
             //TODO..what to do here...

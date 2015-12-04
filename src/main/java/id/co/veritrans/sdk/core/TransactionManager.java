@@ -895,6 +895,8 @@ class TransactionManager {
                                         Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                     }
 
+                                    releaseResources();
+
                                 }
                             });
                 } else {
@@ -982,7 +984,7 @@ class TransactionManager {
                                         callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
                                         Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                     }
-
+                                    releaseResources();
                                 }
                             });
                 } else {
@@ -1040,11 +1042,14 @@ class TransactionManager {
                                 @Override
                                 public void onError(Throwable throwable) {
                                     callback.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
                                 }
 
                                 @Override
                                 public void onNext(TransactionResponse
                                                            bbmMoneyTransferResponse) {
+
+
 
                                     if (bbmMoneyTransferResponse != null) {
 
@@ -1063,12 +1068,16 @@ class TransactionManager {
                                             callback.onFailure(bbmMoneyTransferResponse
                                                             .getStatusMessage(),
                                                     bbmMoneyTransferResponse);
+                                            releaseResources();
                                         }
 
                                     } else {
                                         callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
                                         Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                        releaseResources();
                                     }
+
+                                    releaseResources();
 
                                 }
                             });

@@ -22,11 +22,7 @@ import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.BBMMoneyPaymentFragment;
 import id.co.veritrans.sdk.fragments.BBMMoneyPaymentStatusFragment;
 import id.co.veritrans.sdk.fragments.BankTransferFragment;
-import id.co.veritrans.sdk.fragments.IndomaretPaymentFragment;
-import id.co.veritrans.sdk.fragments.IndomaretPaymentStatusFragment;
 import id.co.veritrans.sdk.fragments.InstructionBBMMoneyFragment;
-import id.co.veritrans.sdk.fragments.InstructionIndomaretFragment;
-import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
@@ -237,7 +233,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
                 BBMMoneyPaymentStatusFragment.newInstance(transactionResponse, false);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.indomaret_container,
+        fragmentTransaction.replace(R.id.bbm_money_container,
                 bbmMoneyPaymentStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();
@@ -250,7 +246,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             BBMMoneyPaymentFragment bbmMoneyPaymentFragment =
                     BBMMoneyPaymentFragment.newInstance(transactionResponse);
-            fragmentTransaction.replace(R.id.indomaret_container,
+            fragmentTransaction.replace(R.id.bbm_money_container,
                     bbmMoneyPaymentFragment, PAYMENT_FRAGMENT);
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();
