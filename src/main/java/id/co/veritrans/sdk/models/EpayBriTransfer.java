@@ -3,13 +3,15 @@ package id.co.veritrans.sdk.models;
 
 import java.util.ArrayList;
 
+import id.co.veritrans.sdk.core.Constants;
+
 /**
  * Created by shivam on 10/26/15.
  */
 public class EpayBriTransfer extends TransactionModel {
 
 
-    public static final String PAYMENT_TYPE = "bri_epay";
+    public static final String PAYMENT_TYPE = Constants.PAYMENT_EPAY_BRI;
 
     /**
      * payment_type : bank_transfer

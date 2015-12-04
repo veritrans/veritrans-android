@@ -59,6 +59,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        btConfirmPayment.setVisibility(View.VISIBLE);
         btConfirmPayment.setOnClickListener(this);
     }
 

@@ -169,7 +169,10 @@ public class Constants {
     public static final String TRANSACTION_ERROR_MESSAGE = "transaction_error";
     public static final String EVENT_TRANSACTION_COMPLETE = "veritranse_transaction_complete";
     public static final String PAYMENT_STATUS = "payment_status";
-
+    public static final String PENDING = "pending";
+    public static final String VERITRANS_RESPONSE = "Android";
+    public static final String SETTLEMENT = "settlement";
+    //payment types to send in rerquest
     public static final String PAYMENT_EPAY_BRI = "bri_epay";
     public static final String PAYMENT_BANK_TRANSFER = "bank_transfer";
     public static final String PAYMENT_MANDIRI_BILL_PAYMENT = "echannel";
@@ -180,7 +183,9 @@ public class Constants {
     public static final String PAYMENT_INDOSAT_DOMPETKU = "indosat_dompetku";
     public static final String PAYMENT_MANDIRI_ECASH = "mandiri_ecash";
     public static final String PAYMENT_INDOMARET = "cstore";
-    public static final String PENDING = "pending";
-    public static final String VERITRANS_RESPONSE = "Android";
     public static final String PAYMENT_RESPONSE = "payment_response";
+
+    public static final String PAYMENT_CREDIT_DEBIT = "credit_card";
+    public static final String PAYMENT_PERMATA = "permata";
+    public static final String DENY = "deny";
 }

@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+import id.co.veritrans.sdk.core.Constants;
+
 /**
  * model class to hold card information.
  *
@@ -13,7 +15,7 @@ import java.util.ArrayList;
  */
 public class CardTransfer extends TransactionModel {
 
-    public static final String PAYMENT_TYPE = "credit_card";
+    public static final String PAYMENT_TYPE = Constants.PAYMENT_CREDIT_DEBIT;
 
     /**
      * {

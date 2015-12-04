@@ -214,11 +214,13 @@ class TransactionManager {
                                             callBack.onFailure(permataBankTransferResponse
                                                             .getStatusMessage(),
                                                     permataBankTransferResponse);
+                                            releaseResources();
                                         }
 
                                     } else {
                                         callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
                                         Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                        releaseResources();
                                     }
 
                                 }

@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.gson.Gson;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
@@ -141,8 +143,14 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
-        if (resultCode == RESULT_OK && transactionResponse != null &&
-                !TextUtils.isEmpty(transactionResponse.getTransactionId())) {
+
+        if (resultCode == RESULT_OK && data != null ) {
+            String responseStr = data.getStringExtra(Constants.PAYMENT_RESPONSE);
+            if(TextUtils.isEmpty(responseStr)){
+                return;
+            }
+            Gson gson = new Gson();
+            TransactionResponse transactionResponse = gson.fromJson(responseStr, TransactionResponse.class);
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponse);
             replaceFragment(paymentTransactionStatusFragment, true, false);
