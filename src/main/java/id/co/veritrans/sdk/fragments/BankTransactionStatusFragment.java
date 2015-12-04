@@ -29,7 +29,7 @@ public class BankTransactionStatusFragment extends Fragment {
     private static final String DATA = "data";
     public static final String PENDING = "Pending";
 
-    private TransactionResponse mPermataBankTransferResponse = null;
+    private TransactionResponse mTransactionResponse = null;
 
     // Views
     private TextViewFont mTextViewAmount = null;
@@ -78,7 +78,7 @@ public class BankTransactionStatusFragment extends Fragment {
 
         //retrieve data from bundle.
         Bundle data = getArguments();
-        mPermataBankTransferResponse = (TransactionResponse) data.getSerializable(DATA);
+        mTransactionResponse = (TransactionResponse) data.getSerializable(DATA);
         mPaymentType = data.getInt(PAYMENT_TYPE);
 
         initializeDataToView();
@@ -110,7 +110,7 @@ public class BankTransactionStatusFragment extends Fragment {
      */
     private void initializeDataToView() {
 
-        if (mPermataBankTransferResponse != null) {
+        if (mTransactionResponse != null) {
 
             if (getActivity() != null) {
 
@@ -128,15 +128,15 @@ public class BankTransactionStatusFragment extends Fragment {
                 }
             }
 
-            mTextViewTransactionTime.setText(mPermataBankTransferResponse.getTransactionTime());
-            mTextViewOrderId.setText(mPermataBankTransferResponse.getOrderId());
-            mTextViewAmount.setText(mPermataBankTransferResponse.getGrossAmount());
+            mTextViewTransactionTime.setText(mTransactionResponse.getTransactionTime());
+            mTextViewOrderId.setText(mTransactionResponse.getOrderId());
+            mTextViewAmount.setText(mTransactionResponse.getGrossAmount());
 
-            if (mPermataBankTransferResponse.getTransactionStatus().contains(PENDING) ||
-                    mPermataBankTransferResponse.getTransactionStatus().contains("pending")) {
+            if (mTransactionResponse.getTransactionStatus().contains(PENDING) ||
+                    mTransactionResponse.getTransactionStatus().contains("pending")) {
 
-            } else if (mPermataBankTransferResponse.getStatusCode().equalsIgnoreCase(Constants
-                    .SUCCESS_CODE_200) || mPermataBankTransferResponse.getStatusCode().
+            } else if (mTransactionResponse.getStatusCode().equalsIgnoreCase(Constants
+                    .SUCCESS_CODE_200) || mTransactionResponse.getStatusCode().
                     equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
 
                 setUiForSuccess();
@@ -151,6 +151,11 @@ public class BankTransactionStatusFragment extends Fragment {
                         ((IndosatDompetkuActivity) getActivity()).activateRetry();
                     } else if (mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY){
                         ((MandiriClickPayActivity) getActivity()).activateRetry();
+
+                        if ( mTransactionResponse != null &&
+                                mTransactionResponse.getTransactionStatus().equalsIgnoreCase("deny")){
+                            mTextViewFontTransactionStatus.setText("Payment Denied.");
+                        }
                     }
                     else {
                         ((BankTransferActivity) getActivity()).activateRetry();
