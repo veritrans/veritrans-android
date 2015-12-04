@@ -8,6 +8,7 @@
     <dimen name="four_dp">4dp</dimen>
     <dimen name="five_dp">5dp</dimen>
     <dimen name="eight_dp">8dp</dimen>
+    <dimen name="twelve_dp">12dp</dimen>
     <dimen name="sixteen_dp">16dp</dimen>
     <dimen name="twenty_four_dp">24dp</dimen>
     <dimen name="btn_height">48dp</dimen>

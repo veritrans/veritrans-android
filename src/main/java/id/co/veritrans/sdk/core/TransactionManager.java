@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
+import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
@@ -934,6 +935,8 @@ class TransactionManager {
                                         Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                     }
 
+                                    releaseResources();
+
                                 }
                             });
                 } else {
@@ -1024,6 +1027,100 @@ class TransactionManager {
                                         callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
                                         Logger.e(Constants.ERROR_EMPTY_RESPONSE);
                                     }
+                                    releaseResources();
+                                }
+                            });
+                } else {
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callback.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
+                }
+            } else {
+                callback.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            releaseResources();
+        }
+    }
+
+
+    public static void paymentUsingBBMMoney(final Activity activity, final BBMMoneyRequestModel
+            bbmMoneyRequestModel, final TransactionCallback callback) {
+
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                Observable<TransactionResponse> observable = null;
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+
+                    observable = apiInterface.paymentUsingBBMMoney(merchantToken,
+                            bbmMoneyRequestModel);
+
+                    subscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<TransactionResponse>() {
+
+                                @Override
+                                public void onCompleted() {
+
+                                    if (subscription != null && !subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
+                                    }
+                                    releaseResources();
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    callback.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
+                                }
+
+                                @Override
+                                public void onNext(TransactionResponse
+                                                           bbmMoneyTransferResponse) {
+
+
+
+                                    if (bbmMoneyTransferResponse != null) {
+
+                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                            displayResponse(bbmMoneyTransferResponse);
+                                        }
+
+                                        if (bbmMoneyTransferResponse.getStatusCode().trim()
+                                                .equalsIgnoreCase(Constants.SUCCESS_CODE_200)
+                                                || bbmMoneyTransferResponse.getStatusCode()
+                                                .trim().equalsIgnoreCase(Constants
+                                                        .SUCCESS_CODE_201)) {
+
+                                            callback.onSuccess(bbmMoneyTransferResponse);
+                                        } else {
+                                            callback.onFailure(bbmMoneyTransferResponse
+                                                            .getStatusMessage(),
+                                                    bbmMoneyTransferResponse);
+                                            releaseResources();
+                                        }
+
+                                    } else {
+                                        callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                        releaseResources();
+                                    }
+
+                                    releaseResources();
 
                                 }
                             });

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.BBMMoneyActivity;
 import id.co.veritrans.sdk.activities.BankTransferActivity;
 import id.co.veritrans.sdk.activities.CIMBClickPayActivity;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
@@ -161,6 +162,11 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                     .getResources().getString(R.string.indomaret))) {
                 Intent startIndomaret = new Intent(sActivity, IndomaretActivity.class);
                 sActivity.startActivityForResult(startIndomaret,
+                        Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else if (nameText.getText().toString().trim().equalsIgnoreCase(sActivity
+                    .getResources().getString(R.string.bbm_money))) {
+                Intent startBBMMoney = new Intent(sActivity, BBMMoneyActivity.class);
+                sActivity.startActivityForResult(startBBMMoney,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else {
                 showMessage();

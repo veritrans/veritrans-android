@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.core;
 
+import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
@@ -142,5 +143,12 @@ public interface VeritranceApiInterface {
     Observable<TransactionResponse> paymentUsingIndomaret(@Header("x-auth") String auth,
                                                           @Body IndomaretRequestModel
                                                                   indomaretRequestModel);
+
+    //BBMMoney Payment
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingBBMMoney(@Header("x-auth") String auth,
+                                                          @Body BBMMoneyRequestModel
+                                                                  bbmMoneyRequestModel);
 }
 
