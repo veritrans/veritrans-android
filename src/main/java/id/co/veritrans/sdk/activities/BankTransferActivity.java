@@ -248,7 +248,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         setSupportActionBar(mToolbar);
 
         BankTransactionStatusFragment bankTransactionStatusFragment =
-                BankTransactionStatusFragment.newInstance(transactionResponse, false);
+                BankTransactionStatusFragment.newInstance(transactionResponse, position);
 
         // setup transaction status fragment
         fragmentTransaction.replace(R.id.bank_transfer_container,
