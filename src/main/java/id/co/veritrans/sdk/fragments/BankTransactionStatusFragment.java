@@ -114,19 +114,15 @@ public class BankTransactionStatusFragment extends Fragment {
 
             if (getActivity() != null) {
 
-                if (((BankTransferActivity) getActivity()).getPosition()
-                        == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
+                if ( mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT ) {
                     mTextViewBankName.setText(MANDIRI_BILL);
 
-                } else if (((BankTransferActivity) getActivity()).getPosition()
-                        == Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER) {
+                } else if ( mPaymentType  == Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER ) {
                     mTextViewBankName.setText(VIRTUAL_ACCOUNT);
-                } else if (((BankTransferActivity) getActivity()).getPosition()
-                        == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
+                } else if ( mPaymentType == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU ) {
                     mTextViewBankName.setText(getActivity().getResources().getString(R.string
                             .indosat_dompetku));
-                } else if (((BankTransferActivity) getActivity()).getPosition()
-                        == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY){
+                } else if (  mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY){
                     mTextViewBankName.setText(getActivity().getResources().getString(R.string
                             .mandiri_click_pay));
                 }

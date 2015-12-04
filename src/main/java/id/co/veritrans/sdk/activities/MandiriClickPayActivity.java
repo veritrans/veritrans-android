@@ -14,6 +14,7 @@ import android.widget.Button;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
@@ -28,6 +29,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class MandiriClickPayActivity extends AppCompatActivity implements View.OnClickListener {
 
 
+    public static final String DENY = "202";
     private MandiriClickPayFragment mMandiriClickPayFragment = null;
     private Button mButtonConfirmPayment = null;
     private Toolbar mToolbar = null;
@@ -228,9 +230,17 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                     public void onFailure(String errorMessage, TransactionResponse
                             transactionResponse) {
 
-
                         mTransactionResponse = transactionResponse;
                         MandiriClickPayActivity.this.errorMessage = errorMessage;
+
+
+                        Logger.e("Error is ", "" + errorMessage);
+
+                        if (transactionResponse != null
+                                && transactionResponse.getStatusCode().contains(DENY)) {
+                            setUpTransactionStatusFragment(transactionResponse);
+                        }
+
 
                         SdkUtil.hideProgressDialog();
                         if (errorMessage != null) {
@@ -279,7 +289,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                         Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.bank_transfer_container,
+        fragmentTransaction.replace(R.id.mandiri_clickpay_container,
                 bankTransactionStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();
