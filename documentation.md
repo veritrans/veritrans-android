@@ -30,8 +30,8 @@ To use Veritrans SDK  in your android application perform following steps.
 **Step 1 -**  Add the library as a gradle dependency:
        
 you can simply declare it as dependency in  **build.gradle** file as follow
-```
-        dependencies {
+```sh
+       dependencies {
          compile project(':veritranssdk')
         }
 
@@ -182,6 +182,16 @@ transactionRequest.setItemDetails(ArrayList<ShippingAddress>);
 # Payment Flow
 Veritrans SDK has 2 types of payment flows first is using default ui proived by sdk and second is using core flow.
 1) Payment flow  using default UI -
+
+    In this flow sdk provides an UI to take required information from user to execute transaction.  
+    To perform transaction using this, follow the steps given below:  
+     I) Set transaction request information to sdk.  
+     II) Register a **Broadcast Receiver** to handle payment response.  
+     III) Call the startPaymentUiFlow().
+     
+     **Note -** don't call any payment specific method in this flow, Sdk provides an UI to user with all available methods.
+
+    
     here in this flow just set transaction request information to sdk and start payment flow using following code-
     ```
     if (transactionRequest != null && mVeritransSDK != null) {
@@ -200,7 +210,7 @@ Veritrans SDK has 2 types of payment flows first is using default ui proived by 
 This will start Payment flow if all information is valid.
 
 
-2) Payment flow  using core structure -
+2) **Payment flow  using core structure -**
     
     In this flow we are assuming that you have created ui to take required information from user to execute transaction.  
     To perform transaction using core, follow the steps given below:  
@@ -210,50 +220,24 @@ This will start Payment flow if all information is valid.
      
      **Note -** don't call  mVeritransSDK.startPaymentUiFlow(); for core.
 
-## Mandiri Bill Payment
- 
- To execute payment process using mandiri bill payment method  
-
-
-2.[User detail screen](#user_detail_screen)  
-- _User details like name and contact info_
-
-3.[User address screen](#user_address_screen)   
-- _User billing and shipping address details_  
-
-4.[Select Payment Method](select_payment_method)
-- _Choose the payment option from list_  
-
-5.[Credit card Flow](credit_card_flow)
-- _Saved cards with no saved cards_
-- _Add new card_
-- _Payment status screen_
-- _Saved card screen with cards_
-- _One click flow_
-- _Two click flow_
-
-6.[Bank transfer Flow](bank_transfer_Flow)  
-- _Bank transfer main screen_
-- _Instruction screen_
-- _Payment detail screen_
-- _Payment status screen_  
-
-7.[Mandiri bill payment](mandiri_bill_payment)  
-- _Mandiri bill payment main screen_
-- _Instruction screen_
-- _Payment detail screen_
-- _Payment status screen_  
-
-
+    The main difference between the core and ui flow is that
+    I) Get payment response -  
+        In Core Flow - Use TransactionCallback.
+        In UI Flow - Use Broadcast Receiver.
+        
+    II) Payment Selection Method -  
+        In Core Flow - Call paymentUsingXXX().
+        In UI Flow - Call startPaymentUiFlow() to see all payment methods.
+        
+        
+## Deciding the which flow -
+When payment method is already known and have all required information to execute transaction then go for core flow, else use Ui flow and let user choose the payment method.
 
 ## Payment-options
+In case of core flow use following information to do transactions -
 
-[image insert]  
+1) Credit/Debit - 
 
-**This screen is created for testing purpose.**  
-On this screen we can set some options required for testing purpose.  
-
-* Set amount for payment (default is 100)
 * There are **3 types** of flow for **card payments**.  
 **1. _One click_**  
 **2. _Two click_**  
@@ -267,79 +251,29 @@ We will go in detail about these flows ahead.
 
 * **One click** and **two click** use **secure** flow only.  
 
-* **Delete cards** - Tester can clear all the credit cards locally saved using this option.
-* You can customize List of payment option using given checkbox.
-* On click of payment button new **_order id_** will be created and take user to user detail screen if user details had already provided then it will take user to select payment option screen.  
+To enable secure transacion 
+```
+transactionRequest.setCardPaymentInfo(CARD_CLRDICK_TYPE, isSecure);
 
-## User detail screen
-[image insert]   
-On this screen we are taking user details like user full name, email and phone no from user.
-which used in future payment process, saving user detail in **_UserDetail_** class maintained in models folder of VeritransSdk.
+where - 
+CARD_CLRDICK_TYPE -  type of card use Constants, 
+        Constants.CARD_CLICK_TYPE_ONE_CLICK - for one click
+        Constants.CARD_CLICK_TYPE_TWO_CLICK - for two click
+        Constants.CARD_CLICK_TYPE_NONE  - for normal transaction
 
-## User address screen
-[image insert]  
-Here we are taking user billing address and shipping address.
-User can have different billing and shipping address or same.   
-If user have different shipping and billing address, user have to unchecked the bottom checkbox.
-User addresses are maintained in **_UserAddress class_**. This class is entity of **_UserDetail class_**.
-
-To **fetch user details** from file system refer following code.
-
-
-         StorageDataHandler storageDataHandler = new StorageDataHandler();
-         UserDetail userDetail = null;
-        try {
-           userDetail = (UserDetail) storageDataHandler.readObject(getActivity(), Constants
-                   .USER_DETAILS);
-        
-        } catch (ClassNotFoundException e) {
-           e.printStackTrace();
-        } catch (IOException e) {
-           e.printStackTrace();
-        }
-
-To **write user details** to file system refer following code.
-
-```  
-
-    storageDataHandler.writeObject(getActivity(), Constants.USER_DETAILS, userDetail);
-
+isSecure - set it to true for secure transaction.
 ```
 
-Here ***Constant.USER_DETAIL*** is file name stored locally. UserDetail is serialized.   
 
-Refer UserDetailFragment class for further implementation of flow.
-
-## Select payment option  
-[insert image]  
-This is first screen of main flow. We are showing list of available payment methods. ***PaymentMehodActivity*** class holds the code for list.
-
-## Credit card flow
-[image insert]
-### Add new card   
-[image insert]  
-
-We can add new card here  
-List of actions as follows
-- Take card details from user
-- Do validation of card detail  
-- On successful validation adding bank name and card type from list of BNI available in asset folder of SDK.
-- Once we got all the details we are making api call for token
-
-***VeritransSDK class*** contains all important methods required for payment transaction.
-Code to get VeritransSDK object  
-
-    VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();  
-
-**Mehod to get token**
-
+**Get token**
+```
     veritransSDK.getToken(activity, cardTokenRequest, tokenCallBack);  
+```
 
 ***CardTokenRequest*** class contains card details required for getting token.  
 
 ## TokenCallBack Interface
 It contains two methods onSuccess and onFailure -  
-
 
     @Override  
     public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {  
