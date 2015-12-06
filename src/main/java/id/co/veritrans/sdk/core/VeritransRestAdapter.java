@@ -1,7 +1,6 @@
 package id.co.veritrans.sdk.core;
 
 import android.app.Activity;
-import android.content.Context;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -24,9 +23,9 @@ import retrofit.converter.GsonConverter;
  * Created by chetan on 16/10/15.
  */
 class VeritransRestAdapter {
-
     private static final String TAG = VeritransRestAdapter.class.getName();
-    private static VeritranceApiInterface sVeritranceApiInterface;
+    private static VeritranceApiInterface veritranceApiInterface;
+    private static VeritranceApiInterface merchantVeritranceApiInterface;
 
     /**
      * It will return instance of VeritranceApiInterface using that we can execute api calls.
@@ -39,41 +38,30 @@ class VeritransRestAdapter {
     public static VeritranceApiInterface getApiClient(final Activity activity,
                                                       boolean showNetworkNotAvailableDialog) {
         if (Utils.isNetworkAvailable(activity)) {
-
-            if (sVeritranceApiInterface == null) {
+            if (veritranceApiInterface == null) {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
                 Gson gson = new GsonBuilder()
                         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                         .registerTypeAdapter(Date.class, new DateTypeAdapter())
                         .create();
-
                 RestAdapter.Builder builder = new RestAdapter.Builder()
                         .setConverter(new GsonConverter(gson))
                         .setLogLevel(RestAdapter.LogLevel.FULL)
                         .setClient(new OkClient(okHttpClient));
-
                 RestAdapter restAdapter;
-
-
                 if (BuildConfig.DEBUG) {
                     builder.setEndpoint(Constants.BASE_URL_FOR_DEBUG);
                     restAdapter = builder.build();
                     restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
-
                 } else {
                     builder.setEndpoint(Constants.BASE_URL_FOR_RELEASE);
                     restAdapter = builder.build();
                 }
-
-
-                sVeritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
+                veritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
             }
-
-            return sVeritranceApiInterface;
-
+            return veritranceApiInterface;
         } else {
-
             if (showNetworkNotAvailableDialog && activity != null) {
                 try {
                     activity.runOnUiThread(new Runnable() {
@@ -86,60 +74,43 @@ class VeritransRestAdapter {
                             dialog.show();
                         }
                     });
-
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
             }
-
         }
-
         return null;
-
     }
 
-    public static VeritranceApiInterface getMerchantApiClient(final Context activity,
-                                                      boolean showNetworkNotAvailableDialog) {
-
-        VeritranceApiInterface sVeritranceApiInterface = null;
-
-
+    public static VeritranceApiInterface getMerchantApiClient(final Activity activity, boolean
+            showNetworkNotAvailableDialog) {
         if (Utils.isNetworkAvailable(activity)) {
 
-            if (sVeritranceApiInterface == null) {
+            if (merchantVeritranceApiInterface == null) {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
                 Gson gson = new GsonBuilder()
                         .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                         .registerTypeAdapter(Date.class, new DateTypeAdapter())
                         .create();
-
                 RestAdapter.Builder builder = new RestAdapter.Builder()
                         .setConverter(new GsonConverter(gson))
                         .setLogLevel(RestAdapter.LogLevel.FULL)
                         .setClient(new OkClient(okHttpClient));
-
                 RestAdapter restAdapter;
-
-
                 if (BuildConfig.DEBUG) {
                     builder.setEndpoint(Constants.BASE_URL_MERCHANT_FOR_DEBUG);
                     restAdapter = builder.build();
                     restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
-
                 } else {
                     builder.setEndpoint(Constants.BASE_URL_MERCHANT_FOR_RELEASE);
                     restAdapter = builder.build();
                 }
-
-
-                sVeritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
+                merchantVeritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
             }
+            return merchantVeritranceApiInterface;
 
-            return sVeritranceApiInterface;
-
-        } /*else {
-
+        } else {
             if (showNetworkNotAvailableDialog && activity != null) {
                 try {
                     activity.runOnUiThread(new Runnable() {
@@ -152,16 +123,11 @@ class VeritransRestAdapter {
                             dialog.show();
                         }
                     });
-
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
             }
-
-        }*/
-
+        }
         return null;
-
     }
-
 }

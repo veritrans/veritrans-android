@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 /**
+ *
+ * model class to hold information bout Bank Transfer api call
+ *
  * Created by shivam on 10/26/15.
  */
 public class PermataBankTransfer extends TransactionModel {

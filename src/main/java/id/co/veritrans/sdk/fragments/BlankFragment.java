@@ -1,14 +1,17 @@
 package id.co.veritrans.sdk.fragments;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
+import android.support.annotation.IntegerRes;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.widgets.MorphingButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +22,7 @@ import id.co.veritrans.sdk.R;
  * create an instance of this fragment.
  */
 public class BlankFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,36 +33,24 @@ public class BlankFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private MorphingButton btnMorph;
 
     public BlankFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static BlankFragment newInstance(String param1, String param2) {
+    public static BlankFragment newInstance() {
         BlankFragment fragment = new BlankFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -76,6 +68,51 @@ public class BlankFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+         btnMorph = (MorphingButton) view.findViewById(R.id.btnMorph1);
+        MorphingButton.Params circle = morphCicle();
+        btnMorph.morph(circle);
+      btnMorph.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              MorphingButton.Params square = MorphingButton.Params.create()
+                      .duration(1000)
+                      .cornerRadius(dimen(R.dimen.mb_corner_radius_2))
+                      .width(1000)
+                      .height(200)
+                      .text("test")
+                      .colorPressed(color(R.color.colorAccent))
+                      .color(color(R.color.colorAccent));
+              btnMorph.morph(square);
+          }
+      });
+                
+
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    public MorphingButton.Params morphCicle() {
+        return MorphingButton.Params.create()
+                    .cornerRadius(200)
+                    .width(200)
+                    .height(200)
+                    .colorPressed(color(R.color.colorAccent))
+                    .color(color(R.color.colorAccent));
+    }
+
+    public int dimen(@DimenRes int resId) {
+        return (int) getResources().getDimension(resId);
+    }
+
+    public int color(@ColorRes int resId) {
+        return getResources().getColor(resId);
+    }
+
+    public int integer(@IntegerRes int resId) {
+        return getResources().getInteger(resId);
+    }
+
+    /*@Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -85,12 +122,12 @@ public class BlankFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
-    @Override
+*/
+    /*@Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this

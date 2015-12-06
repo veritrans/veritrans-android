@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -23,11 +24,8 @@ public class WebviewFragment extends Fragment {
     private static final String URL_PARAM = "url_param";
     public WebView webView;
     private String webUrl;
-    /*private Button sucBt;
-    private Button unsucBt;*/
 
     public WebviewFragment() {
-        // Required empty public constructor
     }
 
     public static WebviewFragment newInstance(String url) {
@@ -50,37 +48,30 @@ public class WebviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_webview, container, false);
+        return inflater.inflate(R.layout.fragment_webview, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         webView = (WebView) view.findViewById(R.id.webview);
-       /* sucBt = (Button)view.findViewById(R.id.btn_success);
-        unsucBt = (Button)view.findViewById(R.id.btn_unsuccess);
-        sucBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                trnsSuc(v);
-            }
-        });
-        unsucBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                trnsUnsuc(v);
-            }
-        });*/
         initwebview();
         webView.loadUrl(webUrl);
-        return view;
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void initwebview() {
         SdkUtil.showProgressDialog(getActivity(), true);
-
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.setInitialScale(1);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         webView.setWebViewClient(new VeritransWebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
+        webView.addJavascriptInterface(new JsInterface(), Constants.VERITRANS_RESPONSE);
+       // webView.addJavascriptInterface(new WebAppInterface(getActivity()), "Android");
     }
 
     public void webviewBackPressed() {
@@ -92,12 +83,6 @@ public class WebviewFragment extends Fragment {
     private class VeritransWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            /*if (Uri.parse(url).getHost().equals("URL_NAME")) {
-                return false;
-            }
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);*/
-
             view.loadUrl(url);
             return true;
         }
@@ -110,7 +95,11 @@ public class WebviewFragment extends Fragment {
                 Intent returnIntent = new Intent();
                 getActivity().setResult(getActivity().RESULT_OK, returnIntent);
                 getActivity().finish();
-            }
+            } /*else if (url.contains(Constants.CALLBACK_URL)) {
+                Intent returnIntent = new Intent();
+                getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                getActivity().finish();
+            }*/
         }
 
         @Override
@@ -121,16 +110,33 @@ public class WebviewFragment extends Fragment {
         }
     }
 
-   /* public void trnsSuc(View view){
-        PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-        PaymentTransactionStatusFragment.newInstance(true);
-        ((CreditDebitCardFlowActivity) getActivity()).replaceFragment
-        (paymentTransactionStatusFragment,true,false);
+
+    public class JsInterface {
+
+        @JavascriptInterface
+        public void paymentResponse(String data) {
+            Logger.i("paymentStatus:"+data);
+            Intent intent = new Intent();
+            intent.putExtra(Constants.PAYMENT_RESPONSE, data);
+            getActivity().setResult(getActivity().RESULT_OK, intent);
+            getActivity().finish();
+        }
+
     }
-    public void trnsUnsuc(View view){
-        PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-        PaymentTransactionStatusFragment.newInstance(false);
-        ((CreditDebitCardFlowActivity) getActivity()).replaceFragment
-        (paymentTransactionStatusFragment,true,false);
+
+    /*public class WebAppInterface {
+        Context mContext;
+
+        *//** Instantiate the interface and set the context *//*
+        WebAppInterface(Context c) {
+            mContext = c;
+        }
+
+        *//** Show a toast from the web page *//*
+        @JavascriptInterface
+        public void showToast(String toast) {
+            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+        }
     }*/
+
 }

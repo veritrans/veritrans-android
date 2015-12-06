@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
+ * contains information about payment charge api call like,
+ * </p> status message, status code, transaction id, transaction status etc.
+ *
  * Created by chetan on 30/10/15.
  */
 public class TransactionResponse implements Serializable {
@@ -63,6 +66,9 @@ public class TransactionResponse implements Serializable {
     @SerializedName("permata_va_number")
     private String permataVANumber;
 
+    @SerializedName("redirect_url")
+    private String redirectUrl;
+
     private String bank;
     private String eci;
 
@@ -78,6 +84,25 @@ public class TransactionResponse implements Serializable {
      */
     @SerializedName("biller_code")
     private String companyCode;
+
+    /**
+     * payment code for Indomaret
+     */
+    @SerializedName("payment_code")
+    private String paymentCodeIndomaret;
+
+    public TransactionResponse(String statusCode, String statusMessage, String transactionId,
+                               String orderId, String grossAmount, String paymentType,
+                               String transactionTime, String transactionStatus) {
+        this.statusCode = statusCode;
+        this.statusMessage = statusMessage;
+        this.transactionId = transactionId;
+        this.orderId = orderId;
+        this.grossAmount = grossAmount;
+        this.paymentType = paymentType;
+        this.transactionTime = transactionTime;
+        this.transactionStatus = transactionStatus;
+    }
 
     public String getStatusCode() {
         return statusCode;
@@ -238,5 +263,21 @@ public class TransactionResponse implements Serializable {
         } catch (NullPointerException e) {
             return "";
         }
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
+    public String getPaymentCodeIndomaret() {
+        return paymentCodeIndomaret;
+    }
+
+    public void setPaymentCodeIndomaret(String paymentCodeIndomaret) {
+        this.paymentCodeIndomaret = paymentCodeIndomaret;
     }
 }

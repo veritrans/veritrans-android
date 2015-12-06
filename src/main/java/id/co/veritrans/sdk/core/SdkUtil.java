@@ -17,14 +17,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
+import id.co.veritrans.sdk.models.CIMBClickPayModel;
+import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
+import id.co.veritrans.sdk.models.EpayBriTransfer;
+import id.co.veritrans.sdk.models.IndomaretRequestModel;
+import id.co.veritrans.sdk.models.IndosatDompetku;
+import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
+import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.ShippingAddress;
 import id.co.veritrans.sdk.models.TransactionDetails;
@@ -33,24 +41,37 @@ import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.VeritransLoadingDialog;
 
 /**
+ *
+ * It contains utility methods required for sdk.
+ *
  * Created by chetan on 19/10/15.
  */
 public class SdkUtil {
 
     private static VeritransLoadingDialog progressDialog;
 
+    /**
+     * it will validate an given email-id.
+     *
+     * @param email
+     * @return true if given email-id is valid else returns false
+     */
     public static boolean isEmailValid(String email) {
-        Logger.i("email:" + email);
+
         if (!TextUtils.isEmpty(email)) {
             Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(email.trim());
-            Logger.i("matcher:" + matcher.matches());
             return matcher.matches();
         } else {
             return false;
         }
     }
 
+    /**
+     * it will validate an given phone number.
+     * @param phoneNo
+     * @return true if given phone number is valid else returns false
+     */
     public static boolean isPhoneNumberValid(String phoneNo) {
         if (!TextUtils.isEmpty(phoneNo)) {
             if (phoneNo.length() < Constants.PHONE_NUMBER_LENGTH) {
@@ -63,6 +84,11 @@ public class SdkUtil {
         }
     }
 
+    /**
+     * Show snack bar with given message.
+     * @param activity instance of an activity.
+     * @param message message to display on snackbar.
+     */
     public static void showSnackbar(Activity activity, String message) {
 
         try {
@@ -74,8 +100,14 @@ public class SdkUtil {
         }
     }
 
+
+    /**
+     * Utility method which will help to close the keyboard.
+     * @param activity
+     */
     public static void hideKeyboard(Activity activity) {
         try {
+            Logger.i("hide keyboard");
             View view = activity.getCurrentFocus();
             if (view != null) {
                 InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context
@@ -87,6 +119,11 @@ public class SdkUtil {
         }
     }
 
+    /**
+     * it will validate an given card number.
+     * @param ccNumber
+     * @return true if given card number is valid else returns false.
+     */
     public static boolean isValidCardNumber(String ccNumber) {
         int sum = 0;
         boolean alternate = false;
@@ -106,6 +143,12 @@ public class SdkUtil {
         return isvalid;
     }
 
+    /**
+     * Displays an progress dialog.
+     *
+     * @param activity instance of an activity
+     * @param isCancelable set whether dialog is cancellable or not.
+     */
     public static void showProgressDialog(Activity activity, boolean isCancelable) {
 
         hideProgressDialog();
@@ -127,6 +170,14 @@ public class SdkUtil {
 
     }
 
+
+    /**
+     * Displays an progress dialog with an message.
+     *
+     * @param activity instance of an activity
+     * @param message message to display information about on going task.
+     * @param isCancelable set whether dialog is cancellable or not.
+     */
     public static void showProgressDialog(Activity activity, String message, boolean isCancelable) {
 
         hideProgressDialog();
@@ -148,10 +199,16 @@ public class SdkUtil {
 
     }
 
+    /**
+     * @return an instance of progress dialog if visible any else returns null.
+     */
     public static VeritransLoadingDialog getProgressDialog() {
         return progressDialog;
     }
 
+    /**
+     * It will close the progress dialog if visible any.
+     */
     public static void hideProgressDialog() {
 
         if (progressDialog != null && progressDialog.isShowing()) {
@@ -167,11 +224,20 @@ public class SdkUtil {
         }
     }
 
+    /**
+     * display snackbar with message about failed api call.
+     * @param activity
+     * @param errorMessage
+     */
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
-            if (!TextUtils.isEmpty(errorMessage) && errorMessage.contains(Constants
-                    .RETROFIT_NETWORK_MESSAGE)) {
-                SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+            if(!TextUtils.isEmpty(errorMessage)) {
+                if (errorMessage.contains(Constants
+                        .RETROFIT_NETWORK_MESSAGE)) {
+                    SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+                } else {
+                    SdkUtil.showSnackbar(activity, errorMessage);
+                }
             } else {
                 SdkUtil.showSnackbar(activity, activity.getString(R.string.api_fail_message));
             }
@@ -195,6 +261,13 @@ public class SdkUtil {
         return number;
     }
 
+
+    /**
+     * helper method to extract {@link MandiriBillPayTransferModel} from {@link TransactionRequest}.
+     *
+     * @param request
+     * @return
+     */
     protected static MandiriBillPayTransferModel getMandiriBillPayModel(TransactionRequest
                                                                                 request) {
 
@@ -214,6 +287,12 @@ public class SdkUtil {
         return model;
     }
 
+
+    /**
+     * helper method to extract {@link MandiriClickPayModel} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
     protected static MandiriClickPayRequestModel getMandiriClickPayRequestModel(TransactionRequest
                                                                                         request,
                                                                                 MandiriClickPayModel mandiriClickPayModel) {
@@ -234,6 +313,12 @@ public class SdkUtil {
         return model;
     }
 
+
+    /**
+     * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
     protected static PermataBankTransfer getPermataBankModel(TransactionRequest request) {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
@@ -246,7 +331,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank("permata");
+        bankTransfer.setBank(Constants.PAYMENT_PERMATA);
 
         PermataBankTransfer model =
                 new PermataBankTransfer(bankTransfer,
@@ -258,6 +343,154 @@ public class SdkUtil {
 
     }
 
+
+
+
+    /**
+     * helper method to extract {@link id.co.veritrans.sdk.models.IndomaretRequestModel} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
+    protected static IndomaretRequestModel getIndomaretRequestModel(TransactionRequest request, IndomaretRequestModel.CstoreEntity cstoreEntity) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        IndomaretRequestModel model =
+                new IndomaretRequestModel();
+        model.setPaymentType(Constants.PAYMENT_INDOMARET);
+                        model.setItem_details(request.getItemDetails());
+                        model.setCustomerDetails(request.getCustomerDetails());
+                        model.setTransactionDetails(transactionDetails);
+                        model.setCstore(cstoreEntity);
+
+
+        return model;
+
+    }
+
+    protected static BBMMoneyRequestModel getBBMMoneyRequestModel(TransactionRequest request) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        BBMMoneyRequestModel model =
+                new BBMMoneyRequestModel();
+        model.setPaymentType("bbm_money");
+        model.setTransactionDetails(transactionDetails);
+        return model;
+    }
+
+
+
+    /**
+     * helper method to extract {@link id.co.veritrans.sdk.models.IndosatDompetkuRequest} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
+    protected static IndosatDompetkuRequest getIndosatDompetkuRequestModel(TransactionRequest request, String msisdn) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        //if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        //}
+
+
+        IndosatDompetku indosatDompetku = null;
+
+        if( msisdn != null && !TextUtils.isEmpty(msisdn)){
+            indosatDompetku = new IndosatDompetku(msisdn.trim());
+        }
+
+
+        IndosatDompetkuRequest model =
+                new IndosatDompetkuRequest();
+
+                model.setCustomerDetails(request.getCustomerDetails(), request.getShippingAddressArrayList(), request.getBillingAddressArrayList());
+                model.setPaymentType(Constants.PAYMENT_INDOSAT_DOMPETKU);
+
+        IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
+                .IndosatDompetkuEntity();
+            entity.setMsisdn(""+msisdn);
+
+                model.setIndosatDompetku(entity);
+                model.setItemDetails(request.getItemDetails());
+                model.setTransactionDetails(transactionDetails);
+
+        return model;
+
+    }
+
+
+    /**
+     * helper method to extract {@link CIMBClickPayModel} from {@link TransactionRequest}.
+     * @return
+     */
+
+    protected static CIMBClickPayModel getCIMBClickPayModel(TransactionRequest request) {
+
+        DescriptionModel cimbDescription = new DescriptionModel("Any Description"); //TODO...Description for transaction
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+
+        CIMBClickPayModel model =
+                new CIMBClickPayModel(cimbDescription, transactionDetails, request.getItemDetails(),
+                        request.getBillingAddressArrayList(),
+                        request.getShippingAddressArrayList(),
+                        request.getCustomerDetails());
+        return model;
+    }
+
+    /**
+     * helper method to extract {@link CIMBClickPayModel} from {@link TransactionRequest}.
+     * @return
+     */
+
+    protected static MandiriECashModel getMandiriECashModel(TransactionRequest request) {
+
+        DescriptionModel description = new DescriptionModel("Any Description");
+        //TODO...Description for transaction
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+
+        MandiriECashModel model =
+                new MandiriECashModel(description, transactionDetails, request.getItemDetails(),
+                        request.getBillingAddressArrayList(),
+                        request.getShippingAddressArrayList(),
+                        request.getCustomerDetails());
+        return model;
+    }
+
+    /**
+     * helper method to extract {@link CardTransfer} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
     public static CardTransfer getCardTransferModel(TransactionRequest request,
                                                     CardPaymentDetails cardPaymentDetails) {
 
@@ -278,13 +511,28 @@ public class SdkUtil {
         return model;
     }
 
+
+
+
+
+
+
+
+    /**
+     * helper method to add {@link CustomerDetails} in {@link TransactionRequest}.
+     * @param transactionRequest
+     * @return transactionRequest with  {@link CustomerDetails}.
+     */
     protected static TransactionRequest initializeUserInfo(TransactionRequest transactionRequest) {
-
         transactionRequest = getUserDetails(transactionRequest);
-
         return transactionRequest;
     }
 
+    /**
+     * it extracts customer information from TransactionRequest.
+     * @param request instance of TransactionRequest
+     * @return
+     */
     private static TransactionRequest getUserDetails(TransactionRequest request) {
 
         UserDetail userDetail = null;
@@ -387,16 +635,73 @@ public class SdkUtil {
         return billingAddress;
     }
 
+    /**
+     * shows keyboard on screen forcefully.
+     * @param activity
+     * @param editText
+     */
     public static void showKeyboard(Activity activity, EditText editText) {
+        Logger.i("show keyboard");
+        if(editText!=null) {
+            editText.requestFocus();
+            editText.setFocusable(true);
+            editText.setFocusableInTouchMode(true);
+        }
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context
                 .INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+
     }
 
-   /* public static BankDetailArray loadBankDetailJsonFromAsset(final Activity activity) {
+
+    /**
+     *
+     * return user details if available else return null
+     *
+     * @param context
+     * @return UserDetail
+     */
+    protected static UserDetail getUserDetails(Context context){
+
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+            try {
+                UserDetail userDetail = (UserDetail) storageDataHandler.readObject(context, Constants
+                        .USER_DETAILS);
+
+                return userDetail;
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+    }
+
+    /**
+     * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
+     * @param request
+     * @return
+     */
+    protected static EpayBriTransfer getEpayBriBankModel(TransactionRequest request) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
 
 
 
+        EpayBriTransfer model =
+                new EpayBriTransfer(transactionDetails, request.getItemDetails(),
+                        request.getBillingAddressArrayList(),
+                        request.getShippingAddressArrayList(),
+                        request.getCustomerDetails());
+        return model;
 
-    }*/
+    }
+
 }

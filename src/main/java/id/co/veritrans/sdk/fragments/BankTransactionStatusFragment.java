@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferActivity;
+import id.co.veritrans.sdk.activities.IndosatDompetkuActivity;
+import id.co.veritrans.sdk.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -22,24 +24,39 @@ public class BankTransactionStatusFragment extends Fragment {
 
     private static final String VIRTUAL_ACCOUNT = "Virtual Account";
     private static final String MANDIRI_BILL = "Mandiri Bill Payment";
+
+
     private static final String DATA = "data";
+    public static final String PENDING = "Pending";
 
-    private TransactionResponse mPermataBankTransferResponse = null;
+    private TransactionResponse mTransactionResponse = null;
 
+    // Views
     private TextViewFont mTextViewAmount = null;
     private TextViewFont mTextViewOrderId = null;
     private TextViewFont mTextViewTransactionTime = null;
     private TextViewFont mTextViewBankName = null;
 
-    private ImageView mImageViewTransactionStatus = null;
     private TextViewFont mTextViewFontTransactionStatus = null;
     private TextViewFont mTextViewFontPaymentErrorMessage = null;
+    private ImageView mImageViewTransactionStatus = null;
+    private static final String PAYMENT_TYPE = "payment_type";
+    private int mPaymentType = -1;
 
+    /**
+     * It creates new BankTransactionStatusFragment object and set TransactionResponse object to it,
+     * so later it can be accessible using fragments getArgument().
+     *
+     * @param transactionResponse
+     * @return instance of BankTransactionStatusFragment.
+     */
     public static BankTransactionStatusFragment newInstance(TransactionResponse
-                                                                    transactionResponse) {
+                                                                    transactionResponse,
+                                                            int paymentType) {
         BankTransactionStatusFragment fragment = new BankTransactionStatusFragment();
         Bundle data = new Bundle();
         data.putSerializable(DATA, transactionResponse);
+        data.putInt(PAYMENT_TYPE, paymentType);
         fragment.setArguments(data);
         return fragment;
     }
@@ -53,16 +70,25 @@ public class BankTransactionStatusFragment extends Fragment {
         return view;
     }
 
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         initializeViews(view);
 
+        //retrieve data from bundle.
         Bundle data = getArguments();
-        mPermataBankTransferResponse = (TransactionResponse) data.getSerializable(DATA);
-        initializeDataToView();
+        mTransactionResponse = (TransactionResponse) data.getSerializable(DATA);
+        mPaymentType = data.getInt(PAYMENT_TYPE);
 
+        initializeDataToView();
     }
 
+    /**
+     * initializes view and adds click listener for it.
+     *
+     * @param view
+     */
     private void initializeViews(View view) {
 
         mTextViewAmount = (TextViewFont) view.findViewById(R.id.text_amount);
@@ -79,55 +105,83 @@ public class BankTransactionStatusFragment extends Fragment {
     }
 
 
+    /**
+     * apply data to view
+     */
     private void initializeDataToView() {
 
-        if (mPermataBankTransferResponse != null) {
+        if (mTransactionResponse != null) {
 
             if (getActivity() != null) {
 
-                if (((BankTransferActivity) getActivity()).getPosition()
-                        == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
+                if ( mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT ) {
                     mTextViewBankName.setText(MANDIRI_BILL);
-                } else {
-                    mTextViewBankName.setText(VIRTUAL_ACCOUNT);
-                }
 
+                } else if ( mPaymentType  == Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER ) {
+                    mTextViewBankName.setText(VIRTUAL_ACCOUNT);
+                } else if ( mPaymentType == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU ) {
+                    mTextViewBankName.setText(getActivity().getResources().getString(R.string
+                            .indosat_dompetku));
+                } else if (  mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY){
+                    mTextViewBankName.setText(getActivity().getResources().getString(R.string
+                            .mandiri_click_pay));
+                }
             }
 
-            mTextViewTransactionTime.setText(mPermataBankTransferResponse.getTransactionTime());
-            mTextViewOrderId.setText(mPermataBankTransferResponse.getOrderId());
-            mTextViewAmount.setText(mPermataBankTransferResponse.getGrossAmount());
+            mTextViewTransactionTime.setText(mTransactionResponse.getTransactionTime());
+            mTextViewOrderId.setText(mTransactionResponse.getOrderId());
+            mTextViewAmount.setText(mTransactionResponse.getGrossAmount());
 
-            if (mPermataBankTransferResponse.getTransactionStatus().contains("Pending") ||
-                    mPermataBankTransferResponse.getTransactionStatus().contains("pending")) {
+            if (mTransactionResponse.getTransactionStatus().contains(PENDING) ||
+                    mTransactionResponse.getTransactionStatus().contains("pending")) {
 
-            } else if (mPermataBankTransferResponse.getStatusCode().equalsIgnoreCase(Constants
-                    .SUCCESS_CODE_200) || mPermataBankTransferResponse.getStatusCode().
+            } else if (mTransactionResponse.getStatusCode().equalsIgnoreCase(Constants
+                    .SUCCESS_CODE_200) || mTransactionResponse.getStatusCode().
                     equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
 
                 setUiForSuccess();
             } else {
 
                 setUiForFailure();
+
                 if (getActivity() != null) {
-                    ((BankTransferActivity) getActivity()).activateRetry();
+
+                    // change name of button to 'RETRY'
+                    if (mPaymentType == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
+                        ((IndosatDompetkuActivity) getActivity()).activateRetry();
+                    } else if (mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY){
+                        ((MandiriClickPayActivity) getActivity()).activateRetry();
+
+                        if ( mTransactionResponse != null &&
+                                mTransactionResponse.getTransactionStatus().equalsIgnoreCase("deny")){
+                            mTextViewFontTransactionStatus.setText("Payment Denied.");
+                        }
+                    }
+                    else {
+                        ((BankTransferActivity) getActivity()).activateRetry();
+                    }
                 }
             }
         }
     }
 
 
+    /**
+     * enables ui related to failure of payment transaction.
+     */
     private void setUiForFailure() {
         mImageViewTransactionStatus.setImageResource(R.drawable.ic_failure);
         mTextViewFontTransactionStatus.setText(getString(R.string.payment_unsuccessful));
         mTextViewFontPaymentErrorMessage.setVisibility(View.VISIBLE);
     }
 
-    private void setUiForSuccess() {
 
+    /**
+     * enables ui related to success of payment transaction.
+     */
+    private void setUiForSuccess() {
         mImageViewTransactionStatus.setImageResource(R.drawable.ic_successful);
         mTextViewFontTransactionStatus.setText(getString(R.string.payment_successful));
         mTextViewFontPaymentErrorMessage.setVisibility(View.GONE);
     }
-
 }

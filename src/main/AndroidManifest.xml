@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="id.co.veritrans.sdk"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    package="id.co.veritrans.sdk"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -34,6 +35,42 @@
             android:name=".activities.MandiriClickPayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
+        <activity
+            android:name=".activities.EpayBriActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+        <activity
+            android:name=".activities.CIMBClickPayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+
+        <activity
+            android:name=".activities.MandiriECashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+        <activity
+            android:name=".activities.IndosatDompetkuActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+        <activity
+            android:name=".activities.IndomaretActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+        <activity
+            android:name=".activities.NotificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+        <activity
+            android:name=".activities.BBMMoneyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+
+
+        <activity
+            android:name=".activities.MandiriClickPayInstructionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+
 
     </application>
 

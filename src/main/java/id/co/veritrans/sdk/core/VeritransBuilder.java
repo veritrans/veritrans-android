@@ -5,11 +5,15 @@ import android.content.Context;
 /**
  * Created by shivam on 10/20/15.
  * <p/>
- * helper class to create object of veritrans sdk class.
+ * helper class to create object of veritrans sdk.
+ * </p>
+ * Call its constructor with activity , client_key and sever_key.
+ *</p>
+ * You can also enable or disable using {@link #enableLog(boolean)}
  */
 public class VeritransBuilder {
 
-    protected String serverKey = null;
+    /*protected String serverKey = null;*/
     protected String clientKey = null;
     protected Context context = null;
     protected boolean enableLog = true;
@@ -18,22 +22,11 @@ public class VeritransBuilder {
      * It  will initialize an data required to sdk.
      *
      * @param context
-     * @param clientKey client key retrieved from veritrans server.
-     * @param serverKey server key retrieved from veritrans server.
+
      */
-    public VeritransBuilder(Context context, String clientKey,
-                            String serverKey) {
-
-        if (context != null
-                && clientKey != null && serverKey != null) {
-
+    public VeritransBuilder(Context context,String clientKey) {
             this.context = context.getApplicationContext();
             this.clientKey = clientKey;
-            this.serverKey = serverKey;
-
-        } else {
-            throw new IllegalArgumentException("Invalid data supplied to sdk.");
-        }
     }
 
 

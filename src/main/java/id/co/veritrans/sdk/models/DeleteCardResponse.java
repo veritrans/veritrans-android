@@ -1,16 +1,14 @@
 package id.co.veritrans.sdk.models;
 
-import android.text.TextUtils;
-
 /**
- * Created by chetan on 20/11/15.
+ * Created by chetan on 04/12/15.
  */
-public class TransactionUpdateMerchantResponse {
+public class DeleteCardResponse {
     private String message;
     private String error;
 
     public String getMessage() {
-        return !TextUtils.isEmpty(message) ? message : "";
+        return message;
     }
 
     public void setMessage(String message) {
@@ -18,7 +16,7 @@ public class TransactionUpdateMerchantResponse {
     }
 
     public String getError() {
-        return !TextUtils.isEmpty(error) ? error : "";
+        return error;
     }
 
     public void setError(String error) {

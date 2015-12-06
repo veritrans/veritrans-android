@@ -94,6 +94,7 @@
 
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
+    <string name="transfer_amount">Transfer Amount</string>
     <string name="hint_email_optional">Email Address (Optional)</string>
     <string name="email_instruction">We\'ll send payment instruction to mail.</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
@@ -115,6 +116,7 @@
     <string name="tab_bca_prima">BCA/Prima</string>
     <string name="tab_permata_alto">Permata/Alto</string>
     <string name="payment_instrution">Payment Instruction</string>
+    <string name="payment_code">Payment Code</string>
 
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
@@ -134,6 +136,51 @@
     <string name="bca_instruction_step5">5.\tEnter the number 013 (Bank Permata) and choose \'Correct\'.</string>
     <string name="bca_instruction_step6">6.\tEnter full amount to be paid (if the amount entered is not the same as the invoiced amount, the transaction will be declined).</string>
     <string name="bca_instruction_step7">7.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
+
+
+    <!-- cimb transfer Instructions -->
+    <string name="cimb_instruction_step1">1.\tPlease make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
+    <string name="cimb_instruction_step2">2.\tTransaction will be cancelled if payment is not completed within 2 hours.</string>
+    <string name="cimb_instruction_step3">3.\tPlease make sure that there is no pop-up blocker on your browser.</string>
+
+
+    <!-- Mandiri E Cash transfer Instruction-->
+    <string name="mandiri__e_cash_instruction_step1">1.\tMake sure you have registered your mobile phone number for Mandiri e-cash.</string>
+    <string name="mandiri__e_cash_instruction_step2">2.\tClick \'Confirm Payment\'.</string>
+    <string name="mandiri__e_cash_instruction_step3">3.\tEnter your phone number and PIN.</string>
+    <string name="mandiri__e_cash_instruction_step4">4.\tPlease wait for an SMS from Mandiri e-cash that contains your One Time Password (OTP).</string>
+    <string name="mandiri__e_cash_instruction_step5">5.\tEnter the 6 digit OTP, then click
+        \'pay\' to make payment.</string>
+    <string name="mandiri__e_cash_instruction_step6">6.\tIf you haven\'t received the OTP or the
+        OTP has expired, click \'cancel\' and retry your transaction.</string>
+
+
+    <!-- Indomaret Instruction-->
+    <string name="indomaret_instruction_step1">1.\tAfter confirming your payment, we will issue you a unique Payment Code number.</string>
+    <string name="indomaret_instruction_step2">2.\tNote down your Payment Code and total amount.
+        Don\'t worry, we will also mail you a copy of the payment instructions.</string>
+    <string name="indomaret_instruction_step3">3.\tGo to an Indomaret store near you and provide the cashier with the Payment Code number.</string>
+    <string name="indomaret_instruction_step4">4.\tThe cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
+    <string name="indomaret_instruction_step5">5.\tConfirm the payment with the cashier.</string>
+    <string name="indomaret_instruction_step6">6.\tYour transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
+
+
+    <!-- BBM Money Instruction-->
+    <string name="bbm_money_instruction_step1">1.\tPlease click \'Confirm Payment\'.</string>
+    <string name="bbm_money_instruction_step2">2.\tOpen or install the BBM™ Money app on your
+        smartphone.</string>
+    <string name="bbm_money_instruction_step3">3.\tMake sure you have enough balance in your BBM™ Money wallet.</string>
+    <string name="bbm_money_instruction_step4">4.\tLogin to your BBM™ Money account and select
+        \'Send To Company\'.</string>
+    <string name="bbm_money_instruction_step5">5.\tSelect \'Online Shopping\' as the biller and
+        then enter Payment Code into the \'Payment Code\' field.</string>
+    <string name="bbm_money_instruction_step6">6.\tInput amount to be paid into \'Amount\'.</string>
+
+    <string name="get_bbm_money_app">Get BBM Money App</string>
+    <string name="title_bbm_not_found">BBM Money App not found!</string>
+    <string name="message_bbm_not_found">To continue payment, please install BBM Money App.</string>
+    <string name="bbm_btn_text1">PAY WITH</string>
+    <string name="bbm_btn_text2">BBM MONEY</string>
 
 
     <!-- Permata/Alto bank transfer Instruction-->
@@ -191,6 +238,42 @@
     <string name="card_delete_message">Are you sure you want to delete card?</string>
     <string name="message_save_card">Save your card for faster checkout process.</string>
     <string name="got_it">Got it</string>
-
+    <string name="bri_instruction_step1">1.Please make sure that you have a User ID for BRI e-Pay and
+        have registered for mTOKEN before going through with the payment
+    </string>
+    <string name="bri_instruction_step2">2.To obtain a User ID for BRI e-Pay, please register at the
+        nearest BRI ATM.
+    </string>
+    <string name="bri_instruction_step3">3.Please visit the nearest BRI branch office to register
+        the mTOKEN.
+    </string>
+    <string name="bri_instruction_step4">4.Payment via BRI e-Pay will be processed online and your
+        BRI bank account balance will be deducted automatically based on your total amount.
+    </string>
+    <string name="bri_instruction_step5">5.Your transaction will be cancelled if payment is not
+        completed within 2 hours.
+    </string>
+    <string name="empty_transaction_response">Payment failed! Please try again.</string>
+    <string name="cancel_transaction">Cancel Transaction?</string>
+    <string name="cancel_transaction_message">Are you sure you want to cancel this transaction?
+    </string>
+    <string name="indosat_instruction_step1">1.\tInput your registered indosat phone number.</string>
+    <string name="indosat_instruction_step2">2.\tMake sure you have sufficient funds in your account.</string>
+    <string name="indosat_instruction_step3">3.\tClick \'Confirm Payment\'.</string>
+    <string name="indosat_instruction_step4">4.\tYou will receive an USSD maessage from \nIndosat to complete transaction via Dompetku app.</string>
+    <string name="indosat_instruction_step5">5.\tInput your PIN.</string>
+    <string name="indosat_instruction_step6">6.\tPayment Complete.</string>
+    <string name="hint_indosat_phone_number">Indosat Phone Number</string>
+    <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing.</string>
+    <string name="mandiri_click_pay_instruction_step2">2.\tEnter your Mandiri token password.</string>
+    <string name="mandiri_click_pay_instruction_step3">3.\tPress 3 when it displays APPLI</string>
+    <string name="mandiri_click_pay_instruction_step4">4.\tEnter \'intput 1\' and press</string>
+    <string name="mandiri_click_pay_instruction_step5">5.\tEnter \'intput 2\' and press</string>
+    <string name="mandiri_click_pay_instruction_step6">6.\tEnter \'intput 3\' and press</string>
+    <string name="mandiri_click_pay_instruction_step7">7.\tPut the response code on your Mandiri token \n into the challenge token field.</string>
+    <string name="for_three_seconds">for 3 seconds</string>
+    <string name="title_payment_status">Payment Status</string>
+    <string name="payment_deny">Payment deny.</string>
+    <string name="success">success</string>
 
 </resources>

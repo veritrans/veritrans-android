@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 /**
+ *
+ * contains information required to execute mandiri click pay request.
+ *
  * Created by shivam on 11/2/15.
  */
 public class MandiriClickPayRequestModel extends TransactionModel {

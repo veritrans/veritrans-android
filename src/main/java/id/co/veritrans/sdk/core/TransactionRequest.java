@@ -11,6 +11,8 @@ import id.co.veritrans.sdk.models.ItemDetails;
 import id.co.veritrans.sdk.models.ShippingAddress;
 
 /**
+ * It contains information about transaction like {@literal orderId}, {@literal amount}, itemDetails
+ * <p/>
  * Created by shivam on 11/5/15.
  */
 public class TransactionRequest {
@@ -23,21 +25,66 @@ public class TransactionRequest {
      * use payment methods from {@link id.co.veritrans.sdk.core.Constants}
      */
     protected int paymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
+
     protected Activity activity = null;
+
+    /**
+     * unique order id to identify this transaction.
+     * <p/>Using this id later u can check status of transaction.
+     */
     private String orderId = null;
+
+    /**
+     * amount to charge customer.
+     */
     private double amount = 0.0;
+
+    /**
+     * It helps to identify whether to execute transaction in secure manner or not.
+     */
     private boolean isSecureCard = true;
+
     private String cardClickType;
+
+    /**
+     * It contains an extra information that you want to display on bill.
+     */
     private BillInfoModel billInfoModel = null;
+
+    /**
+     * list of purchased items.
+     */
     private ArrayList<ItemDetails> itemDetails = new ArrayList();
+
+    /**
+     * List of billing addresses.
+     */
     private ArrayList<BillingAddress> mBillingAddressArrayList = new ArrayList<>();
+
+    /**
+     * List of shipping addresses.
+     */
     private ArrayList<ShippingAddress> mShippingAddressArrayList = new ArrayList<>();
+
+    /**
+     * contains details about customer
+     */
     private CustomerDetails mCustomerDetails = null;
+
+    /**
+     * helps to identify whether to use ui or not.
+     */
     private boolean useUi = true;
 
 
-    public TransactionRequest(String orderId, Activity
-            activity, double amount, int paymentMethod) {
+    /**
+     * @param orderId       order id of transaction.
+     * @param activity      instance of activity.
+     * @param amount        amount to charge.
+     * @param paymentMethod payment method.
+     */
+    public TransactionRequest(Activity
+                                      activity, String orderId, double amount, int paymentMethod) {
 
         if (orderId != null && activity != null && amount > 0) {
             this.orderId = orderId;
@@ -48,6 +95,25 @@ public class TransactionRequest {
             Logger.e("Invalid transaction data.");
         }
     }
+
+    /**
+     * @param orderId       order id of transaction.
+     * @param activity      instance of activity.
+     * @param amount        amount to charge.
+     */
+    public TransactionRequest(Activity
+                                      activity, String orderId, double amount) {
+
+        if (orderId != null && activity != null && amount > 0) {
+            this.orderId = orderId;
+            this.amount = amount;
+            this.paymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
+            this.activity = activity;
+        } else {
+            Logger.e("Invalid transaction data.");
+        }
+    }
+
 
     public CustomerDetails getCustomerDetails() {
         return mCustomerDetails;

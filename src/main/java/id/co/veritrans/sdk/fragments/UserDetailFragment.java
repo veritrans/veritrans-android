@@ -42,7 +42,11 @@ public class UserDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_detail, container, false);
+        return inflater.inflate(R.layout.fragment_user_detail, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         ((UserDetailsActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string
                 .title_user_details));
         fullnameEt = (EditText) view.findViewById(R.id.et_full_name);
@@ -60,7 +64,7 @@ public class UserDetailFragment extends Fragment {
                 }
             }
         });
-        return view;
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void validateSaveData() throws IOException {
@@ -90,12 +94,19 @@ public class UserDetailFragment extends Fragment {
             phoneEt.requestFocus();
             return;
         }
-
-        UserDetail userDetail = new UserDetail();
+        UserDetail userDetail = null;
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+        try {
+            userDetail = (UserDetail) storageDataHandler.readObject(getActivity(), Constants.USER_DETAILS);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(userDetail == null) {
+            userDetail = new UserDetail();
+        }
         userDetail.setUserFullName(fullName);
         userDetail.setEmail(email);
         userDetail.setPhoneNumber(phoneNo);
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
         storageDataHandler.writeObject(getActivity(), Constants.USER_DETAILS, userDetail);
         UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
         ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);

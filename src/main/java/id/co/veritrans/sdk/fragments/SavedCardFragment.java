@@ -49,13 +49,13 @@ public class SavedCardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_saved_card, container, false);
+        return inflater.inflate(R.layout.fragment_saved_card, container, false);
+    }
 
-        emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
-
-
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         bindViews(view);
-        return view;
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -72,6 +72,7 @@ public class SavedCardFragment extends Fragment {
     }
 
     private void bindViews(View view) {
+        emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
         addCardBt = (FloatingActionButton) view.findViewById(R.id.btn_add_card);
         addCardBt.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +92,7 @@ public class SavedCardFragment extends Fragment {
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
         creditCards = ((CreditDebitCardFlowActivity) getActivity()).getCreditCards();
+
 
         if (creditCards != null) {
              cardPagerAdapter = new CardPagerAdapter(this,getChildFragmentManager(),
@@ -113,6 +115,8 @@ public class SavedCardFragment extends Fragment {
                 }
             });
             circlePageIndicator.setViewPager(savedCardPager);
+            //to notify adapter when credit card details received
+            ((CreditDebitCardFlowActivity)getActivity()).setAdapterViews(cardPagerAdapter,circlePageIndicator);
             showHideNoCardMessage();
         }
 
@@ -130,23 +134,8 @@ public class SavedCardFragment extends Fragment {
     }
 
     public void deleteCreditCard(String cardNumber) {
-
-        if(creditCards!=null && !creditCards.isEmpty()){
-            int position  = -1;
-            for(int i =0; i < creditCards.size();i++){
-                if(creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)){
-                    position = i;
-                }
-            }
-            Logger.i("position to delete:"+position+",creditCard size:"+creditCards.size());
-            if(position >= 0){
-                creditCards.remove(position);
-                Logger.i("creditCard size:" + creditCards.size());
-            }
-            cardPagerAdapter.notifyDataSetChanged();
-            circlePageIndicator.notifyDataSetChanged();
             showHideNoCardMessage();
-            ((CreditDebitCardFlowActivity)getActivity()).saveCreditCards();
-        }
+            ((CreditDebitCardFlowActivity)getActivity()).deleteCards(cardNumber);
+
     }
 }

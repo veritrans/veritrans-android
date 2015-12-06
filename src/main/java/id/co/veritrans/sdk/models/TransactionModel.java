@@ -8,6 +8,8 @@ import java.util.ArrayList;
  * Created by shivam on 10/30/15.
  * <p/>
  * Global model class for payment transaction.
+ * contains information about product, billing address, shipping address, payment type and
+ * customer details.
  */
 class TransactionModel {
 
@@ -20,6 +22,12 @@ class TransactionModel {
 
     @SerializedName("payment_type")
     String paymentType;
+
+    @SerializedName("cimb_clicks")
+    DescriptionModel cimbClicks;
+
+    @SerializedName("mandiri_ecash")
+    DescriptionModel mandiriECash;
 
     @SerializedName("transaction_details")
     TransactionDetails transactionDetails;

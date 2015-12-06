@@ -15,15 +15,20 @@ import android.view.View;
 
 import id.co.veritrans.sdk.R;
 
+/**
+ * created to handle the scrolling behaviour of collapsing tool bar.
+ *
+ *
+ */
 public class ViewBehavior extends CoordinatorLayout.Behavior<HeaderView> {
 
     private Context mContext;
-
     private int mStartMarginLeft;
     private int mEndMargintLeft;
     private int mMarginRight;
     private int mStartMarginBottom;
     private boolean isHide;
+
 
     public ViewBehavior(Context context, AttributeSet attrs) {
         mContext = context;

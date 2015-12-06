@@ -23,6 +23,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:title=""
             >
+
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="match_parent"
@@ -66,14 +67,19 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_payment_methods"
+    <id.co.veritrans.sdk.widgets.TextViewFont
+        android:id="@+id/textview_to_compare"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_height="match_parent"
+        android:visibility="gone"
         />
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_payment_methods"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
 
     <include
         android:id="@+id/float_header_view"
