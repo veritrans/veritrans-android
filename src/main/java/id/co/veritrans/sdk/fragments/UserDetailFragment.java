@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import id.co.veritrans.sdk.R;
@@ -99,6 +100,8 @@ public class UserDetailFragment extends Fragment {
         try {
             userDetail = (UserDetail) storageDataHandler.readObject(getActivity(), Constants.USER_DETAILS);
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }catch (FileNotFoundException e){
             e.printStackTrace();
         }
         if(userDetail == null) {
