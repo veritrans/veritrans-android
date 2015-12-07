@@ -13,27 +13,24 @@ public class BBMCallBackUrl {
     @SerializedName("user_cancel")
     private String userCancel;
 
-    public String getCheckStatus() {
-        return checkStatus;
+
+    public BBMCallBackUrl(String checkStatus, String beforePaymentError, String userCancel) {
+        this.checkStatus = checkStatus;
+        this.beforePaymentError = beforePaymentError;
+        this.userCancel = userCancel;
     }
 
-    public void setCheckStatus(String checkStatus) {
-        this.checkStatus = checkStatus;
+    public String getCheckStatus() {
+        return checkStatus;
     }
 
     public String getBeforePaymentError() {
         return beforePaymentError;
     }
 
-    public void setBeforePaymentError(String beforePaymentError) {
-        this.beforePaymentError = beforePaymentError;
-    }
 
     public String getUserCancel() {
         return userCancel;
     }
 
-    public void setUserCancel(String userCancel) {
-        this.userCancel = userCancel;
-    }
 }

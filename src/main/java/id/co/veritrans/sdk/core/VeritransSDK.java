@@ -17,6 +17,7 @@ import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
 import id.co.veritrans.sdk.callbacks.SavedCardCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
+import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
@@ -62,6 +63,8 @@ public class VeritransSDK {
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
     private String TRANSACTION_RESPONSE_NOT_AVAILABLE = "Transaction response not available.";
+
+    private BBMCallBackUrl mBBMCallBackUrl = null;
 
     private VeritransSDK() {
     }
@@ -619,5 +622,13 @@ public class VeritransSDK {
         if (activity != null && creditCard != null) {
             TransactionManager.deleteCard(activity, creditCard, deleteCardCallback);
         }
+    }
+
+    public BBMCallBackUrl getBBMCallBackUrl() {
+        return mBBMCallBackUrl;
+    }
+
+    public void setBBMCallBackUrl(BBMCallBackUrl BBMCallBackUrl) {
+        mBBMCallBackUrl = BBMCallBackUrl;
     }
 }

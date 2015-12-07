@@ -2,11 +2,8 @@ package id.co.veritrans.sdk.fragments;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,11 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import java.util.List;
-
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
-import id.co.veritrans.sdk.core.Logger;
+import id.co.veritrans.sdk.core.SdkUtil;
 
 /**
  * Created by Ankit on 12/03/15.
@@ -39,8 +34,10 @@ public class InstructionBBMMoneyFragment extends Fragment implements View.OnClic
     }
 
     private void initialiseView(View view){
+
         layoutGetBBMMoneyApp = (LinearLayout) view.findViewById(R.id.layout_get_bbm__money_app);
-        if (isBBMMoneyInstalled(Constants.BBM_MONEY_PACKAGE)){
+
+        if (SdkUtil.isBBMMoneyInstalled(getActivity())){
             layoutGetBBMMoneyApp.setVisibility(View.GONE);
         } else {
             layoutGetBBMMoneyApp.setVisibility(View.VISIBLE);
@@ -49,18 +46,6 @@ public class InstructionBBMMoneyFragment extends Fragment implements View.OnClic
         layoutGetBBMMoneyApp.setOnClickListener(this);
     }
 
-    public boolean isBBMMoneyInstalled(String bbmUri) {
-        boolean isInstalled = false;
-        PackageManager pm = getActivity().getPackageManager();
-        try {
-            pm.getPackageInfo(bbmUri, PackageManager.GET_ACTIVITIES);
-            isInstalled = true;
-        } catch (PackageManager.NameNotFoundException e) {
-            isInstalled = false;
-        }
-
-        return isInstalled;
-    }
 
     public void openPlayStore() {
         try {

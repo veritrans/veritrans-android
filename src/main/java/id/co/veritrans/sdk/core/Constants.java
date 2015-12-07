@@ -185,12 +185,6 @@ public class Constants {
     //BBM CallBack Urls
     public static final String BBM_PREFIX_URL = "bbmmoney://api/payment/imp?data=";
 
-    public static final String CHECK_STATUS = "https://hangout.betas" +
-            ".in/veritrans/api/paymentstatus";
-    public static final String BEFORE_PAYMENT_ERROR = "https://hangout.betas" +
-            ".in/veritrans/api/paymentstatus";
-    public static final String USER_CANCEL = "https://hangout.betas" +
-            ".in/veritrans/api/paymentstatus";
 
     public static final String PAYMENT_RESPONSE = "payment_response";
 

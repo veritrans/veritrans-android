@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.core;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
@@ -11,20 +12,24 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
+import id.co.veritrans.sdk.models.BBMUrlEncodeJson;
 import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
-import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
+import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetku;
@@ -41,9 +46,8 @@ import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.VeritransLoadingDialog;
 
 /**
- *
  * It contains utility methods required for sdk.
- *
+ * <p/>
  * Created by chetan on 19/10/15.
  */
 public class SdkUtil {
@@ -69,6 +73,7 @@ public class SdkUtil {
 
     /**
      * it will validate an given phone number.
+     *
      * @param phoneNo
      * @return true if given phone number is valid else returns false
      */
@@ -86,8 +91,9 @@ public class SdkUtil {
 
     /**
      * Show snack bar with given message.
+     *
      * @param activity instance of an activity.
-     * @param message message to display on snackbar.
+     * @param message  message to display on snackbar.
      */
     public static void showSnackbar(Activity activity, String message) {
 
@@ -103,6 +109,7 @@ public class SdkUtil {
 
     /**
      * Utility method which will help to close the keyboard.
+     *
      * @param activity
      */
     public static void hideKeyboard(Activity activity) {
@@ -121,6 +128,7 @@ public class SdkUtil {
 
     /**
      * it will validate an given card number.
+     *
      * @param ccNumber
      * @return true if given card number is valid else returns false.
      */
@@ -146,7 +154,7 @@ public class SdkUtil {
     /**
      * Displays an progress dialog.
      *
-     * @param activity instance of an activity
+     * @param activity     instance of an activity
      * @param isCancelable set whether dialog is cancellable or not.
      */
     public static void showProgressDialog(Activity activity, boolean isCancelable) {
@@ -174,8 +182,8 @@ public class SdkUtil {
     /**
      * Displays an progress dialog with an message.
      *
-     * @param activity instance of an activity
-     * @param message message to display information about on going task.
+     * @param activity     instance of an activity
+     * @param message      message to display information about on going task.
      * @param isCancelable set whether dialog is cancellable or not.
      */
     public static void showProgressDialog(Activity activity, String message, boolean isCancelable) {
@@ -226,12 +234,13 @@ public class SdkUtil {
 
     /**
      * display snackbar with message about failed api call.
+     *
      * @param activity
      * @param errorMessage
      */
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
-            if(!TextUtils.isEmpty(errorMessage)) {
+            if (!TextUtils.isEmpty(errorMessage)) {
                 if (errorMessage.contains(Constants
                         .RETROFIT_NETWORK_MESSAGE)) {
                     SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
@@ -290,6 +299,7 @@ public class SdkUtil {
 
     /**
      * helper method to extract {@link MandiriClickPayModel} from {@link TransactionRequest}.
+     *
      * @param request
      * @return
      */
@@ -316,6 +326,7 @@ public class SdkUtil {
 
     /**
      * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
+     *
      * @param request
      * @return
      */
@@ -344,14 +355,17 @@ public class SdkUtil {
     }
 
 
-
-
     /**
-     * helper method to extract {@link id.co.veritrans.sdk.models.IndomaretRequestModel} from {@link TransactionRequest}.
+     * helper method to extract {@link id.co.veritrans.sdk.models.IndomaretRequestModel} from
+     * {@link TransactionRequest}.
+     *
      * @param request
      * @return
      */
-    protected static IndomaretRequestModel getIndomaretRequestModel(TransactionRequest request, IndomaretRequestModel.CstoreEntity cstoreEntity) {
+    protected static IndomaretRequestModel getIndomaretRequestModel(TransactionRequest request,
+                                                                    IndomaretRequestModel
+                                                                            .CstoreEntity
+                                                                            cstoreEntity) {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
@@ -364,10 +378,10 @@ public class SdkUtil {
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
         model.setPaymentType(Constants.PAYMENT_INDOMARET);
-                        model.setItem_details(request.getItemDetails());
-                        model.setCustomerDetails(request.getCustomerDetails());
-                        model.setTransactionDetails(transactionDetails);
-                        model.setCstore(cstoreEntity);
+        model.setItem_details(request.getItemDetails());
+        model.setCustomerDetails(request.getCustomerDetails());
+        model.setTransactionDetails(transactionDetails);
+        model.setCstore(cstoreEntity);
 
 
         return model;
@@ -392,26 +406,29 @@ public class SdkUtil {
     }
 
 
-
     /**
-     * helper method to extract {@link id.co.veritrans.sdk.models.IndosatDompetkuRequest} from {@link TransactionRequest}.
+     * helper method to extract {@link id.co.veritrans.sdk.models.IndosatDompetkuRequest} from
+     * {@link TransactionRequest}.
+     *
      * @param request
      * @return
      */
-    protected static IndosatDompetkuRequest getIndosatDompetkuRequestModel(TransactionRequest request, String msisdn) {
+    protected static IndosatDompetkuRequest getIndosatDompetkuRequestModel(TransactionRequest
+                                                                                   request,
+                                                                           String msisdn) {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
 
         //if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
+        //get user details only if using default ui.
+        request = initializeUserInfo(request);
         //}
 
 
         IndosatDompetku indosatDompetku = null;
 
-        if( msisdn != null && !TextUtils.isEmpty(msisdn)){
+        if (msisdn != null && !TextUtils.isEmpty(msisdn)) {
             indosatDompetku = new IndosatDompetku(msisdn.trim());
         }
 
@@ -419,16 +436,17 @@ public class SdkUtil {
         IndosatDompetkuRequest model =
                 new IndosatDompetkuRequest();
 
-                model.setCustomerDetails(request.getCustomerDetails(), request.getShippingAddressArrayList(), request.getBillingAddressArrayList());
-                model.setPaymentType(Constants.PAYMENT_INDOSAT_DOMPETKU);
+        model.setCustomerDetails(request.getCustomerDetails(), request
+                .getShippingAddressArrayList(), request.getBillingAddressArrayList());
+        model.setPaymentType(Constants.PAYMENT_INDOSAT_DOMPETKU);
 
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();
-            entity.setMsisdn(""+msisdn);
+        entity.setMsisdn("" + msisdn);
 
-                model.setIndosatDompetku(entity);
-                model.setItemDetails(request.getItemDetails());
-                model.setTransactionDetails(transactionDetails);
+        model.setIndosatDompetku(entity);
+        model.setItemDetails(request.getItemDetails());
+        model.setTransactionDetails(transactionDetails);
 
         return model;
 
@@ -437,10 +455,12 @@ public class SdkUtil {
 
     /**
      * helper method to extract {@link CIMBClickPayModel} from {@link TransactionRequest}.
+     *
      * @return
      */
 
-    protected static CIMBClickPayModel getCIMBClickPayModel(TransactionRequest request, DescriptionModel cimbDescription) {
+    protected static CIMBClickPayModel getCIMBClickPayModel(TransactionRequest request,
+                                                            DescriptionModel cimbDescription) {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
@@ -461,10 +481,12 @@ public class SdkUtil {
 
     /**
      * helper method to extract {@link CIMBClickPayModel} from {@link TransactionRequest}.
+     *
      * @return
      */
 
-    protected static MandiriECashModel getMandiriECashModel(TransactionRequest request, DescriptionModel description) {
+    protected static MandiriECashModel getMandiriECashModel(TransactionRequest request,
+                                                            DescriptionModel description) {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
@@ -485,6 +507,7 @@ public class SdkUtil {
 
     /**
      * helper method to extract {@link CardTransfer} from {@link TransactionRequest}.
+     *
      * @param request
      * @return
      */
@@ -509,14 +532,9 @@ public class SdkUtil {
     }
 
 
-
-
-
-
-
-
     /**
      * helper method to add {@link CustomerDetails} in {@link TransactionRequest}.
+     *
      * @param transactionRequest
      * @return transactionRequest with  {@link CustomerDetails}.
      */
@@ -527,6 +545,7 @@ public class SdkUtil {
 
     /**
      * it extracts customer information from TransactionRequest.
+     *
      * @param request instance of TransactionRequest
      * @return
      */
@@ -634,12 +653,13 @@ public class SdkUtil {
 
     /**
      * shows keyboard on screen forcefully.
+     *
      * @param activity
      * @param editText
      */
     public static void showKeyboard(Activity activity, EditText editText) {
         Logger.i("show keyboard");
-        if(editText!=null) {
+        if (editText != null) {
             editText.requestFocus();
             editText.setFocusable(true);
             editText.setFocusableInTouchMode(true);
@@ -652,31 +672,31 @@ public class SdkUtil {
 
 
     /**
-     *
      * return user details if available else return null
      *
      * @param context
      * @return UserDetail
      */
-    protected static UserDetail getUserDetails(Context context){
+    protected static UserDetail getUserDetails(Context context) {
 
         StorageDataHandler storageDataHandler = new StorageDataHandler();
-            try {
-                UserDetail userDetail = (UserDetail) storageDataHandler.readObject(context, Constants
-                        .USER_DETAILS);
+        try {
+            UserDetail userDetail = (UserDetail) storageDataHandler.readObject(context, Constants
+                    .USER_DETAILS);
 
-                return userDetail;
+            return userDetail;
 
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
      * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
+     *
      * @param request
      * @return
      */
@@ -691,7 +711,6 @@ public class SdkUtil {
         }
 
 
-
         EpayBriTransfer model =
                 new EpayBriTransfer(transactionDetails, request.getItemDetails(),
                         request.getBillingAddressArrayList(),
@@ -701,4 +720,58 @@ public class SdkUtil {
 
     }
 
+
+    public static boolean isBBMMoneyInstalled(Activity activity) {
+
+        boolean isInstalled = false;
+
+        if (activity != null) {
+
+            PackageManager pm = activity.getPackageManager();
+            try {
+                pm.getPackageInfo(Constants.BBM_MONEY_PACKAGE, PackageManager.GET_ACTIVITIES);
+                isInstalled = true;
+            } catch (PackageManager.NameNotFoundException e) {
+                isInstalled = false;
+            }
+        }
+
+        return isInstalled;
+    }
+
+    /**
+     * it retuns the encoded url in string format.
+     *
+     * @param permataVA
+     * @return url in encoded format
+     */
+    public static String createEncodedUrl(String permataVA, String checkStatus, String
+            beforePaymentError, String userCancel) {
+
+        String encodedUrl = null;
+
+        if (permataVA != null && checkStatus != null && beforePaymentError != null && userCancel
+                != null) {
+
+            BBMCallBackUrl bbmCallBackUrl = new BBMCallBackUrl(checkStatus, beforePaymentError,
+                    userCancel);
+            BBMUrlEncodeJson bbmUrlEncodeJson = new BBMUrlEncodeJson();
+
+            if (permataVA != null) {
+                bbmUrlEncodeJson.setReference(permataVA);
+            }
+
+            bbmUrlEncodeJson.setCallbackUrl(bbmCallBackUrl);
+            String jsonString = bbmUrlEncodeJson.getString();
+            Logger.i("JSON String: " + jsonString);
+
+            try {
+                encodedUrl = URLEncoder.encode(jsonString, "UTF-8");
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return encodedUrl;
+    }
 }
