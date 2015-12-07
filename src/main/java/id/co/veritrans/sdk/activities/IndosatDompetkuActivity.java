@@ -230,7 +230,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
      */
     private void transactionUsingIndosat(final VeritransSDK veritransSDK) {
 
-        veritransSDK.paymentUsingIndosatDompetku(IndosatDompetkuActivity.this, new
+        veritransSDK.paymentUsingIndosatDompetku(IndosatDompetkuActivity.this, phoneNumber, new
                 TransactionCallback() {
 
                     @Override
@@ -264,7 +264,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
                             Logger.e("transaction error is " + errorMessage);
                         }
                     }
-                }, phoneNumber);
+                });
     }
 
 

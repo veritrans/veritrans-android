@@ -217,7 +217,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         cstoreEntity.setStore("indomaret");
 
         //Execute transaction
-        veritransSDK.paymentUsingIndomaret(IndomaretActivity.this, new
+        veritransSDK.paymentUsingIndomaret(IndomaretActivity.this, cstoreEntity, new
                 TransactionCallback() {
 
                     @Override
@@ -255,7 +255,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
                         }
 
                     }
-                }, cstoreEntity);
+                });
     }
 
 
