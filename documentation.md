@@ -237,7 +237,13 @@ When payment method is already known and have all required information to execut
 In case of core flow use following information to do transactions -
 
 1) Credit/Debit - 
+    For credit/debit card transaction follow the steps given bellow:
+    1) Add card type information in transaction request object.
+    2) Get token using getToken() of sdk. 
+    3) If secure flow is enabled then we will get redirect_url which will take user to web page for 3d secure validation. 
+    4) After successful validation do charge api call using paymentUsingCard().
 
+#### Card Type details -
 * There are **3 types** of flow for **card payments**.  
 **1. _One click_**  
 **2. _Two click_**  
@@ -265,7 +271,7 @@ isSecure - set it to true for secure transaction.
 ```
 
 
-**Get token**
+### Get token**
 ```
     veritransSDK.getToken(activity, cardTokenRequest, tokenCallBack);  
 ```
@@ -287,12 +293,31 @@ It contains two methods onSuccess and onFailure -
     }
     On success of get token api call, it will return token id and other parameters in TokenDetailsResponse. 
 
-If secure flow is available then we will get redirect_url which will take user to web page for 3d secure validation.
-After successful validation we are making charge api call.
+If secure flow is available then it will return redirect_url which will take user to web page for 3d secure validation.
 
+After successful validation do charge api call.
+
+#### Charge using Credit/Debit card -
 For doing charge api call we have to call following function from VeritransSDK.
 
-     veritransSDK.paymentUsingCard(activity, cardTransfer, transactionCallback);
+     veritransSDK.paymentUsingCard(activity, cardTransfer, new
+                TransactionCallback() {
+
+                    @Override
+                    public void onSuccess(TransactionResponse transactionResponse) {
+                        Toast.makeText(context, "Transaction success:  " +
+                                transactionResponse.getStatusMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage, TransactionResponse
+                            transactionResponse) {
+
+                        Toast.makeText(context, "Transaction failed: " + errorMessage,
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+                });
 
 In above code we have to supply ** _CardTransfer_ ** class object, and implemented interface TransactionCallback which have functions onSuccess and onFailure.
 
@@ -307,62 +332,9 @@ In above code we have to supply ** _CardTransfer_ ** class object, and implement
 
     
 after successful transaction card information will be get saved if user permits. In TransactionResponse we get ***saved_token_id*** which is used in future transaction.
-## Save Card Details
-To save card details use code given below:
-
-    try {
-      storageDataHandler.writeObject(this, Constants.USERS_SAVED_CARD, creditCards)
-    } catch (IOException e) {
-    	e.printStackTrace();
-    }  
-
-## Payment status screen  
-[insert image]  
-
-To show status of payment we are calling ***PaymentTransactionStatusFragment*** and passing ***TransactionResponse*** object which we got in onSuccess or onFailure method.  
-At PaymentTransactionStatusFragment we are showing transaction related information or failure reasons and Retry option.  
-
-## Saved card screen with saved cards  
-[insert image]  
-
-When user completes successful transaction with permission to save cards we save credit card details(Not cvv).  
-This saved cards are shown here. User can use this cards for future transactions.
-
-## One click flow  
-* After initial transaction we use  ***_saved_token_id*** for future transaction as follows 
-
-```
-
-            {
-                // Required
-                "payment_type": "credit_card",
-                "credit_card": {
-                    // New Token Generated from One Click Clicks Initial Charge Response saved_token_id
-                    "token_id": "saved_token_id",
-                    "bank": "bni"
-                },
-                // Required
-                "transaction_details": {
-                    "order_id": "A87551",
-                    "gross_amount": 145000
-                }
-            }
-
-```
-
-* Response for api call is same as normal transaction.
-* We can use this saved_token_id for all future transaction call.
-
-## Two click flow  
-* After initial transaction we save ***saved_token_id***.
-* In future transactions we take cvv for saved card from view pager.
-* With the help of saved_token_id and card detail execute api call for getToken.
-* Gettoken api call gives new token_id,
-* If secure flow is available then we will get redirect_url which will take user to browser for 3d secure validation.
-* After successfull validation we are making charge api call.
 
 ## Bank transfer flow
-### 1) Using core flow
+
 ###### To perform transaction using bank transfer method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
 * Create instance of  **TransactionRequest** and add required fields like item details, 
@@ -377,7 +349,7 @@ shipping address etc.
 ```
 
   
-       mVeritransSDK.paymentUsingPermataBank(MainActivity.this, new TransactionCallback() {
+       mVeritransSDK.paymentUsingPermataBank(activity, new TransactionCallback() {
                             
             @Override
             public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
@@ -397,43 +369,9 @@ shipping address etc.
 
 * Take appropriate action in onFailure() or  onSuccess() of TransactionCallback.
   
-### 2) Using Ui Flow
-###### To perform transaction using bank transfer method follow the steps given below:
-* Create the instance of veritrans library using VeritransBuilder class.
-* Create instance of TransactionRequest and add required fields like ItemDetail, 
-   shipping address etc.
-* Then add Transaction details in previously created veritrans object using 
-
-```
-
-        mVeritransSDK.setTransactionRequest(TransactionRequest);
-
-```
-
-* Then start default UI flow using 
-
-
-```
-
-       mVeritransSDK.startPaymentUiFlow();
-
-```
-
-It will start payment flow. 
-
-* If you haven't filled up the user details information then it will take you to the user details    screen. After filling up all required information it will take you to the "Select Payment Method" screen.
-* Select "Bank Transfer" from  avaible payments method. 
-* Fill up an email id in email address field if you want to receive payment instructions on your email id, This is an optional step.
-* Confirm payment by tapping of **CONFIRM PAYMENT** button.
-* It will start a **charge** api call for bank transfer.
-* After successfully completion of transaction, you will see an **Virtual Account Number** and its **expiry time**.
-* Then to get more information about transaction tap on **COMPLETE PAYMENT AT ATM** button.  
-* Finally, select **Done** to finish the payment process or select **RETRY** in case of failure.
-    
 
 ## Mandiri bill payment
 
-### 1) Using core flow
 ###### To perform transaction using mandiri bill payment method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
 * Create instance of **TransactionRequest** and add required fields like item details, 
@@ -450,7 +388,7 @@ It will start payment flow.
 
 ```
 
-        mVeritransSDK.paymentUsingMandiriBillPay(MainActivity.this, new TransactionCallback() {
+        mVeritransSDK.paymentUsingMandiriBillPay(activity, new TransactionCallback() {
    
                             
             @Override
@@ -468,39 +406,156 @@ It will start payment flow.
         
 ```
 
+* Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
+
+
+
+## Indosat Dompetku 
+
+###### To perform transaction using indosat dompetku payment method follow the steps given below:
+* Create the instance of veritrans library using **VeritransBuilder** class.
+* Create instance of **TransactionRequest** and add required fields like item details, 
+   shipping address etc. This payment method requires **MSISDN** number which is registered mobile number of user.
+* Then add Transaction details in previously created veritrans object using 
+
+```
+
+        mVeritransSDK.setTransactionRequest(TransactionRequest);
+
+```
+
+* Then execute Transaction using following method and add **TransactionCallback** to get response back
+
+```
+
+        mVeritransSDK.paymentUsingIndosatDompetku(activity , MSISDN, new TransactionCallback() {
+   
+                            
+            @Override
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+                    Log.d(" Transaction failed ", ""+errorMessage);
+                    // write your code here to take appropriate action 
+                }
+        
+                @Override
+                public void onSuccess(TransactionResponse transactionResponse) {
+                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
+                    // write your code here.
+                }
+        });
+        
+        
+        where - msisdn  is registered user mobile number, must be less than 12. for debug you can use 08123456789
+        
+```
 
 * Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
-  
 
-### 2) Using Ui Flow
- 
-###### To perform transaction using mandiri bill payment method follow the steps given below:
-* Create the instance of veritrans library using VeritransBuilder class.
-* Create instance of TransactionRequest and add required fields like ItemDetail, 
-   shipping address etc.
-* Then add Transaction details in previously created  veritrans object using 
 
+
+
+
+## Indomaret 
+
+###### To perform transaction using indomaret payment method follow the steps given below:
+* Create the instance of veritrans library using **VeritransBuilder** class.
+* Create instance of **TransactionRequest** and add required fields like item details, 
+   shipping address etc. This payment method requires **Cstore** details.
+* Then add Transaction details in previously created veritrans object using 
+
+```
+// add cstore deatils
+IndomaretRequestModel.CstoreEntity cstoreEntity = new IndomaretRequestModel.CstoreEntity();
+        cstoreEntity.setMessage("message_here");
+        cstoreEntity.setStore("indomaret");
+
+
+        mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 ```
 
-           mVeritransSDK.setTransactionRequest(TransactionRequest);
-           
-```
-
-* Then start default UI flow using 
+* Then execute Transaction using following method and add **TransactionCallback** to get response back
 
 ```
 
-            mVeritransSDK.startPaymentUiFlow();
-            //It will start payment flow. 
+        mVeritransSDK.paymentUsingIndomaret(activity, cstoreEntity, new TransactionCallback() {
+   
+                            
+            @Override
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+                    Log.d(" Transaction failed ", ""+errorMessage);
+                    // write your code here to take appropriate action 
+                }
+        
+                @Override
+                public void onSuccess(TransactionResponse transactionResponse) {
+                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
+                    // write your code here.
+                }
+        });
+        
+```
+
+* Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
+
+
+
+
+## Mandiri ClickPay
+
+###### To perform transaction using mandiri click pay payment method follow the steps given below:
+* Create the instance of veritrans library using **VeritransBuilder** class.
+* Create instance of **TransactionRequest** and add required fields like item details, 
+   shipping address etc. This payment method also requires details about **Mandiri click pay**.
+* Then add Transaction details in previously created veritrans object using 
 
 ```
 
-* If you haven't filled up the user details information then it will take you to the user details    screen. After filling up all required information it will take you to the "Select Payment Method" screen.
-* Select "Mandiri Bill Payment" from  avaible payments method. 
-* Fill up an email id in email address field if you want to receive payment instructions details on your email id, This is an optional step.
-* Confirm payment by tapping of **CONFIRM PAYMENT** button.
-* It will start a **charge** api call for mandiri bill payment.
-* After successfully completion of transaction, you will see a **company code, bill code and validaty time**.
-* Then to get more information about transaction tap on **COMPLETE PAYMENT AT ATM** button.  
-* Finally, select **Done** to finish the payment process or  **RETRY** in case of failure.
+
+mVeritransSDK.setTransactionRequest(TransactionRequest);
+
+// add Mandiri ClickPay Model deatils
+MandiriClickPayModel mandiriClickPayModel = new MandiriClickPayModel();
+                    mandiriClickPayModel.setCardNumber(CardNumber);
+                    mandiriClickPayModel.setInput1(INPUT1);
+                    mandiriClickPayModel.setInput2(INPUT2);
+                    mandiriClickPayModel.setInput3(INPUT3);
+                    mandiriClickPayModel.setToken(CHALLENGE_TOKEN);
+
+
+where 
+CardNumber String Required -	Mandiri debit Card number.
+INPUT1 - 	Last 10 digit of card_number.
+INPUT2 - 	Transaction gross_amount.
+INPUT3 - 	5-digits random number which will be given to the customer.
+CHALLENGE_TOKEN - 	Number received by customer's physical token after input1, input2, and input3 are entered.
+
+        
+
+```
+
+* Then execute Transaction using following method and add **TransactionCallback** to get response back.
+
+```
+
+        mVeritransSDK.paymentUsingMandiriClickPay(activity.this,
+                mandiriClickPayModel, new TransactionCallback() {
+   
+                            
+            @Override
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+                    Log.d(" Transaction failed ", ""+errorMessage);
+                    // write your code here to take appropriate action 
+                }
+        
+                @Override
+                public void onSuccess(TransactionResponse transactionResponse) {
+                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
+                    // write your code here.
+                }
+        });
+        
+```
+
+* Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
+
