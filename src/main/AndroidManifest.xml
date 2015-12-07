@@ -71,6 +71,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
 
+        <activity
+            android:name=".activities.OffersActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+
 
     </application>
 

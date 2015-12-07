@@ -21,6 +21,7 @@ import id.co.veritrans.sdk.activities.IndomaretActivity;
 import id.co.veritrans.sdk.activities.IndosatDompetkuActivity;
 import id.co.veritrans.sdk.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.activities.MandiriECashActivity;
+import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
@@ -167,6 +168,11 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                     .getResources().getString(R.string.bbm_money))) {
                 Intent startBBMMoney = new Intent(sActivity, BBMMoneyActivity.class);
                 sActivity.startActivityForResult(startBBMMoney,
+                        Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else if (nameText.getText().toString().trim().equalsIgnoreCase(sActivity
+                    .getResources().getString(R.string.offers))) {
+                Intent startOffersActivity = new Intent(sActivity, OffersActivity.class);
+                sActivity.startActivityForResult(startOffersActivity,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else {
                 showMessage();
