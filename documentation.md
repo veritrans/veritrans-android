@@ -743,6 +743,95 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 
 
+## BBM money - 
+
+###### To perform transaction using BBM money app follow the steps given below:
+* Check Whether BBM moeny app is installed or not on device using following code : -
+```
+    SdkUtil.isBBMMoneyInstalled(activity)- it will return true if app is installed on device. 
+
+```
+* Create the instance of veritrans library using **VeritransBuilder** class.
+* Create instance of **TransactionRequest** and add required fields like item details, 
+   shipping address etc. This requires BBM callback url  call bas
+* Then add Transaction details in previously created veritrans object using 
+
+```
+                    BBMCallBackUrl bbmCallBackUrl = new BBMCallBackUrl(Constants.CHECK_STATUS,
+                            Constants.BEFORE_PAYMENT_ERROR, Constants.USER_CANCEL);
+                    //start transaction
+                    mVeritransSDK.setTransactionRequest(transactionRequest);
+                    mVeritransSDK.setBBMCallBackUrl(bbmCallBackUrl);
+
+```
+
+* Then execute Transaction using following method and add **TransactionCallback** to get response back. In onSuccess() of callback you will get Permata Virtual Account number (Payment code).
+* Handle the further process and response same as performed in ePay BRI.
+
+```
+        //add Description for transaction
+        DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
+
+        mVeritransSDK.paymentUsingBBMMoney(activity, description, new TransactionCallback()  {
+                            
+            @Override
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+                    Log.d(" Transaction failed ", ""+errorMessage);
+                    // write your code here to take appropriate action 
+                  
+                }
+        
+                @Override
+                public void onSuccess(TransactionResponse transactionResponse) {
+                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
+                    // get permata VA number  
+                    String PERMATA_VA = transactionResponse.getPermataVANumber();
+                }
+        });
+       
+```
+
+* Create encode Url using Permata virtual account number and callback url in the following format -
+    URL- bbmmoney://api/payment/imp?data=URL encoded JSON data
+
+Now created encoded url using following json format- 
+``` 
+{
+  "reference":"8744000000000091", // permata_va_number
+
+  "callback_url": {
+    "check_status":"https://example.com/order/check_status.html",
+    "before_payment_error":"https://example.com/order/unfinish.html",
+    "user_cancel":"https://example.com/order/cancel.html"
+    }
+}
+```
+**_You can use following static method from sdk to create encoded string_** - 
+```
+SdkUtil.createEncodedUrl(String permataVA, String checkStatus, String
+            beforePaymentError, String userCancel);
+```
+
+
+
+* Now start bbm money app using following code :
+```
+String  BBM_PREFIX_URL = "bbmmoney://api/payment/imp?data=";
+
+String  encodedUrl = SdkUtil.createEncodedUrl(PERMATA_VA,
+                        checkStatus,
+                        beforePaymentError,
+                        userCancel);
+
+                String feedUrl = BBM_PREFIX_URL + encodedUrl;
+
+                if (SdkUtil.isBBMMoneyInstalled(BBMMoneyActivity.this)) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(feedUrl)));
+                }
+          
+```
+
+
 ## Mandiri e-Cash - 
 
 ###### To perform transaction using Mandiri e-Cash payment method follow the steps given below:
@@ -779,3 +868,5 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
         });
         
 ```
+
+
