@@ -17,10 +17,12 @@ import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
 import id.co.veritrans.sdk.callbacks.SavedCardCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
+import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
@@ -54,11 +56,15 @@ public class VeritransSDK {
     private static boolean isLogEnabled = true;
     /*private static String serverKey = null;*/
     private static String clientKey = null;
+    private static String merchantServerUrl = null;
+
     protected boolean isRunning = false;
 
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
     private String TRANSACTION_RESPONSE_NOT_AVAILABLE = "Transaction response not available.";
+
+    private BBMCallBackUrl mBBMCallBackUrl = null;
 
     private VeritransSDK() {
     }
@@ -70,7 +76,7 @@ public class VeritransSDK {
             isLogEnabled = veritransBuilder.enableLog;
             /*serverKey = veritransBuilder.serverKey;*/
             clientKey = veritransBuilder.clientKey;
-
+            merchantServerUrl = veritransBuilder.merchantServerUrl;
             initializeFonts();
             return veritransSDK;
         } else {
@@ -157,6 +163,11 @@ public class VeritransSDK {
         return clientKey;
     }
 
+    public String getMerchantServerUrl(){
+        return merchantServerUrl;
+    }
+
+
     public ArrayList<PaymentMethodsModel> getSelectedPaymentMethods() {
         return selectedPaymentMethods;
     }
@@ -211,7 +222,8 @@ public class VeritransSDK {
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
             transactionRequest.activity = activity;
 
-            PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel(transactionRequest);
+            PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel
+                    (transactionRequest);
 
             isRunning = true;
             TransactionManager.paymentUsingPermataBank(transactionRequest.getActivity(),
@@ -286,7 +298,7 @@ public class VeritransSDK {
      */
     public void paymentUsingMandiriBillPay(Activity activity,
                                            TransactionCallback mandiriBillPayTransferStatus) {
-          if (transactionRequest != null && activity != null
+        if (transactionRequest != null && activity != null
                 && mandiriBillPayTransferStatus != null) {
 
             if (transactionRequest.getBillInfoModel() != null
@@ -321,18 +333,21 @@ public class VeritransSDK {
      *
      * @param activity
      * @param paymentTransactionCallback TransactionCallback instance
+     * @param descriptionModel           contains description about the cimb payment
      */
 
-    public void paymentUsingCIMBClickPay(Activity activity, TransactionCallback
+    public void paymentUsingCIMBClickPay(Activity activity, DescriptionModel descriptionModel,
+                                         TransactionCallback
             paymentTransactionCallback) {
 
         if (transactionRequest != null && activity != null
-                && paymentTransactionCallback != null) {
+                && paymentTransactionCallback != null && descriptionModel != null) {
 
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CIMB_CLICKS;
             transactionRequest.activity = activity;
 
-            CIMBClickPayModel cimbClickPayModel = SdkUtil.getCIMBClickPayModel(transactionRequest);
+            CIMBClickPayModel cimbClickPayModel = SdkUtil.getCIMBClickPayModel
+                    (transactionRequest, descriptionModel);
 
             isRunning = true;
 
@@ -341,18 +356,26 @@ public class VeritransSDK {
                     paymentTransactionCallback);
         } else {
             isRunning = false;
-            showError(transactionRequest, paymentTransactionCallback);
+
+            if (descriptionModel == null) {
+                Logger.e(Constants.ERROR_DESCRIPTION_REQUIRED);
+
+            } else {
+                showError(transactionRequest, paymentTransactionCallback);
+            }
         }
     }
 
     /**
      * It will execute an transaction for Mandiri E Cash.
      *
-     * @param activity
-     * @param paymentTransactionCallback TransactionCallback instance
+     * @param activity                   instance of current activity.
+     * @param paymentTransactionCallback TransactionCallback instance.
+     * @param descriptionModel           Description about Mandiri E cash payment.
      */
 
-    public void paymentUsingMandiriECash(Activity activity, TransactionCallback
+    public void paymentUsingMandiriECash(Activity activity, DescriptionModel descriptionModel,
+                                         TransactionCallback
             paymentTransactionCallback) {
         if (transactionRequest != null && activity != null
                 && paymentTransactionCallback != null) {
@@ -360,7 +383,8 @@ public class VeritransSDK {
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_ECASH;
             transactionRequest.activity = activity;
 
-            MandiriECashModel mandiriECashModel = SdkUtil.getMandiriECashModel(transactionRequest);
+            MandiriECashModel mandiriECashModel = SdkUtil.getMandiriECashModel
+                    (transactionRequest, descriptionModel);
 
             isRunning = true;
 
@@ -369,7 +393,12 @@ public class VeritransSDK {
                     paymentTransactionCallback);
         } else {
             isRunning = false;
-            showError(transactionRequest, paymentTransactionCallback);
+
+            if (descriptionModel == null) {
+                Logger.e(Constants.ERROR_DESCRIPTION_REQUIRED);
+            } else {
+                showError(transactionRequest, paymentTransactionCallback);
+            }
         }
     }
 
@@ -413,7 +442,8 @@ public class VeritransSDK {
     }
 
     /**
-     * This will start actual execution of transaction. if you have enabled an ui then it will start activity according to it.
+     * This will start actual execution of transaction. if you have enabled an ui then it will
+     * start activity according to it.
      */
     public void startPaymentUiFlow() {
 
@@ -475,7 +505,7 @@ public class VeritransSDK {
      *
      * @param activity              instance of an activity.
      * @param indosatTransferStatus instance of TransactionCallback.
-     * @param msisdn registered mobile number of user.
+     * @param msisdn                registered mobile number of user.
      */
     public void paymentUsingIndosatDompetku(Activity activity, String msisdn,
                                             TransactionCallback indosatTransferStatus) {
@@ -511,7 +541,8 @@ public class VeritransSDK {
      * @param activity          instance of an activity.
      * @param indomaretCallback instance of TransactionCallback.
      */
-    public void paymentUsingIndomaret(Activity activity, IndomaretRequestModel.CstoreEntity cstoreEntity,
+    public void paymentUsingIndomaret(Activity activity, IndomaretRequestModel.CstoreEntity
+            cstoreEntity,
                                       TransactionCallback indomaretCallback) {
 
         if (transactionRequest != null && activity != null
@@ -586,9 +617,18 @@ public class VeritransSDK {
         }
     }
 
-    public void deleteCard(Activity activity, CardTokenRequest creditCard, DeleteCardCallback deleteCardCallback) {
+    public void deleteCard(Activity activity, CardTokenRequest creditCard, DeleteCardCallback
+            deleteCardCallback) {
         if (activity != null && creditCard != null) {
             TransactionManager.deleteCard(activity, creditCard, deleteCardCallback);
         }
+    }
+
+    public BBMCallBackUrl getBBMCallBackUrl() {
+        return mBBMCallBackUrl;
+    }
+
+    public void setBBMCallBackUrl(BBMCallBackUrl BBMCallBackUrl) {
+        mBBMCallBackUrl = BBMCallBackUrl;
     }
 }

@@ -559,3 +559,314 @@ CHALLENGE_TOKEN - 	Number received by customer's physical token after input1, in
 
 * Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
 
+
+## ePay BRI
+
+###### To perform transaction using ePay BRI payment method follow the steps given below:
+* Create the instance of veritrans library using **VeritransBuilder** class.
+* Create instance of **TransactionRequest** and add required fields like item details, 
+   shipping address etc. 
+* Then add Transaction details in previously created veritrans object using 
+
+```
+mVeritransSDK.setTransactionRequest(TransactionRequest);
+```
+
+* Then execute Transaction using following method and add **TransactionCallback** to get response back. In onSuccess() of callback you will get redirect url from server, start webview to handle the redirect url. 
+
+```
+
+        mVeritransSDK.paymentUsingEpayBri(activity,
+                new TransactionCallback() {
+   
+                            
+            @Override
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+                    Log.d(" Transaction failed ", ""+errorMessage);
+                    // write your code here to take appropriate action 
+                }
+        
+                @Override
+                public void onSuccess(TransactionResponse transactionResponse) {
+                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
+                    //here you will get url
+                    
+                    if (transactionResponse != null &&
+                                !TextUtils.isEmpty(transactionResponse.getRedirectUrl())) {
+                            
+                            // create Web Activity  to handle redirect url. start web activity for result 
+                        }
+                }
+        });
+       
+       
+       
+       
+       
+        @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data!=null ) {
+        // get data from intent.
+            String responseStr = data.getStringExtra(Constants.PAYMENT_RESPONSE);
+             Gson gson = new Gson();
+            TransactionResponse transactionResponse = gson.fromJson(responseStr, TransactionResponse.class);
+            // handle response here
+            
+      }
+      } 
+```
+
+* Create Web View  Activity to handle  redirect url and set following setting to webView      
+    - Enable java script.
+    - setLoadWithOverviewMode() to true
+    - add javaScript interface to intercept the request, to get the status of transaction.
+    e.g - 
+```
+private void initwebview() {
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setInitialScale(1);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+        webView.setWebViewClient(new MyWebViewClient());
+        webView.setWebChromeClient(new WebChromeClient());
+       
+       // java script interface to intercept the request and get paymet status data from server.
+        webView.addJavascriptInterface(new JsInterface(), Constants.VERITRANS_RESPONSE);
+       
+       // don't change the second paramter. It is constant used in sdk to find response status.
+    }
+
+    public void webviewBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        }
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            if (url.contains(Constants.CALLBACK_STRING)) {
+                Intent returnIntent = new Intent();
+                getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                getActivity().finish();
+            } 
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+        }
+    }
+
+
+
+/**
+Use this interface in your web view to get response back. 
+**/
+    public class JsInterface {
+
+        /**
+         * java script code written on merchant server (redirect url)
+         * doctype html
+         html
+         head
+         title= title
+         script(type='text/javascript').
+         function paymentStatus(data) {
+         Android.paymentResponse(data);
+         }
+
+         body(onload="paymentStatus('" + paymentStatus + "')")
+         h1 Success.
+         * @param data
+         */
+        @JavascriptInterface
+        public void paymentResponse(String data) {
+            // finish activity and return payment response.
+            Intent intent = new Intent();
+            intent.putExtra(Constants.PAYMENT_RESPONSE, data);
+            getActivity().setResult(getActivity().RESULT_OK, intent);
+            getActivity().finish();
+        }
+
+    }
+    
+    }//end of WebviewActivity class
+```
+
+## CIMB Clicks
+
+###### To perform transaction using CIMB Clicks payment method follow the steps given below:
+* Create the instance of veritrans library using **VeritransBuilder** class.
+* Create instance of **TransactionRequest** and add required fields like item details, 
+   shipping address etc. This payment method requires **Description Model**.
+* Then add Transaction details in previously created veritrans object using 
+
+```
+mVeritransSDK.setTransactionRequest(TransactionRequest);
+```
+
+* Then execute Transaction using following method and add **TransactionCallback** to get response back. In onSuccess() of callback you will get redirect url from server, start webview to handle the redirect url.
+* Handle the further process and response same as performed in ePay BRI.
+
+```
+        //add Description for transaction
+        DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
+
+        mVeritransSDK.paymentUsingCIMBClickPay(CIMBClickPayActivity.this, cimbDescription, new TransactionCallback() {
+                            
+            @Override
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+                    Log.d(" Transaction failed ", ""+errorMessage);
+                    // write your code here to take appropriate action 
+                }
+        
+                @Override
+                public void onSuccess(TransactionResponse transactionResponse) {
+                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
+                  // handle redirect url same as e-Pay BRI. 
+                }
+        });
+        
+```
+
+
+
+## BBM money - 
+
+###### To perform transaction using BBM money app follow the steps given below:
+* Check Whether BBM moeny app is installed or not on device using following code : -
+```
+    SdkUtil.isBBMMoneyInstalled(activity)- it will return true if app is installed on device. 
+
+```
+* Create the instance of veritrans library using **VeritransBuilder** class.
+* Create instance of **TransactionRequest** and add required fields like item details, 
+   shipping address etc. This requires BBM callback url  call bas
+* Then add Transaction details in previously created veritrans object using 
+
+```
+                    BBMCallBackUrl bbmCallBackUrl = new BBMCallBackUrl(Constants.CHECK_STATUS,
+                            Constants.BEFORE_PAYMENT_ERROR, Constants.USER_CANCEL);
+                    //start transaction
+                    mVeritransSDK.setTransactionRequest(transactionRequest);
+                    mVeritransSDK.setBBMCallBackUrl(bbmCallBackUrl);
+
+```
+
+* Then execute Transaction using following method and add **TransactionCallback** to get response back. In onSuccess() of callback you will get Permata Virtual Account number (Payment code).
+* Handle the further process and response same as performed in ePay BRI.
+
+```
+        //add Description for transaction
+        DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
+
+        mVeritransSDK.paymentUsingBBMMoney(activity, description, new TransactionCallback()  {
+                            
+            @Override
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+                    Log.d(" Transaction failed ", ""+errorMessage);
+                    // write your code here to take appropriate action 
+                  
+                }
+        
+                @Override
+                public void onSuccess(TransactionResponse transactionResponse) {
+                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
+                    // get permata VA number  
+                    String PERMATA_VA = transactionResponse.getPermataVANumber();
+                }
+        });
+       
+```
+
+* Create encode Url using Permata virtual account number and callback url in the following format -
+    URL- bbmmoney://api/payment/imp?data=URL encoded JSON data
+
+Now created encoded url using following json format- 
+``` 
+{
+  "reference":"8744000000000091", // permata_va_number
+
+  "callback_url": {
+    "check_status":"https://example.com/order/check_status.html",
+    "before_payment_error":"https://example.com/order/unfinish.html",
+    "user_cancel":"https://example.com/order/cancel.html"
+    }
+}
+```
+**_You can use following static method from sdk to create encoded string_** - 
+```
+SdkUtil.createEncodedUrl(String permataVA, String checkStatus, String
+            beforePaymentError, String userCancel);
+```
+
+
+
+* Now start bbm money app using following code :
+```
+String  BBM_PREFIX_URL = "bbmmoney://api/payment/imp?data=";
+
+String  encodedUrl = SdkUtil.createEncodedUrl(PERMATA_VA,
+                        checkStatus,
+                        beforePaymentError,
+                        userCancel);
+
+                String feedUrl = BBM_PREFIX_URL + encodedUrl;
+
+                if (SdkUtil.isBBMMoneyInstalled(BBMMoneyActivity.this)) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(feedUrl)));
+                }
+          
+```
+
+
+## Mandiri e-Cash - 
+
+###### To perform transaction using Mandiri e-Cash payment method follow the steps given below:
+* Create the instance of veritrans library using **VeritransBuilder** class.
+* Create instance of **TransactionRequest** and add required fields like item details, 
+   shipping address etc. This payment method requires **Description Model**.
+* Then add Transaction details in previously created veritrans object using 
+
+```
+mVeritransSDK.setTransactionRequest(TransactionRequest);
+```
+
+* Then execute Transaction using following method and add **TransactionCallback** to get response back. In onSuccess() of callback you will get redirect url from server, start webview to handle the redirect url.
+* Handle the further process and response same as performed in ePay BRI.
+
+```
+        //add Description for transaction
+        DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
+
+        mVeritransSDK.paymentUsingMandiriECash(activity, description, new TransactionCallback()  {
+                            
+            @Override
+            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+                    Log.d(" Transaction failed ", ""+errorMessage);
+                    // write your code here to take appropriate action 
+                  
+                }
+        
+                @Override
+                public void onSuccess(TransactionResponse transactionResponse) {
+                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
+                    // handle redirect url same as e-Pay BRI. 
+                }
+        });
+        
+```
+
+

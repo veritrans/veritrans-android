@@ -17,6 +17,7 @@ public class VeritransBuilder {
     protected String clientKey = null;
     protected Context context = null;
     protected boolean enableLog = true;
+    protected  String merchantServerUrl = null;
 
     /**
      * It  will initialize an data required to sdk.
@@ -24,9 +25,10 @@ public class VeritransBuilder {
      * @param context
 
      */
-    public VeritransBuilder(Context context,String clientKey) {
+    public VeritransBuilder(Context context, String clientKey, String merchantServerUrl) {
             this.context = context.getApplicationContext();
             this.clientKey = clientKey;
+            this.merchantServerUrl = merchantServerUrl;
     }
 
 
@@ -50,7 +52,7 @@ public class VeritransBuilder {
      */
     public VeritransSDK buildSDK() {
 
-        if (VeritransSDK.getVeritransSDK() == null) {
+        if (VeritransSDK.getVeritransSDK() == null && isValidData()) {
 
             VeritransSDK veritransSDK = VeritransSDK.getInstance(this);
             return veritransSDK;
@@ -61,4 +63,13 @@ public class VeritransBuilder {
         return null;
     }
 
+    public boolean isValidData() {
+
+        if(merchantServerUrl == null || clientKey == null || context == null){
+            Logger.e("invalid data supplied to sdk");
+            return false;
+        }
+
+        return true;
+    }
 }

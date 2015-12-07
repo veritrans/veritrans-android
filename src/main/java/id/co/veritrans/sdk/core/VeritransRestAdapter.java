@@ -86,7 +86,8 @@ class VeritransRestAdapter {
             showNetworkNotAvailableDialog) {
         if (Utils.isNetworkAvailable(activity)) {
 
-            if (merchantVeritranceApiInterface == null) {
+            if (merchantVeritranceApiInterface == null && VeritransSDK.getVeritransSDK() != null) {
+
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
                 Gson gson = new GsonBuilder()
@@ -98,16 +99,20 @@ class VeritransRestAdapter {
                         .setLogLevel(RestAdapter.LogLevel.FULL)
                         .setClient(new OkClient(okHttpClient));
                 RestAdapter restAdapter;
+
+                builder.setEndpoint(VeritransSDK.getVeritransSDK().getMerchantServerUrl());
+                restAdapter = builder.build();
+
                 if (BuildConfig.DEBUG) {
-                    builder.setEndpoint(Constants.BASE_URL_MERCHANT_FOR_DEBUG);
-                    restAdapter = builder.build();
                     restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
-                } else {
-                    builder.setEndpoint(Constants.BASE_URL_MERCHANT_FOR_RELEASE);
-                    restAdapter = builder.build();
                 }
+
                 merchantVeritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
+
+            } else if (VeritransSDK.getVeritransSDK() == null) {
+                Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
             }
+
             return merchantVeritranceApiInterface;
 
         } else {

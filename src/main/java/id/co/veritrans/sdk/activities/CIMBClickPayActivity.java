@@ -22,6 +22,7 @@ import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.InstructionCIMBFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
+import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.TransactionResponse;
 
 /**
@@ -100,15 +101,12 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
 
     private void makeTransaction(){
         SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        mVeritransSDK.paymentUsingCIMBClickPay(CIMBClickPayActivity.this, new TransactionCallback() {
+        DescriptionModel cimbDescription = new DescriptionModel("Any Description");
+
+        mVeritransSDK.paymentUsingCIMBClickPay(CIMBClickPayActivity.this, cimbDescription, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse cimbClickPayTransferResponse) {
                 SdkUtil.hideProgressDialog();
-//                if (cimbClickPayTransferResponse != null) {
-//                    mTransactionResponse = cimbClickPayTransferResponse;
-//                } else {
-//                    onBackPressed();
-//                }
 
                 if (cimbClickPayTransferResponse != null &&
                         !TextUtils.isEmpty(cimbClickPayTransferResponse.getRedirectUrl())) {

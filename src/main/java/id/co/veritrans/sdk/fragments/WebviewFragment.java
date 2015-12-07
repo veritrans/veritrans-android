@@ -111,8 +111,25 @@ public class WebviewFragment extends Fragment {
     }
 
 
+
     public class JsInterface {
 
+
+        /**
+         * code is written on merchant server (redirect url)
+         * doctype html
+         html
+         head
+         title= title
+         script(type='text/javascript').
+         function paymentStatus(data) {
+         Android.paymentResponse(data);
+         }
+
+         body(onload="paymentStatus('" + paymentStatus + "')")
+         h1 Success.
+         * @param data
+         */
         @JavascriptInterface
         public void paymentResponse(String data) {
             Logger.i("paymentStatus:"+data);
