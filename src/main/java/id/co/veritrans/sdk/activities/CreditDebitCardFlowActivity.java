@@ -23,7 +23,6 @@ import java.util.List;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.CardPagerAdapter;
-import id.co.veritrans.sdk.callbacks.DeleteCardCallback;
 import id.co.veritrans.sdk.callbacks.SavedCardCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
 import id.co.veritrans.sdk.callbacks.TransactionCallback;
@@ -42,7 +41,6 @@ import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
-import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.ShippingAddress;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionDetails;
@@ -50,6 +48,7 @@ import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.UserAddress;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
+import id.co.veritrans.sdk.widgets.TextViewFont;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -80,6 +79,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     private String errorMessage = null;
     private CardPagerAdapter cardPagerAdapter;
     private CirclePageIndicator circlePageIndicator;
+    private TextViewFont emptyCardsTextViewFont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -308,10 +308,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     //onfailure for transaction api call
     @Override
     public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-
         CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
         CreditDebitCardFlowActivity.this.errorMessage = errorMessage;
-
         SdkUtil.hideProgressDialog();
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
@@ -358,6 +356,10 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 cardTokenRequest.setCardCVV(0);
                 cardTokenRequest.setClientKey("");
                 cardTokenRequest.setGrossAmount(0);
+                //to save card number in xxxxxxxxxxxx1118 format
+                /*String formatedCardNumber = cardTokenRequest.getFormatedCardNumber();
+                formatedCardNumber = formatedCardNumber.replace("-","");
+                cardTokenRequest.setCardNumber(formatedCardNumber);*/
                 cardTokenRequest.setBank(Constants.BANK_NAME);
                 if (cardTokenRequest.isSaved() && !TextUtils.isEmpty(cardPaymentResponse
                         .getSavedTokenId())) {
@@ -430,6 +432,14 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                     if (cardPagerAdapter != null && circlePageIndicator != null) {
                         cardPagerAdapter.notifyDataSetChanged();
                         circlePageIndicator.notifyDataSetChanged();
+                    }
+                    if(emptyCardsTextViewFont!=null) {
+                        if (!creditCards.isEmpty()){
+                            emptyCardsTextViewFont.setVisibility(View.GONE);
+                        } else {
+                            emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+                        }
+
                     }
                 }
             }
@@ -565,60 +575,11 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         this.RESULT_CODE = resultCode;
     }
 
-    public void deleteCards(final String cardNumber) {
-        CardTokenRequest creditCard = null;
-        if (creditCards != null && !creditCards.isEmpty()) {
 
-            for (int i = 0; i < creditCards.size(); i++) {
-                if (creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)) {
-                    creditCard = creditCards.get(i);
-                }
-            }
-            try {
-                Logger.i("position to delete:" + creditCard.getCardNumber() + ",creditCard size:" + creditCards.size());
-            } catch (NullPointerException e) {
-            }
-        }
-        if (creditCard != null) {
-            veritransSDK.deleteCard(this, creditCard, new DeleteCardCallback() {
-                @Override
-                public void onFailure(String errorMessage) {
 
-                }
-
-                @Override
-                public void onSuccess(DeleteCardResponse deleteResponse) {
-                    if (deleteResponse == null || !deleteResponse.getMessage().equalsIgnoreCase(getString(R.string.success))) {
-                        return;
-                    }
-                    int position = -1;
-                    for (int i = 0; i < creditCards.size(); i++) {
-                        if (creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)) {
-                            position = i;
-                        }
-                    }
-                    if (creditCards != null && !creditCards.isEmpty()) {
-                        Logger.i("position to delete:" + position);
-                        creditCards.remove(position);
-                        if (cardPagerAdapter != null && circlePageIndicator != null) {
-                            cardPagerAdapter.notifyDataSetChanged();
-                            circlePageIndicator.notifyDataSetChanged();
-                        }
-                    }
-                }
-            });
-        }
-            /*if(position >= 0){
-                creditCards.remove(position);
-                Logger.i("creditCard size:" + creditCards.size());
-            }*/
-
-        //notify
-
-    }
-
-    public void setAdapterViews(CardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator) {
+    public void setAdapterViews(CardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, TextViewFont emptyCardsTextViewFont) {
         this.cardPagerAdapter = cardPagerAdapter;
         this.circlePageIndicator = circlePageIndicator;
+        this.emptyCardsTextViewFont = emptyCardsTextViewFont;
     }
 }

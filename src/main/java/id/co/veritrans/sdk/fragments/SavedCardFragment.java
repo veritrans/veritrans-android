@@ -14,10 +14,12 @@ import java.util.ArrayList;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.adapters.CardPagerAdapter;
+import id.co.veritrans.sdk.callbacks.DeleteCardCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.CardTokenRequest;
+import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
@@ -115,8 +117,7 @@ public class SavedCardFragment extends Fragment {
                 }
             });
             circlePageIndicator.setViewPager(savedCardPager);
-            //to notify adapter when credit card details received
-            ((CreditDebitCardFlowActivity)getActivity()).setAdapterViews(cardPagerAdapter,circlePageIndicator);
+            ((CreditDebitCardFlowActivity)getActivity()).setAdapterViews(cardPagerAdapter,circlePageIndicator,emptyCardsTextViewFont);
             showHideNoCardMessage();
         }
 
@@ -135,7 +136,57 @@ public class SavedCardFragment extends Fragment {
 
     public void deleteCreditCard(String cardNumber) {
             showHideNoCardMessage();
-            ((CreditDebitCardFlowActivity)getActivity()).deleteCards(cardNumber);
+            deleteCards(cardNumber);
 
+    }
+
+    public void deleteCards(final String cardNumber) {
+        CardTokenRequest creditCard = null;
+        if (creditCards != null && !creditCards.isEmpty()) {
+
+            for (int i = 0; i < creditCards.size(); i++) {
+                if (creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)) {
+                    creditCard = creditCards.get(i);
+                }
+            }
+            try {
+                Logger.i("position to delete:" + creditCard.getCardNumber() + ",creditCard size:" + creditCards.size());
+            } catch (NullPointerException e) {
+            }
+        }
+        if (creditCard != null) {
+            veritransSDK.deleteCard(getActivity(), creditCard, new DeleteCardCallback() {
+                @Override
+                public void onFailure(String errorMessage) {
+
+                }
+
+                @Override
+                public void onSuccess(DeleteCardResponse deleteResponse) {
+                    if (deleteResponse == null || !deleteResponse.getMessage().equalsIgnoreCase(getString(R.string.success))) {
+                        return;
+                    }
+                    int position = -1;
+                    for (int i = 0; i < creditCards.size(); i++) {
+                        if (creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)) {
+                            position = i;
+                        }
+                    }
+                    if (creditCards != null && !creditCards.isEmpty()) {
+                        Logger.i("position to delete:" + position);
+                        creditCards.remove(position);
+                        if (cardPagerAdapter != null && circlePageIndicator != null) {
+                            cardPagerAdapter.notifyDataSetChanged();
+                            circlePageIndicator.notifyDataSetChanged();
+                            if(creditCards.isEmpty()){
+                                emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+                            } else {
+                                emptyCardsTextViewFont.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 }
