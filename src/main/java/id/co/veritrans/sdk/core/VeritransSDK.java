@@ -475,9 +475,10 @@ public class VeritransSDK {
      *
      * @param activity              instance of an activity.
      * @param indosatTransferStatus instance of TransactionCallback.
+     * @param msisdn registered mobile number of user.
      */
-    public void paymentUsingIndosatDompetku(Activity activity,
-                                            TransactionCallback indosatTransferStatus, String msisdn) {
+    public void paymentUsingIndosatDompetku(Activity activity, String msisdn,
+                                            TransactionCallback indosatTransferStatus) {
         if (transactionRequest != null && activity != null
                 && indosatTransferStatus != null) {
 
@@ -510,8 +511,8 @@ public class VeritransSDK {
      * @param activity          instance of an activity.
      * @param indomaretCallback instance of TransactionCallback.
      */
-    public void paymentUsingIndomaret(Activity activity,
-                                      TransactionCallback indomaretCallback, IndomaretRequestModel.CstoreEntity cstoreEntity) {
+    public void paymentUsingIndomaret(Activity activity, IndomaretRequestModel.CstoreEntity cstoreEntity,
+                                      TransactionCallback indomaretCallback) {
 
         if (transactionRequest != null && activity != null
                 && indomaretCallback != null && cstoreEntity != null) {
