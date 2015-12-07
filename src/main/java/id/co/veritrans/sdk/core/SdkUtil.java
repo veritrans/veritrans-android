@@ -440,9 +440,8 @@ public class SdkUtil {
      * @return
      */
 
-    protected static CIMBClickPayModel getCIMBClickPayModel(TransactionRequest request) {
+    protected static CIMBClickPayModel getCIMBClickPayModel(TransactionRequest request, DescriptionModel cimbDescription) {
 
-        DescriptionModel cimbDescription = new DescriptionModel("Any Description"); //TODO...Description for transaction
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
 
@@ -465,10 +464,8 @@ public class SdkUtil {
      * @return
      */
 
-    protected static MandiriECashModel getMandiriECashModel(TransactionRequest request) {
+    protected static MandiriECashModel getMandiriECashModel(TransactionRequest request, DescriptionModel description) {
 
-        DescriptionModel description = new DescriptionModel("Any Description");
-        //TODO...Description for transaction
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
 

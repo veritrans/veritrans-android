@@ -205,4 +205,6 @@ public class Constants {
     public static final String PAYMENT_CREDIT_DEBIT = "credit_card";
     public static final String PAYMENT_PERMATA = "permata";
     public static final String DENY = "deny";
+    public static final String ERROR_DESCRIPTION_REQUIRED = "add description model";
+
 }

@@ -22,6 +22,7 @@ import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.InstructionMandiriECashFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
+import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.TransactionResponse;
 
 /**
@@ -100,7 +101,10 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
 
     private void makeTransaction(){
         SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        mVeritransSDK.paymentUsingMandiriECash(MandiriECashActivity.this, new TransactionCallback() {
+
+        DescriptionModel description = new DescriptionModel("Any Description");
+
+        mVeritransSDK.paymentUsingMandiriECash(MandiriECashActivity.this, description, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse transferResponse) {
                 SdkUtil.hideProgressDialog();
