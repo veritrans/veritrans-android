@@ -1,7 +1,9 @@
 package id.co.veritrans.sdk.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -31,6 +33,7 @@ import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.fragments.AddCardDetailsFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.SavedCardFragment;
 import id.co.veritrans.sdk.models.BankDetail;
@@ -80,6 +83,11 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     private CardPagerAdapter cardPagerAdapter;
     private CirclePageIndicator circlePageIndicator;
     private TextViewFont emptyCardsTextViewFont;
+    private TextViewFont titleHeaderTextViewFont;
+
+    public TextViewFont getTitleHeaderTextViewFont() {
+        return titleHeaderTextViewFont;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +98,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        titleHeaderTextViewFont = (TextViewFont) findViewById(R.id.title_header);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -98,8 +107,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         replaceFragment(blankFragment,true,false);*/
         getCreditCards();
 
-        SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
-        replaceFragment(savedCardFragment, true, false);
+
         /*if( == null || getCreditCards().isEmpty()){
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
                     .newInstance();
@@ -154,8 +162,11 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     }*/
 
     public void payUsingCard() {
+
         SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
+        //getSupportActionBar().setTitle(getString(R.string.processing_payment));
+        titleHeaderTextViewFont.setText(getString(R.string.processing_payment));
         CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
                 userDetail.getEmail(), userDetail.getPhoneNumber());
 
@@ -308,6 +319,13 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     //onfailure for transaction api call
     @Override
     public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
+        Handler handler = new  Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                processingLayout.setVisibility(View.GONE);
+            }
+        },200);
         CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
         CreditDebitCardFlowActivity.this.errorMessage = errorMessage;
         SdkUtil.hideProgressDialog();
@@ -315,14 +333,21 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
         replaceFragment(paymentTransactionStatusFragment, true, false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        processingLayout.setVisibility(View.GONE);
-        getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
+        //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
+        titleHeaderTextViewFont.setText(getString(R.string.title_payment_failed));
 
     }
 
     //onSuccess for transaction api call
     @Override
     public void onSuccess(TransactionResponse cardPaymentResponse) {
+        Handler handler = new  Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                processingLayout.setVisibility(View.GONE);
+            }
+        },200);
 
         SdkUtil.hideProgressDialog();
         Logger.i("cardPaymentResponse:" + cardPaymentResponse.getStatusCode());
@@ -336,8 +361,9 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                     PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
             replaceFragment(paymentTransactionStatusFragment, true, false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
-            processingLayout.setVisibility(View.GONE);
+            //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
+            titleHeaderTextViewFont.setText(getString(R.string.title_payment_successful));
+
             if (cardTokenRequest.isSaved()) {
                 if (!creditCards.isEmpty()) {
                     int position = -1;
@@ -403,50 +429,66 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     }
 
     public ArrayList<CardTokenRequest> getCreditCards() {
-        /*try {
-            ArrayList<CardTokenRequest> cards = (ArrayList<CardTokenRequest>) storageDataHandler
-                    .readObject(this, Constants.USERS_SAVED_CARD);
-            if (cards != null) {
-                creditCards.clear();
-                creditCards.addAll(cards);
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
         if (creditCards == null || creditCards.isEmpty()) {
             fetchCreditCards();
         }
         return creditCards;
     }
-
+    ProgressDialog progressDialog;
     public void fetchCreditCards() {
+        SdkUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
+        processingLayout.setVisibility(View.VISIBLE);
         veritransSDK.getSavedCard(this, new SavedCardCallback() {
             @Override
             public void onSuccess(CardResponse cardResponse) {
+                SdkUtil.hideProgressDialog();
+                //
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        processingLayout.setVisibility(View.GONE);
+                    }
+                }, 200);
                 Logger.i("cards api successful" + cardResponse);
                 if (cardResponse != null && !cardResponse.getCreditCards().isEmpty()) {
+
                     creditCards.clear();
                     creditCards.addAll(cardResponse.getCreditCards());
                     if (cardPagerAdapter != null && circlePageIndicator != null) {
                         cardPagerAdapter.notifyDataSetChanged();
                         circlePageIndicator.notifyDataSetChanged();
                     }
-                    if(emptyCardsTextViewFont!=null) {
-                        if (!creditCards.isEmpty()){
+                    //processingLayout.setVisibility(View.GONE);
+                    if (emptyCardsTextViewFont != null) {
+                        if (!creditCards.isEmpty()) {
                             emptyCardsTextViewFont.setVisibility(View.GONE);
                         } else {
                             emptyCardsTextViewFont.setVisibility(View.VISIBLE);
                         }
 
                     }
+                    SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
+                    //getSupportActionBar().setTitle(getString(R.string.saved_card));
+                    titleHeaderTextViewFont.setText(getString(R.string.saved_card));
+                    replaceFragment(savedCardFragment, true, false);
+
+                } else {
+                    AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
+                            .newInstance();
+                    replaceFragment
+                            (addCardDetailsFragment, true, false);
+                    //getSupportActionBar().setTitle(getString(R.string.card_details));
+                    titleHeaderTextViewFont.setText(getString(R.string.card_details));
+
                 }
             }
 
             @Override
             public void onFailure(String errorMessage, CardResponse cardResponse) {
+                SdkUtil.hideProgressDialog();
                 Logger.i("card fetching failed :" + errorMessage);
+                processingLayout.setVisibility(View.GONE);
             }
         });
     }

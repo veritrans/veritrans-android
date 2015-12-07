@@ -61,19 +61,13 @@ public class AddCardDetailsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
-                    .string.card_details));
-            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar()
-                    .setDisplayHomeAsUpEnabled(true);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((CreditDebitCardFlowActivity)getActivity()).getTitleHeaderTextViewFont().setText(getString(R.string.card_details));
         veritransSDK = ((CreditDebitCardFlowActivity) getActivity()).getVeritransSDK();
         userDetail = ((CreditDebitCardFlowActivity) getActivity()).getUserDetail();
         bankDetails = ((CreditDebitCardFlowActivity) getActivity()).getBankDetails();
@@ -88,6 +82,15 @@ public class AddCardDetailsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        try {
+            Logger.i("onViewCreated called addcarddetail called");
+            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
+                    .string.card_details));
+            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar()
+                    .setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         bindViews(view);
         super.onViewCreated(view, savedInstanceState);
     }

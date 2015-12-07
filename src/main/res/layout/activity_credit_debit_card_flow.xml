@@ -20,7 +20,7 @@
         <id.co.veritrans.sdk.widgets.TextViewFont
             android:id="@+id/title_header"
             android:textColor="@android:color/white"
-            android:text="@string/card_details"
+            android:text="@string/credit_card"
             android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

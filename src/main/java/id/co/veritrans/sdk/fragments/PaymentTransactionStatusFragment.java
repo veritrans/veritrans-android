@@ -111,10 +111,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         } else if (transactionResponse.getTransactionStatus().equalsIgnoreCase(Constants.PENDING)) {
             paymentIv.setImageResource(R.drawable.ic_pending);
             paymentStatusTv.setText(getString(R.string.payment_pending));
-        }  else  if (!transactionResponse.getStatusCode().equalsIgnoreCase(Constants
-                .SUCCESS_CODE_200) &&
-                !transactionResponse.getStatusCode().
-                        equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+        }  else  {
             setUiForFailure();
         }
         transactionTimeTextViewFont.setText(transactionResponse.getTransactionTime());
@@ -233,6 +230,14 @@ public class PaymentTransactionStatusFragment extends Fragment {
     }
 
     private void setPaymentType() {
+        try {
+            Logger.i("PaymentType:" + transactionResponse.getPaymentType());
+        }catch (NullPointerException e){
+
+        }
+        if(transactionResponse==null){
+            return;
+        }
         if (transactionResponse.getPaymentType().equalsIgnoreCase(Constants.PAYMENT_EPAY_BRI)) {
             paymentTypeTextViewFont.setText(getString(R.string.epay_bri));
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(Constants.PAYMENT_MANDIRI_BILL_PAYMENT)) {

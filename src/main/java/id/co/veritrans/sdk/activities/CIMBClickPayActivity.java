@@ -42,6 +42,7 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
 
     private FragmentManager fragmentManager;
     private String currentFragmentName = "";
+    private TransactionResponse transactionResponseFromMerchant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +76,11 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
         replaceFragment(cimbClickPayFragment, true, false);
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -99,7 +98,7 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void makeTransaction(){
+    private void makeTransaction() {
         SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         DescriptionModel cimbDescription = new DescriptionModel("Any Description");
 
@@ -136,21 +135,20 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
 
-        if (resultCode == RESULT_OK && data != null ) {
+        if (resultCode == RESULT_OK && data != null) {
             String responseStr = data.getStringExtra(Constants.PAYMENT_RESPONSE);
-            if(TextUtils.isEmpty(responseStr)){
+            if (TextUtils.isEmpty(responseStr)) {
                 return;
             }
             Gson gson = new Gson();
-            TransactionResponse transactionResponse = gson.fromJson(responseStr, TransactionResponse.class);
+            transactionResponseFromMerchant = gson.fromJson(responseStr, TransactionResponse.class);
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponse);
+                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
             replaceFragment(paymentTransactionStatusFragment, true, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         }
@@ -181,9 +179,12 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    public void setResultAndFinish(){
+    public void setResultAndFinish() {
+
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
+        if (transactionResponseFromMerchant != null) {
+            data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponseFromMerchant);
+        }
         data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
         setResult(RESULT_CODE, data);
         finish();

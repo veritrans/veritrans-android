@@ -49,7 +49,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
 
     // for result
-    private TransactionResponse mTransactionResponse = null;
+    private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
     private int RESULT_CODE = RESULT_CANCELED;
 
@@ -236,7 +236,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                     public void onFailure(String errorMessage, TransactionResponse
                             transactionResponse) {
 
-                        mTransactionResponse = transactionResponse;
+                        MandiriClickPayActivity.this.transactionResponse = transactionResponse;
                         MandiriClickPayActivity.this.errorMessage = errorMessage;
 
 
@@ -258,7 +258,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
                     public void onSuccess(TransactionResponse transactionResponse) {
                         SdkUtil.hideProgressDialog();
 
-                        mTransactionResponse = transactionResponse;
+                        MandiriClickPayActivity.this.transactionResponse = transactionResponse;
 
                         if (transactionResponse != null) {
                             setUpTransactionStatusFragment(transactionResponse);
@@ -307,7 +307,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, mTransactionResponse);
+        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
         data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
         setResult(RESULT_CODE, data);
         finish();
