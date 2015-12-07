@@ -55,6 +55,8 @@ public class VeritransSDK {
     private static boolean isLogEnabled = true;
     /*private static String serverKey = null;*/
     private static String clientKey = null;
+    private static String merchantServerUrl = null;
+
     protected boolean isRunning = false;
 
     private TransactionRequest transactionRequest = null;
@@ -71,7 +73,7 @@ public class VeritransSDK {
             isLogEnabled = veritransBuilder.enableLog;
             /*serverKey = veritransBuilder.serverKey;*/
             clientKey = veritransBuilder.clientKey;
-
+            merchantServerUrl = veritransBuilder.merchantServerUrl;
             initializeFonts();
             return veritransSDK;
         } else {
@@ -157,6 +159,11 @@ public class VeritransSDK {
     public String getClientKey() {
         return clientKey;
     }
+
+    public String getMerchantServerUrl(){
+        return merchantServerUrl;
+    }
+
 
     public ArrayList<PaymentMethodsModel> getSelectedPaymentMethods() {
         return selectedPaymentMethods;
