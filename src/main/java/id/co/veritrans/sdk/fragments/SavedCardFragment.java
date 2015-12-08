@@ -17,6 +17,7 @@ import id.co.veritrans.sdk.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.callbacks.DeleteCardCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
+import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
@@ -63,14 +64,14 @@ public class SavedCardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        try {
+        /*try {
             ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
                     .string.saved_card));
             ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar()
                     .setDisplayHomeAsUpEnabled(true);
         } catch (NullPointerException e){
             e.printStackTrace();
-        }
+        }*/
     }
 
     private void bindViews(View view) {
@@ -93,9 +94,12 @@ public class SavedCardFragment extends Fragment {
                 .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-        creditCards = ((CreditDebitCardFlowActivity) getActivity()).getCreditCards();
+        creditCards = ((CreditDebitCardFlowActivity) getActivity()).getCreditCardList();
+        setViewPagerValues();
 
+    }
 
+    private void setViewPagerValues() {
         if (creditCards != null) {
              cardPagerAdapter = new CardPagerAdapter(this,getChildFragmentManager(),
                     creditCards);
@@ -120,8 +124,6 @@ public class SavedCardFragment extends Fragment {
             ((CreditDebitCardFlowActivity)getActivity()).setAdapterViews(cardPagerAdapter,circlePageIndicator,emptyCardsTextViewFont);
             showHideNoCardMessage();
         }
-
-
     }
 
     private void showHideNoCardMessage() {
@@ -142,6 +144,7 @@ public class SavedCardFragment extends Fragment {
 
     public void deleteCards(final String cardNumber) {
         CardTokenRequest creditCard = null;
+        Logger.i("cardNumber:"+cardNumber);
         if (creditCards != null && !creditCards.isEmpty()) {
 
             for (int i = 0; i < creditCards.size(); i++) {
@@ -152,13 +155,14 @@ public class SavedCardFragment extends Fragment {
             try {
                 Logger.i("position to delete:" + creditCard.getCardNumber() + ",creditCard size:" + creditCards.size());
             } catch (NullPointerException e) {
+                e.printStackTrace();
             }
         }
         if (creditCard != null) {
             veritransSDK.deleteCard(getActivity(), creditCard, new DeleteCardCallback() {
                 @Override
                 public void onFailure(String errorMessage) {
-
+                    SdkUtil.showSnackbar(getActivity(),errorMessage);
                 }
 
                 @Override
@@ -173,9 +177,36 @@ public class SavedCardFragment extends Fragment {
                         }
                     }
                     if (creditCards != null && !creditCards.isEmpty()) {
-                        Logger.i("position to delete:" + position);
+                        Logger.i("position to delete:" + position + "," + creditCards.size());
+                        if(!creditCards.isEmpty()) {
+                            for (int i = 0; i < creditCards.size(); i++) {
+                                Logger.i("cards before:" + creditCards.get(i).getCardNumber());
+                            }
+                        }
+
                         creditCards.remove(position);
+
+
+                        if(!creditCards.isEmpty()) {
+                            for (int i = 0; i < creditCards.size(); i++) {
+
+                                Logger.i("cards after:" + creditCards.get(i).getCardNumber());
+                            }
+                        }
+
+                        //notifydataset change not worked properly for viewpager so setting it again
+                        Logger.i("setting view pager value");
+                       // setViewPagerValues(creditCardsNew);
+                        /*if(creditCards.size()>1) {
+                            try {
+                                savedCardPager.setCurrentItem(position);
+                            } catch (ArrayIndexOutOfBoundsException e) {
+                                savedCardPager.setCurrentItem(creditCards.size() - 1);
+                            }
+                        }*/
                         if (cardPagerAdapter != null && circlePageIndicator != null) {
+                            Logger.i("notifying data");
+                            cardPagerAdapter.notifyChangeInPosition(1);
                             cardPagerAdapter.notifyDataSetChanged();
                             circlePageIndicator.notifyDataSetChanged();
                             if(creditCards.isEmpty()){

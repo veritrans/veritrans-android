@@ -101,22 +101,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         titleHeaderTextViewFont = (TextViewFont) findViewById(R.id.title_header);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         calculateScreenWidth();
-        /*BlankFragment blankFragment = BlankFragment.newInstance();
-        replaceFragment(blankFragment,true,false);*/
         getCreditCards();
-
-
-        /*if( == null || getCreditCards().isEmpty()){
-            AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
-                    .newInstance();
-            replaceFragment
-                    (addCardDetailsFragment, true, false);
-        } else {
-            SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
-            replaceFragment(savedCardFragment, true, false);
-        }*/
         readBankDetails();
     }
 
@@ -132,13 +118,15 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
     @Override
     public void onBackPressed() {
+        SdkUtil.hideKeyboard(this);
         if (fragmentManager.getBackStackEntryCount() == 1) {
             setResultAndFinish();
         } else {
-            if (currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class
+            if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class
                     .getName())) {
                 setResultAndFinish();
             } else {
+
                 super.onBackPressed();
             }
         }
@@ -334,7 +322,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         replaceFragment(paymentTransactionStatusFragment, true, false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
-        titleHeaderTextViewFont.setText(getString(R.string.title_payment_failed));
+        titleHeaderTextViewFont.setText(getString(R.string.title_payment_status));
 
     }
 
@@ -347,7 +335,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             public void run() {
                 processingLayout.setVisibility(View.GONE);
             }
-        },200);
+        }, 200);
 
         SdkUtil.hideProgressDialog();
         Logger.i("cardPaymentResponse:" + cardPaymentResponse.getStatusCode());
@@ -362,7 +350,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             replaceFragment(paymentTransactionStatusFragment, true, false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
-            titleHeaderTextViewFont.setText(getString(R.string.title_payment_successful));
+            titleHeaderTextViewFont.setText(getString(R.string.title_payment_status));
 
             if (cardTokenRequest.isSaved()) {
                 if (!creditCards.isEmpty()) {
@@ -433,6 +421,10 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             fetchCreditCards();
         }
         return creditCards;
+    }
+
+    public ArrayList<CardTokenRequest> getCreditCardList() {
+             return creditCards;
     }
     ProgressDialog progressDialog;
     public void fetchCreditCards() {
