@@ -249,9 +249,9 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
 
                         SdkUtil.hideProgressDialog();
-                        if (errorMessage != null) {
+                        /*if (errorMessage != null) {
                             SdkUtil.showSnackbar(MandiriClickPayActivity.this, errorMessage);
-                        }
+                        }*/
                     }
 
                     @Override
