@@ -49,8 +49,8 @@
 
 
                         <TableLayout
-                            android:weightSum="3"
-                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             >
 
@@ -68,8 +68,9 @@
                                 />
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_width="@dimen/forty_dp"
+                                android:gravity="center"
                                 android:text=":"
                                 android:textColor="@color/white_little_transparent"
                                 android:textSize="@dimen/primary_text_size"
@@ -78,7 +79,7 @@
                                 />
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:layout_width="wrap_content"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
                                 android:layout_marginTop="4dp"
@@ -109,7 +110,8 @@
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
                                 android:layout_weight="0.3"
-                                android:layout_width="wrap_content"
+                                android:layout_width="@dimen/forty_dp"
+                                android:gravity="center"
                                 android:layout_height="wrap_content"
                                 android:text=":"
                                 android:textColor="@color/white_little_transparent"
@@ -119,10 +121,10 @@
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
                                 android:id="@+id/text_input_1"
-                                android:layout_width="wrap_content"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:layout_gravity="right"
+                                android:gravity="right"
                                 android:text="Input 1 here"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/secondary_text_size"
@@ -147,7 +149,8 @@
                                 />
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:layout_width="wrap_content"
+                                android:layout_width="@dimen/forty_dp"
+                                android:gravity="center"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.3"
                                 android:text=":"
@@ -158,10 +161,10 @@
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
                                 android:id="@+id/text_input_2"
-                                android:layout_width="wrap_content"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:layout_gravity="right"
+                                android:gravity="right"
                                 android:text="input 2 here"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/secondary_text_size"
@@ -186,7 +189,8 @@
                                 />
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:layout_width="wrap_content"
+                                android:layout_width="@dimen/forty_dp"
+                                android:gravity="center"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="0.3"
@@ -198,10 +202,10 @@
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
                                 android:id="@+id/text_input_3"
-                                android:layout_width="wrap_content"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:layout_gravity="right"
+                                android:gravity="right"
                                 android:text="Input 3 here"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/secondary_text_size"

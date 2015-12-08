@@ -28,8 +28,9 @@ public class Constants {
 
 
     public static final int PHONE_NUMBER_LENGTH = 10;
+    public static final int PHONE_NUMBER_MAX_LENGTH = 12;
     public static final String USER_DETAILS = "user_details";
-    public static final int ZIPCODE_LENGTH = 6;
+    public static final int ZIPCODE_LENGTH = 5;
     public static final String USER_ADDRESS_DETAILS = "user_address_details";
 
 
@@ -193,4 +194,5 @@ public class Constants {
     public static final String DENY = "deny";
     public static final String ERROR_DESCRIPTION_REQUIRED = "add description model";
 
+    public static final String CHALLENGE = "challenge";
 }

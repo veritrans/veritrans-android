@@ -215,6 +215,7 @@ public class CardDetailFragment extends Fragment {
         deleteIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Logger.i("Card to delete:" + cardDetail.getCardNumber());
                 VeritransDialog veritransDialog = new VeritransDialog(getActivity(),getString(R.string.delete)
                         ,getString(R.string.card_delete_message),getString(android.R.string.yes),
                         getString(android.R.string.no));
@@ -222,6 +223,7 @@ public class CardDetailFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         if(parentFragment!=null && parentFragment instanceof SavedCardFragment) {
+
                             ((SavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getCardNumber());
                         }
                     }
@@ -244,6 +246,7 @@ public class CardDetailFragment extends Fragment {
     }
 
     private void cardTransactionProcess(String cvv) {
+        Logger.i("Card to delete:"+cardDetail.getCardNumber());
         try {
             cardDetail.setCardCVV(Integer.parseInt(cvv));
         } catch (NumberFormatException e) {

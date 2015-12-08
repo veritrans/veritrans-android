@@ -53,7 +53,7 @@
                 app:font="@string/font_open_sans_semibold"/>
 
             <TableLayout
-
+                android:id="@+id/transaction_info_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/twenty_four_dp">
