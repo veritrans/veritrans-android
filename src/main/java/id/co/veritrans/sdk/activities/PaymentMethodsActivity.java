@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -320,7 +319,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Logger.d(TAG, "in onActivity result : request code is " + requestCode);
+        Logger.d(TAG, "in onActivity result : request code is " + requestCode+","+resultCode);
 
         if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {
             Logger.d(TAG, "sending result back with code " + requestCode);

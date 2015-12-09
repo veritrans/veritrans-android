@@ -164,7 +164,9 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
             } else {
                 if(mButtonConfirmPayment.getText().toString().equalsIgnoreCase(getString(R.string.retry))) {
-                    finish();
+                    //finish();
+                    Logger.i("on retry pressed");
+                    setResultAndFinish();
                 }else {
                     RESULT_CODE = RESULT_OK;
                     onBackPressed();
@@ -309,7 +311,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         Intent data = new Intent();
         data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
         data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
-        setResult(RESULT_CODE, data);
+        setResult(RESULT_OK, data);
         finish();
     }
 
