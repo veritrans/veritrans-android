@@ -34,8 +34,8 @@
             android:id="@+id/image_delete_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingBottom="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/twenty_four_dp"
+            android:paddingBottom="@dimen/twenty_four_dp"
             android:clickable="true"
             android:src="@drawable/delete"
             android:layout_alignParentRight="true"/>

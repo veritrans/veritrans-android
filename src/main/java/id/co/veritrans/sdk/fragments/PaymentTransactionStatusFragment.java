@@ -119,8 +119,14 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 paymentStatusTv.setText(getString(R.string.payment_successful));
                 paymentMessageTv.setVisibility(View.GONE);
             } else {*/
-            paymentIv.setImageResource(R.drawable.ic_pending);
-            paymentStatusTv.setText(getString(R.string.payment_pending));
+            if(transactionResponse.getFraudStatus().equalsIgnoreCase(Constants.CHALLENGE)){
+                paymentIv.setImageResource(R.drawable.ic_successful);
+                paymentStatusTv.setText(getString(R.string.payment_successful));
+                paymentMessageTv.setVisibility(View.GONE);
+            } else {
+                paymentIv.setImageResource(R.drawable.ic_pending);
+                paymentStatusTv.setText(getString(R.string.payment_pending));
+            }
             //}
         } else {
             setUiForFailure();

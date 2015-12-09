@@ -195,4 +195,5 @@ public class Constants {
     public static final String ERROR_DESCRIPTION_REQUIRED = "add description model";
 
     public static final String CHALLENGE = "challenge";
+    public static final String SUCCESS_CODE_202 = "202";
 }
