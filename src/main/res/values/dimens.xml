@@ -8,7 +8,9 @@
     <dimen name="four_dp">4dp</dimen>
     <dimen name="five_dp">5dp</dimen>
     <dimen name="eight_dp">8dp</dimen>
+    <dimen name="eleven_dp">12dp</dimen>
     <dimen name="twelve_dp">12dp</dimen>
+    <dimen name="fourteen_dp">14dp</dimen>
     <dimen name="sixteen_dp">16dp</dimen>
     <dimen name="seventeen_dp">17dp</dimen>
     <dimen name="twenty_four_dp">24dp</dimen>
@@ -17,6 +19,7 @@
     <dimen name="sixtyfour_dp">64dp</dimen>
     <dimen name="eighty_dp">80dp</dimen>
     <dimen name="fiftyfour_dp">54dp</dimen>
+    <dimen name="fortytwo_dp">54dp</dimen>
     <dimen name="tool_bar_height">56dp</dimen>
 
 

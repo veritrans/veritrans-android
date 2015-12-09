@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.OffersActivity;
+import id.co.veritrans.sdk.callbacks.AnyOfferClickedListener;
 import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
@@ -21,13 +23,15 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
         .OfferViewHolder> {
 
     private static Activity sActivity;
-    private ArrayList<OffersListModel> data = null;
+    private static ArrayList<OffersListModel> data = null;
     private static final String ENDS_ON = "Ends on : ";
+    private static AnyOfferClickedListener anyOfferClickedListener = null;
 
-
-    public OffersAdapter(Activity activity, ArrayList<OffersListModel> data) {
+    public OffersAdapter(Activity activity, ArrayList<OffersListModel> data,
+                         AnyOfferClickedListener anyOfferClickedListener) {
         this.sActivity = activity;
         this.data = data;
+        this.anyOfferClickedListener = anyOfferClickedListener;
     }
 
 
@@ -52,7 +56,6 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
         return data.size();
     }
 
-
     /**
      * public static view holder class.
      */
@@ -70,8 +73,8 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
 
         @Override
         public void onClick(View view) {
-
-
+            anyOfferClickedListener.onOfferClicked(getAdapterPosition(), data.get
+                    (getAdapterPosition()).getOfferTitle());
         }
     }
 }

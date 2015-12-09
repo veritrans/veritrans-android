@@ -17,6 +17,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             >
 
             <id.co.veritrans.sdk.widgets.TextViewFont
@@ -26,6 +27,27 @@
                 android:text="@string/offers"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/header_text_size"
+                app:font="@string/font_open_sans_bold"
+                />
+
+            <id.co.veritrans.sdk.widgets.TextViewFont
+                android:id="@+id/text_title_card_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/card_details"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size"
+                app:font="@string/font_open_sans_bold"
+                />
+
+            <id.co.veritrans.sdk.widgets.TextViewFont
+                android:id="@+id/text_title_offer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/offers"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tertiary_text_size"
                 app:font="@string/font_open_sans_bold"
                 />
 

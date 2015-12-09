@@ -2,15 +2,12 @@ package id.co.veritrans.sdk.fragments;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +15,20 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.OffersAdapter;
-import id.co.veritrans.sdk.adapters.PaymentMethodsAdapter;
-import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.callbacks.AnyOfferClickedListener;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.OffersListModel;
-import id.co.veritrans.sdk.models.PaymentMethodsModel;
-import id.co.veritrans.sdk.utilities.Utils;
-import id.co.veritrans.sdk.widgets.HeaderView;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
  * Created by Ankit on 12/7/15.
  */
-public class OffersListFragment extends Fragment{
+public class OffersListFragment extends Fragment implements AnyOfferClickedListener{
+
+    private TextViewFont textViewTitleOffers = null;
+    private TextViewFont textViewTitleCardDetails = null;
+    private TextViewFont textViewOfferName = null;
 
     RecyclerView recyclerViewOffers = null;
     private ArrayList<OffersListModel> data = new ArrayList<>();
@@ -48,7 +45,19 @@ public class OffersListFragment extends Fragment{
     }
 
     private void initialiseView(View view){
+        textViewTitleOffers = (TextViewFont) getActivity().findViewById(R.id.text_title);
+        textViewTitleCardDetails = (TextViewFont) getActivity().findViewById(R.id
+                .text_title_card_details);
+        textViewOfferName = (TextViewFont) getActivity().findViewById(R.id.text_title_offer_name);
+        setToolbar();
+
         recyclerViewOffers = (RecyclerView) view.findViewById(R.id.rv_offers);
+    }
+
+    private void setToolbar(){
+        textViewTitleOffers.setVisibility(View.VISIBLE);
+        textViewTitleCardDetails.setVisibility(View.GONE);
+        textViewOfferName.setVisibility(View.GONE);
     }
 
 
@@ -61,9 +70,8 @@ public class OffersListFragment extends Fragment{
         initialiseAdapterData();
 
         if (getActivity() != null){
-            Logger.i("Coming in Setup: "+data.size());
             OffersAdapter offersAdapter = new
-                    OffersAdapter(getActivity(), data);
+                    OffersAdapter(getActivity(), data, this);
             recyclerViewOffers.setHasFixedSize(true);
             recyclerViewOffers.setLayoutManager(
                     new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -92,4 +100,19 @@ public class OffersListFragment extends Fragment{
         data.add(new OffersListModel("Buy 14 get 1 free", "34 December 2015", false));
     }
 
+    @Override
+    public void onOfferClicked(int position, String offerName) {
+
+        if (getActivity() != null) {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            OffersAddCardDetailsFragment offersAddCardDetailsFragment =
+                    OffersAddCardDetailsFragment.newInstance(offerName);
+            fragmentTransaction.replace(R.id.offers_container,
+                    offersAddCardDetailsFragment, OffersAddCardDetailsFragment.class.getName());
+            fragmentTransaction.addToBackStack(OffersListFragment.class.getName());
+            fragmentTransaction.commit();
+        }
+    }
 }
