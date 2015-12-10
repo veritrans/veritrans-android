@@ -66,6 +66,7 @@
     <string name="hint_cvv">CVV</string>
     <string name="save_card_message">Save this card for future use</string>
     <string name="pay_now">Pay now</string>
+    <string name="pay_with_instalments">Pay with instalments</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
     <string name="hint_expiry_date">Expiry(mm/yy)</string>
     <string name="validation_message_card_number">Please enter card number</string>

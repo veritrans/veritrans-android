@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,9 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private Button buttonPayNow = null;
     private static final String OFFER_NAME = "offer_name";
     private String offerName = null;
+    private ImageView imageViewPlus = null;
+    private ImageView imageViewMinus = null;
+    private TextViewFont textViewInstalment = null;
 
 
     public static OffersAddCardDetailsFragment newInstance(String offerName) {
@@ -69,6 +73,9 @@ public class OffersAddCardDetailsFragment extends Fragment {
 
             textViewOfferStatus = (TextViewFont) view.findViewById(R.id.text_offer_status);
             buttonPayNow = (Button) view.findViewById(R.id.btn_pay_now);
+            imageViewPlus = (ImageView) view.findViewById(R.id.img_plus);
+            imageViewMinus = (ImageView) view.findViewById(R.id.img_minus);
+            textViewInstalment = (TextViewFont) view.findViewById(R.id.text_instalment);
         }
     }
 

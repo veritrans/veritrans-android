@@ -12,7 +12,7 @@
     <dimen name="twelve_dp">12dp</dimen>
     <dimen name="fourteen_dp">14dp</dimen>
     <dimen name="sixteen_dp">16dp</dimen>
-    <dimen name="seventeen_dp">17dp</dimen>
+
     <dimen name="twenty_four_dp">24dp</dimen>
     <dimen name="btn_height">48dp</dimen>
     <dimen name="twentyfour">24dp</dimen>
@@ -27,6 +27,7 @@
     <dimen name="big_text">22sp</dimen>
     <dimen name="header_text_size">20sp</dimen>
     <dimen name="primary_text_size">16sp</dimen>
+    <dimen name="seventeen_sp">17sp</dimen>
     <dimen name="tool_bar_title_size">18sp</dimen>
 
     <dimen name="secondary_text_size">14sp</dimen>

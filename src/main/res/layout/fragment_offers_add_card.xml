@@ -136,15 +136,77 @@
                 </RelativeLayout>
             </LinearLayout>
 
+            <RelativeLayout
+                android:id="@+id/layout_pay_with_instalments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/expiry_date_layout"
+                android:layout_marginBottom="@dimen/eight_dp"
+                android:layout_marginTop="@dimen/sixteen_dp"
+                android:layout_alignParentLeft="true"
+                >
+
+                <id.co.veritrans.sdk.widgets.TextViewFont
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="left"
+                    android:text="@string/pay_with_instalments"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/seventeen_sp"
+                    app:font="@string/font_open_sans_regular"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_alignParentRight="true"
+
+                    >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/img_minus"
+                        android:background="@drawable/ic_minus_button_selector"
+                        />
+
+                    <id.co.veritrans.sdk.widgets.TextViewFont
+                        android:id="@+id/text_instalment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:text="0 Months"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="@dimen/tertiary_text_size"
+                        android:layout_marginRight="@dimen/sixteen_dp"
+                        android:layout_marginLeft="@dimen/sixteen_dp"
+                        app:font="@string/font_open_sans_regular"
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/img_plus"
+                        android:background="@drawable/ic_plus_button_selector"
+
+                        />
+
+                </LinearLayout>
+            </RelativeLayout>
             <CheckBox
                 android:id="@+id/cb_store_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/expiry_date_layout"
+                android:layout_below="@id/layout_pay_with_instalments"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/save_card_message"
                 />
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -152,6 +214,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_below="@+id/cb_store_card"
                 >
+
                 <Button
                     android:id="@+id/btn_pay_now"
                     android:layout_width="match_parent"
