@@ -25,24 +25,11 @@
             app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
-            android:id="@+id/text_offer_ends_on"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_offer_title"
-            android:layout_marginTop="@dimen/eight_dp"
-            android:gravity="left"
-            android:text="demo"
-            android:textColor="@color/dark_gray"
-            android:textSize="@dimen/twelve_dp"
-            app:font="@string/font_open_sans_regular"
-            />
-
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/text_offer_ends_on"
+            android:layout_below="@+id/text_offer_title"
             android:layout_marginTop="@dimen/sixteen_dp"
             android:background="@color/gray_divider"
             />

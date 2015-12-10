@@ -10,12 +10,10 @@ package id.co.veritrans.sdk.models;
 public class OffersListModel {
 
     private String offerTitle;
-    private String offerEndsOn;
     private boolean isSelected;
 
-    public OffersListModel(String offerTitle, String offerEndsOn, boolean isSelected) {
+    public OffersListModel(String offerTitle, boolean isSelected) {
         this.offerTitle = offerTitle;
-        this.offerEndsOn = offerEndsOn;
         this.isSelected = isSelected;
     }
 
@@ -25,14 +23,6 @@ public class OffersListModel {
 
     public void setOfferTitle(String offerTitle) {
         this.offerTitle = offerTitle;
-    }
-
-    public String getOfferEndsOn() {
-        return offerEndsOn;
-    }
-
-    public void setOfferEndsOn(String offerEndsOn) {
-        this.offerEndsOn = offerEndsOn;
     }
 
     public boolean isSelected() {

@@ -24,7 +24,6 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
 
     private static Activity sActivity;
     private static ArrayList<OffersListModel> data = null;
-    private static final String ENDS_ON = "Ends on : ";
     private static AnyOfferClickedListener anyOfferClickedListener = null;
 
     public OffersAdapter(Activity activity, ArrayList<OffersListModel> data,
@@ -48,7 +47,6 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
     @Override
     public void onBindViewHolder(OfferViewHolder holder, int position) {
         holder.textViewOfferTitle.setText(data.get(position).getOfferTitle());
-        holder.textViewOfferEndsOn.setText(ENDS_ON + data.get(position).getOfferEndsOn());
     }
 
     @Override
@@ -62,12 +60,11 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
     public static class OfferViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        TextViewFont textViewOfferTitle, textViewOfferEndsOn;
+        TextViewFont textViewOfferTitle;
 
         public OfferViewHolder(View itemView) {
             super(itemView);
             textViewOfferTitle = (TextViewFont) itemView.findViewById(R.id.text_offer_title);
-            textViewOfferEndsOn = (TextViewFont) itemView.findViewById(R.id.text_offer_ends_on);
             itemView.setOnClickListener(this);
         }
 

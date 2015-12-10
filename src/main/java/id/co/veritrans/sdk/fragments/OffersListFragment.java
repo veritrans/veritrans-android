@@ -84,20 +84,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
      */
     private void initialiseAdapterData() {
         data.clear();
-        data.add(new OffersListModel("Bank BSA- Buy 1 Get 1 Offer on credit cards", "21 December 2015", false));
-        data.add(new OffersListModel("Buy 2 get 1 free", "22 December 2015", false));
-        data.add(new OffersListModel("Buy 3 get 1 free", "23 December 2015", false));
-        data.add(new OffersListModel("Buy 4 get 1 free", "24 December 2015", false));
-        data.add(new OffersListModel("Buy 5 get 1 free", "25 December 2015", false));
-        data.add(new OffersListModel("Buy 6 get 1 free", "26 December 2015", false));
-        data.add(new OffersListModel("Buy 7 get 1 free", "27 December 2015", false));
-        data.add(new OffersListModel("Buy 8 get 1 free", "28 December 2015", false));
-        data.add(new OffersListModel("Buy 9 get 1 free", "29 December 2015", false));
-        data.add(new OffersListModel("Buy 10 get 1 free", "30 December 2015", false));
-        data.add(new OffersListModel("Buy 11 get 1 free", "31 December 2015", false));
-        data.add(new OffersListModel("Buy 12 get 1 free", "32 December 2015", false));
-        data.add(new OffersListModel("Buy 13 get 1 free", "33 December 2015", false));
-        data.add(new OffersListModel("Buy 14 get 1 free", "34 December 2015", false));
+        data.add(new OffersListModel("Bank BSA- Buy 1 Get 1 Offer on credit cards", false));
     }
 
     @Override
