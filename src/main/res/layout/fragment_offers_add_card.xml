@@ -9,31 +9,55 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         >
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
-            android:id="@+id/text_offer_status"
+        <LinearLayout
+            android:id="@+id/layout_offer_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/bg_offer_success"
-            android:drawableLeft="@drawable/ic_offer_success"
-            android:drawablePadding="@dimen/fortytwo_dp"
-            android:gravity="center_vertical"
-            android:paddingBottom="@dimen/eleven_dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/eleven_dp"
-            android:text="demo"
-            android:textColor="@color/text_offer_success"
-            android:textSize="@dimen/eleven_dp"
-            app:font="@string/font_open_sans_regular"
-            />
+            android:orientation="vertical"
+            >
 
+            <id.co.veritrans.sdk.widgets.TextViewFont
+                android:id="@+id/text_offer_status_applied"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_offer_success"
+                android:drawableLeft="@drawable/ic_offer_success"
+                android:drawablePadding="@dimen/fortytwo_dp"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/eleven_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/eleven_dp"
+                android:text="@string/offer_applied"
+                android:textColor="@color/text_offer_success"
+                android:textSize="@dimen/eleven_sp"
+                app:font="@string/font_open_sans_regular"
+                />
+
+            <id.co.veritrans.sdk.widgets.TextViewFont
+                android:id="@+id/text_offer_status_not_applied"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_offer_failure"
+                android:drawableLeft="@drawable/ic_offer_fail"
+                android:drawablePadding="@dimen/fortytwo_dp"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/eleven_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/eleven_dp"
+                android:text="@string/offer_not_applied"
+                android:textColor="@color/text_offer_failure"
+                android:textSize="@dimen/eleven_sp"
+                app:font="@string/font_open_sans_regular"
+                />
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/text_offer_status"
+            android:layout_below="@+id/layout_offer_status"
             android:paddingBottom="@dimen/sixteen_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
@@ -140,10 +164,10 @@
                 android:id="@+id/layout_pay_with_instalments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_below="@+id/expiry_date_layout"
                 android:layout_marginBottom="@dimen/eight_dp"
                 android:layout_marginTop="@dimen/sixteen_dp"
-                android:layout_alignParentLeft="true"
                 >
 
                 <id.co.veritrans.sdk.widgets.TextViewFont
@@ -160,15 +184,15 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
 
                     >
 
                     <ImageView
+                        android:id="@+id/img_minus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/img_minus"
                         android:background="@drawable/ic_minus_button_selector"
                         />
 
@@ -177,25 +201,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/sixteen_dp"
+                        android:layout_marginRight="@dimen/sixteen_dp"
                         android:gravity="center"
                         android:text="0 Months"
                         android:textColor="@color/dark_gray"
                         android:textSize="@dimen/tertiary_text_size"
-                        android:layout_marginRight="@dimen/sixteen_dp"
-                        android:layout_marginLeft="@dimen/sixteen_dp"
                         app:font="@string/font_open_sans_regular"
                         />
 
                     <ImageView
+                        android:id="@+id/img_plus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/img_plus"
                         android:background="@drawable/ic_plus_button_selector"
 
                         />
 
                 </LinearLayout>
             </RelativeLayout>
+
             <CheckBox
                 android:id="@+id/cb_store_card"
                 android:layout_width="wrap_content"
@@ -205,8 +230,6 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/save_card_message"
                 />
-
-
 
             <RelativeLayout
                 android:layout_width="match_parent"
