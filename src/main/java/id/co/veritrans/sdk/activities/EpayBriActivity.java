@@ -36,6 +36,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
     private FragmentManager fragmentManager;
     private String currentFragmentName = "";
     private String errorMessage;
+    private TransactionResponse transactionResponseFromMerchant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,10 +136,11 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
             if(TextUtils.isEmpty(responseStr)){
                 return;
             }
+            Logger.i("responseStr:"+responseStr);
             Gson gson = new Gson();
-            TransactionResponse transactionResponse = gson.fromJson(responseStr, TransactionResponse.class);
+            transactionResponseFromMerchant = gson.fromJson(responseStr, TransactionResponse.class);
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponse);
+                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
             replaceFragment(paymentTransactionStatusFragment, true, false);
             btConfirmPayment.setVisibility(View.GONE);
             /*veritransSDK.getPaymentStatus(this, transactionResponse.getTransactionId(), new PaymentStatusCallback() {
@@ -187,7 +189,10 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
 
     public void setResultAndFinish(){
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
+        if (transactionResponseFromMerchant != null) {
+            Logger.i("transactionResponseFromMerchant:"+transactionResponseFromMerchant.getString());
+            data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponseFromMerchant);
+        }
         data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
         setResult(RESULT_CODE, data);
         finish();

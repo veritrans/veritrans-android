@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +40,6 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class PaymentMethodsActivity extends AppCompatActivity implements AppBarLayout
         .OnOffsetChangedListener {
 
-
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.7f;
     private static final float ALPHA = 0.6f;
@@ -63,7 +61,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private TextViewFont headerTextView = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
     private TextViewFont textViewMeasureHeight = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +86,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         transactionRequest.setCustomerDetails(customerDetails);
         setUpPaymentMethods();
     }
-
 
     /**
      * if recycler view fits within screen then it will disable the scrolling of it.
@@ -120,7 +116,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         }, 200);
     }
 
-
     /**
      * Disable scrolling of recycler view.
      */
@@ -131,7 +126,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         appBarLayoutParams.setBehavior(null);
         mAppBarLayout.setLayoutParams(appBarLayoutParams);
     }
-
 
     /**
      * bind views , initializes adapter and set it to recycler view.
@@ -198,7 +192,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         textViewMeasureHeight = (TextViewFont) findViewById(R.id.textview_to_compare);
     }
 
-
     /**
      * initialize adapter data model by dummy values.
      */
@@ -212,12 +205,10 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         }
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -229,7 +220,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -246,7 +236,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             toolbarHeaderView.setVisibility(View.GONE);
             isHideToolbarView = !isHideToolbarView;
         }
-
 
         if (percentage == PERCENTAGE_TOTAL) {
             headerTextView.setVisibility(View.GONE);
@@ -274,7 +263,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
                 floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 2.95f);
                 floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.1f);
                 floatHeaderView.invalidate();
-
 
             } else {
 
@@ -313,14 +301,13 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         }
     }
 
-
     /**
      * sends broadcast for transaction details.
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Logger.d(TAG, "in onActivity result : request code is " + requestCode);
+        Logger.d(TAG, "in onActivity result : request code is " + requestCode + "," + resultCode);
 
         if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {
             Logger.d(TAG, "sending result back with code " + requestCode);

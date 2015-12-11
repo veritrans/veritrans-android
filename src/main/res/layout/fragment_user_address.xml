@@ -18,7 +18,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/sixtyfour_dp"
             android:paddingLeft="@dimen/eight_dp"
             android:paddingRight="@dimen/eight_dp"
             android:paddingTop="@dimen/eight_dp"
@@ -94,7 +93,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_zip_code"
                             android:inputType="number"
-                            android:maxLength="15"
+                            android:maxLength="5"
                             android:singleLine="true"
                             android:textColorHint="@color/colorAccent"/>
                     </android.support.design.widget.TextInputLayout>
@@ -232,30 +231,32 @@
                     </RelativeLayout>
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/sixtyfour_dp"
+                android:layout_below="@id/shipping_address_view"
+                android:background="@color/colorAccentLight"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp"
+                android:layout_alignParentBottom="true"
+                >
 
+                <Button
+                    android:id="@+id/btn_next"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/blue_button_selector"
+                    android:text="@string/next"
+                    android:textColor="@android:color/white"
+
+                    />
+
+            </RelativeLayout>
         </RelativeLayout>
 
 
     </ScrollView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/sixtyfour_dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorAccentLight"
-        android:padding="@dimen/eight_dp"
-        >
 
-        <Button
-            android:id="@+id/btn_next"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/btn_height"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/blue_button_selector"
-            android:text="@string/next"
-            android:textColor="@android:color/white"
-
-            />
-
-    </RelativeLayout>
 </RelativeLayout>

@@ -105,7 +105,7 @@ public class TransactionResponse implements Serializable {
     }
 
     public String getStatusCode() {
-        return statusCode;
+        return TextUtils.isEmpty(statusCode)?"":statusCode;
     }
 
     public void setStatusCode(String statusCode) {
@@ -177,7 +177,7 @@ public class TransactionResponse implements Serializable {
     }
 
     public String getTransactionStatus() {
-        return transactionStatus;
+        return TextUtils.isEmpty(transactionStatus) ? "" : transactionStatus;
     }
 
     public void setTransactionStatus(String transactionStatus) {
@@ -185,7 +185,7 @@ public class TransactionResponse implements Serializable {
     }
 
     public String getFraudStatus() {
-        return fraudStatus;
+        return TextUtils.isEmpty(fraudStatus)?"":fraudStatus;
     }
 
     public void setFraudStatus(String fraudStatus) {

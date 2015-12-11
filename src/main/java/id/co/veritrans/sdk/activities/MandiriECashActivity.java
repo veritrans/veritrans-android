@@ -42,7 +42,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
 
     private FragmentManager fragmentManager;
     private String currentFragmentName = "";
-
+    private TransactionResponse transactionResponseFromMerchant;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,9 +147,9 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
                 return;
             }
             Gson gson = new Gson();
-            TransactionResponse transactionResponse = gson.fromJson(responseStr, TransactionResponse.class);
+            transactionResponseFromMerchant = gson.fromJson(responseStr, TransactionResponse.class);
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponse);
+                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
             replaceFragment(paymentTransactionStatusFragment, true, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         }
@@ -182,7 +182,9 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
 
     public void setResultAndFinish(){
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
+        if (transactionResponseFromMerchant != null) {
+            data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponseFromMerchant);
+        }
         data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
         setResult(RESULT_CODE, data);
         finish();

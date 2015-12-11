@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CIMBClickPayActivity;
@@ -42,6 +43,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private TextViewFont transactionTimeTextViewFont = null;
     private TextViewFont paymentTypeTextViewFont = null;
     private int count = 1;
+    private TableLayout detailsTable;
 
     public PaymentTransactionStatusFragment() {
         // Required empty public constructor
@@ -93,6 +95,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         paymentIv = (ImageView) view.findViewById(R.id.image_payment);
         paymentStatusTv = (TextViewFont) view.findViewById(R.id.text_payment_status);
         paymentMessageTv = (TextViewFont) view.findViewById(R.id.text_payment_message);
+        detailsTable = (TableLayout) view.findViewById(R.id.transaction_info_layout);
     }
 
     private void bindDataForNotificationData() {
@@ -103,49 +106,48 @@ public class PaymentTransactionStatusFragment extends Fragment {
     }
 
     private void setPaymentStatusValues() {
-        if (transactionResponse.getTransactionStatus().equalsIgnoreCase(Constants.SUCCESS) ||
+        if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
+                transactionResponse.getTransactionStatus().equalsIgnoreCase(Constants.SUCCESS) ||
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(Constants.SETTLEMENT)) {
             paymentIv.setImageResource(R.drawable.ic_successful);
             paymentStatusTv.setText(getString(R.string.payment_successful));
             paymentMessageTv.setVisibility(View.GONE);
-        } else if (transactionResponse.getTransactionStatus().equalsIgnoreCase(Constants.PENDING)) {
-            paymentIv.setImageResource(R.drawable.ic_pending);
-            paymentStatusTv.setText(getString(R.string.payment_pending));
-        }  else  if (!transactionResponse.getStatusCode().equalsIgnoreCase(Constants
-                .SUCCESS_CODE_200) &&
-                !transactionResponse.getStatusCode().
-                        equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+        } else if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_201) ||
+                transactionResponse.getTransactionStatus().equalsIgnoreCase(Constants.PENDING)) {
+            /*if(transactionResponse.getFraudStatus().equalsIgnoreCase(Constants.CHALLENGE)){
+                paymentIv.setImageResource(R.drawable.ic_successful);
+                paymentStatusTv.setText(getString(R.string.payment_successful));
+                paymentMessageTv.setVisibility(View.GONE);
+            } else {*/
+            if(transactionResponse.getFraudStatus().equalsIgnoreCase(Constants.CHALLENGE)){
+                paymentIv.setImageResource(R.drawable.ic_successful);
+                paymentStatusTv.setText(getString(R.string.payment_successful));
+                paymentMessageTv.setVisibility(View.GONE);
+            } else {
+                paymentIv.setImageResource(R.drawable.ic_pending);
+                paymentStatusTv.setText(getString(R.string.payment_pending));
+            }
+            //}
+        } else {
             setUiForFailure();
         }
-        transactionTimeTextViewFont.setText(transactionResponse.getTransactionTime());
-        amountTextViewFont.setText(transactionResponse.getGrossAmount());
-        orderIdTextViewFont.setText(transactionResponse.getOrderId());
+        try {
+            transactionTimeTextViewFont.setText(transactionResponse.getTransactionTime());
+            amountTextViewFont.setText(transactionResponse.getGrossAmount());
+            orderIdTextViewFont.setText(transactionResponse.getOrderId());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+
+        }
+        if (transactionResponse != null && TextUtils.isEmpty(transactionResponse.getTransactionTime()) &&
+                TextUtils.isEmpty(transactionResponse.getGrossAmount()) && TextUtils.isEmpty(transactionResponse.getOrderId())) {
+            detailsTable.setVisibility(View.GONE);
+        }
     }
 
     private void bindDataToView() {
 
         if (transactionResponse != null) {
-
-
-           /* if (transactionResponse != null) {
-                if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants
-                        .SUCCESS_CODE_200) ||
-                        transactionResponse.getStatusCode().
-                                equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
-                    setUiForSuccess();
-
-                } else {
-                    setUiForFailure();
-                }
-
-                transactionTimeTextViewFont.setText(transactionResponse.getTransactionTime());
-                setPaymentType();
-
-            } else {
-                setUiForFailure();
-            }*/
-            /*amountTextViewFont.setText("" + veritrans.getTransactionRequest().getAmount());
-            orderIdTextViewFont.setText("" + veritrans.getTransactionRequest().getOrderId());*/
             try {
                 Logger.i("transactionstatus:" + transactionResponse.getString());
             } catch (NullPointerException e) {
@@ -154,33 +156,36 @@ public class PaymentTransactionStatusFragment extends Fragment {
             setPaymentType();
             setPaymentStatusValues();
 
-            actionBt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getActivity().getClass().getName().equalsIgnoreCase(CreditDebitCardFlowActivity.class.getName())) {
-                        ((CreditDebitCardFlowActivity) getActivity())
-                                .setResultCode(getActivity().RESULT_OK);
-                        ((CreditDebitCardFlowActivity) getActivity()).setResultAndFinish();
-                    } else if (getActivity().getClass().getName().equalsIgnoreCase(EpayBriActivity.class.getName())) {
-                        ((EpayBriActivity) getActivity())
-                                .setResultCode(getActivity().RESULT_OK);
-                        ((EpayBriActivity) getActivity()).setResultAndFinish();
-                    } else if (getActivity().getClass().getName().equalsIgnoreCase(CIMBClickPayActivity
-                            .class.getName())) {
-                        ((CIMBClickPayActivity) getActivity())
-                                .setResultCode(getActivity().RESULT_OK);
-                        ((CIMBClickPayActivity) getActivity()).setResultAndFinish();
-                    } else if (getActivity().getClass().getName().equalsIgnoreCase
-                            (MandiriECashActivity
-                                    .class.getName())) {
-                        ((MandiriECashActivity) getActivity())
-                                .setResultCode(getActivity().RESULT_OK);
-                        ((MandiriECashActivity) getActivity()).setResultAndFinish();
-                    }
-
-                }
-            });
+        } else {
+            setUiForFailure();
         }
+
+        actionBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity().getClass().getName().equalsIgnoreCase(CreditDebitCardFlowActivity.class.getName())) {
+                    ((CreditDebitCardFlowActivity) getActivity())
+                            .setResultCode(getActivity().RESULT_OK);
+                    ((CreditDebitCardFlowActivity) getActivity()).setResultAndFinish();
+                } else if (getActivity().getClass().getName().equalsIgnoreCase(EpayBriActivity.class.getName())) {
+                    ((EpayBriActivity) getActivity())
+                            .setResultCode(getActivity().RESULT_OK);
+                    ((EpayBriActivity) getActivity()).setResultAndFinish();
+                } else if (getActivity().getClass().getName().equalsIgnoreCase(CIMBClickPayActivity
+                        .class.getName())) {
+                    ((CIMBClickPayActivity) getActivity())
+                            .setResultCode(getActivity().RESULT_OK);
+                    ((CIMBClickPayActivity) getActivity()).setResultAndFinish();
+                } else if (getActivity().getClass().getName().equalsIgnoreCase
+                        (MandiriECashActivity
+                                .class.getName())) {
+                    ((MandiriECashActivity) getActivity())
+                            .setResultCode(getActivity().RESULT_OK);
+                    ((MandiriECashActivity) getActivity()).setResultAndFinish();
+                }
+
+            }
+        });
     }
 
     private void setUiForFailure() {
@@ -188,51 +193,39 @@ public class PaymentTransactionStatusFragment extends Fragment {
         actionBt.setText(getString(R.string.retry));
         paymentIv.setImageResource(R.drawable.ic_failure);
         paymentStatusTv.setText(getString(R.string.payment_unsuccessful));
+
+        if (transactionResponse == null) {
+            paymentMessageTv.setVisibility(View.VISIBLE);
+            paymentMessageTv.setText(getString(R.string.api_fail_message));
+            detailsTable.setVisibility(View.GONE);
+            return;
+        }
         try {
             Logger.i("fail_message" + transactionResponse.getStatusMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-         if(transactionResponse.getTransactionStatus().equalsIgnoreCase(Constants.DENY)){
-             paymentMessageTv.setVisibility(View.VISIBLE);
-             paymentMessageTv.setText(getString(R.string.payment_deny));
+        if (transactionResponse.getTransactionStatus().equalsIgnoreCase(Constants.DENY)) {
+            paymentMessageTv.setVisibility(View.VISIBLE);
+            paymentMessageTv.setText(getString(R.string.payment_deny));
         } else {
-             if (!TextUtils.isEmpty(transactionResponse.getStatusMessage())) {
-                 paymentMessageTv.setVisibility(View.VISIBLE);
-                 paymentMessageTv.setText(transactionResponse.getStatusMessage());
-             } else {
-                 paymentMessageTv.setVisibility(View.GONE);
-             }
-         }
-    }
-
-    private void setUiForSuccess() {
-        isSuccessful = true;
-        actionBt.setText(getString(R.string.done));
-        paymentMessageTv.setVisibility(View.GONE);
-        if (veritrans != null) {
-            /*switch (veritrans.getTransactionRequest().getPaymentMethod()) {
-                case Constants.PAYMENT_METHOD_EPAY_BRI:
-                    paymentIv.setImageResource(R.drawable.ic_pending);
-                    paymentStatusTv.setText(getString(R.string.payment_pending));
-                    break;
-                case Constants.PAYMENT_METHOD_CIMB_CLICKS:
-                    paymentIv.setImageResource(R.drawable.ic_pending);
-                    paymentStatusTv.setText(getString(R.string.payment_pending));
-                    break;
-                case Constants.PAYMENT_METHOD_MANDIRI_ECASH:
-                    paymentIv.setImageResource(R.drawable.ic_pending);
-                    paymentStatusTv.setText(getString(R.string.payment_pending));
-                    break;
-                default:
-                    paymentIv.setImageResource(R.drawable.ic_successful);
-                    paymentStatusTv.setText(getString(R.string.payment_successful));
-                    break;
-            }*/
+            if (!TextUtils.isEmpty(transactionResponse.getStatusMessage())) {
+                paymentMessageTv.setVisibility(View.VISIBLE);
+                paymentMessageTv.setText(transactionResponse.getStatusMessage());
+            } else {
+                paymentMessageTv.setVisibility(View.GONE);
+            }
         }
     }
-
     private void setPaymentType() {
+        try {
+            Logger.i("PaymentType:" + transactionResponse.getPaymentType());
+        } catch (NullPointerException e) {
+
+        }
+        if (transactionResponse == null) {
+            return;
+        }
         if (transactionResponse.getPaymentType().equalsIgnoreCase(Constants.PAYMENT_EPAY_BRI)) {
             paymentTypeTextViewFont.setText(getString(R.string.epay_bri));
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(Constants.PAYMENT_MANDIRI_BILL_PAYMENT)) {
@@ -252,33 +245,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(Constants.PAYMENT_INDOSAT_DOMPETKU)) {
             paymentTypeTextViewFont.setText(getString(R.string.indosat_dompetku));
         }
-        /*if (veritrans != null) {
-            switch (veritrans.getTransactionRequest().getPaymentMethod()) {
-                case Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT:
-                    paymentTypeTextViewFont.setText(getString(R.string.credit_card));
-                    break;
-                case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
-                    paymentTypeTextViewFont.setText(getString(R.string.mandiri_bill_payment));
-                    break;
-                case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
-                    paymentTypeTextViewFont.setText(getString(R.string.virtual_account));
-                    break;
-                case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
-                    paymentTypeTextViewFont.setText(getString(R.string.mandiri_click_pay));
-                    break;
-                case Constants.PAYMENT_METHOD_EPAY_BRI:
-                    paymentTypeTextViewFont.setText(getString(R.string.epay_bri));
-                    break;
-                case Constants.PAYMENT_METHOD_CIMB_CLICKS:
-                    paymentTypeTextViewFont.setText(getString(R.string.cimb_clicks));
-                    break;
-                case Constants.PAYMENT_METHOD_MANDIRI_ECASH:
-                    paymentTypeTextViewFont.setText(getString(R.string.mandiri_e_cash));
-                    break;
-                //todo add payment type as per requirement.
-            }
-
-        }*/
 
     }
 

@@ -66,7 +66,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     private Toolbar mToolbar = null;
 
     private BankTransferFragment bankTransferFragment = null;
-    private TransactionResponse mTransactionResponse = null;
+    private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
     private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
 
@@ -213,8 +213,8 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
                 mAppBarLayout.setExpanded(true);
 
-                if (mTransactionResponse != null) {
-                    setUpTransactionStatusFragment(mTransactionResponse);
+                if (transactionResponse != null) {
+                    setUpTransactionStatusFragment(transactionResponse);
                 } else {
                     RESULT_CODE = RESULT_OK;
                     SdkUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
@@ -369,7 +369,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                 SdkUtil.hideProgressDialog();
 
                 if (permataBankTransferResponse != null) {
-                    mTransactionResponse = permataBankTransferResponse;
+                    transactionResponse = permataBankTransferResponse;
                     mAppBarLayout.setExpanded(true);
                     setUpTransactionFragment(permataBankTransferResponse);
                 } else {
@@ -383,7 +383,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
                 try {
                     BankTransferActivity.this.errorMessage = errorMessage;
-                    mTransactionResponse = transactionResponse;
+                    BankTransferActivity.this.transactionResponse = transactionResponse;
 
                     SdkUtil.hideProgressDialog();
                     SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
@@ -413,7 +413,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                         SdkUtil.hideProgressDialog();
 
                         if (mandiriBillPayTransferResponse != null) {
-                            mTransactionResponse = mandiriBillPayTransferResponse;
+                            transactionResponse = mandiriBillPayTransferResponse;
                             mAppBarLayout.setExpanded(true);
                             setUpTransactionFragment(mandiriBillPayTransferResponse);
                         } else {
@@ -458,7 +458,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, mTransactionResponse);
+        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
         data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
         setResult(RESULT_CODE, data);
         finish();

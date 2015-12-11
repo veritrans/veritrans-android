@@ -1346,6 +1346,7 @@ class TransactionManager {
     private static void releaseResources() {
         if (VeritransSDK.getVeritransSDK() != null) {
             VeritransSDK.getVeritransSDK().isRunning = false;
+            Logger.i("released transaction");
         }
     }
 

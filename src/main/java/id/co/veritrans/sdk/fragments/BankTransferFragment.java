@@ -9,10 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.io.IOException;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -23,7 +27,8 @@ public class BankTransferFragment extends Fragment {
 
     private TextViewFont mTextViewSeeInstruction = null;
     private EditText mEditTextEmailId = null;
-
+    private StorageDataHandler storageDataHandler;
+    private UserDetail userDetail;
 
     @Nullable
     @Override
@@ -49,12 +54,19 @@ public class BankTransferFragment extends Fragment {
 
         mTextViewSeeInstruction = (TextViewFont)
                 view.findViewById(R.id.text_see_instruction);
-
+        storageDataHandler = new StorageDataHandler();
+        try {
+            userDetail = (UserDetail) storageDataHandler.readObject(getActivity(),
+                    Constants.USER_DETAILS);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         mEditTextEmailId = (EditText) view.findViewById(R.id.et_email);
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         try {
-            mEditTextEmailId.setText(veritransSDK.getTransactionRequest().getCustomerDetails()
-                    .getEmail());
+            mEditTextEmailId.setText(userDetail.getEmail());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

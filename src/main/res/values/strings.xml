@@ -277,6 +277,7 @@
     <string name="title_payment_status">Payment Status</string>
     <string name="payment_deny">Payment deny.</string>
     <string name="success">success</string>
+    <string name="fetching_cards">Fetching cards</string>
 
     <string name="offer_applied">Offer Applied Successfully !</string>
     <string name="offer_not_applied">Offer is not applicable on this card</string>

@@ -79,10 +79,11 @@ public class SdkUtil {
      */
     public static boolean isPhoneNumberValid(String phoneNo) {
         if (!TextUtils.isEmpty(phoneNo)) {
-            if (phoneNo.length() < Constants.PHONE_NUMBER_LENGTH) {
-                return false;
-            } else {
+            if (phoneNo.length() == Constants.PHONE_NUMBER_LENGTH ||
+                    phoneNo.length() == Constants.PHONE_NUMBER_MAX_LENGTH) {
                 return true;
+            } else {
+                return false;
             }
         } else {
             return false;
