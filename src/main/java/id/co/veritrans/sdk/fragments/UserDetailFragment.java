@@ -15,6 +15,7 @@ import java.io.IOException;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.models.UserDetail;
@@ -110,6 +111,7 @@ public class UserDetailFragment extends Fragment {
         userDetail.setUserFullName(fullName);
         userDetail.setEmail(email);
         userDetail.setPhoneNumber(phoneNo);
+        Logger.i("writting in file");
         storageDataHandler.writeObject(getActivity(), Constants.USER_DETAILS, userDetail);
         UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
         ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);

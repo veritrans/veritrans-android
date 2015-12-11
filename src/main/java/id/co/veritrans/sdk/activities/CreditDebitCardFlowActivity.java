@@ -429,7 +429,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     ProgressDialog progressDialog;
     public void fetchCreditCards() {
         SdkUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
-        processingLayout.setVisibility(View.VISIBLE);
+      //  processingLayout.setVisibility(View.VISIBLE);
         veritransSDK.getSavedCard(this, new SavedCardCallback() {
             @Override
             public void onSuccess(CardResponse cardResponse) {
@@ -524,9 +524,12 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
                             try {
                                 userDetail = (UserDetail) storageDataHandler.readObject(CreditDebitCardFlowActivity.this,
                                         Constants.USER_DETAILS);
+                                Logger.i("userDetail:"+userDetail.getUserFullName());
                             } catch (ClassNotFoundException e) {
                                 e.printStackTrace();
                             } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (NullPointerException e){
                                 e.printStackTrace();
                             }
                             ArrayList<BankDetail> bankDetails = new ArrayList<BankDetail>();
