@@ -76,6 +76,10 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
     private TextViewFont textViewOfferName = null;
 
     public static final String OFFER_NAME = "offer_name";
+    public static final String OFFER_TYPE = "offer_type";
+
+    public static final String OFFER_TYPE_BINPROMO = "offer_type_binpromo";
+    public static final String OFFER_TYPE_INSTALMENTS = "offer_type_instalments";
 
     private OffersListFragment offersListFragment = null;
     private int position = Constants.PAYMENT_METHOD_OFFERS;

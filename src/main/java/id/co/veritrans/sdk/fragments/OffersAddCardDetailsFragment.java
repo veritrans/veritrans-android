@@ -38,6 +38,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private Button buttonPayNow = null;
 
     private String offerName = null;
+    private String offerType = null;
     private ImageView imageViewPlus = null;
     private ImageView imageViewMinus = null;
     private TextViewFont textViewInstalment = null;
@@ -45,10 +46,11 @@ public class OffersAddCardDetailsFragment extends Fragment {
 
 
 
-    public static OffersAddCardDetailsFragment newInstance(String offerName) {
+    public static OffersAddCardDetailsFragment newInstance(String offerName, String offerType) {
         OffersAddCardDetailsFragment fragment = new OffersAddCardDetailsFragment();
         Bundle data = new Bundle();
         data.putString(OffersActivity.OFFER_NAME, offerName);
+        data.putString(OffersActivity.OFFER_TYPE, offerType);
         fragment.setArguments(data);
         return fragment;
     }
@@ -66,6 +68,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
         //retrieve data from bundle.
         Bundle data = getArguments();
         offerName = data.getString(OffersActivity.OFFER_NAME);
+        offerType = data.getString(OffersActivity.OFFER_TYPE);
         initialiseView(view);
     }
 
@@ -91,7 +94,12 @@ public class OffersAddCardDetailsFragment extends Fragment {
             layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id
                     .layout_pay_with_instalments);
 
-            hideOrShowPayWithInstalment(false);
+            if (offerType.equalsIgnoreCase(OffersActivity.OFFER_TYPE_INSTALMENTS)){
+                hideOrShowPayWithInstalment(true);
+            } else {
+                hideOrShowPayWithInstalment(false);
+            }
+
             hideOrShowOfferStatus(false, false);
         }
     }

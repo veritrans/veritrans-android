@@ -70,8 +70,15 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
 
         @Override
         public void onClick(View view) {
+            String offerType = null;
+            if (data.get(getAdapterPosition()).getDuration().isEmpty()){
+                offerType = OffersActivity.OFFER_TYPE_BINPROMO;
+            } else {
+                offerType = OffersActivity.OFFER_TYPE_INSTALMENTS;
+            }
+
             anyOfferClickedListener.onOfferClicked(getAdapterPosition(), data.get
-                    (getAdapterPosition()).getOfferName());
+                    (getAdapterPosition()).getOfferName(), offerType);
         }
     }
 }

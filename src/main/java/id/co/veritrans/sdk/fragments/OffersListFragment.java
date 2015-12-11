@@ -138,7 +138,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     }
 
     @Override
-    public void onOfferClicked(int position, String offerName) {
+    public void onOfferClicked(int position, String offerName, String offerType) {
         if (getActivity() != null) {
 //            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 //            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -152,12 +152,12 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
 
             if (((OffersActivity) getActivity()).creditCards.isEmpty()) {
                 OffersAddCardDetailsFragment addCardDetailsFragment = OffersAddCardDetailsFragment
-                        .newInstance(offerName);
+                        .newInstance(offerName, offerType);
                 ((OffersActivity) getActivity()).replaceFragment(addCardDetailsFragment, true,
                         false);
             } else {
                 OffersSavedCardFragment savedCardFragment = OffersSavedCardFragment
-                        .newInstance(offerName);
+                        .newInstance(offerName, offerType);
                 ((OffersActivity) getActivity()).replaceFragment(savedCardFragment, true, false);
             }
 

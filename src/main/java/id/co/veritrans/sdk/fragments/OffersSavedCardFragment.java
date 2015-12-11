@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
@@ -31,6 +32,12 @@ public class OffersSavedCardFragment extends Fragment {
     private TextViewFont textViewTitleCardDetails = null;
     private TextViewFont textViewOfferName = null;
     private String offerName = null;
+    private String offerType = null;
+
+    private ImageView imageViewPlus = null;
+    private ImageView imageViewMinus = null;
+    private TextViewFont textViewInstalment = null;
+    private RelativeLayout layoutPayWithInstalment = null;
 
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
@@ -46,10 +53,11 @@ public class OffersSavedCardFragment extends Fragment {
 
     }
 
-    public static OffersSavedCardFragment newInstance(String offerName) {
+    public static OffersSavedCardFragment newInstance(String offerName, String offerType) {
         OffersSavedCardFragment fragment = new OffersSavedCardFragment();
         Bundle data = new Bundle();
         data.putString(OffersActivity.OFFER_NAME, offerName);
+        data.putString(OffersActivity.OFFER_TYPE, offerType);
         fragment.setArguments(data);
         return fragment;
     }
@@ -70,10 +78,18 @@ public class OffersSavedCardFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Bundle data = getArguments();
         offerName = data.getString(OffersActivity.OFFER_NAME);
+        offerType = data.getString(OffersActivity.OFFER_TYPE);
         bindViews(view);
         super.onViewCreated(view, savedInstanceState);
     }
 
+    private void hideOrShowPayWithInstalment(boolean isShowLayout){
+        if (isShowLayout){
+            layoutPayWithInstalment.setVisibility(View.VISIBLE);
+        } else {
+            layoutPayWithInstalment.setVisibility(View.GONE);
+        }
+    }
 
     private void setToolbar(){
         textViewTitleOffers.setVisibility(View.GONE);
@@ -93,6 +109,18 @@ public class OffersSavedCardFragment extends Fragment {
 
         setToolbar();
 
+        imageViewPlus = (ImageView) view.findViewById(R.id.img_plus);
+        imageViewMinus = (ImageView) view.findViewById(R.id.img_minus);
+        textViewInstalment = (TextViewFont) view.findViewById(R.id.text_instalment);
+        layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id
+                .layout_pay_with_instalments);
+
+        if (offerType.equalsIgnoreCase(OffersActivity.OFFER_TYPE_INSTALMENTS)){
+            hideOrShowPayWithInstalment(true);
+        } else {
+            hideOrShowPayWithInstalment(false);
+        }
+
         emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
         addCardBt = (FloatingActionButton) view.findViewById(R.id.btn_add_card);
@@ -101,7 +129,7 @@ public class OffersSavedCardFragment extends Fragment {
             public void onClick(View v) {
 
                 OffersAddCardDetailsFragment offersAddCardDetailsFragment = OffersAddCardDetailsFragment
-                        .newInstance(offerName);
+                        .newInstance(offerName, offerType);
                 ((OffersActivity) getActivity()).replaceFragment
                         (offersAddCardDetailsFragment, true, false);
             }
