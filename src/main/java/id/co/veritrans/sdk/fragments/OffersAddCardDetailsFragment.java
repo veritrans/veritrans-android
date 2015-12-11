@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.adapters.OffersAdapter;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.models.OffersListModel;
@@ -35,7 +36,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private TextViewFont textViewOfferNotApplied = null;
     private LinearLayout layoutOfferStatus = null;
     private Button buttonPayNow = null;
-    private static final String OFFER_NAME = "offer_name";
+
     private String offerName = null;
     private ImageView imageViewPlus = null;
     private ImageView imageViewMinus = null;
@@ -47,7 +48,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     public static OffersAddCardDetailsFragment newInstance(String offerName) {
         OffersAddCardDetailsFragment fragment = new OffersAddCardDetailsFragment();
         Bundle data = new Bundle();
-        data.putString(OFFER_NAME, offerName);
+        data.putString(OffersActivity.OFFER_NAME, offerName);
         fragment.setArguments(data);
         return fragment;
     }
@@ -64,7 +65,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //retrieve data from bundle.
         Bundle data = getArguments();
-        offerName = data.getString(OFFER_NAME);
+        offerName = data.getString(OffersActivity.OFFER_NAME);
         initialiseView(view);
     }
 
@@ -100,6 +101,8 @@ public class OffersAddCardDetailsFragment extends Fragment {
         textViewTitleCardDetails.setVisibility(View.VISIBLE);
         textViewOfferName.setVisibility(View.VISIBLE);
         textViewOfferName.setText(offerName);
+
+        textViewTitleCardDetails.setText(getResources().getString(R.string.card_details));
     }
 
     private void hideOrShowPayWithInstalment(boolean isShowLayout){

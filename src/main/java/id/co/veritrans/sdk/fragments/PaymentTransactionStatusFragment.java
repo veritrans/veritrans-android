@@ -17,6 +17,7 @@ import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.activities.EpayBriActivity;
 import id.co.veritrans.sdk.activities.MandiriECashActivity;
 import id.co.veritrans.sdk.activities.NotificationActivity;
+import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.VeritransSDK;
@@ -182,6 +183,11 @@ public class PaymentTransactionStatusFragment extends Fragment {
                     ((MandiriECashActivity) getActivity())
                             .setResultCode(getActivity().RESULT_OK);
                     ((MandiriECashActivity) getActivity()).setResultAndFinish();
+                } else if (getActivity().getClass().getName().equalsIgnoreCase
+                        (OffersActivity.class.getName())) {
+                    ((OffersActivity) getActivity())
+                            .setResultCode(getActivity().RESULT_OK);
+                    ((OffersActivity) getActivity()).setResultAndFinish();
                 }
 
             }

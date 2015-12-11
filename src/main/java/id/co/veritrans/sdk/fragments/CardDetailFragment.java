@@ -49,6 +49,7 @@ public class CardDetailFragment extends Fragment {
     private VeritransSDK veritransSDK;
     private Fragment parentFragment;
     private ImageView imageQuestionmark;
+
     public CardDetailFragment() {
 
     }
@@ -168,11 +169,11 @@ public class CardDetailFragment extends Fragment {
         cardNoTv.setText(cardDetail.getFormatedCardNumber());
         expTv.setText(cardDetail.getFormatedExpiryDate());
         final String cardType = cardDetail.getCardType();
-        if(!TextUtils.isEmpty(cardType)){
-            if(cardType.equalsIgnoreCase(Constants.CARD_TYPE_VISA)){
+        if (!TextUtils.isEmpty(cardType)) {
+            if (cardType.equalsIgnoreCase(Constants.CARD_TYPE_VISA)) {
                 Drawable visa = getResources().getDrawable(R.drawable.visa);
                 cardNoTv.setCompoundDrawablesWithIntrinsicBounds(null, null, visa, null);
-            } else if(cardType.equalsIgnoreCase(Constants.CARD_TYPE_MASTERCARD)){
+            } else if (cardType.equalsIgnoreCase(Constants.CARD_TYPE_MASTERCARD)) {
                 Drawable masterCard = getResources().getDrawable(R.drawable.mastercard);
                 cardNoTv.setCompoundDrawablesWithIntrinsicBounds(null, null, masterCard, null);
             }
@@ -216,15 +217,18 @@ public class CardDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Logger.i("Card to delete:" + cardDetail.getCardNumber());
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(),getString(R.string.delete)
-                        ,getString(R.string.card_delete_message),getString(android.R.string.yes),
+                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getString(R.string.delete)
+                        , getString(R.string.card_delete_message), getString(android.R.string.yes),
                         getString(android.R.string.no));
                 View.OnClickListener positiveClickListner = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(parentFragment!=null && parentFragment instanceof SavedCardFragment) {
+                        if (parentFragment != null && parentFragment instanceof SavedCardFragment) {
 
                             ((SavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getCardNumber());
+                        } else if (parentFragment != null && parentFragment instanceof OffersSavedCardFragment) {
+                            ((OffersSavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getCardNumber
+                                    ());
                         }
                     }
                 };
@@ -232,11 +236,11 @@ public class CardDetailFragment extends Fragment {
                 veritransDialog.show();
             }
         });
-        imageQuestionmark = (ImageView)view.findViewById(R.id.image_questionmark);
+        imageQuestionmark = (ImageView) view.findViewById(R.id.image_questionmark);
         imageQuestionmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image,null),
+                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image, null),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
                 veritransDialog.show();
                 SdkUtil.hideKeyboard(getActivity()); // hide keyboard if visible.
@@ -246,7 +250,7 @@ public class CardDetailFragment extends Fragment {
     }
 
     private void cardTransactionProcess(String cvv) {
-        Logger.i("Card to delete:"+cardDetail.getCardNumber());
+        Logger.i("Card to delete:" + cardDetail.getCardNumber());
         try {
             cardDetail.setCardCVV(Integer.parseInt(cvv));
         } catch (NumberFormatException e) {
@@ -329,7 +333,7 @@ public class CardDetailFragment extends Fragment {
                                                                SdkUtil.showKeyboard(getActivity(), cvvEt);
                                                            }
                                                        }
-                                                   },50);
+                                                   }, 50);
                                                }
 
                                                @Override

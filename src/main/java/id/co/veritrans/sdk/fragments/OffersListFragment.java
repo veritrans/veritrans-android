@@ -65,6 +65,8 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         textViewTitleOffers.setVisibility(View.VISIBLE);
         textViewTitleCardDetails.setVisibility(View.GONE);
         textViewOfferName.setVisibility(View.GONE);
+
+        textViewTitleOffers.setText(getResources().getString(R.string.offers));
     }
 
 
@@ -138,15 +140,27 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     @Override
     public void onOfferClicked(int position, String offerName) {
         if (getActivity() != null) {
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//
+//            OffersAddCardDetailsFragment offersAddCardDetailsFragment =
+//                    OffersAddCardDetailsFragment.newInstance(offerName);
+//            fragmentTransaction.replace(R.id.offers_container,
+//                    offersAddCardDetailsFragment, OffersAddCardDetailsFragment.class.getName());
+//            fragmentTransaction.addToBackStack(OffersListFragment.class.getName());
+//            fragmentTransaction.commit();
 
-            OffersAddCardDetailsFragment offersAddCardDetailsFragment =
-                    OffersAddCardDetailsFragment.newInstance(offerName);
-            fragmentTransaction.replace(R.id.offers_container,
-                    offersAddCardDetailsFragment, OffersAddCardDetailsFragment.class.getName());
-            fragmentTransaction.addToBackStack(OffersListFragment.class.getName());
-            fragmentTransaction.commit();
+            if (((OffersActivity) getActivity()).creditCards.isEmpty()) {
+                OffersAddCardDetailsFragment addCardDetailsFragment = OffersAddCardDetailsFragment
+                        .newInstance(offerName);
+                ((OffersActivity) getActivity()).replaceFragment(addCardDetailsFragment, true,
+                        false);
+            } else {
+                OffersSavedCardFragment savedCardFragment = OffersSavedCardFragment
+                        .newInstance(offerName);
+                ((OffersActivity) getActivity()).replaceFragment(savedCardFragment, true, false);
+            }
+
         }
     }
 }
