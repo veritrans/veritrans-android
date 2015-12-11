@@ -27,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/epay_bri"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/header_text_size"
-                app:font="@string/font_open_sans_bold"
+                android:textSize="@dimen/tool_bar_title_size"
+                app:font="@string/font_open_sans_regular"
                 />
 
         </LinearLayout>

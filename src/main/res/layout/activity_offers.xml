@@ -26,8 +26,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/offers"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/header_text_size"
-                app:font="@string/font_open_sans_bold"
+                android:textSize="@dimen/tool_bar_title_size"
+                app:font="@string/font_open_sans_regular"
                 />
 
             <id.co.veritrans.sdk.widgets.TextViewFont
@@ -36,8 +36,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/card_details"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/secondary_text_size"
-                app:font="@string/font_open_sans_bold"
+                android:textSize="@dimen/primary_text_size"
+                app:font="@string/font_open_sans_regular"
                 />
 
             <id.co.veritrans.sdk.widgets.TextViewFont
@@ -48,7 +48,7 @@
                 android:text="@string/offers"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/tertiary_text_size"
-                app:font="@string/font_open_sans_bold"
+                app:font="@string/font_open_sans_regular"
                 />
 
         </LinearLayout>
