@@ -1,5 +1,11 @@
 package id.co.veritrans.sdk.models;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * model class created for offers list recycler view.
@@ -7,29 +13,66 @@ package id.co.veritrans.sdk.models;
  *
  * Created by Ankit on 12/7/15.
  */
-public class OffersListModel {
+public class OffersListModel implements Serializable{
 
-    private String offerTitle;
-    private boolean isSelected;
+    @SerializedName("offer name")
+    private String offerName;
+    @SerializedName("duration")
+    private List<Integer> duration = new ArrayList<>();
+    @SerializedName("bins")
+    private List<String> bins = new ArrayList<>();
 
-    public OffersListModel(String offerTitle, boolean isSelected) {
-        this.offerTitle = offerTitle;
-        this.isSelected = isSelected;
+    /**
+     *
+     * @return
+     * The offerName
+     */
+    public String getOfferName() {
+        return offerName;
     }
 
-    public String getOfferTitle() {
-        return offerTitle;
+    /**
+     *
+     * @param offerName
+     * The offer name
+     */
+    public void setOfferName(String offerName) {
+        this.offerName = offerName;
     }
 
-    public void setOfferTitle(String offerTitle) {
-        this.offerTitle = offerTitle;
+    /**
+     *
+     * @return
+     * The duration
+     */
+    public List<Integer> getDuration() {
+        return duration;
     }
 
-    public boolean isSelected() {
-        return isSelected;
+    /**
+     *
+     * @param duration
+     * The duration
+     */
+    public void setDuration(List<Integer> duration) {
+        this.duration = duration;
     }
 
-    public void setIsSelected(boolean isSelected) {
-        this.isSelected = isSelected;
+    /**
+     *
+     * @return
+     * The bins
+     */
+    public List<String> getBins() {
+        return bins;
+    }
+
+    /**
+     *
+     * @param bins
+     * The bins
+     */
+    public void setBins(List<String> bins) {
+        this.bins = bins;
     }
 }

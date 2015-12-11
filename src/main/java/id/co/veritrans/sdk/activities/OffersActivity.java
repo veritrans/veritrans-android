@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.ArrayList;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -16,6 +18,7 @@ import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.OffersAddCardDetailsFragment;
 import id.co.veritrans.sdk.fragments.OffersListFragment;
+import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -34,6 +37,8 @@ public class OffersActivity extends AppCompatActivity {
 
     private OffersListFragment offersListFragment = null;
     private int position = Constants.PAYMENT_METHOD_OFFERS;
+    public ArrayList<OffersListModel> offersListModels = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

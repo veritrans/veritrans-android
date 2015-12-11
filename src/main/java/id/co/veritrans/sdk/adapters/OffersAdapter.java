@@ -46,7 +46,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
 
     @Override
     public void onBindViewHolder(OfferViewHolder holder, int position) {
-        holder.textViewOfferTitle.setText(data.get(position).getOfferTitle());
+        holder.textViewOfferTitle.setText(data.get(position).getOfferName());
     }
 
     @Override
@@ -71,7 +71,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
         @Override
         public void onClick(View view) {
             anyOfferClickedListener.onOfferClicked(getAdapterPosition(), data.get
-                    (getAdapterPosition()).getOfferTitle());
+                    (getAdapterPosition()).getOfferName());
         }
     }
 }

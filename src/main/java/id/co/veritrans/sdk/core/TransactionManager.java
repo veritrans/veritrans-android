@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.DeleteCardCallback;
+import id.co.veritrans.sdk.callbacks.GetOffersCallback;
 import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
 import id.co.veritrans.sdk.callbacks.SavedCardCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
@@ -16,6 +17,7 @@ import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
+import id.co.veritrans.sdk.models.GetOffersResponseModel;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
@@ -43,6 +45,7 @@ class TransactionManager {
     private static Subscription paymentStatusSubscription = null;
     private static Subscription cardSubscription = null;
     private static Subscription deleteCardSubscription = null;
+    private static Subscription offersSubscription = null;
 
     /**
      * it will execute an api call to get token from server, and after completion of request it
@@ -1241,7 +1244,7 @@ class TransactionManager {
                 if (merchantToken != null) {
 
                     observable = apiInterface.getCard(merchantToken
-                            );
+                    );
 
                     cardSubscription = observable.subscribeOn(Schedulers
                             .io())
@@ -1417,6 +1420,86 @@ class TransactionManager {
         } else {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
             callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
+        }
+    }
+
+    public static void getOffers(final Activity activity,
+                                final GetOffersCallback callback) {
+
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getMerchantApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                Observable<GetOffersResponseModel> observable = null;
+                String merchantToken = veritransSDK.getMerchantToken(activity);
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+
+                    observable = apiInterface.getOffers(merchantToken
+                    );
+
+                    offersSubscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<GetOffersResponseModel>() {
+
+                                @Override
+                                public void onCompleted() {
+
+                                    if (offersSubscription != null && !offersSubscription.isUnsubscribed()) {
+                                        offersSubscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
+
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    callback.onFailure(throwable.getMessage(), null);
+                                    releaseResources();
+                                }
+
+                                @Override
+                                public void onNext(GetOffersResponseModel getOffersResponseModel) {
+
+                                    releaseResources();
+                                    if (getOffersResponseModel != null) {
+
+                                        if (getOffersResponseModel.getMessage().equalsIgnoreCase(activity.getString(R.string.success))) {
+
+                                            callback.onSuccess(getOffersResponseModel);
+                                        } else {
+                                            callback.onFailure(getOffersResponseModel.getMessage(),
+                                                    getOffersResponseModel);
+                                        }
+
+                                    } else {
+                                        callback.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                        Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                    }
+
+                                }
+                            });
+                } else {
+                    Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+                    callback.onFailure(Constants.ERROR_INVALID_DATA_SUPPLIED, null);
+                    releaseResources();
+                }
+            } else {
+                callback.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            callback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
             releaseResources();
         }
     }

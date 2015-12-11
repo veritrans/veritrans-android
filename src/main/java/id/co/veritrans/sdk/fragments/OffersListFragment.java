@@ -11,27 +11,33 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.adapters.OffersAdapter;
 import id.co.veritrans.sdk.callbacks.AnyOfferClickedListener;
+import id.co.veritrans.sdk.callbacks.GetOffersCallback;
 import id.co.veritrans.sdk.core.Logger;
+import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.models.GetOffersResponseModel;
 import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
  * Created by Ankit on 12/7/15.
  */
-public class OffersListFragment extends Fragment implements AnyOfferClickedListener{
+public class OffersListFragment extends Fragment implements AnyOfferClickedListener {
 
     private TextViewFont textViewTitleOffers = null;
     private TextViewFont textViewTitleCardDetails = null;
     private TextViewFont textViewOfferName = null;
 
     RecyclerView recyclerViewOffers = null;
-    private ArrayList<OffersListModel> data = new ArrayList<>();
+    private OffersAdapter offersAdapter = null;
+    private VeritransSDK veritransSDK = null;
 
     @Nullable
     @Override
@@ -39,12 +45,13 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
             savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_offers_list, container, false);
+        veritransSDK = VeritransSDK.getVeritransSDK();
         initialiseView(view);
         setUpOffersList();
         return view;
     }
 
-    private void initialiseView(View view){
+    private void initialiseView(View view) {
         textViewTitleOffers = (TextViewFont) getActivity().findViewById(R.id.text_title);
         textViewTitleCardDetails = (TextViewFont) getActivity().findViewById(R.id
                 .text_title_card_details);
@@ -54,7 +61,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         recyclerViewOffers = (RecyclerView) view.findViewById(R.id.rv_offers);
     }
 
-    private void setToolbar(){
+    private void setToolbar() {
         textViewTitleOffers.setVisibility(View.VISIBLE);
         textViewTitleCardDetails.setVisibility(View.GONE);
         textViewOfferName.setVisibility(View.GONE);
@@ -67,29 +74,69 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     private void setUpOffersList() {
 
         // setUp recyclerView
-        initialiseAdapterData();
-
-        if (getActivity() != null){
-            OffersAdapter offersAdapter = new
-                    OffersAdapter(getActivity(), data, this);
+        if (getActivity() != null) {
+            offersAdapter = new
+                    OffersAdapter(getActivity(), ((OffersActivity) getActivity()).offersListModels, this);
             recyclerViewOffers.setHasFixedSize(true);
             recyclerViewOffers.setLayoutManager(
                     new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             recyclerViewOffers.setAdapter(offersAdapter);
         }
+
+        //Call OffersApi if the model is empty...
+        if (((OffersActivity) getActivity()).offersListModels == null || ((OffersActivity)
+                getActivity()).offersListModels.isEmpty
+                ()) {
+            initialiseAdapterData();
+        }
     }
 
     /**
-     * initialize adapter data model by dummy values.
+     * initialize adapter offersListModels model by dummy values.
      */
     private void initialiseAdapterData() {
-        data.clear();
-        data.add(new OffersListModel("Bank BSA- Buy 1 Get 1 Offer on credit cards", false));
+
+        if (getActivity() != null) {
+            SdkUtil.showProgressDialog(getActivity(), getString(R.string.fetching_offers),
+                    false);
+
+            if (veritransSDK != null) {
+                veritransSDK.getOffersList(getActivity(), new GetOffersCallback() {
+                    @Override
+                    public void onSuccess(GetOffersResponseModel getOffersResponseModel) {
+
+                        SdkUtil.hideProgressDialog();
+
+                        Logger.i("offers api successful" + getOffersResponseModel);
+                        if (getOffersResponseModel != null && getOffersResponseModel.getOffers()
+                                != null) {
+                            ((OffersActivity) getActivity()).offersListModels.clear();
+                            if (!getOffersResponseModel.getOffers().getBinpromo().isEmpty()) {
+                                ((OffersActivity) getActivity()).offersListModels.addAll(getOffersResponseModel.getOffers().getBinpromo());
+                            }
+
+                            if (!getOffersResponseModel.getOffers().getInstallments().isEmpty()) {
+                                ((OffersActivity) getActivity()).offersListModels.addAll(getOffersResponseModel.getOffers().getInstallments());
+                            }
+
+                            if (offersAdapter != null) {
+                                offersAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage, GetOffersResponseModel getOffersResponseModel) {
+                        SdkUtil.hideProgressDialog();
+                        Logger.i("offers fetching failed :" + errorMessage);
+                    }
+                });
+            }
+        }
     }
 
     @Override
     public void onOfferClicked(int position, String offerName) {
-
         if (getActivity() != null) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

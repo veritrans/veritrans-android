@@ -7,6 +7,7 @@ import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
+import id.co.veritrans.sdk.models.GetOffersResponseModel;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
@@ -170,4 +171,10 @@ public interface VeritranceApiInterface {
     Observable<TransactionResponse> paymentUsingBBMMoney(@Header("x-auth") String auth,
                                                           @Body BBMMoneyRequestModel
                                                                   bbmMoneyRequestModel);
+
+    //get offers
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("/offers")
+    Observable<GetOffersResponseModel> getOffers(@Header("x-auth") String auth);
+
 }

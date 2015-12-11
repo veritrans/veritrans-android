@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.callbacks.DeleteCardCallback;
+import id.co.veritrans.sdk.callbacks.GetOffersCallback;
 import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
 import id.co.veritrans.sdk.callbacks.SavedCardCallback;
 import id.co.veritrans.sdk.callbacks.TokenCallBack;
@@ -630,5 +631,18 @@ public class VeritransSDK {
 
     public void setBBMCallBackUrl(BBMCallBackUrl BBMCallBackUrl) {
         mBBMCallBackUrl = BBMCallBackUrl;
+    }
+
+    /**
+     * It will fetch the Offers from merchant server.
+     *
+     * @param activity instance of an activity.
+     * @param callback
+     */
+    public void getOffersList(Activity activity,
+                             GetOffersCallback callback) {
+        if (activity != null) {
+            TransactionManager.getOffers(activity, callback);
+        }
     }
 }

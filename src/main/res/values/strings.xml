@@ -223,6 +223,7 @@
     <string name="company_code">Company Code</string>
     <string name="bill_code">Billpay Code</string>
     <string name="processing_payment">Processing Payment</string>
+    <string name="fetching_offers">Fetching Offers</string>
 
 
     <string name="credit_card">Credit/Debit Card</string>
