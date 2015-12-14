@@ -477,8 +477,6 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
         return creditCards;
     }
 
-    ProgressDialog progressDialog;
-
     public void fetchCreditCards() {
         SdkUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
         textViewTitleOffers.setText(getString(R.string.fetching_cards));

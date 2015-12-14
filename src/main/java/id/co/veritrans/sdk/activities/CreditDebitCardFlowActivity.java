@@ -426,7 +426,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     public ArrayList<CardTokenRequest> getCreditCardList() {
              return creditCards;
     }
-    ProgressDialog progressDialog;
+
     public void fetchCreditCards() {
         SdkUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
       //  processingLayout.setVisibility(View.VISIBLE);

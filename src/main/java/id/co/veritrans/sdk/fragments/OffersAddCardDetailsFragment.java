@@ -52,7 +52,6 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private TextViewFont textViewOfferApplied = null;
     private TextViewFont textViewOfferNotApplied = null;
     private LinearLayout layoutOfferStatus = null;
-    private Button buttonPayNow = null;
 
     private String offerName = null;
     private String offerType = null;
@@ -131,7 +130,6 @@ public class OffersAddCardDetailsFragment extends Fragment {
             textViewOfferNotApplied = (TextViewFont) view.findViewById(R.id
                     .text_offer_status_not_applied);
             layoutOfferStatus = (LinearLayout) view.findViewById(R.id.layout_offer_status);
-            buttonPayNow = (Button) view.findViewById(R.id.btn_pay_now);
 
             imageViewPlus = (ImageView) view.findViewById(R.id.img_plus);
             imageViewMinus = (ImageView) view.findViewById(R.id.img_minus);
