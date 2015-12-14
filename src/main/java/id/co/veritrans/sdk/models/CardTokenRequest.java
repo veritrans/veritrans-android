@@ -5,10 +5,11 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * model class hold information required to execute get token api call.
- *
+ * <p/>
  * Created by shivam on 10/29/15.
  */
 
@@ -25,10 +26,10 @@ public class CardTokenRequest implements Serializable {
     // &two_click=false
 
     private String cardNumber;
-    private int cardCVV ;
+    private int cardCVV;
     private int cardExpiryMonth;
     private int cardExpiryYear;
-    private boolean secure ;
+    private boolean secure;
     private boolean twoClick;
     private String bank = null;
     private String cardType;
@@ -36,6 +37,9 @@ public class CardTokenRequest implements Serializable {
     private double grossAmount;
     private boolean isSaved;
     private String clientKey;
+    private boolean instalment;
+    private int instalmentTerm;
+    private ArrayList<String> bins;
     //private String cardHolderName;
 
     public CardTokenRequest() {
@@ -145,14 +149,14 @@ public class CardTokenRequest implements Serializable {
         this.isSaved = isSaved;
     }
 
-   /* public String getCardHolderName() {
-        return cardHolderName;
-    }
+    /* public String getCardHolderName() {
+         return cardHolderName;
+     }
 
-    public void setCardHolderName(String cardHolderName) {
-        this.cardHolderName = cardHolderName;
-    }
-*/
+     public void setCardHolderName(String cardHolderName) {
+         this.cardHolderName = cardHolderName;
+     }
+ */
     public String getCardType() {
         return cardType;
     }
@@ -196,5 +200,42 @@ public class CardTokenRequest implements Serializable {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public void setCardExpiryMonth(int cardExpiryMonth) {
+        this.cardExpiryMonth = cardExpiryMonth;
+    }
+
+    public void setCardExpiryYear(int cardExpiryYear) {
+        this.cardExpiryYear = cardExpiryYear;
+    }
+
+    public boolean isInstalment() {
+        return instalment;
+    }
+
+    public void setInstalment(boolean instalment) {
+        this.instalment = instalment;
+    }
+
+
+    public int getInstalmentTerm() {
+        return instalmentTerm;
+    }
+
+    public void setInstalmentTerm(int instalmentTerm) {
+        this.instalmentTerm = instalmentTerm;
+    }
+
+    public String getFormattedInstalmentTerm() {
+        return instalmentTerm + "";
+    }
+
+    public ArrayList<String> getBins() {
+        return bins;
+    }
+
+    public void setBins(ArrayList<String> bins) {
+        this.bins = bins;
     }
 }

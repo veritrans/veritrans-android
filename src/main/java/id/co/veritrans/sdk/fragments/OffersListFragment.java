@@ -140,15 +140,13 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     @Override
     public void onOfferClicked(int position, String offerName, String offerType) {
         if (getActivity() != null) {
-//            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//
-//            OffersAddCardDetailsFragment offersAddCardDetailsFragment =
-//                    OffersAddCardDetailsFragment.newInstance(offerName);
-//            fragmentTransaction.replace(R.id.offers_container,
-//                    offersAddCardDetailsFragment, OffersAddCardDetailsFragment.class.getName());
-//            fragmentTransaction.addToBackStack(OffersListFragment.class.getName());
-//            fragmentTransaction.commit();
+
+            try {
+            ((OffersActivity)getActivity()).setSelectedOffer(((OffersActivity) getActivity())
+                    .offersListModels.get(position));
+            } catch (ArrayIndexOutOfBoundsException array) {
+                array.printStackTrace();
+            }
 
             if (((OffersActivity) getActivity()).creditCards.isEmpty()) {
                 OffersAddCardDetailsFragment addCardDetailsFragment = OffersAddCardDetailsFragment

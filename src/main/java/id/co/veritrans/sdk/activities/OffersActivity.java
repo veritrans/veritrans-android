@@ -86,6 +86,16 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
     private int position = Constants.PAYMENT_METHOD_OFFERS;
     public ArrayList<OffersListModel> offersListModels = new ArrayList<>();
 
+    public OffersListModel getSelectedOffer() {
+        return selectedOffer;
+    }
+
+    public void setSelectedOffer(OffersListModel selectedOffer) {
+        this.selectedOffer = selectedOffer;
+    }
+
+    private OffersListModel selectedOffer;
+
     private static final int PAYMENT_WEB_INTENT = 200;
     private static final int PAY_USING_CARD = 61;
     private int RESULT_CODE = RESULT_CANCELED;
@@ -136,20 +146,6 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
         getCreditCards();
         readBankDetails();
     }
-
-    private void setUpHomeFragment() {
-        // setup home fragment
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        offersListFragment = new OffersListFragment();
-
-        fragmentTransaction.add(R.id.offers_container,
-                offersListFragment, OFFERS_FRAGMENT);
-        fragmentTransaction.commit();
-        currentFragment = OFFERS_FRAGMENT;
-    }
-
 
     private void initializeView() {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -256,12 +252,14 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
             if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
                     (Constants.CARD_CLICK_TYPE_ONE_CLICK) &&
                     !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
-                cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
-                        cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved());
+                cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
+                        cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved(),
+                        cardTokenRequest.getFormattedInstalmentTerm(), cardTokenRequest.getBins());
             } else if (tokenDetailsResponse != null) {
                 Logger.i("tokenDetailsResponse.getTokenId():" + tokenDetailsResponse.getTokenId());
-                cardPaymentDetails = new CardPaymentDetails(Constants.BANK_NAME,
-                        tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved());
+                cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
+                        tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved(),
+                        cardTokenRequest.getFormattedInstalmentTerm(), cardTokenRequest.getBins());
             } else {
                 SdkUtil.hideProgressDialog();
                 processingLayout.setVisibility(View.GONE);

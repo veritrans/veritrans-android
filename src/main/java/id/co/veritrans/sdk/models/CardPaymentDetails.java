@@ -2,6 +2,8 @@ package id.co.veritrans.sdk.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by shivam on 10/30/15.
  */
@@ -18,10 +20,27 @@ public class CardPaymentDetails {
     @SerializedName("save_token_id")
     private boolean saveTokenId;
 
+    @SerializedName("installment_term")
+    private String instalmentTerm;
+
+    @SerializedName("bins")
+    private ArrayList<String> binsArray;
+
+
+
+
     public CardPaymentDetails(String bank, String tokenId, boolean saveTokenId) {
         this.bank = bank;
         this.tokenId = tokenId;
         this.saveTokenId = saveTokenId;
+    }
+
+    public CardPaymentDetails(String bank, String tokenId, boolean saveTokenId, String instalmentTerm, ArrayList<String> binsArray) {
+        this.bank = bank;
+        this.tokenId = tokenId;
+        this.saveTokenId = saveTokenId;
+        this.instalmentTerm = instalmentTerm;
+        this.binsArray = binsArray;
     }
 
     public String getBank() {
@@ -46,5 +65,25 @@ public class CardPaymentDetails {
 
     public void setSaveTokenId(boolean saveTokenId) {
         this.saveTokenId = saveTokenId;
+    }
+
+    public boolean isSaveTokenId() {
+        return saveTokenId;
+    }
+
+    public String getInstalmentTerm() {
+        return instalmentTerm;
+    }
+
+    public void setInstalmentTerm(String instalmentTerm) {
+        this.instalmentTerm = instalmentTerm;
+    }
+
+    public ArrayList<String> getBinsArray() {
+        return binsArray;
+    }
+
+    public void setBinsArray(ArrayList<String> binsArray) {
+        this.binsArray = binsArray;
     }
 }

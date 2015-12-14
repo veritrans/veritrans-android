@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.text.TextUtils;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.callbacks.DeleteCardCallback;
 import id.co.veritrans.sdk.callbacks.GetOffersCallback;
 import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
@@ -67,24 +68,29 @@ class TransactionManager {
             if (apiInterface != null) {
 
                 Observable<TokenDetailsResponse> observable;
-
                 if (cardTokenRequest.isTwoClick()) {
-                    observable = apiInterface.getTokenTwoClick(
+                    observable = apiInterface.getTokenOfferTwoClick(
                             cardTokenRequest.getCardCVV(),
                             cardTokenRequest.getSavedTokenId(),
                             cardTokenRequest.isTwoClick(),
                             cardTokenRequest.isSecure(),
                             cardTokenRequest.getGrossAmount(),
                             cardTokenRequest.getBank(),
-                            cardTokenRequest.getClientKey());
+                            cardTokenRequest.getClientKey(),
+                            cardTokenRequest.isInstalment(),
+                            cardTokenRequest.getFormattedInstalmentTerm());
                 } else {
-                    observable = apiInterface.get3DSToken(cardTokenRequest.getCardNumber(),
+                    observable = apiInterface.get3DSTokenOffers(cardTokenRequest.getCardNumber(),
                             cardTokenRequest.getCardCVV(),
                             cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
                                     .getCardExpiryYear(),
-                            cardTokenRequest.getClientKey(), cardTokenRequest.getBank(),
-                            cardTokenRequest.isSecure(), cardTokenRequest.isTwoClick(),
-                            cardTokenRequest.getGrossAmount());
+                            cardTokenRequest.getClientKey(),
+                            cardTokenRequest.getBank(),
+                            cardTokenRequest.isSecure(),
+                            cardTokenRequest.isTwoClick(),
+                            cardTokenRequest.getGrossAmount(),
+                            cardTokenRequest.isInstalment(),
+                            cardTokenRequest.getFormattedInstalmentTerm());
                 }
 
                 subscription = observable.subscribeOn(Schedulers
@@ -1098,7 +1104,6 @@ class TransactionManager {
                                                            bbmMoneyTransferResponse) {
 
 
-
                                     if (bbmMoneyTransferResponse != null) {
 
                                         if (veritransSDK != null && veritransSDK.isLogEnabled()) {
@@ -1426,7 +1431,7 @@ class TransactionManager {
     }
 
     public static void getOffers(final Activity activity,
-                                final GetOffersCallback callback) {
+                                 final GetOffersCallback callback) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 

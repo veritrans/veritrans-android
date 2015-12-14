@@ -104,7 +104,7 @@
                 android:layout_marginRight="@dimen/twelve_dp"
                 android:layout_weight="0.50"
                 android:gravity="center"
-                android:text="0 Months"
+                android:text="@string/zero_month"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/tertiary_text_size"
                 app:font="@string/font_open_sans_regular"

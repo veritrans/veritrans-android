@@ -20,7 +20,7 @@ public class OffersListModel implements Serializable{
     @SerializedName("duration")
     private List<Integer> duration = new ArrayList<>();
     @SerializedName("bins")
-    private List<String> bins = new ArrayList<>();
+    private ArrayList<String> bins = new ArrayList<>();
 
     /**
      *
@@ -63,7 +63,7 @@ public class OffersListModel implements Serializable{
      * @return
      * The bins
      */
-    public List<String> getBins() {
+    public ArrayList<String> getBins() {
         return bins;
     }
 
@@ -72,7 +72,7 @@ public class OffersListModel implements Serializable{
      * @param bins
      * The bins
      */
-    public void setBins(List<String> bins) {
+    public void setBins(ArrayList<String> bins) {
         this.bins = bins;
     }
 }

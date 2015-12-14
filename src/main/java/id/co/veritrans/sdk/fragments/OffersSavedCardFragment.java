@@ -54,6 +54,8 @@ public class OffersSavedCardFragment extends Fragment {
 
     private final String MONTH = "Month";
 
+    private boolean isInstalment = false;
+
 
     public OffersSavedCardFragment() {
 
@@ -104,9 +106,11 @@ public class OffersSavedCardFragment extends Fragment {
     private void hideOrShowPayWithInstalment(boolean isShowLayout) {
         if (isShowLayout) {
             layoutPayWithInstalment.setVisibility(View.VISIBLE);
+            isInstalment = true;
             showDuration();
         } else {
             layoutPayWithInstalment.setVisibility(View.GONE);
+            isInstalment = false;
         }
     }
 
@@ -270,6 +274,32 @@ public class OffersSavedCardFragment extends Fragment {
         showHideNoCardMessage();
         deleteCards(cardNumber);
 
+    }
+
+    public int gettingInstalmentTerm() {
+        int instalmentTerm = 0;
+        if (isInstalment) {
+            String duration = textViewInstalment.getText().toString().trim();
+            String durationSplit[] = duration.split(" ");
+            duration = durationSplit[0];
+
+            try {
+                instalmentTerm = Integer.parseInt(duration);
+            } catch (NumberFormatException ne) {
+                ne.printStackTrace();
+            }
+        }
+        return instalmentTerm;
+    }
+
+    public boolean isInstalment() {
+        boolean isInstalmentValue = false;
+        if (isInstalment) {
+            isInstalmentValue = true;
+        } else {
+            isInstalmentValue = false;
+        }
+        return isInstalmentValue;
     }
 
     public void deleteCards(final String cardNumber) {

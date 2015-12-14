@@ -87,6 +87,8 @@
     <string name="enter_cvv">Enter cvv</string>
     <string name="valid_thru">Valid Thru</string>
 
+    <string name="zero_month">0 Month</string>
+
 
     <!-- Permata VA Bank Transfer-->
     <string name="virtual_account">Virtual Account</string>

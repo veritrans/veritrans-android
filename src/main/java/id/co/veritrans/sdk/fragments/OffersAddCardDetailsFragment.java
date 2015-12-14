@@ -82,6 +82,13 @@ public class OffersAddCardDetailsFragment extends Fragment {
     int currentPosition, totalPositions;
 
     private final String MONTH = "Month";
+    private boolean isInstalment = false;
+
+    public ArrayList<String> getBins() {
+        return bins;
+    }
+
+    private ArrayList<String> bins = new ArrayList<>();
 
     public OffersAddCardDetailsFragment() {
     }
@@ -146,8 +153,10 @@ public class OffersAddCardDetailsFragment extends Fragment {
 
             if (offerType.equalsIgnoreCase(OffersActivity.OFFER_TYPE_INSTALMENTS)) {
                 hideOrShowPayWithInstalment(true);
+                isInstalment = true;
             } else {
                 hideOrShowPayWithInstalment(false);
+                isInstalment = false;
             }
 
             hideOrShowOfferStatus(false, false);
@@ -318,7 +327,18 @@ public class OffersAddCardDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isValid(true)) {
+                    int instalmentTerm = 0;
+                    if (isInstalment) {
+                        String duration = textViewInstalment.getText().toString().trim();
+                        String durationSplit[] = duration.split(" ");
+                        duration = durationSplit[0];
 
+                        try {
+                            instalmentTerm = Integer.parseInt(duration);
+                        } catch (NumberFormatException ne) {
+                            ne.printStackTrace();
+                        }
+                    }
                     CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
                             .parseInt(cvv),
                             expMonth, expYear,
@@ -328,6 +348,9 @@ public class OffersAddCardDetailsFragment extends Fragment {
                     cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest()
                             .getAmount());
                     cardTokenRequest.setCardType(cardType);
+                    cardTokenRequest.setInstalment(isInstalment);
+                    cardTokenRequest.setInstalmentTerm(instalmentTerm);
+                    cardTokenRequest.setBins(bins);
                     if (bankDetails != null && !bankDetails.isEmpty()) {
                         String firstSix = cardNumber.substring(0, 6);
                         for (BankDetail bankDetail : bankDetails) {
@@ -645,6 +668,10 @@ public class OffersAddCardDetailsFragment extends Fragment {
                 getActivity()).offersListModels.isEmpty()) {
             if (!((OffersActivity) getActivity()).offersListModels.get(offerPosition).getBins()
                     .isEmpty()) {
+
+                bins.addAll(((OffersActivity) getActivity()).offersListModels.get(offerPosition)
+                        .getBins());
+
                 boolean isMatch = false, isNumberFormatException = false;
 
                 for (int loop = 0; loop < ((OffersActivity) getActivity()).offersListModels.get
@@ -681,7 +708,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
 //                    if (isNumberFormatException) {
 //                        hideOrShowOfferStatus(false, false);
 //                    } else {
-                        hideOrShowOfferStatus(true, false);
+                    hideOrShowOfferStatus(true, false);
 //                    }
                 }
             }

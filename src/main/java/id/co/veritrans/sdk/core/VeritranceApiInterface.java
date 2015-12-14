@@ -150,10 +150,10 @@ public interface VeritranceApiInterface {
                                                                   indomaretRequestModel);
 
     //save cards or get cards
-   @Headers({"Content-Type: application/json", "Accept: application/json"})
-   @POST("/card/")
-   Observable<CardResponse> saveCard(@Header("x-auth") String auth,
-                                  @Body CardTokenRequest cardTokenRequest);
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/card/")
+    Observable<CardResponse> saveCard(@Header("x-auth") String auth,
+                                      @Body CardTokenRequest cardTokenRequest);
 
     //save cards or get cards
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -163,18 +163,77 @@ public interface VeritranceApiInterface {
     //delete card
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/delete")
-    Observable<DeleteCardResponse> deleteCard(@Header("x-auth")String auth, @Body CardTokenRequest cardTokenRequest);
+    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Body CardTokenRequest cardTokenRequest);
 
     //BBMMoney Payment
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
     Observable<TransactionResponse> paymentUsingBBMMoney(@Header("x-auth") String auth,
-                                                          @Body BBMMoneyRequestModel
-                                                                  bbmMoneyRequestModel);
+                                                         @Body BBMMoneyRequestModel
+                                                                 bbmMoneyRequestModel);
 
     //get offers
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("/offers")
     Observable<GetOffersResponseModel> getOffers(@Header("x-auth") String auth);
+
+
+    /**
+     * For offers get token
+     *
+     * @param cardCVV
+     * @param tokenId
+     * @param twoClick
+     * @param secure
+     * @param grossAmount
+     * @param bank
+     * @param clientKey
+     * @param instalment
+     * @param instalmentTerm
+     * @return
+     */
+
+    @GET("/token/")
+    Observable<TokenDetailsResponse> getTokenOfferTwoClick(
+            @Query("card_cvv") int cardCVV,
+            @Query("token_id") String tokenId,
+            @Query("two_click") boolean twoClick,
+            @Query("secure") boolean secure,
+            @Query("gross_amount") double grossAmount,
+            @Query("bank") String bank,
+            @Query("client_key") String clientKey,
+            @Query("installment") boolean instalment,
+            @Query("installment_term") String instalmentTerm
+    );
+
+    /***
+     * Get offers 3ds token
+     *
+     * @param cardNumber
+     * @param cardCVV
+     * @param cardExpiryMonth
+     * @param cardExpiryYear
+     * @param clientKey
+     * @param bank
+     * @param secure
+     * @param twoClick
+     * @param grossAmount
+     * @return
+     */
+
+    @GET("/token/")
+    Observable<TokenDetailsResponse> get3DSTokenOffers(@Query("card_number") String cardNumber,
+                                                       @Query("card_cvv") int cardCVV,
+                                                       @Query("card_exp_month") int cardExpiryMonth,
+                                                       @Query("card_exp_year") int cardExpiryYear,
+                                                       @Query("client_key") String clientKey,
+                                                       @Query("bank") String bank,
+                                                       @Query("secure") boolean secure,
+                                                       @Query("two_click") boolean twoClick,
+                                                       @Query("gross_amount") double grossAmount,
+                                                       @Query("installment") boolean instalment,
+                                                       @Query("installment_term") String
+                                                               instalmentTerm
+    );
 
 }
