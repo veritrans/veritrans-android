@@ -267,10 +267,11 @@ public class OffersAddCardDetailsFragment extends Fragment {
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
         etCardNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+            public void onFocusChange(View v, boolean hasFocus) { //here show status
                 Logger.i("onFocus change etCardNo");
                 if (!hasFocus) {
                     Logger.i("onFocus change not etCardNo");
+                    offerStatusValidation();
                     focusChange();
                 } else {
                     Logger.i("onFocus change has focus etCardNo");
@@ -633,6 +634,57 @@ public class OffersAddCardDetailsFragment extends Fragment {
         } else {
             cardType = "";
 
+        }
+    }
+
+    private void offerStatusValidation() {
+
+        String cardNumber = etCardNo.getText().toString().trim();
+
+        if (((OffersActivity) getActivity()).offersListModels != null && !((OffersActivity)
+                getActivity()).offersListModels.isEmpty()) {
+            if (!((OffersActivity) getActivity()).offersListModels.get(offerPosition).getBins()
+                    .isEmpty()) {
+                boolean isMatch = false, isNumberFormatException = false;
+
+                for (int loop = 0; loop < ((OffersActivity) getActivity()).offersListModels.get
+                        (offerPosition).getBins().size(); loop++) {
+                    String binValue = ((OffersActivity) getActivity()).offersListModels.get
+                            (offerPosition).getBins().get(loop).toString();
+
+                    int binInt = 0;
+                    try {
+
+                        binInt = Integer.parseInt(binValue);
+                        int binValueLength = binValue.length();
+                        String matchCard = null;
+                        if (!cardNumber.isEmpty()) {
+                            matchCard = cardNumber.replace(" ", "");
+                            matchCard = matchCard.substring(0, binValueLength);
+                        }
+
+                        if (matchCard.equalsIgnoreCase(binValue)) {
+                            Logger.i("matches");
+                            isMatch = true;
+                            break;
+                        }
+
+                    } catch (NumberFormatException ne) {
+                        ne.printStackTrace();
+                        isNumberFormatException = true;
+                    }
+                }
+                if (isMatch) {
+                    hideOrShowOfferStatus(true, true);
+                } else {
+
+//                    if (isNumberFormatException) {
+//                        hideOrShowOfferStatus(false, false);
+//                    } else {
+                        hideOrShowOfferStatus(true, false);
+//                    }
+                }
+            }
         }
     }
 }
