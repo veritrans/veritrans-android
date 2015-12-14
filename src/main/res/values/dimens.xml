@@ -17,6 +17,7 @@
     <dimen name="btn_height">48dp</dimen>
     <dimen name="twentyfour">24dp</dimen>
     <dimen name="sixtyfour_dp">64dp</dimen>
+    <dimen name="seventy_dp">80dp</dimen>
     <dimen name="eighty_dp">80dp</dimen>
     <dimen name="fiftyfour_dp">54dp</dimen>
     <dimen name="fortytwo_dp">54dp</dimen>

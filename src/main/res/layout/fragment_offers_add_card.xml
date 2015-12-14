@@ -173,6 +173,7 @@
                 <id.co.veritrans.sdk.widgets.TextViewFont
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:gravity="left"
                     android:text="@string/pay_with_instalments"
@@ -185,24 +186,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_gravity="center"
-
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:weightSum="1"
                     >
 
                     <ImageView
                         android:id="@+id/img_minus"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
                         android:background="@drawable/ic_minus_button_selector"
+                        android:padding="@dimen/sixteen_dp"
                         />
 
                     <id.co.veritrans.sdk.widgets.TextViewFont
                         android:id="@+id/text_instalment"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/sixteen_dp"
-                        android:layout_marginRight="@dimen/sixteen_dp"
+                        android:layout_marginLeft="@dimen/twelve_dp"
+                        android:layout_marginRight="@dimen/twelve_dp"
+                        android:layout_weight="0.50"
                         android:gravity="center"
                         android:text="0 Months"
                         android:textColor="@color/dark_gray"
@@ -212,10 +217,11 @@
 
                     <ImageView
                         android:id="@+id/img_plus"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
                         android:background="@drawable/ic_plus_button_selector"
-
+                        android:padding="@dimen/sixteen_dp"
                         />
 
                 </LinearLayout>

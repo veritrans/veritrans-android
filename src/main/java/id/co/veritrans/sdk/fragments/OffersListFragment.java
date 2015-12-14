@@ -152,12 +152,12 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
 
             if (((OffersActivity) getActivity()).creditCards.isEmpty()) {
                 OffersAddCardDetailsFragment addCardDetailsFragment = OffersAddCardDetailsFragment
-                        .newInstance(offerName, offerType);
+                        .newInstance(position, offerName, offerType);
                 ((OffersActivity) getActivity()).replaceFragment(addCardDetailsFragment, true,
                         false);
             } else {
                 OffersSavedCardFragment savedCardFragment = OffersSavedCardFragment
-                        .newInstance(offerName, offerType);
+                        .newInstance(position, offerName, offerType);
                 ((OffersActivity) getActivity()).replaceFragment(savedCardFragment, true, false);
             }
 

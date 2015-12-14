@@ -75,6 +75,7 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
     private TextViewFont textViewTitleCardDetails = null;
     private TextViewFont textViewOfferName = null;
 
+    public static final String OFFER_POSITION = "offer_position";
     public static final String OFFER_NAME = "offer_name";
     public static final String OFFER_TYPE = "offer_type";
 

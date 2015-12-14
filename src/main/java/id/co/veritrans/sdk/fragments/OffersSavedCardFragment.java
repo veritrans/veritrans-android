@@ -23,6 +23,7 @@ import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
+import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
@@ -31,6 +32,7 @@ public class OffersSavedCardFragment extends Fragment {
     private TextViewFont textViewTitleOffers = null;
     private TextViewFont textViewTitleCardDetails = null;
     private TextViewFont textViewOfferName = null;
+    private int offerPosition = 0;
     private String offerName = null;
     private String offerType = null;
 
@@ -48,14 +50,20 @@ public class OffersSavedCardFragment extends Fragment {
 
     private TextViewFont emptyCardsTextViewFont;
 
+    int currentPosition, totalPositions;
+
+    private final String MONTH = "Month";
+
 
     public OffersSavedCardFragment() {
 
     }
 
-    public static OffersSavedCardFragment newInstance(String offerName, String offerType) {
+    public static OffersSavedCardFragment newInstance(int position, String offerName, String
+            offerType) {
         OffersSavedCardFragment fragment = new OffersSavedCardFragment();
         Bundle data = new Bundle();
+        data.putInt(OffersActivity.OFFER_POSITION, position);
         data.putString(OffersActivity.OFFER_NAME, offerName);
         data.putString(OffersActivity.OFFER_TYPE, offerType);
         fragment.setArguments(data);
@@ -77,18 +85,11 @@ public class OffersSavedCardFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Bundle data = getArguments();
+        offerPosition = data.getInt(OffersActivity.OFFER_POSITION);
         offerName = data.getString(OffersActivity.OFFER_NAME);
         offerType = data.getString(OffersActivity.OFFER_TYPE);
         bindViews(view);
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    private void hideOrShowPayWithInstalment(boolean isShowLayout) {
-        if (isShowLayout) {
-            layoutPayWithInstalment.setVisibility(View.VISIBLE);
-        } else {
-            layoutPayWithInstalment.setVisibility(View.GONE);
-        }
     }
 
     private void setToolbar() {
@@ -98,6 +99,70 @@ public class OffersSavedCardFragment extends Fragment {
         textViewOfferName.setText(offerName);
 
         textViewTitleCardDetails.setText(getResources().getString(R.string.saved_card));
+    }
+
+    private void hideOrShowPayWithInstalment(boolean isShowLayout) {
+        if (isShowLayout) {
+            layoutPayWithInstalment.setVisibility(View.VISIBLE);
+            showDuration();
+        } else {
+            layoutPayWithInstalment.setVisibility(View.GONE);
+        }
+    }
+
+    private void showDuration() {
+
+        ArrayList<OffersListModel> offersList = new ArrayList<>();
+
+        if (((OffersActivity) getActivity()).offersListModels != null || !((OffersActivity) getActivity()).offersListModels.isEmpty()) {
+            offersList.addAll(((OffersActivity) getActivity()).offersListModels);
+            if (offersList.get(offerPosition).getDuration() != null || !offersList.get(offerPosition).getDuration().isEmpty()) {
+                currentPosition = 0;
+                totalPositions = offersList.get(offerPosition).getDuration().size() - 1;
+                textViewInstalment.setText(offersList.get(offerPosition).getDuration().get(0)
+                        .toString() + " " + MONTH);
+                disableEnableMinusPlus();
+            }
+        }
+    }
+
+    private void disableEnableMinusPlus() {
+
+        Logger.i("Positions: " + currentPosition + "----" + totalPositions);
+
+        if (currentPosition == 0 && totalPositions == 0) {
+            imageViewMinus.setEnabled(false);
+            imageViewPlus.setEnabled(false);
+        } else if (currentPosition > 0 && currentPosition < totalPositions) {
+            imageViewMinus.setEnabled(true);
+            imageViewPlus.setEnabled(true);
+        } else if (currentPosition > 0 && currentPosition == totalPositions) {
+            imageViewMinus.setEnabled(true);
+            imageViewPlus.setEnabled(false);
+        } else if (currentPosition == 0 && currentPosition < totalPositions) {
+            imageViewMinus.setEnabled(false);
+            imageViewPlus.setEnabled(true);
+        }
+    }
+
+    private void onMinusClicked() {
+        if (currentPosition > 0 && currentPosition <= totalPositions) {
+            currentPosition = currentPosition - 1;
+            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get
+                    (offerPosition).getDuration().get(currentPosition)
+                    .toString() + " " + MONTH);
+        }
+        disableEnableMinusPlus();
+    }
+
+    private void onPlusClicked() {
+        if (currentPosition >= 0 && currentPosition < totalPositions) {
+            currentPosition = currentPosition + 1;
+            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get
+                    (offerPosition).getDuration().get(currentPosition)
+                    .toString() + " " + MONTH);
+        }
+        disableEnableMinusPlus();
     }
 
     private void bindViews(View view) {
@@ -121,6 +186,20 @@ public class OffersSavedCardFragment extends Fragment {
             hideOrShowPayWithInstalment(false);
         }
 
+        imageViewMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMinusClicked();
+            }
+        });
+
+        imageViewPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPlusClicked();
+            }
+        });
+
         emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
         addCardBt = (FloatingActionButton) view.findViewById(R.id.btn_add_card);
@@ -129,7 +208,7 @@ public class OffersSavedCardFragment extends Fragment {
             public void onClick(View v) {
 
                 OffersAddCardDetailsFragment offersAddCardDetailsFragment = OffersAddCardDetailsFragment
-                        .newInstance(offerName, offerType);
+                        .newInstance(offerPosition, offerName, offerType);
                 ((OffersActivity) getActivity()).replaceFragment
                         (offersAddCardDetailsFragment, true, false);
             }

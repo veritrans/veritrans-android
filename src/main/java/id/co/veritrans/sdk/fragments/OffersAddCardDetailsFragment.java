@@ -53,6 +53,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private TextViewFont textViewOfferNotApplied = null;
     private LinearLayout layoutOfferStatus = null;
 
+    private int offerPosition = 0;
     private String offerName = null;
     private String offerType = null;
     private ImageView imageViewPlus = null;
@@ -78,6 +79,9 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private UserDetail userDetail;
     private ArrayList<BankDetail> bankDetails;
     private String cardType = "";
+    int currentPosition, totalPositions;
+
+    private final String MONTH = "Month";
 
     public OffersAddCardDetailsFragment() {
     }
@@ -90,9 +94,11 @@ public class OffersAddCardDetailsFragment extends Fragment {
         bankDetails = ((OffersActivity) getActivity()).getBankDetails();
     }
 
-    public static OffersAddCardDetailsFragment newInstance(String offerName, String offerType) {
+    public static OffersAddCardDetailsFragment newInstance(int position, String offerName, String
+            offerType) {
         OffersAddCardDetailsFragment fragment = new OffersAddCardDetailsFragment();
         Bundle data = new Bundle();
+        data.putInt(OffersActivity.OFFER_POSITION, position);
         data.putString(OffersActivity.OFFER_NAME, offerName);
         data.putString(OffersActivity.OFFER_TYPE, offerType);
         fragment.setArguments(data);
@@ -111,6 +117,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //retrieve data from bundle.
         Bundle data = getArguments();
+        offerPosition = data.getInt(OffersActivity.OFFER_POSITION);
         offerName = data.getString(OffersActivity.OFFER_NAME);
         offerType = data.getString(OffersActivity.OFFER_TYPE);
         initialiseView(view);
@@ -146,6 +153,20 @@ public class OffersAddCardDetailsFragment extends Fragment {
             hideOrShowOfferStatus(false, false);
 
             bindCreditCardView(view);
+
+            imageViewMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onMinusClicked();
+                }
+            });
+
+            imageViewPlus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onPlusClicked();
+                }
+            });
         }
     }
 
@@ -161,9 +182,65 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private void hideOrShowPayWithInstalment(boolean isShowLayout) {
         if (isShowLayout) {
             layoutPayWithInstalment.setVisibility(View.VISIBLE);
+            showDuration();
         } else {
             layoutPayWithInstalment.setVisibility(View.GONE);
         }
+    }
+
+    private void showDuration() {
+
+        ArrayList<OffersListModel> offersList = new ArrayList<>();
+
+        if (((OffersActivity) getActivity()).offersListModels != null || !((OffersActivity) getActivity()).offersListModels.isEmpty()) {
+            offersList.addAll(((OffersActivity) getActivity()).offersListModels);
+            if (offersList.get(offerPosition).getDuration() != null || !offersList.get(offerPosition).getDuration().isEmpty()) {
+                currentPosition = 0;
+                totalPositions = offersList.get(offerPosition).getDuration().size() - 1;
+                textViewInstalment.setText(offersList.get(offerPosition).getDuration().get(0)
+                        .toString() + " " + MONTH);
+                disableEnableMinusPlus();
+            }
+        }
+    }
+
+    private void disableEnableMinusPlus() {
+
+        Logger.i("Positions: " + currentPosition + "----" + totalPositions);
+
+        if (currentPosition == 0 && totalPositions == 0) {
+            imageViewMinus.setEnabled(false);
+            imageViewPlus.setEnabled(false);
+        } else if (currentPosition > 0 && currentPosition < totalPositions) {
+            imageViewMinus.setEnabled(true);
+            imageViewPlus.setEnabled(true);
+        } else if (currentPosition > 0 && currentPosition == totalPositions) {
+            imageViewMinus.setEnabled(true);
+            imageViewPlus.setEnabled(false);
+        } else if (currentPosition == 0 && currentPosition < totalPositions) {
+            imageViewMinus.setEnabled(false);
+            imageViewPlus.setEnabled(true);
+        }
+    }
+
+    private void onMinusClicked() {
+        if (currentPosition > 0 && currentPosition <= totalPositions) {
+            currentPosition = currentPosition - 1;
+            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get
+                    (offerPosition).getDuration().get(currentPosition)
+                    .toString() + " " + MONTH);
+        }
+        disableEnableMinusPlus();
+    }
+
+    private void onPlusClicked() {
+        if (currentPosition >= 0 && currentPosition < totalPositions) {
+            currentPosition = currentPosition + 1;
+            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get
+                    (offerPosition).getDuration().get(currentPosition)
+                    .toString() + " " + MONTH);
+        }
+        disableEnableMinusPlus();
     }
 
     private void hideOrShowOfferStatus(boolean isShowLayout, boolean isOfferApplied) {
