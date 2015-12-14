@@ -83,15 +83,15 @@ public class OffersSavedCardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void hideOrShowPayWithInstalment(boolean isShowLayout){
-        if (isShowLayout){
+    private void hideOrShowPayWithInstalment(boolean isShowLayout) {
+        if (isShowLayout) {
             layoutPayWithInstalment.setVisibility(View.VISIBLE);
         } else {
             layoutPayWithInstalment.setVisibility(View.GONE);
         }
     }
 
-    private void setToolbar(){
+    private void setToolbar() {
         textViewTitleOffers.setVisibility(View.GONE);
         textViewTitleCardDetails.setVisibility(View.VISIBLE);
         textViewOfferName.setVisibility(View.VISIBLE);
@@ -115,7 +115,7 @@ public class OffersSavedCardFragment extends Fragment {
         layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id
                 .layout_pay_with_instalments);
 
-        if (offerType.equalsIgnoreCase(OffersActivity.OFFER_TYPE_INSTALMENTS)){
+        if (offerType.equalsIgnoreCase(OffersActivity.OFFER_TYPE_INSTALMENTS)) {
             hideOrShowPayWithInstalment(true);
         } else {
             hideOrShowPayWithInstalment(false);
@@ -147,31 +147,33 @@ public class OffersSavedCardFragment extends Fragment {
     }
 
 
-        private void setViewPagerValues(){
+    private void setViewPagerValues() {
         if (creditCards != null) {
-             cardPagerAdapter = new CardPagerAdapter(this,getChildFragmentManager(),
-                    creditCards);
-            savedCardPager.setAdapter(cardPagerAdapter);
-            savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int
-                        positionOffsetPixels) {
-                }
+            if (getActivity() != null) {
+                cardPagerAdapter = new CardPagerAdapter(this, getChildFragmentManager(),
+                        creditCards, getActivity());
+                savedCardPager.setAdapter(cardPagerAdapter);
+                savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int
+                            positionOffsetPixels) {
+                    }
 
-                @Override
-                public void onPageSelected(int position) {
+                    @Override
+                    public void onPageSelected(int position) {
                     /*SdkUtil.hideKeyboard(getActivity());*/
-                }
+                    }
 
-                @Override
-                public void onPageScrollStateChanged(int state) {
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
 
-                }
-            });
-            circlePageIndicator.setViewPager(savedCardPager);
-            //to notify adapter when credit card details received
-            ((OffersActivity)getActivity()).setAdapterViews(cardPagerAdapter,circlePageIndicator, emptyCardsTextViewFont);
-            showHideNoCardMessage();
+                    }
+                });
+                circlePageIndicator.setViewPager(savedCardPager);
+                //to notify adapter when credit card details received
+                ((OffersActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyCardsTextViewFont);
+                showHideNoCardMessage();
+            }
         }
     }
 
@@ -186,7 +188,7 @@ public class OffersSavedCardFragment extends Fragment {
     }
 
     public void deleteCreditCard(String cardNumber) {
-            showHideNoCardMessage();
+        showHideNoCardMessage();
         deleteCards(cardNumber);
 
     }
@@ -227,7 +229,7 @@ public class OffersSavedCardFragment extends Fragment {
                     }
                     if (creditCards != null && !creditCards.isEmpty()) {
                         Logger.i("position to delete:" + position + "," + creditCards.size());
-                        if(!creditCards.isEmpty()) {
+                        if (!creditCards.isEmpty()) {
                             for (int i = 0; i < creditCards.size(); i++) {
                                 Logger.i("cards before:" + creditCards.get(i).getCardNumber());
                             }
@@ -236,7 +238,7 @@ public class OffersSavedCardFragment extends Fragment {
                         creditCards.remove(position);
 
 
-                        if(!creditCards.isEmpty()) {
+                        if (!creditCards.isEmpty()) {
                             for (int i = 0; i < creditCards.size(); i++) {
 
                                 Logger.i("cards after:" + creditCards.get(i).getCardNumber());
@@ -258,7 +260,7 @@ public class OffersSavedCardFragment extends Fragment {
                             cardPagerAdapter.notifyChangeInPosition(1);
                             cardPagerAdapter.notifyDataSetChanged();
                             circlePageIndicator.notifyDataSetChanged();
-                            if(creditCards.isEmpty()){
+                            if (creditCards.isEmpty()) {
                                 emptyCardsTextViewFont.setVisibility(View.VISIBLE);
                             } else {
                                 emptyCardsTextViewFont.setVisibility(View.GONE);

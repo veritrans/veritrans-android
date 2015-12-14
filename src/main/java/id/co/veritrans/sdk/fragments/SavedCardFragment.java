@@ -101,28 +101,30 @@ public class SavedCardFragment extends Fragment {
 
     private void setViewPagerValues() {
         if (creditCards != null) {
-             cardPagerAdapter = new CardPagerAdapter(this,getChildFragmentManager(),
-                    creditCards);
-            savedCardPager.setAdapter(cardPagerAdapter);
-            savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int
-                        positionOffsetPixels) {
-                }
+            if (getActivity() != null) {
+                cardPagerAdapter = new CardPagerAdapter(this, getChildFragmentManager(),
+                        creditCards, getActivity());
+                savedCardPager.setAdapter(cardPagerAdapter);
+                savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int
+                            positionOffsetPixels) {
+                    }
 
-                @Override
-                public void onPageSelected(int position) {
+                    @Override
+                    public void onPageSelected(int position) {
                     /*SdkUtil.hideKeyboard(getActivity());*/
-                }
+                    }
 
-                @Override
-                public void onPageScrollStateChanged(int state) {
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
 
-                }
-            });
-            circlePageIndicator.setViewPager(savedCardPager);
-            ((CreditDebitCardFlowActivity)getActivity()).setAdapterViews(cardPagerAdapter,circlePageIndicator,emptyCardsTextViewFont);
-            showHideNoCardMessage();
+                    }
+                });
+                circlePageIndicator.setViewPager(savedCardPager);
+                ((CreditDebitCardFlowActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyCardsTextViewFont);
+                showHideNoCardMessage();
+            }
         }
     }
 
@@ -137,14 +139,14 @@ public class SavedCardFragment extends Fragment {
     }
 
     public void deleteCreditCard(String cardNumber) {
-            showHideNoCardMessage();
-            deleteCards(cardNumber);
+        showHideNoCardMessage();
+        deleteCards(cardNumber);
 
     }
 
     public void deleteCards(final String cardNumber) {
         CardTokenRequest creditCard = null;
-        Logger.i("cardNumber:"+cardNumber);
+        Logger.i("cardNumber:" + cardNumber);
         if (creditCards != null && !creditCards.isEmpty()) {
 
             for (int i = 0; i < creditCards.size(); i++) {
@@ -162,7 +164,7 @@ public class SavedCardFragment extends Fragment {
             veritransSDK.deleteCard(getActivity(), creditCard, new DeleteCardCallback() {
                 @Override
                 public void onFailure(String errorMessage) {
-                    SdkUtil.showSnackbar(getActivity(),errorMessage);
+                    SdkUtil.showSnackbar(getActivity(), errorMessage);
                 }
 
                 @Override
@@ -178,7 +180,7 @@ public class SavedCardFragment extends Fragment {
                     }
                     if (creditCards != null && !creditCards.isEmpty()) {
                         Logger.i("position to delete:" + position + "," + creditCards.size());
-                        if(!creditCards.isEmpty()) {
+                        if (!creditCards.isEmpty()) {
                             for (int i = 0; i < creditCards.size(); i++) {
                                 Logger.i("cards before:" + creditCards.get(i).getCardNumber());
                             }
@@ -187,7 +189,7 @@ public class SavedCardFragment extends Fragment {
                         creditCards.remove(position);
 
 
-                        if(!creditCards.isEmpty()) {
+                        if (!creditCards.isEmpty()) {
                             for (int i = 0; i < creditCards.size(); i++) {
 
                                 Logger.i("cards after:" + creditCards.get(i).getCardNumber());
@@ -196,7 +198,7 @@ public class SavedCardFragment extends Fragment {
 
                         //notifydataset change not worked properly for viewpager so setting it again
                         Logger.i("setting view pager value");
-                       // setViewPagerValues(creditCardsNew);
+                        // setViewPagerValues(creditCardsNew);
                         /*if(creditCards.size()>1) {
                             try {
                                 savedCardPager.setCurrentItem(position);
@@ -209,7 +211,7 @@ public class SavedCardFragment extends Fragment {
                             cardPagerAdapter.notifyChangeInPosition(1);
                             cardPagerAdapter.notifyDataSetChanged();
                             circlePageIndicator.notifyDataSetChanged();
-                            if(creditCards.isEmpty()){
+                            if (creditCards.isEmpty()) {
                                 emptyCardsTextViewFont.setVisibility(View.VISIBLE);
                             } else {
                                 emptyCardsTextViewFont.setVisibility(View.GONE);

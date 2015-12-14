@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.adapters;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,15 +17,18 @@ public class CardPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<CardTokenRequest> cardDetails;
     private Fragment parentFragment;
     private long baseId = 0;
-    public CardPagerAdapter(Fragment fragment, FragmentManager fm, ArrayList<CardTokenRequest> cardDetails) {
+    private Activity activity;
+    public CardPagerAdapter(Fragment fragment, FragmentManager fm, ArrayList<CardTokenRequest>
+            cardDetails, Activity activity) {
         super(fm);
         this.cardDetails = cardDetails;
         parentFragment = fragment;
+        this.activity = activity;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return CardDetailFragment.newInstance(cardDetails.get(position),parentFragment);
+        return CardDetailFragment.newInstance(cardDetails.get(position),parentFragment, activity);
     }
 
     @Override

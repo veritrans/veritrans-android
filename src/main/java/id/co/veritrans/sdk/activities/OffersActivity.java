@@ -487,14 +487,13 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
             @Override
             public void onSuccess(CardResponse cardResponse) {
                 SdkUtil.hideProgressDialog();
-                //
-//                Handler handler = new Handler();
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        processingLayout.setVisibility(View.GONE);
-//                    }
-//                }, 200);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        processingLayout.setVisibility(View.GONE);
+                    }
+                }, 200);
 
                 Logger.i("cards api successful" + cardResponse);
                 if (cardResponse != null && !cardResponse.getCreditCards().isEmpty()) {
