@@ -111,16 +111,6 @@ public class CardDetailFragment extends Fragment {
                 cardWidth = ((CreditDebitCardFlowActivity) getActivity()).getScreenWidth();
             } else if (activity instanceof OffersActivity) {
                 cardWidth = ((OffersActivity) getActivity()).getScreenWidth();
-
-                if (((OffersActivity) getActivity()).getSelectedOffer() != null) {
-                    cardDetail.setBins(((OffersActivity) getActivity()).getSelectedOffer().getBins());
-                    if (parentFragment != null && parentFragment instanceof OffersSavedCardFragment) {
-                        if (((OffersSavedCardFragment) parentFragment).isInstalment()) {
-                            cardDetail.setInstalmentTerm(((OffersSavedCardFragment) parentFragment).gettingInstalmentTerm());
-                            cardDetail.setInstalment(((OffersSavedCardFragment) parentFragment).isInstalment());
-                        }
-                    }
-                }
             }
         }
         cardWidth = cardWidth - getResources().getDimension(R.dimen.sixteen_dp) * getResources()
@@ -276,6 +266,21 @@ public class CardDetailFragment extends Fragment {
 
     private void cardTransactionProcess(String cvv) {
         Logger.i("Card to delete:" + cardDetail.getCardNumber());
+
+        if (activity != null) {
+            if (activity instanceof OffersActivity) {
+                if (((OffersActivity) getActivity()).getSelectedOffer() != null) {
+                    cardDetail.setBins(((OffersActivity) getActivity()).getSelectedOffer().getBins());
+                    if (parentFragment != null && parentFragment instanceof OffersSavedCardFragment) {
+                        if (((OffersSavedCardFragment) parentFragment).isInstalment()) {
+                            cardDetail.setInstalmentTerm(((OffersSavedCardFragment) parentFragment).gettingInstalmentTerm());
+                            cardDetail.setInstalment(((OffersSavedCardFragment) parentFragment).isInstalment());
+                        }
+                    }
+                }
+            }
+        }
+
         try {
             cardDetail.setCardCVV(Integer.parseInt(cvv));
         } catch (NumberFormatException e) {

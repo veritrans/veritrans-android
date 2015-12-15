@@ -327,29 +327,31 @@ public class OffersAddCardDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isValid(true)) {
+
+                    CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
+                            .parseInt(cvv),
+                            expMonth, expYear,
+                            veritransSDK.getClientKey());
+
                     int instalmentTerm = 0;
                     if (isInstalment) {
                         String duration = textViewInstalment.getText().toString().trim();
                         String durationSplit[] = duration.split(" ");
                         duration = durationSplit[0];
-
                         try {
                             instalmentTerm = Integer.parseInt(duration);
                         } catch (NumberFormatException ne) {
                             ne.printStackTrace();
                         }
+                        cardTokenRequest.setInstalment(isInstalment);
+                        cardTokenRequest.setInstalmentTerm(instalmentTerm);
                     }
-                    CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
-                            .parseInt(cvv),
-                            expMonth, expYear,
-                            veritransSDK.getClientKey());
+
                     cardTokenRequest.setIsSaved(cbStoreCard.isChecked());
                     cardTokenRequest.setSecure(veritransSDK.getTransactionRequest().isSecureCard());
                     cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest()
                             .getAmount());
                     cardTokenRequest.setCardType(cardType);
-                    cardTokenRequest.setInstalment(isInstalment);
-                    cardTokenRequest.setInstalmentTerm(instalmentTerm);
                     cardTokenRequest.setBins(bins);
                     if (bankDetails != null && !bankDetails.isEmpty()) {
                         String firstSix = cardNumber.substring(0, 6);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.text.TextUtils;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.callbacks.DeleteCardCallback;
 import id.co.veritrans.sdk.callbacks.GetOffersCallback;
 import id.co.veritrans.sdk.callbacks.PaymentStatusCallback;
@@ -69,28 +68,56 @@ class TransactionManager {
 
                 Observable<TokenDetailsResponse> observable;
                 if (cardTokenRequest.isTwoClick()) {
-                    observable = apiInterface.getTokenOfferTwoClick(
-                            cardTokenRequest.getCardCVV(),
-                            cardTokenRequest.getSavedTokenId(),
-                            cardTokenRequest.isTwoClick(),
-                            cardTokenRequest.isSecure(),
-                            cardTokenRequest.getGrossAmount(),
-                            cardTokenRequest.getBank(),
-                            cardTokenRequest.getClientKey(),
-                            cardTokenRequest.isInstalment(),
-                            cardTokenRequest.getFormattedInstalmentTerm());
+
+                    if (cardTokenRequest.isInstalment()) {
+                        observable = apiInterface.getTokenInstalmentOfferTwoClick(
+                                cardTokenRequest.getCardCVV(),
+                                cardTokenRequest.getSavedTokenId(),
+                                cardTokenRequest.isTwoClick(),
+                                cardTokenRequest.isSecure(),
+                                cardTokenRequest.getGrossAmount(),
+                                cardTokenRequest.getBank(),
+                                cardTokenRequest.getClientKey(),
+                                cardTokenRequest.isInstalment(),
+                                cardTokenRequest.getFormattedInstalmentTerm());
+                    } else {
+                        observable = apiInterface.getTokenTwoClick(
+                                cardTokenRequest.getCardCVV(),
+                                cardTokenRequest.getSavedTokenId(),
+                                cardTokenRequest.isTwoClick(),
+                                cardTokenRequest.isSecure(),
+                                cardTokenRequest.getGrossAmount(),
+                                cardTokenRequest.getBank(),
+                                cardTokenRequest.getClientKey());
+                    }
+
+
                 } else {
-                    observable = apiInterface.get3DSTokenOffers(cardTokenRequest.getCardNumber(),
-                            cardTokenRequest.getCardCVV(),
-                            cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
-                                    .getCardExpiryYear(),
-                            cardTokenRequest.getClientKey(),
-                            cardTokenRequest.getBank(),
-                            cardTokenRequest.isSecure(),
-                            cardTokenRequest.isTwoClick(),
-                            cardTokenRequest.getGrossAmount(),
-                            cardTokenRequest.isInstalment(),
-                            cardTokenRequest.getFormattedInstalmentTerm());
+
+                    if (cardTokenRequest.isInstalment()) {
+                        observable = apiInterface.get3DSTokenInstalmentOffers(cardTokenRequest.getCardNumber(),
+                                cardTokenRequest.getCardCVV(),
+                                cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
+                                        .getCardExpiryYear(),
+                                cardTokenRequest.getClientKey(),
+                                cardTokenRequest.getBank(),
+                                cardTokenRequest.isSecure(),
+                                cardTokenRequest.isTwoClick(),
+                                cardTokenRequest.getGrossAmount(),
+                                cardTokenRequest.isInstalment(),
+                                cardTokenRequest.getFormattedInstalmentTerm());
+                    } else {
+                        observable = apiInterface.get3DSToken(cardTokenRequest.getCardNumber(),
+                                cardTokenRequest.getCardCVV(),
+                                cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
+                                        .getCardExpiryYear(),
+                                cardTokenRequest.getClientKey(),
+                                cardTokenRequest.getBank(),
+                                cardTokenRequest.isSecure(),
+                                cardTokenRequest.isTwoClick(),
+                                cardTokenRequest.getGrossAmount());
+                    }
+
                 }
 
                 subscription = observable.subscribeOn(Schedulers

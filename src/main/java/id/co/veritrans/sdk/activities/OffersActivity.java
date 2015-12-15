@@ -252,14 +252,31 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
             if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
                     (Constants.CARD_CLICK_TYPE_ONE_CLICK) &&
                     !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
-                cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
-                        cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved(),
-                        cardTokenRequest.getFormattedInstalmentTerm(), cardTokenRequest.getBins());
+                if (cardTokenRequest.isInstalment()) {
+                    cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
+                            cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved(),
+                            cardTokenRequest.getFormattedInstalmentTerm(), cardTokenRequest.getBins());
+                } else {
+                    cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
+                            cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved());
+                    cardPaymentDetails.setBinsArray(cardTokenRequest.getBins());
+                }
+
             } else if (tokenDetailsResponse != null) {
-                Logger.i("tokenDetailsResponse.getTokenId():" + tokenDetailsResponse.getTokenId());
-                cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
-                        tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved(),
-                        cardTokenRequest.getFormattedInstalmentTerm(), cardTokenRequest.getBins());
+
+                if (cardTokenRequest.isInstalment()) {
+                    Logger.i("tokenDetailsResponse.getTokenId():" + tokenDetailsResponse.getTokenId());
+                    cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
+                            tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved(),
+                            cardTokenRequest.getFormattedInstalmentTerm(), cardTokenRequest.getBins());
+                } else {
+                    Logger.i("tokenDetailsResponse.getTokenId():" + tokenDetailsResponse.getTokenId());
+                    cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
+                            tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved());
+                    cardPaymentDetails.setBinsArray(cardTokenRequest.getBins());
+                }
+
+
             } else {
                 SdkUtil.hideProgressDialog();
                 processingLayout.setVisibility(View.GONE);

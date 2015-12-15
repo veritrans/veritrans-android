@@ -179,7 +179,7 @@ public interface VeritranceApiInterface {
 
 
     /**
-     * For offers get token
+     * For instalment offers get token
      *
      * @param cardCVV
      * @param tokenId
@@ -194,7 +194,7 @@ public interface VeritranceApiInterface {
      */
 
     @GET("/token/")
-    Observable<TokenDetailsResponse> getTokenOfferTwoClick(
+    Observable<TokenDetailsResponse> getTokenInstalmentOfferTwoClick(
             @Query("card_cvv") int cardCVV,
             @Query("token_id") String tokenId,
             @Query("two_click") boolean twoClick,
@@ -207,7 +207,7 @@ public interface VeritranceApiInterface {
     );
 
     /***
-     * Get offers 3ds token
+     * Get instalment offers 3ds token
      *
      * @param cardNumber
      * @param cardCVV
@@ -222,18 +222,18 @@ public interface VeritranceApiInterface {
      */
 
     @GET("/token/")
-    Observable<TokenDetailsResponse> get3DSTokenOffers(@Query("card_number") String cardNumber,
-                                                       @Query("card_cvv") int cardCVV,
-                                                       @Query("card_exp_month") int cardExpiryMonth,
-                                                       @Query("card_exp_year") int cardExpiryYear,
-                                                       @Query("client_key") String clientKey,
-                                                       @Query("bank") String bank,
-                                                       @Query("secure") boolean secure,
-                                                       @Query("two_click") boolean twoClick,
-                                                       @Query("gross_amount") double grossAmount,
-                                                       @Query("installment") boolean instalment,
-                                                       @Query("installment_term") String
-                                                               instalmentTerm
+    Observable<TokenDetailsResponse> get3DSTokenInstalmentOffers(@Query("card_number") String cardNumber,
+                                                                 @Query("card_cvv") int cardCVV,
+                                                                 @Query("card_exp_month") int cardExpiryMonth,
+                                                                 @Query("card_exp_year") int cardExpiryYear,
+                                                                 @Query("client_key") String clientKey,
+                                                                 @Query("bank") String bank,
+                                                                 @Query("secure") boolean secure,
+                                                                 @Query("two_click") boolean twoClick,
+                                                                 @Query("gross_amount") double grossAmount,
+                                                                 @Query("installment") boolean instalment,
+                                                                 @Query("installment_term") String
+                                                                         instalmentTerm
     );
 
 }
