@@ -671,6 +671,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
             if (!((OffersActivity) getActivity()).offersListModels.get(offerPosition).getBins()
                     .isEmpty()) {
 
+                bins.clear();
                 bins.addAll(((OffersActivity) getActivity()).offersListModels.get(offerPosition)
                         .getBins());
 
