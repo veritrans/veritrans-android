@@ -143,6 +143,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_width="@dimen/btn_height"
                 android:layout_height="@dimen/btn_height"
+                android:visibility="gone"
                 android:textColor="@android:color/white"/>
            <!-- <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btn_add_card"
@@ -156,9 +157,9 @@
 
             <Button
                 android:id="@+id/btn_pay_now"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_height"
+                android:layout_height="@dimen/fifty_six_dp"
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/blue_button_selector"
                 android:text="@string/pay_now"

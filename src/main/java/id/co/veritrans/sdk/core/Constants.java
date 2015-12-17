@@ -110,7 +110,7 @@ public class Constants {
 
     public static final String WEBURL = "weburl";
 
-    public static final String BANK_NAME = "bni";
+    //public static final String BANK_NAME = "bni";
 
     /**
      * When failed to create api request, probably because of no network connection.

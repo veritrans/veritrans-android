@@ -1,16 +1,16 @@
 package id.co.veritrans.sdk.models;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
- *
  * model class to hold information about get Token api call.
  * it contains  token id, redirect url (if any) etc.
- *
+ * <p/>
  * Created by shivam on 10/26/15.
  */
 public class TokenDetailsResponse {
-
 
     /**
      * statusMessage : OK, success request new token
@@ -21,9 +21,10 @@ public class TokenDetailsResponse {
      * .id/v2/token/redirect/481111-1114-0452c0cb-3199-4081-82ba-2e05b378c0ca
      */
 
-
     @SerializedName("status_message")
     private String statusMessage;
+
+    @SerializedName("bank")
     private String bank;
 
     @SerializedName("status_code")
@@ -44,7 +45,7 @@ public class TokenDetailsResponse {
     }
 
     public String getBank() {
-        return bank;
+        return TextUtils.isEmpty(bank) ? "" : bank;
     }
 
     public void setBank(String bank) {

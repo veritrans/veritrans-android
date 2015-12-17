@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:orientation="vertical"
+        android:id="@+id/credit_card_holder"
         android:paddingTop="@dimen/sixteen_dp"
 
         >
@@ -58,11 +59,18 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/sixteen_dp"
         >
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_add_card"
+      <!--  <id.co.veritrans.sdk.widgets.MorphingButton
+            android:id="@+id/btnMorph1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_width="@dimen/btn_height"
             android:layout_height="@dimen/btn_height"
+            android:visibility="gone"
+            android:textColor="@android:color/white"/>-->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_add_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:borderWidth="0dp"
             app:elevation="0dp"
             android:layout_alignParentBottom="true"

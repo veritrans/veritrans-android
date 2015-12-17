@@ -7,6 +7,7 @@ package id.co.veritrans.sdk.utilities;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -186,7 +187,7 @@ public class Utils {
 
     public static String getFormattedAmount(double amount) {
         try {
-            return new DecimalFormat("#,###").format(amount);
+            return new DecimalFormat("#.###").format(amount);
         } catch (NumberFormatException e) {
             return "" + amount;
         } catch (NullPointerException e) {
@@ -300,11 +301,13 @@ public class Utils {
     public static String getFormatedAmount(int amount) {
         String amountString;
         double amountDouble = Double.parseDouble(""+amount);
-        DecimalFormat formatter = new DecimalFormat("#,###");
+        DecimalFormat formatter = new DecimalFormat("#.###");
         amountString = formatter.format(amountDouble);
         Logger.i("Amount:" + amountString);
 
         return amountString;
     }
-
+    public static int dpToPx(int dp){
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
+    }
 }

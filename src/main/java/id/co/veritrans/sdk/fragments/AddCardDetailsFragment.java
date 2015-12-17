@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.fragments;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.BankDetail;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.UserDetail;
+import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.MorphingButton;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
@@ -100,7 +102,7 @@ public class AddCardDetailsFragment extends Fragment {
             e.printStackTrace();
         }
         bindViews(view);
-        morphingAnimation(view);
+       // morphingAnimation(view);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -113,7 +115,7 @@ public class AddCardDetailsFragment extends Fragment {
         questionImg = (ImageView) view.findViewById(R.id.image_question);
         questionSaveCardImg = (ImageView) view.findViewById(R.id.image_question_save_card);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
-        formLayout.setAlpha(0);
+        //formLayout.setAlpha(0);
         etCardNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -494,35 +496,57 @@ public class AddCardDetailsFragment extends Fragment {
     MorphingButton btnMorph;
     private void morphingAnimation(View view){
         ObjectAnimator alpha1=ObjectAnimator.ofFloat(formLayout, "alpha", 0, 1f);
-        alpha1.setDuration(100);
+        alpha1.setDuration(600);
+        alpha1.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                payNowBtn.setVisibility(View.VISIBLE);
+                btnMorph.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
         alpha1.start();
         btnMorph = (MorphingButton) view.findViewById(R.id.btnMorph1);
         MorphingButton.Params circle = morphCicle();
         btnMorph.morph(circle);
-
+        Logger.i("64dp:"+Utils.dpToPx(56));
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 MorphingButton.Params square = MorphingButton.Params.create()
-                        .duration(500)
+                        .duration(600)
                         .cornerRadius(dimen(R.dimen.mb_corner_radius_2))
                         .width(1000)
-                        .height(150)
+                        .height(Utils.dpToPx(56))
                         .colorPressed(color(R.color.colorAccent))
                         .color(color(R.color.colorAccent));
                 btnMorph.morph(square);
             }
-        },100);
+        },50);
 
 
     }
 
     public MorphingButton.Params morphCicle() {
         return MorphingButton.Params.create()
-                .cornerRadius(200)
-                .width(200)
-                .height(200)
+                .cornerRadius(Utils.dpToPx(56))
+                .width(Utils.dpToPx(56))
+                .height(Utils.dpToPx(56))
                 .colorPressed(color(R.color.colorAccent))
                 .color(color(R.color.colorAccent));
     }

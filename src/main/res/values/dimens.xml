@@ -46,5 +46,6 @@
     <dimen name="twenty_dp">20dp</dimen>
     <dimen name="mb_corner_radius_2">4dp</dimen>
     <dimen name="forty_dp">40dp</dimen>
+    <dimen name="fifty_six_dp">56dp</dimen>
 
 </resources>

@@ -1,5 +1,7 @@
 package id.co.veritrans.sdk.fragments;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -7,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
@@ -33,7 +37,8 @@ public class SavedCardFragment extends Fragment {
     private CardPagerAdapter cardPagerAdapter;
 
     private TextViewFont emptyCardsTextViewFont;
-
+    //private MorphingButton btnMorph;
+    private LinearLayout creditCardLayout;
     public SavedCardFragment() {
 
     }
@@ -74,17 +79,60 @@ public class SavedCardFragment extends Fragment {
         }*/
     }
 
-    private void bindViews(View view) {
+    private void bindViews(final View view) {
         emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
+        creditCardLayout = (LinearLayout)view.findViewById(R.id.credit_card_holder);
+        /*btnMorph = (MorphingButton) view.findViewById(R.id.btnMorph1);
+        MorphingButton.Params circle = morphCicle();
+        btnMorph.morph(circle);*/
         addCardBt = (FloatingActionButton) view.findViewById(R.id.btn_add_card);
         addCardBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
-                        .newInstance();
-                ((CreditDebitCardFlowActivity) getActivity()).replaceFragment
-                        (addCardDetailsFragment, true, false);
+                //btnMorph.setVisibility(View.VISIBLE);
+                ObjectAnimator alpha1=ObjectAnimator.ofFloat(creditCardLayout, "alpha", 1f, 0f);
+                alpha1.setDuration(300);
+                alpha1.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        //payNowBtn.setVisibility(View.VISIBLE);
+
+                        AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
+                                .newInstance();
+                        ((CreditDebitCardFlowActivity)getActivity()).replaceFragment
+                                (addCardDetailsFragment, true, false);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+                alpha1.start();
+                addCardBt.setVisibility(View.GONE);
+                ((CreditDebitCardFlowActivity)(getActivity())).morphingAnimation();
+            }
+        });
+
+        ViewTreeObserver vto = addCardBt.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                SavedCardFragment.this.addCardBt.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                //width = SavedCardFragment.this.addCardBt.getMeasuredWidth();
+                ((CreditDebitCardFlowActivity)getActivity()).setFabHeight(SavedCardFragment.this.addCardBt.getMeasuredHeight());
+
             }
         });
         float cardWidth = ((CreditDebitCardFlowActivity) getActivity()).getScreenWidth();
@@ -222,4 +270,7 @@ public class SavedCardFragment extends Fragment {
             });
         }
     }
+
+
+
 }

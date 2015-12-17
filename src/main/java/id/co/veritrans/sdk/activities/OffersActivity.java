@@ -342,7 +342,9 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
     //onSuccess for get token
     @Override
     public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {
-
+        if(tokenDetailsResponse!=null) {
+            cardTokenRequest.setBank(tokenDetailsResponse.getBank());
+        }
         this.tokenDetailsResponse = tokenDetailsResponse;
         Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
                 + veritransSDK.getTransactionRequest().isSecureCard());
@@ -436,7 +438,18 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
                 /*String formatedCardNumber = cardTokenRequest.getFormatedCardNumber();
                 formatedCardNumber = formatedCardNumber.replace("-","");
                 cardTokenRequest.setCardNumber(formatedCardNumber);*/
-                cardTokenRequest.setBank(Constants.BANK_NAME);
+                //cardTokenRequest.setBank(Constants.BANK_NAME);
+                if (bankDetails != null && !bankDetails.isEmpty()) {
+                    String firstSix = cardTokenRequest.getCardNumber().substring(0, 6);
+                    for (BankDetail bankDetail : bankDetails) {
+                        if (bankDetail.getBin().equalsIgnoreCase(firstSix)) {
+                            cardTokenRequest.setBank(bankDetail.getIssuing_bank());
+                            cardTokenRequest.setCardType(bankDetail.getCard_association());
+                            break;
+                        }
+                    }
+                }
+
                 if (cardTokenRequest.isSaved() && !TextUtils.isEmpty(cardPaymentResponse
                         .getSavedTokenId())) {
                     cardTokenRequest.setSavedTokenId(cardPaymentResponse.getSavedTokenId());
