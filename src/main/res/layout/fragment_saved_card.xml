@@ -61,8 +61,8 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/btn_add_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/btn_height"
+            android:layout_height="@dimen/btn_height"
             app:borderWidth="0dp"
             app:elevation="0dp"
             android:layout_alignParentBottom="true"

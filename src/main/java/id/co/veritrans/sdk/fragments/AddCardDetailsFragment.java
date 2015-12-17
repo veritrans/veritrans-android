@@ -1,7 +1,12 @@
 package id.co.veritrans.sdk.fragments;
 
+import android.animation.ObjectAnimator;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -13,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +34,7 @@ import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.BankDetail;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.UserDetail;
+import id.co.veritrans.sdk.widgets.MorphingButton;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
 public class AddCardDetailsFragment extends Fragment {
@@ -49,6 +56,7 @@ public class AddCardDetailsFragment extends Fragment {
     private UserDetail userDetail;
     private ArrayList<BankDetail> bankDetails;
     private String cardType = "";
+    private RelativeLayout formLayout;
 
     public AddCardDetailsFragment() {
     }
@@ -92,10 +100,12 @@ public class AddCardDetailsFragment extends Fragment {
             e.printStackTrace();
         }
         bindViews(view);
+        morphingAnimation(view);
         super.onViewCreated(view, savedInstanceState);
     }
 
     private void bindViews(View view) {
+        formLayout = (RelativeLayout)view.findViewById(R.id.form_layout);
         etCardNo = (EditText) view.findViewById(R.id.et_card_no);
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
@@ -103,6 +113,7 @@ public class AddCardDetailsFragment extends Fragment {
         questionImg = (ImageView) view.findViewById(R.id.image_question);
         questionSaveCardImg = (ImageView) view.findViewById(R.id.image_question_save_card);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
+        formLayout.setAlpha(0);
         etCardNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -479,5 +490,52 @@ public class AddCardDetailsFragment extends Fragment {
             cardType = "";
 
         }
+    }
+    MorphingButton btnMorph;
+    private void morphingAnimation(View view){
+        ObjectAnimator alpha1=ObjectAnimator.ofFloat(formLayout, "alpha", 0, 1f);
+        alpha1.setDuration(100);
+        alpha1.start();
+        btnMorph = (MorphingButton) view.findViewById(R.id.btnMorph1);
+        MorphingButton.Params circle = morphCicle();
+        btnMorph.morph(circle);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MorphingButton.Params square = MorphingButton.Params.create()
+                        .duration(500)
+                        .cornerRadius(dimen(R.dimen.mb_corner_radius_2))
+                        .width(1000)
+                        .height(150)
+                        .colorPressed(color(R.color.colorAccent))
+                        .color(color(R.color.colorAccent));
+                btnMorph.morph(square);
+            }
+        },100);
+
+
+    }
+
+    public MorphingButton.Params morphCicle() {
+        return MorphingButton.Params.create()
+                .cornerRadius(200)
+                .width(200)
+                .height(200)
+                .colorPressed(color(R.color.colorAccent))
+                .color(color(R.color.colorAccent));
+    }
+
+    public int dimen(@DimenRes int resId) {
+        return (int) getResources().getDimension(resId);
+    }
+
+    public int color(@ColorRes int resId) {
+        return getResources().getColor(resId);
+    }
+
+    public int integer(@IntegerRes int resId) {
+        return getResources().getInteger(resId);
     }
 }

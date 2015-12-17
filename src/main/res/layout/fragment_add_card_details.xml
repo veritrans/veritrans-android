@@ -1,15 +1,19 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
             android:background="@android:color/white"
             tools:context="id.co.veritrans.sdk.fragments.AddCardDetailsFragment">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/sixteen_dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/form_layout">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_card_no"
@@ -127,14 +131,32 @@
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
             />
+        </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_below="@id/cb_store_card">
+            <id.co.veritrans.sdk.widgets.MorphingButton
+                android:id="@+id/btnMorph1"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="@dimen/btn_height"
+                android:layout_height="@dimen/btn_height"
+                android:textColor="@android:color/white"/>
+           <!-- <android.support.design.widget.FloatingActionButton
+                android:id="@+id/btn_add_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:borderWidth="0dp"
+                app:elevation="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_plus_action"/>-->
 
             <Button
                 android:id="@+id/btn_pay_now"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_height"
                 android:layout_alignParentBottom="true"
