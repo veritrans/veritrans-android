@@ -283,5 +283,6 @@
 
     <string name="offer_applied">Offer Applied Successfully !</string>
     <string name="offer_not_applied">Offer is not applicable on this card</string>
+    <string name="no_offers">No offers found</string>
 
 </resources>

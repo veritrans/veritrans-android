@@ -1,6 +1,5 @@
 package id.co.veritrans.sdk.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,12 +32,8 @@ import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
-import id.co.veritrans.sdk.fragments.AddCardDetailsFragment;
-import id.co.veritrans.sdk.fragments.OffersAddCardDetailsFragment;
 import id.co.veritrans.sdk.fragments.OffersListFragment;
-import id.co.veritrans.sdk.fragments.OffersSavedCardFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
-import id.co.veritrans.sdk.fragments.SavedCardFragment;
 import id.co.veritrans.sdk.models.BankDetail;
 import id.co.veritrans.sdk.models.BankDetailArray;
 import id.co.veritrans.sdk.models.BillingAddress;
@@ -141,7 +136,8 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
 
         initializeView();
 //        setUpHomeFragment();
-
+        OffersListFragment offersListFragment = new OffersListFragment();
+        replaceFragment(offersListFragment, true, false);
         calculateScreenWidth();
         getCreditCards();
         readBankDetails();
@@ -494,13 +490,13 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
     }
 
     public void fetchCreditCards() {
-        SdkUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
+      //  SdkUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
         textViewTitleOffers.setText(getString(R.string.fetching_cards));
         //  processingLayout.setVisibility(View.VISIBLE);
         veritransSDK.getSavedCard(this, new SavedCardCallback() {
             @Override
             public void onSuccess(CardResponse cardResponse) {
-                SdkUtil.hideProgressDialog();
+              //  SdkUtil.hideProgressDialog();
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -537,8 +533,7 @@ public class OffersActivity extends AppCompatActivity implements TokenCallBack, 
 //                    replaceFragment(addCardDetailsFragment, true, false);
                 }
 
-                OffersListFragment offersListFragment = new OffersListFragment();
-                replaceFragment(offersListFragment, true, false);
+
             }
 
             @Override

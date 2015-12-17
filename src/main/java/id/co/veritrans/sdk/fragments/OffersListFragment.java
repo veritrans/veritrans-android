@@ -1,18 +1,14 @@
 package id.co.veritrans.sdk.fragments;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
+import android.widget.RelativeLayout;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.OffersActivity;
@@ -23,7 +19,6 @@ import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.GetOffersResponseModel;
-import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -34,10 +29,10 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     private TextViewFont textViewTitleOffers = null;
     private TextViewFont textViewTitleCardDetails = null;
     private TextViewFont textViewOfferName = null;
-
-    RecyclerView recyclerViewOffers = null;
+    private RecyclerView recyclerViewOffers = null;
     private OffersAdapter offersAdapter = null;
     private VeritransSDK veritransSDK = null;
+    private RelativeLayout emptyOffersLayout;
 
     @Nullable
     @Override
@@ -57,8 +52,8 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
                 .text_title_card_details);
         textViewOfferName = (TextViewFont) getActivity().findViewById(R.id.text_title_offer_name);
         setToolbar();
-
         recyclerViewOffers = (RecyclerView) view.findViewById(R.id.rv_offers);
+        emptyOffersLayout = (RelativeLayout)view.findViewById(R.id.empty_offers_layout);
     }
 
     private void setToolbar() {
@@ -68,7 +63,6 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
 
         textViewTitleOffers.setText(getResources().getString(R.string.offers));
     }
-
 
     /**
      * bind views , initializes adapter and set it to recycler view.
@@ -101,8 +95,9 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         if (getActivity() != null) {
             SdkUtil.showProgressDialog(getActivity(), getString(R.string.fetching_offers),
                     false);
-
+            showHideEmptyOffersMessage(false);
             if (veritransSDK != null) {
+
                 veritransSDK.getOffersList(getActivity(), new GetOffersCallback() {
                     @Override
                     public void onSuccess(GetOffersResponseModel getOffersResponseModel) {
@@ -111,7 +106,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
 
                         Logger.i("offers api successful" + getOffersResponseModel);
                         if (getOffersResponseModel != null && getOffersResponseModel.getOffers()
-                                != null) {
+                                != null ) {
                             ((OffersActivity) getActivity()).offersListModels.clear();
                             if (!getOffersResponseModel.getOffers().getBinpromo().isEmpty()) {
                                 ((OffersActivity) getActivity()).offersListModels.addAll(getOffersResponseModel.getOffers().getBinpromo());
@@ -124,6 +119,13 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
                             if (offersAdapter != null) {
                                 offersAdapter.notifyDataSetChanged();
                             }
+                            if(((OffersActivity) getActivity()).offersListModels.isEmpty()){
+                                showHideEmptyOffersMessage(true);
+                            } else {
+                                showHideEmptyOffersMessage(false);
+                            }
+                        } else {
+                            showHideEmptyOffersMessage(true);
                         }
                     }
 
@@ -131,9 +133,20 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
                     public void onFailure(String errorMessage, GetOffersResponseModel getOffersResponseModel) {
                         SdkUtil.hideProgressDialog();
                         Logger.i("offers fetching failed :" + errorMessage);
+                        //todo
+                        showHideEmptyOffersMessage(true);
                     }
                 });
             }
+        }
+    }
+
+    private void showHideEmptyOffersMessage(boolean showLayout) {
+        if(showLayout){
+            emptyOffersLayout.setVisibility(View.VISIBLE);
+
+        } else {
+            emptyOffersLayout.setVisibility(View.GONE);
         }
     }
 
@@ -142,8 +155,8 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         if (getActivity() != null) {
 
             try {
-            ((OffersActivity)getActivity()).setSelectedOffer(((OffersActivity) getActivity())
-                    .offersListModels.get(position));
+                ((OffersActivity) getActivity()).setSelectedOffer(((OffersActivity) getActivity())
+                        .offersListModels.get(position));
             } catch (ArrayIndexOutOfBoundsException array) {
                 array.printStackTrace();
             }

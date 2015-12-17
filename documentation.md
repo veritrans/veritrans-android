@@ -948,9 +948,11 @@ After registeration we get token from google services, we are sending this token
 
 **VeritransGcmListenerService** will catch the push sent by gcm. In push we will receive detaile of payments which are pending.
  
- ## Offers for credit cards
- ###  Get offers from merchant server
- * Call function **getOffersList** from  **VeritransSDK** class - pass activity and GetOffersCallback interface. 
+ ## Offers for credit cards  
+ ###  Get offers from merchant server  
+ * We have implemented offers for credit and debit card transaction.  
+ * The flow of credit and debit card is same with inclusion of offer functionality.  
+ * Call function **getOffersList** from  **VeritransSDK** class - pass **activity** and **GetOffersCallback** interface.  
  ``` 
   new GetOffersCallback() {
      @Override
@@ -962,76 +964,76 @@ After registeration we get token from google services, we are sending this token
          //handle error here   
     }
  }
- 
- ```
-* There are two types of offers  
-**1. Normal offers**  
-**2. Instalments**  
-
-Here is response format for offers
-```  
-{
-   "message": "success",
-   "offers": {
-       "binpromo": [
-           {
-               "offer name": "Get 10% cashback",
-               "bins": [
-                   "48111111",
-                   "3111",
-                   "5",
-                   "bni",
-                   "mandiri"
-               ]
-           }
-       ],
-       "installments": [
-            {
-               "offer name": "MasterCard promo",
-               "duration": [
-                   3,
-                   6,
-                   12
-               ],
-               "bins": [
-                   "48111111",
-                   "3111",
-                   "5",
-                   "bni",
-                   "mandiri"
-               ]
-           }
-       ]
-   }
-}
-```  
-* We can validate offers validity with comparing bins number with first characters of credit card.
-* If card number matches then offer valid for given card number
-* When we are applying the offer for normal flow make function  **getToken** from  **VeritransSdk** class as same as credit card flow.
-* After successful call do charge api call with bins string array as new param.
-* Here is code for setting the bins value.  
-``` 
-cardPaymentDetails.setBinsArray(cardTokenRequest.getBins());  
-```  
-  
-  
-
-For installments flow
-* Make api call for **get token** with 2 new params 
-```
- 'installment' : true, 
- 'installment_term' : 12,  
  ```  
- * In **cardTokenRequest** object set this 2 param
-```  
-//for installment flow
-cardTokenRequest.setInstalment(true); 
-cardTokenRequest.setInstalmentTerm(instalmentTerm);  
-```  
-* When we are doing **charge api** call we have to set 2 param   
-```
-'installment_term' : 12,
-'bins' : ["mandiri","48111111", "3111", "5"]
-```
-* You can find this code in **payUsingCard** function on OffersActivity in VeritransSDK.
-* If offer is valid then payment will take place else respective error is given.
+ * Like credit card flow get saved cards using **veritransSDK.getSavedCard()**. Pass activity and savedCardCallback object to function.  
+ * There are two types of offers  
+ **1. Normal offers**  
+ **2. Installments**  
+ Here is response format for offers  
+ ```  
+ {
+    "message": "success",
+    "offers": {
+        "binpromo": [
+            {
+                "offer name": "Get 10% cashback",
+                "bins": [
+                    "48111111",
+                    "3111",
+                    "5",
+                    "bni",
+                    "mandiri"
+                ]
+            }
+        ],
+        "installments": [
+             {
+                "offer name": "MasterCard promo",
+                "duration": [
+                    3,
+                    6,
+                    12
+                ],
+                "bins": [
+                    "48111111",
+                    "3111",
+                    "5",
+                    "bni",
+                    "mandiri"
+                ]
+            }
+        ]
+    }
+ }
+ ```  
+ * We can validate offers with comparing bin numbers with first characters of credit card.
+ * If card number matches then offer valid for given card number.
+ * When we are applying the offer for normal flow make function call **getToken** from  **VeritransSdk** class as same as credit card flow.
+ * Pass **activity**, **cardTokenRequest** and **tokenCallback** params to function.
+ * After successful call do charge api call with bins string array as new param. 
+ * Here is code for setting the bins value.  
+ ``` 
+ cardPaymentDetails.setBinsArray(cardTokenRequest.getBins());  
+ ```  
+ 
+   
+ 
+ ## For installments flow
+ * Make api call for **get token** with 2 new params 
+ ```
+  'installment' : true, 
+  'installment_term' : 12,  
+  ```  
+  * In **cardTokenRequest** object set this 2 param
+ ```  
+ //for installment flow
+ cardTokenRequest.setInstalment(true); 
+ cardTokenRequest.setInstalmentTerm(instalmentTerm);  
+ ```  
+ * When we are doing **charge api** call we have to set 2 param   
+ ```
+ 'installment_term' : 12,
+ 'bins' : ["mandiri","48111111", "3111", "5"]
+ ```
+ * You can find this code in **payUsingCard** function on OffersActivity in VeritransSDK.
+ * If offer is valid then payment will take place else respective error is given.
