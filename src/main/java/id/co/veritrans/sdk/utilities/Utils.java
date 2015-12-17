@@ -26,7 +26,6 @@ import java.util.Calendar;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 
-
 /**
  * Created by chetan on 14/05/15.
  */
@@ -48,7 +47,6 @@ public class Utils {
         return false;
     }
 
-
     public static void hideKeyboard(Context context, View editText) {
         try {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Context
@@ -61,7 +59,6 @@ public class Utils {
             e.printStackTrace();
         }
     }
-
 
     public static void CheckDwnloadStatus(DownloadManager downloadManager, Activity activity,
                                           long id) {
@@ -158,7 +155,6 @@ public class Utils {
         }
     }
 
-
     public static long startDownload(String uri, Activity activity, DownloadManager
             downloadManager, String directoryName) {
 
@@ -190,14 +186,13 @@ public class Utils {
 
     public static String getFormattedAmount(double amount) {
         try {
-            return new DecimalFormat("##,##,##0").format(amount);
+            return new DecimalFormat("#,###").format(amount);
         } catch (NumberFormatException e) {
             return "" + amount;
         } catch (NullPointerException e) {
             return "" + amount;
         }
     }
-
 
     public static String calculateBase64(final String data) {
 
@@ -216,7 +211,6 @@ public class Utils {
 
         return null;
     }
-
 
     //10 September 2015, 16:00
     public static String getValidityTime(String transactionTime) {
@@ -256,7 +250,6 @@ public class Utils {
 
         return transactionTime;
     }
-
 
     public static String getMonth(int monthValue) {
 
@@ -304,5 +297,14 @@ public class Utils {
 
     }
 
+    public static String getFormatedAmount(int amount) {
+        String amountString;
+        double amountDouble = Double.parseDouble(""+amount);
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        amountString = formatter.format(amountDouble);
+        Logger.i("Amount:" + amountString);
+
+        return amountString;
+    }
 
 }
