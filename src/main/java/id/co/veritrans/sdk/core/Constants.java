@@ -79,7 +79,7 @@ public class Constants {
     /**
      * indonesian rupiah currency symbol
      */
-    public static final String CURRENCY_PREFIX = "Rp";
+    public static final String CURRENCY_PREFIX = "Rp.";
 
     /**
      * When server returns empty response body for any api request.
@@ -196,4 +196,7 @@ public class Constants {
 
     public static final String CHALLENGE = "challenge";
     public static final String SUCCESS_CODE_202 = "202";
+    public static final long CARD_ANIMATION_TIME = 300;
+    public static final int FAB_HEIGHT_DP = 56;
+    public static final long FADE_IN_FORM_TIME = 300;
 }

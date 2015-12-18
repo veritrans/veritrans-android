@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:orientation="vertical"
+        android:id="@+id/credit_card_holder"
         android:paddingTop="@dimen/sixteen_dp"
 
         >
@@ -126,6 +127,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/sixteen_dp"
+        android:id="@+id/new_card_button_layout"
         >
 
         <android.support.design.widget.FloatingActionButton

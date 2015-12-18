@@ -1,6 +1,10 @@
 package id.co.veritrans.sdk.fragments;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -8,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
@@ -47,15 +52,13 @@ public class OffersSavedCardFragment extends Fragment {
     private VeritransSDK veritransSDK;
     private ArrayList<CardTokenRequest> creditCards;
     private CardPagerAdapter cardPagerAdapter;
-
     private TextViewFont emptyCardsTextViewFont;
-
     int currentPosition, totalPositions;
-
     private final String MONTH = "Month";
-
     private boolean isInstalment = false;
-
+    private LinearLayout creditCardLayout;
+    private RelativeLayout newCardButtonLayout;
+    private int creditCardLayoutHeight;
 
     public OffersSavedCardFragment() {
 
@@ -91,6 +94,7 @@ public class OffersSavedCardFragment extends Fragment {
         offerName = data.getString(OffersActivity.OFFER_NAME);
         offerType = data.getString(OffersActivity.OFFER_TYPE);
         bindViews(view);
+
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -170,6 +174,20 @@ public class OffersSavedCardFragment extends Fragment {
     }
 
     private void bindViews(View view) {
+        creditCardLayout = (LinearLayout)view.findViewById(R.id.credit_card_holder);
+        newCardButtonLayout = (RelativeLayout)view.findViewById(R.id.new_card_button_layout);
+        layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id
+                .layout_pay_with_instalments);
+       /* ViewTreeObserver vto = creditCardLayout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                OffersSavedCardFragment.this.creditCardLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                //width = SavedCardFragment.this.addCardBt.getMeasuredWidth();
+
+
+            }
+        });*/
 
         textViewTitleOffers = (TextViewFont) getActivity().findViewById(R.id.text_title);
         textViewTitleCardDetails = (TextViewFont) getActivity().findViewById(R.id
@@ -181,8 +199,7 @@ public class OffersSavedCardFragment extends Fragment {
         imageViewPlus = (ImageView) view.findViewById(R.id.img_plus);
         imageViewMinus = (ImageView) view.findViewById(R.id.img_minus);
         textViewInstalment = (TextViewFont) view.findViewById(R.id.text_instalment);
-        layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id
-                .layout_pay_with_instalments);
+
 
         if (offerType.equalsIgnoreCase(OffersActivity.OFFER_TYPE_INSTALMENTS)) {
             hideOrShowPayWithInstalment(true);
@@ -211,10 +228,7 @@ public class OffersSavedCardFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                OffersAddCardDetailsFragment offersAddCardDetailsFragment = OffersAddCardDetailsFragment
-                        .newInstance(offerPosition, offerName, offerType);
-                ((OffersActivity) getActivity()).replaceFragment
-                        (offersAddCardDetailsFragment, true, false);
+                hideLayouts();
             }
         });
         float cardWidth = ((OffersActivity) getActivity()).getScreenWidth();
@@ -380,4 +394,120 @@ public class OffersSavedCardFragment extends Fragment {
             });
         }
     }
+
+    public void hideLayouts() {
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
+                    .newInstance();
+            ((OffersActivity) getActivity()).replaceFragment
+                    (addCardDetailsFragment, true, false);
+            return;
+        }
+        ((OffersActivity)(getActivity())).morphingAnimation();
+        creditCardLayoutHeight = OffersSavedCardFragment.this.creditCardLayout.getMeasuredHeight();
+        Logger.i("creditCardLayoutHeight:" + creditCardLayoutHeight);
+
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(newCardButtonLayout, "alpha", 1f, 0f);
+        fadeOut.setDuration(Constants.CARD_ANIMATION_TIME);
+        ObjectAnimator fadeOutOffer = ObjectAnimator.ofFloat(layoutPayWithInstalment, "alpha", 1f, 0f);
+        fadeOut.setDuration(Constants.CARD_ANIMATION_TIME);
+        ObjectAnimator translateY = ObjectAnimator.ofFloat(creditCardLayout, "translationY",
+                -creditCardLayoutHeight);
+        translateY.setDuration(Constants.CARD_ANIMATION_TIME);
+        translateY.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                //payNowBtn.setVisibility(View.VISIBLE);
+                addCardBt.setVisibility(View.GONE);
+                /*AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
+                        .newInstance();
+                ((CreditDebitCardFlowActivity) getActivity()).replaceFragment
+                        (addCardDetailsFragment, true, false);*/
+                OffersAddCardDetailsFragment offersAddCardDetailsFragment = OffersAddCardDetailsFragment
+                        .newInstance(offerPosition, offerName, offerType);
+                ((OffersActivity) getActivity()).replaceFragment
+                        (offersAddCardDetailsFragment, true, false);
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        translateY.start();
+        fadeOut.start();
+        fadeOutOffer.start();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showLayouts();
+    }
+
+    public void showLayouts() {
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        ((OffersActivity) getActivity()).getBtnMorph().setVisibility(View.VISIBLE);
+        ((OffersActivity) getActivity()).morphToCircle((int) Constants.CARD_ANIMATION_TIME);
+        //creditCardLayoutHeight = SavedCardFragment.this.creditCardLayout.getMeasuredHeight();
+        Logger.i("creditCardLayoutHeight:" + creditCardLayoutHeight);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(newCardButtonLayout, "alpha", 0f, 1f);
+        fadeIn.setDuration(Constants.CARD_ANIMATION_TIME);
+        ObjectAnimator fadeInOffer = ObjectAnimator.ofFloat(layoutPayWithInstalment, "alpha", 0f, 1f);
+        fadeIn.setDuration(Constants.CARD_ANIMATION_TIME);
+        ObjectAnimator slideOut = ObjectAnimator.ofFloat(creditCardLayout, "translationY",
+                -creditCardLayoutHeight);
+        slideOut.setDuration(0);
+        slideOut.start();
+        ObjectAnimator slideIn = ObjectAnimator.ofFloat(creditCardLayout, "translationY",
+                0);
+        slideIn.setDuration(Constants.CARD_ANIMATION_TIME);
+        slideIn.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                //payNowBtn.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        slideIn.start();
+        fadeIn.start();
+        fadeInOffer.start();
+        addCardBt.setVisibility(View.VISIBLE);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((OffersActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
+            }
+        }, Constants.CARD_ANIMATION_TIME);
+    }
+
 }

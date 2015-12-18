@@ -1,12 +1,12 @@
 package id.co.veritrans.sdk.fragments;
 
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -26,9 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.activities.OffersActivity;
-import id.co.veritrans.sdk.adapters.OffersAdapter;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
@@ -36,7 +34,6 @@ import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.BankDetail;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.OffersListModel;
-import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
@@ -83,6 +80,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
 
     private final String MONTH = "Month";
     private boolean isInstalment = false;
+    private RelativeLayout formLayout;
 
     public ArrayList<String> getBins() {
         return bins;
@@ -128,6 +126,8 @@ public class OffersAddCardDetailsFragment extends Fragment {
         offerName = data.getString(OffersActivity.OFFER_NAME);
         offerType = data.getString(OffersActivity.OFFER_TYPE);
         initialiseView(view);
+        ((OffersActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
+        fadeIn();
     }
 
     private void initialiseView(View view) {
@@ -268,6 +268,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     }
 
     private void bindCreditCardView(View view) {
+        formLayout = (RelativeLayout) view.findViewById(R.id.form_layout);
         etCardNo = (EditText) view.findViewById(R.id.et_card_no);
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
@@ -693,7 +694,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
                             matchCard = matchCard.substring(0, binValueLength);
                         }
 
-                        if (matchCard.equalsIgnoreCase(binValue)) {
+                        if (!TextUtils.isEmpty(matchCard) && matchCard.equalsIgnoreCase(binValue)) {
                             Logger.i("matches");
                             isMatch = true;
                             break;
@@ -716,5 +717,33 @@ public class OffersAddCardDetailsFragment extends Fragment {
                 }
             }
         }
+    }
+
+    private void fadeIn() {
+        formLayout.setAlpha(0);
+        ObjectAnimator fadeInAnimation = ObjectAnimator.ofFloat(formLayout, "alpha", 0, 1f);
+        fadeInAnimation.setDuration(Constants.FADE_IN_FORM_TIME);
+        fadeInAnimation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                payNowBtn.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        fadeInAnimation.start();
     }
 }

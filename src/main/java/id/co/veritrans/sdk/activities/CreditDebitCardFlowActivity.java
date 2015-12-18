@@ -91,6 +91,14 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
     private int fabHeight;
     private MorphingButton btnMorph;
 
+    public MorphingButton getBtnMorph() {
+        return btnMorph;
+    }
+
+    /*public void setBtnMorph(MorphingButton btnMorph) {
+        this.btnMorph = btnMorph;
+    }*/
+
     public TextViewFont getTitleHeaderTextViewFont() {
         return titleHeaderTextViewFont;
     }
@@ -106,13 +114,17 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleHeaderTextViewFont = (TextViewFont) findViewById(R.id.title_header);
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
-        MorphingButton.Params circle = morphCicle();
-        btnMorph.morph(circle);
+        morphToCircle(0);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
         getCreditCards();
         readBankDetails();
+    }
+
+    public void morphToCircle(int time) {
+        MorphingButton.Params circle = morphCicle(time);
+        btnMorph.morph(circle);
     }
 
     @Override
@@ -658,10 +670,11 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
             @Override
             public void run() {
                 MorphingButton.Params square = MorphingButton.Params.create()
-                        .duration(600)
+                        .duration((int) Constants.CARD_ANIMATION_TIME)
                         .cornerRadius(dimen(R.dimen.mb_corner_radius_2))
-                        .width(1000)
-                        .height(Utils.dpToPx(56))
+                        .width((int) cardWidth)
+                        .height(Utils.dpToPx(Constants.FAB_HEIGHT_DP))
+                        .text(getString(R.string.pay_now))
                         .colorPressed(color(R.color.colorAccent))
                         .color(color(R.color.colorAccent));
                 btnMorph.morph(square);
@@ -671,13 +684,16 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements To
 
 
     }
-    public MorphingButton.Params morphCicle() {
+    public MorphingButton.Params morphCicle(int time) {
         return MorphingButton.Params.create()
-                .cornerRadius(Utils.dpToPx(56))
-                .width(Utils.dpToPx(56))
-                .height(Utils.dpToPx(56))
-                .colorPressed(color(R.color.colorAccent))
-                .color(color(R.color.colorAccent));
+                    .cornerRadius(Utils.dpToPx(Constants.FAB_HEIGHT_DP))
+                    .width(Utils.dpToPx(Constants.FAB_HEIGHT_DP))
+                    .height(Utils.dpToPx(Constants.FAB_HEIGHT_DP))
+                    .duration(time)
+                    .colorPressed(color(R.color.colorAccent))
+                    .color(color(R.color.colorAccent));
+
+
     }
 
     public int dimen(@DimenRes int resId) {

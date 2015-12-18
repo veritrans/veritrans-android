@@ -4,10 +4,6 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DimenRes;
-import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -35,8 +31,6 @@ import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.BankDetail;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.UserDetail;
-import id.co.veritrans.sdk.utilities.Utils;
-import id.co.veritrans.sdk.widgets.MorphingButton;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
 public class AddCardDetailsFragment extends Fragment {
@@ -77,7 +71,7 @@ public class AddCardDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((CreditDebitCardFlowActivity)getActivity()).getTitleHeaderTextViewFont().setText(getString(R.string.card_details));
+        ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextViewFont().setText(getString(R.string.card_details));
         veritransSDK = ((CreditDebitCardFlowActivity) getActivity()).getVeritransSDK();
         userDetail = ((CreditDebitCardFlowActivity) getActivity()).getUserDetail();
         bankDetails = ((CreditDebitCardFlowActivity) getActivity()).getBankDetails();
@@ -102,12 +96,13 @@ public class AddCardDetailsFragment extends Fragment {
             e.printStackTrace();
         }
         bindViews(view);
-       // morphingAnimation(view);
+        ((CreditDebitCardFlowActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
+        fadeIn();
         super.onViewCreated(view, savedInstanceState);
     }
 
     private void bindViews(View view) {
-        formLayout = (RelativeLayout)view.findViewById(R.id.form_layout);
+        formLayout = (RelativeLayout) view.findViewById(R.id.form_layout);
         etCardNo = (EditText) view.findViewById(R.id.et_card_no);
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
@@ -310,7 +305,8 @@ public class AddCardDetailsFragment extends Fragment {
             if (isPayButtonClick) {
                 SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_card_number));
                 // etCardNo.requestFocus();
-            } if(!etCardNo.hasFocus()) {
+            }
+            if (!etCardNo.hasFocus()) {
                 etCardNo.setError(getString(R.string.validation_message_card_number));
             }
             /*etExpiryDate.clearFocus();
@@ -320,7 +316,7 @@ public class AddCardDetailsFragment extends Fragment {
             /*etCardNo.requestFocus();
             etExpiryDate.clearFocus();
             etCvv.clearFocus();*/
-            if(!etCardNo.hasFocus()) {
+            if (!etCardNo.hasFocus()) {
                 etCardNo.setError(getString(R.string.validation_message_invalid_card_no));
             }
             if (isPayButtonClick) {
@@ -336,7 +332,8 @@ public class AddCardDetailsFragment extends Fragment {
             if (isPayButtonClick) {
                 SdkUtil.showSnackbar(getActivity(), getString(R.string
                         .validation_message_empty_expiry_date));
-            } if(!etExpiryDate.hasFocus()) {
+            }
+            if (!etExpiryDate.hasFocus()) {
                 etExpiryDate.setError(getString(R.string.validation_message_empty_expiry_date));
             }
             return false;
@@ -348,7 +345,7 @@ public class AddCardDetailsFragment extends Fragment {
                 SdkUtil.showSnackbar(getActivity(), getString(R.string
                         .validation_message_invalid_expiry_date));
             }
-            if(!etExpiryDate.hasFocus()) {
+            if (!etExpiryDate.hasFocus()) {
                 etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
             }
             return false;
@@ -360,7 +357,7 @@ public class AddCardDetailsFragment extends Fragment {
                 SdkUtil.showSnackbar(getActivity(), getString(R.string
                         .validation_message_invalid_expiry_date));
             }
-            if(!etExpiryDate.hasFocus()) {
+            if (!etExpiryDate.hasFocus()) {
                 etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
             }
             return false;
@@ -375,7 +372,7 @@ public class AddCardDetailsFragment extends Fragment {
                     SdkUtil.showSnackbar(getActivity(), getString(R.string
                             .validation_message_invalid_expiry_date));
                 }
-                if(!etExpiryDate.hasFocus()) {
+                if (!etExpiryDate.hasFocus()) {
                     etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 }
                 return false;
@@ -390,7 +387,7 @@ public class AddCardDetailsFragment extends Fragment {
                     SdkUtil.showSnackbar(getActivity(), getString(R.string
                             .validation_message_invalid_expiry_date));
                 }
-                if(!etExpiryDate.hasFocus()) {
+                if (!etExpiryDate.hasFocus()) {
                     etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 }
                 return false;
@@ -411,7 +408,7 @@ public class AddCardDetailsFragment extends Fragment {
                     SdkUtil.showSnackbar(getActivity(), getString(R.string
                             .validation_message_invalid_expiry_date));
                 }
-                if(!etExpiryDate.hasFocus()) {
+                if (!etExpiryDate.hasFocus()) {
                     etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 }
                 return false;
@@ -423,7 +420,7 @@ public class AddCardDetailsFragment extends Fragment {
                     SdkUtil.showSnackbar(getActivity(), getString(R.string
                             .validation_message_invalid_expiry_date));
                 }
-                if(!etExpiryDate.hasFocus()) {
+                if (!etExpiryDate.hasFocus()) {
                     etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 }
                 return false;
@@ -433,7 +430,8 @@ public class AddCardDetailsFragment extends Fragment {
                 etExpiryDate.clearFocus();*/
                 if (isPayButtonClick) {
                     SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_cvv));
-                } if(!etCvv.hasFocus()) {
+                }
+                if (!etCvv.hasFocus()) {
                     etCvv.setError(getString(R.string.validation_message_cvv));
                 }
                 questionImg.setVisibility(View.GONE);
@@ -447,7 +445,7 @@ public class AddCardDetailsFragment extends Fragment {
                         SdkUtil.showSnackbar(getActivity(), getString(R.string
                                 .validation_message_invalid_cvv));
                     }
-                    if(!etCvv.hasFocus()) {
+                    if (!etCvv.hasFocus()) {
                         etCvv.setError(getString(R.string.validation_message_invalid_cvv));
                     }
                     questionImg.setVisibility(View.GONE);
@@ -493,11 +491,11 @@ public class AddCardDetailsFragment extends Fragment {
 
         }
     }
-    MorphingButton btnMorph;
-    private void morphingAnimation(View view){
-        ObjectAnimator alpha1=ObjectAnimator.ofFloat(formLayout, "alpha", 0, 1f);
-        alpha1.setDuration(600);
-        alpha1.addListener(new Animator.AnimatorListener() {
+    private void fadeIn() {
+        formLayout.setAlpha(0);
+        ObjectAnimator fadeInAnimation = ObjectAnimator.ofFloat(formLayout, "alpha", 0, 1f);
+        fadeInAnimation.setDuration(Constants.FADE_IN_FORM_TIME);
+        fadeInAnimation.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -506,7 +504,6 @@ public class AddCardDetailsFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 payNowBtn.setVisibility(View.VISIBLE);
-                btnMorph.setVisibility(View.GONE);
             }
 
             @Override
@@ -519,47 +516,7 @@ public class AddCardDetailsFragment extends Fragment {
 
             }
         });
-        alpha1.start();
-        btnMorph = (MorphingButton) view.findViewById(R.id.btnMorph1);
-        MorphingButton.Params circle = morphCicle();
-        btnMorph.morph(circle);
-        Logger.i("64dp:"+Utils.dpToPx(56));
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                MorphingButton.Params square = MorphingButton.Params.create()
-                        .duration(600)
-                        .cornerRadius(dimen(R.dimen.mb_corner_radius_2))
-                        .width(1000)
-                        .height(Utils.dpToPx(56))
-                        .colorPressed(color(R.color.colorAccent))
-                        .color(color(R.color.colorAccent));
-                btnMorph.morph(square);
-            }
-        },50);
-
-
+        fadeInAnimation.start();
     }
 
-    public MorphingButton.Params morphCicle() {
-        return MorphingButton.Params.create()
-                .cornerRadius(Utils.dpToPx(56))
-                .width(Utils.dpToPx(56))
-                .height(Utils.dpToPx(56))
-                .colorPressed(color(R.color.colorAccent))
-                .color(color(R.color.colorAccent));
-    }
-
-    public int dimen(@DimenRes int resId) {
-        return (int) getResources().getDimension(resId);
-    }
-
-    public int color(@ColorRes int resId) {
-        return getResources().getColor(resId);
-    }
-
-    public int integer(@IntegerRes int resId) {
-        return getResources().getInteger(resId);
-    }
 }

@@ -58,6 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/sixteen_dp"
+        android:id="@+id/new_card_button_layout"
         >
       <!--  <id.co.veritrans.sdk.widgets.MorphingButton
             android:id="@+id/btnMorph1"
@@ -71,6 +72,8 @@
             android:id="@+id/btn_add_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:foregroundGravity="bottom|right"
             app:borderWidth="0dp"
             app:elevation="0dp"
             android:layout_alignParentBottom="true"

@@ -10,7 +10,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:padding="@dimen/sixteen_dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/form_layout">
 
         <LinearLayout
             android:id="@+id/layout_offer_status"
@@ -58,9 +62,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/layout_offer_status"
-            android:paddingBottom="@dimen/sixteen_dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
             >
 
             <android.support.design.widget.TextInputLayout
@@ -237,24 +238,25 @@
                 android:text="@string/save_card_message"
                 />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@+id/cb_store_card"
-                >
 
-                <Button
-                    android:id="@+id/btn_pay_now"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_height"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/blue_button_selector_with_disable"
-                    android:text="@string/pay_now"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    />
-            </RelativeLayout>
+        </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            >
+
+            <Button
+                android:id="@+id/btn_pay_now"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_height"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/blue_button_selector_with_disable"
+                android:text="@string/pay_now"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                />
         </RelativeLayout>
     </RelativeLayout>
 </ScrollView>
