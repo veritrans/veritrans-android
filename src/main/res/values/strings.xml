@@ -72,8 +72,8 @@
     <string name="validation_message_card_number">Please enter card number</string>
     <string name="validation_message_invalid_card_no">Please enter valid card number</string>
     <string name="validation_message_invalid_token_no">Challenge token must be 6 characters.</string>
-    <string name="validation_message_cvv">Please enter cvv.</string>
-    <string name="validation_message_invalid_cvv">Please enter valid cvv</string>
+    <string name="validation_message_cvv">Please enter CVV.</string>
+    <string name="validation_message_invalid_cvv">Please enter valid CVV</string>
     <string name="validation_message_empty_expiry_date">Please enter expiry date</string>
     <string name="message_cvv">CVV is 3 or 4 digit number printed at the back side of the card.</string>
 
@@ -84,7 +84,7 @@
     <string name="no_network_msg">Network not available! Please try later.</string>
     <string name="ok">OK</string>
 
-    <string name="enter_cvv">Enter cvv</string>
+    <string name="enter_cvv">Enter CVV</string>
     <string name="valid_thru">Valid Thru</string>
 
     <string name="zero_month">0 Month</string>

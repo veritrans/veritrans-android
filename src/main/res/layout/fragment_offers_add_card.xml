@@ -143,7 +143,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_cvv"
                             android:inputType="numberPassword"
-                            android:maxLength="3"
+                            android:maxLength="6"
                             android:paddingRight="32dp"
                             android:singleLine="true"/>
 
@@ -250,7 +250,7 @@
             <Button
                 android:id="@+id/btn_pay_now"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_height"
+                android:layout_height="@dimen/fifty_six_dp"
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/blue_button_selector_with_disable"
                 android:text="@string/pay_now"

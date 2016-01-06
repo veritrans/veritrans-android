@@ -159,8 +159,14 @@ class TransactionManager {
                                             .equalsIgnoreCase(Constants.SUCCESS_CODE_200)) {
                                         callBack.onSuccess(tokenDetailsResponse);
                                     } else {
-                                        callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,
-                                                tokenDetailsResponse);
+                                        if(tokenDetailsResponse!=null && !TextUtils.isEmpty(tokenDetailsResponse.getStatusMessage())){
+                                            callBack.onFailure(tokenDetailsResponse.getStatusMessage(),
+                                                    tokenDetailsResponse);
+                                        }else {
+                                            callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,
+                                                    tokenDetailsResponse);
+                                        }
+
                                     }
 
                                 } else {

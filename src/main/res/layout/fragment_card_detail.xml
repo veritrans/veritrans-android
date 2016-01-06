@@ -21,10 +21,10 @@
             android:id="@+id/text_bank_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
-            android:textAllCaps="true"
-            android:text="Bank name"
             android:layout_marginRight="@dimen/thirtytwo_dp"
+            android:gravity="left"
+            android:text="Bank name"
+            android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="@dimen/header_text_size"
             app:font="@string/font_open_sans_semibold"
@@ -34,23 +34,23 @@
             android:id="@+id/image_delete_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/twenty_four_dp"
-            android:paddingBottom="@dimen/twenty_four_dp"
+            android:layout_alignParentRight="true"
             android:clickable="true"
-            android:src="@drawable/delete"
-            android:layout_alignParentRight="true"/>
+            android:paddingBottom="@dimen/twenty_four_dp"
+            android:paddingLeft="@dimen/twenty_four_dp"
+            android:src="@drawable/delete"/>
         <id.co.veritrans.sdk.widgets.TextViewFont
             android:id="@+id/text_card_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_bank_name"
-            android:gravity="left"
             android:drawablePadding="@dimen/sixteen_dp"
+            android:gravity="left"
             android:text="XXXX XXXX XXXX 1234"
             android:textColor="@android:color/white"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_semibold"/>
-            />
+        />
         <LinearLayout android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_alignParentBottom="true"
@@ -149,25 +149,25 @@
             android:orientation="vertical"
             android:padding="@dimen/sixteen_dp"
             android:visibility="visible">
-        <id.co.veritrans.sdk.widgets.TextViewFont
-            android:id="@+id/tv_enter_cvv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:text="@string/enter_cvv"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/big_text"
-            app:font="@string/font_open_sans_regular"/>
-        <ImageView android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:paddingTop="@dimen/two_dp"
-                   android:id="@+id/image_questionmark"
-                   android:src="@drawable/card_question"
-                   android:paddingLeft="@dimen/eight_dp"
-                   android:layout_toRightOf="@id/tv_enter_cvv"
-                   android:clickable="true"/>
-            </RelativeLayout>
+            <id.co.veritrans.sdk.widgets.TextViewFont
+                android:id="@+id/tv_enter_cvv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="@string/enter_cvv"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/big_text"
+                app:font="@string/font_open_sans_regular"/>
+            <ImageView android:id="@+id/image_questionmark"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_toRightOf="@id/tv_enter_cvv"
+                       android:clickable="true"
+                       android:paddingLeft="@dimen/eight_dp"
+                       android:paddingTop="@dimen/two_dp"
+                       android:src="@drawable/card_question"/>
+        </RelativeLayout>
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -179,43 +179,44 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:cursorVisible="false"
-                android:inputType="phone"
-                android:maxLength="3"
-                android:textColor="@color/card_background_color"
+                android:gravity="center"
+                android:inputType="numberPassword"
+                android:maxLength="6"
+                android:textColor="@android:color/white"
+                android:textCursorDrawable="@null"
                 />
 
-            <ImageView
-                android:id="@+id/image_cvv2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:paddingRight="12dp"
-                android:src="@drawable/hollow_circle"
-                />
+            <!--   <ImageView
+                   android:id="@+id/image_cvv2"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerHorizontal="true"
+                   android:paddingRight="12dp"
+                   android:src="@drawable/hollow_circle"
+                   />
 
-            <ImageView
-                android:id="@+id/image_cvv1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/image_cvv2"
-                android:paddingRight="12dp"
-                android:src="@drawable/hollow_circle"
-                />
+               <ImageView
+                   android:id="@+id/image_cvv1"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_toLeftOf="@id/image_cvv2"
+                   android:paddingRight="12dp"
+                   android:src="@drawable/hollow_circle"
+                   />
 
-            <ImageView
-                android:id="@+id/image_cvv3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/image_cvv2"
-                android:src="@drawable/hollow_circle"
-                />
+               <ImageView
+                   android:id="@+id/image_cvv3"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_toRightOf="@id/image_cvv2"
+                   android:src="@drawable/hollow_circle"
+                   />-->
 
             <View
                 android:layout_width="100dp"
                 android:layout_height="1dp"
-                android:layout_below="@id/image_cvv2"
-                android:layout_marginTop="16dp"
+                android:layout_below="@id/et_cvv"
+                android:layout_marginTop="@dimen/two_dp"
                 android:background="@android:color/white"></View>
 
         </RelativeLayout>

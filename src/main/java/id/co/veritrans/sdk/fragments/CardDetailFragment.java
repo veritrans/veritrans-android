@@ -5,9 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
@@ -43,9 +39,9 @@ public class CardDetailFragment extends Fragment {
     private TextViewFont bankNameTv;
     private TextViewFont cardNoTv;
     private TextViewFont expTv;
-    private ImageView cvvCircle1;
+    /*private ImageView cvvCircle1;
     private ImageView cvvCircle2;
-    private ImageView cvvCircle3;
+    private ImageView cvvCircle3;*/
     private EditText cvvEt;
     private Button payNowBt;
     private ImageView deleteIv;
@@ -137,11 +133,11 @@ public class CardDetailFragment extends Fragment {
         bankNameTv = (TextViewFont) view.findViewById(R.id.text_bank_name);
         cardNoTv = (TextViewFont) view.findViewById(R.id.text_card_number);
         expTv = (TextViewFont) view.findViewById(R.id.text_exp_date);
-        cvvCircle1 = (ImageView) view.findViewById(R.id.image_cvv1);
+        /*cvvCircle1 = (ImageView) view.findViewById(R.id.image_cvv1);
         cvvCircle2 = (ImageView) view.findViewById(R.id.image_cvv2);
-        cvvCircle3 = (ImageView) view.findViewById(R.id.image_cvv3);
+        cvvCircle3 = (ImageView) view.findViewById(R.id.image_cvv3);*/
         cvvEt = (EditText) view.findViewById(R.id.et_cvv);
-        cvvEt.addTextChangedListener(new TextWatcher() {
+        /*cvvEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -179,7 +175,7 @@ public class CardDetailFragment extends Fragment {
                 }
 
             }
-        });
+        });*/
         bankNameTv.setText(cardDetail.getBank());
         cardNoTv.setText(cardDetail.getFormatedCardNumber());
         expTv.setText(cardDetail.getFormatedExpiryDate());
