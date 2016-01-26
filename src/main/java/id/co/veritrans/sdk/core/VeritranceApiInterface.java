@@ -25,6 +25,7 @@ import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import retrofit.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -176,6 +177,13 @@ public interface VeritranceApiInterface {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("/offers")
     Observable<GetOffersResponseModel> getOffers(@Header("x-auth") String auth);
+
+    // register credit card info
+    @GET("/card/register")
+    Observable<TransactionResponse> registerCard(@Query("card_number") String cardNumber,
+                                                 @Query("card_exp_month") int cardExpMonth,
+                                                 @Query("card_exp_year") int cardExpYear,
+                                                 @Query("client_key") String clientKey);
 
 
     /**

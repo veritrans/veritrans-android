@@ -47,6 +47,93 @@ class TransactionManager {
     private static Subscription deleteCardSubscription = null;
     private static Subscription offersSubscription = null;
 
+    public static void registerCard(Activity activity, CardTokenRequest cardTokenRequest, final
+    TransactionCallback callBack) {
+
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                Observable<TransactionResponse> observable = apiInterface.registerCard(
+                        cardTokenRequest.getCardNumber(),
+                        cardTokenRequest.getCardExpiryMonth(),
+                        cardTokenRequest.getCardExpiryYear(),
+                        cardTokenRequest.getClientKey()
+                );
+
+                subscription = observable.subscribeOn(Schedulers
+                        .io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<TransactionResponse>() {
+
+                            @Override
+                            public void onCompleted() {
+
+                                if (subscription != null && !subscription.isUnsubscribed()) {
+                                    subscription.unsubscribe();
+                                }
+
+                                releaseResources();
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+
+                                Logger.e("error while getting token : ", "" +
+                                        throwable.getMessage());
+                                callBack.onFailure(throwable.getMessage(), null);
+                                releaseResources();
+                            }
+
+                            @Override
+                            public void onNext(TransactionResponse transactionResponse) {
+
+                                releaseResources();
+
+                                if (transactionResponse != null) {
+
+                                    if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        displayResponse(transactionResponse);
+                                    }
+
+                                    if (transactionResponse.getStatusCode().trim()
+                                            .equalsIgnoreCase(Constants.SUCCESS_CODE_200)) {
+                                        callBack.onSuccess(transactionResponse);
+                                    } else {
+                                        if (transactionResponse != null && !TextUtils.isEmpty(transactionResponse.getStatusMessage())) {
+                                            callBack.onFailure(transactionResponse.getStatusMessage(),
+                                                    transactionResponse);
+                                        } else {
+                                            callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,
+                                                    transactionResponse);
+                                        }
+                                    }
+
+                                } else {
+                                    callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                    Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                }
+                            }
+                        });
+            } else {
+                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+
+        } else {
+            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
+        }
+
+    }
+
+
     /**
      * it will execute an api call to get token from server, and after completion of request it
      * will </p> call appropriate method using registered {@Link TokenCallBack}.
