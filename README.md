@@ -30,6 +30,7 @@ To use Veritrans SDK  in your android application perform following steps.
 ## 2 Payment Flow
 
 Veritrans SDK has 2 types of payment flows first is using default ui proived by sdk and second is using core flow.
+
 1) Payment flow  using default UI -
 
     In this flow sdk provides an UI to take required information from user to execute transaction.  
