@@ -4,6 +4,9 @@
 ### Description 
 Veritrans SDK is an android library project which supports to perform transaction using variouse payment methods supported by veritrans payment gateway. 
 
+Before using this SDK, please familiarize yourself with our [documentation](http://docs.veritrans.co.id/en/welcome/index.html)
+
+
 Veritrans SDK supports following payment methods -
 1) Credit/Debit - helps to perform transaction using credit/debit card with 1 and 2 click support.
 2) Mandiri ClickPay - 
