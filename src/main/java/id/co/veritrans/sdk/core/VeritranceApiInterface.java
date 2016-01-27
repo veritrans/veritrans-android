@@ -150,18 +150,27 @@ public interface VeritranceApiInterface {
                                                           @Body IndomaretRequestModel
                                                                   indomaretRequestModel);
 
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/creditcard")
+    Observable<CardResponse> registerCard(@Header("x-auth") String auth,
+                                          @Body TransactionResponse transactionResponse);
+
+
     //save cards or get cards
+    @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/")
     Observable<CardResponse> saveCard(@Header("x-auth") String auth,
                                       @Body CardTokenRequest cardTokenRequest);
 
     //save cards or get cards
+    @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("/card/")
     Observable<CardResponse> getCard(@Header("x-auth") String auth);
 
     //delete card
+    @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/delete")
     Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Body CardTokenRequest cardTokenRequest);

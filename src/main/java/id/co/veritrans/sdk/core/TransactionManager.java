@@ -2,6 +2,9 @@ package id.co.veritrans.sdk.core;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.google.gson.GsonBuilder;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.DeleteCardCallback;
@@ -29,6 +32,7 @@ import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -47,18 +51,19 @@ class TransactionManager {
     private static Subscription deleteCardSubscription = null;
     private static Subscription offersSubscription = null;
 
-    public static void registerCard(Activity activity, CardTokenRequest cardTokenRequest, final
+    public static void registerCard(final Activity activity, CardTokenRequest cardTokenRequest, final
     TransactionCallback callBack) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        final String merchantToken = veritransSDK.getMerchantToken(activity);
 
-        if (veritransSDK != null) {
+        if (veritransSDK != null && merchantToken != null) {
             VeritranceApiInterface apiInterface =
                     VeritransRestAdapter.getApiClient(activity, true);
 
             if (apiInterface != null) {
 
-                Observable<TransactionResponse> observable = apiInterface.registerCard(
+                final Observable<TransactionResponse> observable = apiInterface.registerCard(
                         cardTokenRequest.getCardNumber(),
                         cardTokenRequest.getCardExpiryMonth(),
                         cardTokenRequest.getCardExpiryYear(),
@@ -102,6 +107,33 @@ class TransactionManager {
 
                                     if (transactionResponse.getStatusCode().trim()
                                             .equalsIgnoreCase(Constants.SUCCESS_CODE_200)) {
+
+                                        VeritranceApiInterface apiInterface =
+                                                VeritransRestAdapter.getMerchantApiClient(activity, true);
+
+                                        if (apiInterface != null) {
+                                            Observable<CardResponse> registerCard = apiInterface
+                                                    .registerCard(merchantToken, transactionResponse);
+
+                                            cardSubscription = registerCard.subscribeOn(Schedulers.io())
+                                                    .observeOn(AndroidSchedulers.mainThread())
+                                                    .subscribe(new Observer<CardResponse>() {
+                                                        @Override
+                                                        public void onCompleted() {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onError(Throwable e) {
+                                                            Log.e("CardSubscriber", e.getMessage());
+                                                        }
+
+                                                        @Override
+                                                        public void onNext(CardResponse cardResponse) {
+                                                        }
+                                                    });
+
+                                        }
                                         callBack.onSuccess(transactionResponse);
                                     } else {
                                         if (transactionResponse != null && !TextUtils.isEmpty(transactionResponse.getStatusMessage())) {
