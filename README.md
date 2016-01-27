@@ -31,7 +31,7 @@ To use Veritrans SDK  in your android application perform following steps.
 
 Veritrans SDK has 2 types of payment flows first is using default ui proived by sdk and second is using core flow.
 
-1) Payment flow  using default UI -
+1) **- Payment flow  using default UI -**
 
     In this flow sdk provides an UI to take required information from user to execute transaction.  
     To perform transaction using this, follow the steps given below:  
@@ -60,7 +60,7 @@ Veritrans SDK has 2 types of payment flows first is using default ui proived by 
 This will start Payment flow if all information is valid.
 
 
-2) **Payment flow  using core structure -**
+2) **- Payment flow  using core structure -**
     
     In this flow we are assuming that you have created ui to take required information from user to execute transaction.  
     To perform transaction using core, follow the steps given below:  
@@ -80,7 +80,7 @@ This will start Payment flow if all information is valid.
         In UI Flow - Call startPaymentUiFlow() to see all payment methods.
         
         
-### Deciding which flow to use -
+### Deciding which flow to use 
 When payment method is already known and have all required information to execute transaction then go for core flow, else use Ui flow and let user choose the payment method.
 
 ### Making Payments
@@ -121,7 +121,7 @@ isSecure - set it to true for secure transaction.
 ```
 
 
-#### Get token**
+#### Get token
 ```
     veritransSDK.getToken(activity, cardTokenRequest, tokenCallBack);  
 ```
@@ -225,7 +225,7 @@ VeritransSDK.getVeritransSDK();
 
 ## 4 Important Informations
 
-### Common request information -
+### Common request information 
 Customer details , item details , billing and shipping  address these are common paramteres which requires in every type of transaction.  
 
 1) Set customer details -
@@ -239,7 +239,7 @@ transactionRequest.setCustomerDetails(customer);
 
 
 
-2) Set Item details -
+2) Set Item details 
 
 **ItemDetails** class holds information about item purchased by user. TransactionRequest takes an array list of item details. To set this in TransactionRequest use following code -
 
@@ -334,7 +334,7 @@ amount - amount to charge.
  <uses-permission android:name="android.permission.WAKE_LOCK" />
  <uses-permission android:name="<your app's package name>.permission.C2D_MESSAGE"/>  
  
-```
+ ```
  Add following receivers and services for receiving push notification and registeration purpose
  
  ```  
