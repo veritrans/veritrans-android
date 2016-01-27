@@ -14,6 +14,7 @@ import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
+import id.co.veritrans.sdk.models.RegisterCardResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionCancelResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
@@ -153,7 +154,7 @@ public interface VeritranceApiInterface {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/creditcard")
     Observable<CardResponse> registerCard(@Header("x-auth") String auth,
-                                          @Body TransactionResponse transactionResponse);
+                                          @Body RegisterCardResponse registerCardResponse);
 
 
     //save cards or get cards
@@ -189,7 +190,7 @@ public interface VeritranceApiInterface {
 
     // register credit card info
     @GET("/card/register")
-    Observable<TransactionResponse> registerCard(@Query("card_number") String cardNumber,
+    Observable<RegisterCardResponse> registerCard(@Query("card_number") String cardNumber,
                                                  @Query("card_exp_month") int cardExpMonth,
                                                  @Query("card_exp_year") int cardExpYear,
                                                  @Query("client_key") String clientKey);

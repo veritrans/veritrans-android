@@ -215,12 +215,13 @@ public class VeritransSDK {
      * @param cardTokenRequest
      * @param transactionCallback
      */
-    public void registerCard(Activity activity, CardTokenRequest cardTokenRequest, TransactionCallback transactionCallback) {
+    public void registerCard(Activity activity, CardTokenRequest cardTokenRequest,
+                             String userId, TransactionCallback transactionCallback) {
 
         if (activity != null && cardTokenRequest != null && transactionCallback != null) {
 
             isRunning = true;
-            TransactionManager.registerCard(activity, cardTokenRequest, transactionCallback);
+            TransactionManager.registerCard(activity, cardTokenRequest, userId, transactionCallback);
         } else {
             if (transactionCallback != null) {
                 transactionCallback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);

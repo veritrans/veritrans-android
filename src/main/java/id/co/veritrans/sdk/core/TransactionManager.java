@@ -27,6 +27,7 @@ import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
+import id.co.veritrans.sdk.models.RegisterCardResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
@@ -51,8 +52,8 @@ class TransactionManager {
     private static Subscription deleteCardSubscription = null;
     private static Subscription offersSubscription = null;
 
-    public static void registerCard(final Activity activity, CardTokenRequest cardTokenRequest, final
-    TransactionCallback callBack) {
+    public static void registerCard(final Activity activity, CardTokenRequest cardTokenRequest,
+                                    final String userId, final TransactionCallback callBack) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final String merchantToken = veritransSDK.getMerchantToken(activity);
@@ -63,7 +64,7 @@ class TransactionManager {
 
             if (apiInterface != null) {
 
-                final Observable<TransactionResponse> observable = apiInterface.registerCard(
+                final Observable<RegisterCardResponse> observable = apiInterface.registerCard(
                         cardTokenRequest.getCardNumber(),
                         cardTokenRequest.getCardExpiryMonth(),
                         cardTokenRequest.getCardExpiryYear(),
@@ -73,7 +74,7 @@ class TransactionManager {
                 subscription = observable.subscribeOn(Schedulers
                         .io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<TransactionResponse>() {
+                        .subscribe(new Observer<RegisterCardResponse>() {
 
                             @Override
                             public void onCompleted() {
@@ -95,25 +96,27 @@ class TransactionManager {
                             }
 
                             @Override
-                            public void onNext(TransactionResponse transactionResponse) {
+                            public void onNext(RegisterCardResponse registerCardResponse) {
 
                                 releaseResources();
 
-                                if (transactionResponse != null) {
+                                if (registerCardResponse != null) {
 
                                     if (veritransSDK != null && veritransSDK.isLogEnabled()) {
-                                        displayResponse(transactionResponse);
+                                        displayResponse(registerCardResponse);
                                     }
 
-                                    if (transactionResponse.getStatusCode().trim()
+                                    if (registerCardResponse.getStatusCode().trim()
                                             .equalsIgnoreCase(Constants.SUCCESS_CODE_200)) {
+
+                                        registerCardResponse.setUserId(userId);
 
                                         VeritranceApiInterface apiInterface =
                                                 VeritransRestAdapter.getMerchantApiClient(activity, true);
 
                                         if (apiInterface != null) {
                                             Observable<CardResponse> registerCard = apiInterface
-                                                    .registerCard(merchantToken, transactionResponse);
+                                                    .registerCard(merchantToken, registerCardResponse);
 
                                             cardSubscription = registerCard.subscribeOn(Schedulers.io())
                                                     .observeOn(AndroidSchedulers.mainThread())
@@ -134,14 +137,14 @@ class TransactionManager {
                                                     });
 
                                         }
-                                        callBack.onSuccess(transactionResponse);
+                                        callBack.onSuccess(registerCardResponse);
                                     } else {
-                                        if (transactionResponse != null && !TextUtils.isEmpty(transactionResponse.getStatusMessage())) {
-                                            callBack.onFailure(transactionResponse.getStatusMessage(),
-                                                    transactionResponse);
+                                        if (registerCardResponse != null && !TextUtils.isEmpty(registerCardResponse.getStatusMessage())) {
+                                            callBack.onFailure(registerCardResponse.getStatusMessage(),
+                                                    registerCardResponse);
                                         } else {
                                             callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,
-                                                    transactionResponse);
+                                                    registerCardResponse);
                                         }
                                     }
 
