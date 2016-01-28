@@ -1,10 +1,10 @@
 # **Veritrans SDK**
 
 ## 1 Overview
-### Description 
+### 1.1 Description 
 Veritrans SDK is an android library project which supports to perform transaction using variouse payment methods supported by veritrans payment gateway. 
 
-Before using this SDK, please familiarize yourself with our [documentation](http://docs.veritrans.co.id/en/welcome/index.html)
+**Before using this SDK, please familiarize yourself with our [documentation](http://docs.veritrans.co.id/en/welcome/index.html)**
 
 
 Veritrans SDK supports following payment methods -
@@ -27,10 +27,9 @@ Following are  configurable parameters of sdk that can be used while performing 
 2) Transaction details - contains payment information like amount, order Id, payment method etc.
 
 
-### Library Integration
-To use Veritrans SDK  in your android application perform following steps.
-
 ## 2 Payment Flow
+
+### 2.1 Types of Payment Flow
 
 Veritrans SDK has 2 types of payment flows first is using default ui proived by sdk and second is using core flow.
 
@@ -83,20 +82,20 @@ This will start Payment flow if all information is valid.
         In UI Flow - Call startPaymentUiFlow() to see all payment methods.
         
         
-### Deciding which flow to use 
+### 2.2 Deciding which flow to use 
 When payment method is already known and have all required information to execute transaction then go for core flow, else use Ui flow and let user choose the payment method.
 
-### Making Payments
+### 2.3 Making Payments
 In case of core flow use following information to do transactions -
 
 1) Credit/Debit - 
     For credit/debit card transaction follow the steps given bellow:
-    1) Add card type information in transaction request object.
-    2) Get token using getToken() of sdk. 
-    3) If secure flow is enabled then we will get redirect_url which will take user to web page for 3d secure validation. 
-    4) After successful validation do charge api call using paymentUsingCard().
+    *1) Add card type information in transaction request object.
+    *2) Get token using getToken() of sdk. 
+    *3) If secure flow is enabled then we will get redirect_url which will take user to web page for 3d secure validation. 
+    *4) After successful validation do charge api call using paymentUsingCard().
 
-#### Card Type details -
+#### 2.3.1 Card Type details -
 * There are **3 types** of flow for **card payments**.  
 **1. _One click_**  
 **2. _Two click_**  
@@ -124,7 +123,7 @@ isSecure - set it to true for secure transaction.
 ```
 
 
-#### Get token
+#### 2.3.2 Get token
 ```
     veritransSDK.getToken(activity, cardTokenRequest, tokenCallBack);  
 ```
@@ -161,7 +160,9 @@ After successful validation do charge api call.
 
 ## 3 SDK Instalation
 
-### Install Veritrans SDK library
+To use Veritrans SDK  in your android application perform following steps.
+
+### 3.1 Install Veritrans SDK library
 
 **Step 1 -**  Add the library as a gradle dependency:
        
@@ -197,7 +198,7 @@ you can simply declare it as dependency in  **build.gradle** file as follow
 
  That's it! now you are ready to use Veritrans Sdk in your application.
 
-### Initializing the library
+### 3.2 Initializing the library
 Once you've setup your build system or IDE to use the Veritrans sdk library. Veritrans SDK requires a merchant key and server key, to get these keys register to veritrans server at https://my.veritrans.co.id/register . 
 
 Now initialize sdk
@@ -228,7 +229,7 @@ VeritransSDK.getVeritransSDK();
 
 ## 4 Important Informations
 
-### Common request information 
+### 4.1 Common request information 
 Customer details , item details , billing and shipping  address these are common paramteres which requires in every type of transaction.  
 
 1) Set customer details -
@@ -318,7 +319,7 @@ amount - amount to charge.
 */
 ```
 
-### Implementation of GCM  
+### 4.2 Implementation of GCM  
  Please visit following link for installtion steps of GCM
  * https://developers.google.com/cloud-messaging/android/client  
  *  Create configuration file and add to your root of your project.
@@ -397,8 +398,8 @@ After registeration we get token from google services, we are sending this token
 
 **VeritransGcmListenerService** will catch the push sent by gcm. In push we will receive detaile of payments which are pending.
  
- ## Offers for credit cards  
- ###  Get offers from merchant server  
+### 4.3 Offers for credit cards  
+####  Get offers from merchant server  
  * We have implemented offers for credit and debit card transaction.  
  * The flow of credit and debit card is same with inclusion of offer functionality.  
  * Call function **getOffersList** from  **VeritransSDK** class - pass **activity** and **GetOffersCallback** interface.  
@@ -468,7 +469,7 @@ After registeration we get token from google services, we are sending this token
 
 ## 5 Payment Types
 
-### Charge using Credit/Debit card -
+### 5.1 Charge using Credit/Debit card -
 For doing charge api call we have to call following function from VeritransSDK.
 
      veritransSDK.paymentUsingCard(activity, cardTransfer, new
@@ -509,7 +510,7 @@ after successful transaction card information will be get saved if user permits.
 
 
 
-### Bank Transfer
+### 5.2 Bank Transfer
 
 ###### To perform transaction using bank transfer method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
@@ -546,7 +547,7 @@ shipping address etc.
 * Take appropriate action in onFailure() or  onSuccess() of TransactionCallback.
   
 
-### Mandiri bill payment
+### 5.3 Mandiri bill payment
 
 ###### To perform transaction using mandiri bill payment method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
@@ -586,7 +587,7 @@ shipping address etc.
 
 
 
-### Indosat Dompetku 
+### 5.4 Indosat Dompetku 
 
 ###### To perform transaction using indosat dompetku payment method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
@@ -631,7 +632,7 @@ shipping address etc.
 
 
 
-### Indomaret 
+### 5.5 Indomaret 
 
 ###### To perform transaction using indomaret payment method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
@@ -677,7 +678,7 @@ IndomaretRequestModel.CstoreEntity cstoreEntity = new IndomaretRequestModel.Csto
 
 
 
-### Mandiri ClickPay
+### 5.6 Mandiri ClickPay
 
 ###### To perform transaction using mandiri click pay payment method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
@@ -736,7 +737,7 @@ CHALLENGE_TOKEN -   Number received by customer's physical token after input1, i
 * Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
 
 
-### ePay BRI
+### 5.7 ePay BRI
 
 ###### To perform transaction using ePay BRI payment method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
@@ -881,7 +882,7 @@ Use this interface in your web view to get response back.
     }//end of WebviewActivity class
 ```
 
-### CIMB Clicks
+### 5.8 CIMB Clicks
 
 ###### To perform transaction using CIMB Clicks payment method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
@@ -919,7 +920,7 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 
 
-### BBM money - 
+### 5.9 BBM money - 
 
 ###### To perform transaction using BBM money app follow the steps given below:
 * Check Whether BBM moeny app is installed or not on device using following code : -
@@ -1008,7 +1009,7 @@ String  encodedUrl = SdkUtil.createEncodedUrl(PERMATA_VA,
 ```
 
 
-### Mandiri e-Cash - 
+### 5.10 Mandiri e-Cash - 
 
 ###### To perform transaction using Mandiri e-Cash payment method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
@@ -1045,7 +1046,7 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
         
 ```
 
-### Payment using Installments Flow
+### 5.11 Payment using Installments Flow
  * Make api call for **get token** with 2 new params 
  ```
   'installment' : true, 
