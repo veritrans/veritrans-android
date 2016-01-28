@@ -4,8 +4,8 @@
 ### 1.1 Description 
 Veritrans SDK is an android library project which supports to perform transaction using variouse payment methods supported by veritrans payment gateway. 
 
-**Before using this SDK, please familiarize yourself with our [documentation](http://docs.veritrans.co.id/en/welcome/index.html)**
-
+**Before using this SDK, please familiarize yourself with our [documentation](http://docs.veritrans.co.id/en/welcome/index.html) **
+Please keep in mind that VTAndroidLib a different library than the Veritrans SDK.
 
 Veritrans SDK supports following payment methods -
 1) Credit/Debit - helps to perform transaction using credit/debit card with 1 and 2 click support.
@@ -319,7 +319,60 @@ amount - amount to charge.
 */
 ```
 
-### 4.2 Implementation of GCM  
+## 4.2 Registering Credit Cards
+
+You can register credit cards to be used at a later time by using the method below on the VeritransSDK object. 
+
+```
+public static void registerCard(final Activity activity, CardTokenRequest cardTokenRequest,
+                                final String userId, final TransactionCallback callBack) {
+
+```
+
+Upon initializing the SDK, make sure you include your server address.
+
+```
+    VeritransBuilder veritransBuilder = new VeritransBuilder(activity, CLIENT_KEY, SERVER_ADDRESS);
+    mVeritransSDK = veritransBuilder.buildSDK();
+
+```
+
+Upon recieving a response from our server, the SDK will send the following GET request to SERVER_ADDRESS/creditcard
+
+```
+Header:
+
+    Content-Type: application/json
+    Accept: application/json
+
+Body request:
+
+    {
+      "masked_card": "xxxxxx-xxxx",
+      "saved_token_id": "xxxxxxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "status_code": "xxx",
+      "transaction_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "user_id": "xxxxxxx"
+    }
+
+All body response from server will be ignored.
+```
+The **saved_token_id** may then be used for a getToken() request similar to a **two click** token. After that, you can use the token for charging.
+
+```
+    CardTokenRequest cardTokenRequest = new CardTokenRequest();
+    cardTokenRequest.setIsSaved(true);
+    cardTokenRequest.setTwoClick(true);
+    cardTokenRequest.setSavedTokenId(SAVED_TOKEN_ID);
+    cardTokenRequest.setCardCVV(123);
+    cardTokenRequest.setClientKey(CLIENT_KEY);
+```
+
+
+
+
+
+### 4.3 Implementation of GCM  
  Please visit following link for installtion steps of GCM
  * https://developers.google.com/cloud-messaging/android/client  
  *  Create configuration file and add to your root of your project.
@@ -398,7 +451,7 @@ After registeration we get token from google services, we are sending this token
 
 **VeritransGcmListenerService** will catch the push sent by gcm. In push we will receive detaile of payments which are pending.
  
-### 4.3 Offers for credit cards  
+### 4.4 Offers for credit cards  
 ####  Get offers from merchant server  
  * We have implemented offers for credit and debit card transaction.  
  * The flow of credit and debit card is same with inclusion of offer functionality.  
