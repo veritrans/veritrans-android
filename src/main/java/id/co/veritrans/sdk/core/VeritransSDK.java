@@ -209,6 +209,30 @@ public class VeritransSDK {
     }
 
     /**
+     * It will execute an api request to register credit card info.
+     *
+     * @param activity         instance of an activity.
+     * @param cardTokenRequest
+     * @param transactionCallback
+     */
+    public void registerCard(Activity activity, CardTokenRequest cardTokenRequest,
+                             String userId, TransactionCallback transactionCallback) {
+
+        if (activity != null && cardTokenRequest != null && transactionCallback != null) {
+
+            isRunning = true;
+            TransactionManager.registerCard(activity, cardTokenRequest, userId, transactionCallback);
+        } else {
+            if (transactionCallback != null) {
+                transactionCallback.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            }
+            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+            isRunning = false;
+        }
+    }
+
+
+    /**
      * It will execute an transaction for permata bank .
      *
      * @param activity                  instance of an activity.

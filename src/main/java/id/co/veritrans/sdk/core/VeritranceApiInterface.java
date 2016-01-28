@@ -14,6 +14,7 @@ import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
+import id.co.veritrans.sdk.models.RegisterCardResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionCancelResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
@@ -25,6 +26,7 @@ import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import retrofit.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -149,18 +151,27 @@ public interface VeritranceApiInterface {
                                                           @Body IndomaretRequestModel
                                                                   indomaretRequestModel);
 
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/creditcard")
+    Observable<CardResponse> registerCard(@Header("x-auth") String auth,
+                                          @Body RegisterCardResponse registerCardResponse);
+
+
     //save cards or get cards
+    @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/")
     Observable<CardResponse> saveCard(@Header("x-auth") String auth,
                                       @Body CardTokenRequest cardTokenRequest);
 
     //save cards or get cards
+    @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("/card/")
     Observable<CardResponse> getCard(@Header("x-auth") String auth);
 
     //delete card
+    @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/delete")
     Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Body CardTokenRequest cardTokenRequest);
@@ -176,6 +187,13 @@ public interface VeritranceApiInterface {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("/offers")
     Observable<GetOffersResponseModel> getOffers(@Header("x-auth") String auth);
+
+    // register credit card info
+    @GET("/card/register")
+    Observable<RegisterCardResponse> registerCard(@Query("card_number") String cardNumber,
+                                                 @Query("card_exp_month") int cardExpMonth,
+                                                 @Query("card_exp_year") int cardExpYear,
+                                                 @Query("client_key") String clientKey);
 
 
     /**

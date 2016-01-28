@@ -2,6 +2,9 @@ package id.co.veritrans.sdk.core;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.google.gson.GsonBuilder;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.callbacks.DeleteCardCallback;
@@ -24,11 +27,13 @@ import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
+import id.co.veritrans.sdk.models.RegisterCardResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -46,6 +51,123 @@ class TransactionManager {
     private static Subscription cardSubscription = null;
     private static Subscription deleteCardSubscription = null;
     private static Subscription offersSubscription = null;
+
+    public static void registerCard(final Activity activity, CardTokenRequest cardTokenRequest,
+                                    final String userId, final TransactionCallback callBack) {
+
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        final String merchantToken = veritransSDK.getMerchantToken(activity);
+
+        if (veritransSDK != null && merchantToken != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getApiClient(activity, true);
+
+            if (apiInterface != null) {
+
+                final Observable<RegisterCardResponse> observable = apiInterface.registerCard(
+                        cardTokenRequest.getCardNumber(),
+                        cardTokenRequest.getCardExpiryMonth(),
+                        cardTokenRequest.getCardExpiryYear(),
+                        cardTokenRequest.getClientKey()
+                );
+
+                subscription = observable.subscribeOn(Schedulers
+                        .io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<RegisterCardResponse>() {
+
+                            @Override
+                            public void onCompleted() {
+
+                                if (subscription != null && !subscription.isUnsubscribed()) {
+                                    subscription.unsubscribe();
+                                }
+
+                                releaseResources();
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+
+                                Logger.e("error while getting token : ", "" +
+                                        throwable.getMessage());
+                                callBack.onFailure(throwable.getMessage(), null);
+                                releaseResources();
+                            }
+
+                            @Override
+                            public void onNext(RegisterCardResponse registerCardResponse) {
+
+                                releaseResources();
+
+                                if (registerCardResponse != null) {
+
+                                    if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        displayResponse(registerCardResponse);
+                                    }
+
+                                    if (registerCardResponse.getStatusCode().trim()
+                                            .equalsIgnoreCase(Constants.SUCCESS_CODE_200)) {
+
+                                        registerCardResponse.setUserId(userId);
+
+                                        VeritranceApiInterface apiInterface =
+                                                VeritransRestAdapter.getMerchantApiClient(activity, true);
+
+                                        if (apiInterface != null) {
+                                            Observable<CardResponse> registerCard = apiInterface
+                                                    .registerCard(merchantToken, registerCardResponse);
+
+                                            cardSubscription = registerCard.subscribeOn(Schedulers.io())
+                                                    .observeOn(AndroidSchedulers.mainThread())
+                                                    .subscribe(new Observer<CardResponse>() {
+                                                        @Override
+                                                        public void onCompleted() {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onError(Throwable e) {
+                                                            Log.e("CardSubscriber", e.getMessage());
+                                                        }
+
+                                                        @Override
+                                                        public void onNext(CardResponse cardResponse) {
+                                                        }
+                                                    });
+
+                                        }
+                                        callBack.onSuccess(registerCardResponse);
+                                    } else {
+                                        if (registerCardResponse != null && !TextUtils.isEmpty(registerCardResponse.getStatusMessage())) {
+                                            callBack.onFailure(registerCardResponse.getStatusMessage(),
+                                                    registerCardResponse);
+                                        } else {
+                                            callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE,
+                                                    registerCardResponse);
+                                        }
+                                    }
+
+                                } else {
+                                    callBack.onFailure(Constants.ERROR_EMPTY_RESPONSE, null);
+                                    Logger.e(Constants.ERROR_EMPTY_RESPONSE);
+                                }
+                            }
+                        });
+            } else {
+                callBack.onFailure(Constants.ERROR_UNABLE_TO_CONNECT, null);
+                Logger.e(Constants.ERROR_UNABLE_TO_CONNECT);
+                releaseResources();
+            }
+
+        } else {
+            callBack.onFailure(Constants.ERROR_SDK_IS_NOT_INITIALIZED, null);
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
+        }
+
+    }
+
 
     /**
      * it will execute an api call to get token from server, and after completion of request it
