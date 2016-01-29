@@ -4,7 +4,8 @@
 ### 1.1 Description 
 Veritrans SDK is an android library project which supports to perform transaction using variouse payment methods supported by veritrans payment gateway. 
 
-**Before using this SDK, please familiarize yourself with our [documentation](http://docs.veritrans.co.id/en/welcome/index.html) **
+**Before using this SDK, please familiarize yourself with our [documentation](http://docs.veritrans.co.id/en/welcome/index.html)**
+
 Please keep in mind that VTAndroidLib a different library than the Veritrans SDK.
 
 Veritrans SDK supports following payment methods -
@@ -33,7 +34,7 @@ Following are  configurable parameters of sdk that can be used while performing 
 
 Veritrans SDK has 2 types of payment flows first is using default ui proived by sdk and second is using core flow.
 
-1) **- Payment flow  using default UI -**
+1) **Payment flow  using default UI**
 
     In this flow sdk provides an UI to take required information from user to execute transaction.  
     To perform transaction using this, follow the steps given below:  
@@ -41,11 +42,12 @@ Veritrans SDK has 2 types of payment flows first is using default ui proived by 
      II) Register a **Broadcast Receiver** to handle payment response.  
      III) Call the startPaymentUiFlow().
      
-     **Note -** don't call any payment specific method in this flow, Sdk provides an UI to user with all available methods.
+**Note** don't call any payment specific method in this flow, Sdk provides an UI to user with all available methods.
 
     
-    here in this flow just set transaction request information to sdk and start payment flow using following code-
-    ```
+here in this flow just set transaction request information to sdk and start payment flow using following code-
+
+```
     if (transactionRequest != null && mVeritransSDK != null) {
 
                     // create transaction request information as shown above.
@@ -57,12 +59,12 @@ Veritrans SDK has 2 types of payment flows first is using default ui proived by 
 
                 }
         
-    ```
+```
 
 This will start Payment flow if all information is valid.
 
 
-2) **- Payment flow  using core structure -**
+2) **Payment flow  using core structure**
     
     In this flow we are assuming that you have created ui to take required information from user to execute transaction.  
     To perform transaction using core, follow the steps given below:  
@@ -70,7 +72,7 @@ This will start Payment flow if all information is valid.
      II) Implement  TransactionCallback  to handle payment response.  
      III) Call the implemented method of the desired payment mode.
      
-     **Note -** don't call  mVeritransSDK.startPaymentUiFlow(); for core.
+     **Note** don't call  mVeritransSDK.startPaymentUiFlow(); for core.
 
     The main difference between the core and ui flow is that
     I) Get payment response -  
@@ -321,11 +323,11 @@ amount - amount to charge.
 
 ## 4.2 Registering Credit Cards
 
-You can register credit cards to be used at a later time by using the method below on the VeritransSDK object. 
+You can register credit cards to be used at a later time by using the method registerCard below on the VeritransSDK object. 
 
 ```
 public static void registerCard(final Activity activity, CardTokenRequest cardTokenRequest,
-                                final String userId, final TransactionCallback callBack) {
+                                final String userId, final TransactionCallback callBack) 
 
 ```
 
