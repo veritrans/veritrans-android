@@ -41,9 +41,9 @@ Veritrans SDK has 2 types of payment flows first is using default ui proived by 
      I) Set transaction request information to sdk.  
      II) Register a **Broadcast Receiver** to handle payment response.  
      III) Call the startPaymentUiFlow().
+  
      
 **Note** don't call any payment specific method in this flow, Sdk provides an UI to user with all available methods.
-
     
 here in this flow just set transaction request information to sdk and start payment flow using following code-
 
