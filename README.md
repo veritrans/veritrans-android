@@ -171,11 +171,14 @@ To use Veritrans SDK  in your android application perform following steps.
 you can simply declare it as dependency in  **build.gradle** file as follow
 ```sh
        dependencies {
-         compile project(':veritranssdk')
+         compile 'id.co.veritrans:androidsdk:0.9.2@aar' // Add the android sdk as a dependency.
         }
 
-      - add name of the library in **setting.gradle**
-      include ':app', ':veritranssdk'
+    repositories {
+        jcenter()
+        maven { url "http://dl.bintray.com/pt-midtrans/maven" } // Add the midtrans repository into the list of repositories
+    }
+
 ```
 
 **Step 2 -** Add internet permissions to  **_AndroidManifest.xml_**  
