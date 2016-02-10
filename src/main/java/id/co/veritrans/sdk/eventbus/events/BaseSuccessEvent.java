@@ -1,9 +1,8 @@
 package id.co.veritrans.sdk.eventbus.events;
 
-import id.co.veritrans.sdk.models.TokenDetailsResponse;
-
 /**
- * Base VeritransBus Event class.
+ * Base success event class.
+ * @author rakawm
  */
 public abstract class BaseSuccessEvent<T> {
     private T response;

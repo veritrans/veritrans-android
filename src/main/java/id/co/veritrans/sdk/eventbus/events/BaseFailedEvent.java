@@ -1,7 +1,7 @@
 package id.co.veritrans.sdk.eventbus.events;
 
 /**
- * Base event for failed message.
+ * Base failed event class.
  * @author rakawm
  */
 public abstract class BaseFailedEvent<T> {
