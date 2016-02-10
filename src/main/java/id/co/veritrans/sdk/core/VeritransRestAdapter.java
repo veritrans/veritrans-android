@@ -1,20 +1,19 @@
 package id.co.veritrans.sdk.core;
 
-import android.app.Activity;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
+
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
 import java.util.concurrent.TimeUnit;
 
 import id.co.veritrans.sdk.BuildConfig;
-import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.utilities.Utils;
-import id.co.veritrans.sdk.widgets.VeritransDialog;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
@@ -30,14 +29,14 @@ class VeritransRestAdapter {
     /**
      * It will return instance of VeritranceApiInterface using that we can execute api calls.
      *
-     * @param activity                      reference of activity in which we want to show dialog.
      * @param showNetworkNotAvailableDialog boolean , whether to show network not available
      *                                      dialog or not.
      * @return
      */
-    public static VeritranceApiInterface getApiClient(final Activity activity,
-                                                      boolean showNetworkNotAvailableDialog) {
-        if (Utils.isNetworkAvailable(activity)) {
+    public static VeritranceApiInterface getApiClient(boolean showNetworkNotAvailableDialog) {
+        if (VeritransSDK.getVeritransSDK() != null
+                && VeritransSDK.getVeritransSDK().getContext() != null
+                && Utils.isNetworkAvailable(VeritransSDK.getVeritransSDK().getContext())) {
             if (veritranceApiInterface == null) {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
@@ -62,29 +61,17 @@ class VeritransRestAdapter {
             }
             return veritranceApiInterface;
         } else {
-            if (showNetworkNotAvailableDialog && activity != null) {
-                try {
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            VeritransDialog dialog = new VeritransDialog(activity,
-                                    activity.getString(R.string.no_network),
-                                    activity.getString(R.string.no_network_msg),
-                                    activity.getString(R.string.ok), null);
-                            dialog.show();
-                        }
-                    });
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+            if (showNetworkNotAvailableDialog) {
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
             }
         }
         return null;
     }
 
-    public static VeritranceApiInterface getMerchantApiClient(final Activity activity, boolean
-            showNetworkNotAvailableDialog) {
-        if (Utils.isNetworkAvailable(activity)) {
+    public static VeritranceApiInterface getMerchantApiClient(boolean showNetworkNotAvailableDialog) {
+        if (VeritransSDK.getVeritransSDK() != null
+                && VeritransSDK.getVeritransSDK().getContext() != null
+                && Utils.isNetworkAvailable(VeritransSDK.getVeritransSDK().getContext())) {
 
             if (merchantVeritranceApiInterface == null && VeritransSDK.getVeritransSDK() != null) {
 
@@ -116,21 +103,8 @@ class VeritransRestAdapter {
             return merchantVeritranceApiInterface;
 
         } else {
-            if (showNetworkNotAvailableDialog && activity != null) {
-                try {
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            VeritransDialog dialog = new VeritransDialog(activity,
-                                    activity.getString(R.string.no_network),
-                                    activity.getString(R.string.no_network_msg),
-                                    activity.getString(R.string.ok), null);
-                            dialog.show();
-                        }
-                    });
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+            if (showNetworkNotAvailableDialog) {
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
             }
         }
         return null;
