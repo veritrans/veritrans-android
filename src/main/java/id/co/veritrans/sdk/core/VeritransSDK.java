@@ -1,8 +1,6 @@
 package id.co.veritrans.sdk.core;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.text.TextUtils;
@@ -11,7 +9,6 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.models.BBMCallBackUrl;
@@ -171,14 +168,6 @@ public class VeritransSDK {
 
     public void setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
         this.selectedPaymentMethods = selectedPaymentMethods;
-    }
-
-    protected Activity getActivity() {
-        if (transactionRequest != null) {
-            return transactionRequest.getActivity();
-        }
-
-        return null;
     }
 
     /**
@@ -386,7 +375,7 @@ public class VeritransSDK {
 
         if (!isRunning) {
 
-            if (transactionRequest != null && transactionRequest.getActivity() != null) {
+            if (transactionRequest != null) {
                 this.transactionRequest = transactionRequest;
             } else {
                 Logger.e(ADD_TRANSACTION_DETAILS);
@@ -419,9 +408,9 @@ public class VeritransSDK {
 
                 transactionRequest.enableUi(true);
 
-                Intent userDetailsIntent = new Intent(transactionRequest.getActivity(),
-                        UserDetailsActivity.class);
-                transactionRequest.getActivity().startActivity(userDetailsIntent);
+                /*Intent userDetailsIntent = new Intent(transactionRequest.getActivity(),
+                        UserDetailsActivity.class);*/
+                //transactionRequest.getActivity().startActivity(userDetailsIntent);
 
             } else {
                 // start specific activity depending  on payment type.
