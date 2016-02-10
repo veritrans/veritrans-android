@@ -15,11 +15,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.callback.TransactionBusCallback;
+import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
+import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.fragments.BBMMoneyPaymentFragment;
 import id.co.veritrans.sdk.fragments.BBMMoneyPaymentStatusFragment;
 import id.co.veritrans.sdk.fragments.BankTransferFragment;
@@ -31,7 +36,7 @@ import id.co.veritrans.sdk.widgets.VeritransDialog;
 /**
  * Created by Ankit on 12/3/15.
  */
-public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickListener {
+public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -78,6 +83,17 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         initializeView();
         bindDataToView();
         setUpHomeFragment();
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
+        }
+        super.onDestroy();
     }
 
 
@@ -203,39 +219,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         SdkUtil.showProgressDialog(BBMMoneyActivity.this, false);
 
         //Execute transaction
-        veritransSDK.paymentUsingBBMMoney(BBMMoneyActivity.this, new
-                TransactionCallback() {
-
-                    @Override
-                    public void onSuccess(TransactionResponse transactionResponse) {
-
-                        SdkUtil.hideProgressDialog();
-
-                        if (transactionResponse != null) {
-                            BBMMoneyActivity.this.transactionResponse = transactionResponse;
-                            appBarLayout.setExpanded(true);
-                            setUpTransactionFragment(transactionResponse);
-                        } else {
-                            onBackPressed();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(String errorMessage, TransactionResponse
-                            transactionResponse) {
-
-                        try {
-                            BBMMoneyActivity.this.errorMessage = errorMessage;
-                            BBMMoneyActivity.this.transactionResponse = transactionResponse;
-
-                            SdkUtil.hideProgressDialog();
-                            SdkUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
-                        } catch (NullPointerException ex) {
-                            Logger.e("transaction error is " + errorMessage);
-                        }
-                    }
-                });
+        veritransSDK.paymentUsingBBMMoney();
     }
 
     private void setUpTransactionStatusFragment(final TransactionResponse transactionResponse) {
@@ -301,4 +285,45 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
+    @Override
+    public void onEvent(TransactionSuccessEvent event) {
+        SdkUtil.hideProgressDialog();
+
+        if (transactionResponse != null) {
+            BBMMoneyActivity.this.transactionResponse = event.getResponse();
+            appBarLayout.setExpanded(true);
+            setUpTransactionFragment(transactionResponse);
+        } else {
+            onBackPressed();
+        }
+    }
+
+    @Override
+    public void onEvent(TransactionFailedEvent event) {
+        try {
+            BBMMoneyActivity.this.errorMessage = event.getMessage();
+            BBMMoneyActivity.this.transactionResponse = event.getResponse();
+
+            SdkUtil.hideProgressDialog();
+            SdkUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+        } catch (NullPointerException ex) {
+            Logger.e("transaction error is " + errorMessage);
+        }
+    }
+
+    @Override
+    public void onEvent(NetworkUnavailableEvent event) {
+        BBMMoneyActivity.this.errorMessage = getString(R.string.no_network_msg);
+
+        SdkUtil.hideProgressDialog();
+        SdkUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+    }
+
+    @Override
+    public void onEvent(GeneralErrorEvent event) {
+        BBMMoneyActivity.this.errorMessage = event.getMessage();
+
+        SdkUtil.hideProgressDialog();
+        SdkUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+    }
 }

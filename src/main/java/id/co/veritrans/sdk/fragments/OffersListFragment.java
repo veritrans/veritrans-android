@@ -14,17 +14,22 @@ import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.adapters.OffersAdapter;
 import id.co.veritrans.sdk.callbacks.AnyOfferClickedListener;
-import id.co.veritrans.sdk.callbacks.GetOffersCallback;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.callback.GetOfferBusCallback;
+import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
+import id.co.veritrans.sdk.eventbus.events.GetOfferFailedEvent;
+import id.co.veritrans.sdk.eventbus.events.GetOfferSuccessEvent;
+import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.models.GetOffersResponseModel;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
  * Created by Ankit on 12/7/15.
  */
-public class OffersListFragment extends Fragment implements AnyOfferClickedListener {
+public class OffersListFragment extends Fragment implements AnyOfferClickedListener, GetOfferBusCallback {
 
     private TextViewFont textViewTitleOffers = null;
     private TextViewFont textViewTitleCardDetails = null;
@@ -33,6 +38,22 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     private OffersAdapter offersAdapter = null;
     private VeritransSDK veritransSDK = null;
     private RelativeLayout emptyOffersLayout;
+
+    @Override
+    public void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
+        }
+        super.onDestroy();
+    }
 
     @Nullable
     @Override
@@ -98,45 +119,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
             showHideEmptyOffersMessage(false);
             if (veritransSDK != null) {
 
-                veritransSDK.getOffersList(getActivity(), new GetOffersCallback() {
-                    @Override
-                    public void onSuccess(GetOffersResponseModel getOffersResponseModel) {
-
-                        SdkUtil.hideProgressDialog();
-
-                        Logger.i("offers api successful" + getOffersResponseModel);
-                        if (getOffersResponseModel != null && getOffersResponseModel.getOffers()
-                                != null ) {
-                            ((OffersActivity) getActivity()).offersListModels.clear();
-                            if (!getOffersResponseModel.getOffers().getBinpromo().isEmpty()) {
-                                ((OffersActivity) getActivity()).offersListModels.addAll(getOffersResponseModel.getOffers().getBinpromo());
-                            }
-
-                            if (!getOffersResponseModel.getOffers().getInstallments().isEmpty()) {
-                                ((OffersActivity) getActivity()).offersListModels.addAll(getOffersResponseModel.getOffers().getInstallments());
-                            }
-
-                            if (offersAdapter != null) {
-                                offersAdapter.notifyDataSetChanged();
-                            }
-                            if(((OffersActivity) getActivity()).offersListModels.isEmpty()){
-                                showHideEmptyOffersMessage(true);
-                            } else {
-                                showHideEmptyOffersMessage(false);
-                            }
-                        } else {
-                            showHideEmptyOffersMessage(true);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(String errorMessage, GetOffersResponseModel getOffersResponseModel) {
-                        SdkUtil.hideProgressDialog();
-                        Logger.i("offers fetching failed :" + errorMessage);
-                        //todo
-                        showHideEmptyOffersMessage(true);
-                    }
-                });
+                veritransSDK.getOffersList();
             }
         }
     }
@@ -173,5 +156,59 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
             }
 
         }
+    }
+
+    @Override
+    public void onEvent(GetOfferSuccessEvent event) {
+        GetOffersResponseModel getOffersResponseModel = event.getResponse();
+        SdkUtil.hideProgressDialog();
+
+        Logger.i("offers api successful" + getOffersResponseModel);
+        if (getOffersResponseModel != null && getOffersResponseModel.getOffers()
+                != null) {
+            ((OffersActivity) getActivity()).offersListModels.clear();
+            if (!getOffersResponseModel.getOffers().getBinpromo().isEmpty()) {
+                ((OffersActivity) getActivity()).offersListModels.addAll(getOffersResponseModel.getOffers().getBinpromo());
+            }
+
+            if (!getOffersResponseModel.getOffers().getInstallments().isEmpty()) {
+                ((OffersActivity) getActivity()).offersListModels.addAll(getOffersResponseModel.getOffers().getInstallments());
+            }
+
+            if (offersAdapter != null) {
+                offersAdapter.notifyDataSetChanged();
+            }
+            if (((OffersActivity) getActivity()).offersListModels.isEmpty()) {
+                showHideEmptyOffersMessage(true);
+            } else {
+                showHideEmptyOffersMessage(false);
+            }
+        } else {
+            showHideEmptyOffersMessage(true);
+        }
+    }
+
+    @Override
+    public void onEvent(GetOfferFailedEvent event) {
+        SdkUtil.hideProgressDialog();
+        Logger.i("offers fetching failed :" + event.getMessage());
+        //todo
+        showHideEmptyOffersMessage(true);
+    }
+
+    @Override
+    public void onEvent(NetworkUnavailableEvent event) {
+        SdkUtil.hideProgressDialog();
+        Logger.i("offers fetching failed :" + getString(R.string.no_network_msg));
+        //todo
+        showHideEmptyOffersMessage(true);
+    }
+
+    @Override
+    public void onEvent(GeneralErrorEvent event) {
+        SdkUtil.hideProgressDialog();
+        Logger.i("offers fetching failed :" + event.getMessage());
+        //todo
+        showHideEmptyOffersMessage(true);
     }
 }
