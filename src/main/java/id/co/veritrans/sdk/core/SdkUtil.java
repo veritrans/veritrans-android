@@ -79,12 +79,8 @@ public class SdkUtil {
      */
     public static boolean isPhoneNumberValid(String phoneNo) {
         if (!TextUtils.isEmpty(phoneNo)) {
-            if (phoneNo.length() == Constants.PHONE_NUMBER_LENGTH ||
-                    phoneNo.length() == Constants.PHONE_NUMBER_MAX_LENGTH) {
-                return true;
-            } else {
-                return false;
-            }
+            return phoneNo.length() == Constants.PHONE_NUMBER_LENGTH ||
+                    phoneNo.length() == Constants.PHONE_NUMBER_MAX_LENGTH;
         } else {
             return false;
         }
@@ -556,8 +552,7 @@ public class SdkUtil {
         CustomerDetails mCustomerDetails = null;
 
         try {
-            userDetail = (UserDetail) StorageDataHandler.readObject(request.getActivity()
-                            .getApplicationContext(),
+            userDetail = (UserDetail) StorageDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext(),
                     Constants.USER_DETAILS);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
@@ -580,8 +575,9 @@ public class SdkUtil {
                 }
 
             } else {
-                SdkUtil.showSnackbar(request.getActivity(), "User details not available.");
-                request.getActivity().finish();
+                Logger.e("User details not available.");
+                //SdkUtil.showSnackbar(VeritransSDK.getVeritransSDK().getContext(), "User details not available.");
+                //request.getActivity().finish();
             }
         } catch (ClassNotFoundException ex) {
             Logger.e("Error while fetching user details : " + ex.getMessage());
@@ -682,7 +678,7 @@ public class SdkUtil {
 
         StorageDataHandler storageDataHandler = new StorageDataHandler();
         try {
-            UserDetail userDetail = (UserDetail) storageDataHandler.readObject(context, Constants
+            UserDetail userDetail = (UserDetail) StorageDataHandler.readObject(context, Constants
                     .USER_DETAILS);
 
             return userDetail;

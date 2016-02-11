@@ -1,5 +1,7 @@
 package id.co.veritrans.sdk.activities;
 
+import com.google.gson.Gson;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,14 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.gson.Gson;
-
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.callback.TransactionBusCallback;
+import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
+import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.fragments.InstructionMandiriECashFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.models.DescriptionModel;
@@ -28,7 +33,7 @@ import id.co.veritrans.sdk.models.TransactionResponse;
 /**
  * Created by Ankit on 11/30/15.
  */
-public class MandiriECashActivity extends AppCompatActivity implements View.OnClickListener {
+public class MandiriECashActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
 
     private static final int PAYMENT_WEB_INTENT = 152;
     private InstructionMandiriECashFragment mandiriECashFragment = null;
@@ -57,6 +62,17 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
         }
         initializeViews();
         setUpFragment();
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
+        }
+        super.onDestroy();
     }
 
     private void initializeViews() {
@@ -104,36 +120,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
 
         DescriptionModel description = new DescriptionModel("Any Description");
 
-        mVeritransSDK.paymentUsingMandiriECash(MandiriECashActivity.this, description, new TransactionCallback() {
-            @Override
-            public void onSuccess(TransactionResponse transferResponse) {
-                SdkUtil.hideProgressDialog();
-
-                if (transferResponse != null &&
-                        !TextUtils.isEmpty(transferResponse.getRedirectUrl())) {
-                    MandiriECashActivity.this.transactionResponse = transferResponse;
-                    Intent intentPaymentWeb = new Intent(MandiriECashActivity.this, PaymentWebActivity.class);
-                    intentPaymentWeb.putExtra(Constants.WEBURL, transferResponse.getRedirectUrl());
-                    startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
-                } else {
-                    SdkUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string
-                            .empty_transaction_response));
-                }
-            }
-
-            @Override
-            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-
-                try {
-                    MandiriECashActivity.this.errorMessage = errorMessage;
-                    MandiriECashActivity.this.transactionResponse = transactionResponse;
-                    SdkUtil.hideProgressDialog();
-                    SdkUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
-                } catch (NullPointerException ex) {
-                    SdkUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string.empty_transaction_response));
-                }
-            }
-        });
+        mVeritransSDK.paymentUsingMandiriECash(description);
     }
 
 
@@ -192,6 +179,49 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
 
     public void setResultCode(int resultCode) {
         this.RESULT_CODE = resultCode;
+    }
+
+    @Override
+    public void onEvent(TransactionSuccessEvent event) {
+        SdkUtil.hideProgressDialog();
+
+        if (event.getResponse() != null &&
+                !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
+            MandiriECashActivity.this.transactionResponse = event.getResponse();
+            Intent intentPaymentWeb = new Intent(MandiriECashActivity.this, PaymentWebActivity.class);
+            intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
+            startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+        } else {
+            SdkUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string
+                    .empty_transaction_response));
+        }
+    }
+
+    @Override
+    public void onEvent(TransactionFailedEvent event) {
+        try {
+            MandiriECashActivity.this.errorMessage = event.getMessage();
+            MandiriECashActivity.this.transactionResponse = event.getResponse();
+
+            SdkUtil.hideProgressDialog();
+            SdkUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+        } catch (NullPointerException ex) {
+            SdkUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string.empty_transaction_response));
+        }
+    }
+
+    @Override
+    public void onEvent(NetworkUnavailableEvent event) {
+        MandiriECashActivity.this.errorMessage = getString(R.string.no_network_msg);
+        SdkUtil.hideProgressDialog();
+        SdkUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+    }
+
+    @Override
+    public void onEvent(GeneralErrorEvent event) {
+        MandiriECashActivity.this.errorMessage = event.getMessage();
+        SdkUtil.hideProgressDialog();
+        SdkUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
     }
 }
 

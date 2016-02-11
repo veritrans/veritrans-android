@@ -127,25 +127,28 @@ isSecure - set it to true for secure transaction.
 
 #### 2.3.2 Get token
 ```
-    veritransSDK.getToken(activity, cardTokenRequest, tokenCallBack);  
+    veritransSDK.getToken(cardTokenRequest, tokenCallBack);  
 ```
 
 ***CardTokenRequest*** class contains card details required for getting token.  
 
-##### TokenCallBack Interface
-It contains two methods onSuccess and onFailure -  
+##### TokenBusCallBack Interface
 
-    @Override  
-    public void onSuccess(TokenDetailsResponse tokenDetailsResponse) {  
-        // get called in case of success
-        //write your code here to save this token
-    }    
-    
-    @Override  
-    public void onFailure(String errorMessage, TokenDetailsResponse tokenDetailsResponse) {  
-        // handle error here
+It contains two methods onSuccess and onFailure.
+
+    @Override
+    public void onEvent(GetTokenSuccess event) {
+       // Success Event
+       TokenDetailsResponse response = event.getResponse();
     }
-    On success of get token api call, it will return token id and other parameters in TokenDetailsResponse. 
+    
+    @Override
+    public void onEvent(GetSuccessFailedEvent event) {
+        // Failed Event
+        String errorMessage = event.getMessage();
+    }
+    
+On success of get token api call, it will return token id and other parameters in `TokenDetailsResponse` in `event.getResponse()`. 
 
 If secure flow is available then it will return redirect_url which will take user to web page for 3d secure validation.
 
@@ -229,7 +232,62 @@ You can also access already created sdk instance using following static method -
 VeritransSDK.getVeritransSDK();
 ```
 
+## 3.3 Setup Event Bus
 
+#### 2.3.1 Using Event Bus
+
+This SDK using Event Bus implementation which don't require activity as a parameter.
+
+For default implementation please add this code blocks into `onCreate` and `onDestroy` method on your Activity/Fragment that needs to implement this SDK.
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if(VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
+        }
+        super.onDestroy();
+    }
+    
+Each API usage has its own `onEvent` interface to capture finished API access. Please implement one of this Event interface on Activity or Fragment that accessing the SDK.
+
+- `TokenBusCallback`
+- `GetCardBusCallback`
+- `SaveCardBusCallback`
+- `DeleteCardBusCallback`
+- `GetOfferBusCallback`
+- `TransactionBusCallback`
+
+This interface will implement 2 general error handler, success event and failed event.
+
+For example, `TransactionBusCallback` will implement these methods.
+
+    @Override
+    public void onEvent(NetworkUnavailableEvent event) {
+        //Network unavailable event implementation
+    }
+    
+    @Override
+    public void onEvent(GeneralErrorEvent event) {
+        //Generic error event implementation
+    }
+        
+    @Override
+    public void onEvent(TransactionSuccessEvent event) {
+        //Success event implementation
+    }
+    
+    @Override
+    public void onEvent(TransactionFailedEvent event) {
+        //Failed event implementation
+    }
 
 
 ## 4 Important Informations
@@ -314,11 +372,10 @@ Sdk will throw error message in case you missed some information right before st
 Create instance of **TransactionRequest** class. 
 ```
 TransactionRequest transactionRequest =
-                new TransactionRequest(activity, order id, amount);
+                new TransactionRequest(order id, amount);
 
 /*
 where -
-activity - instance of current activity class. 
 order id - unique order id for this transaction.
 amount - amount to charge.
 */
@@ -329,8 +386,7 @@ amount - amount to charge.
 You can register credit cards to be used at a later time by using the method registerCard below on the VeritransSDK object. 
 
 ```
-public static void registerCard(final Activity activity, CardTokenRequest cardTokenRequest,
-                                final String userId, final TransactionCallback callBack) 
+public static void registerCard(CardTokenRequest cardTokenRequest, final String userId) 
 
 ```
 
@@ -390,17 +446,17 @@ The **saved_token_id** may then be used for a getToken() request similar to a **
  ```
  apply plugin: 'com.google.gms.google-services'
  ```
-  Add following permissions to manifest file  
+  Add following permissions to manifest file
+    
  ```
  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
  <uses-permission android:name="android.permission.WAKE_LOCK" />
  <uses-permission android:name="<your app's package name>.permission.C2D_MESSAGE"/>  
- 
  ```
+ 
  Add following receivers and services for receiving push notification and registeration purpose
  
- ```  
- 
+ ```
  <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
@@ -432,8 +488,10 @@ The **saved_token_id** may then be used for a getToken() request similar to a **
             android:exported="false">
         </service>
  ```  
+ 
  * Now  start registeration service in first activity or application class. Check availability of GoogleApi in device.
  Here is code for checking availability of code
+ 
 ```
 private boolean checkPlayServices() {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
@@ -451,6 +509,7 @@ private boolean checkPlayServices() {
         return true;
     }
 ```  
+
 For registeration functionality you can refer RegistrationIntentService from sdk example app.
 After registeration we get token from google services, we are sending this token to merchant server.
 
@@ -460,21 +519,27 @@ After registeration we get token from google services, we are sending this token
 ####  Get offers from merchant server  
  * We have implemented offers for credit and debit card transaction.  
  * The flow of credit and debit card is same with inclusion of offer functionality.  
- * Call function **getOffersList** from  **VeritransSDK** class - pass **activity** and **GetOffersCallback** interface.  
- ``` 
-  new GetOffersCallback() {
-     @Override
-     public void onSuccess(GetOffersResponseModel getOffersResponseModel) {
-         //logic to populate offers
-     }
+ * Register Activity/Fragment into `VeritransBus` See: *Setup Event Bus*.
+ * Call function `getOffersList` from  `VeritransSDK` class.  
+ * Implement `GetOfferBusCallback`
+
+```  
     @Override
-    public void onFailure(String errorMessage, GetOffersResponseModel getOffersResponseModel) {
-         //handle error here   
+    public void onEvent(GetOfferSuccessEvent event) {
+        //Success implementation
+        GetOffersResponseModel response = event.getResponse();
     }
- }
- ```  
- * Like credit card flow get saved cards using **veritransSDK.getSavedCard()**. Pass activity and savedCardCallback object to function.  
+      
+    @Override
+    public void onEvent(GetOfferFailedEvent event) {
+        //Failed implementation
+        String errorMessage = event.getMessage();
+    }
+``` 
+
+ * Like credit card flow get saved cards using **veritransSDK.getSavedCard()**.
  * There are two types of offers  
+ 
  **1. Normal offers**  
  **2. Installments**  
  Here is response format for offers  
@@ -514,10 +579,28 @@ After registeration we get token from google services, we are sending this token
     }
  }
  ```  
+ 
  * We can validate offers with comparing bin numbers with first characters of credit card.
  * If card number matches then offer valid for given card number.
  * When we are applying the offer for normal flow make function call **getToken** from  **VeritransSdk** class as same as credit card flow.
- * Pass **activity**, **cardTokenRequest** and **tokenCallback** params to function.
+ * Pass **cardTokenRequest** params to function.
+ * Implement `GetCardBusCallback`.
+ 
+ ```
+ 
+     @Override
+     public void onEvent(GetCardsSuccessEvent event){
+        //Success implementation
+        CardResponse response = event.getResponse();
+     }
+     
+     @Override
+     public void onEvent(GetCardFailedEvent event) {
+        //Failed implementation
+        String errorMessage = event.getMessage();
+     }
+ ```
+ 
  * After successful call do charge api call with bins string array as new param. 
  * Here is code for setting the bins value.  
  ``` 
@@ -527,41 +610,33 @@ After registeration we get token from google services, we are sending this token
 
 ## 5 Payment Types
 
-### 5.1 Charge using Credit/Debit card -
-For doing charge api call we have to call following function from VeritransSDK.
+For each API call in payment function, you need to do this first before calling any API functions.
 
-     veritransSDK.paymentUsingCard(activity, cardTransfer, new
-                TransactionCallback() {
+- Register Activity/Fragment into `VeritransBus` See: *Setup Event Bus*.
+- Implement `TransactionBusCallback` in Activity/Fragment.
 
-                    @Override
-                    public void onSuccess(TransactionResponse transactionResponse) {
-                        Toast.makeText(context, "Transaction success:  " +
-                                transactionResponse.getStatusMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(String errorMessage, TransactionResponse
-                            transactionResponse) {
-
-                        Toast.makeText(context, "Transaction failed: " + errorMessage,
-                                Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-In above code we have to supply ** _CardTransfer_ ** class object, and implemented interface TransactionCallback which have functions onSuccess and onFailure.
-
+```
     @Override
-    public void onSuccess(TransactionResponse cardPaymentResponse) {
-        //write code after success
-    }  
-    @Override
-    public void onFailure(String errorMessage, TransactionResponse transactionResponse) {    
-        //write code after failure
+    public void onEvent(TransactionSuccessEvent event) {
+        //Success implementation
+        TransactionResponse response = event.getResponse();
     }
-
     
-after successful transaction card information will be get saved if user permits. In TransactionResponse we get ***saved_token_id*** which is used in future transaction.
+    @Override
+    public void onEvent(TransactionFailedEvent event) {
+        //Failed implementation
+        String message = event.getMessage();
+    }
+```
+
+### 5.1 Charge using Credit/Debit card -
+For doing charge api call we have to call this function.
+
+     `veritransSDK.paymentUsingCard(cardTransfer);`
+
+In above code we have to supply ** _CardTransfer_ ** class object.
+
+After successful transaction card information will be get saved if user permits. In TransactionResponse we get ***saved_token_id*** which is used in future transaction.
 
 
 
@@ -578,32 +653,13 @@ shipping address etc.
 
         mVeritransSDK.setTransactionRequest(TransactionRequest);
     
-* Then execute Transaction using following method and add **TransactionCallback** to get response back.
+* Then execute Transaction using following method to get response back.
 
 
 ```
-
-  
-       mVeritransSDK.paymentUsingPermataBank(activity, new TransactionCallback() {
-                            
-            @Override
-            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-                    Log.d(" Transaction failed ", ""+errorMessage);
-                    // write your code here to take appropriate action 
-                }
-    
-            @Override
-            public void onSuccess(TransactionResponse transactionResponse) {
-                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
-                     // write your code here to handle success.
-                    }
-        });
-
-      
+       mVeritransSDK.paymentUsingPermataBank(); 
 ```
 
-* Take appropriate action in onFailure() or  onSuccess() of TransactionCallback.
-  
 
 ### 5.3 Mandiri bill payment
 
@@ -614,35 +670,16 @@ shipping address etc.
 * Then add Transaction details in previously created veritrans object using 
 
 ```
-
-        mVeritransSDK.setTransactionRequest(TransactionRequest);
-
-```
-
-* Then execute Transaction using following method and add **TransactionCallback** to get response back
+mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 ```
 
-        mVeritransSDK.paymentUsingMandiriBillPay(activity, new TransactionCallback() {
-   
-                            
-            @Override
-            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-                    Log.d(" Transaction failed ", ""+errorMessage);
-                    // write your code here to take appropriate action 
-                }
-        
-                @Override
-                public void onSuccess(TransactionResponse transactionResponse) {
-                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
-                    // write your code here.
-                }
-        });
+* Then execute Transaction using following method to get response back
+
+```
+mVeritransSDK.paymentUsingMandiriBillPay();
         
 ```
-
-* Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
-
 
 
 ### 5.4 Indosat Dompetku 
@@ -654,38 +691,19 @@ shipping address etc.
 * Then add Transaction details in previously created veritrans object using 
 
 ```
-
-        mVeritransSDK.setTransactionRequest(TransactionRequest);
-
-```
-
-* Then execute Transaction using following method and add **TransactionCallback** to get response back
+mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 ```
 
-        mVeritransSDK.paymentUsingIndosatDompetku(activity , MSISDN, new TransactionCallback() {
-   
-                            
-            @Override
-            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-                    Log.d(" Transaction failed ", ""+errorMessage);
-                    // write your code here to take appropriate action 
-                }
-        
-                @Override
-                public void onSuccess(TransactionResponse transactionResponse) {
-                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
-                    // write your code here.
-                }
-        });
-        
-        
-        where - msisdn  is registered user mobile number, must be less than 12. for debug you can use 08123456789
+* Then execute Transaction using following method to get response back
+
+```
+mVeritransSDK.paymentUsingIndosatDompetku(MSISDN);
+
+
+where - msisdn  is registered user mobile number, must be less than 12. for debug you can use 08123456789
         
 ```
-
-* Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
-
 
 
 
@@ -701,37 +719,19 @@ shipping address etc.
 ```
 // add cstore deatils
 IndomaretRequestModel.CstoreEntity cstoreEntity = new IndomaretRequestModel.CstoreEntity();
-        cstoreEntity.setMessage("message_here");
-        cstoreEntity.setStore("indomaret");
+cstoreEntity.setMessage("message_here");
+cstoreEntity.setStore("indomaret");
 
-
-        mVeritransSDK.setTransactionRequest(TransactionRequest);
-
-```
-
-* Then execute Transaction using following method and add **TransactionCallback** to get response back
+mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 ```
 
-        mVeritransSDK.paymentUsingIndomaret(activity, cstoreEntity, new TransactionCallback() {
-   
-                            
-            @Override
-            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-                    Log.d(" Transaction failed ", ""+errorMessage);
-                    // write your code here to take appropriate action 
-                }
-        
-                @Override
-                public void onSuccess(TransactionResponse transactionResponse) {
-                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
-                    // write your code here.
-                }
-        });
+* Then execute Transaction using following method to get response back
+
+```
+mVeritransSDK.paymentUsingIndomaret(cstoreEntity);
         
 ```
-
-* Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
 
 
 
@@ -746,16 +746,15 @@ IndomaretRequestModel.CstoreEntity cstoreEntity = new IndomaretRequestModel.Csto
 
 ```
 
-
 mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 // add Mandiri ClickPay Model deatils
 MandiriClickPayModel mandiriClickPayModel = new MandiriClickPayModel();
-                    mandiriClickPayModel.setCardNumber(CardNumber);
-                    mandiriClickPayModel.setInput1(INPUT1);
-                    mandiriClickPayModel.setInput2(INPUT2);
-                    mandiriClickPayModel.setInput3(INPUT3);
-                    mandiriClickPayModel.setToken(CHALLENGE_TOKEN);
+mandiriClickPayModel.setCardNumber(CardNumber);
+mandiriClickPayModel.setInput1(INPUT1);
+mandiriClickPayModel.setInput2(INPUT2);
+mandiriClickPayModel.setInput3(INPUT3);
+mandiriClickPayModel.setToken(CHALLENGE_TOKEN);
 
 
 where 
@@ -763,32 +762,14 @@ CardNumber String Required -    Mandiri debit Card number.
 INPUT1 -    Last 10 digit of card_number.
 INPUT2 -    Transaction gross_amount.
 INPUT3 -    5-digits random number which will be given to the customer.
-CHALLENGE_TOKEN -   Number received by customer's physical token after input1, input2, and input3 are entered.
-
-        
+CHALLENGE_TOKEN -   Number received by customer's physical token after input1, input2, and input3 are entered. 
 
 ```
 
-* Then execute Transaction using following method and add **TransactionCallback** to get response back.
+* Then execute Transaction using following method to get response back.
 
 ```
-
-        mVeritransSDK.paymentUsingMandiriClickPay(activity.this,
-                mandiriClickPayModel, new TransactionCallback() {
-   
-                            
-            @Override
-            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-                    Log.d(" Transaction failed ", ""+errorMessage);
-                    // write your code here to take appropriate action 
-                }
-        
-                @Override
-                public void onSuccess(TransactionResponse transactionResponse) {
-                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
-                    // write your code here.
-                }
-        });
+mVeritransSDK.paymentUsingMandiriClickPay(mandiriClickPayModel);
         
 ```
 
@@ -807,38 +788,23 @@ CHALLENGE_TOKEN -   Number received by customer's physical token after input1, i
 mVeritransSDK.setTransactionRequest(TransactionRequest);
 ```
 
-* Then execute Transaction using following method and add **TransactionCallback** to get response back. In onSuccess() of callback you will get redirect url from server, start webview to handle the redirect url. 
+* Then execute Transaction using following method to get response back. In success event implementation you will get redirect url from server, start webview to handle the redirect url. 
 
 ```
 
-        mVeritransSDK.paymentUsingEpayBri(activity,
-                new TransactionCallback() {
-   
-                            
-            @Override
-            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-                    Log.d(" Transaction failed ", ""+errorMessage);
-                    // write your code here to take appropriate action 
-                }
+    @Override
+    public void onEvent(TransactionSuccessEvent event) {
+        //Success implementation
+        TransactionResponse response = event.getResponse();
+        if (response != null && !TextUtils.isEmpty(response.getRedirectUrl())) {
+            // create Web Activity  to handle redirect url. start web activity for result 
+        }
+    }
+    
+    //Call paymentUsingEpayBri
+    mVeritransSDK.paymentUsingEpayBri();
         
-                @Override
-                public void onSuccess(TransactionResponse transactionResponse) {
-                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
-                    //here you will get url
-                    
-                    if (transactionResponse != null &&
-                                !TextUtils.isEmpty(transactionResponse.getRedirectUrl())) {
-                            
-                            // create Web Activity  to handle redirect url. start web activity for result 
-                        }
-                }
-        });
-       
-       
-       
-       
-       
-        @Override
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data!=null ) {
@@ -848,8 +814,8 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
             TransactionResponse transactionResponse = gson.fromJson(responseStr, TransactionResponse.class);
             // handle response here
             
-      }
-      } 
+        }
+    } 
 ```
 
 * Create Web View  Activity to handle  redirect url and set following setting to webView      
@@ -857,6 +823,7 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
     - setLoadWithOverviewMode() to true
     - add javaScript interface to intercept the request, to get the status of transaction.
     e.g - 
+    
 ```
 private void initwebview() {
         webView.getSettings().setJavaScriptEnabled(true);
@@ -952,27 +919,24 @@ Use this interface in your web view to get response back.
 mVeritransSDK.setTransactionRequest(TransactionRequest);
 ```
 
-* Then execute Transaction using following method and add **TransactionCallback** to get response back. In onSuccess() of callback you will get redirect url from server, start webview to handle the redirect url.
+* Then execute Transaction using following method to get response back. In success evdent implementation you will get redirect url from server, start webview to handle the redirect url.
 * Handle the further process and response same as performed in ePay BRI.
 
 ```
         //add Description for transaction
         DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
 
-        mVeritransSDK.paymentUsingCIMBClickPay(CIMBClickPayActivity.this, cimbDescription, new TransactionCallback() {
-                            
-            @Override
-            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-                    Log.d(" Transaction failed ", ""+errorMessage);
-                    // write your code here to take appropriate action 
-                }
+        @Override
+        public void onEvent(TransactionSuccessEvent event) {
+            //Success implementation
+            TransactionResponse response = event.getResponse();
+            if (response != null && !TextUtils.isEmpty(response.getRedirectUrl())) {
+                // create Web Activity  to handle redirect url. start web activity for result 
+            }
+        }
         
-                @Override
-                public void onSuccess(TransactionResponse transactionResponse) {
-                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
-                  // handle redirect url same as e-Pay BRI. 
-                }
-        });
+        //Call paymentUsingCIMBClickPay
+        mVeritransSDK.paymentUsingCIMBClickPay(cimbDescription);
         
 ```
 
@@ -982,47 +946,42 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 ###### To perform transaction using BBM money app follow the steps given below:
 * Check Whether BBM moeny app is installed or not on device using following code : -
+
 ```
     SdkUtil.isBBMMoneyInstalled(activity)- it will return true if app is installed on device. 
 
 ```
+
 * Create the instance of veritrans library using **VeritransBuilder** class.
 * Create instance of **TransactionRequest** and add required fields like item details, 
    shipping address etc. This requires BBM callback url  call bas
 * Then add Transaction details in previously created veritrans object using 
 
 ```
-                    BBMCallBackUrl bbmCallBackUrl = new BBMCallBackUrl(Constants.CHECK_STATUS,
-                            Constants.BEFORE_PAYMENT_ERROR, Constants.USER_CANCEL);
-                    //start transaction
-                    mVeritransSDK.setTransactionRequest(transactionRequest);
-                    mVeritransSDK.setBBMCallBackUrl(bbmCallBackUrl);
-
+    BBMCallBackUrl bbmCallBackUrl = new BBMCallBackUrl(Constants.CHECK_STATUS,
+        Constants.BEFORE_PAYMENT_ERROR, Constants.USER_CANCEL);
+    //start transaction
+    mVeritransSDK.setTransactionRequest(transactionRequest);
+    mVeritransSDK.setBBMCallBackUrl(bbmCallBackUrl);
 ```
 
-* Then execute Transaction using following method and add **TransactionCallback** to get response back. In onSuccess() of callback you will get Permata Virtual Account number (Payment code).
+* Then execute Transaction using following method to get response back. In success implementation you will get Permata Virtual Account number (Payment code).
 * Handle the further process and response same as performed in ePay BRI.
 
 ```
         //add Description for transaction
         DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
 
-        mVeritransSDK.paymentUsingBBMMoney(activity, description, new TransactionCallback()  {
-                            
-            @Override
-            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-                    Log.d(" Transaction failed ", ""+errorMessage);
-                    // write your code here to take appropriate action 
-                  
-                }
+        //Handle success implementation
+        @Override
+        public void onEvent(TransactionSuccessEvent event) {
+            //Success implementation
+            TransactionResponse response = event.getResponse();
+            String PERMATA_VA = response.getPermataVANumber();
+        }
         
-                @Override
-                public void onSuccess(TransactionResponse transactionResponse) {
-                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
-                    // get permata VA number  
-                    String PERMATA_VA = transactionResponse.getPermataVANumber();
-                }
-        });
+        //Call paymentUsingBBMMoney
+        mVeritransSDK.paymentUsingBBMMoney(description);
        
 ```
 
@@ -1050,6 +1009,7 @@ SdkUtil.createEncodedUrl(String permataVA, String checkStatus, String
 
 
 * Now start bbm money app using following code :
+
 ```
 String  BBM_PREFIX_URL = "bbmmoney://api/payment/imp?data=";
 
@@ -1066,7 +1026,6 @@ String  encodedUrl = SdkUtil.createEncodedUrl(PERMATA_VA,
           
 ```
 
-
 ### 5.10 Mandiri e-Cash - 
 
 ###### To perform transaction using Mandiri e-Cash payment method follow the steps given below:
@@ -1079,28 +1038,25 @@ String  encodedUrl = SdkUtil.createEncodedUrl(PERMATA_VA,
 mVeritransSDK.setTransactionRequest(TransactionRequest);
 ```
 
-* Then execute Transaction using following method and add **TransactionCallback** to get response back. In onSuccess() of callback you will get redirect url from server, start webview to handle the redirect url.
+* Then execute Transaction using following method to get response back. In success implementation you will get redirect url from server, start webview to handle the redirect url.
 * Handle the further process and response same as performed in ePay BRI.
 
 ```
         //add Description for transaction
         DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
 
-        mVeritransSDK.paymentUsingMandiriECash(activity, description, new TransactionCallback()  {
-                            
-            @Override
-            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-                    Log.d(" Transaction failed ", ""+errorMessage);
-                    // write your code here to take appropriate action 
-                  
-                }
+        //Handle success implementation
+        @Override
+        public void onEvent(TransactionSuccessEvent event) {
+            //Success implementation
+            TransactionResponse response = event.getResponse();
+            if (response != null && !TextUtils.isEmpty(response.getRedirectUrl())) {
+                // create Web Activity  to handle redirect url. start web activity for result 
+            }
+        }
         
-                @Override
-                public void onSuccess(TransactionResponse transactionResponse) {
-                    Log.d(" Transaction status ", ""+transactionResponse.getStatusMessage());
-                    // handle redirect url same as e-Pay BRI. 
-                }
-        });
+        //Call function paymentUsingMandiriECash
+        mVeritransSDK.paymentUsingMandiriECash(description);
         
 ```
 

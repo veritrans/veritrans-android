@@ -14,11 +14,16 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.callback.TransactionBusCallback;
+import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
+import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.fragments.IndomaretPaymentFragment;
 import id.co.veritrans.sdk.fragments.IndomaretPaymentStatusFragment;
@@ -30,7 +35,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 /**
  * Created by Ankit on 12/01/15.
  */
-public class IndomaretActivity extends AppCompatActivity implements View.OnClickListener {
+public class IndomaretActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -77,6 +82,17 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         initializeView();
         bindDataToView();
         setUpHomeFragment();
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
+        }
+        super.onDestroy();
     }
 
 
@@ -217,7 +233,8 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         cstoreEntity.setStore("indomaret");
 
         //Execute transaction
-        veritransSDK.paymentUsingIndomaret(IndomaretActivity.this, cstoreEntity, new
+        veritransSDK.paymentUsingIndomaret(cstoreEntity);
+        /*veritransSDK.paymentUsingIndomaret(IndomaretActivity.this, cstoreEntity, new
                 TransactionCallback() {
 
                     @Override
@@ -255,7 +272,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
                         }
 
                     }
-                });
+                });*/
     }
 
 
@@ -283,5 +300,67 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
         setResult(RESULT_CODE, data);
         finish();
+    }
+
+    @Override
+    public void onEvent(TransactionSuccessEvent event) {
+        Toast.makeText(IndomaretActivity.this, "Transaction success:  " +
+                event.getResponse().getStatusMessage(), Toast.LENGTH_SHORT).show();
+
+        SdkUtil.hideProgressDialog();
+
+        if (event.getResponse() != null) {
+            IndomaretActivity.this.transactionResponse = event.getResponse();
+            appBarLayout.setExpanded(true);
+            setUpTransactionFragment(event.getResponse());
+        } else {
+            onBackPressed();
+        }
+    }
+
+    @Override
+    public void onEvent(TransactionFailedEvent event) {
+        Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
+                        event.getMessage(),
+                Toast.LENGTH_SHORT).show();
+        try {
+            IndomaretActivity.this.errorMessage = event.getMessage();
+            IndomaretActivity.this.transactionResponse = event.getResponse();
+
+            SdkUtil.hideProgressDialog();
+            SdkUtil.showSnackbar(IndomaretActivity.this, "" + event.getMessage());
+        } catch (NullPointerException ex) {
+            Logger.e("transaction error is " + event.getMessage());
+        }
+    }
+
+    @Override
+    public void onEvent(NetworkUnavailableEvent event) {
+        Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
+                        getString(R.string.no_network_msg),
+                Toast.LENGTH_SHORT).show();
+        try {
+            IndomaretActivity.this.errorMessage = getString(R.string.no_network_msg);
+
+            SdkUtil.hideProgressDialog();
+            SdkUtil.showSnackbar(IndomaretActivity.this, "" + getString(R.string.no_network_msg));
+        } catch (NullPointerException ex) {
+            Logger.e("transaction error is " + getString(R.string.no_network_msg));
+        }
+    }
+
+    @Override
+    public void onEvent(GeneralErrorEvent event) {
+        Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
+                        event.getMessage(),
+                Toast.LENGTH_SHORT).show();
+        try {
+            IndomaretActivity.this.errorMessage = event.getMessage();
+
+            SdkUtil.hideProgressDialog();
+            SdkUtil.showSnackbar(IndomaretActivity.this, "" + event.getMessage());
+        } catch (NullPointerException ex) {
+            Logger.e("transaction error is " + event.getMessage());
+        }
     }
 }

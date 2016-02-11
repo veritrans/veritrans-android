@@ -1,7 +1,5 @@
 package id.co.veritrans.sdk.core;
 
-import android.app.Activity;
-
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.models.BillInfoModel;
@@ -25,8 +23,6 @@ public class TransactionRequest {
      * use payment methods from {@link id.co.veritrans.sdk.core.Constants}
      */
     protected int paymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
-
-    protected Activity activity = null;
 
     /**
      * unique order id to identify this transaction.
@@ -79,18 +75,15 @@ public class TransactionRequest {
 
     /**
      * @param orderId       order id of transaction.
-     * @param activity      instance of activity.
      * @param amount        amount to charge.
      * @param paymentMethod payment method.
      */
-    public TransactionRequest(Activity
-                                      activity, String orderId, double amount, int paymentMethod) {
+    public TransactionRequest(String orderId, double amount, int paymentMethod) {
 
-        if (orderId != null && activity != null && amount > 0) {
+        if (orderId != null && amount > 0) {
             this.orderId = orderId;
             this.amount = amount;
             this.paymentMethod = paymentMethod;
-            this.activity = activity;
         } else {
             Logger.e("Invalid transaction data.");
         }
@@ -98,17 +91,14 @@ public class TransactionRequest {
 
     /**
      * @param orderId       order id of transaction.
-     * @param activity      instance of activity.
      * @param amount        amount to charge.
      */
-    public TransactionRequest(Activity
-                                      activity, String orderId, double amount) {
+    public TransactionRequest(String orderId, double amount) {
 
-        if (orderId != null && activity != null && amount > 0) {
+        if (orderId != null && amount > 0) {
             this.orderId = orderId;
             this.amount = amount;
             this.paymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;
-            this.activity = activity;
         } else {
             Logger.e("Invalid transaction data.");
         }
@@ -196,11 +186,6 @@ public class TransactionRequest {
             Logger.e(ERROR_MESSAGE);
         }
     }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
 
     /**
      * It will help to enable/disable default ui provided by sdk.
