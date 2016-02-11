@@ -59,18 +59,6 @@ public class Constants {
 
     public static final float CARD_ASPECT_RATIO = 0.555f;
 
-
-    /**
-     * server end point when application is running in debug mode.
-     */
-    public static final String BASE_URL_FOR_DEBUG = "https://api.sandbox.veritrans.co.id/v2/";
-
-    /**
-     * server end point when application is running in release version.
-     */
-    public static final String BASE_URL_FOR_RELEASE = "https://api.sandbox.veritrans.co.id/v2/";
-
-
     /**
      * name of application directory
      */
@@ -103,10 +91,6 @@ public class Constants {
      * network error message
      */
     public static final CharSequence RETROFIT_NETWORK_MESSAGE = "Unable to resolve host";
-
-    public static final CharSequence CALLBACK_STRING = "/token/callback/";
-
-    public static final CharSequence CALLBACK_URL ="https://hangout.betas.in/veritrans/api/paymentstatus";
 
     public static final String WEBURL = "weburl";
 
@@ -177,16 +161,6 @@ public class Constants {
     public static final String PAYMENT_INDOMARET = "cstore";
 
     public static final String PENDING = "pending";
-
-    //BBM App Installed or not
-    public static final String BBM_MONEY_PACKAGE = "com.monitise.client.android.bbmmoney";
-    public static final String MARKET_URL = "market://details?id=";
-    public static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=";
-
-    //BBM CallBack Urls
-    public static final String BBM_PREFIX_URL = "bbmmoney://api/payment/imp?data=";
-
-
     public static final String PAYMENT_RESPONSE = "payment_response";
 
     public static final String PAYMENT_CREDIT_DEBIT = "credit_card";

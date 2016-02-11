@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.SdkUtil;
 
 /**
@@ -49,10 +49,10 @@ public class InstructionBBMMoneyFragment extends Fragment implements View.OnClic
 
     public void openPlayStore() {
         try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.MARKET_URL +
-                    Constants.BBM_MONEY_PACKAGE)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.MARKET_URL +
+                    BuildConfig.BBM_MONEY_PACKAGE)));
         } catch (ActivityNotFoundException activityNotFoundException) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.PLAY_STORE_URL + Constants.BBM_MONEY_PACKAGE)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.PLAY_STORE_URL + BuildConfig.BBM_MONEY_PACKAGE)));
         }
     }
 
