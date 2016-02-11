@@ -19,6 +19,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
@@ -726,7 +727,7 @@ public class SdkUtil {
 
             PackageManager pm = activity.getPackageManager();
             try {
-                pm.getPackageInfo(Constants.BBM_MONEY_PACKAGE, PackageManager.GET_ACTIVITIES);
+                pm.getPackageInfo(BuildConfig.BBM_MONEY_PACKAGE, PackageManager.GET_ACTIVITIES);
                 isInstalled = true;
             } catch (PackageManager.NameNotFoundException e) {
                 isInstalled = false;

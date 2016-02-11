@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -201,7 +202,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
                         veritransSDK.getBBMCallBackUrl().getBeforePaymentError(),
                         veritransSDK.getBBMCallBackUrl().getUserCancel());
 
-                String feedUrl = Constants.BBM_PREFIX_URL + encodedUrl;
+                String feedUrl = BuildConfig.BBM_PREFIX_URL + encodedUrl;
 
                 if (SdkUtil.isBBMMoneyInstalled(BBMMoneyActivity.this)) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(feedUrl)));
