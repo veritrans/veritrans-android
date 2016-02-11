@@ -1,7 +1,6 @@
 package id.co.veritrans.sdk.core;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
@@ -135,7 +134,7 @@ class TransactionManager {
 
                                                         @Override
                                                         public void onError(Throwable e) {
-                                                            Log.e("CardSubscriber", e.getMessage());
+                                                            Logger.e("CardSubscriber", e.getMessage());
                                                         }
 
                                                         @Override
