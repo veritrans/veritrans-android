@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -105,7 +104,7 @@ public class VeritransSDK {
             return veritransSDK;
         }
 
-        Log.e(Constants.TAG, Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+        Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
         return null;
     }
 
