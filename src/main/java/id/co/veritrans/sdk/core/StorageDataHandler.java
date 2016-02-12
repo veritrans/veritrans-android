@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 
 /**
  * Created by chetan on 19/10/15.
+ * @deprecated
  */
 public class StorageDataHandler {
 
