@@ -1,11 +1,11 @@
 package id.co.veritrans.sdk.core;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
@@ -39,6 +39,7 @@ public class VeritransSDK {
     private static final String FONTS_OPEN_SANS_SEMI_BOLD_TTF = "fonts/open_sans_semibold.ttf";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
 
+    private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static Context context = null;
 
     private static Typeface typefaceOpenSansRegular = null;
@@ -50,13 +51,11 @@ public class VeritransSDK {
     /*private static String serverKey = null;*/
     private static String clientKey = null;
     private static String merchantServerUrl = null;
-
+    private static SharedPreferences mPreferences = null;
     protected boolean isRunning = false;
-
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
     private String TRANSACTION_RESPONSE_NOT_AVAILABLE = "Transaction response not available.";
-
     private BBMCallBackUrl mBBMCallBackUrl = null;
 
     private VeritransSDK() {
@@ -71,6 +70,7 @@ public class VeritransSDK {
             clientKey = veritransBuilder.clientKey;
             merchantServerUrl = veritransBuilder.merchantServerUrl;
             initializeFonts();
+            initializeSharedPreferences();
             return veritransSDK;
         } else {
             return null;
@@ -86,6 +86,10 @@ public class VeritransSDK {
         typefaceOpenSansRegular = Typeface.createFromAsset(assets, FONTS_OPEN_SANS_REGULAR_TTF);
         typefaceOpenSansSemiBold = Typeface.createFromAsset(assets,
                 FONTS_OPEN_SANS_SEMI_BOLD_TTF);
+    }
+
+    private static void initializeSharedPreferences() {
+        mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     /**
@@ -106,6 +110,10 @@ public class VeritransSDK {
 
         Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
         return null;
+    }
+
+    public static SharedPreferences getmPreferences() {
+        return mPreferences;
     }
 
     public Typeface getTypefaceOpenSansRegular() {
@@ -133,16 +141,11 @@ public class VeritransSDK {
     }
 
     public String getMerchantToken() {
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
         UserDetail userDetail = null;
         try {
-            userDetail = (UserDetail) StorageDataHandler.readObject(context, Constants
-                    .USER_DETAILS);
+            userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return "";
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
