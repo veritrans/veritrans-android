@@ -12,11 +12,16 @@ import android.view.View;
 import android.widget.Button;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.callback.TransactionBusCallback;
+import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
+import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.fragments.InstructionIndosatFragment;
@@ -42,7 +47,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
  * <p/>
  * Created by shivam on 11/30/15.
  */
-public class IndosatDompetkuActivity extends AppCompatActivity implements View.OnClickListener {
+public class IndosatDompetkuActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String STATUS_FRAGMENT = "transaction_status";
@@ -74,6 +79,17 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         bindDataToView();
 
         setUpHomeFragment();
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
+        }
+        super.onDestroy();
     }
 
 
@@ -230,7 +246,8 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
      */
     private void transactionUsingIndosat(final VeritransSDK veritransSDK) {
 
-        veritransSDK.paymentUsingIndosatDompetku(IndosatDompetkuActivity.this, phoneNumber, new
+        veritransSDK.paymentUsingIndosatDompetku(phoneNumber);
+        /*veritransSDK.paymentUsingIndosatDompetku(IndosatDompetkuActivity.this, phoneNumber, new
                 TransactionCallback() {
 
                     @Override
@@ -264,7 +281,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
                             Logger.e("transaction error is " + errorMessage);
                         }
                     }
-                });
+                });*/
     }
 
 
@@ -316,5 +333,54 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
         setResult(RESULT_CODE, data);
         finish();
+    }
+
+    @Override
+    public void onEvent(TransactionSuccessEvent event) {
+        SdkUtil.hideProgressDialog();
+        mTransactionResponse = event.getResponse();
+
+        if (event.getResponse() != null) {
+            setUpTransactionStatusFragment(event.getResponse());
+        } else {
+
+            SdkUtil.showSnackbar(IndosatDompetkuActivity.this,
+                    SOMETHING_WENT_WRONG);
+            onBackPressed();
+        }
+    }
+
+    @Override
+    public void onEvent(TransactionFailedEvent event) {
+        mTransactionResponse = event.getResponse();
+        IndosatDompetkuActivity.this.errorMessage = event.getMessage();
+        try {
+            SdkUtil.hideProgressDialog();
+            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+        } catch (NullPointerException ex) {
+            Logger.e("transaction error is " + errorMessage);
+        }
+    }
+
+    @Override
+    public void onEvent(NetworkUnavailableEvent event) {
+        IndosatDompetkuActivity.this.errorMessage = getString(R.string.no_network_msg);
+        try {
+            SdkUtil.hideProgressDialog();
+            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+        } catch (NullPointerException ex) {
+            Logger.e("transaction error is " + errorMessage);
+        }
+    }
+
+    @Override
+    public void onEvent(GeneralErrorEvent event) {
+        IndosatDompetkuActivity.this.errorMessage = event.getMessage();
+        try {
+            SdkUtil.hideProgressDialog();
+            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+        } catch (NullPointerException ex) {
+            Logger.e("transaction error is " + errorMessage);
+        }
     }
 }

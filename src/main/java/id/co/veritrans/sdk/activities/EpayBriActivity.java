@@ -1,5 +1,7 @@
 package id.co.veritrans.sdk.activities;
 
+import com.google.gson.Gson;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,19 +14,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.gson.Gson;
-
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.callback.TransactionBusCallback;
+import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
+import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.fragments.InstructionEpayBriFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.models.TransactionResponse;
 
-public class EpayBriActivity extends AppCompatActivity implements View.OnClickListener {
+public class EpayBriActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
 
     private static final int PAYMENT_WEB_INTENT = 150;
     private static int RESULT_CODE = RESULT_CANCELED;
@@ -52,6 +57,17 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
 
         initializeViews();
         setUpFragment();
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
+        }
+        super.onDestroy();
     }
 
     private void initializeViews() {
@@ -97,7 +113,8 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
     private void makeTransaction() {
 
         SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        veritransSDK.paymentUsingEpayBri(EpayBriActivity.this,
+        veritransSDK.paymentUsingEpayBri();
+        /*veritransSDK.paymentUsingEpayBri(EpayBriActivity.this,
                 new TransactionCallback() {
 
                     @Override
@@ -123,7 +140,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
                         }
 
                     }
-                });
+                });*/
 
     }
 
@@ -199,6 +216,44 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void setResultCode(int resultCode) {
-        this.RESULT_CODE = resultCode;
+        RESULT_CODE = resultCode;
+    }
+
+    @Override
+    public void onEvent(TransactionSuccessEvent event) {
+        SdkUtil.hideProgressDialog();
+        if (event.getResponse() != null &&
+                !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
+            EpayBriActivity.this.transactionResponse = event.getResponse();
+            Intent intentPaymentWeb = new Intent(EpayBriActivity.this, PaymentWebActivity.class);
+            intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
+            startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+        } else {
+            SdkUtil.showApiFailedMessage(EpayBriActivity.this, getString(R.string.empty_transaction_response));
+        }
+    }
+
+    @Override
+    public void onEvent(TransactionFailedEvent event) {
+        EpayBriActivity.this.errorMessage = event.getMessage();
+
+        SdkUtil.hideProgressDialog();
+        SdkUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
+    }
+
+    @Override
+    public void onEvent(NetworkUnavailableEvent event) {
+        EpayBriActivity.this.errorMessage = getString(R.string.no_network_msg);
+
+        SdkUtil.hideProgressDialog();
+        SdkUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
+    }
+
+    @Override
+    public void onEvent(GeneralErrorEvent event) {
+        EpayBriActivity.this.errorMessage = event.getMessage();
+
+        SdkUtil.hideProgressDialog();
+        SdkUtil.showApiFailedMessage(EpayBriActivity.this, event.getMessage());
     }
 }

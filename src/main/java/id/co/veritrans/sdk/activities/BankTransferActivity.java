@@ -14,11 +14,16 @@ import android.view.View;
 import android.widget.Button;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.callbacks.TransactionCallback;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.callback.TransactionBusCallback;
+import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
+import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
+import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.fragments.BankTransferPaymentFragment;
@@ -48,7 +53,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
  * <p/>
  * Created by shivam on 10/26/15.
  */
-public class BankTransferActivity extends AppCompatActivity implements View.OnClickListener {
+public class BankTransferActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -95,6 +100,17 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         bindDataToView();
 
         setUpHomeFragment();
+        if(!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
+        }
+        super.onDestroy();
     }
 
 
@@ -357,41 +373,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      * @param veritransSDK
      */
     private void bankTransferTransaction(VeritransSDK veritransSDK) {
-
-
-        veritransSDK.paymentUsingPermataBank(BankTransferActivity.this, new TransactionCallback() {
-
-
-            @Override
-            public void onSuccess(TransactionResponse
-                                          permataBankTransferResponse) {
-
-                SdkUtil.hideProgressDialog();
-
-                if (permataBankTransferResponse != null) {
-                    transactionResponse = permataBankTransferResponse;
-                    mAppBarLayout.setExpanded(true);
-                    setUpTransactionFragment(permataBankTransferResponse);
-                } else {
-                    onBackPressed();
-                }
-
-            }
-
-            @Override
-            public void onFailure(String errorMessage, TransactionResponse transactionResponse) {
-
-                try {
-                    BankTransferActivity.this.errorMessage = errorMessage;
-                    BankTransferActivity.this.transactionResponse = transactionResponse;
-
-                    SdkUtil.hideProgressDialog();
-                    SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
-                } catch (NullPointerException ex) {
-                    Logger.e("transaction error is " + errorMessage);
-                }
-            }
-        });
+        veritransSDK.paymentUsingPermataBank();
     }
 
 
@@ -403,36 +385,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      */
     private void mandiriBillPayTransaction(VeritransSDK veritransSDK) {
 
-        veritransSDK.paymentUsingMandiriBillPay(BankTransferActivity.this, new
-                TransactionCallback() {
-
-                    @Override
-                    public void onSuccess(TransactionResponse
-                                                  mandiriBillPayTransferResponse) {
-
-                        SdkUtil.hideProgressDialog();
-
-                        if (mandiriBillPayTransferResponse != null) {
-                            transactionResponse = mandiriBillPayTransferResponse;
-                            mAppBarLayout.setExpanded(true);
-                            setUpTransactionFragment(mandiriBillPayTransferResponse);
-                        } else {
-                            onBackPressed();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(String errorMessage, TransactionResponse
-                            transactionResponse) {
-                        try {
-                            SdkUtil.hideProgressDialog();
-                            SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
-                        } catch (NullPointerException ex) {
-                            Logger.e("transaction error is " + errorMessage);
-                        }
-                    }
-                });
+        veritransSDK.paymentUsingMandiriBillPay();
     }
 
     /**
@@ -462,5 +415,45 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
         setResult(RESULT_CODE, data);
         finish();
+    }
+
+    @Override
+    public void onEvent(TransactionSuccessEvent event) {
+        SdkUtil.hideProgressDialog();
+
+        if (event.getResponse() != null) {
+            transactionResponse = event.getResponse();
+            mAppBarLayout.setExpanded(true);
+            setUpTransactionFragment(event.getResponse());
+        } else {
+            onBackPressed();
+        }
+    }
+
+    @Override
+    public void onEvent(GeneralErrorEvent event) {
+        BankTransferActivity.this.errorMessage = event.getMessage();
+        SdkUtil.hideProgressDialog();
+        SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+    }
+
+    @Override
+    public void onEvent(TransactionFailedEvent event) {
+        try {
+            BankTransferActivity.this.errorMessage = event.getMessage();
+            BankTransferActivity.this.transactionResponse = event.getResponse();
+
+            SdkUtil.hideProgressDialog();
+            SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+        } catch (NullPointerException ex) {
+            Logger.e("transaction error is " + errorMessage);
+        }
+    }
+
+    @Override
+    public void onEvent(NetworkUnavailableEvent event) {
+        BankTransferActivity.this.errorMessage = getString(R.string.no_network_msg);
+        SdkUtil.hideProgressDialog();
+        SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
     }
 }
