@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -553,8 +552,7 @@ public class SdkUtil {
         CustomerDetails mCustomerDetails = null;
 
         try {
-            userDetail = (UserDetail) StorageDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext(),
-                    Constants.USER_DETAILS);
+            userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
 
@@ -580,9 +578,7 @@ public class SdkUtil {
                 //SdkUtil.showSnackbar(VeritransSDK.getVeritransSDK().getContext(), "User details not available.");
                 //request.getActivity().finish();
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.e("Error while fetching user details : " + ex.getMessage());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.e("Error while fetching user details : " + ex.getMessage());
         }
 
@@ -679,14 +675,11 @@ public class SdkUtil {
 
         StorageDataHandler storageDataHandler = new StorageDataHandler();
         try {
-            UserDetail userDetail = (UserDetail) StorageDataHandler.readObject(context, Constants
-                    .USER_DETAILS);
+            UserDetail userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
 
             return userDetail;
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

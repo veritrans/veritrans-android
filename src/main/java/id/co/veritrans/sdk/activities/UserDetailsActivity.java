@@ -10,13 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
-import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.fragments.UserAddressFragment;
 import id.co.veritrans.sdk.fragments.UserDetailFragment;
 import id.co.veritrans.sdk.models.UserAddress;
@@ -30,10 +29,8 @@ public class UserDetailsActivity extends AppCompatActivity {
     }
 
     public void checkUserDetails() {
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
         try {
-            UserDetail userDetail = (UserDetail) StorageDataHandler.readObject(this, Constants
-                    .USER_DETAILS);
+            UserDetail userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
                 //TODO check user have address filled
                 //if no take user to select address
@@ -56,9 +53,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                 replaceFragment(userDetailFragment);
                 return;
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         setView();

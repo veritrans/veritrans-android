@@ -28,6 +28,7 @@ import java.util.List;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
@@ -395,26 +396,16 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
                         @Override
                         public void call(Subscriber<? super List<BankDetail>> sub) {
                             try {
-                                userDetail = (UserDetail) StorageDataHandler.readObject(CreditDebitCardFlowActivity.this,
-                                        Constants.USER_DETAILS);
+                                userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
                                 Logger.i("userDetail:"+userDetail.getUserFullName());
-                            } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (NullPointerException e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            ArrayList<BankDetail> bankDetails = new ArrayList<BankDetail>();
+                            ArrayList<BankDetail> bankDetails = new ArrayList<>();
                             try {
-                                bankDetails = (ArrayList<BankDetail>) StorageDataHandler.readObject(
-                                        CreditDebitCardFlowActivity.this, Constants.BANK_DETAILS);
+                                bankDetails = LocalDataHandler.readObject(Constants.BANK_DETAILS, BankDetailArray.class).getBankDetails();
                                 Logger.i("bankDetails:" + bankDetails.size());
-                            } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (NullPointerException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             if (bankDetails.isEmpty()) {
@@ -436,10 +427,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
                                     Gson gson = new Gson();
                                     bankDetails = gson.fromJson(json, BankDetailArray.class).getBankDetails();
                                     Logger.i("bankDetails:" + bankDetails.size());
-                                    StorageDataHandler.writeObject(CreditDebitCardFlowActivity.this, Constants.BANK_DETAILS, bankDetails);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } catch (NullPointerException e) {
+                                    LocalDataHandler.saveObject(Constants.BANK_DETAILS, bankDetails);
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
