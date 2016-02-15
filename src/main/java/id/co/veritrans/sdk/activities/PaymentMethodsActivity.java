@@ -72,7 +72,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
         UserDetail userDetail = null;
         try {
-            userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
+            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -163,8 +163,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            String amount = Constants.CURRENCY_PREFIX + " "
-                    + Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount());
+            String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount()));
 
             collapsingToolbarLayout.setTitle(" ");
             toolbarHeaderView.bindTo(PAYABLE_AMOUNT, "" + amount);
@@ -311,7 +310,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-                data.setAction(Constants.EVENT_TRANSACTION_COMPLETE);
+                data.setAction(getString(R.string.event_transaction_complete));
                 sendBroadcast(data);
                 finish();
             } else {

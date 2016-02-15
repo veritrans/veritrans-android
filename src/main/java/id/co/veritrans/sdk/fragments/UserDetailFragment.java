@@ -13,7 +13,6 @@ import java.io.IOException;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
@@ -97,7 +96,7 @@ public class UserDetailFragment extends Fragment {
         }
         UserDetail userDetail = null;
         try {
-            userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
+            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,7 +107,7 @@ public class UserDetailFragment extends Fragment {
         userDetail.setEmail(email);
         userDetail.setPhoneNumber(phoneNo);
         Logger.i("writting in file");
-        LocalDataHandler.saveObject(Constants.USER_DETAILS, userDetail);
+        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
         ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);
 

@@ -11,7 +11,6 @@ import android.widget.EditText;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
@@ -55,7 +54,7 @@ public class BankTransferFragment extends Fragment {
                 view.findViewById(R.id.text_see_instruction);
         storageDataHandler = new StorageDataHandler();
         try {
-            userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
+            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,7 +73,7 @@ public class BankTransferFragment extends Fragment {
 
                     Intent intent = new Intent(getActivity(),
                             BankTransferInstructionActivity.class);
-                    intent.putExtra(Constants.POSITION, 0);
+                    intent.putExtra(getString(R.string.position), 0);
                     getActivity().startActivity(intent);
 
                 }

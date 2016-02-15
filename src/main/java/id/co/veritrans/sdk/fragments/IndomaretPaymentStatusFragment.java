@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.activities.BankTransferActivity;
 import id.co.veritrans.sdk.activities.IndomaretActivity;
-import id.co.veritrans.sdk.activities.IndosatDompetkuActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -23,19 +21,16 @@ public class IndomaretPaymentStatusFragment extends Fragment {
 
     private static final String INDOMARET = "Indomaret";
     private static final String DATA = "data";
-
+    private static final String IS_FROM_INDOMARET = "indomaret";
     private TransactionResponse transactionResponse = null;
-
     // Views
     private TextViewFont mTextViewAmount = null;
     private TextViewFont mTextViewOrderId = null;
     private TextViewFont mTextViewTransactionTime = null;
     private TextViewFont mTextViewBankName = null;
-
     private TextViewFont mTextViewFontTransactionStatus = null;
     private TextViewFont mTextViewFontPaymentErrorMessage = null;
     private ImageView mImageViewTransactionStatus = null;
-    private static  final  String IS_FROM_INDOMARET = "indomaret";
     private boolean isFromIndomaret = false;
 
     public static IndomaretPaymentStatusFragment newInstance(TransactionResponse
@@ -118,10 +113,8 @@ public class IndomaretPaymentStatusFragment extends Fragment {
             if (transactionResponse.getTransactionStatus().contains("Pending") ||
                     transactionResponse.getTransactionStatus().contains("pending")) {
 
-            } else if (transactionResponse.getStatusCode().equalsIgnoreCase(Constants
-                    .SUCCESS_CODE_200) || transactionResponse.getStatusCode().
-                    equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
-
+            } else if (transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200))
+                    || transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_201))) {
                 setUiForSuccess();
             } else {
 

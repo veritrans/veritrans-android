@@ -108,7 +108,7 @@ public class UserAddressFragment extends Fragment {
         StorageDataHandler storageDataHandler = new StorageDataHandler();
         UserDetail userDetail = null;
         try {
-            userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
+            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -209,7 +209,7 @@ public class UserAddressFragment extends Fragment {
                 userDetail = new UserDetail();
             }
             userDetail.setUserAddresses(userAddresses);
-            LocalDataHandler.saveObject(Constants.USER_DETAILS, userDetail);
+            LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
             Intent selectPaymentIntent = new Intent(getActivity(), PaymentMethodsActivity.class);
             startActivity(selectPaymentIntent);
             getActivity().finish();

@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.fragments.UserAddressFragment;
@@ -30,7 +29,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
     public void checkUserDetails() {
         try {
-            UserDetail userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
+            UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
                 //TODO check user have address filled
                 //if no take user to select address

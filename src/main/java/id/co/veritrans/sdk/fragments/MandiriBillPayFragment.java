@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -86,13 +85,11 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
 
 
         if (mTransactionResponse != null) {
-            if (mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants
-                    .SUCCESS_CODE_200) ||
-                    mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants
-                            .SUCCESS_CODE_201)
-                    )
+            if (mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200)) ||
+                    mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
                 mTextViewCompanyCode.setText(mTransactionResponse
                         .getCompanyCode());
+            }
 
             mTextViewBillpayCode.setText(mTransactionResponse
                     .getPaymentCode());
@@ -113,7 +110,7 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
     private void showInstruction() {
         Intent intent = new Intent(getActivity(),
                 BankTransferInstructionActivity.class);
-        intent.putExtra(Constants.POSITION, 0);
+        intent.putExtra(getString(R.string.position), 0);
         getActivity().startActivity(intent);
     }
 

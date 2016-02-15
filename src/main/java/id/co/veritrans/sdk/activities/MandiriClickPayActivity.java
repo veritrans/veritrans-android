@@ -226,8 +226,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
             }
 
         } else {
-            SdkUtil.showSnackbar(MandiriClickPayActivity.this, Constants
-                    .ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(MandiriClickPayActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -279,8 +278,8 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), transactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_OK, data);
         finish();
     }

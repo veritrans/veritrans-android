@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 
+import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.models.BBMCallBackUrl;
@@ -143,7 +144,7 @@ public class VeritransSDK {
     public String getMerchantToken() {
         UserDetail userDetail = null;
         try {
-            userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
+            userDetail = LocalDataHandler.readObject(context.getString(R.string.user_details), UserDetail.class);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -185,7 +186,7 @@ public class VeritransSDK {
             TransactionManager.getToken(cardTokenRequest);
 
         } else {
-            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+            Logger.e(context.getString(R.string.error_invalid_data_supplied));
             isRunning = false;
         }
     }
@@ -202,7 +203,7 @@ public class VeritransSDK {
             isRunning = true;
             TransactionManager.registerCard(cardTokenRequest, userId);
         } else {
-            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+            Logger.e(context.getString(R.string.error_invalid_data_supplied));
             isRunning = false;
         }
     }
@@ -225,7 +226,7 @@ public class VeritransSDK {
             TransactionManager.paymentUsingPermataBank(permataBankTransfer);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -244,7 +245,7 @@ public class VeritransSDK {
             TransactionManager.paymentUsingCard(cardTransfer);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -270,7 +271,7 @@ public class VeritransSDK {
         } else {
 
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -300,7 +301,7 @@ public class VeritransSDK {
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
 
         }
     }
@@ -328,10 +329,10 @@ public class VeritransSDK {
             isRunning = false;
 
             if (descriptionModel == null) {
-                Logger.e(Constants.ERROR_DESCRIPTION_REQUIRED);
+                Logger.e(context.getString(R.string.error_description_required));
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
             }
         }
     }
@@ -357,9 +358,9 @@ public class VeritransSDK {
             isRunning = false;
 
             if (descriptionModel == null) {
-                Logger.e(Constants.ERROR_DESCRIPTION_REQUIRED);
+                Logger.e(context.getString(R.string.error_description_required));
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
             }
         }
     }
@@ -384,7 +385,7 @@ public class VeritransSDK {
             }
 
         } else {
-            Logger.e(Constants.ERROR_ALREADY_RUNNING);
+            Logger.e(context.getString(R.string.error_already_running));
         }
 
     }
@@ -394,7 +395,7 @@ public class VeritransSDK {
             Logger.e(ADD_TRANSACTION_DETAILS);
         }
 
-        Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+        Logger.e(context.getString(R.string.error_invalid_data_supplied));
     }
 
     /**
@@ -423,7 +424,7 @@ public class VeritransSDK {
             if (transactionRequest == null) {
                 Logger.e(ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(Constants.ERROR_ALREADY_RUNNING);
+                Logger.e(context.getString(R.string.error_already_running));
             }
         }
     }
@@ -445,7 +446,7 @@ public class VeritransSDK {
             TransactionManager.paymentUsingEpayBri(epayBriTransfer);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -466,7 +467,7 @@ public class VeritransSDK {
             TransactionManager.paymentUsingIndosatDompetku(indosatDompetkuRequest);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -495,7 +496,7 @@ public class VeritransSDK {
             TransactionManager.paymentUsingIndomaret(indomaretRequestModel);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -535,7 +536,7 @@ public class VeritransSDK {
             TransactionManager.paymentUsingBBMMoney(bbmMoneyRequestModel);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 

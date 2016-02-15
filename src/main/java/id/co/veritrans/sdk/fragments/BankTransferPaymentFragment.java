@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -78,13 +77,10 @@ public class BankTransferPaymentFragment extends Fragment {
         mTextViewValidity = (TextViewFont) view.findViewById(R.id.text_validaty);
 
         if (sPermataBankTransferResponse != null) {
-            if (sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(Constants
-                    .SUCCESS_CODE_200) ||
-                    sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase
-                            (Constants.SUCCESS_CODE_201)
-                    )
-                mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse
-                        .getPermataVANumber());
+            if (sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
+                    || sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
+                mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse.getPermataVANumber());
+            }
 
             mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime
                     (sPermataBankTransferResponse.getTransactionTime()));
@@ -107,7 +103,7 @@ public class BankTransferPaymentFragment extends Fragment {
     private void showInstruction() {
         Intent intent = new Intent(getActivity(),
                 BankTransferInstructionActivity.class);
-        intent.putExtra(Constants.POSITION, 2);
+        intent.putExtra(getString(R.string.position), 2);
         getActivity().startActivity(intent);
     }
 

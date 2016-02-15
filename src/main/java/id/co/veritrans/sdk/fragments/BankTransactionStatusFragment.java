@@ -22,25 +22,20 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class BankTransactionStatusFragment extends Fragment {
 
 
+    public static final String PENDING = "Pending";
     private static final String VIRTUAL_ACCOUNT = "Virtual Account";
     private static final String MANDIRI_BILL = "Mandiri Bill Payment";
-
-
     private static final String DATA = "data";
-    public static final String PENDING = "Pending";
-
+    private static final String PAYMENT_TYPE = "payment_type";
     private TransactionResponse mTransactionResponse = null;
-
     // Views
     private TextViewFont mTextViewAmount = null;
     private TextViewFont mTextViewOrderId = null;
     private TextViewFont mTextViewTransactionTime = null;
     private TextViewFont mTextViewBankName = null;
-
     private TextViewFont mTextViewFontTransactionStatus = null;
     private TextViewFont mTextViewFontPaymentErrorMessage = null;
     private ImageView mImageViewTransactionStatus = null;
-    private static final String PAYMENT_TYPE = "payment_type";
     private int mPaymentType = -1;
 
     /**
@@ -135,9 +130,8 @@ public class BankTransactionStatusFragment extends Fragment {
             if (mTransactionResponse.getTransactionStatus().contains(PENDING) ||
                     mTransactionResponse.getTransactionStatus().contains("pending")) {
 
-            } else if (mTransactionResponse.getStatusCode().equalsIgnoreCase(Constants
-                    .SUCCESS_CODE_200) || mTransactionResponse.getStatusCode().
-                    equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+            } else if (mTransactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200))
+                    || mTransactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_201))) {
 
                 setUiForSuccess();
             } else {
