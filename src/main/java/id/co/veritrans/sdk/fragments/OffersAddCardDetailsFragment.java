@@ -42,14 +42,14 @@ import id.co.veritrans.sdk.widgets.VeritransDialog;
  * Created by Ankit on 12/8/15.
  */
 public class OffersAddCardDetailsFragment extends Fragment {
+    private final String MONTH = "Month";
+    int currentPosition, totalPositions;
     private TextViewFont textViewTitleOffers = null;
     private TextViewFont textViewTitleCardDetails = null;
     private TextViewFont textViewOfferName = null;
-
     private TextViewFont textViewOfferApplied = null;
     private TextViewFont textViewOfferNotApplied = null;
     private LinearLayout layoutOfferStatus = null;
-
     private int offerPosition = 0;
     private String offerName = null;
     private String offerType = null;
@@ -57,8 +57,6 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private ImageView imageViewMinus = null;
     private TextViewFont textViewInstalment = null;
     private RelativeLayout layoutPayWithInstalment = null;
-
-
     private String lastExpDate = "";
     private EditText etCardNo;
     private EditText etCvv;
@@ -76,27 +74,11 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private UserDetail userDetail;
     private ArrayList<BankDetail> bankDetails;
     private String cardType = "";
-    int currentPosition, totalPositions;
-
-    private final String MONTH = "Month";
     private boolean isInstalment = false;
     private RelativeLayout formLayout;
-
-    public ArrayList<String> getBins() {
-        return bins;
-    }
-
     private ArrayList<String> bins = new ArrayList<>();
 
     public OffersAddCardDetailsFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        veritransSDK = ((OffersActivity) getActivity()).getVeritransSDK();
-        userDetail = ((OffersActivity) getActivity()).getUserDetail();
-        bankDetails = ((OffersActivity) getActivity()).getBankDetails();
     }
 
     public static OffersAddCardDetailsFragment newInstance(int position, String offerName, String
@@ -108,6 +90,18 @@ public class OffersAddCardDetailsFragment extends Fragment {
         data.putString(OffersActivity.OFFER_TYPE, offerType);
         fragment.setArguments(data);
         return fragment;
+    }
+
+    public ArrayList<String> getBins() {
+        return bins;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        veritransSDK = ((OffersActivity) getActivity()).getVeritransSDK();
+        userDetail = ((OffersActivity) getActivity()).getUserDetail();
+        bankDetails = ((OffersActivity) getActivity()).getBankDetails();
     }
 
     @Nullable
@@ -645,12 +639,12 @@ public class OffersAddCardDetailsFragment extends Fragment {
         if (cardNo.charAt(0) == '4') {
             Drawable visa = getResources().getDrawable(R.drawable.visa_non_transperent);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, visa, null);
-            cardType = Constants.CARD_TYPE_VISA;
+            cardType = getString(R.string.visa);
         } else if ((cardNo.charAt(0) == '5') && ((cardNo.charAt(1) == '1') || (cardNo.charAt(1) == '2')
                 || (cardNo.charAt(1) == '3') || (cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '5'))) {
             Drawable masterCard = getResources().getDrawable(R.drawable.mastercard_non_transperent);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, masterCard, null);
-            cardType = Constants.CARD_TYPE_MASTERCARD;
+            cardType = getString(R.string.mastercard);
 
         } else if ((cardNo.charAt(0) == '3') && ((cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '7'))) {
             Drawable amex = getResources().getDrawable(R.drawable.amex_non_transperent);

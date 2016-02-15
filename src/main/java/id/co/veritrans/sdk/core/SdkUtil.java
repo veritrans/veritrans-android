@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -239,8 +238,7 @@ public class SdkUtil {
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
             if (!TextUtils.isEmpty(errorMessage)) {
-                if (errorMessage.contains(Constants
-                        .RETROFIT_NETWORK_MESSAGE)) {
+                if (errorMessage.contains(VeritransSDK.getVeritransSDK().getContext().getString(R.string.retrofit_network_message))) {
                     SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
                 } else {
                     SdkUtil.showSnackbar(activity, errorMessage);
@@ -340,7 +338,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(Constants.PAYMENT_PERMATA);
+        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_permata));
 
         PermataBankTransfer model =
                 new PermataBankTransfer(bankTransfer,
@@ -375,7 +373,7 @@ public class SdkUtil {
 
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
-        model.setPaymentType(Constants.PAYMENT_INDOMARET);
+        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indomaret));
         model.setItem_details(request.getItemDetails());
         model.setCustomerDetails(request.getCustomerDetails());
         model.setTransactionDetails(transactionDetails);
@@ -436,7 +434,7 @@ public class SdkUtil {
 
         model.setCustomerDetails(request.getCustomerDetails(), request
                 .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        model.setPaymentType(Constants.PAYMENT_INDOSAT_DOMPETKU);
+        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indosat_dompetku));
 
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();
@@ -553,8 +551,7 @@ public class SdkUtil {
         CustomerDetails mCustomerDetails = null;
 
         try {
-            userDetail = (UserDetail) StorageDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext(),
-                    Constants.USER_DETAILS);
+            userDetail = LocalDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext().getString(R.string.user_details), UserDetail.class);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
 
@@ -580,9 +577,7 @@ public class SdkUtil {
                 //SdkUtil.showSnackbar(VeritransSDK.getVeritransSDK().getContext(), "User details not available.");
                 //request.getActivity().finish();
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.e("Error while fetching user details : " + ex.getMessage());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.e("Error while fetching user details : " + ex.getMessage());
         }
 
@@ -679,14 +674,11 @@ public class SdkUtil {
 
         StorageDataHandler storageDataHandler = new StorageDataHandler();
         try {
-            UserDetail userDetail = (UserDetail) StorageDataHandler.readObject(context, Constants
-                    .USER_DETAILS);
+            UserDetail userDetail = LocalDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext().getString(R.string.user_details), UserDetail.class);
 
             return userDetail;
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

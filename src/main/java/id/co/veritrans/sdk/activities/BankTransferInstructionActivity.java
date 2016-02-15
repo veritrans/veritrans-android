@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.fragments.InstructionBCAFragment;
 import id.co.veritrans.sdk.fragments.InstructionMandiriFragment;
 import id.co.veritrans.sdk.fragments.InstructionPermataFragment;
@@ -36,7 +35,7 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
         initializeViews();
 
         if (getIntent() != null) {
-            int position = getIntent().getIntExtra(Constants.POSITION, 0);
+            int position = getIntent().getIntExtra(getString(R.string.position), 0);
             mViewPager.setCurrentItem(position);
         }
 

@@ -149,7 +149,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
         if (resultCode == RESULT_OK && data!=null ) {
-            String responseStr = data.getStringExtra(Constants.PAYMENT_RESPONSE);
+            String responseStr = data.getStringExtra(getString(R.string.payment_response));
             if(TextUtils.isEmpty(responseStr)){
                 return;
             }
@@ -208,9 +208,9 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         Intent data = new Intent();
         if (transactionResponseFromMerchant != null) {
             Logger.i("transactionResponseFromMerchant:"+transactionResponseFromMerchant.getString());
-            data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponseFromMerchant);
+            data.putExtra(getString(R.string.transaction_response), transactionResponseFromMerchant);
         }
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
