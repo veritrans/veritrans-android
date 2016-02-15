@@ -474,12 +474,12 @@ public class AddCardDetailsFragment extends Fragment {
         if (cardNo.charAt(0) == '4') {
             Drawable visa = getResources().getDrawable(R.drawable.visa_non_transperent);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, visa, null);
-            cardType = Constants.CARD_TYPE_VISA;
+            cardType = getString(R.string.visa);
         } else if ((cardNo.charAt(0) == '5') && ((cardNo.charAt(1) == '1') || (cardNo.charAt(1) == '2')
                 || (cardNo.charAt(1) == '3') || (cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '5'))) {
             Drawable masterCard = getResources().getDrawable(R.drawable.mastercard_non_transperent);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, masterCard, null);
-            cardType = Constants.CARD_TYPE_MASTERCARD;
+            cardType = getString(R.string.mastercard);
 
         } else if ((cardNo.charAt(0) == '3') && ((cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '7'))) {
             Drawable amex = getResources().getDrawable(R.drawable.amex_non_transperent);

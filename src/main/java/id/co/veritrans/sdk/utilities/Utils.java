@@ -24,7 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Logger;
 
 /**
@@ -174,7 +174,7 @@ public class Utils {
                 //request.setDestinationInExternalFilesDir(activity, path, "" + fileName);
                 request.setNotificationVisibility(DownloadManager.Request
                         .VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                String path = Constants.DIR_APP + File.separator + "" + directoryName;
+                String path = activity.getString(R.string.app_directory) + File.separator + "" + directoryName;
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, path +
                         File.separator + fileName + ".mp4");
                 return downloadManager.enqueue(request);

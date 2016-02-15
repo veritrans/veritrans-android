@@ -164,8 +164,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
             mTextViewTitle.setText(getResources().getString(R.string.indosat_dompetku));
 
         } else {
-            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, Constants
-                    .ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_something_wrong));
             Logger.e(IndosatDompetkuActivity.class.getSimpleName(), Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -215,8 +214,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
                 mVeritransSDK.getTransactionRequest().getCustomerDetails().setPhone(phoneNumber
                         .trim());
             } else {
-                SdkUtil.showSnackbar(IndosatDompetkuActivity.this, Constants
-                        .ERROR_INVALID_PHONE_NUMBER);
+                SdkUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_invalid_phone_number));
                 return;
             }
         }
@@ -329,8 +327,8 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, mTransactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), mTransactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }

@@ -44,7 +44,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
 
     public PaymentMethodsAdapter(Activity activity, ArrayList<PaymentMethodsModel> data) {
-        this.sActivity = activity;
+        sActivity = activity;
         this.data = data;
     }
 
@@ -111,7 +111,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                     .getResources().getString(R.string.mandiri_bill_payment))) {
 
                 Intent startMandiriBillpay = new Intent(sActivity, BankTransferActivity.class);
-                startMandiriBillpay.putExtra(Constants.POSITION,
+                startMandiriBillpay.putExtra(sActivity.getString(R.string.position),
                         Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
 
                 sActivity.startActivityForResult(startMandiriBillpay, Constants
@@ -121,7 +121,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                     .getResources().getString(R.string.bank_transfer))) {
 
                 Intent startBankPayment = new Intent(sActivity, BankTransferActivity.class);
-                startBankPayment.putExtra(Constants.POSITION,
+                startBankPayment.putExtra(sActivity.getString(R.string.position),
                         Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER);
 
                 sActivity.startActivityForResult(startBankPayment,
