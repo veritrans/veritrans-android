@@ -8,8 +8,11 @@ import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 
+import com.flurry.android.FlurryAgent;
+
 import java.util.ArrayList;
 
+import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
@@ -75,6 +78,7 @@ public class VeritransSDK {
             merchantServerUrl = veritransBuilder.merchantServerUrl;
             initializeFonts();
             initializeSharedPreferences();
+            initializeFlurry();
             return veritransSDK;
         } else {
             return null;
@@ -94,6 +98,10 @@ public class VeritransSDK {
 
     private static void initializeSharedPreferences() {
         mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
+    }
+
+    private static void initializeFlurry() {
+        FlurryAgent.init(context, BuildConfig.FLURRY_API_KEY);
     }
 
     /**
