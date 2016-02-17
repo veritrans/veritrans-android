@@ -44,10 +44,12 @@ android {
     productFlavors {
         development {
             buildConfigField "String", "BASE_URL", "\"https://api.sandbox.veritrans.co.id/v2/\""
+            buildConfigField "String", "FLURRY_API_KEY", "\"NNB5NK9TP5HNJCZCYXNJ\""
         }
 
         production {
             buildConfigField "String", "BASE_URL", "\"https://api.veritrans.co.id/v2/\""
+            buildConfigField "String", "FLURRY_API_KEY", "\"KYKDDMDXDVJ96B5S9HBS\""
         }
     }
 

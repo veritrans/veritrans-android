@@ -12,6 +12,7 @@ import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
 
+import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
@@ -100,7 +101,7 @@ public class VeritransSDK {
     }
 
     private static void initializeFlurry() {
-        FlurryAgent.init(context, context.getString(R.string.flurry_api_key));
+        FlurryAgent.init(context, BuildConfig.FLURRY_API_KEY);
     }
 
     /**
