@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
@@ -463,6 +465,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
         }, Constants.CARD_ANIMATION_TIME);
     }
 
+    @Subscribe
     @Override
     public void onEvent(DeleteCardSuccessEvent event) {
 
@@ -518,16 +521,19 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(DeleteCardFailedEvent event) {
         SdkUtil.showSnackbar(getActivity(), event.getMessage());
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         SdkUtil.showSnackbar(getActivity(), getString(R.string.no_network_msg));
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         SdkUtil.showSnackbar(getActivity(), event.getMessage());

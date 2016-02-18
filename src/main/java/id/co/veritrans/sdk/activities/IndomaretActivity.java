@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -303,6 +305,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         finish();
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         Toast.makeText(IndomaretActivity.this, "Transaction success:  " +
@@ -319,6 +322,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
@@ -335,6 +339,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
@@ -350,6 +355,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         Toast.makeText(IndomaretActivity.this, "Transaction failed: " +

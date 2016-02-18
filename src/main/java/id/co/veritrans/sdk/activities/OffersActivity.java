@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -581,6 +583,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         btnMorph.morph(circle);
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetTokenSuccessEvent event) {
         TokenDetailsResponse tokenDetailsResponse = event.getResponse();
@@ -603,12 +606,14 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetTokenFailedEvent event) {
         SdkUtil.hideProgressDialog();
         SdkUtil.showApiFailedMessage(this, event.getMessage());
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         TransactionResponse cardPaymentResponse = event.getResponse();
@@ -680,6 +685,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         TransactionResponse transactionResponse = event.getResponse();
@@ -701,16 +707,19 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         textViewTitleOffers.setText(getString(R.string.title_payment_status));
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
 
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
 
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetCardsSuccessEvent event) {
         CardResponse cardResponse = event.getResponse();
@@ -746,6 +755,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetCardFailedEvent event) {
         SdkUtil.hideProgressDialog();
@@ -753,11 +763,13 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         processingLayout.setVisibility(View.GONE);
     }
 
+    @Subscribe
     @Override
     public void onEvent(SaveCardSuccessEvent event) {
         Logger.i("card saved");
     }
 
+    @Subscribe
     @Override
     public void onEvent(SaveCardFailedEvent event) {
 
