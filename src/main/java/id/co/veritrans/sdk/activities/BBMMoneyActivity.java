@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
@@ -285,7 +287,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         finish();
     }
 
-
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -299,6 +301,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         try {
@@ -312,6 +315,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         BBMMoneyActivity.this.errorMessage = getString(R.string.no_network_msg);
@@ -320,6 +324,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         SdkUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         BBMMoneyActivity.this.errorMessage = event.getMessage();

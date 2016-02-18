@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -181,6 +183,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
         this.RESULT_CODE = resultCode;
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -197,6 +200,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         try {
@@ -210,6 +214,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         MandiriECashActivity.this.errorMessage = getString(R.string.no_network_msg);
@@ -217,6 +222,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
         SdkUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         MandiriECashActivity.this.errorMessage = event.getMessage();
