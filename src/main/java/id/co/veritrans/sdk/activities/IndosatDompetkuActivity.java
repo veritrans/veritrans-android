@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -333,6 +335,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         finish();
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -348,6 +351,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         mTransactionResponse = event.getResponse();
@@ -360,6 +364,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         IndosatDompetkuActivity.this.errorMessage = getString(R.string.no_network_msg);
@@ -371,6 +376,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         IndosatDompetkuActivity.this.errorMessage = event.getMessage();

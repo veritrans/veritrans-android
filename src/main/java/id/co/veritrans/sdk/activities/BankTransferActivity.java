@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -416,6 +418,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         finish();
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -429,6 +432,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         BankTransferActivity.this.errorMessage = event.getMessage();
@@ -436,6 +440,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         try {
@@ -449,6 +454,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         BankTransferActivity.this.errorMessage = getString(R.string.no_network_msg);
