@@ -54,8 +54,8 @@ here in this flow just set transaction request information to sdk and start paym
                     //set transaction information to sdk
                     mVeritransSDK.setTransactionRequest(transactionRequest);
 
-                    // start ui flow
-                    mVeritransSDK.startPaymentUiFlow();
+                    // start ui flow using activity instance
+                    mVeritransSDK.startPaymentUiFlow(activity);
 
                 }
         
@@ -136,12 +136,14 @@ isSecure - set it to true for secure transaction.
 
 It contains two methods onSuccess and onFailure.
 
+    @Subscribe
     @Override
     public void onEvent(GetTokenSuccess event) {
        // Success Event
        TokenDetailsResponse response = event.getResponse();
     }
     
+    @Subscribe
     @Override
     public void onEvent(GetSuccessFailedEvent event) {
         // Failed Event
@@ -238,7 +240,7 @@ VeritransSDK.getVeritransSDK();
 
 This SDK using Event Bus implementation which don't require activity as a parameter.
 
-For default implementation please add this code blocks into `onCreate` and `onDestroy` method on your Activity/Fragment that needs to implement this SDK.
+For default implementation of the `core flow` please add this code blocks into `onCreate` and `onDestroy` method on your Activity/Fragment that needs to implement this SDK.
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -268,22 +270,27 @@ Each API usage has its own `onEvent` interface to capture finished API access. P
 This interface will implement 2 general error handler, success event and failed event.
 
 For example, `TransactionBusCallback` will implement these methods.
-
+    
+    // Need to attach @Subscribe annotation to enable Event Bus registration
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         //Network unavailable event implementation
     }
     
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         //Generic error event implementation
     }
-        
+      
+    @Subscribe  
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         //Success event implementation
     }
     
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         //Failed event implementation
@@ -298,13 +305,10 @@ Customer details , item details , billing and shipping  address these are common
 1) Set customer details -
 
 **CustomerDetails** class holds information about customer. To set information about customer in TransactionRequest use following code -
-
 ```
 CustomerDetails customer = new CustomerDetails(String firstName, String lastName, String email, String phone);
 transactionRequest.setCustomerDetails(customer);
 ```
-
-
 
 2) Set Item details 
 
@@ -319,7 +323,6 @@ ItemDetails itemDetails2 = new CustomerDetailsItemDetails(String id, double pric
 
 transactionRequest.setItemDetails(ArrayList<ItemDetails>);
 ```
-
 
 3) Set Billing Address -
 **BillingAddress** class holds information about billing. TransactionRequest takes an array list of billing details. To set this in TransactionRequest use following code - 
@@ -336,8 +339,6 @@ BillingAddress billingAddress2 =new BillingAddress(String firstName, String last
 transactionRequest.setItemDetails(ArrayList<BillingAddress>);
 
 ```
-
-
 
 4) Set Shipping Address -
 **ShippingAddress** class holds information about billing. TransactionRequest takes an array list of shipping details. To set this in TransactionRequest use following code -
@@ -429,10 +430,6 @@ The **saved_token_id** may then be used for a getToken() request similar to a **
     cardTokenRequest.setClientKey(CLIENT_KEY);
 ```
 
-
-
-
-
 ### 4.3 Implementation of GCM  
  Please visit following link for installtion steps of GCM
  * https://developers.google.com/cloud-messaging/android/client  
@@ -521,20 +518,25 @@ After registeration we get token from google services, we are sending this token
  * The flow of credit and debit card is same with inclusion of offer functionality.  
  * Register Activity/Fragment into `VeritransBus` See: *Setup Event Bus*.
  * Call function `getOffersList` from  `VeritransSDK` class.  
- * Implement `GetOfferBusCallback`
+ * Implement `GetOfferBusCallback` interface. 
 
 ```  
+    @Subscribe
     @Override
     public void onEvent(GetOfferSuccessEvent event) {
         //Success implementation
         GetOffersResponseModel response = event.getResponse();
     }
-      
+    
+    @Subscribe  
     @Override
     public void onEvent(GetOfferFailedEvent event) {
         //Failed implementation
         String errorMessage = event.getMessage();
     }
+    
+    //There are two more onEvent methods which handles generic error and unavailable network error.
+    ...
 ``` 
 
  * Like credit card flow get saved cards using **veritransSDK.getSavedCard()**.
@@ -584,21 +586,25 @@ After registeration we get token from google services, we are sending this token
  * If card number matches then offer valid for given card number.
  * When we are applying the offer for normal flow make function call **getToken** from  **VeritransSdk** class as same as credit card flow.
  * Pass **cardTokenRequest** params to function.
- * Implement `GetCardBusCallback`.
+ * Implement `GetCardBusCallback`interface.
  
  ```
- 
+     @Subscribe
      @Override
      public void onEvent(GetCardsSuccessEvent event){
         //Success implementation
         CardResponse response = event.getResponse();
      }
      
+     @Subscribe
      @Override
      public void onEvent(GetCardFailedEvent event) {
         //Failed implementation
         String errorMessage = event.getMessage();
      }
+     
+     //There are two more onEvent methods which handles generic error and unavailable network error.
+     ...
  ```
  
  * After successful call do charge api call with bins string array as new param. 
@@ -607,26 +613,30 @@ After registeration we get token from google services, we are sending this token
  cardPaymentDetails.setBinsArray(cardTokenRequest.getBins());  
  ```  
 
-
 ## 5 Payment Types
 
 For each API call in payment function, you need to do this first before calling any API functions.
 
 - Register Activity/Fragment into `VeritransBus` See: *Setup Event Bus*.
-- Implement `TransactionBusCallback` in Activity/Fragment.
+- Implement `TransactionBusCallback` interface in Activity/Fragment.
 
 ```
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         //Success implementation
         TransactionResponse response = event.getResponse();
     }
     
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         //Failed implementation
         String message = event.getMessage();
     }
+    
+    //There are two more onEvent methods which handles generic error and unavailable network error.
+    ...
 ```
 
 ### 5.1 Charge using Credit/Debit card -
@@ -637,11 +647,6 @@ For doing charge api call we have to call this function.
 In above code we have to supply ** _CardTransfer_ ** class object.
 
 After successful transaction card information will be get saved if user permits. In TransactionResponse we get ***saved_token_id*** which is used in future transaction.
-
-
-
-
-
 
 ### 5.2 Bank Transfer
 
@@ -655,11 +660,9 @@ shipping address etc.
     
 * Then execute Transaction using following method to get response back.
 
-
 ```
        mVeritransSDK.paymentUsingPermataBank(); 
 ```
-
 
 ### 5.3 Mandiri bill payment
 
@@ -680,7 +683,6 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 mVeritransSDK.paymentUsingMandiriBillPay();
         
 ```
-
 
 ### 5.4 Indosat Dompetku 
 
@@ -704,8 +706,6 @@ mVeritransSDK.paymentUsingIndosatDompetku(MSISDN);
 where - msisdn  is registered user mobile number, must be less than 12. for debug you can use 08123456789
         
 ```
-
-
 
 
 ### 5.5 Indomaret 
@@ -732,9 +732,6 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 mVeritransSDK.paymentUsingIndomaret(cstoreEntity);
         
 ```
-
-
-
 
 ### 5.6 Mandiri ClickPay
 
@@ -791,7 +788,7 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 * Then execute Transaction using following method to get response back. In success event implementation you will get redirect url from server, start webview to handle the redirect url. 
 
 ```
-
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         //Success implementation
@@ -813,7 +810,6 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
              Gson gson = new Gson();
             TransactionResponse transactionResponse = gson.fromJson(responseStr, TransactionResponse.class);
             // handle response here
-            
         }
     } 
 ```
@@ -871,8 +867,6 @@ private void initwebview() {
         }
     }
 
-
-
 /**
 Use this interface in your web view to get response back. 
 **/
@@ -926,6 +920,7 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
         //add Description for transaction
         DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
 
+        @Subscribe
         @Override
         public void onEvent(TransactionSuccessEvent event) {
             //Success implementation
@@ -935,12 +930,11 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
             }
         }
         
-        //Call paymentUsingCIMBClickPay
+        //Call paymentUsingCIMBClickPay method
         mVeritransSDK.paymentUsingCIMBClickPay(cimbDescription);
+        ...
         
 ```
-
-
 
 ### 5.9 BBM money - 
 
@@ -973,6 +967,7 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
         DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
 
         //Handle success implementation
+        @Subscribe
         @Override
         public void onEvent(TransactionSuccessEvent event) {
             //Success implementation
@@ -1046,6 +1041,7 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
         DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
 
         //Handle success implementation
+        @Subscribe
         @Override
         public void onEvent(TransactionSuccessEvent event) {
             //Success implementation
