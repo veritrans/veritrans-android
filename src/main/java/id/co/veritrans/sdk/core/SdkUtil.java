@@ -23,6 +23,7 @@ import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BBMUrlEncodeJson;
+import id.co.veritrans.sdk.models.BCABankTransfer;
 import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
@@ -342,6 +343,36 @@ public class SdkUtil {
 
         PermataBankTransfer model =
                 new PermataBankTransfer(bankTransfer,
+                        transactionDetails, request.getItemDetails(),
+                        request.getBillingAddressArrayList(),
+                        request.getShippingAddressArrayList(),
+                        request.getCustomerDetails());
+        return model;
+
+    }
+
+    /**
+     * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
+     *
+     * @param request
+     * @return
+     */
+    protected static BCABankTransfer getBcaBankTransferRequest(TransactionRequest request) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        // bank name
+        BankTransfer bankTransfer = new BankTransfer();
+        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_bca));
+
+        BCABankTransfer model =
+                new BCABankTransfer(bankTransfer,
                         transactionDetails, request.getItemDetails(),
                         request.getBillingAddressArrayList(),
                         request.getShippingAddressArrayList(),

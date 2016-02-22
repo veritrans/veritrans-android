@@ -326,6 +326,7 @@
     <string name="payment_indomaret">cstore</string>
     <string name="payment_credit_debit">credit_card</string>
     <string name="payment_permata">permata</string>
+    <string name="payment_bca">bca</string>
     <!--Error Response-->
     <string name="error_empty_response">failed to retrieve response from server.</string>
     <string name="error_sdk_not_initialized">sdk is not initialized.</string>
