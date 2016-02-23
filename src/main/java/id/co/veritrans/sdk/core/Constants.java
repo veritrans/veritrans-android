@@ -23,6 +23,9 @@ public class Constants {
     public static final int PAYMENT_METHOD_MANDIRI_BILL_PAYMENT = 9;
     public static final int PAYMENT_METHOD_INDOMARET = 10;
 
+    public static final int BANK_TRANSFER_BCA = 1001;
+    public static final int BANK_TRANSFER_PERMATA = 1003;
+
     public static final String TAG = "VeritransSDK";
 
     public static final int PHONE_NUMBER_LENGTH = 10;

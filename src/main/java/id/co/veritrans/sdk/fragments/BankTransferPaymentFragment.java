@@ -103,7 +103,7 @@ public class BankTransferPaymentFragment extends Fragment {
     private void showInstruction() {
         Intent intent = new Intent(getActivity(),
                 BankTransferInstructionActivity.class);
-        intent.putExtra(getString(R.string.position), 2);
+        intent.putExtra(BankTransferInstructionActivity.BANK, getArguments().getString(BankTransferInstructionActivity.BANK));
         getActivity().startActivity(intent);
     }
 
