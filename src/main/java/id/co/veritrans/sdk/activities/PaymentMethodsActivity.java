@@ -310,8 +310,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-                data.setAction(getString(R.string.event_transaction_complete));
-                sendBroadcast(data);
                 finish();
             } else {
                 //transaction failed.

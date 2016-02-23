@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="?android:selectableItemBackground">
+
+
+    <ImageView
+        android:id="@+id/img_bank_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:src="@drawable/ic_launcher"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_toRightOf="@id/img_bank_icon">
+
+        <id.co.veritrans.sdk.widgets.TextViewFont
+            android:id="@+id/text_bank_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|left"
+            android:text="demo"
+            android:textColor="@color/black"
+            app:font="@string/font_open_sans_regular" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_divider" />
+    </RelativeLayout>
+</RelativeLayout>

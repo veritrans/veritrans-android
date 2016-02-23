@@ -22,6 +22,7 @@ import id.co.veritrans.sdk.activities.IndosatDompetkuActivity;
 import id.co.veritrans.sdk.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.activities.MandiriECashActivity;
 import id.co.veritrans.sdk.activities.OffersActivity;
+import id.co.veritrans.sdk.activities.SelectBankTransferActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
@@ -120,10 +121,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
             } else if (name.equalsIgnoreCase(sActivity
                     .getResources().getString(R.string.bank_transfer))) {
 
-                Intent startBankPayment = new Intent(sActivity, BankTransferActivity.class);
-                startBankPayment.putExtra(sActivity.getString(R.string.position),
-                        Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER);
-
+                Intent startBankPayment = new Intent(sActivity, SelectBankTransferActivity.class);
                 sActivity.startActivityForResult(startBankPayment,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
 

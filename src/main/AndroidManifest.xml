@@ -76,6 +76,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
 
+        <activity android:name=".activities.SelectBankTransferActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
+
 
     </application>
 
