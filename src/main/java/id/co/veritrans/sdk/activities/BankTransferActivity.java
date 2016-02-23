@@ -125,7 +125,18 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         bankTransferFragment = new BankTransferFragment();
+        Bundle bundle = new Bundle();
+        if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
+            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
+            bankTransferFragment.setArguments(bundle);
+        } else if (position == Constants.BANK_TRANSFER_PERMATA){
+            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
+            bankTransferFragment.setArguments(bundle);
+        } else if(position == Constants.BANK_TRANSFER_BCA) {
+            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+            bankTransferFragment.setArguments(bundle);
 
+        }
         fragmentTransaction.add(R.id.bank_transfer_container,
                 bankTransferFragment, HOME_FRAGMENT);
         fragmentTransaction.commit();
@@ -195,8 +206,10 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
                 mTextViewTitle.setText(getResources().getString(R.string.mandiri_bill_payment));
-            } else {
-                mTextViewTitle.setText(getResources().getString(R.string.bank_transfer));
+            } else if(position == Constants.BANK_TRANSFER_BCA){
+                mTextViewTitle.setText(getResources().getString(R.string.activity_bank_transfer_bca));
+            } else if( position == Constants.BANK_TRANSFER_PERMATA) {
+                mTextViewTitle.setText(getResources().getString(R.string.activity_bank_transfer_permata));
             }
 
         } else {
@@ -296,15 +309,28 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
                 MandiriBillPayFragment bankTransferPaymentFragment =
                         MandiriBillPayFragment.newInstance(transactionResponse);
-
+                Bundle bundle = new Bundle();
+                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
+                bankTransferPaymentFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.bank_transfer_container,
                         bankTransferPaymentFragment, PAYMENT_FRAGMENT);
-            } else {
-
+            } else if (position == Constants.BANK_TRANSFER_PERMATA){
                 BankTransferPaymentFragment bankTransferPaymentFragment =
                         BankTransferPaymentFragment.newInstance(transactionResponse);
+                Bundle bundle = new Bundle();
+                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
+                bankTransferPaymentFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.bank_transfer_container,
                         bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+            } else if(position == Constants.BANK_TRANSFER_BCA) {
+                BankTransferPaymentFragment bankTransferPaymentFragment =
+                        BankTransferPaymentFragment.newInstance(transactionResponse);
+                Bundle bundle = new Bundle();
+                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+                bankTransferPaymentFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.bank_transfer_container,
+                        bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+
             }
 
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
@@ -353,8 +379,10 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
             SdkUtil.showProgressDialog(BankTransferActivity.this, getString(R.string.processing_payment), false);
 
-            if (position == Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER) {
+            if (position == Constants.BANK_TRANSFER_PERMATA) {
                 bankTransferTransaction(veritransSDK);
+            } else if(position == Constants.BANK_TRANSFER_BCA) {
+                bcaBankTransferTransaction(veritransSDK);
             } else {
                 mandiriBillPayTransaction(veritransSDK);
             }
@@ -364,6 +392,16 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
+    }
+
+    /**
+     * it performs BCA bank transfer and in onSuccess() of callback method it will call {@link
+     * #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
+     *
+     * @param veritransSDK
+     */
+    private void bcaBankTransferTransaction(VeritransSDK veritransSDK) {
+        veritransSDK.paymentUsingBcaBankTransfer();
     }
 
 

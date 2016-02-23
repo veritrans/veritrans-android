@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.core;
 
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
+import id.co.veritrans.sdk.models.BCABankTransfer;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
@@ -26,7 +27,6 @@ import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import retrofit.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -94,6 +94,18 @@ public interface VeritranceApiInterface {
                                                             String authorization,
                                                             @Body PermataBankTransfer
                                                                     permataBankTransfer);
+
+    /**
+     * Do the payment using BCA VA.
+     * @param authorization     authorization token.
+     * @param bcaBankTransfer   transaction details
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingBCAVA(
+            @Header("x-auth") String authorization,
+            @Body BCABankTransfer bcaBankTransfer);
 
     //debit card
     @Headers({"Content-Type: application/json", "Accept: application/json"})

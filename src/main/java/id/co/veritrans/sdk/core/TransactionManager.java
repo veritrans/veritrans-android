@@ -21,6 +21,7 @@ import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionStatusSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
+import id.co.veritrans.sdk.models.BCABankTransfer;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
@@ -386,6 +387,102 @@ class TransactionManager {
                                             VeritransBusProvider.getInstance().post(
                                                     new TransactionFailedEvent(permataBankTransferResponse.getStatusMessage(),
                                                             permataBankTransferResponse));
+                                            releaseResources();
+                                        }
+
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new TransactionFailedEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response), null));
+                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        releaseResources();
+                                    }
+
+                                }
+                            });
+                } else {
+                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
+                    releaseResources();
+                }
+            } else {
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                releaseResources();
+            }
+
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED));
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
+        }
+    }
+
+    /**
+     * it will execute an api call to perform transaction using permata bank, and after
+     * completion of request it
+     * will </p> call appropriate method using registered {@Link TransactionCallback}.
+     *
+     * @param bcaBankTransfer information required perform transaction using BCA bank
+     */
+    public static void paymentUsingBCATransfer(final BCABankTransfer bcaBankTransfer) {
+
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getMerchantApiClient(true);
+
+            if (apiInterface != null) {
+                Observable<TransactionResponse> observable = null;
+
+                String merchantToken = veritransSDK.getMerchantToken();
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+                    observable = apiInterface.paymentUsingBCAVA(merchantToken,
+                            bcaBankTransfer);
+
+                    subscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<TransactionResponse>() {
+
+                                @Override
+                                public void onCompleted() {
+
+                                    if (subscription != null && !subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
+
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(throwable.getMessage(), null));
+                                    releaseResources();
+                                }
+
+                                @Override
+                                public void onNext(TransactionResponse bcaBankTransferResponse) {
+
+                                    releaseResources();
+
+                                    if (bcaBankTransferResponse != null) {
+
+                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                            displayResponse(bcaBankTransferResponse);
+                                        }
+
+                                        if (bcaBankTransferResponse.getStatusCode().trim()
+                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                || bcaBankTransferResponse.getStatusCode()
+                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+
+                                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaBankTransferResponse));
+                                        } else {
+                                            VeritransBusProvider.getInstance().post(
+                                                    new TransactionFailedEvent(bcaBankTransferResponse.getStatusMessage(),
+                                                            bcaBankTransferResponse));
                                             releaseResources();
                                         }
 

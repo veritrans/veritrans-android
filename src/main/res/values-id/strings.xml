@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- bca/ prima bank transfer Instruction-->
+    <string name="bca_instruction_step1">1.\tPada menu utama, pilih Transaksi lainnya.</string>
+    <string name="bca_instruction_step2">2.\tPilih \'Transfer\'.</string>
+    <string name="bca_instruction_step3">3.\tPilih \'Ke Rek BCA Virtual Account\'.</string>
+    <string name="bca_instruction_step4">4.\tMasukkan nomor (11 digit No. Rekening pembayaran) lalu tekan \'Benar\'.</string>
+    <string name="bca_instruction_step5">5.\tMasukkan jumlah tagihan yang akan anda bayar.</string>
+    <string name="bca_instruction_step6">6.\tPada halaman konfirmasi transfer akan muncul detail pembayaran anda. Jika informasi telah sesuai tekan \'Ya\'.</string>
+</resources>
