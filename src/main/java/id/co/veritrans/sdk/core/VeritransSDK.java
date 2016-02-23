@@ -20,6 +20,7 @@ import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BCABankTransfer;
+import id.co.veritrans.sdk.models.BankTransferModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
@@ -176,6 +177,12 @@ public class VeritransSDK {
         return merchantServerUrl;
     }
 
+    public ArrayList<BankTransferModel> getBankTransferList() {
+        ArrayList<BankTransferModel> models = new ArrayList<>();
+        models.add(new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_banktransfer2, true));
+        models.add(new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_banktransfer2, true));
+        return models;
+    }
 
     public ArrayList<PaymentMethodsModel> getSelectedPaymentMethods() {
         return selectedPaymentMethods;
