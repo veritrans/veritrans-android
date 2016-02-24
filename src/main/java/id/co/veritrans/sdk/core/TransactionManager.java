@@ -644,6 +644,7 @@ class TransactionManager {
                                 @Override
                                 public void onError(Throwable throwable) {
                                     releaseResources();
+                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
                                 }
 
                                 @Override
