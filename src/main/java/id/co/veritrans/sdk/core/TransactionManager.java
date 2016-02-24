@@ -22,6 +22,7 @@ import id.co.veritrans.sdk.eventbus.events.TransactionStatusSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BCABankTransfer;
+import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
@@ -695,6 +696,103 @@ class TransactionManager {
             releaseResources();
         }
     }
+
+    /**
+     * it will execute an api call to perform transaction using BCA KlikPay, and after
+     * completion of request it
+     * will </p> call appropriate method using registered {@Link TransactionCallback}.
+     *
+     * @param bcaKlikPayModel information required perform transaction using BCA KlikPay.
+     */
+    public static void paymentUsingBCAKlikPay(final BCAKlikPayModel bcaKlikPayModel) {
+
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            VeritranceApiInterface apiInterface =
+                    VeritransRestAdapter.getMerchantApiClient(true);
+
+            if (apiInterface != null) {
+
+                Observable<TransactionResponse> observable = null;
+                String merchantToken = veritransSDK.getMerchantToken();
+                Logger.i("merchantToken:" + merchantToken);
+                if (merchantToken != null) {
+                    observable = apiInterface.paymentUsingBCAKlikPay(merchantToken,
+                            bcaKlikPayModel);
+
+                    subscription = observable.subscribeOn(Schedulers
+                            .io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<TransactionResponse>() {
+
+                                @Override
+                                public void onCompleted() {
+
+                                    if (subscription != null && !subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
+                                    }
+
+                                    releaseResources();
+
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    releaseResources();
+                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                }
+
+                                @Override
+                                public void onNext(TransactionResponse
+                                                           bcaKlikPayResponse) {
+
+                                    releaseResources();
+
+                                    if (bcaKlikPayResponse != null) {
+
+                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                            displayResponse(bcaKlikPayResponse);
+                                        }
+
+                                        if (bcaKlikPayResponse.getStatusCode().trim()
+                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                || bcaKlikPayResponse.getStatusCode()
+                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+
+                                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaKlikPayResponse));
+                                        } else {
+                                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(
+                                                    bcaKlikPayResponse.getStatusMessage(),
+                                                    bcaKlikPayResponse));
+                                        }
+
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response), null);
+                                    }
+
+                                }
+                            });
+                } else {
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    releaseResources();
+                }
+            } else {
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                releaseResources();
+            }
+
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED));
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
+        }
+    }
+
+
 
     /**
      * it will execute an api call to perform transaction using mandiri bill pay, and after
