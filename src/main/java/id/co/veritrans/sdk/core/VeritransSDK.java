@@ -179,8 +179,8 @@ public class VeritransSDK {
 
     public ArrayList<BankTransferModel> getBankTransferList() {
         ArrayList<BankTransferModel> models = new ArrayList<>();
-        models.add(new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_banktransfer2, true));
-        models.add(new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_banktransfer2, true));
+        models.add(new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true));
+        models.add(new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true));
         return models;
     }
 
