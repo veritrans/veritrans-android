@@ -110,7 +110,7 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
     private void showInstruction() {
         Intent intent = new Intent(getActivity(),
                 BankTransferInstructionActivity.class);
-        intent.putExtra(getString(R.string.position), 0);
+        intent.putExtra(BankTransferInstructionActivity.BANK, getArguments().getString(BankTransferInstructionActivity.BANK));
         getActivity().startActivity(intent);
     }
 

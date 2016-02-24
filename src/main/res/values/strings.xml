@@ -11,6 +11,11 @@
     <string name="validation_phone_no_empty">Please enter phone number.</string>
     <string name="validation_phone_no_invalid">Please enter valid phone number</string>
 
+    <!--Activities-->
+    <string name="activity_select_bank">Select Bank</string>
+    <string name="activity_bank_transfer_bca">BCA Bank Transfer</string>
+    <string name="activity_bank_transfer_mandiri">Mandiri Bank Transfer</string>
+    <string name="activity_bank_transfer_permata">Permata Bank Transfer</string>
     <!-- User Address -->
     <string name="title_user_details">User Details</string>
     <string name="hint_address">Address</string>
@@ -95,6 +100,11 @@
     <string name="bank_transfer">Bank Transfer</string>
     <string name="mandiri_bill_payment">Mandiri Bill Payment</string>
 
+    <!--Bank Transfer-->
+    <string name="bca_bank_transfer">BCA</string>
+    <string name="permata_bank_transfer">Permata</string>
+
+
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
     <string name="transfer_amount">Transfer Amount</string>
@@ -123,24 +133,45 @@
 
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
-    <string name="mandiri_instruction_step1">1.\tEnter Your PIN.</string>
-    <string name="mandiri_instruction_step2">2.\tOn the main menu, Choose \'others\'.</string>
-    <string name="mandiri_instruction_step3">3.\tChoose Transfer.</string>
-    <string name="mandiri_instruction_step4">4.\tChoose \'Online Transfer\'.</string>
-    <string name="mandiri_instruction_step5">5.\tEnter the number 013 (code 013 and 16-digit account number).</string>
-    <string name="mandiri_instruction_step6">6.\tThe reference number can be left blank and then choose correct.</string>
+
+    <string name="mandiri_instruction_step1">1.\tOn the main menu, Choose \'Pay/Buy\'.</string>
+    <string name="mandiri_instruction_step2">2.\tChoose \'Others\'.</string>
+    <string name="mandiri_instruction_step3">3.\tChoose \'Multi Payment\'.</string>
+    <string name="mandiri_instruction_step4">4.\tEnter 70012 (Veritrans company code) and press \'Correct\'.</string>
+    <string name="mandiri_instruction_step5">5.\tEnter your Payment code and press \'Correct\'.</string>
+    <string name="mandiri_instruction_step6">6.\tYour payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
+
+    <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (ib.bankmandiri.co.id).</string>
+    <string name="mandiri_internet_instruction_step2">2.\tFrom the main menu choose \'Payment\', then choose \'Multi Payment\'.</string>
+    <string name="mandiri_internet_instruction_step3">3.\tSelect your account in \'From Account\', then \'Billing Name\' select \'Veritrans\'.</string>
+    <string name="mandiri_internet_instruction_step4">4.\tEnter the \'Payment Code\' and you will receive your payment details.</string>
+    <string name="mandiri_internet_instruction_step5">5.\tConfirm your payment using Mandiri Token.</string>
 
 
     <!-- bca/ prima bank transfer Instruction-->
-    <string name="bca_instruction_step1">1.\tEnter Your PIN.</string>
-    <string name="bca_instruction_step2">2.\tOn the main menu, Choose \'Other Transaction\'.</string>
-    <string name="bca_instruction_step3">3.\tChoose \'Transfer\'.</string>
-    <string name="bca_instruction_step4">4.\tChoose \'Other Bank Account\'.</string>
-    <string name="bca_instruction_step5">5.\tEnter the number 013 (Bank Permata) and choose \'Correct\'.</string>
-    <string name="bca_instruction_step6">6.\tEnter full amount to be paid (if the amount entered is not the same as the invoiced amount, the transaction will be declined).</string>
-    <string name="bca_instruction_step7">7.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
-
-
+    <!--BCA Transfer-->
+    <string name="bca_instruction_step1">1.\tOn the main menu, Choose \'Other Transaction\'.</string>
+    <string name="bca_instruction_step2">2.\tChoose \'Transfer\'.</string>
+    <string name="bca_instruction_step3">3.\tChoose \'To BCA Virtual Account\'.</string>
+    <string name="bca_instruction_step4">4.\tEnter your payment code (11 digit code) and press \'Correct\'.</string>
+    <string name="bca_instruction_step5">5.\tEnter full amount to be paid and press \'Correct\'.</string>
+    <string name="bca_instruction_step6">6.\tYour payment details will appear on the confirmation page. If information is correct press \'Yes\'.</string>
+    <!--Klik BCA-->
+    <string name="bca_klik_instruction_step1">1.\tChoose menu \'Fund Transfer\'.</string>
+    <string name="bca_klik_instruction_step2">2.\tChoose \'Transfer to BCA Virtual Account\'.</string>
+    <string name="bca_klik_instruction_step3">3.\t\'Input BCA Virtual Account Number\' or \'Choose from Transfer List\' and click \'Continue\'.</string>
+    <string name="bca_klik_instruction_step4">4.\tAmount to be paid, account number and Merchant name will appear on the payment confirmation page, if information is right click \'Continue\'.</string>
+    <string name="bca_klik_instruction_step5">5.\tGet your \'BCA token\' and input KEYBCA Response \'APPLI 1\' and click \'Submit\'.</string>
+    <string name="bca_klik_instruction_step6">6.\tYour transaction is Done.</string>
+    <!--m-BCA-->
+    <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
+    <string name="bca_mbanking_instruction_step2">2.\tChoose \'Transfer\'</string>
+    <string name="bca_mbanking_instruction_step3">3.\tChoose \'BCA Virtual Account\'.</string>
+    <string name="bca_mbanking_instruction_step4">4.\tChoose \'account number\' that you want to use for payment.</string>
+    <string name="bca_mbanking_instruction_step5">5.\tInput BCA Virtual Account Number and click \'OK\'.</string>
+    <string name="bca_mbanking_instruction_step6">6.\tBCA Virtual Account Number and your account information will appear on the payment confirmation page and then click \'Send\'.</string>
+    <string name="bca_mbanking_instruction_step7">7.\tClick \'OK\' on the payment confirmation page.</string>
+    <string name="bca_mbanking_instruction_step8">8.\tEnter amount to be transferred then click \'OK\'.</string>
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">1.\tPlease make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
     <string name="cimb_instruction_step2">2.\tTransaction will be cancelled if payment is not completed within 2 hours.</string>
@@ -326,6 +357,7 @@
     <string name="payment_indomaret">cstore</string>
     <string name="payment_credit_debit">credit_card</string>
     <string name="payment_permata">permata</string>
+    <string name="payment_bca">bca</string>
     <!--Error Response-->
     <string name="error_empty_response">failed to retrieve response from server.</string>
     <string name="error_sdk_not_initialized">sdk is not initialized.</string>
@@ -339,4 +371,13 @@
     <string name="error_transaction">transaction_error</string>
     <string name="retrofit_network_message">Unable to resolve host</string>
 
+    <!--TAB TITLE-->
+    <string name="tab_bca_atm">ATM BCA</string>
+    <string name="tab_bca_klik">Klik BCA</string>
+    <string name="tab_bca_mobile">m-BCA</string>
+    <string name="tab_mandiri_atm">ATM Mandiri</string>
+    <string name="tab_mandiri_internet">Mandiri Internet</string>
+    <string name="tab_permata_atm">ATM Permata</string>
+    <string name="tab_alto">Alto</string>
+    <string name="tab_mandiri_bill">Mandiri Bill</string>
 </resources>
