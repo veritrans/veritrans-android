@@ -24,6 +24,8 @@ import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BBMUrlEncodeJson;
 import id.co.veritrans.sdk.models.BCABankTransfer;
+import id.co.veritrans.sdk.models.BCAKlikPayDescriptionModel;
+import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
@@ -318,6 +320,25 @@ public class SdkUtil {
                         request.getBillingAddressArrayList(),
                         request.getShippingAddressArrayList(), request.getCustomerDetails());
         return model;
+    }
+
+    protected static BCAKlikPayModel getBCAKlikPayModel(TransactionRequest request,
+                                                        BCAKlikPayDescriptionModel descriptionModel) {
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(), request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        return new BCAKlikPayModel(
+          descriptionModel,
+                transactionDetails,
+                request.getItemDetails(),
+                request.getBillingAddressArrayList(),
+                request.getShippingAddressArrayList(),
+                request.getCustomerDetails()
+        );
     }
 
 
