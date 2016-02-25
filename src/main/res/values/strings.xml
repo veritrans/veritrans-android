@@ -163,6 +163,12 @@
     <string name="bca_klik_instruction_step4">4.\tAmount to be paid, account number and Merchant name will appear on the payment confirmation page, if information is right click \'Continue\'.</string>
     <string name="bca_klik_instruction_step5">5.\tGet your \'BCA token\' and input KEYBCA Response \'APPLI 1\' and click \'Submit\'.</string>
     <string name="bca_klik_instruction_step6">6.\tYour transaction is Done.</string>
+
+    <!--KLIK BCA PAYMENT-->
+    <string name="bca_klik_pay_instruction_step1">1.\tYou will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
+    <string name="bca_klik_pay_instruction_step2">2.\tFor payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
+    <string name="bca_klik_pay_instruction_step3">3.\tFor more information about BCA KlikPay please contact Halo BCA at (021) 500888 or visit www.bca.co.id.</string>
+
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
     <string name="bca_mbanking_instruction_step2">2.\tChoose \'Transfer\'</string>
@@ -266,6 +272,7 @@
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="mandiri_e_cash">Mandiri e-Cash</string>
+    <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Offers</string>
     <string name="loading">Loading</string>
