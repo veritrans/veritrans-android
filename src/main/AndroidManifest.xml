@@ -80,6 +80,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
 
+        <activity android:name=".activities.BCAKlikPayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"/>
 
     </application>
 

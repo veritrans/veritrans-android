@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BBMMoneyActivity;
+import id.co.veritrans.sdk.activities.BCAKlikPayActivity;
 import id.co.veritrans.sdk.activities.BankTransferActivity;
 import id.co.veritrans.sdk.activities.CIMBClickPayActivity;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
@@ -172,6 +173,9 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                 Intent startOffersActivity = new Intent(sActivity, OffersActivity.class);
                 sActivity.startActivityForResult(startOffersActivity,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else if (nameText.getText().toString().trim().equalsIgnoreCase(sActivity.getResources().getString(R.string.bca_klik))) {
+                Intent startBCAKlikPayActivity = new Intent(sActivity, BCAKlikPayActivity.class);
+                sActivity.startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else {
                 showMessage();
             }
