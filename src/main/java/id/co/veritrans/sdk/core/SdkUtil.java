@@ -31,6 +31,7 @@ import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.CstoreEntity;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
@@ -411,9 +412,7 @@ public class SdkUtil {
      * @return
      */
     protected static IndomaretRequestModel getIndomaretRequestModel(TransactionRequest request,
-                                                                    IndomaretRequestModel
-                                                                            .CstoreEntity
-                                                                            cstoreEntity) {
+                                                                    CstoreEntity cstoreEntity) {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());

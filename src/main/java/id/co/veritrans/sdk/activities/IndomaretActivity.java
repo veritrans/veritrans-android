@@ -30,7 +30,7 @@ import id.co.veritrans.sdk.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.fragments.IndomaretPaymentFragment;
 import id.co.veritrans.sdk.fragments.IndomaretPaymentStatusFragment;
 import id.co.veritrans.sdk.fragments.InstructionIndomaretFragment;
-import id.co.veritrans.sdk.models.IndomaretRequestModel;
+import id.co.veritrans.sdk.models.CstoreEntity;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -231,7 +231,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         SdkUtil.showProgressDialog(IndomaretActivity.this, getString(R.string.processing_payment),
                 false);
 
-        IndomaretRequestModel.CstoreEntity cstoreEntity = new IndomaretRequestModel.CstoreEntity();
+        CstoreEntity cstoreEntity = new CstoreEntity();
         cstoreEntity.setMessage("demo_message");
         cstoreEntity.setStore("indomaret");
 

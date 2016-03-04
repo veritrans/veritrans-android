@@ -26,6 +26,7 @@ import id.co.veritrans.sdk.models.BankTransferModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.CstoreEntity;
 import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
@@ -543,7 +544,7 @@ public class VeritransSDK {
      *
      * @param cstoreEntity transaction details
      */
-    public void paymentUsingIndomaret(IndomaretRequestModel.CstoreEntity cstoreEntity) {
+    public void paymentUsingIndomaret(CstoreEntity cstoreEntity) {
 
         if (transactionRequest != null
                 && cstoreEntity != null) {
