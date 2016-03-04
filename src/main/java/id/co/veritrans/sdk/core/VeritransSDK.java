@@ -20,10 +20,13 @@ import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BCABankTransfer;
+import id.co.veritrans.sdk.models.BCAKlikPayDescriptionModel;
+import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.BankTransferModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.CstoreEntity;
 import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
@@ -315,6 +318,25 @@ public class VeritransSDK {
     }
 
     /**
+     * It will execute an transaction for mandiri click pay.
+     *
+     * @param descriptionModel       information about BCA Klikpay
+     */
+    public void paymentUsingBCAKlikPay(BCAKlikPayDescriptionModel descriptionModel) {
+
+        if (transactionRequest != null && descriptionModel != null) {
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
+            BCAKlikPayModel bcaKlikPayModel = SdkUtil.getBCAKlikPayModel(transactionRequest, descriptionModel);
+            isRunning = true;
+            TransactionManager.paymentUsingBCAKlikPay(bcaKlikPayModel);
+        } else {
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+
+    /**
      * It will execute an transaction for mandiri bill pay.
      *
      */
@@ -522,7 +544,7 @@ public class VeritransSDK {
      *
      * @param cstoreEntity transaction details
      */
-    public void paymentUsingIndomaret(IndomaretRequestModel.CstoreEntity cstoreEntity) {
+    public void paymentUsingIndomaret(CstoreEntity cstoreEntity) {
 
         if (transactionRequest != null
                 && cstoreEntity != null) {

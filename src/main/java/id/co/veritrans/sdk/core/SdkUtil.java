@@ -24,11 +24,14 @@ import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BBMUrlEncodeJson;
 import id.co.veritrans.sdk.models.BCABankTransfer;
+import id.co.veritrans.sdk.models.BCAKlikPayDescriptionModel;
+import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.CstoreEntity;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
@@ -320,6 +323,25 @@ public class SdkUtil {
         return model;
     }
 
+    protected static BCAKlikPayModel getBCAKlikPayModel(TransactionRequest request,
+                                                        BCAKlikPayDescriptionModel descriptionModel) {
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(), request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        return new BCAKlikPayModel(
+          descriptionModel,
+                transactionDetails,
+                request.getItemDetails(),
+                request.getBillingAddressArrayList(),
+                request.getShippingAddressArrayList(),
+                request.getCustomerDetails()
+        );
+    }
+
 
     /**
      * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
@@ -390,9 +412,7 @@ public class SdkUtil {
      * @return
      */
     protected static IndomaretRequestModel getIndomaretRequestModel(TransactionRequest request,
-                                                                    IndomaretRequestModel
-                                                                            .CstoreEntity
-                                                                            cstoreEntity) {
+                                                                    CstoreEntity cstoreEntity) {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());

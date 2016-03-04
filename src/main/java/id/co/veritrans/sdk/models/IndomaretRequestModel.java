@@ -51,67 +51,44 @@ public class IndomaretRequestModel {
 
     private List<ItemDetails> item_details;
 
-    public void setCustomerDetails(CustomerDetails customerDetails) {
-        this.customerDetails = customerDetails;
-    }
-
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
-    }
-
-    public void setTransactionDetails(TransactionDetails transactionDetails) {
-        this.transactionDetails = transactionDetails;
-    }
-
-    public void setCstore(CstoreEntity cstore) {
-        this.cstore = cstore;
-    }
-
-    public void setItem_details(List<ItemDetails> item_details) {
-        this.item_details = item_details;
-    }
-
     public CustomerDetails getCustomerDetails() {
         return customerDetails;
+    }
+
+    public void setCustomerDetails(CustomerDetails customerDetails) {
+        this.customerDetails = customerDetails;
     }
 
     public String getPaymentType() {
         return paymentType;
     }
 
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
     public TransactionDetails getTransactionDetails() {
         return transactionDetails;
+    }
+
+    public void setTransactionDetails(TransactionDetails transactionDetails) {
+        this.transactionDetails = transactionDetails;
     }
 
     public CstoreEntity getCstore() {
         return cstore;
     }
 
+    public void setCstore(CstoreEntity cstore) {
+        this.cstore = cstore;
+    }
+
     public List<ItemDetails> getItem_details() {
         return item_details;
     }
 
-
-
-    public static class CstoreEntity {
-        private String store;
-        private String message;
-
-        public void setStore(String store) {
-            this.store = store;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public String getStore() {
-            return store;
-        }
-
-        public String getMessage() {
-            return message;
-        }
+    public void setItem_details(List<ItemDetails> item_details) {
+        this.item_details = item_details;
     }
 
 

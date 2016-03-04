@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.core;
 
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BCABankTransfer;
+import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
@@ -121,6 +122,20 @@ public interface VeritranceApiInterface {
             @Header("x-auth") String auth
             , @Body MandiriClickPayRequestModel
                     mandiriClickPayRequestModel);
+
+    /**
+     * Do payment using BCA Klik Pay.
+     *
+     * @param auth              Client authentication key.
+     * @param bcaKlikPayModel   Request body.
+     * @return                  Observable of the Transaction Response object.
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingBCAKlikPay(
+           @Header("x-auth") String auth,
+           @Body BCAKlikPayModel bcaKlikPayModel
+    );
 
     //mandiri bill pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})
