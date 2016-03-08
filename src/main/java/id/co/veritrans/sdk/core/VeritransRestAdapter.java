@@ -23,21 +23,21 @@ import retrofit.converter.GsonConverter;
  */
 class VeritransRestAdapter {
     private static final String TAG = VeritransRestAdapter.class.getName();
-    private static VeritranceApiInterface veritranceApiInterface;
-    private static VeritranceApiInterface merchantVeritranceApiInterface;
+    private static PaymentAPI paymentAPI;
+    private static PaymentAPI merchantPaymentAPI;
 
     /**
-     * It will return instance of VeritranceApiInterface using that we can execute api calls.
+     * It will return instance of PaymentAPI using that we can execute api calls.
      *
      * @param showNetworkNotAvailableDialog boolean , whether to show network not available
      *                                      dialog or not.
      * @return
      */
-    public static VeritranceApiInterface getApiClient(boolean showNetworkNotAvailableDialog) {
+    public static PaymentAPI getApiClient(boolean showNetworkNotAvailableDialog) {
         if (VeritransSDK.getVeritransSDK() != null
                 && VeritransSDK.getVeritransSDK().getContext() != null
                 && Utils.isNetworkAvailable(VeritransSDK.getVeritransSDK().getContext())) {
-            if (veritranceApiInterface == null) {
+            if (paymentAPI == null) {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
                 Gson gson = new GsonBuilder()
@@ -57,9 +57,9 @@ class VeritransRestAdapter {
                     builder.setEndpoint(Constants.BASE_URL_FOR_RELEASE);
                     restAdapter = builder.build();
                 }
-                veritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
+                paymentAPI = restAdapter.create(PaymentAPI.class);
             }
-            return veritranceApiInterface;
+            return paymentAPI;
         } else {
             if (showNetworkNotAvailableDialog) {
                 VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
@@ -68,12 +68,12 @@ class VeritransRestAdapter {
         return null;
     }
 
-    public static VeritranceApiInterface getMerchantApiClient(boolean showNetworkNotAvailableDialog) {
+    public static PaymentAPI getMerchantApiClient(boolean showNetworkNotAvailableDialog) {
         if (VeritransSDK.getVeritransSDK() != null
                 && VeritransSDK.getVeritransSDK().getContext() != null
                 && Utils.isNetworkAvailable(VeritransSDK.getVeritransSDK().getContext())) {
 
-            if (merchantVeritranceApiInterface == null && VeritransSDK.getVeritransSDK() != null) {
+            if (merchantPaymentAPI == null && VeritransSDK.getVeritransSDK() != null) {
 
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
@@ -94,13 +94,13 @@ class VeritransRestAdapter {
                     restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
                 }
 
-                merchantVeritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
+                merchantPaymentAPI = restAdapter.create(PaymentAPI.class);
 
             } else if (VeritransSDK.getVeritransSDK() == null) {
                 Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
             }
 
-            return merchantVeritranceApiInterface;
+            return merchantPaymentAPI;
 
         } else {
             if (showNetworkNotAvailableDialog) {
