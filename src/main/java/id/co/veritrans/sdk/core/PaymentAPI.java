@@ -30,10 +30,7 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
-/**
- * Created by shivam on 10/26/15.
- */
-public interface VeritranceApiInterface {
+public interface PaymentAPI {
 
     //token?card_number=4811111111111114&card_cvv=123&card_exp_month=06&card_exp_year=2020
     // &client_key=VT-client-Lre_JFh5klhfGefF
