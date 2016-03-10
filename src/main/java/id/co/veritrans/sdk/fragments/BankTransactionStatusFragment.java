@@ -42,7 +42,7 @@ public class BankTransactionStatusFragment extends Fragment {
      * It creates new BankTransactionStatusFragment object and set TransactionResponse object to it,
      * so later it can be accessible using fragments getArgument().
      *
-     * @param transactionResponse
+     * @param transactionResponse   response of the transaction call.
      * @return instance of BankTransactionStatusFragment.
      */
     public static BankTransactionStatusFragment newInstance(TransactionResponse
@@ -82,7 +82,7 @@ public class BankTransactionStatusFragment extends Fragment {
     /**
      * initializes view and adds click listener for it.
      *
-     * @param view
+     * @param view  view that needed to be initialized
      */
     private void initializeViews(View view) {
 

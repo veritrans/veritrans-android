@@ -1,7 +1,5 @@
 package id.co.veritrans.sdk.activities;
 
-import com.google.gson.Gson;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +17,8 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -130,7 +130,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
         morphToCircle(0);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
         getCreditCards();
         readBankDetails();
@@ -560,14 +560,18 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
             cardTokenRequest.setBank(tokenDetailsResponse.getBank());
         }
         this.tokenDetailsResponse = tokenDetailsResponse;
-        Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
-                + veritransSDK.getTransactionRequest().isSecureCard() + "," + tokenDetailsResponse.getBank());
+        if (tokenDetailsResponse != null) {
+            Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
+                    + veritransSDK.getTransactionRequest().isSecureCard() + "," + tokenDetailsResponse.getBank());
+        }
         if (veritransSDK.getTransactionRequest().isSecureCard()) {
             SdkUtil.hideProgressDialog();
-            if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
-                Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
-                intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
-                startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+            if (tokenDetailsResponse != null) {
+                if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
+                    Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
+                    intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
+                    startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                }
             }
         } else {
             SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);

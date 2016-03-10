@@ -112,7 +112,7 @@ public class VeritransSDK {
     /**
      * Returns instance of veritrans sdk.
      *
-     * @return
+     * @return VeritransSDK instance
      */
     public static VeritransSDK getVeritransSDK() {
 
@@ -198,7 +198,7 @@ public class VeritransSDK {
     /**
      * It will execute an api request to retrieve a token.
      *
-     * @param cardTokenRequest
+     * @param cardTokenRequest  token request object
      */
     public void getToken(CardTokenRequest cardTokenRequest) {
 
@@ -216,7 +216,7 @@ public class VeritransSDK {
     /**
      * It will execute an api request to register credit card info.
      *
-     * @param cardTokenRequest
+     * @param cardTokenRequest  request token object
      */
     public void registerCard(CardTokenRequest cardTokenRequest, String userId) {
 
@@ -433,7 +433,7 @@ public class VeritransSDK {
     /**
      * Set transaction information that you want to execute.
      *
-     * @param transactionRequest
+     * @param transactionRequest    request token object
      */
     public void setTransactionRequest(TransactionRequest transactionRequest) {
 

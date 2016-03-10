@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
     tools:context="id.co.veritrans.sdk.activities.PaymentWebActivity">
 
@@ -12,20 +12,20 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed"
         android:background="@color/colorPrimary"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
 
         >
 
         <id.co.veritrans.sdk.widgets.TextViewFont
             android:id="@+id/title_header"
-            android:textColor="@android:color/white"
-            android:text="@string/processing_payment"
-            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:font="@string/font_open_sans_regular"
+            android:text="@string/processing_payment"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/tool_bar_title_size"
+            android:visibility="visible"
+            app:font="@string/font_open_sans_regular"
             />
 
     </android.support.v7.widget.Toolbar>
@@ -35,6 +35,5 @@
         android:id="@+id/webview_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        ></RelativeLayout>
+        android:layout_below="@id/toolbar" />
 </RelativeLayout>

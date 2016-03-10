@@ -88,10 +88,11 @@ public class AddCardDetailsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         try {
             Logger.i("onViewCreated called addcarddetail called");
-            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar().setTitle(getString(R
-                    .string.card_details));
-            ((CreditDebitCardFlowActivity) getActivity()).getSupportActionBar()
-                    .setDisplayHomeAsUpEnabled(true);
+            CreditDebitCardFlowActivity creditDebitCardFlowActivity = (CreditDebitCardFlowActivity) getActivity();
+            if (creditDebitCardFlowActivity != null && creditDebitCardFlowActivity.getSupportActionBar() != null) {
+                creditDebitCardFlowActivity.getSupportActionBar().setTitle(getString(R.string.card_details));
+                creditDebitCardFlowActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -192,7 +193,7 @@ public class AddCardDetailsFragment extends Fragment {
         questionImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image, null),
+                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
                 veritransDialog.show();
             }
@@ -200,7 +201,7 @@ public class AddCardDetailsFragment extends Fragment {
         questionSaveCardImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cart_dialog, null),
+                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cart_dialog),
                         getString(R.string.message_save_card), getString(R.string.got_it), "");
                 veritransDialog.show();
             }
@@ -361,7 +362,7 @@ public class AddCardDetailsFragment extends Fragment {
                 etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
             }
             return false;
-        } else if (expDateArray != null && expDateArray.length == 2) {
+        } else if (expDateArray != null) {
             try {
                 expMonth = Integer.parseInt(expDateArray[0]);
             } catch (NumberFormatException e) {

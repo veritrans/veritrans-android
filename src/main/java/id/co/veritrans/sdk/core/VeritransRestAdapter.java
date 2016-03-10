@@ -4,7 +4,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
-
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
@@ -31,7 +30,7 @@ class VeritransRestAdapter {
      *
      * @param showNetworkNotAvailableDialog boolean , whether to show network not available
      *                                      dialog or not.
-     * @return
+     * @return Payment API implementation
      */
     public static PaymentAPI getApiClient(boolean showNetworkNotAvailableDialog) {
         if (VeritransSDK.getVeritransSDK() != null

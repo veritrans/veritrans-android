@@ -95,7 +95,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
          * starts payment flow, it compares name of that view to payment method to start
          * particular payment flow.
          *
-         * @param view
+         * @param view  clicked view
          */
         @Override
         public void onClick(View view) {

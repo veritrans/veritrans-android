@@ -34,7 +34,7 @@ public class NotificationUtils {
     public static final String PREF_NOTIFICATION_COUNT = "pref_notification_count";
     /**
      * Create and show a notification containing the received notification message.
-     * @param context
+     * @param context   application context
      * @param data message received from notification.
      */
     public static void sendNotification(Context context, Bundle data) {

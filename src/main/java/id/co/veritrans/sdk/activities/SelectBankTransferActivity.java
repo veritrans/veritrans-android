@@ -53,7 +53,10 @@ public class SelectBankTransferActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_bank_transfer);
 
         mVeritransSDK = VeritransSDK.getVeritransSDK();
-        TransactionRequest transactionRequest = mVeritransSDK.getTransactionRequest();
+        TransactionRequest transactionRequest = null;
+        if (mVeritransSDK != null) {
+            transactionRequest = mVeritransSDK.getTransactionRequest();
+        }
 
         UserDetail userDetail = null;
         try {
@@ -78,7 +81,7 @@ public class SelectBankTransferActivity extends AppCompatActivity {
         //setup tool bar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // setUp recyclerView
         initialiseAdapterData();

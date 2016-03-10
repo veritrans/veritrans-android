@@ -128,7 +128,7 @@ public class WebviewFragment extends Fragment {
 
          body(onload="paymentStatus('" + paymentStatus + "')")
          h1 Success.
-         * @param data
+         * @param data  JS data
          */
         @JavascriptInterface
         public void paymentResponse(String data) {

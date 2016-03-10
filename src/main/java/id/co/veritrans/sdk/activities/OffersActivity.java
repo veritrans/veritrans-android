@@ -1,7 +1,5 @@
 package id.co.veritrans.sdk.activities;
 
-import com.google.gson.Gson;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +17,8 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -179,7 +179,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
 
@@ -447,7 +447,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            ArrayList<BankDetail> bankDetails = new ArrayList<BankDetail>();
+                            ArrayList<BankDetail> bankDetails = new ArrayList<>();
                             try {
                                 bankDetails = LocalDataHandler.readObject(getString(R.string.bank_details), BankDetailArray.class).getBankDetails();
                                 Logger.i("bankDetails:" + bankDetails.size());
@@ -591,8 +591,10 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
             cardTokenRequest.setBank(tokenDetailsResponse.getBank());
         }
         this.tokenDetailsResponse = tokenDetailsResponse;
-        Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
-                + veritransSDK.getTransactionRequest().isSecureCard());
+        if (tokenDetailsResponse != null) {
+            Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
+                    + veritransSDK.getTransactionRequest().isSecureCard());
+        }
         if (veritransSDK.getTransactionRequest().isSecureCard()) {
             SdkUtil.hideProgressDialog();
             if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
@@ -636,7 +638,8 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
             replaceFragment(paymentTransactionStatusFragment, true, false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
             textViewTitleOffers.setText(getString(R.string.title_payment_status));
 
@@ -702,7 +705,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
         replaceFragment(paymentTransactionStatusFragment, true, false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
         textViewTitleOffers.setText(getString(R.string.title_payment_status));
     }

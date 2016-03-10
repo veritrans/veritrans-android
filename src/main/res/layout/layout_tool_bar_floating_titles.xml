@@ -1,34 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<id.co.veritrans.sdk.widgets.HeaderView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<id.co.veritrans.sdk.widgets.HeaderView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/float_header_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:orientation="vertical"
-    android:paddingLeft="56dp"
-    >
+    android:paddingLeft="56dp">
 
     <!-- Title -->
     <id.co.veritrans.sdk.widgets.TextViewFont
-        android:id="@+id/header_view_title"
+        android:id="@+id/header_view_float_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="1.5dp"
         android:textColor="@color/white"
         android:textSize="@dimen/secondary_text_size"
-        app:font="@string/font_open_sans_regular"
-        android:layout_marginTop="1.5dp"
-        />
+        app:font="@string/font_open_sans_regular" />
 
     <!-- Subtitle -->
     <id.co.veritrans.sdk.widgets.TextViewFont
-        android:id="@+id/header_view_sub_title"
+        android:id="@+id/header_view_float_sub_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:textSize="@dimen/header_text_size"
-        app:font="@string/font_open_sans_regular"
-        />
+        app:font="@string/font_open_sans_regular" />
 
 </id.co.veritrans.sdk.widgets.HeaderView>

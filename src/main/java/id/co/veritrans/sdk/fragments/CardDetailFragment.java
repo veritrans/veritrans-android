@@ -72,9 +72,15 @@ public class CardDetailFragment extends Fragment {
         veritransSDK = VeritransSDK.getVeritransSDK();
         if (getArguments() != null) {
             cardDetail = (CardTokenRequest) getArguments().getSerializable(ARG_PARAM);
+            if (cardDetail != null && veritransSDK != null) {
+                if (veritransSDK.getTransactionRequest() != null) {
+                    cardDetail.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
+                    Logger.i("cardDetail:" + cardDetail.getString());
+                }
+            } else {
+                Logger.e("Veritrans SDK is not started");
+            }
         }
-        cardDetail.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
-        Logger.i("cardDetail:" + cardDetail.getString());
     }
 
 
@@ -250,7 +256,7 @@ public class CardDetailFragment extends Fragment {
         imageQuestionmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image, null),
+                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
                 veritransDialog.show();
                 SdkUtil.hideKeyboard(getActivity()); // hide keyboard if visible.

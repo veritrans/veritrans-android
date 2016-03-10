@@ -30,7 +30,8 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getString(R.string.title_payment_status));
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setTitle(getString(R.string.title_payment_status));
         setUpFragment();
     }
 

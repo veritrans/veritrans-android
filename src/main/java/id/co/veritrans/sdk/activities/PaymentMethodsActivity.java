@@ -78,11 +78,17 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         }
 
         veritransSDK = VeritransSDK.getVeritransSDK();
-        TransactionRequest transactionRequest = veritransSDK.getTransactionRequest();
-        CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
-                userDetail.getEmail(), userDetail.getPhoneNumber());
-        transactionRequest.setCustomerDetails(customerDetails);
-        setUpPaymentMethods();
+        TransactionRequest transactionRequest = null;
+        if (veritransSDK != null) {
+            transactionRequest = veritransSDK.getTransactionRequest();
+            CustomerDetails customerDetails = null;
+            if (userDetail != null) {
+                customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
+                        userDetail.getEmail(), userDetail.getPhoneNumber());
+                transactionRequest.setCustomerDetails(customerDetails);
+            }
+            setUpPaymentMethods();
+        } else Logger.e("Veritrans SDK is not started.");
     }
 
     /**
@@ -137,7 +143,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         mAppBarLayout.addOnOffsetChangedListener(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bindDataToView();
 

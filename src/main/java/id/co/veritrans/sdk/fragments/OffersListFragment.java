@@ -103,9 +103,8 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         }
 
         //Call OffersApi if the model is empty...
-        if (((OffersActivity) getActivity()).offersListModels == null || ((OffersActivity)
-                getActivity()).offersListModels.isEmpty
-                ()) {
+        OffersActivity offersActivity = (OffersActivity) getActivity();
+        if (offersActivity != null && (offersActivity.offersListModels == null || offersActivity.offersListModels.isEmpty())) {
             initialiseAdapterData();
         }
     }

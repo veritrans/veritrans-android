@@ -24,13 +24,12 @@ import id.co.veritrans.sdk.fragments.InstructionMandiriInternetFragment;
  */
 public class BankTransferInstructionActivity extends AppCompatActivity {
 
-    private static final int PAGE_MARGIN = 20;
     public static final String BANK = "bank";
     public static final String TYPE_BCA = "bank.bca";
     public static final String TYPE_PERMATA = "bank.permata";
     public static final String TYPE_MANDIRI = "bank.mandiri";
     public static final String TYPE_MANDIRI_BILL = "bank.mandiri.bill";
-
+    private static final int PAGE_MARGIN = 20;
     private Toolbar mToolbar = null;
     private ViewPager mViewPager = null;
     private TabLayout mTabLayout = null;
@@ -48,8 +47,8 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
     /**
      * handles click of back arrow given on action bar.
      *
-     * @param item
-     * @return
+     * @param item  selected menu
+     * @return is handled or not
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -72,7 +71,7 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
         mToolbar.setNavigationIcon(R.drawable.ic_close);
         mToolbar.setTitle(getResources().getString(R.string.payment_instrution));
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mTabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager_bank_instruction);

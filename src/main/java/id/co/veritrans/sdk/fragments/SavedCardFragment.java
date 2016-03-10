@@ -206,7 +206,9 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
                 }
             }
             try {
-                Logger.i("position to delete:" + creditCard.getCardNumber() + ",creditCard size:" + creditCards.size());
+                if (creditCard != null) {
+                    Logger.i("position to delete:" + creditCard.getCardNumber() + ",creditCard size:" + creditCards.size());
+                }
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }

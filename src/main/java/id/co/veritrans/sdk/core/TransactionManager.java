@@ -64,9 +64,10 @@ class TransactionManager {
                                     final String userId) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        final String merchantToken = veritransSDK.getMerchantToken();
 
-        if (veritransSDK != null && merchantToken != null) {
+
+        if (veritransSDK != null) {
+            final String merchantToken = veritransSDK.getMerchantToken();
             PaymentAPI apiInterface =
                     VeritransRestAdapter.getApiClient(true);
 
@@ -110,12 +111,12 @@ class TransactionManager {
 
                                 if (registerCardResponse != null) {
 
-                                    if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                    if (veritransSDK.isLogEnabled()) {
                                         displayResponse(registerCardResponse);
                                     }
 
                                     if (registerCardResponse.getStatusCode().trim()
-                                            .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))) {
+                                            .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))) {
 
                                         registerCardResponse.setUserId(userId);
 
@@ -147,24 +148,24 @@ class TransactionManager {
                                         }
                                         VeritransBusProvider.getInstance().post(new RegisterCardSuccessEvent(registerCardResponse));
                                     } else {
-                                        if (registerCardResponse != null && !TextUtils.isEmpty(registerCardResponse.getStatusMessage())) {
+                                        if (!TextUtils.isEmpty(registerCardResponse.getStatusMessage())) {
                                             VeritransBusProvider.getInstance().post(
                                                     new RegisterCardFailedEvent(registerCardResponse.getStatusMessage(),
                                                             registerCardResponse));
                                         } else {
-                                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
+                                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
                                         }
                                     }
 
                                 } else {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                    Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                 }
                             }
                         });
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -179,7 +180,7 @@ class TransactionManager {
 
     /**
      * it will execute an api call to get token from server, and after completion of request it
-     * will </p> call appropriate method using registered {@Link TokenCallBack}.
+     * will </p> call appropriate method using registered {@link GetTokenSuccessEvent}.
      *
      * @param cardTokenRequest information about credit card.
      */
@@ -278,21 +279,21 @@ class TransactionManager {
 
                                 if (tokenDetailsResponse != null) {
 
-                                    if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                    if (veritransSDK.isLogEnabled()) {
                                         displayTokenResponse(tokenDetailsResponse);
                                     }
 
                                     if (tokenDetailsResponse.getStatusCode().trim()
-                                            .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))) {
+                                            .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))) {
                                         VeritransBusProvider.getInstance().post(new GetTokenSuccessEvent(tokenDetailsResponse));
                                     } else {
-                                        if(tokenDetailsResponse!=null && !TextUtils.isEmpty(tokenDetailsResponse.getStatusMessage())){
+                                        if (!TextUtils.isEmpty(tokenDetailsResponse.getStatusMessage())) {
                                             VeritransBusProvider.getInstance().post(new GetTokenFailedEvent(
                                                     tokenDetailsResponse.getStatusMessage(),
                                                     tokenDetailsResponse));
                                         }else {
                                             VeritransBusProvider.getInstance().post(new GetTokenFailedEvent(
-                                                    VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response),
+                                                    veritransSDK.getContext().getString(R.string.error_empty_response),
                                                     tokenDetailsResponse
                                             ));
                                         }
@@ -300,15 +301,15 @@ class TransactionManager {
                                     }
 
                                 } else {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                    Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                 }
                             }
                         });
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -323,7 +324,7 @@ class TransactionManager {
     /**
      * it will execute an api call to perform transaction using permata bank, and after
      * completion of request it
-     * will </p> call appropriate method using registered {@Link TransactionCallback}.
+     * will </p> call appropriate method using registered {@link TransactionSuccessEvent} or {@link TransactionFailedEvent}.
      *
      * @param permataBankTransfer information required perform transaction using permata bank
      */
@@ -374,14 +375,14 @@ class TransactionManager {
 
                                     if (permataBankTransferResponse != null) {
 
-                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        if (veritransSDK.isLogEnabled()) {
                                             displayResponse(permataBankTransferResponse);
                                         }
 
                                         if (permataBankTransferResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || permataBankTransferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
                                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(permataBankTransferResponse));
                                         } else {
@@ -392,21 +393,21 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new TransactionFailedEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response), null));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new TransactionFailedEvent(veritransSDK.getContext().getString(R.string.error_empty_response), null));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                         releaseResources();
                                     }
 
                                 }
                             });
                 } else {
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -420,7 +421,7 @@ class TransactionManager {
     /**
      * it will execute an api call to perform transaction using permata bank, and after
      * completion of request it
-     * will </p> call appropriate method using registered {@Link TransactionCallback}.
+     * will </p> call appropriate method using registered {@link TransactionSuccessEvent} or {@link TransactionFailedEvent}.
      *
      * @param bcaBankTransfer information required perform transaction using BCA bank
      */
@@ -470,14 +471,14 @@ class TransactionManager {
 
                                     if (bcaBankTransferResponse != null) {
 
-                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        if (veritransSDK.isLogEnabled()) {
                                             displayResponse(bcaBankTransferResponse);
                                         }
 
                                         if (bcaBankTransferResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || bcaBankTransferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
                                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaBankTransferResponse));
                                         } else {
@@ -488,21 +489,21 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new TransactionFailedEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response), null));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new TransactionFailedEvent(veritransSDK.getContext().getString(R.string.error_empty_response), null));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                         releaseResources();
                                     }
 
                                 }
                             });
                 } else {
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -516,13 +517,13 @@ class TransactionManager {
     /**
      * it will execute an api call to perform transaction using credit card, and after
      * completion of request it
-     * will </p> call appropriate method using registered {@Link TransactionCallback}.
+     * will </p> call appropriate method using registered {@link TransactionSuccessEvent} or {@link TransactionFailedEvent}.
      *
      * @param cardTransfer                   information required perform transaction using
      *                                       credit card
      */
     public static void paymentUsingCard(CardTransfer cardTransfer) {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
             PaymentAPI apiInterface =
@@ -569,9 +570,9 @@ class TransactionManager {
                                     if (cardPaymentResponse != null) {
 
                                         if (cardPaymentResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || cardPaymentResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
                                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(cardPaymentResponse));
                                         } else {
@@ -582,14 +583,14 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
                                     }
                                 }
 
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             }
@@ -604,7 +605,7 @@ class TransactionManager {
     /**
      * it will execute an api call to perform transaction using mandiri click pay, and after
      * completion of request it
-     * will </p> call appropriate method using registered {@Link TransactionCallback}.
+     * will </p> call appropriate method using registered {@link TransactionSuccessEvent} or {@link TransactionFailedEvent}.
      *
      * @param mandiriClickPayRequestModel information required perform transaction using mandiri
      *                                    click pay.
@@ -656,14 +657,14 @@ class TransactionManager {
 
                                     if (mandiriTransferResponse != null) {
 
-                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        if (veritransSDK.isLogEnabled()) {
                                             displayResponse(mandiriTransferResponse);
                                         }
 
                                         if (mandiriTransferResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || mandiriTransferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
                                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(mandiriTransferResponse));
                                         } else {
@@ -673,20 +674,20 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response), null);
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response), null);
                                     }
 
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -700,7 +701,7 @@ class TransactionManager {
     /**
      * it will execute an api call to perform transaction using BCA KlikPay, and after
      * completion of request it
-     * will </p> call appropriate method using registered {@Link TransactionCallback}.
+     * will </p> call appropriate method using registered {@link TransactionSuccessEvent} or {@link TransactionFailedEvent}.
      *
      * @param bcaKlikPayModel information required perform transaction using BCA KlikPay.
      */
@@ -756,9 +757,9 @@ class TransactionManager {
                                         }
 
                                         if (bcaKlikPayResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || bcaKlikPayResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
                                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaKlikPayResponse));
                                         } else {
@@ -768,20 +769,20 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response), null);
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response), null);
                                     }
 
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -797,7 +798,7 @@ class TransactionManager {
     /**
      * it will execute an api call to perform transaction using mandiri bill pay, and after
      * completion of request it
-     * will </p> call appropriate method using registered {@Link TransactionCallback}.
+     * will </p> call appropriate method using registered {@link TransactionSuccessEvent} or {@link TransactionFailedEvent}.
      *
      * @param mandiriBillPayTransferModel information required perform transaction using mandiri
      *                                    bill pay.
@@ -851,14 +852,14 @@ class TransactionManager {
 
                                     if (permataBankTransferResponse != null) {
 
-                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        if (veritransSDK.isLogEnabled()) {
                                             displayResponse(permataBankTransferResponse);
                                         }
 
                                         if (permataBankTransferResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || permataBankTransferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
                                             VeritransBusProvider.getInstance().post(
                                                     new TransactionSuccessEvent(permataBankTransferResponse));
@@ -870,20 +871,20 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                     }
 
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -931,13 +932,13 @@ class TransactionManager {
                                     releaseResources();
 
                                     if (cimbPayTransferResponse != null) {
-                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        if (veritransSDK.isLogEnabled()) {
                                             displayResponse(cimbPayTransferResponse);
                                         }
                                         if (cimbPayTransferResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || cimbPayTransferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
                                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(cimbPayTransferResponse));
                                         } else {
                                             VeritransBusProvider.getInstance().post(new TransactionFailedEvent(
@@ -946,19 +947,19 @@ class TransactionManager {
                                             ));
                                         }
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                     }
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
         } else {
@@ -1008,9 +1009,9 @@ class TransactionManager {
                                             displayResponse(transferResponse);
                                         }
                                         if (transferResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || transferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
                                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transferResponse));
                                         } else {
                                             VeritransBusProvider.getInstance().post(new TransactionFailedEvent(
@@ -1019,19 +1020,19 @@ class TransactionManager {
                                             ));
                                         }
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                     }
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
         } else {
@@ -1089,14 +1090,14 @@ class TransactionManager {
 
                                     if (epayBriTransferResponse != null) {
 
-                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        if (veritransSDK.isLogEnabled()) {
                                             displayResponse(epayBriTransferResponse);
                                         }
 
                                         if (epayBriTransferResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || epayBriTransferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
                                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(epayBriTransferResponse));
                                         } else {
@@ -1107,20 +1108,20 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                     }
 
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -1177,28 +1178,28 @@ class TransactionManager {
                                         if (TextUtils.isEmpty(transactionStatusResponse
                                                 .getStatusCode())) {
                                             if (transactionStatusResponse.getStatusCode()
-                                                    .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200)) ||
+                                                    .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200)) ||
                                                     transactionStatusResponse.getStatusCode()
-                                                            .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                            .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
                                                 VeritransBusProvider.getInstance().post(new TransactionStatusSuccessEvent(transactionStatusResponse));
                                             }
                                         } else {
-                                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
+                                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
                                         }
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
                                     }
                                 }
                             });
 
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -1263,9 +1264,9 @@ class TransactionManager {
                                         }
 
                                         if (permataBankTransferResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || permataBankTransferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
                                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(permataBankTransferResponse));
                                         } else {
@@ -1275,8 +1276,8 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                     }
 
                                     releaseResources();
@@ -1284,13 +1285,13 @@ class TransactionManager {
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -1348,14 +1349,14 @@ class TransactionManager {
                                     releaseResources();
                                     if (indomaretTransferResponse != null) {
 
-                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        if (veritransSDK.isLogEnabled()) {
                                             displayResponse(indomaretTransferResponse);
                                         }
 
                                         if (indomaretTransferResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || indomaretTransferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
                                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(indomaretTransferResponse));
                                         } else {
@@ -1366,20 +1367,20 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                     }
                                     releaseResources();
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -1436,14 +1437,14 @@ class TransactionManager {
 
                                     if (bbmMoneyTransferResponse != null) {
 
-                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        if (veritransSDK.isLogEnabled()) {
                                             displayResponse(bbmMoneyTransferResponse);
                                         }
 
                                         if (bbmMoneyTransferResponse.getStatusCode().trim()
-                                                .equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_200))
+                                                .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
                                                 || bbmMoneyTransferResponse.getStatusCode()
-                                                .trim().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                                                .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
                                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bbmMoneyTransferResponse));
                                         } else {
@@ -1454,8 +1455,8 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                         releaseResources();
                                     }
 
@@ -1464,13 +1465,13 @@ class TransactionManager {
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -1527,7 +1528,7 @@ class TransactionManager {
                                     releaseResources();
                                     if (cardResponse != null) {
 
-                                        if (cardResponse.getMessage().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success))) {
+                                        if (cardResponse.getMessage().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success))) {
 
                                             VeritransBusProvider.getInstance().post(new SaveCardSuccessEvent(cardResponse));
                                         } else {
@@ -1538,20 +1539,20 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                     }
 
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -1608,7 +1609,7 @@ class TransactionManager {
                                     releaseResources();
                                     if (cardResponse != null) {
 
-                                        if (cardResponse.getMessage().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success))) {
+                                        if (cardResponse.getMessage().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success))) {
                                             VeritransBusProvider.getInstance().post(new GetCardsSuccessEvent(cardResponse));
                                         } else {
                                             VeritransBusProvider.getInstance().post(new GetCardFailedEvent(
@@ -1618,20 +1619,20 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                     }
 
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -1679,8 +1680,9 @@ class TransactionManager {
     }
 
     private static void releaseResources() {
-        if (VeritransSDK.getVeritransSDK() != null) {
-            VeritransSDK.getVeritransSDK().isRunning = false;
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            veritransSDK.isRunning = false;
             Logger.i("released transaction");
         }
     }
@@ -1729,7 +1731,7 @@ class TransactionManager {
                                     releaseResources();
                                     if (deleteCardResponse != null) {
                                         if (deleteCardResponse.getMessage().equalsIgnoreCase(
-                                                VeritransSDK.getVeritransSDK().getContext().getString(R.string.success))) {
+                                                veritransSDK.getContext().getString(R.string.success))) {
                                             VeritransBusProvider.getInstance().post(new DeleteCardSuccessEvent(deleteCardResponse));
                                         } else {
                                             VeritransBusProvider.getInstance().post(new DeleteCardFailedEvent(
@@ -1739,20 +1741,20 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                     }
 
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
@@ -1810,7 +1812,7 @@ class TransactionManager {
                                     if (getOffersResponseModel != null) {
 
                                         if (getOffersResponseModel.getMessage().equalsIgnoreCase(
-                                                VeritransSDK.getVeritransSDK().getContext().getString(R.string.success))) {
+                                                veritransSDK.getContext().getString(R.string.success))) {
 
                                             VeritransBusProvider.getInstance().post(new GetOfferSuccessEvent(getOffersResponseModel));
                                         } else {
@@ -1821,20 +1823,20 @@ class TransactionManager {
                                         }
 
                                     } else {
-                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response)));
-                                        Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_empty_response));
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                                     }
 
                                 }
                             });
                 } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied)));
-                    Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied)));
+                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
                     releaseResources();
                 }
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect)));
-                Logger.e(VeritransSDK.getVeritransSDK().getContext().getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
                 releaseResources();
             }
 
