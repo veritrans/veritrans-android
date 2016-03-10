@@ -67,7 +67,7 @@ class TransactionManager {
         final String merchantToken = veritransSDK.getMerchantToken();
 
         if (veritransSDK != null && merchantToken != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getApiClient(true);
 
             if (apiInterface != null) {
@@ -119,7 +119,7 @@ class TransactionManager {
 
                                         registerCardResponse.setUserId(userId);
 
-                                        VeritranceApiInterface apiInterface =
+                                        PaymentAPI apiInterface =
                                                 VeritransRestAdapter.getMerchantApiClient(true);
 
                                         if (apiInterface != null) {
@@ -188,7 +188,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getApiClient(true);
 
             if (apiInterface != null) {
@@ -332,7 +332,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -525,7 +525,7 @@ class TransactionManager {
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -614,7 +614,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -807,7 +807,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -897,7 +897,7 @@ class TransactionManager {
     public static void paymentUsingCIMBPay(CIMBClickPayModel cimbClickPayModel) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
@@ -971,7 +971,7 @@ class TransactionManager {
     public static void paymentUsingMandiriECash(MandiriECashModel mandiriECashModel) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
@@ -1046,7 +1046,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -1135,7 +1135,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -1214,7 +1214,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -1306,7 +1306,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -1396,7 +1396,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -1486,7 +1486,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -1567,7 +1567,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -1689,7 +1689,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -1768,7 +1768,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
