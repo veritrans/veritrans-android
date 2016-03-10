@@ -1,6 +1,8 @@
 package id.co.veritrans.sdk.core;
 
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
+import id.co.veritrans.sdk.models.BCABankTransfer;
+import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
@@ -26,7 +28,6 @@ import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import retrofit.http.QueryMap;
 import rx.Observable;
 
 public interface PaymentAPI {
@@ -92,6 +93,18 @@ public interface PaymentAPI {
                                                             @Body PermataBankTransfer
                                                                     permataBankTransfer);
 
+    /**
+     * Do the payment using BCA VA.
+     * @param authorization     authorization token.
+     * @param bcaBankTransfer   transaction details
+     * @return
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingBCAVA(
+            @Header("x-auth") String authorization,
+            @Body BCABankTransfer bcaBankTransfer);
+
     //debit card
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
@@ -106,6 +119,20 @@ public interface PaymentAPI {
             @Header("x-auth") String auth
             , @Body MandiriClickPayRequestModel
                     mandiriClickPayRequestModel);
+
+    /**
+     * Do payment using BCA Klik Pay.
+     *
+     * @param auth              Client authentication key.
+     * @param bcaKlikPayModel   Request body.
+     * @return                  Observable of the Transaction Response object.
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingBCAKlikPay(
+           @Header("x-auth") String auth,
+           @Body BCAKlikPayModel bcaKlikPayModel
+    );
 
     //mandiri bill pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})

@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.adapters.OffersAdapter;
@@ -158,6 +160,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetOfferSuccessEvent event) {
         GetOffersResponseModel getOffersResponseModel = event.getResponse();
@@ -188,6 +191,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetOfferFailedEvent event) {
         SdkUtil.hideProgressDialog();
@@ -196,6 +200,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         showHideEmptyOffersMessage(true);
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         SdkUtil.hideProgressDialog();
@@ -204,6 +209,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         showHideEmptyOffersMessage(true);
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         SdkUtil.hideProgressDialog();

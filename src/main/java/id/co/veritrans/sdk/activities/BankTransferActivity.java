@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -30,6 +32,7 @@ import id.co.veritrans.sdk.fragments.BankTransferPaymentFragment;
 import id.co.veritrans.sdk.fragments.MandiriBillPayFragment;
 import id.co.veritrans.sdk.models.TransactionDetails;
 import id.co.veritrans.sdk.models.TransactionResponse;
+import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
@@ -89,10 +92,10 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         // get position of selected payment method
         Intent data = getIntent();
         if (data != null) {
-            position = data.getIntExtra(Constants.POSITION, Constants
+            position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
         } else {
-            SdkUtil.showSnackbar(BankTransferActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -122,7 +125,18 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         bankTransferFragment = new BankTransferFragment();
+        Bundle bundle = new Bundle();
+        if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
+            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
+            bankTransferFragment.setArguments(bundle);
+        } else if (position == Constants.BANK_TRANSFER_PERMATA){
+            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
+            bankTransferFragment.setArguments(bundle);
+        } else if(position == Constants.BANK_TRANSFER_BCA) {
+            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+            bankTransferFragment.setArguments(bundle);
 
+        }
         fragmentTransaction.add(R.id.bank_transfer_container,
                 bankTransferFragment, HOME_FRAGMENT);
         fragmentTransaction.commit();
@@ -185,20 +199,21 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
         if (mVeritransSDK != null) {
 
-            mTextViewAmount.setText(Constants.CURRENCY_PREFIX + " " + mVeritransSDK
-                    .getTransactionRequest().getAmount());
+            mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
             mTextViewOrderId.setText("" + mVeritransSDK.getTransactionRequest().getOrderId());
             mButtonConfirmPayment.setTypeface(mVeritransSDK.getTypefaceOpenSansSemiBold());
             mButtonConfirmPayment.setOnClickListener(this);
 
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
                 mTextViewTitle.setText(getResources().getString(R.string.mandiri_bill_payment));
-            } else {
-                mTextViewTitle.setText(getResources().getString(R.string.bank_transfer));
+            } else if(position == Constants.BANK_TRANSFER_BCA){
+                mTextViewTitle.setText(getResources().getString(R.string.activity_bank_transfer_bca));
+            } else if( position == Constants.BANK_TRANSFER_PERMATA) {
+                mTextViewTitle.setText(getResources().getString(R.string.activity_bank_transfer_permata));
             }
 
         } else {
-            SdkUtil.showSnackbar(BankTransferActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
             Logger.e(BankTransferActivity.class.getSimpleName(), Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -294,15 +309,28 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
                 MandiriBillPayFragment bankTransferPaymentFragment =
                         MandiriBillPayFragment.newInstance(transactionResponse);
-
+                Bundle bundle = new Bundle();
+                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
+                bankTransferPaymentFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.bank_transfer_container,
                         bankTransferPaymentFragment, PAYMENT_FRAGMENT);
-            } else {
-
+            } else if (position == Constants.BANK_TRANSFER_PERMATA){
                 BankTransferPaymentFragment bankTransferPaymentFragment =
                         BankTransferPaymentFragment.newInstance(transactionResponse);
+                Bundle bundle = new Bundle();
+                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
+                bankTransferPaymentFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.bank_transfer_container,
                         bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+            } else if(position == Constants.BANK_TRANSFER_BCA) {
+                BankTransferPaymentFragment bankTransferPaymentFragment =
+                        BankTransferPaymentFragment.newInstance(transactionResponse);
+                Bundle bundle = new Bundle();
+                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+                bankTransferPaymentFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.bank_transfer_container,
+                        bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+
             }
 
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
@@ -334,8 +362,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
             if (!TextUtils.isEmpty(emailId) && SdkUtil.isEmailValid(emailId)) {
                 mVeritransSDK.getTransactionRequest().getCustomerDetails().setEmail(emailId.trim());
             } else if (!TextUtils.isEmpty(emailId) && emailId.trim().length() > 0) {
-                SdkUtil.showSnackbar(BankTransferActivity.this, Constants
-                        .ERROR_INVALID_EMAIL_ID);
+                SdkUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_invalid_email_id));
                 return;
             }
         }
@@ -352,8 +379,10 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
             SdkUtil.showProgressDialog(BankTransferActivity.this, getString(R.string.processing_payment), false);
 
-            if (position == Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER) {
+            if (position == Constants.BANK_TRANSFER_PERMATA) {
                 bankTransferTransaction(veritransSDK);
+            } else if(position == Constants.BANK_TRANSFER_BCA) {
+                bcaBankTransferTransaction(veritransSDK);
             } else {
                 mandiriBillPayTransaction(veritransSDK);
             }
@@ -363,6 +392,16 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
+    }
+
+    /**
+     * it performs BCA bank transfer and in onSuccess() of callback method it will call {@link
+     * #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
+     *
+     * @param veritransSDK
+     */
+    private void bcaBankTransferTransaction(VeritransSDK veritransSDK) {
+        veritransSDK.paymentUsingBcaBankTransfer();
     }
 
 
@@ -411,12 +450,13 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), transactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -430,6 +470,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         BankTransferActivity.this.errorMessage = event.getMessage();
@@ -437,6 +478,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         try {
@@ -450,6 +492,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         BankTransferActivity.this.errorMessage = getString(R.string.no_network_msg);

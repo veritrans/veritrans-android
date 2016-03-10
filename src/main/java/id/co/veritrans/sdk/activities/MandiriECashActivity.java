@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -129,7 +131,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
         if (resultCode == RESULT_OK && data != null ) {
-            String responseStr = data.getStringExtra(Constants.PAYMENT_RESPONSE);
+            String responseStr = data.getStringExtra(getString(R.string.payment_response));
             if(TextUtils.isEmpty(responseStr)){
                 return;
             }
@@ -170,9 +172,9 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
     public void setResultAndFinish(){
         Intent data = new Intent();
         if (transactionResponseFromMerchant != null) {
-            data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponseFromMerchant);
+            data.putExtra(getString(R.string.transaction_response), transactionResponseFromMerchant);
         }
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
@@ -181,6 +183,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
         this.RESULT_CODE = resultCode;
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -197,6 +200,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         try {
@@ -210,6 +214,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         MandiriECashActivity.this.errorMessage = getString(R.string.no_network_msg);
@@ -217,6 +222,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
         SdkUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         MandiriECashActivity.this.errorMessage = event.getMessage();

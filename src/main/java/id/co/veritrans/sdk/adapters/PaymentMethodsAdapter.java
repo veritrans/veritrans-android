@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BBMMoneyActivity;
+import id.co.veritrans.sdk.activities.BCAKlikPayActivity;
 import id.co.veritrans.sdk.activities.BankTransferActivity;
 import id.co.veritrans.sdk.activities.CIMBClickPayActivity;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
@@ -22,6 +23,7 @@ import id.co.veritrans.sdk.activities.IndosatDompetkuActivity;
 import id.co.veritrans.sdk.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.activities.MandiriECashActivity;
 import id.co.veritrans.sdk.activities.OffersActivity;
+import id.co.veritrans.sdk.activities.SelectBankTransferActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
@@ -44,7 +46,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
 
     public PaymentMethodsAdapter(Activity activity, ArrayList<PaymentMethodsModel> data) {
-        this.sActivity = activity;
+        sActivity = activity;
         this.data = data;
     }
 
@@ -111,7 +113,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                     .getResources().getString(R.string.mandiri_bill_payment))) {
 
                 Intent startMandiriBillpay = new Intent(sActivity, BankTransferActivity.class);
-                startMandiriBillpay.putExtra(Constants.POSITION,
+                startMandiriBillpay.putExtra(sActivity.getString(R.string.position),
                         Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
 
                 sActivity.startActivityForResult(startMandiriBillpay, Constants
@@ -120,10 +122,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
             } else if (name.equalsIgnoreCase(sActivity
                     .getResources().getString(R.string.bank_transfer))) {
 
-                Intent startBankPayment = new Intent(sActivity, BankTransferActivity.class);
-                startBankPayment.putExtra(Constants.POSITION,
-                        Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER);
-
+                Intent startBankPayment = new Intent(sActivity, SelectBankTransferActivity.class);
                 sActivity.startActivityForResult(startBankPayment,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
 
@@ -174,6 +173,9 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                 Intent startOffersActivity = new Intent(sActivity, OffersActivity.class);
                 sActivity.startActivityForResult(startOffersActivity,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else if (nameText.getText().toString().trim().equalsIgnoreCase(sActivity.getResources().getString(R.string.bca_klik))) {
+                Intent startBCAKlikPayActivity = new Intent(sActivity, BCAKlikPayActivity.class);
+                sActivity.startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else {
                 showMessage();
             }

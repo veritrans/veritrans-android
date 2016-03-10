@@ -14,8 +14,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 
@@ -70,7 +70,7 @@ public class WebviewFragment extends Fragment {
         }
         webView.setWebViewClient(new VeritransWebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
-        webView.addJavascriptInterface(new JsInterface(), Constants.VERITRANS_RESPONSE);
+        webView.addJavascriptInterface(new JsInterface(), getString(R.string.veritrans_response));
        // webView.addJavascriptInterface(new WebAppInterface(getActivity()), "Android");
     }
 
@@ -91,7 +91,7 @@ public class WebviewFragment extends Fragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             SdkUtil.hideProgressDialog();
-            if (url.contains(Constants.CALLBACK_STRING)) {
+            if (url.contains(BuildConfig.CALLBACK_STRING)) {
                 Intent returnIntent = new Intent();
                 getActivity().setResult(getActivity().RESULT_OK, returnIntent);
                 getActivity().finish();
@@ -134,7 +134,7 @@ public class WebviewFragment extends Fragment {
         public void paymentResponse(String data) {
             Logger.i("paymentStatus:"+data);
             Intent intent = new Intent();
-            intent.putExtra(Constants.PAYMENT_RESPONSE, data);
+            intent.putExtra(getString(R.string.payment_response), data);
             getActivity().setResult(getActivity().RESULT_OK, intent);
             getActivity().finish();
         }

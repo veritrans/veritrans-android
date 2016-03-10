@@ -1,6 +1,5 @@
 package id.co.veritrans.sdk.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -67,11 +64,10 @@ public class IndomaretPaymentFragment extends Fragment {
         mTextViewPaymentCode = (TextViewFont) view.findViewById(R.id.text_payment_code);
 
         if (transactionResponse != null) {
-            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants
-                    .SUCCESS_CODE_200) || transactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201))
-            mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime
-                    (transactionResponse.getTransactionTime()));
-
+            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
+                    || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
+                mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime(transactionResponse.getTransactionTime()));
+            }
             if (transactionResponse.getPaymentCodeIndomaret() != null)
                 mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeIndomaret());
 

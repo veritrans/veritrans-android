@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+
+import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -30,6 +33,7 @@ import id.co.veritrans.sdk.fragments.BBMMoneyPaymentStatusFragment;
 import id.co.veritrans.sdk.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.fragments.InstructionBBMMoneyFragment;
 import id.co.veritrans.sdk.models.TransactionResponse;
+import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
@@ -73,10 +77,10 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         // get position of selected payment method
         Intent data = getIntent();
         if (data != null) {
-            position = data.getIntExtra(Constants.POSITION, Constants
+            position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_BBM_MONEY);
         } else {
-            SdkUtil.showSnackbar(BBMMoneyActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(BBMMoneyActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -147,8 +151,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
 
     private void bindDataToView() {
         if (veritransSDK != null) {
-            textViewAmount.setText(Constants.CURRENCY_PREFIX + " " + veritransSDK
-                    .getTransactionRequest().getAmount());
+            textViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
             textViewOrderId.setText("" + veritransSDK.getTransactionRequest().getOrderId());
             buttonConfirmPayment.setTypeface(veritransSDK.getTypefaceOpenSansSemiBold());
             buttonConfirmPayment.setOnClickListener(this);
@@ -201,7 +204,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
                         veritransSDK.getBBMCallBackUrl().getBeforePaymentError(),
                         veritransSDK.getBBMCallBackUrl().getUserCancel());
 
-                String feedUrl = Constants.BBM_PREFIX_URL + encodedUrl;
+                String feedUrl = BuildConfig.BBM_PREFIX_URL + encodedUrl;
 
                 if (SdkUtil.isBBMMoneyInstalled(BBMMoneyActivity.this)) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(feedUrl)));
@@ -278,13 +281,13 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
 
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), transactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
 
-
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -298,6 +301,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         try {
@@ -311,6 +315,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         BBMMoneyActivity.this.errorMessage = getString(R.string.no_network_msg);
@@ -319,6 +324,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         SdkUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         BBMMoneyActivity.this.errorMessage = event.getMessage();

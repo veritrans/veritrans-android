@@ -119,22 +119,5 @@
             />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/eight_dp"
-            android:background="@color/light_gray"
-            android:lineSpacingExtra="2dp"
-            android:paddingBottom="@dimen/five_dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:text="@string/bca_instruction_step7"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
-            />
-
-
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

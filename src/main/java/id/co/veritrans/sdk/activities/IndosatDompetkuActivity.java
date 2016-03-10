@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -164,8 +166,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
             mTextViewTitle.setText(getResources().getString(R.string.indosat_dompetku));
 
         } else {
-            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, Constants
-                    .ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_something_wrong));
             Logger.e(IndosatDompetkuActivity.class.getSimpleName(), Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -215,8 +216,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
                 mVeritransSDK.getTransactionRequest().getCustomerDetails().setPhone(phoneNumber
                         .trim());
             } else {
-                SdkUtil.showSnackbar(IndosatDompetkuActivity.this, Constants
-                        .ERROR_INVALID_PHONE_NUMBER);
+                SdkUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_invalid_phone_number));
                 return;
             }
         }
@@ -329,12 +329,13 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, mTransactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), mTransactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -350,6 +351,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         mTransactionResponse = event.getResponse();
@@ -362,6 +364,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         IndosatDompetkuActivity.this.errorMessage = getString(R.string.no_network_msg);
@@ -373,6 +376,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         IndosatDompetkuActivity.this.errorMessage = event.getMessage();

@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import java.util.List;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
@@ -139,10 +142,10 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         // get position of selected payment method
         Intent data = getIntent();
         if (data != null) {
-            position = data.getIntExtra(Constants.POSITION, Constants
+            position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_OFFERS);
         } else {
-            SdkUtil.showSnackbar(OffersActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(OffersActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -271,7 +274,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
             }
             //for one click
             if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
-                    (Constants.CARD_CLICK_TYPE_ONE_CLICK) &&
+                    (getString(R.string.card_click_type_one_click)) &&
                     !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
                 if (cardTokenRequest.isInstalment()) {
                     cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
@@ -439,26 +442,16 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
                         @Override
                         public void call(Subscriber<? super List<BankDetail>> sub) {
                             try {
-                                userDetail = (UserDetail) StorageDataHandler.readObject(OffersActivity.this,
-                                        Constants.USER_DETAILS);
+                                userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
                                 Logger.i("userDetail:" + userDetail.getUserFullName());
-                            } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (NullPointerException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             ArrayList<BankDetail> bankDetails = new ArrayList<BankDetail>();
                             try {
-                                bankDetails = (ArrayList<BankDetail>) StorageDataHandler.readObject(
-                                        OffersActivity.this, Constants.BANK_DETAILS);
+                                bankDetails = LocalDataHandler.readObject(getString(R.string.bank_details), BankDetailArray.class).getBankDetails();
                                 Logger.i("bankDetails:" + bankDetails.size());
-                            } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (NullPointerException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             if (bankDetails.isEmpty()) {
@@ -481,11 +474,8 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
                                     Gson gson = new Gson();
                                     bankDetails = gson.fromJson(json, BankDetailArray.class).getBankDetails();
                                     Logger.i("bankDetails:" + bankDetails.size());
-                                    StorageDataHandler.writeObject(OffersActivity.this, Constants
-                                            .BANK_DETAILS, bankDetails);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } catch (NullPointerException e) {
+                                    LocalDataHandler.saveObject(getString(R.string.bank_details), bankDetails);
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -521,8 +511,8 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
 
     public void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), transactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
@@ -593,6 +583,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         btnMorph.morph(circle);
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetTokenSuccessEvent event) {
         TokenDetailsResponse tokenDetailsResponse = event.getResponse();
@@ -615,12 +606,14 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetTokenFailedEvent event) {
         SdkUtil.hideProgressDialog();
         SdkUtil.showApiFailedMessage(this, event.getMessage());
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         TransactionResponse cardPaymentResponse = event.getResponse();
@@ -635,8 +628,8 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         SdkUtil.hideProgressDialog();
         Logger.i("cardPaymentResponse:" + cardPaymentResponse.getStatusCode());
 
-        if (cardPaymentResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
-                cardPaymentResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+        if (cardPaymentResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200)) ||
+                cardPaymentResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_201))) {
 
             transactionResponse = cardPaymentResponse;
 
@@ -692,6 +685,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         TransactionResponse transactionResponse = event.getResponse();
@@ -713,16 +707,19 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         textViewTitleOffers.setText(getString(R.string.title_payment_status));
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
 
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
 
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetCardsSuccessEvent event) {
         CardResponse cardResponse = event.getResponse();
@@ -758,6 +755,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetCardFailedEvent event) {
         SdkUtil.hideProgressDialog();
@@ -765,11 +763,13 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         processingLayout.setVisibility(View.GONE);
     }
 
+    @Subscribe
     @Override
     public void onEvent(SaveCardSuccessEvent event) {
         Logger.i("card saved");
     }
 
+    @Subscribe
     @Override
     public void onEvent(SaveCardFailedEvent event) {
 

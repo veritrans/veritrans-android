@@ -45,16 +45,15 @@ class VeritransRestAdapter {
                         .registerTypeAdapter(Date.class, new DateTypeAdapter())
                         .create();
                 RestAdapter.Builder builder = new RestAdapter.Builder()
+                        .setEndpoint(BuildConfig.BASE_URL)
                         .setConverter(new GsonConverter(gson))
                         .setLogLevel(RestAdapter.LogLevel.FULL)
                         .setClient(new OkClient(okHttpClient));
                 RestAdapter restAdapter;
                 if (BuildConfig.DEBUG) {
-                    builder.setEndpoint(Constants.BASE_URL_FOR_DEBUG);
                     restAdapter = builder.build();
                     restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
                 } else {
-                    builder.setEndpoint(Constants.BASE_URL_FOR_RELEASE);
                     restAdapter = builder.build();
                 }
                 paymentAPI = restAdapter.create(PaymentAPI.class);

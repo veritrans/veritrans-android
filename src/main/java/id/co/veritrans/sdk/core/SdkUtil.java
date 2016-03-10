@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -19,15 +18,20 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BBMUrlEncodeJson;
+import id.co.veritrans.sdk.models.BCABankTransfer;
+import id.co.veritrans.sdk.models.BCAKlikPayDescriptionModel;
+import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.CstoreEntity;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
@@ -238,8 +242,7 @@ public class SdkUtil {
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
             if (!TextUtils.isEmpty(errorMessage)) {
-                if (errorMessage.contains(Constants
-                        .RETROFIT_NETWORK_MESSAGE)) {
+                if (errorMessage.contains(VeritransSDK.getVeritransSDK().getContext().getString(R.string.retrofit_network_message))) {
                     SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
                 } else {
                     SdkUtil.showSnackbar(activity, errorMessage);
@@ -320,6 +323,25 @@ public class SdkUtil {
         return model;
     }
 
+    protected static BCAKlikPayModel getBCAKlikPayModel(TransactionRequest request,
+                                                        BCAKlikPayDescriptionModel descriptionModel) {
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(), request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        return new BCAKlikPayModel(
+          descriptionModel,
+                transactionDetails,
+                request.getItemDetails(),
+                request.getBillingAddressArrayList(),
+                request.getShippingAddressArrayList(),
+                request.getCustomerDetails()
+        );
+    }
+
 
     /**
      * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
@@ -339,10 +361,40 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(Constants.PAYMENT_PERMATA);
+        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_permata));
 
         PermataBankTransfer model =
                 new PermataBankTransfer(bankTransfer,
+                        transactionDetails, request.getItemDetails(),
+                        request.getBillingAddressArrayList(),
+                        request.getShippingAddressArrayList(),
+                        request.getCustomerDetails());
+        return model;
+
+    }
+
+    /**
+     * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
+     *
+     * @param request
+     * @return
+     */
+    protected static BCABankTransfer getBcaBankTransferRequest(TransactionRequest request) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        // bank name
+        BankTransfer bankTransfer = new BankTransfer();
+        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_bca));
+
+        BCABankTransfer model =
+                new BCABankTransfer(bankTransfer,
                         transactionDetails, request.getItemDetails(),
                         request.getBillingAddressArrayList(),
                         request.getShippingAddressArrayList(),
@@ -360,9 +412,7 @@ public class SdkUtil {
      * @return
      */
     protected static IndomaretRequestModel getIndomaretRequestModel(TransactionRequest request,
-                                                                    IndomaretRequestModel
-                                                                            .CstoreEntity
-                                                                            cstoreEntity) {
+                                                                    CstoreEntity cstoreEntity) {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
@@ -374,7 +424,7 @@ public class SdkUtil {
 
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
-        model.setPaymentType(Constants.PAYMENT_INDOMARET);
+        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indomaret));
         model.setItem_details(request.getItemDetails());
         model.setCustomerDetails(request.getCustomerDetails());
         model.setTransactionDetails(transactionDetails);
@@ -435,7 +485,7 @@ public class SdkUtil {
 
         model.setCustomerDetails(request.getCustomerDetails(), request
                 .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        model.setPaymentType(Constants.PAYMENT_INDOSAT_DOMPETKU);
+        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indosat_dompetku));
 
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();
@@ -552,8 +602,7 @@ public class SdkUtil {
         CustomerDetails mCustomerDetails = null;
 
         try {
-            userDetail = (UserDetail) StorageDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext(),
-                    Constants.USER_DETAILS);
+            userDetail = LocalDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext().getString(R.string.user_details), UserDetail.class);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
 
@@ -579,9 +628,7 @@ public class SdkUtil {
                 //SdkUtil.showSnackbar(VeritransSDK.getVeritransSDK().getContext(), "User details not available.");
                 //request.getActivity().finish();
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.e("Error while fetching user details : " + ex.getMessage());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.e("Error while fetching user details : " + ex.getMessage());
         }
 
@@ -678,14 +725,11 @@ public class SdkUtil {
 
         StorageDataHandler storageDataHandler = new StorageDataHandler();
         try {
-            UserDetail userDetail = (UserDetail) StorageDataHandler.readObject(context, Constants
-                    .USER_DETAILS);
+            UserDetail userDetail = LocalDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext().getString(R.string.user_details), UserDetail.class);
 
             return userDetail;
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -726,7 +770,7 @@ public class SdkUtil {
 
             PackageManager pm = activity.getPackageManager();
             try {
-                pm.getPackageInfo(Constants.BBM_MONEY_PACKAGE, PackageManager.GET_ACTIVITIES);
+                pm.getPackageInfo(BuildConfig.BBM_MONEY_PACKAGE, PackageManager.GET_ACTIVITIES);
                 isInstalled = true;
             } catch (PackageManager.NameNotFoundException e) {
                 isInstalled = false;

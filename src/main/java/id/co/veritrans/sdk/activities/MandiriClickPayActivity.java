@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
@@ -226,8 +228,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
             }
 
         } else {
-            SdkUtil.showSnackbar(MandiriClickPayActivity.this, Constants
-                    .ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(MandiriClickPayActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -279,8 +280,8 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), transactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_OK, data);
         finish();
     }
@@ -296,6 +297,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -310,6 +312,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         MandiriClickPayActivity.this.transactionResponse = event.getResponse();
@@ -327,6 +330,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         SdkUtil.hideProgressDialog();
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         MandiriClickPayActivity.this.errorMessage = getString(R.string.no_network_msg);
@@ -336,6 +340,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         SdkUtil.hideProgressDialog();
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         MandiriClickPayActivity.this.errorMessage = event.getMessage();

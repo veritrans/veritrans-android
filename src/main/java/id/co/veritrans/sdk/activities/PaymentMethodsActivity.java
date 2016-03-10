@@ -14,12 +14,12 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
@@ -40,12 +40,12 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
 public class PaymentMethodsActivity extends AppCompatActivity implements AppBarLayout
         .OnOffsetChangedListener {
 
+    public static final String PAYABLE_AMOUNT = "Payable Amount";
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.7f;
     private static final float ALPHA = 0.6f;
     private static final String TAG = PaymentMethodsActivity.class.getSimpleName();
     private static final float PERCENTAGE_TOTAL = 1f;
-    public static final String PAYABLE_AMOUNT = "Payable Amount";
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
 
     private VeritransSDK veritransSDK = null;
@@ -72,10 +72,8 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
         UserDetail userDetail = null;
         try {
-            userDetail = (UserDetail) storageDataHandler.readObject(this, Constants.USER_DETAILS);
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
+            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -165,8 +163,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            String amount = Constants.CURRENCY_PREFIX + " "
-                    + Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount());
+            String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount()));
 
             collapsingToolbarLayout.setTitle(" ");
             toolbarHeaderView.bindTo(PAYABLE_AMOUNT, "" + amount);
@@ -313,8 +310,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-                data.setAction(Constants.EVENT_TRANSACTION_COMPLETE);
-                sendBroadcast(data);
                 finish();
             } else {
                 //transaction failed.

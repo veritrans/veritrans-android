@@ -181,10 +181,10 @@ public class CardDetailFragment extends Fragment {
         expTv.setText(cardDetail.getFormatedExpiryDate());
         final String cardType = cardDetail.getCardType();
         if (!TextUtils.isEmpty(cardType)) {
-            if (cardType.equalsIgnoreCase(Constants.CARD_TYPE_VISA)) {
+            if (cardType.equalsIgnoreCase(getString(R.string.visa))) {
                 Drawable visa = getResources().getDrawable(R.drawable.visa);
                 cardNoTv.setCompoundDrawablesWithIntrinsicBounds(null, null, visa, null);
-            } else if (cardType.equalsIgnoreCase(Constants.CARD_TYPE_MASTERCARD)) {
+            } else if (cardType.equalsIgnoreCase(getString(R.string.mastercard))) {
                 Drawable masterCard = getResources().getDrawable(R.drawable.mastercard);
                 cardNoTv.setCompoundDrawablesWithIntrinsicBounds(null, null, masterCard, null);
             }
@@ -217,8 +217,7 @@ public class CardDetailFragment extends Fragment {
 
         Logger.i("veritransSDK.getCardClickType()" + veritransSDK.getTransactionRequest()
                 .getCardClickType());
-        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants
-                .CARD_CLICK_TYPE_ONE_CLICK)) {
+        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
             payNowFrontBt.setVisibility(View.VISIBLE);
         } else {
             payNowFrontBt.setVisibility(View.GONE);
@@ -283,8 +282,7 @@ public class CardDetailFragment extends Fragment {
             e.printStackTrace();
         }
         cardDetail.setClientKey(veritransSDK.getClientKey());
-        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants
-                .CARD_CLICK_TYPE_ONE_CLICK)) {
+        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
 
             if (activity != null) {
                 if (activity instanceof CreditDebitCardFlowActivity) {
@@ -294,7 +292,7 @@ public class CardDetailFragment extends Fragment {
                 }
             }
         } else if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
-                (Constants.CARD_CLICK_TYPE_TWO_CLICK)) {
+                (getString(R.string.card_click_type_two_click))) {
 
             if (activity != null) {
                 if (activity instanceof CreditDebitCardFlowActivity) {
@@ -317,8 +315,7 @@ public class CardDetailFragment extends Fragment {
     }
 
     private void flipCard() {
-        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(Constants
-                .CARD_CLICK_TYPE_ONE_CLICK)) {
+        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
             return;
         }
        /* Animation scaleDown = new ScaleAnimation(
