@@ -3,7 +3,6 @@ package id.co.veritrans.sdk.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Ankit on 12/10/15.

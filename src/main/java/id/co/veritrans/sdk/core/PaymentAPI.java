@@ -4,6 +4,7 @@ import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BCABankTransfer;
 import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
+import id.co.veritrans.sdk.models.CardRegistrationResponse;
 import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
@@ -278,4 +279,17 @@ public interface PaymentAPI {
                                                                          instalmentTerm
     );
 
+    /**
+     * Register card into Veritrans API.
+     *
+     * @return observable of token
+     */
+    @GET("/card/register")
+    Observable<CardRegistrationResponse> registerCard(
+            @Query("card_number") String cardNumber,
+            @Query("card_cvv") int cardCVV,
+            @Query("card_exp_month") int cardExpiryMonth,
+            @Query("card_exp_year") int cardExpiryYear,
+            @Query("client_key") String clientKey
+    );
 }
