@@ -153,6 +153,7 @@
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
+                            android:contentDescription="@string/description_question_mark"
                             android:padding="8dp"
                             android:src="@drawable/ic_cvvinfo" />
                     </RelativeLayout>
@@ -194,6 +195,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.25"
                             android:background="@drawable/ic_minus_button_selector"
+                            android:contentDescription="@string/description_minus_button"
                             android:padding="@dimen/sixteen_dp" />
 
                         <id.co.veritrans.sdk.widgets.TextViewFont
@@ -216,6 +218,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.25"
                             android:background="@drawable/ic_plus_button_selector"
+                            android:contentDescription="@string/description_plus_button"
                             android:padding="@dimen/sixteen_dp" />
 
                     </LinearLayout>

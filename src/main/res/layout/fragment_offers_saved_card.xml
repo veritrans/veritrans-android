@@ -92,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:background="@drawable/ic_minus_button_selector"
+                android:contentDescription="@string/description_minus_button"
                 android:padding="@dimen/sixteen_dp"
                 />
 
@@ -116,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:background="@drawable/ic_plus_button_selector"
+                android:contentDescription="@string/description_plus_button"
                 android:padding="@dimen/sixteen_dp"
                 />
 
@@ -145,6 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@id/btn_add_card"
+            android:layout_toStartOf="@id/btn_add_card"
             android:padding="@dimen/sixteen_dp"
             android:src="@drawable/curve_arrow"
             android:visibility="gone"

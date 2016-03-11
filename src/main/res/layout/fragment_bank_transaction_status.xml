@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/sixteen_dp"
+            android:contentDescription="@string/description_transaction_status"
             android:src="@drawable/ic_pending"/>
 
 
@@ -159,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="left"
-                    android:text="Transaction Time Here"
+                    android:text="@string/text_transaction_time_here"
                     android:textColor="@color/black"
                     android:textSize="@dimen/primary_text_size"
                     app:font="@string/font_open_sans_regular"
@@ -170,8 +171,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="Payment Type here"
+                    android:gravity="end"
+                    android:text="@string/text_payment_type_here"
                     android:textColor="@color/black"
                     android:textSize="@dimen/primary_text_size"
                     app:font="@string/font_open_sans_regular"

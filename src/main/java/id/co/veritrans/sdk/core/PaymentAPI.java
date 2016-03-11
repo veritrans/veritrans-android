@@ -284,6 +284,12 @@ public interface PaymentAPI {
     /**
      * Register card into Veritrans API.
      *
+     * @param cardNumber        credit card number
+     * @param cardCVV           credit card cvv number
+     * @param cardExpiryMonth   credit card expiry month in number
+     * @param cardExpiryYear    credit card expiry year in 4 digit (example: 2020)
+     * @param clientKey         veritrans API client key
+     *
      * @return observable of token
      */
     @GET("/card/register")

@@ -38,8 +38,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/sixteen_dp"
                 android:layout_marginTop="@dimen/sixteen_dp"
+                android:contentDescription="@string/description_dialog_title"
                 android:visibility="gone"
-
                 />
         </RelativeLayout>
 

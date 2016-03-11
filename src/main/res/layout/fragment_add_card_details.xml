@@ -103,10 +103,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
+                        android:contentDescription="@string/description_help_icon"
                         android:padding="8dp"
                         android:src="@drawable/ic_cvvinfo"
-
                         />
                 </RelativeLayout>
             </LinearLayout>
@@ -129,6 +130,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_toEndOf="@id/cb_store_card"
                 android:layout_toRightOf="@id/cb_store_card"
+                android:contentDescription="@string/description_help_icon"
                 android:paddingLeft="@dimen/sixteen_dp"
                 android:paddingRight="@dimen/sixteen_dp"
                 android:src="@drawable/ic_cvvinfo" />
