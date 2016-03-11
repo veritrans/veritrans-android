@@ -33,6 +33,7 @@ import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
+import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
@@ -212,7 +213,9 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
             }
         }
         if (creditCard != null) {
-            veritransSDK.deleteCard(creditCard);
+            SaveCardRequest saveCardRequest = new SaveCardRequest();
+            saveCardRequest.setSavedTokenId(creditCard.getSavedTokenId());
+            veritransSDK.deleteCard(saveCardRequest);
         }
     }
 

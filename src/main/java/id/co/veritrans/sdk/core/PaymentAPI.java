@@ -6,7 +6,6 @@ import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardRegistrationResponse;
 import id.co.veritrans.sdk.models.CardResponse;
-import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
@@ -18,6 +17,7 @@ import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.RegisterCardResponse;
+import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionCancelResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
@@ -187,7 +187,7 @@ public interface PaymentAPI {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/")
     Observable<CardResponse> saveCard(@Header("x-auth") String auth,
-                                      @Body CardTokenRequest cardTokenRequest);
+                                      @Body SaveCardRequest cardTokenRequest);
 
     //save cards or get cards
     @Deprecated
@@ -199,7 +199,7 @@ public interface PaymentAPI {
     @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/delete")
-    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Body CardTokenRequest cardTokenRequest);
+    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Body SaveCardRequest cardTokenRequest);
 
     //BBMMoney Payment
     @Headers({"Content-Type: application/json", "Accept: application/json"})

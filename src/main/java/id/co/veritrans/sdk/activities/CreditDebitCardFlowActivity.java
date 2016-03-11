@@ -1,7 +1,5 @@
 package id.co.veritrans.sdk.activities;
 
-import com.google.gson.Gson;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +17,8 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -61,6 +61,7 @@ import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
+import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.models.ShippingAddress;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionDetails;
@@ -324,7 +325,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
         }
     }
 
-    public void saveCreditCards(CardTokenRequest creditCard) {
+    public void saveCreditCards(SaveCardRequest creditCard) {
         /*try {
             storageDataHandler.writeObject(this, Constants.USERS_SAVED_CARD, creditCards);
         } catch (IOException e) {
@@ -634,7 +635,9 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
                 }
                 Logger.i("Card:" + cardTokenRequest.getString());
                 creditCards.add(cardTokenRequest);
-                saveCreditCards(cardTokenRequest);
+                SaveCardRequest saveCardRequest = new SaveCardRequest();
+                saveCardRequest.setSavedTokenId(cardTokenRequest.getSavedTokenId());
+                saveCreditCards(saveCardRequest);
             }
         }
     }

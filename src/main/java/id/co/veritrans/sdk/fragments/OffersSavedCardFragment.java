@@ -35,6 +35,7 @@ import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.OffersListModel;
+import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 
@@ -346,7 +347,9 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             }
         }
         if (creditCard != null) {
-            veritransSDK.deleteCard(creditCard);
+            SaveCardRequest saveCardRequest = new SaveCardRequest();
+            saveCardRequest.setSavedTokenId(creditCard.getSavedTokenId());
+            veritransSDK.deleteCard(saveCardRequest);
         }
     }
 

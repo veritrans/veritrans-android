@@ -37,6 +37,7 @@ import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
+import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.models.UserDetail;
 
 /**
@@ -576,7 +577,7 @@ public class VeritransSDK {
      *
      * @param cardTokenRequest card details
      */
-    public void saveCards(CardTokenRequest cardTokenRequest) {
+    public void saveCards(SaveCardRequest cardTokenRequest) {
         if (cardTokenRequest != null) {
             TransactionManager.saveCards(cardTokenRequest);
         }
@@ -602,7 +603,7 @@ public class VeritransSDK {
         }
     }
 
-    public void deleteCard(CardTokenRequest creditCard) {
+    public void deleteCard(SaveCardRequest creditCard) {
         if (creditCard != null) {
             TransactionManager.deleteCard(creditCard);
         }
