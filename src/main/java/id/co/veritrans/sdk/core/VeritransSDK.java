@@ -608,6 +608,12 @@ public class VeritransSDK {
         }
     }
 
+    public void cardRegistration(String cardNumber,
+                                 int cardCvv, int cardExpMonth,
+                                 int cardExpYear) {
+        TransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear);
+        isRunning = true;
+    }
     public BBMCallBackUrl getBBMCallBackUrl() {
         return mBBMCallBackUrl;
     }

@@ -4,6 +4,8 @@ import android.text.TextUtils;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.events.CardRegistrationFailedEvent;
+import id.co.veritrans.sdk.eventbus.events.CardRegistrationSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.DeleteCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.DeleteCardSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
@@ -24,6 +26,7 @@ import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BCABankTransfer;
 import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
+import id.co.veritrans.sdk.models.CardRegistrationResponse;
 import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
@@ -59,6 +62,67 @@ class TransactionManager {
     private static Subscription cardSubscription = null;
     private static Subscription deleteCardSubscription = null;
     private static Subscription offersSubscription = null;
+
+    public static void cardRegistration(String cardNumber,
+                                        int cardCvv,
+                                        int cardExpMonth,
+                                        int cardExpYear) {
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            PaymentAPI paymentAPI = VeritransRestAdapter.getApiClient(true);
+            if (paymentAPI != null) {
+                final Observable<CardRegistrationResponse> observable = paymentAPI.registerCard(cardNumber, cardCvv, cardExpMonth, cardExpYear, veritransSDK.getClientKey());
+
+                subscription = observable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<CardRegistrationResponse>() {
+                            @Override
+                            public void onCompleted() {
+                                if (subscription != null && !subscription.isUnsubscribed()) {
+                                    subscription.unsubscribe();
+                                }
+
+                                releaseResources();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Logger.e("error while getting token : ", "" +
+                                        e.getMessage());
+                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                releaseResources();
+                            }
+
+                            @Override
+                            public void onNext(CardRegistrationResponse cardRegistrationResponse) {
+                                releaseResources();
+
+                                if (cardRegistrationResponse != null) {
+                                    if (cardRegistrationResponse.getStatusCode().equals(veritransSDK.getContext().getString(R.string.success_code_200))) {
+                                        VeritransBusProvider.getInstance().post(new CardRegistrationSuccessEvent(cardRegistrationResponse));
+                                        releaseResources();
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new CardRegistrationFailedEvent(cardRegistrationResponse.getStatusMessage(), cardRegistrationResponse));
+                                        releaseResources();
+                                    }
+                                } else {
+                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(veritransSDK.getContext().getString(R.string.error_empty_response), null));
+                                    Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                                    releaseResources();
+                                }
+                            }
+                        });
+            } else {
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
+                releaseResources();
+            }
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED));
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
+        }
+    }
 
     public static void registerCard(CardTokenRequest cardTokenRequest,
                                     final String userId) {
