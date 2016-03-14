@@ -310,6 +310,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
                 MandiriBillPayFragment bankTransferPaymentFragment =
                         MandiriBillPayFragment.newInstance(transactionResponse);
                 Bundle bundle = new Bundle();
+                bundle.putSerializable("data", transactionResponse);
                 bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
                 bankTransferPaymentFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.bank_transfer_container,
