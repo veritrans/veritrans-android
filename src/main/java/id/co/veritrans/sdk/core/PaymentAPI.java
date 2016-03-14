@@ -1,11 +1,12 @@
 package id.co.veritrans.sdk.core;
 
+import id.co.veritrans.sdk.models.AuthModel;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BCABankTransfer;
 import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
+import id.co.veritrans.sdk.models.CardRegistrationResponse;
 import id.co.veritrans.sdk.models.CardResponse;
-import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
@@ -17,6 +18,8 @@ import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.RegisterCardResponse;
+import id.co.veritrans.sdk.models.SaveCardRequest;
+import id.co.veritrans.sdk.models.SaveCardResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionCancelResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
@@ -30,10 +33,7 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
-/**
- * Created by shivam on 10/26/15.
- */
-public interface VeritranceApiInterface {
+public interface PaymentAPI {
 
     //token?card_number=4811111111111114&card_cvv=123&card_exp_month=06&card_exp_year=2020
     // &client_key=VT-client-Lre_JFh5klhfGefF
@@ -187,9 +187,9 @@ public interface VeritranceApiInterface {
     //save cards or get cards
     @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/card/")
-    Observable<CardResponse> saveCard(@Header("x-auth") String auth,
-                                      @Body CardTokenRequest cardTokenRequest);
+    @POST("/card/register")
+    Observable<SaveCardResponse> saveCard(@Header("x-auth") String auth,
+                                      @Body SaveCardRequest cardTokenRequest);
 
     //save cards or get cards
     @Deprecated
@@ -201,7 +201,7 @@ public interface VeritranceApiInterface {
     @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/delete")
-    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Body CardTokenRequest cardTokenRequest);
+    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Body SaveCardRequest cardTokenRequest);
 
     //BBMMoney Payment
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -281,4 +281,26 @@ public interface VeritranceApiInterface {
                                                                          instalmentTerm
     );
 
+    /**
+     * Register card into Veritrans API.
+     *
+     * @return observable of token
+     */
+    @Headers({"Content-Type: application/json", "x-auth: da53847171259b511488cf366e701050"})
+    @GET("/card/register")
+    Observable<CardRegistrationResponse> registerCard(
+            @Query("card_number") String cardNumber,
+            @Query("card_cvv") int cardCVV,
+            @Query("card_exp_month") int cardExpiryMonth,
+            @Query("card_exp_year") int cardExpiryYear,
+            @Query("client_key") String clientKey
+    );
+
+    /**
+     * Get authentication token.
+     *
+     * @return authentication token.
+     */
+    @POST("/auth")
+    Observable<AuthModel> getAuthenticationToken();
 }

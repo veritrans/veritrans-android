@@ -4,6 +4,9 @@ import android.text.TextUtils;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.events.AuthenticationEvent;
+import id.co.veritrans.sdk.eventbus.events.CardRegistrationFailedEvent;
+import id.co.veritrans.sdk.eventbus.events.CardRegistrationSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.DeleteCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.DeleteCardSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
@@ -20,10 +23,12 @@ import id.co.veritrans.sdk.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionStatusSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
+import id.co.veritrans.sdk.models.AuthModel;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BCABankTransfer;
 import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
+import id.co.veritrans.sdk.models.CardRegistrationResponse;
 import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
@@ -37,6 +42,8 @@ import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.RegisterCardResponse;
+import id.co.veritrans.sdk.models.SaveCardRequest;
+import id.co.veritrans.sdk.models.SaveCardResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
@@ -60,14 +67,75 @@ class TransactionManager {
     private static Subscription deleteCardSubscription = null;
     private static Subscription offersSubscription = null;
 
+    public static void cardRegistration(String cardNumber,
+                                        int cardCvv,
+                                        int cardExpMonth,
+                                        int cardExpYear) {
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            PaymentAPI paymentAPI = VeritransRestAdapter.getApiClient(true);
+            if (paymentAPI != null) {
+                final Observable<CardRegistrationResponse> observable = paymentAPI.registerCard(cardNumber, cardCvv, cardExpMonth, cardExpYear, veritransSDK.getClientKey());
+
+                subscription = observable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<CardRegistrationResponse>() {
+                            @Override
+                            public void onCompleted() {
+                                if (subscription != null && !subscription.isUnsubscribed()) {
+                                    subscription.unsubscribe();
+                                }
+
+                                releaseResources();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Logger.e("error while getting token : ", "" +
+                                        e.getMessage());
+                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                releaseResources();
+                            }
+
+                            @Override
+                            public void onNext(CardRegistrationResponse cardRegistrationResponse) {
+                                releaseResources();
+
+                                if (cardRegistrationResponse != null) {
+                                    if (cardRegistrationResponse.getStatusCode().equals(veritransSDK.getContext().getString(R.string.success_code_200))) {
+                                        VeritransBusProvider.getInstance().post(new CardRegistrationSuccessEvent(cardRegistrationResponse));
+                                        releaseResources();
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new CardRegistrationFailedEvent(cardRegistrationResponse.getStatusMessage(), cardRegistrationResponse));
+                                        releaseResources();
+                                    }
+                                } else {
+                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(veritransSDK.getContext().getString(R.string.error_empty_response), null));
+                                    Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                                    releaseResources();
+                                }
+                            }
+                        });
+            } else {
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
+                releaseResources();
+            }
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED));
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
+        }
+    }
+
     public static void registerCard(CardTokenRequest cardTokenRequest,
                                     final String userId) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        final String merchantToken = veritransSDK.getMerchantToken();
+        final String merchantToken = veritransSDK.readAuthenticationToken();
 
         if (veritransSDK != null && merchantToken != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getApiClient(true);
 
             if (apiInterface != null) {
@@ -119,7 +187,7 @@ class TransactionManager {
 
                                         registerCardResponse.setUserId(userId);
 
-                                        VeritranceApiInterface apiInterface =
+                                        PaymentAPI apiInterface =
                                                 VeritransRestAdapter.getMerchantApiClient(true);
 
                                         if (apiInterface != null) {
@@ -188,7 +256,7 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getApiClient(true);
 
             if (apiInterface != null) {
@@ -332,13 +400,13 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingPermataBank(merchantToken,
@@ -429,13 +497,13 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingBCAVA(merchantToken,
@@ -525,7 +593,7 @@ class TransactionManager {
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
@@ -533,7 +601,7 @@ class TransactionManager {
                 Observable<TransactionResponse> observable = null;
 
                 //String serverKey = Utils.calculateBase64(veritransSDK.getMerchantToken());
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -614,13 +682,13 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingMandiriClickPay(merchantToken,
@@ -709,13 +777,13 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingBCAKlikPay(merchantToken,
@@ -807,14 +875,14 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -897,11 +965,11 @@ class TransactionManager {
     public static void paymentUsingCIMBPay(CIMBClickPayModel cimbClickPayModel) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -971,11 +1039,11 @@ class TransactionManager {
     public static void paymentUsingMandiriECash(MandiriECashModel mandiriECashModel) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingMandiriECash(merchantToken,
@@ -1046,14 +1114,14 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingEpayBri(merchantToken,
@@ -1135,14 +1203,14 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionStatusResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.transactionStatus(merchantToken,
@@ -1214,14 +1282,14 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -1306,13 +1374,13 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -1396,13 +1464,13 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -1481,28 +1549,28 @@ class TransactionManager {
         }
     }
 
-    public static void saveCards(final CardTokenRequest cardTokenRequest) {
+    public static void saveCards(final SaveCardRequest cardTokenRequest) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
-                Observable<CardResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
+                Observable<SaveCardResponse> observable = null;
+                String auth = veritransSDK.readAuthenticationToken();
+                Logger.i("Authentication token:" + auth);
+                if (auth != null && !auth.equals("")) {
 
-                    observable = apiInterface.saveCard(merchantToken,
+                    observable = apiInterface.saveCard(auth,
                             cardTokenRequest);
 
                     cardSubscription = observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<CardResponse>() {
+                            .subscribe(new Observer<SaveCardResponse>() {
 
                                 @Override
                                 public void onCompleted() {
@@ -1522,17 +1590,17 @@ class TransactionManager {
                                 }
 
                                 @Override
-                                public void onNext(CardResponse cardResponse) {
+                                public void onNext(SaveCardResponse cardResponse) {
 
                                     releaseResources();
                                     if (cardResponse != null) {
 
-                                        if (cardResponse.getMessage().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success))) {
+                                        if (cardResponse.getCode() == 200) {
 
                                             VeritransBusProvider.getInstance().post(new SaveCardSuccessEvent(cardResponse));
                                         } else {
                                             VeritransBusProvider.getInstance().post(new SaveCardFailedEvent(
-                                                    cardResponse.getMessage(),
+                                                    cardResponse.getStatus(),
                                                     cardResponse
                                             ));
                                         }
@@ -1567,18 +1635,17 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
                 Observable<CardResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
+                String auth = veritransSDK.readAuthenticationToken();
+                Logger.i("Authentication token:" + auth);
+                if (auth != null && !auth.equals("")) {
 
-                    observable = apiInterface.getCard(merchantToken
-                    );
+                    observable = apiInterface.getCard(auth);
 
                     cardSubscription = observable.subscribeOn(Schedulers
                             .io())
@@ -1608,11 +1675,11 @@ class TransactionManager {
                                     releaseResources();
                                     if (cardResponse != null) {
 
-                                        if (cardResponse.getMessage().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success))) {
+                                        if (cardResponse.getCode() == 200) {
                                             VeritransBusProvider.getInstance().post(new GetCardsSuccessEvent(cardResponse));
                                         } else {
                                             VeritransBusProvider.getInstance().post(new GetCardFailedEvent(
-                                                    cardResponse.getMessage(),
+                                                    cardResponse.getStatus(),
                                                     cardResponse
                                             ));
                                         }
@@ -1685,21 +1752,21 @@ class TransactionManager {
         }
     }
 
-    public static void deleteCard(CardTokenRequest creditCard) {
+    public static void deleteCard(SaveCardRequest creditCard) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
                 Observable<DeleteCardResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
+                String auth = veritransSDK.readAuthenticationToken();
+                Logger.i("Authentication token:" + auth);
+                if (auth != null) {
 
-                    observable = apiInterface.deleteCard(merchantToken,
+                    observable = apiInterface.deleteCard(auth,
                             creditCard);
 
                     deleteCardSubscription = observable.subscribeOn(Schedulers
@@ -1768,13 +1835,13 @@ class TransactionManager {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            VeritranceApiInterface apiInterface =
+            PaymentAPI apiInterface =
                     VeritransRestAdapter.getMerchantApiClient(true);
 
             if (apiInterface != null) {
 
                 Observable<GetOffersResponseModel> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -1838,6 +1905,49 @@ class TransactionManager {
                 releaseResources();
             }
 
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED));
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
+        }
+    }
+
+    public static void getAuthenticationToken() {
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+
+        if (veritransSDK != null) {
+            PaymentAPI paymentAPI = VeritransRestAdapter.getMerchantApiClient(true);
+            if (paymentAPI != null) {
+                Observable<AuthModel> observable = paymentAPI.getAuthenticationToken();
+                subscription = observable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<AuthModel>() {
+                            @Override
+                            public void onCompleted() {
+                                if (subscription != null && !subscription.isUnsubscribed()) {
+                                    subscription.unsubscribe();
+                                }
+
+                                releaseResources();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                releaseResources();
+                            }
+
+                            @Override
+                            public void onNext(AuthModel authModel) {
+                                releaseResources();
+                                VeritransBusProvider.getInstance().post(new AuthenticationEvent(authModel));
+                            }
+                        });
+            } else {
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect)));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
+                releaseResources();
+            }
         } else {
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED));
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);

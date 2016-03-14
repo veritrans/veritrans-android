@@ -1,12 +1,12 @@
 package id.co.veritrans.sdk.eventbus.events;
 
-import id.co.veritrans.sdk.models.CardResponse;
+import id.co.veritrans.sdk.models.SaveCardResponse;
 
 /**
  * @author rakawm
  */
-public class SaveCardSuccessEvent extends BaseSuccessEvent<CardResponse> {
-    public SaveCardSuccessEvent(CardResponse response) {
+public class SaveCardSuccessEvent extends BaseSuccessEvent<SaveCardResponse> {
+    public SaveCardSuccessEvent(SaveCardResponse response) {
         super(response);
     }
 }

@@ -79,4 +79,6 @@ public class Constants {
     public static final long CARD_ANIMATION_TIME = 300;
     public static final int FAB_HEIGHT_DP = 56;
     public static final long FADE_IN_FORM_TIME = 300;
+
+    public static final String AUTH_TOKEN = "authentication.token";
 }

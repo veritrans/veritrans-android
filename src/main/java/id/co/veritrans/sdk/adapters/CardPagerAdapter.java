@@ -8,17 +8,18 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.fragments.CardDetailFragment;
-import id.co.veritrans.sdk.models.CardTokenRequest;
+import id.co.veritrans.sdk.models.SaveCardRequest;
 
 /**
  * Created by chetan on 27/10/15.
  */
 public class CardPagerAdapter extends FragmentPagerAdapter {
-    private ArrayList<CardTokenRequest> cardDetails;
+    private ArrayList<SaveCardRequest> cardDetails;
     private Fragment parentFragment;
     private long baseId = 0;
     private Activity activity;
-    public CardPagerAdapter(Fragment fragment, FragmentManager fm, ArrayList<CardTokenRequest>
+
+    public CardPagerAdapter(Fragment fragment, FragmentManager fm, ArrayList<SaveCardRequest>
             cardDetails, Activity activity) {
         super(fm);
         this.cardDetails = cardDetails;

@@ -1,8 +1,8 @@
 package id.co.veritrans.sdk.core;
 
-import com.google.gson.Gson;
-
 import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
 
 /**
  * @author rakawm
@@ -17,6 +17,27 @@ public class LocalDataHandler {
     private static <T> T convertBackToObject(String json, Class<T> classType) {
         Gson gson = new Gson();
         return gson.fromJson(json, classType);
+    }
+
+    /**
+     * Save specified string into shared preferences.
+     * @param key   file name.
+     * @param value string to store.
+     */
+    public static void saveString(String key, String value) {
+        SharedPreferences preferences = VeritransSDK.getmPreferences();
+        preferences.edit().putString(key, value).apply();
+    }
+
+    /**
+     * Get specified string object from shared preferences.
+     *
+     * @param key file name.
+     * @return string value.
+     */
+    public static String readString(String key) {
+        SharedPreferences preferences = VeritransSDK.getmPreferences();
+        return preferences.getString(key, "");
     }
 
     /**
