@@ -406,7 +406,7 @@ class TransactionManager {
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingPermataBank(merchantToken,
