@@ -1,14 +1,12 @@
 package id.co.veritrans.sdk.models;
 
-import java.util.ArrayList;
-
 /**
- * Created by chetan on 04/12/15.
+ * @author rakawm
  */
-public class CardResponse {
+public class SaveCardResponse {
     private String status;
     private int code;
-    private ArrayList<SaveCardRequest> data;
+    private String message;
 
     public String getStatus() {
         return status;
@@ -26,11 +24,11 @@ public class CardResponse {
         this.code = code;
     }
 
-    public ArrayList<SaveCardRequest> getData() {
-        return data;
+    public String getMessage() {
+        return message;
     }
 
-    public void setData(ArrayList<SaveCardRequest> data) {
-        this.data = data;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

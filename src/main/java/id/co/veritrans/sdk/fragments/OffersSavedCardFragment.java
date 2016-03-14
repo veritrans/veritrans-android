@@ -32,7 +32,6 @@ import id.co.veritrans.sdk.eventbus.events.DeleteCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.DeleteCardSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.models.SaveCardRequest;
@@ -57,7 +56,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
     private VeritransSDK veritransSDK;
-    private ArrayList<CardTokenRequest> creditCards;
+    private ArrayList<SaveCardRequest> creditCards;
     private CardPagerAdapter cardPagerAdapter;
     private TextViewFont emptyCardsTextViewFont;
     private boolean isInstalment = false;
@@ -301,9 +300,9 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
         }
     }
 
-    public void deleteCreditCard(String cardNumber) {
+    public void deleteCreditCard(String tokenId) {
         showHideNoCardMessage();
-        deleteCards(cardNumber);
+        deleteCards(tokenId);
 
     }
 
@@ -329,19 +328,19 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
         return isInstalmentValue;
     }
 
-    public void deleteCards(final String cardNumber) {
+    public void deleteCards(final String tokenId) {
         this.cardNumber = cardNumber;
-        CardTokenRequest creditCard = null;
+        SaveCardRequest creditCard = null;
         Logger.i("cardNumber:" + cardNumber);
         if (creditCards != null && !creditCards.isEmpty()) {
 
             for (int i = 0; i < creditCards.size(); i++) {
-                if (creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)) {
+                if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(tokenId)) {
                     creditCard = creditCards.get(i);
                 }
             }
             try {
-                Logger.i("position to delete:" + creditCard.getCardNumber() + ",creditCard size:" + creditCards.size());
+                Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
@@ -478,7 +477,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
         }
         int position = -1;
         for (int i = 0; i < creditCards.size(); i++) {
-            if (creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)) {
+            if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
                 position = i;
             }
         }
@@ -486,7 +485,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             Logger.i("position to delete:" + position + "," + creditCards.size());
             if (!creditCards.isEmpty()) {
                 for (int i = 0; i < creditCards.size(); i++) {
-                    Logger.i("cards before:" + creditCards.get(i).getCardNumber());
+                    Logger.i("cards before:" + creditCards.get(i).getSavedTokenId());
                 }
             }
 
@@ -496,7 +495,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             if (!creditCards.isEmpty()) {
                 for (int i = 0; i < creditCards.size(); i++) {
 
-                    Logger.i("cards after:" + creditCards.get(i).getCardNumber());
+                    Logger.i("cards after:" + creditCards.get(i).getSavedTokenId());
                 }
             }
 

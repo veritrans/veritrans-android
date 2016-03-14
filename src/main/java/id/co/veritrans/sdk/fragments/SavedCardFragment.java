@@ -31,7 +31,6 @@ import id.co.veritrans.sdk.eventbus.events.DeleteCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.DeleteCardSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
@@ -42,7 +41,7 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
     private VeritransSDK veritransSDK;
-    private ArrayList<CardTokenRequest> creditCards;
+    private ArrayList<SaveCardRequest> creditCards;
     private CardPagerAdapter cardPagerAdapter;
 
     private TextViewFont emptyCardsTextViewFont;
@@ -195,19 +194,19 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
 
     }
 
-    public void deleteCards(final String cardNumber) {
-        CardTokenRequest creditCard = null;
-        this.cardNumber = cardNumber;
+    public void deleteCards(final String tokenId) {
+        SaveCardRequest creditCard = null;
+        this.cardNumber = tokenId;
         Logger.i("cardNumber:" + cardNumber);
         if (creditCards != null && !creditCards.isEmpty()) {
 
             for (int i = 0; i < creditCards.size(); i++) {
-                if (creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)) {
+                if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(tokenId)) {
                     creditCard = creditCards.get(i);
                 }
             }
             try {
-                Logger.i("position to delete:" + creditCard.getCardNumber() + ",creditCard size:" + creditCards.size());
+                Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
@@ -326,7 +325,7 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
         }
         int position = -1;
         for (int i = 0; i < creditCards.size(); i++) {
-            if (creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)) {
+            if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
                 position = i;
             }
         }
@@ -334,7 +333,7 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
             Logger.i("position to delete:" + position + "," + creditCards.size());
             if (!creditCards.isEmpty()) {
                 for (int i = 0; i < creditCards.size(); i++) {
-                    Logger.i("cards before:" + creditCards.get(i).getCardNumber());
+                    Logger.i("cards before:" + creditCards.get(i).getSavedTokenId());
                 }
             }
 
@@ -343,7 +342,7 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
             if (!creditCards.isEmpty()) {
                 for (int i = 0; i < creditCards.size(); i++) {
 
-                    Logger.i("cards after:" + creditCards.get(i).getCardNumber());
+                    Logger.i("cards after:" + creditCards.get(i).getSavedTokenId());
                 }
             }
 

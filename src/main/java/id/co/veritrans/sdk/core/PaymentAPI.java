@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.core;
 
+import id.co.veritrans.sdk.models.AuthModel;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BCABankTransfer;
 import id.co.veritrans.sdk.models.BCAKlikPayModel;
@@ -18,6 +19,7 @@ import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.RegisterCardResponse;
 import id.co.veritrans.sdk.models.SaveCardRequest;
+import id.co.veritrans.sdk.models.SaveCardResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionCancelResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
@@ -185,8 +187,8 @@ public interface PaymentAPI {
     //save cards or get cards
     @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/card/")
-    Observable<CardResponse> saveCard(@Header("x-auth") String auth,
+    @POST("/card/register")
+    Observable<SaveCardResponse> saveCard(@Header("x-auth") String auth,
                                       @Body SaveCardRequest cardTokenRequest);
 
     //save cards or get cards
@@ -284,6 +286,7 @@ public interface PaymentAPI {
      *
      * @return observable of token
      */
+    @Headers({"Content-Type: application/json", "x-auth: da53847171259b511488cf366e701050"})
     @GET("/card/register")
     Observable<CardRegistrationResponse> registerCard(
             @Query("card_number") String cardNumber,
@@ -292,4 +295,12 @@ public interface PaymentAPI {
             @Query("card_exp_year") int cardExpiryYear,
             @Query("client_key") String clientKey
     );
+
+    /**
+     * Get authentication token.
+     *
+     * @return authentication token.
+     */
+    @POST("/auth")
+    Observable<AuthModel> getAuthenticationToken();
 }

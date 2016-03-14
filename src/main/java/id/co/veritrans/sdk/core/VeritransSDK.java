@@ -173,6 +173,10 @@ public class VeritransSDK {
         //return serverKey;
     }
 
+    public String readAuthenticationToken() {
+        return LocalDataHandler.readString(Constants.AUTH_TOKEN);
+    }
+
     public String getClientKey() {
         return clientKey;
     }
@@ -629,5 +633,12 @@ public class VeritransSDK {
      */
     public void getOffersList() {
         TransactionManager.getOffers();
+    }
+
+    /**
+     * It will run background task to get authentication token.
+     */
+    public void getAuthenticationToken() {
+        TransactionManager.getAuthenticationToken();
     }
 }
