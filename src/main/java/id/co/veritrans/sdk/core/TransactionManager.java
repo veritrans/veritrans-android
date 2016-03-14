@@ -132,7 +132,7 @@ class TransactionManager {
                                     final String userId) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        final String merchantToken = veritransSDK.getMerchantToken();
+        final String merchantToken = veritransSDK.readAuthenticationToken();
 
         if (veritransSDK != null && merchantToken != null) {
             PaymentAPI apiInterface =
@@ -406,7 +406,7 @@ class TransactionManager {
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingPermataBank(merchantToken,
@@ -503,7 +503,7 @@ class TransactionManager {
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingBCAVA(merchantToken,
@@ -601,7 +601,7 @@ class TransactionManager {
                 Observable<TransactionResponse> observable = null;
 
                 //String serverKey = Utils.calculateBase64(veritransSDK.getMerchantToken());
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -688,7 +688,7 @@ class TransactionManager {
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingMandiriClickPay(merchantToken,
@@ -783,7 +783,7 @@ class TransactionManager {
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingBCAKlikPay(merchantToken,
@@ -882,7 +882,7 @@ class TransactionManager {
 
                 Observable<TransactionResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -969,7 +969,7 @@ class TransactionManager {
                     VeritransRestAdapter.getMerchantApiClient(true);
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -1043,7 +1043,7 @@ class TransactionManager {
                     VeritransRestAdapter.getMerchantApiClient(true);
             if (apiInterface != null) {
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingMandiriECash(merchantToken,
@@ -1121,7 +1121,7 @@ class TransactionManager {
 
                 Observable<TransactionResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingEpayBri(merchantToken,
@@ -1210,7 +1210,7 @@ class TransactionManager {
 
                 Observable<TransactionStatusResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     observable = apiInterface.transactionStatus(merchantToken,
@@ -1289,7 +1289,7 @@ class TransactionManager {
 
                 Observable<TransactionResponse> observable = null;
 
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -1380,7 +1380,7 @@ class TransactionManager {
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -1470,7 +1470,7 @@ class TransactionManager {
             if (apiInterface != null) {
 
                 Observable<TransactionResponse> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
@@ -1841,7 +1841,7 @@ class TransactionManager {
             if (apiInterface != null) {
 
                 Observable<GetOffersResponseModel> observable = null;
-                String merchantToken = veritransSDK.getMerchantToken();
+                String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
 
