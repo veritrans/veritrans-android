@@ -255,6 +255,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
                     !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
                 cardPaymentDetails = new CardPaymentDetails("",
                         cardTokenRequest.getSavedTokenId(), true);
+                cardPaymentDetails.setRecurring(true);
             } else if (tokenDetailsResponse != null) {
                 Logger.i("tokenDetailsResponse.getTokenId():" + tokenDetailsResponse.getTokenId());
                 cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),

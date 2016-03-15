@@ -1595,7 +1595,7 @@ class TransactionManager {
                                     releaseResources();
                                     if (cardResponse != null) {
 
-                                        if (cardResponse.getCode() == 200) {
+                                        if (cardResponse.getCode() == 200 || cardResponse.getCode() == 201) {
 
                                             VeritransBusProvider.getInstance().post(new SaveCardSuccessEvent(cardResponse));
                                         } else {

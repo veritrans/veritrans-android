@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
@@ -464,6 +465,15 @@ public class VeritransSDK {
         Logger.e(context.getString(R.string.error_invalid_data_supplied));
     }
 
+    /**
+     * This will start actual execution of save card UI flow.
+     *
+     * @param activity current activity.
+     */
+    public void startRegisterCardUIFlow(Activity activity) {
+        Intent intent = new Intent(activity, SaveCreditCardActivity.class);
+        activity.startActivity(intent);
+    }
     /**
      * This will start actual execution of transaction. if you have enabled an ui then it will
      * start activity according to it.
