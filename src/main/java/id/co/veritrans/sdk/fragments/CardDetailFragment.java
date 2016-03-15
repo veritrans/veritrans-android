@@ -1,7 +1,6 @@
 package id.co.veritrans.sdk.fragments;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -25,6 +24,7 @@ import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.CardTokenRequest;
+import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.utilities.FlipAnimation;
 import id.co.veritrans.sdk.widgets.TextViewFont;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
@@ -32,7 +32,7 @@ import id.co.veritrans.sdk.widgets.VeritransDialog;
 public class CardDetailFragment extends Fragment {
 
     private static final String ARG_PARAM = "card_detail";
-    private CardTokenRequest cardDetail;
+    private SaveCardRequest cardDetail;
     private RelativeLayout rootLayout;
     private RelativeLayout cardContainerBack;
     private RelativeLayout cardContainerFront;
@@ -55,7 +55,7 @@ public class CardDetailFragment extends Fragment {
 
     }
 
-    public static CardDetailFragment newInstance(CardTokenRequest cardDetails, Fragment
+    public static CardDetailFragment newInstance(SaveCardRequest cardDetails, Fragment
             parentFragment, Activity activity) {
         CardDetailFragment fragment = new CardDetailFragment();
         fragment.parentFragment = parentFragment;
@@ -71,6 +71,7 @@ public class CardDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         veritransSDK = VeritransSDK.getVeritransSDK();
         if (getArguments() != null) {
+<<<<<<< HEAD
             cardDetail = (CardTokenRequest) getArguments().getSerializable(ARG_PARAM);
             if (cardDetail != null && veritransSDK != null) {
                 if (veritransSDK.getTransactionRequest() != null) {
@@ -81,6 +82,12 @@ public class CardDetailFragment extends Fragment {
                 Logger.e("Veritrans SDK is not started");
             }
         }
+=======
+            cardDetail = (SaveCardRequest) getArguments().getSerializable(ARG_PARAM);
+            Logger.i("cardDetail:" + cardDetail.getMaskedCard());
+        }
+
+>>>>>>> feature/ui-register-card
     }
 
 
@@ -182,19 +189,8 @@ public class CardDetailFragment extends Fragment {
 
             }
         });*/
-        bankNameTv.setText(cardDetail.getBank());
-        cardNoTv.setText(cardDetail.getFormatedCardNumber());
-        expTv.setText(cardDetail.getFormatedExpiryDate());
-        final String cardType = cardDetail.getCardType();
-        if (!TextUtils.isEmpty(cardType)) {
-            if (cardType.equalsIgnoreCase(getString(R.string.visa))) {
-                Drawable visa = getResources().getDrawable(R.drawable.visa);
-                cardNoTv.setCompoundDrawablesWithIntrinsicBounds(null, null, visa, null);
-            } else if (cardType.equalsIgnoreCase(getString(R.string.mastercard))) {
-                Drawable masterCard = getResources().getDrawable(R.drawable.mastercard);
-                cardNoTv.setCompoundDrawablesWithIntrinsicBounds(null, null, masterCard, null);
-            }
-        }
+        cardNoTv.setText(cardDetail.getMaskedCard().replace("-", "XXXXXX"));
+
         payNowBt = (Button) view.findViewById(R.id.btn_pay_now);
         payNowBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,7 +228,7 @@ public class CardDetailFragment extends Fragment {
         deleteIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.i("Card to delete:" + cardDetail.getCardNumber());
+                Logger.i("Card to delete:" + cardDetail.getMaskedCard());
                 VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getString(R.string.delete)
                         , getString(R.string.card_delete_message), getString(android.R.string.yes),
                         getString(android.R.string.no));
@@ -241,10 +237,9 @@ public class CardDetailFragment extends Fragment {
                     public void onClick(View v) {
                         if (parentFragment != null && parentFragment instanceof SavedCardFragment) {
 
-                            ((SavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getCardNumber());
+                            ((SavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getSavedTokenId());
                         } else if (parentFragment != null && parentFragment instanceof OffersSavedCardFragment) {
-                            ((OffersSavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getCardNumber
-                                    ());
+                            ((OffersSavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getSavedTokenId());
                         }
                     }
                 };
@@ -266,53 +261,50 @@ public class CardDetailFragment extends Fragment {
     }
 
     private void cardTransactionProcess(String cvv) {
-        Logger.i("Card to delete:" + cardDetail.getCardNumber());
+        Logger.i("Card to delete:" + cardDetail.getMaskedCard());
 
         if (activity != null) {
             if (activity instanceof OffersActivity) {
                 if (((OffersActivity) getActivity()).getSelectedOffer() != null) {
-                    cardDetail.setBins(((OffersActivity) getActivity()).getSelectedOffer().getBins());
                     if (parentFragment != null && parentFragment instanceof OffersSavedCardFragment) {
-                        if (((OffersSavedCardFragment) parentFragment).isInstalment()) {
-                            cardDetail.setInstalmentTerm(((OffersSavedCardFragment) parentFragment).gettingInstalmentTerm());
-                            cardDetail.setInstalment(((OffersSavedCardFragment) parentFragment).isInstalment());
-                        }
+
                     }
                 }
             }
         }
 
-        try {
-            cardDetail.setCardCVV(Integer.parseInt(cvv));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        cardDetail.setClientKey(veritransSDK.getClientKey());
         if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
 
             if (activity != null) {
+                CardTokenRequest request = new CardTokenRequest();
+                request.setSavedTokenId(cardDetail.getSavedTokenId());
                 if (activity instanceof CreditDebitCardFlowActivity) {
-                    ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(cardDetail);
+                    ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(request);
                 } else if (activity instanceof OffersActivity) {
-                    ((OffersActivity) getActivity()).oneClickPayment(cardDetail);
+                    ((OffersActivity) getActivity()).oneClickPayment(request);
                 }
             }
         } else if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
                 (getString(R.string.card_click_type_two_click))) {
 
             if (activity != null) {
+                CardTokenRequest request = new CardTokenRequest();
+                request.setSavedTokenId(cardDetail.getSavedTokenId());
+                request.setCardCVV(Integer.parseInt(cvv));
                 if (activity instanceof CreditDebitCardFlowActivity) {
-                    ((CreditDebitCardFlowActivity) getActivity()).twoClickPayment(cardDetail);
+                    ((CreditDebitCardFlowActivity) getActivity()).twoClickPayment(request);
                 } else if (activity instanceof OffersActivity) {
-                    ((OffersActivity) getActivity()).twoClickPayment(cardDetail);
+                    ((OffersActivity) getActivity()).twoClickPayment(request);
                 }
             }
         } else {
             if (activity != null) {
+                CardTokenRequest request = new CardTokenRequest();
+                request.setSavedTokenId(cardDetail.getSavedTokenId());
                 if (activity instanceof CreditDebitCardFlowActivity) {
-                    ((CreditDebitCardFlowActivity) getActivity()).getToken(cardDetail);
+                    ((CreditDebitCardFlowActivity) getActivity()).getToken(request);
                 } else if (activity instanceof OffersActivity) {
-                    ((OffersActivity) getActivity()).getToken(cardDetail);
+                    ((OffersActivity) getActivity()).getToken(request);
                 }
             }
         }

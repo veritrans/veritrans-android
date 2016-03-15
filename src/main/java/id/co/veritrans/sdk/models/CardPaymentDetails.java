@@ -19,6 +19,7 @@ public class CardPaymentDetails {
     private String tokenId;
     @SerializedName("save_token_id")
     private boolean saveTokenId;
+    private boolean recurring;
 
     @SerializedName("installment_term")
     private String instalmentTerm;
@@ -63,12 +64,12 @@ public class CardPaymentDetails {
         return saveTokenId;
     }
 
-    public void setSaveTokenId(boolean saveTokenId) {
-        this.saveTokenId = saveTokenId;
-    }
-
     public boolean isSaveTokenId() {
         return saveTokenId;
+    }
+
+    public void setSaveTokenId(boolean saveTokenId) {
+        this.saveTokenId = saveTokenId;
     }
 
     public String getInstalmentTerm() {
@@ -85,5 +86,13 @@ public class CardPaymentDetails {
 
     public void setBinsArray(ArrayList<String> binsArray) {
         this.binsArray = binsArray;
+    }
+
+    public boolean isRecurring() {
+        return recurring;
+    }
+
+    public void setRecurring(boolean recurring) {
+        this.recurring = recurring;
     }
 }

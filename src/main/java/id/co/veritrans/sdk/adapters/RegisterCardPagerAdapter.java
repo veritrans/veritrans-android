@@ -7,19 +7,23 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.fragments.CardDetailFragment;
+import id.co.veritrans.sdk.fragments.RegisterCardDetailsFragment;
 import id.co.veritrans.sdk.models.SaveCardRequest;
 
 /**
- * Created by chetan on 27/10/15.
+ * @author rakawm
  */
-public class CardPagerAdapter extends FragmentPagerAdapter {
+public class RegisterCardPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<SaveCardRequest> cardDetails;
     private Fragment parentFragment;
     private long baseId = 0;
     private Activity activity;
 
-    public CardPagerAdapter(Fragment fragment, FragmentManager fm, ArrayList<SaveCardRequest>
+    public RegisterCardPagerAdapter(FragmentManager fm) {
+        super(fm);
+    }
+
+    public RegisterCardPagerAdapter(Fragment fragment, FragmentManager fm, ArrayList<SaveCardRequest>
             cardDetails, Activity activity) {
         super(fm);
         this.cardDetails = cardDetails;
@@ -29,7 +33,7 @@ public class CardPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return CardDetailFragment.newInstance(cardDetails.get(position),parentFragment, activity);
+        return RegisterCardDetailsFragment.newInstance(cardDetails.get(position), parentFragment, activity);
     }
 
     @Override
@@ -59,6 +63,7 @@ public class CardPagerAdapter extends FragmentPagerAdapter {
     /**
      * Notify that the position of a fragment has been changed.
      * Create a new ID for each position to force recreation of the fragment
+     *
      * @param n number of items which have been changed
      */
     public void notifyChangeInPosition(int n) {
