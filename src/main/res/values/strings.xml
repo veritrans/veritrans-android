@@ -10,6 +10,7 @@
     <string name="validation_email_invalid">Please enter valid email</string>
     <string name="validation_phone_no_empty">Please enter phone number.</string>
     <string name="validation_phone_no_invalid">Please enter valid phone number</string>
+    <string name="my_credit_card">My Credit Card</string>
 
     <string name="description_btn_bbm">BBM Button</string>
     <string name="description_mandiri_token_instruction">Mandiri Token Instruction</string>
@@ -299,7 +300,8 @@
     <string name="bill_code">Billpay Code</string>
     <string name="processing_payment">Processing Payment</string>
     <string name="fetching_offers">Fetching Offers</string>
-
+    <string name="no_card_yet">No Card Yet</string>
+    <string name="save_time_save_credit">Save your time by adding credit card that can be used for every transaction</string>
 
     <string name="credit_card">Credit/Debit Card</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>

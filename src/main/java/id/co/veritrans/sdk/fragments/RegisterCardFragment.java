@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.fragments;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -155,12 +156,7 @@ public class RegisterCardFragment extends Fragment {
                 isValid(false);
             }
         });
-        if (veritransSDK.isLogEnabled()) {
-            /*etExpiryDate.setText("12/20");
-            etCardNo.setText("4811 1111 1111 1114");
-            // etCardHolderName.setText("Chetan");
-            etCvv.setText("123");*/
-        }
+
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -346,7 +342,7 @@ public class RegisterCardFragment extends Fragment {
                 etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
             }
             return false;
-        } else if (expDateArray != null && expDateArray.length == 2) {
+        } else if (expDateArray != null) {
             try {
                 expMonth = Integer.parseInt(expDateArray[0]);
             } catch (NumberFormatException e) {
@@ -379,7 +375,7 @@ public class RegisterCardFragment extends Fragment {
             }
             Calendar calendar = Calendar.getInstance();
             Date date = calendar.getTime();
-            SimpleDateFormat format = new SimpleDateFormat("yy");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yy");
             String year = format.format(date);
 
             int currentMonth = calendar.get(Calendar.MONTH) + 1;

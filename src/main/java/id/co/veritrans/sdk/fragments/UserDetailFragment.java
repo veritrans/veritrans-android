@@ -47,8 +47,10 @@ public class UserDetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        ((UserDetailsActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string
-                .title_user_details));
+        UserDetailsActivity userDetailsActivity = (UserDetailsActivity) getActivity();
+        if (userDetailsActivity != null && userDetailsActivity.getSupportActionBar() != null) {
+            userDetailsActivity.getSupportActionBar().setTitle(getString(R.string.title_user_details));
+        }
         fullnameEt = (EditText) view.findViewById(R.id.et_full_name);
         phoneEt = (EditText) view.findViewById(R.id.et_phone);
         emailEt = (EditText) view.findViewById(R.id.et_email);

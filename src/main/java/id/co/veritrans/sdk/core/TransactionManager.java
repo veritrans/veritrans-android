@@ -132,14 +132,9 @@ class TransactionManager {
                                     final String userId) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-<<<<<<< HEAD
-=======
-        final String merchantToken = veritransSDK.readAuthenticationToken();
->>>>>>> feature/ui-register-card
-
 
         if (veritransSDK != null) {
-            final String merchantToken = veritransSDK.getMerchantToken();
+            final String merchantToken = veritransSDK.readAuthenticationToken();
             PaymentAPI apiInterface =
                     VeritransRestAdapter.getApiClient(true);
 
@@ -824,7 +819,7 @@ class TransactionManager {
 
                                     if (bcaKlikPayResponse != null) {
 
-                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        if (veritransSDK.isLogEnabled()) {
                                             displayResponse(bcaKlikPayResponse);
                                         }
 
@@ -1077,7 +1072,7 @@ class TransactionManager {
                                     releaseResources();
 
                                     if (transferResponse != null) {
-                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        if (veritransSDK.isLogEnabled()) {
                                             displayResponse(transferResponse);
                                         }
                                         if (transferResponse.getStatusCode().trim()
@@ -1331,7 +1326,7 @@ class TransactionManager {
 
                                     if (permataBankTransferResponse != null) {
 
-                                        if (veritransSDK != null && veritransSDK.isLogEnabled()) {
+                                        if (veritransSDK.isLogEnabled()) {
                                             displayResponse(permataBankTransferResponse);
                                         }
 
@@ -1599,13 +1594,7 @@ class TransactionManager {
 
                                     releaseResources();
                                     if (cardResponse != null) {
-
-<<<<<<< HEAD
-                                        if (cardResponse.getMessage().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success))) {
-=======
                                         if (cardResponse.getCode() == 200 || cardResponse.getCode() == 201) {
->>>>>>> feature/ui-register-card
-
                                             VeritransBusProvider.getInstance().post(new SaveCardSuccessEvent(cardResponse));
                                         } else {
                                             VeritransBusProvider.getInstance().post(new SaveCardFailedEvent(
@@ -1684,11 +1673,7 @@ class TransactionManager {
                                     releaseResources();
                                     if (cardResponse != null) {
 
-<<<<<<< HEAD
-                                        if (cardResponse.getMessage().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success))) {
-=======
                                         if (cardResponse.getCode() == 200) {
->>>>>>> feature/ui-register-card
                                             VeritransBusProvider.getInstance().post(new GetCardsSuccessEvent(cardResponse));
                                         } else {
                                             VeritransBusProvider.getInstance().post(new GetCardFailedEvent(

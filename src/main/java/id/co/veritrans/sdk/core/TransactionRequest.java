@@ -110,11 +110,15 @@ public class TransactionRequest {
     }
 
     public void setCustomerDetails(CustomerDetails customerDetails) {
-        if (!VeritransSDK.getVeritransSDK().isRunning()) {
-            mCustomerDetails = customerDetails;
-        } else {
-            Logger.e(ERROR_MESSAGE);
-        }
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            if (!veritransSDK.isRunning()) {
+                mCustomerDetails = customerDetails;
+            } else {
+                Logger.e(ERROR_MESSAGE);
+            }
+        } else Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+
     }
 
     public ArrayList<BillingAddress> getBillingAddressArrayList() {
@@ -122,11 +126,14 @@ public class TransactionRequest {
     }
 
     public void setBillingAddressArrayList(ArrayList<BillingAddress> billingAddressArrayList) {
-        if (!VeritransSDK.getVeritransSDK().isRunning()) {
-            mBillingAddressArrayList = billingAddressArrayList;
-        } else {
-            Logger.e(ERROR_MESSAGE);
-        }
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            if (!veritransSDK.isRunning()) {
+                mBillingAddressArrayList = billingAddressArrayList;
+            } else {
+                Logger.e(ERROR_MESSAGE);
+            }
+        } else Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
     }
 
     public ArrayList<ShippingAddress> getShippingAddressArrayList() {
@@ -134,11 +141,14 @@ public class TransactionRequest {
     }
 
     public void setShippingAddressArrayList(ArrayList<ShippingAddress> shippingAddressArrayList) {
-        if (!VeritransSDK.getVeritransSDK().isRunning()) {
-            mShippingAddressArrayList = shippingAddressArrayList;
-        } else {
-            Logger.e(ERROR_MESSAGE);
-        }
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            if (!veritransSDK.isRunning()) {
+                mShippingAddressArrayList = shippingAddressArrayList;
+            } else {
+                Logger.e(ERROR_MESSAGE);
+            }
+        } else Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
     }
 
     public String getOrderId() {
@@ -166,12 +176,14 @@ public class TransactionRequest {
     }
 
     public void setBillInfoModel(BillInfoModel billInfoModel) {
-
-        if (!VeritransSDK.getVeritransSDK().isRunning()) {
-            this.billInfoModel = billInfoModel;
-        } else {
-            Logger.e(ERROR_MESSAGE);
-        }
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            if (!veritransSDK.isRunning()) {
+                this.billInfoModel = billInfoModel;
+            } else {
+                Logger.e(ERROR_MESSAGE);
+            }
+        } else Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
     }
 
     public ArrayList<ItemDetails> getItemDetails() {
@@ -179,12 +191,14 @@ public class TransactionRequest {
     }
 
     public void setItemDetails(ArrayList<ItemDetails> itemDetails) {
-
-        if (!VeritransSDK.getVeritransSDK().isRunning()) {
-            this.itemDetails = itemDetails;
-        } else {
-            Logger.e(ERROR_MESSAGE);
-        }
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            if (!veritransSDK.isRunning()) {
+                this.itemDetails = itemDetails;
+            } else {
+                Logger.e(ERROR_MESSAGE);
+            }
+        } else Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
     }
 
     /**

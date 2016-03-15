@@ -40,8 +40,6 @@ public class NotificationActivity extends AppCompatActivity {
         if (transactionResponse != null) {
             paymentStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponse);
             replaceFragment(paymentStatusFragment, true, false);
-        } else {
-            //show error
         }
     }
 

@@ -110,6 +110,7 @@ public class IndomaretPaymentStatusFragment extends Fragment {
             mTextViewOrderId.setText(transactionResponse.getOrderId());
             mTextViewAmount.setText(transactionResponse.getGrossAmount());
 
+            //noinspection StatementWithEmptyBody
             if (transactionResponse.getTransactionStatus().contains("Pending") ||
                     transactionResponse.getTransactionStatus().contains("pending")) {
 

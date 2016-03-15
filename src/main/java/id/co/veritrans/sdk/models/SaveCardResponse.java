@@ -1,10 +1,14 @@
 package id.co.veritrans.sdk.models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * @author rakawm
  */
 public class SaveCardResponse {
+    @SerializedName("status_message")
     private String status;
+    @SerializedName("status_code")
     private int code;
     private String message;
 

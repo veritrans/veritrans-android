@@ -595,18 +595,20 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         if (tokenDetailsResponse != null) {
             Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
                     + veritransSDK.getTransactionRequest().isSecureCard());
-        }
-        if (veritransSDK.getTransactionRequest().isSecureCard()) {
-            SdkUtil.hideProgressDialog();
-            if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
-                Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
-                intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
-                startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+            if (veritransSDK.getTransactionRequest().isSecureCard()) {
+                SdkUtil.hideProgressDialog();
+                if (tokenDetailsResponse.getRedirectUrl() != null &&
+                        !tokenDetailsResponse.getRedirectUrl().equals("")) {
+                    Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
+                    intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
+                    startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                }
+            } else {
+                SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+                payUsingCard();
             }
-        } else {
-            SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-            payUsingCard();
         }
+
     }
 
     @Subscribe
@@ -757,7 +759,6 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
 
             }
 
-        } else {
         }
     }
 

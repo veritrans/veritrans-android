@@ -71,8 +71,6 @@ public class BBMMoneyPaymentFragment extends Fragment {
                 PERMATA_VA = transactionResponse.getPermataVANumber();
             }
 
-        } else {
-            //TODO..what to do here...
         }
     }
 }

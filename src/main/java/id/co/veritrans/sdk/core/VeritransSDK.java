@@ -492,9 +492,7 @@ public class VeritransSDK {
                         UserDetailsActivity.class);
                 activity.startActivity(userDetailsIntent);
 
-            } else {
-                // start specific activity depending  on payment type.
-            }
+            } 
 
         } else {
 

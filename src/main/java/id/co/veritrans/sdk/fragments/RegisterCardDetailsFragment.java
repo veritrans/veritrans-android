@@ -62,8 +62,8 @@ public class RegisterCardDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         veritransSDK = VeritransSDK.getVeritransSDK();
-        if (getArguments() != null) {
-            cardDetail = (SaveCardRequest) getArguments().getSerializable(ARG_PARAM);
+        cardDetail = (SaveCardRequest) getArguments().getSerializable(ARG_PARAM);
+        if (cardDetail != null) {
             Logger.i("cardDetail:" + cardDetail.getMaskedCard());
         }
 
@@ -190,7 +190,7 @@ public class RegisterCardDetailsFragment extends Fragment {
         imageQuestionmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image, null),
+                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
                 veritransDialog.show();
                 SdkUtil.hideKeyboard(getActivity()); // hide keyboard if visible.

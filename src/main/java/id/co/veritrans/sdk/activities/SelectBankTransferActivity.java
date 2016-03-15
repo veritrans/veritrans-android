@@ -56,16 +56,9 @@ public class SelectBankTransferActivity extends AppCompatActivity {
         TransactionRequest transactionRequest = null;
         if (mVeritransSDK != null) {
             transactionRequest = mVeritransSDK.getTransactionRequest();
-        }
-
-        UserDetail userDetail = null;
-        try {
-            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-            CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
-                    userDetail.getEmail(), userDetail.getPhoneNumber());
+            UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+            CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "", userDetail.getEmail(), userDetail.getPhoneNumber());
             transactionRequest.setCustomerDetails(customerDetails);
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
 
         setUpBankList();
@@ -144,8 +137,6 @@ public class SelectBankTransferActivity extends AppCompatActivity {
                 sendBroadcast(data);
                 setResult(RESULT_OK);
                 finish();
-            } else {
-                //transaction failed.
             }
 
         } else {

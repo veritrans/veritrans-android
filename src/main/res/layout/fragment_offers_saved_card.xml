@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@android:color/white"
               android:orientation="vertical"
@@ -35,7 +36,6 @@
                 android:id="@+id/saved_card_pager"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_weight="1"
                 />
         </RelativeLayout>
 
@@ -57,8 +57,6 @@
         android:id="@+id/layout_pay_with_instalments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/expiry_date_layout"
         android:layout_marginBottom="@dimen/eight_dp"
         android:layout_marginTop="@dimen/sixteen_dp"
         android:paddingLeft="@dimen/sixteen_dp"
@@ -75,7 +73,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/seventeen_sp"
             app:font="@string/font_open_sans_regular"
-            />
+            tools:ignore="RelativeOverlap" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -148,10 +146,10 @@
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@id/btn_add_card"
             android:layout_toStartOf="@id/btn_add_card"
+            android:contentDescription="@string/description_arrow"
             android:padding="@dimen/sixteen_dp"
             android:src="@drawable/curve_arrow"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <id.co.veritrans.sdk.widgets.TextViewFont
             android:id="@+id/text_card_number"

@@ -70,26 +70,11 @@ public class CardDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         veritransSDK = VeritransSDK.getVeritransSDK();
-        if (getArguments() != null) {
-<<<<<<< HEAD
-            cardDetail = (CardTokenRequest) getArguments().getSerializable(ARG_PARAM);
-            if (cardDetail != null && veritransSDK != null) {
-                if (veritransSDK.getTransactionRequest() != null) {
-                    cardDetail.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
-                    Logger.i("cardDetail:" + cardDetail.getString());
-                }
-            } else {
-                Logger.e("Veritrans SDK is not started");
-            }
-        }
-=======
-            cardDetail = (SaveCardRequest) getArguments().getSerializable(ARG_PARAM);
+        cardDetail = (SaveCardRequest) getArguments().getSerializable(ARG_PARAM);
+        if (cardDetail != null) {
             Logger.i("cardDetail:" + cardDetail.getMaskedCard());
         }
-
->>>>>>> feature/ui-register-card
     }
-
 
     @Override
     public void onPause() {
@@ -345,8 +330,6 @@ public class CardDetailFragment extends Fragment {
                 SdkUtil.showKeyboard(getActivity(), cvvEt);
             }*/
             SdkUtil.hideKeyboard(getActivity());
-        } else {
-            //SdkUtil.showKeyboard(getActivity(),cvvEt);
         }
         flipAnimation.setAnimationListener(new Animation.AnimationListener() {
                                                @Override

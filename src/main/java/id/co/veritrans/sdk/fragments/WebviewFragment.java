@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -59,6 +60,7 @@ public class WebviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @SuppressLint("AddJavascriptInterface")
     private void initwebview() {
         SdkUtil.showProgressDialog(getActivity(), true);
         webView.getSettings().setJavaScriptEnabled(true);

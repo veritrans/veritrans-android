@@ -16,6 +16,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -41,7 +42,6 @@ import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.eventbus.events.SaveCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
-import id.co.veritrans.sdk.fragments.RegisterCardFragment;
 import id.co.veritrans.sdk.fragments.RegisterSavedCardFragment;
 import id.co.veritrans.sdk.models.CardResponse;
 import id.co.veritrans.sdk.models.SaveCardRequest;
@@ -61,7 +61,7 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
     private String currentFragmentName;
     private float cardWidth;
     private FragmentManager fragmentManager;
-    private TextViewFont emptyCardsTextViewFont;
+    private LinearLayout emptyContainer;
     private TextViewFont titleHeaderTextViewFont;
     private int fabHeight;
     private MorphingButton btnMorph;
@@ -92,7 +92,7 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
         morphToCircle(0);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
         getCreditCards();
 
@@ -262,10 +262,10 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
 
     }
 
-    public void setAdapterViews(RegisterCardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, TextViewFont emptyCardsTextViewFont) {
+    public void setAdapterViews(RegisterCardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, LinearLayout emptyContainer) {
         this.pagerAdapter = cardPagerAdapter;
         this.circlePageIndicator = circlePageIndicator;
-        this.emptyCardsTextViewFont = emptyCardsTextViewFont;
+        this.emptyContainer = emptyContainer;
     }
 
     public int dimen(@DimenRes int resId) {
@@ -312,7 +312,7 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
             }
         }, 200);
         Logger.i("cards api successful" + cardResponse);
-        if (cardResponse != null && !cardResponse.getData().isEmpty()) {
+        if (cardResponse != null) {
 
             creditCards.clear();
             creditCards.addAll(cardResponse.getData());
@@ -321,11 +321,11 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
                 circlePageIndicator.notifyDataSetChanged();
             }
             //processingLayout.setVisibility(View.GONE);
-            if (emptyCardsTextViewFont != null) {
+            if (emptyContainer != null) {
                 if (!creditCards.isEmpty()) {
-                    emptyCardsTextViewFont.setVisibility(View.GONE);
+                    emptyContainer.setVisibility(View.GONE);
                 } else {
-                    emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+                    emptyContainer.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -333,12 +333,6 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
             titleHeaderTextViewFont.setText(getString(R.string.saved_card));
             replaceFragment(savedCardFragment, true, false);
 
-        } else {
-            RegisterCardFragment addCardDetailsFragment = RegisterCardFragment
-                    .newInstance();
-            replaceFragment(addCardDetailsFragment, true, false);
-            //getSupportActionBar().setTitle(getString(R.string.card_details));
-            titleHeaderTextViewFont.setText(getString(R.string.card_details));
         }
     }
 

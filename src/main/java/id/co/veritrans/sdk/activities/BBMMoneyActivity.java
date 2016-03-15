@@ -173,10 +173,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
 
                     appBarLayout.setExpanded(true);
 
-                    if (transactionResponse != null) {
-//                        setUpTransactionStatusFragment(transactionResponse);
-
-                    } else {
+                    if (transactionResponse == null) {
                         RESULT_CODE = RESULT_OK;
                         SdkUtil.showSnackbar(BBMMoneyActivity.this, SOMETHING_WENT_WRONG);
                         onBackPressed();
@@ -211,8 +208,6 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
                 } else {
                     instructionBBMMoneyFragment.openPlayStore();
                 }
-            } else {
-
             }
         }
     }

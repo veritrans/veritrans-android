@@ -329,7 +329,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
     }
 
     public void deleteCards(final String tokenId) {
-        this.cardNumber = cardNumber;
+        this.cardNumber = tokenId;
         SaveCardRequest creditCard = null;
         Logger.i("cardNumber:" + cardNumber);
         if (creditCards != null && !creditCards.isEmpty()) {
@@ -339,19 +339,9 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                     creditCard = creditCards.get(i);
                 }
             }
-            try {
-<<<<<<< HEAD
-                if (creditCard != null) {
-                    Logger.i("position to delete:" + creditCard.getCardNumber() + ",creditCard size:" + creditCards.size());
-                }
-=======
-                Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
->>>>>>> feature/ui-register-card
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
         }
         if (creditCard != null) {
+            Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
             SaveCardRequest saveCardRequest = new SaveCardRequest();
             saveCardRequest.setSavedTokenId(creditCard.getSavedTokenId());
             veritransSDK.deleteCard(saveCardRequest);

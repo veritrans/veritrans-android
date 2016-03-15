@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/til_card_no"
                 android:layout_marginTop="@dimen/eight_dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/eight_dp"
                 android:weightSum="1">
@@ -93,7 +94,6 @@
                             android:hint="@string/hint_cvv"
                             android:inputType="numberPassword"
                             android:maxLength="6"
-                            android:paddingRight="32dp"
                             android:singleLine="true" />
 
                     </android.support.design.widget.TextInputLayout>

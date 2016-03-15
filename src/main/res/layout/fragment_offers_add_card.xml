@@ -1,5 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -102,6 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/til_card_no"
                     android:layout_marginTop="@dimen/sixteen_dp"
+                    android:baselineAligned="false"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/eight_dp"
                     android:weightSum="1">
@@ -140,8 +142,6 @@
                                 android:hint="@string/hint_cvv"
                                 android:inputType="numberPassword"
                                 android:maxLength="6"
-                                android:paddingEnd="32dp"
-                                android:paddingRight="32dp"
                                 android:singleLine="true" />
 
                         </android.support.design.widget.TextInputLayout>
@@ -178,7 +178,8 @@
                         android:text="@string/pay_with_instalments"
                         android:textColor="@color/black"
                         android:textSize="@dimen/seventeen_sp"
-                        app:font="@string/font_open_sans_regular" />
+                        app:font="@string/font_open_sans_regular"
+                        tools:ignore="RelativeOverlap" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

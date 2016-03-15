@@ -317,8 +317,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
             if (resultCode == RESULT_OK) {
                 finish();
-            } else {
-                //transaction failed.
             }
 
         } else {

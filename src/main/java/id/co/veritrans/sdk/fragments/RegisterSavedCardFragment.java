@@ -34,7 +34,6 @@ import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
-import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
  * @author rakawm
@@ -47,7 +46,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     private ArrayList<SaveCardRequest> creditCards;
     private RegisterCardPagerAdapter cardPagerAdapter;
 
-    private TextViewFont emptyCardsTextViewFont;
+    private LinearLayout emptyContainer;
     //private MorphingButton btnMorph;
     private LinearLayout creditCardLayout;
     private RelativeLayout newCardButtonLayout;
@@ -78,7 +77,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_saved_card, container, false);
+        return inflater.inflate(R.layout.fragment_empty_card, container, false);
     }
 
     @Override
@@ -94,7 +93,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     }
 
     private void bindViews(final View view) {
-        emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
+        emptyContainer = (LinearLayout) view.findViewById(R.id.container_no_card);
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
         creditCardLayout = (LinearLayout) view.findViewById(R.id.credit_card_holder);
         newCardButtonLayout = (RelativeLayout) view.findViewById(R.id.new_card_button_layout);
@@ -165,7 +164,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
                     }
                 });
                 circlePageIndicator.setViewPager(savedCardPager);
-                ((SaveCreditCardActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyCardsTextViewFont);
+                ((SaveCreditCardActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyContainer);
                 showHideNoCardMessage();
             }
         }
@@ -173,10 +172,10 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
 
     private void showHideNoCardMessage() {
         if (creditCards.isEmpty()) {
-            emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+            emptyContainer.setVisibility(View.VISIBLE);
             //savedCardPager.setVisibility(View.GONE);
         } else {
-            emptyCardsTextViewFont.setVisibility(View.GONE);
+            emptyContainer.setVisibility(View.GONE);
             //savedCardPager.setVisibility(View.VISIBLE);
         }
     }
@@ -202,13 +201,9 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
                     creditCard = creditCards.get(i);
                 }
             }
-            try {
-                Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
         }
         if (creditCard != null) {
+            Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
             SaveCardRequest saveCardRequest = new SaveCardRequest();
             saveCardRequest.setSavedTokenId(creditCard.getSavedTokenId());
             veritransSDK.deleteCard(saveCardRequest);
@@ -310,6 +305,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
             @Override
             public void run() {
                 ((SaveCreditCardActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
+                ((SaveCreditCardActivity) getActivity()).getTitleHeaderTextViewFont().setText(R.string.saved_card);
             }
         }, Constants.CARD_ANIMATION_TIME);
     }
@@ -360,9 +356,9 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
                 cardPagerAdapter.notifyDataSetChanged();
                 circlePageIndicator.notifyDataSetChanged();
                 if (creditCards.isEmpty()) {
-                    emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+                    emptyContainer.setVisibility(View.VISIBLE);
                 } else {
-                    emptyCardsTextViewFont.setVisibility(View.GONE);
+                    emptyContainer.setVisibility(View.GONE);
                 }
             }
         }

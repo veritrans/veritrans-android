@@ -71,8 +71,6 @@ public class IndomaretPaymentFragment extends Fragment {
             if (transactionResponse.getPaymentCodeIndomaret() != null)
                 mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeIndomaret());
 
-        } else {
-            //TODO..what to do here...
         }
     }
 }

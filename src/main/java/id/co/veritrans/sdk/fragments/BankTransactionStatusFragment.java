@@ -127,6 +127,7 @@ public class BankTransactionStatusFragment extends Fragment {
             mTextViewOrderId.setText(mTransactionResponse.getOrderId());
             mTextViewAmount.setText(mTransactionResponse.getGrossAmount());
 
+            //noinspection StatementWithEmptyBody
             if (mTransactionResponse.getTransactionStatus().contains(PENDING) ||
                     mTransactionResponse.getTransactionStatus().contains("pending")) {
 

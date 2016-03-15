@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.fragments;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -312,12 +313,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
                 isValid(false);
             }
         });
-        if (veritransSDK.isLogEnabled()) {
-            /*etExpiryDate.setText("12/20");
-            etCardNo.setText("4811 1111 1111 1114");
-            // etCardHolderName.setText("Chetan");
-            etCvv.setText("123");*/
-        }
+
         payNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -559,7 +555,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
             }
             Calendar calendar = Calendar.getInstance();
             Date date = calendar.getTime();
-            SimpleDateFormat format = new SimpleDateFormat("yy");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yy");
             String year = format.format(date);
 
             int currentMonth = calendar.get(Calendar.MONTH) + 1;

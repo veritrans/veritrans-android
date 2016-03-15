@@ -33,9 +33,10 @@ class VeritransRestAdapter {
      * @return Payment API implementation
      */
     public static PaymentAPI getApiClient(boolean showNetworkNotAvailableDialog) {
-        if (VeritransSDK.getVeritransSDK() != null
-                && VeritransSDK.getVeritransSDK().getContext() != null
-                && Utils.isNetworkAvailable(VeritransSDK.getVeritransSDK().getContext())) {
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null
+                && veritransSDK.getContext() != null
+                && Utils.isNetworkAvailable(veritransSDK.getContext())) {
             if (paymentAPI == null) {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
@@ -67,9 +68,10 @@ class VeritransRestAdapter {
     }
 
     public static PaymentAPI getMerchantApiClient(boolean showNetworkNotAvailableDialog) {
-        if (VeritransSDK.getVeritransSDK() != null
-                && VeritransSDK.getVeritransSDK().getContext() != null
-                && Utils.isNetworkAvailable(VeritransSDK.getVeritransSDK().getContext())) {
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null
+                && veritransSDK.getContext() != null
+                && Utils.isNetworkAvailable(veritransSDK.getContext())) {
 
             if (merchantPaymentAPI == null && VeritransSDK.getVeritransSDK() != null) {
 
