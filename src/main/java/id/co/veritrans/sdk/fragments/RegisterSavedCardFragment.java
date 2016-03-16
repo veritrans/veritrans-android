@@ -31,7 +31,6 @@ import id.co.veritrans.sdk.eventbus.events.DeleteCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.DeleteCardSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 
@@ -181,6 +180,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     }
 
     public void deleteCreditCard(String cardNumber) {
+        SdkUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
         showHideNoCardMessage();
         deleteCards(cardNumber);
     }
@@ -313,10 +313,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     @Subscribe
     @Override
     public void onEvent(DeleteCardSuccessEvent event) {
-        DeleteCardResponse deleteResponse = event.getResponse();
-        if (deleteResponse == null || !deleteResponse.getMessage().equalsIgnoreCase(getString(R.string.success))) {
-            return;
-        }
+        SdkUtil.hideProgressDialog();
         int position = -1;
         for (int i = 0; i < creditCards.size(); i++) {
             if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
@@ -367,18 +364,21 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     @Subscribe
     @Override
     public void onEvent(DeleteCardFailedEvent event) {
+        SdkUtil.hideProgressDialog();
         SdkUtil.showSnackbar(getActivity(), event.getMessage());
     }
 
     @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
+        SdkUtil.hideProgressDialog();
         SdkUtil.showSnackbar(getActivity(), getString(R.string.no_network_msg));
     }
 
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
+        SdkUtil.hideProgressDialog();
         SdkUtil.showSnackbar(getActivity(), event.getMessage());
     }
 }
