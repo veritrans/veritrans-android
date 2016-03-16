@@ -46,7 +46,7 @@ public class BankTransferFragment extends Fragment {
     /**
      * initializes view and adds click listener for it.
      *
-     * @param view
+     * @param view  view that needed to be initialized
      */
     private void initializeViews(View view) {
 
@@ -86,7 +86,7 @@ public class BankTransferFragment extends Fragment {
      * created to give access to email id field from {@link id.co.veritrans.sdk.activities
      * .BankTransferActivity}.
      *
-     * @return
+     * @return email identifier
      */
     public String getEmailId() {
         if (mEditTextEmailId != null) {

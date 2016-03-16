@@ -24,17 +24,20 @@ import java.util.Calendar;
 import java.util.Date;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
+import id.co.veritrans.sdk.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.BankDetail;
-import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
-public class AddCardDetailsFragment extends Fragment {
+/**
+ * @author rakawm
+ */
+public class RegisterCardFragment extends Fragment {
+
     private String lastExpDate = "";
     private EditText etCardNo;
     private EditText etCvv;
@@ -42,7 +45,7 @@ public class AddCardDetailsFragment extends Fragment {
     private CheckBox cbStoreCard;
     private ImageView questionImg;
     private ImageView questionSaveCardImg;
-    private Button payNowBtn;
+    private Button saveBtn;
     private String cardNumber;
     private String cvv;
     private String expiryDate;
@@ -55,27 +58,15 @@ public class AddCardDetailsFragment extends Fragment {
     private String cardType = "";
     private RelativeLayout formLayout;
 
-    public AddCardDetailsFragment() {
-    }
-
-    public static AddCardDetailsFragment newInstance() {
-        AddCardDetailsFragment fragment = new AddCardDetailsFragment();
-        return fragment;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
+    public static RegisterCardFragment newInstance() {
+        return new RegisterCardFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextViewFont().setText(getString(R.string.card_details));
-        veritransSDK = ((CreditDebitCardFlowActivity) getActivity()).getVeritransSDK();
-        userDetail = ((CreditDebitCardFlowActivity) getActivity()).getUserDetail();
-        bankDetails = ((CreditDebitCardFlowActivity) getActivity()).getBankDetails();
+        ((SaveCreditCardActivity) getActivity()).getTitleHeaderTextViewFont().setText(getString(R.string.card_details));
+        veritransSDK = ((SaveCreditCardActivity) getActivity()).getVeritransSDK();
     }
 
     @Override
@@ -89,18 +80,25 @@ public class AddCardDetailsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         try {
             Logger.i("onViewCreated called addcarddetail called");
-            CreditDebitCardFlowActivity creditDebitCardFlowActivity = (CreditDebitCardFlowActivity) getActivity();
-            if (creditDebitCardFlowActivity != null && creditDebitCardFlowActivity.getSupportActionBar() != null) {
-                creditDebitCardFlowActivity.getSupportActionBar().setTitle(getString(R.string.card_details));
-                creditDebitCardFlowActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            SaveCreditCardActivity creditCardActivity = (SaveCreditCardActivity) getActivity();
+            if (creditCardActivity != null) {
+                if (creditCardActivity.getSupportActionBar() != null) {
+                    creditCardActivity.getSupportActionBar().setTitle(getString(R.string.card_details));
+                    creditCardActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                }
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
         bindViews(view);
-        ((CreditDebitCardFlowActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
+        ((SaveCreditCardActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
         fadeIn();
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    public void focusChange() {
+        Logger.i("onFocus change has not focus");
+        isValid(false);
     }
 
     private void bindViews(View view) {
@@ -109,9 +107,12 @@ public class AddCardDetailsFragment extends Fragment {
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
         cbStoreCard = (CheckBox) view.findViewById(R.id.cb_store_card);
+        cbStoreCard.setVisibility(View.GONE);
         questionImg = (ImageView) view.findViewById(R.id.image_question);
         questionSaveCardImg = (ImageView) view.findViewById(R.id.image_question_save_card);
-        payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
+        questionSaveCardImg.setVisibility(View.GONE);
+        saveBtn = (Button) view.findViewById(R.id.btn_pay_now);
+        saveBtn.setText(R.string.btn_save_card);
         //formLayout.setAlpha(0);
         etCardNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -155,33 +156,17 @@ public class AddCardDetailsFragment extends Fragment {
                 isValid(false);
             }
         });
-        payNowBtn.setOnClickListener(new View.OnClickListener() {
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isValid(true)) {
-
-                    CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
-                            .parseInt(cvv),
-                            expMonth, expYear,
-                            veritransSDK.getClientKey());
-                    cardTokenRequest.setIsSaved(cbStoreCard.isChecked());
-                    cardTokenRequest.setSecure(veritransSDK.getTransactionRequest().isSecureCard());
-                    cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest()
-                            .getAmount());
-                    cardTokenRequest.setCardType(cardType);
-                    if (bankDetails != null && !bankDetails.isEmpty()) {
-                        String firstSix = cardNumber.substring(0, 6);
-                        for (BankDetail bankDetail : bankDetails) {
-                            if (bankDetail.getBin().equalsIgnoreCase(firstSix)) {
-                                cardTokenRequest.setBank(bankDetail.getIssuing_bank());
-                                cardTokenRequest.setCardType(bankDetail.getCard_association());
-                                break;
-                            }
-                        }
-                    }
-                    //make payment
+                    // Save card
                     SdkUtil.showProgressDialog(getActivity(), false);
-                    ((CreditDebitCardFlowActivity) getActivity()).getToken(cardTokenRequest);
+                    SaveCreditCardActivity activity = (SaveCreditCardActivity) getActivity();
+                    if (activity != null) {
+                        activity.registerCard(cardNumber, Integer.parseInt(cvv), expMonth, 2000 + expYear);
+                    }
                 }
             }
         });
@@ -456,11 +441,6 @@ public class AddCardDetailsFragment extends Fragment {
         return true;
     }
 
-    public void focusChange() {
-        Logger.i("onFocus change has not focus");
-        isValid(false);
-    }
-
     private void setCardType() {
         String cardNo = etCardNo.getText().toString().trim();
         if (cardNo.isEmpty() || cardNo.length() < 2) {
@@ -487,6 +467,7 @@ public class AddCardDetailsFragment extends Fragment {
 
         }
     }
+
     private void fadeIn() {
         formLayout.setAlpha(0);
         ObjectAnimator fadeInAnimation = ObjectAnimator.ofFloat(formLayout, "alpha", 0, 1f);
@@ -499,7 +480,7 @@ public class AddCardDetailsFragment extends Fragment {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                payNowBtn.setVisibility(View.VISIBLE);
+                saveBtn.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -514,5 +495,4 @@ public class AddCardDetailsFragment extends Fragment {
         });
         fadeInAnimation.start();
     }
-
 }

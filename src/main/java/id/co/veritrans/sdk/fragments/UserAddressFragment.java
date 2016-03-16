@@ -53,10 +53,11 @@ public class UserAddressFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((UserDetailsActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string
-                .title_shipping_billing_address));
-
-
+        UserDetailsActivity userDetailsActivity = (UserDetailsActivity) getActivity();
+        if (userDetailsActivity != null) {
+            if (userDetailsActivity.getSupportActionBar() != null)
+                userDetailsActivity.getSupportActionBar().setTitle(getString(R.string.title_shipping_billing_address));
+        }
     }
 
     @Override
@@ -106,17 +107,9 @@ public class UserAddressFragment extends Fragment {
     private void validateAndSaveAddress() {
         SdkUtil.hideKeyboard(getActivity());
         StorageDataHandler storageDataHandler = new StorageDataHandler();
-        UserDetail userDetail = null;
-        try {
-            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            Logger.i("userDetails:" + userDetail.getUserFullName());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        if (userDetail != null) Logger.i("userDetails:" + userDetail.getUserFullName());
+
         ArrayList<UserAddress> userAddresses = new ArrayList<>();
         String billingAddress = etAddress.getText().toString().trim();
         String billingCity = etCity.getText().toString().trim();

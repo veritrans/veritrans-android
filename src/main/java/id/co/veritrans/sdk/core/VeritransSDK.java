@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
@@ -113,7 +114,7 @@ public class VeritransSDK {
     /**
      * Returns instance of veritrans sdk.
      *
-     * @return
+     * @return VeritransSDK instance
      */
     public static VeritransSDK getVeritransSDK() {
 
@@ -203,7 +204,7 @@ public class VeritransSDK {
     /**
      * It will execute an api request to retrieve a token.
      *
-     * @param cardTokenRequest
+     * @param cardTokenRequest  token request object
      */
     public void getToken(CardTokenRequest cardTokenRequest) {
 
@@ -221,7 +222,7 @@ public class VeritransSDK {
     /**
      * It will execute an api request to register credit card info.
      *
-     * @param cardTokenRequest
+     * @param cardTokenRequest  request token object
      */
     public void registerCard(CardTokenRequest cardTokenRequest, String userId) {
 
@@ -438,7 +439,7 @@ public class VeritransSDK {
     /**
      * Set transaction information that you want to execute.
      *
-     * @param transactionRequest
+     * @param transactionRequest    request token object
      */
     public void setTransactionRequest(TransactionRequest transactionRequest) {
 
@@ -465,6 +466,15 @@ public class VeritransSDK {
     }
 
     /**
+     * This will start actual execution of save card UI flow.
+     *
+     * @param activity current activity.
+     */
+    public void startRegisterCardUIFlow(Activity activity) {
+        Intent intent = new Intent(activity, SaveCreditCardActivity.class);
+        activity.startActivity(intent);
+    }
+    /**
      * This will start actual execution of transaction. if you have enabled an ui then it will
      * start activity according to it.
      * @param activity current activity.
@@ -482,9 +492,7 @@ public class VeritransSDK {
                         UserDetailsActivity.class);
                 activity.startActivity(userDetailsIntent);
 
-            } else {
-                // start specific activity depending  on payment type.
-            }
+            } 
 
         } else {
 

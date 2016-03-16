@@ -180,7 +180,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
 
@@ -448,7 +448,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            ArrayList<BankDetail> bankDetails = new ArrayList<BankDetail>();
+                            ArrayList<BankDetail> bankDetails = new ArrayList<>();
                             try {
                                 bankDetails = LocalDataHandler.readObject(getString(R.string.bank_details), BankDetailArray.class).getBankDetails();
                                 Logger.i("bankDetails:" + bankDetails.size());
@@ -592,19 +592,23 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
             cardTokenRequest.setBank(tokenDetailsResponse.getBank());
         }
         this.tokenDetailsResponse = tokenDetailsResponse;
-        Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
-                + veritransSDK.getTransactionRequest().isSecureCard());
-        if (veritransSDK.getTransactionRequest().isSecureCard()) {
-            SdkUtil.hideProgressDialog();
-            if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
-                Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
-                intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
-                startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+        if (tokenDetailsResponse != null) {
+            Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
+                    + veritransSDK.getTransactionRequest().isSecureCard());
+            if (veritransSDK.getTransactionRequest().isSecureCard()) {
+                SdkUtil.hideProgressDialog();
+                if (tokenDetailsResponse.getRedirectUrl() != null &&
+                        !tokenDetailsResponse.getRedirectUrl().equals("")) {
+                    Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
+                    intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
+                    startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                }
+            } else {
+                SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+                payUsingCard();
             }
-        } else {
-            SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-            payUsingCard();
         }
+
     }
 
     @Subscribe
@@ -637,7 +641,8 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
             replaceFragment(paymentTransactionStatusFragment, true, false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
             textViewTitleOffers.setText(getString(R.string.title_payment_status));
 
@@ -705,7 +710,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
         replaceFragment(paymentTransactionStatusFragment, true, false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
         textViewTitleOffers.setText(getString(R.string.title_payment_status));
     }
@@ -754,7 +759,6 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
 
             }
 
-        } else {
         }
     }
 

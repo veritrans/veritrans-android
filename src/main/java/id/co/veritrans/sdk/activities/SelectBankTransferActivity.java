@@ -53,16 +53,12 @@ public class SelectBankTransferActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_bank_transfer);
 
         mVeritransSDK = VeritransSDK.getVeritransSDK();
-        TransactionRequest transactionRequest = mVeritransSDK.getTransactionRequest();
-
-        UserDetail userDetail = null;
-        try {
-            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-            CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
-                    userDetail.getEmail(), userDetail.getPhoneNumber());
+        TransactionRequest transactionRequest = null;
+        if (mVeritransSDK != null) {
+            transactionRequest = mVeritransSDK.getTransactionRequest();
+            UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+            CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "", userDetail.getEmail(), userDetail.getPhoneNumber());
             transactionRequest.setCustomerDetails(customerDetails);
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
 
         setUpBankList();
@@ -78,7 +74,7 @@ public class SelectBankTransferActivity extends AppCompatActivity {
         //setup tool bar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // setUp recyclerView
         initialiseAdapterData();
@@ -141,8 +137,6 @@ public class SelectBankTransferActivity extends AppCompatActivity {
                 sendBroadcast(data);
                 setResult(RESULT_OK);
                 finish();
-            } else {
-                //transaction failed.
             }
 
         } else {

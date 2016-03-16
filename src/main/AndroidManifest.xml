@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="id.co.veritrans.sdk"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="id.co.veritrans.sdk">
 
     <application
         android:allowBackup="true"
@@ -84,6 +83,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"/>
 
+        <activity
+            android:name=".activities.SaveCreditCardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme" />
     </application>
 
 </manifest>

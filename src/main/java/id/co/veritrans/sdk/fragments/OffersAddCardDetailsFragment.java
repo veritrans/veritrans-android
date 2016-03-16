@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.fragments;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -312,12 +313,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
                 isValid(false);
             }
         });
-        if (veritransSDK.isLogEnabled()) {
-            /*etExpiryDate.setText("12/20");
-            etCardNo.setText("4811 1111 1111 1114");
-            // etCardHolderName.setText("Chetan");
-            etCvv.setText("123");*/
-        }
+
         payNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -367,7 +363,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
         questionImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image, null),
+                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
                 veritransDialog.show();
             }
@@ -526,7 +522,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
                 etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
             }
             return false;
-        } else if (expDateArray != null && expDateArray.length == 2) {
+        } else if (expDateArray != null) {
             try {
                 expMonth = Integer.parseInt(expDateArray[0]);
             } catch (NumberFormatException e) {
@@ -559,7 +555,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
             }
             Calendar calendar = Calendar.getInstance();
             Date date = calendar.getTime();
-            SimpleDateFormat format = new SimpleDateFormat("yy");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yy");
             String year = format.format(date);
 
             int currentMonth = calendar.get(Calendar.MONTH) + 1;
@@ -675,7 +671,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
                 for (int loop = 0; loop < ((OffersActivity) getActivity()).offersListModels.get
                         (offerPosition).getBins().size(); loop++) {
                     String binValue = ((OffersActivity) getActivity()).offersListModels.get
-                            (offerPosition).getBins().get(loop).toString();
+                            (offerPosition).getBins().get(loop);
 
                     int binInt = 0;
                     try {

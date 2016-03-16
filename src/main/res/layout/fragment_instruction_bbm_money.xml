@@ -30,7 +30,7 @@
                 android:paddingRight="@dimen/sixteen_dp"
                 android:text="@string/get_bbm_money_app"
                 android:textColor="@color/dark_gray"
-                android:textSize="@dimen/twelve_dp"
+                android:textSize="12sp"
                 app:font="@string/font_open_sans_regular"
                 />
 
@@ -39,8 +39,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/sixteen_dp"
-                android:src="@drawable/ic_googleplay"
-                />
+                android:contentDescription="@string/description_google_play"
+                android:src="@drawable/ic_googleplay" />
 
         </LinearLayout>
 

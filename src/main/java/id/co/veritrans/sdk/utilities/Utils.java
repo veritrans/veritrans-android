@@ -4,6 +4,7 @@ package id.co.veritrans.sdk.utilities;
  * Created by shivam on 10/26/15.
  */
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -221,9 +222,10 @@ public class Utils {
 
             //2015-10-30 20:32:51
             String data[] = transactionTime.split(" ");
-            if (data != null && data.length > 1) {
+            if (data.length > 1) {
 
                 try {
+                    @SuppressLint("SimpleDateFormat")
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(simpleDateFormat.parse(data[0]));

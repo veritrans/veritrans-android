@@ -87,8 +87,16 @@ public class CardTokenRequest implements Serializable {
         return cardExpiryMonth;
     }
 
+    public void setCardExpiryMonth(int cardExpiryMonth) {
+        this.cardExpiryMonth = cardExpiryMonth;
+    }
+
     public int getCardExpiryYear() {
         return cardExpiryYear;
+    }
+
+    public void setCardExpiryYear(int cardExpiryYear) {
+        this.cardExpiryYear = cardExpiryYear;
     }
 
     public String getClientKey() {
@@ -111,7 +119,7 @@ public class CardTokenRequest implements Serializable {
     /**
      * if 3ds transaction set it true.
      *
-     * @param secure
+     * @param secure    is secure or not
      */
     public void setSecure(boolean secure) {
         this.secure = secure;
@@ -200,14 +208,6 @@ public class CardTokenRequest implements Serializable {
             e.printStackTrace();
             return "";
         }
-    }
-
-    public void setCardExpiryMonth(int cardExpiryMonth) {
-        this.cardExpiryMonth = cardExpiryMonth;
-    }
-
-    public void setCardExpiryYear(int cardExpiryYear) {
-        this.cardExpiryYear = cardExpiryYear;
     }
 
     public boolean isInstalment() {

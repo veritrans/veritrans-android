@@ -36,7 +36,7 @@ public class BankTransferPaymentFragment extends Fragment {
      * it creates new BankTransferPaymentFragment object and set TransactionResponse object to it,
      * so later it can be accessible using fragments getArgument().
      *
-     *  @param permataBankTransferResponse
+     *  @param permataBankTransferResponse  response of transaction call
      * @return instance of BankTransferPaymentFragment
      */
     public static BankTransferPaymentFragment newInstance(TransactionResponse
@@ -66,7 +66,7 @@ public class BankTransferPaymentFragment extends Fragment {
     /**
      * initializes view and adds click listener for it.
      *
-     * @param view
+     * @param view  view that needed to be initialized
      */
     private void initializeViews(View view) {
 
@@ -80,13 +80,13 @@ public class BankTransferPaymentFragment extends Fragment {
             if (sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
                     || sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
                 mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse.getPermataVANumber());
+            } else {
+                mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse.getStatusMessage());
             }
 
             mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime
                     (sPermataBankTransferResponse.getTransactionTime()));
 
-        } else {
-            mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse.getStatusMessage());
         }
 
         mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {

@@ -50,7 +50,7 @@ public class MandiriClickPayModel {
         if(input2 != null) {
             this.input2 = ""+ (int) Double.parseDouble(input2);
         }else {
-            this.input2 = input2;
+            this.input2 = "";
         }
     }
 

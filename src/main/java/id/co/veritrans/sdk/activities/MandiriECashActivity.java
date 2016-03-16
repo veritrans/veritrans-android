@@ -1,7 +1,5 @@
 package id.co.veritrans.sdk.activities;
 
-import com.google.gson.Gson;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +11,8 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -82,7 +82,7 @@ public class MandiriECashActivity extends AppCompatActivity implements View.OnCl
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
     }
 
