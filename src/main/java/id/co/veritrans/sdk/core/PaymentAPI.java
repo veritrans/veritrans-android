@@ -25,6 +25,7 @@ import id.co.veritrans.sdk.models.TransactionCancelResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Headers;
@@ -202,8 +203,8 @@ public interface PaymentAPI {
     //delete card
     @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/card/delete")
-    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Body SaveCardRequest cardTokenRequest);
+    @DELETE("/card/{saved_token_id}")
+    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Path("saved_token_id") String savedTokenId);
 
     //BBMMoney Payment
     @Headers({"Content-Type: application/json", "Accept: application/json"})

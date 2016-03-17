@@ -299,6 +299,7 @@
     <string name="company_code">Company Code</string>
     <string name="bill_code">Billpay Code</string>
     <string name="processing_payment">Processing Payment</string>
+    <string name="processing_delete">Deleting Card</string>
     <string name="fetching_offers">Fetching Offers</string>
     <string name="no_card_yet">No Card Yet</string>
     <string name="save_time_save_credit">Save your time by adding credit card that can be used for every transaction</string>

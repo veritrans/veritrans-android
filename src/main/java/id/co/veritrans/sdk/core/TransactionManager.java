@@ -1766,7 +1766,7 @@ class TransactionManager {
                 if (auth != null) {
 
                     observable = apiInterface.deleteCard(auth,
-                            creditCard);
+                            creditCard.getSavedTokenId());
 
                     deleteCardSubscription = observable.subscribeOn(Schedulers
                             .io())
@@ -1794,8 +1794,7 @@ class TransactionManager {
                                 public void onNext(DeleteCardResponse deleteCardResponse) {
                                     releaseResources();
                                     if (deleteCardResponse != null) {
-                                        if (deleteCardResponse.getMessage().equalsIgnoreCase(
-                                                veritransSDK.getContext().getString(R.string.success))) {
+                                        if (deleteCardResponse.getCode() == 200 || deleteCardResponse.getCode() == 204) {
                                             VeritransBusProvider.getInstance().post(new DeleteCardSuccessEvent(deleteCardResponse));
                                         } else {
                                             VeritransBusProvider.getInstance().post(new DeleteCardFailedEvent(

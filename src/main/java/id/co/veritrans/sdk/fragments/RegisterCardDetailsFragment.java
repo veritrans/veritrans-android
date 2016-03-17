@@ -174,11 +174,8 @@ public class RegisterCardDetailsFragment extends Fragment {
                 View.OnClickListener positiveClickListner = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (parentFragment != null && parentFragment instanceof SavedCardFragment) {
-
-                            ((SavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getSavedTokenId());
-                        } else if (parentFragment != null && parentFragment instanceof OffersSavedCardFragment) {
-                            ((OffersSavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getSavedTokenId());
+                        if (parentFragment != null && parentFragment instanceof RegisterSavedCardFragment) {
+                            ((RegisterSavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getSavedTokenId());
                         }
                     }
                 };
