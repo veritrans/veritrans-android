@@ -25,6 +25,7 @@ import id.co.veritrans.sdk.models.TransactionCancelResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Headers;
@@ -50,6 +51,8 @@ public interface PaymentAPI {
     /**
      * card_cvv, token_id, two_click, bank, secure, gross_amount
      * this api call hit veritrans server
+     *
+     * @return observable of transaction response
      */
     @GET("/token/")
     Observable<TokenDetailsResponse> getTokenTwoClick(
@@ -100,7 +103,7 @@ public interface PaymentAPI {
      * Do the payment using BCA VA.
      * @param authorization     authorization token.
      * @param bcaBankTransfer   transaction details
-     * @return
+     * @return observable of transaction response
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
@@ -200,8 +203,8 @@ public interface PaymentAPI {
     //delete card
     @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/card/delete")
-    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Body SaveCardRequest cardTokenRequest);
+    @DELETE("/card/{saved_token_id}")
+    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Path("saved_token_id") String savedTokenId);
 
     //BBMMoney Payment
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -226,16 +229,16 @@ public interface PaymentAPI {
     /**
      * For instalment offers get token
      *
-     * @param cardCVV
-     * @param tokenId
-     * @param twoClick
-     * @param secure
-     * @param grossAmount
-     * @param bank
-     * @param clientKey
-     * @param instalment
-     * @param instalmentTerm
-     * @return
+     * @param cardCVV       card cvv number
+     * @param tokenId       token identifier
+     * @param twoClick      is two click or not
+     * @param secure        is secure or not
+     * @param grossAmount   gross amount
+     * @param bank          bank name
+     * @param clientKey     client key
+     * @param instalment    installment
+     * @param instalmentTerm    installment terms
+     * @return observable of transaction response
      */
 
     @GET("/token/")
@@ -254,16 +257,16 @@ public interface PaymentAPI {
     /***
      * Get instalment offers 3ds token
      *
-     * @param cardNumber
-     * @param cardCVV
-     * @param cardExpiryMonth
-     * @param cardExpiryYear
-     * @param clientKey
-     * @param bank
-     * @param secure
-     * @param twoClick
-     * @param grossAmount
-     * @return
+     * @param cardNumber        card number
+     * @param cardCVV           card cvv number
+     * @param cardExpiryMonth   card expiry's month
+     * @param cardExpiryYear    card expiry's year
+     * @param clientKey         client key
+     * @param bank              bank name
+     * @param secure            is secure
+     * @param twoClick          is two click
+     * @param grossAmount       gross amount
+     * @return observable of transaction response
      */
 
     @GET("/token/")
@@ -283,6 +286,12 @@ public interface PaymentAPI {
 
     /**
      * Register card into Veritrans API.
+     *
+     * @param cardNumber        credit card number
+     * @param cardCVV           credit card cvv number
+     * @param cardExpiryMonth   credit card expiry month in number
+     * @param cardExpiryYear    credit card expiry year in 4 digit (example: 2020)
+     * @param clientKey         veritrans API client key
      *
      * @return observable of token
      */

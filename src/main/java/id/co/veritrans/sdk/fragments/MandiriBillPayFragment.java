@@ -36,7 +36,7 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
      * later it can
      * be accessible using fragments getArgument().
      *
-     * @param permataBankTransferResponse
+     * @param permataBankTransferResponse           response of transaction call
      * @return instance of MandiriBillPayFragment.
      */
     public static MandiriBillPayFragment newInstance(TransactionResponse
@@ -73,7 +73,7 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
     /**
      * initializes view and adds click listener for it.
      *
-     * @param view
+     * @param view  view that needed to be initialized
      */
     private void initializeViews(View view) {
 
@@ -89,6 +89,8 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
                     mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
                 mTextViewCompanyCode.setText(mTransactionResponse
                         .getCompanyCode());
+            } else {
+                mTextViewCompanyCode.setText(mTransactionResponse.getCompanyCode());
             }
 
             mTextViewBillpayCode.setText(mTransactionResponse
@@ -97,8 +99,6 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
             mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime
                     (mTransactionResponse.getTransactionTime()));
 
-        } else {
-            mTextViewCompanyCode.setText(mTransactionResponse.getCompanyCode());
         }
 
         mTextViewSeeInstruction.setOnClickListener(this);

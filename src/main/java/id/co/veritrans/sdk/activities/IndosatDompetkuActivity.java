@@ -150,7 +150,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         //setup tool bar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -181,7 +181,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
      * 2) if current fragment is status fragment  then it will send result back to {@link
      * PaymentMethodsActivity}.
      *
-     * @param view
+     * @param view  clicked view
      */
     @Override
     public void onClick(View view) {
@@ -242,7 +242,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
      * call {@link #setUpTransactionStatusFragment(TransactionResponse)}  to display appropriate
      * message.
      *
-     * @param veritransSDK
+     * @param veritransSDK  Veritrans SDK instance
      */
     private void transactionUsingIndosat(final VeritransSDK veritransSDK) {
 
@@ -288,7 +288,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
     /**
      * Displays status of transaction from {@link TransactionResponse} object.
      *
-     * @param transactionResponse
+     * @param transactionResponse   response of transaction call
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {

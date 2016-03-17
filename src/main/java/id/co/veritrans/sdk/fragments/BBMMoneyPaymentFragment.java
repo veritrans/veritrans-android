@@ -54,7 +54,7 @@ public class BBMMoneyPaymentFragment extends Fragment {
     /**
      * initializes view and adds click listener for it.
      *
-     * @param view
+     * @param view  view that needed to be initialized
      */
     private void initializeViews(View view) {
         mTextViewValidity = (TextViewFont) view.findViewById(R.id.text_validaty);
@@ -71,8 +71,6 @@ public class BBMMoneyPaymentFragment extends Fragment {
                 PERMATA_VA = transactionResponse.getPermataVANumber();
             }
 
-        } else {
-            //TODO..what to do here...
         }
     }
 }

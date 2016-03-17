@@ -143,7 +143,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void bindDataToView() {

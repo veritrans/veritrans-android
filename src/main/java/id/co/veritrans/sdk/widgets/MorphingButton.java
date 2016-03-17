@@ -23,6 +23,7 @@ import id.co.veritrans.sdk.R;
  */
 public class MorphingButton extends Button {
 
+    protected boolean mAnimationInProgress;
     private Padding mPadding;
     private int mHeight;
     private int mWidth;
@@ -30,9 +31,6 @@ public class MorphingButton extends Button {
     private int mCornerRadius;
     private int mStrokeWidth;
     private int mStrokeColor;
-
-    protected boolean mAnimationInProgress;
-
     private StrokeGradientDrawable mDrawableNormal;
     private StrokeGradientDrawable mDrawablePressed;
 
@@ -213,7 +211,10 @@ public class MorphingButton extends Button {
             @Override
             public void run() {
                 Drawable drawable = getResources().getDrawable(icon);
-                int padding = (getWidth() / 2) - (drawable.getIntrinsicWidth() / 2);
+                int padding = 0;
+                if (drawable != null) {
+                    padding = (getWidth() / 2) - (drawable.getIntrinsicWidth() / 2);
+                }
                 setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
                 setPadding(padding, 0, 0, 0);
             }
@@ -222,13 +223,6 @@ public class MorphingButton extends Button {
 
     public void setIconLeft(@DrawableRes int icon) {
         setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
-    }
-
-    private class Padding {
-        public int left;
-        public int right;
-        public int top;
-        public int bottom;
     }
 
     public static class Params {
@@ -306,5 +300,12 @@ public class MorphingButton extends Button {
             this.animationListener = animationListener;
             return this;
         }
+    }
+
+    private class Padding {
+        public int left;
+        public int right;
+        public int top;
+        public int bottom;
     }
 }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/root_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -21,9 +22,10 @@
             android:id="@+id/text_bank_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/thirtytwo_dp"
             android:layout_marginRight="@dimen/thirtytwo_dp"
             android:gravity="left"
-            android:text="Bank name"
+            android:text="@string/text_bank_name"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="@dimen/header_text_size"
@@ -34,28 +36,35 @@
             android:id="@+id/image_delete_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:clickable="true"
+            android:contentDescription="@string/description_delete_card"
             android:paddingBottom="@dimen/twenty_four_dp"
             android:paddingLeft="@dimen/twenty_four_dp"
+            android:paddingRight="@dimen/twenty_four_dp"
             android:src="@drawable/delete"/>
+
         <id.co.veritrans.sdk.widgets.TextViewFont
             android:id="@+id/text_card_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_bank_name"
             android:drawablePadding="@dimen/sixteen_dp"
-            android:gravity="left"
-            android:text="XXXX XXXX XXXX 1234"
+            android:gravity="start"
+            android:text="@string/text_sample_masked_credit_card"
             android:textColor="@android:color/white"
             android:textSize="@dimen/secondary_text_size"
             app:font="@string/font_open_sans_semibold"/>
-        />
-        <LinearLayout android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_alignParentBottom="true"
-                      android:layout_alignParentRight="true"
-                      android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            tools:ignore="RelativeOverlap">
             <Button
                 android:id="@+id/btn_pay_now_front"
                 android:layout_width="wrap_content"
@@ -72,9 +81,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:baselineAligned="false"
             android:orientation="horizontal"
-            android:weightSum="1"
-            >
+            android:weightSum="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,32 +108,11 @@
                     android:id="@+id/text_exp_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/text_bank_name"
                     android:gravity="left"
-                    android:text="XX/12"
+                    android:text="@string/text_sample_card_expiry"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/secondary_text_size"
-                    app:font="@string/font_open_sans_regular"
-
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:gravity="right"
-                android:orientation="vertical"
-                >
-
-                <!--<ImageView
-                    android:id="@+id/image_card_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:src="@drawable/ic_visa"
-                    android:visibility="gone"
-                    />-->
+                    app:font="@string/font_open_sans_regular" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -159,15 +147,21 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/big_text"
                 app:font="@string/font_open_sans_regular"/>
-            <ImageView android:id="@+id/image_questionmark"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_toRightOf="@id/tv_enter_cvv"
-                       android:clickable="true"
-                       android:paddingLeft="@dimen/eight_dp"
-                       android:paddingTop="@dimen/two_dp"
-                       android:src="@drawable/card_question"/>
+
+            <ImageView
+                android:id="@+id/image_questionmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/tv_enter_cvv"
+                android:layout_toRightOf="@id/tv_enter_cvv"
+                android:clickable="true"
+                android:contentDescription="@string/description_question_mark"
+                android:paddingLeft="@dimen/eight_dp"
+                android:paddingRight="@dimen/eight_dp"
+                android:paddingTop="@dimen/two_dp"
+                android:src="@drawable/card_question" />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -217,7 +211,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@id/et_cvv"
                 android:layout_marginTop="@dimen/two_dp"
-                android:background="@android:color/white"></View>
+                android:background="@android:color/white" />
 
         </RelativeLayout>
 

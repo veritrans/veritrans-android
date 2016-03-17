@@ -2,7 +2,8 @@
 
 ## 1 Overview
 ### 1.1 Description 
-Veritrans SDK is an android library project which supports to perform transaction using variouse payment methods supported by veritrans payment gateway. 
+
+Veritrans SDK is an android library project which supports performing transaction using various payment methods supported by Veritrans payment gateway. 
 
 **Before using this SDK, please familiarize yourself with our [documentation](http://docs.veritrans.co.id/en/welcome/index.html)**
 
@@ -20,19 +21,19 @@ Veritrans SDK supports following payment methods -
 9) Mandiri Bill Payment - 
 10) Indomaret -
 11) Offers - supports offers like BIN, Discount etc.
+12) Register Card - 
 
-Instantiate sdk after application finishes launching processes.
-
+Instantiate sdk after application finishes launching processes. This can be done on Application class or your Main Activity class then call it at `onCreate` method.
 Following are  configurable parameters of sdk that can be used while performing transaction -
 1) Server Endpoint- url of server to which transaction data will be sent.
 2) Transaction details - contains payment information like amount, order Id, payment method etc.
-
+3) Veritrans Client Key - token that specified by merchant server to enable the transaction using `credit card`.
 
 ## 2 Payment Flow
 
 ### 2.1 Types of Payment Flow
 
-Veritrans SDK has 2 types of payment flows first is using default ui proived by sdk and second is using core flow.
+Veritrans SDK has 2 types of payment flows first is using default ui proived by sdk and second is using core flow. It also has default UI for registering card.
 
 1) **Payment flow  using default UI**
 
@@ -40,8 +41,19 @@ Veritrans SDK has 2 types of payment flows first is using default ui proived by 
     To perform transaction using this, follow the steps given below:  
      I) Set transaction request information to sdk.  
      II) Register a **Broadcast Receiver** to handle payment response.  
-     III) Call the startPaymentUiFlow().
+     III) Specify which transaction method that is supported by merchant. 
+     IV) Call the startPaymentUiFlow().
   
+
+**Note** Need to specify which payment method that is supported by merchant. For example, this code add Bank Transfer payment support on SDK. 
+                
+                // Set Payment Model using Permata VA/Bank Transfer
+                ArrayList<PaymentMethodsModel> models = new ArrayList<>();
+                PaymentMethodsModel model = new PaymentMethodsModel(getString(R.string.bank_transfer), id.co.veritrans.sdk.R.drawable.ic_atm, Constants.PAYMENT_METHOD_NOT_SELECTED);
+                model.setIsSelected(true);
+                models.add(model);
+                selectedPaymentMethods = models;
+                VeritransSDK.getVeritransSDK().setSelectedPaymentMethods(selectedPaymentMethods);
      
 **Note** don't call any payment specific method in this flow, Sdk provides an UI to user with all available methods.
     
@@ -63,8 +75,16 @@ here in this flow just set transaction request information to sdk and start paym
 
 This will start Payment flow if all information is valid.
 
+2) **Registering card using UI Flow**
 
-2) **Payment flow  using core structure**
+To use default UI of Registering Card, you can call `startRegisterCardUIFlow` using current activity instance.
+
+```
+// start ui flow using activity instance
+mVeritransSDK.startPaymentUiFlow(activity);
+```
+
+3) **Payment flow using core structure**
     
     In this flow we are assuming that you have created ui to take required information from user to execute transaction.  
     To perform transaction using core, follow the steps given below:  
@@ -157,14 +177,6 @@ If secure flow is available then it will return redirect_url which will take use
 After successful validation do charge api call.
 
 
-
-
-
-
-
-
-
-
 ## 3 SDK Instalation
 
 To use Veritrans SDK  in your android application perform following steps.
@@ -213,14 +225,13 @@ Once you've setup your build system or IDE to use the Veritrans sdk library. Ver
 
 Now initialize sdk
 ```
-// sdk initialization process
-        VeritransBuilder veritransBuilder = new
-                VeritransBuilder(context, VT_CLIENT_KEY);
-        veritransBuilder.enableLog(true);   // enable logs for debugging purpose.
-    VeritransSDK mVeritransSDK = veritransBuilder.buildSDK();
+// SDK initialization process
+VeritransBuilder veritransBuilder = new VeritransBuilder(context, VT_CLIENT_KEY, BASE_URL_MERCHANT);
+veritransBuilder.enableLog(true);   // enable logs for debugging purpose.
+veritransBuilder.buildSDK();
 
 /*
-where -
+WHERE 
 VeritransBuilder - builder class which helps to create sdk instance. 
 Context - application context.
 VT_CLIENT_KEY - merchant/client key received from veritrans server.
@@ -238,9 +249,9 @@ VeritransSDK.getVeritransSDK();
 
 #### 2.3.1 Using Event Bus
 
-This SDK using Event Bus implementation which don't require activity as a parameter.
+This SDK using Event Bus implementation which don't require activity as a parameter. Instead, you need to register your subscribed class using `Event Bus`.
 
-For default implementation of the `core flow` please add this code blocks into `onCreate` and `onDestroy` method on your Activity/Fragment that needs to implement this SDK.
+For default implementation of the `core flow` please add this code blocks into `onCreate` and `onDestroy` method on your Activity/Fragment that needs to implement this SDK. This to ensure only one event bus registered for each shown activity.
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -266,6 +277,8 @@ Each API usage has its own `onEvent` interface to capture finished API access. P
 - `DeleteCardBusCallback`
 - `GetOfferBusCallback`
 - `TransactionBusCallback`
+- `CardRegistrationBusCallback`
+- `GetAuthenticationBusCallback`
 
 This interface will implement 2 general error handler, success event and failed event.
 
@@ -296,6 +309,7 @@ For example, `TransactionBusCallback` will implement these methods.
         //Failed event implementation
     }
 
+**Note**: Need to add `@Subscribe` annotation on implemented methods above.
 
 ## 4 Important Informations
 
@@ -384,41 +398,60 @@ amount - amount to charge.
 
 ## 4.2 Registering Credit Cards
 
-You can register credit cards to be used at a later time by using the method registerCard below on the VeritransSDK object. 
+There are two steps for registering credit card.
+
+1. Need to get `saved_token_id` from Veritrans Payment API.
+2. Save `saved_token_id` into merchant server storage.
+_
+
+You can get `saved_token_id` -- that will be used at a later time -- by using the method `cardRegistration` below on the VeritransSDK object. 
 
 ```
-public static void registerCard(CardTokenRequest cardTokenRequest, final String userId) 
+VeritransSDK.getVeritransSDK().cardRegistration(
+    String cardNumber,
+    int cardCVV,
+    int cardExpMonth,
+    int cardExpYear
+);
 
 ```
 
-Upon initializing the SDK, make sure you include your server address.
+Don't forget to register your Activity/Fragment to Event Bus provider and subscribe to implemented methods from `CardRegistrationBusCallback` and `SaveCardBusCallback`.
 
-```
-    VeritransBuilder veritransBuilder = new VeritransBuilder(activity, CLIENT_KEY, SERVER_ADDRESS);
-    mVeritransSDK = veritransBuilder.buildSDK();
+This implementation example will receive `saved_token_id` then save it to merchant token.
 
-```
-
-Upon recieving a response from our server, the SDK will send the following GET request to SERVER_ADDRESS/creditcard
-
-```
-Header:
-
-    Content-Type: application/json
-    Accept: application/json
-
-Body request:
-
-    {
-      "masked_card": "xxxxxx-xxxx",
-      "saved_token_id": "xxxxxxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-      "status_code": "xxx",
-      "transaction_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-      "user_id": "xxxxxxx"
+    @Subscribe
+    @Override
+    public void onEvent(CardRegistrationSuccessEvent event) {
+        // Create save card request using saved_token_id and masked_card from response body_
+        SaveCardRequest cardRequest = new SaveCardRequest();
+        cardRequest.setCode(event.getResponse().getStatusCode());
+        cardRequest.setMaskedCard(event.getResponse().getMaskedCard());
+        cardRequest.setSavedTokenId(event.getResponse().getSavedTokenId());
+        cardRequest.setTransactionId(event.getResponse().getTransactionId());
+        
+        // Save the card
+        veritransSDK.saveCards(cardRequest);
     }
 
-All body response from server will be ignored.
-```
+    @Subscribe
+    @Override
+    public void onEvent(CardRegistrationFailedEvent event) {
+        // Handle when failed get saved_token_id from Veritrans Payment API
+    }
+    
+    @Subscribe
+    @Override
+    public void onEvent(SaveCardSuccessEvent event) {
+        // Handle when success saving saved_token_id into merchant server
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(SaveCardFailedEvent event) {
+        // Handle when failed saving saved_token_id into merchant server
+    }
+
 The **saved_token_id** may then be used for a getToken() request similar to a **two click** token. After that, you can use the token for charging.
 
 ```
@@ -964,7 +997,7 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 ```
         //add Description for transaction
-        DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
+        DescriptionModel description = new DescriptionModel("Any Description"); 
 
         //Handle success implementation
         @Subscribe
@@ -1038,7 +1071,7 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 ```
         //add Description for transaction
-        DescriptionModel cimbDescription = new DescriptionModel("Any Description"); 
+        DescriptionModel mandiriECashDescription = new DescriptionModel("Any Description"); 
 
         //Handle success implementation
         @Subscribe
@@ -1056,7 +1089,42 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
         
 ```
 
-### 5.11 Payment using Installments Flow
+### 5.11 Payment using BCA KlikPay
+
+#### To perform transaction using BCA KlikPay payment method follow the steps given below:
+* Create the instance of Veritrans library using `VeritransBuilder` class.
+* Create instance of `TransactionRequest` and add required fields.
+* Then add Transaction details in previously created `VeritransSDK` instance
+
+```
+mVeritransSDK.setTransactionRequest(TransactionRequest);
+```
+
+* Then execute Transaction using following method to get response back. In success implementation you will get redirect url from server, start webview to handle the redirect url.
+* Handle the further process and response same as performed in ePay BRI.
+
+
+```
+        //add Description for transaction
+        BCAKlikPayDescriptionModel descriptionModel = new BCAKlikPayDescriptionModel("Any description");
+
+        //Handle success implementation
+        @Subscribe
+        @Override
+        public void onEvent(TransactionSuccessEvent event) {
+            //Success implementation
+            TransactionResponse response = event.getResponse();
+            if (response != null && !TextUtils.isEmpty(response.getRedirectUrl())) {
+                // create Web Activity  to handle redirect url. start web activity for result 
+            }
+        }
+        
+        //Call function paymentUsingBCAKlikPay
+        mVeritransSDK.paymentUsingBCAKlikPay(descriptionModel);
+        
+```
+
+### 5.12 Payment using Installments Flow
  * Make api call for **get token** with 2 new params 
  ```
   'installment' : true, 

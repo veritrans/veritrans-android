@@ -22,7 +22,7 @@ public class VeritransBuilder {
     /**
      * It  will initialize an data required to sdk.
      *
-     * @param context
+     * @param context   application context
 
      */
     public VeritransBuilder(Context context, String clientKey, String merchantServerUrl) {
@@ -36,7 +36,7 @@ public class VeritransBuilder {
      * controls the log of sdk. Log can help you to debug application.
      * set false to disable log of sdk, by default logs are on.
      *
-     * @param enableLog
+     * @param enableLog     is log enabled
      * @return object of VeritransBuilder
      */
     public VeritransBuilder enableLog(boolean enableLog) {

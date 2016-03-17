@@ -42,13 +42,6 @@ public class InstructionIndosatFragment extends Fragment {
         }
     }
 
-
-    /**
-     * created to give access to phone number field from {@link id.co.veritrans.sdk.activities
-     * .IndosatDompetkuActivity}.
-     *
-     * @return
-     */
     public String getPhoneNumber() {
         if (mEditTextPhoneNumber != null) {
             return mEditTextPhoneNumber.getText().toString();

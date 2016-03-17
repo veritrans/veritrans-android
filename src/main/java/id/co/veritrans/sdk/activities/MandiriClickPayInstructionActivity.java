@@ -28,8 +28,8 @@ public class MandiriClickPayInstructionActivity extends AppCompatActivity {
     /**
      * handles click of back arrow given on action bar.
      *
-     * @param item
-     * @return
+     * @param item  selected menu
+     * @return is handled or not
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -51,7 +51,7 @@ public class MandiriClickPayInstructionActivity extends AppCompatActivity {
         mToolbar.setNavigationIcon(R.drawable.ic_close);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 

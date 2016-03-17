@@ -31,7 +31,6 @@ import id.co.veritrans.sdk.eventbus.events.DeleteCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.DeleteCardSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.TextViewFont;
@@ -189,6 +188,7 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
     }
 
     public void deleteCreditCard(String cardNumber) {
+        SdkUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
         showHideNoCardMessage();
         deleteCards(cardNumber);
 
@@ -205,13 +205,9 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
                     creditCard = creditCards.get(i);
                 }
             }
-            try {
-                Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
         }
         if (creditCard != null) {
+            Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
             SaveCardRequest saveCardRequest = new SaveCardRequest();
             saveCardRequest.setSavedTokenId(creditCard.getSavedTokenId());
             veritransSDK.deleteCard(saveCardRequest);
@@ -312,6 +308,7 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
             @Override
             public void run() {
                 ((CreditDebitCardFlowActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
+                ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextViewFont().setText(R.string.saved_card);
             }
         }, Constants.CARD_ANIMATION_TIME);
     }
@@ -319,10 +316,7 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
     @Subscribe
     @Override
     public void onEvent(DeleteCardSuccessEvent event) {
-        DeleteCardResponse deleteResponse = event.getResponse();
-        if (deleteResponse == null || !deleteResponse.getMessage().equalsIgnoreCase(getString(R.string.success))) {
-            return;
-        }
+        SdkUtil.hideProgressDialog();
         int position = -1;
         for (int i = 0; i < creditCards.size(); i++) {
             if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
@@ -373,18 +367,21 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
     @Subscribe
     @Override
     public void onEvent(DeleteCardFailedEvent event) {
+        SdkUtil.hideProgressDialog();
         SdkUtil.showSnackbar(getActivity(), event.getMessage());
     }
 
     @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
+        SdkUtil.hideProgressDialog();
         SdkUtil.showSnackbar(getActivity(), getString(R.string.no_network_msg));
     }
 
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
+        SdkUtil.hideProgressDialog();
         SdkUtil.showSnackbar(getActivity(), event.getMessage());
     }
 }

@@ -131,7 +131,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
         morphToCircle(0);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
         getCreditCards();
         readBankDetails();
@@ -255,6 +255,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
                     !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
                 cardPaymentDetails = new CardPaymentDetails("",
                         cardTokenRequest.getSavedTokenId(), true);
+                cardPaymentDetails.setRecurring(true);
             } else if (tokenDetailsResponse != null) {
                 Logger.i("tokenDetailsResponse.getTokenId():" + tokenDetailsResponse.getTokenId());
                 cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
@@ -566,13 +567,15 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
             cardTokenRequest.setBank(tokenDetailsResponse.getBank());
         }
         this.tokenDetailsResponse = tokenDetailsResponse;
-        //Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","+ veritransSDK.getTransactionRequest().isSecureCard() + "," + tokenDetailsResponse.getBank());
+
         if (veritransSDK.getTransactionRequest().isSecureCard()) {
             SdkUtil.hideProgressDialog();
-            if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
-                Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
-                intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
-                startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+            if (tokenDetailsResponse != null) {
+                if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
+                    Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
+                    intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
+                    startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                }
             }
         } else {
             SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
@@ -603,14 +606,15 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
         Logger.i("cardPaymentResponse:" + cardPaymentResponse.getStatusCode());
 
         if (cardPaymentResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200)) ||
-                cardPaymentResponse.getStatusCode().equalsIgnoreCase(VeritransSDK.getVeritransSDK().getContext().getString(R.string.success_code_201))) {
+                cardPaymentResponse.getStatusCode().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
             transactionResponse = cardPaymentResponse;
 
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
             replaceFragment(paymentTransactionStatusFragment, true, false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
             titleHeaderTextViewFont.setText(getString(R.string.title_payment_status));
 
@@ -667,7 +671,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
         replaceFragment(paymentTransactionStatusFragment, true, false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
         titleHeaderTextViewFont.setText(getString(R.string.title_payment_status));
     }

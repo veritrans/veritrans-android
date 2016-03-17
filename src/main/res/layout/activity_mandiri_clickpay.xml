@@ -49,9 +49,9 @@
 
 
                         <TableLayout
-                            android:weightSum="1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:weightSum="1"
                             >
 
                             <TableRow>
@@ -68,14 +68,14 @@
                                 />
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:layout_height="wrap_content"
                                 android:layout_width="@dimen/forty_dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.3"
                                 android:gravity="center"
-                                android:text=":"
+                                android:text="@string/text_colon"
                                 android:textColor="@color/white_little_transparent"
                                 android:textSize="@dimen/primary_text_size"
                                 app:font="@string/font_open_sans_bold"
-                                android:layout_weight="0.3"
                                 />
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
@@ -83,8 +83,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
                                 android:layout_marginTop="4dp"
-                                android:text="3"
                                 android:layout_weight="1"
+                                android:text="@string/text_three"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/secondary_text_size"
                                 app:font="@string/font_open_sans_regular"
@@ -98,10 +98,10 @@
                             >
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:layout_weight="0.3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
+                                android:layout_weight="0.3"
                                 android:text="@string/input_1"
                                 android:textColor="@color/white_little_transparent"
                                 android:textSize="@dimen/secondary_text_size"
@@ -109,11 +109,11 @@
                                 />
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
-                                android:layout_weight="0.3"
                                 android:layout_width="@dimen/forty_dp"
-                                android:gravity="center"
                                 android:layout_height="wrap_content"
-                                android:text=":"
+                                android:layout_weight="0.3"
+                                android:gravity="center"
+                                android:text="@string/text_colon"
                                 android:textColor="@color/white_little_transparent"
                                 android:textSize="@dimen/primary_text_size"
                                 app:font="@string/font_open_sans_bold"
@@ -125,7 +125,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="right"
-                                android:text="Input 1 here"
+                                android:text="@string/text_input_one_here"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/secondary_text_size"
                                 app:font="@string/font_open_sans_regular"
@@ -140,8 +140,8 @@
                             <id.co.veritrans.sdk.widgets.TextViewFont
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.3"
                                 android:layout_gravity="left"
+                                android:layout_weight="0.3"
                                 android:text="@string/input_2"
                                 android:textColor="@color/white_little_transparent"
                                 android:textSize="@dimen/secondary_text_size"
@@ -150,10 +150,10 @@
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
                                 android:layout_width="@dimen/forty_dp"
-                                android:gravity="center"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.3"
-                                android:text=":"
+                                android:gravity="center"
+                                android:text="@string/text_colon"
                                 android:textColor="@color/white_little_transparent"
                                 android:textSize="@dimen/primary_text_size"
                                 app:font="@string/font_open_sans_bold"
@@ -165,7 +165,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="right"
-                                android:text="input 2 here"
+                                android:text="@string/text_input_two_here"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/secondary_text_size"
                                 app:font="@string/font_open_sans_regular"
@@ -180,8 +180,8 @@
                             <id.co.veritrans.sdk.widgets.TextViewFont
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.3"
                                 android:layout_gravity="left"
+                                android:layout_weight="0.3"
                                 android:text="@string/input_3"
                                 android:textColor="@color/white_little_transparent"
                                 android:textSize="@dimen/secondary_text_size"
@@ -190,11 +190,11 @@
 
                             <id.co.veritrans.sdk.widgets.TextViewFont
                                 android:layout_width="@dimen/forty_dp"
-                                android:gravity="center"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="0.3"
-                                android:text=":"
+                                android:gravity="center"
+                                android:text="@string/text_colon"
                                 android:textColor="@color/white_little_transparent"
                                 android:textSize="@dimen/primary_text_size"
                                 app:font="@string/font_open_sans_bold"
@@ -205,8 +205,8 @@
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:gravity="right"
-                                android:text="Input 3 here"
+                                android:gravity="end"
+                                android:text="@string/text_input_three_here"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/secondary_text_size"
                                 app:font="@string/font_open_sans_regular"

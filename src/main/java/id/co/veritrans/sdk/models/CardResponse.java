@@ -1,12 +1,16 @@
 package id.co.veritrans.sdk.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
  * Created by chetan on 04/12/15.
  */
 public class CardResponse {
+    @SerializedName("status_message")
     private String status;
+    @SerializedName("status_code")
     private int code;
     private ArrayList<SaveCardRequest> data;
 

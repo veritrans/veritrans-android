@@ -4,7 +4,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
-
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
@@ -31,12 +30,13 @@ class VeritransRestAdapter {
      *
      * @param showNetworkNotAvailableDialog boolean , whether to show network not available
      *                                      dialog or not.
-     * @return
+     * @return Payment API implementation
      */
     public static PaymentAPI getApiClient(boolean showNetworkNotAvailableDialog) {
-        if (VeritransSDK.getVeritransSDK() != null
-                && VeritransSDK.getVeritransSDK().getContext() != null
-                && Utils.isNetworkAvailable(VeritransSDK.getVeritransSDK().getContext())) {
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null
+                && veritransSDK.getContext() != null
+                && Utils.isNetworkAvailable(veritransSDK.getContext())) {
             if (paymentAPI == null) {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
@@ -68,9 +68,10 @@ class VeritransRestAdapter {
     }
 
     public static PaymentAPI getMerchantApiClient(boolean showNetworkNotAvailableDialog) {
-        if (VeritransSDK.getVeritransSDK() != null
-                && VeritransSDK.getVeritransSDK().getContext() != null
-                && Utils.isNetworkAvailable(VeritransSDK.getVeritransSDK().getContext())) {
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null
+                && veritransSDK.getContext() != null
+                && Utils.isNetworkAvailable(veritransSDK.getContext())) {
 
             if (merchantPaymentAPI == null && VeritransSDK.getVeritransSDK() != null) {
 

@@ -69,7 +69,7 @@ public class BBMMoneyPaymentStatusFragment extends Fragment {
     /**
      * initializes view and adds click listener for it.
      *
-     * @param view
+     * @param view  view that needed to be initialized
      */
     private void initializeViews(View view) {
 
@@ -110,6 +110,7 @@ public class BBMMoneyPaymentStatusFragment extends Fragment {
             mTextViewOrderId.setText(transactionResponse.getOrderId());
             mTextViewAmount.setText(transactionResponse.getGrossAmount());
 
+            //noinspection StatementWithEmptyBody
             if (transactionResponse.getTransactionStatus().contains("Pending") ||
                     transactionResponse.getTransactionStatus().contains("pending")) {
 

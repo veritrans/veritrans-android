@@ -188,7 +188,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         //setup tool bar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -229,7 +229,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      * 3) if current fragment is status fragment  then it will send result back to {@link
      * PaymentMethodsActivity}.
      *
-     * @param view
+     * @param view  clicked view
      */
     @Override
     public void onClick(View view) {
@@ -263,7 +263,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     /**
      * Displays status of transaction from {@link TransactionResponse} object.
      *
-     * @param transactionResponse
+     * @param transactionResponse   response of the transaction call
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
@@ -295,7 +295,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      * if selected payment method is bank transfer then it will set {@link
      * BankTransferPaymentFragment} to manage it.
      *
-     * @param transactionResponse
+     * @param transactionResponse   response of the transaction call
      */
     private void setUpTransactionFragment(final TransactionResponse
                                                   transactionResponse) {
@@ -399,7 +399,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      * it performs BCA bank transfer and in onSuccess() of callback method it will call {@link
      * #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
      *
-     * @param veritransSDK
+     * @param veritransSDK  Veritrans SDK instance
      */
     private void bcaBankTransferTransaction(VeritransSDK veritransSDK) {
         veritransSDK.paymentUsingBcaBankTransfer();
@@ -410,7 +410,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      * it performs bank transfer and in onSuccess() of callback method it will call {@link
      * #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
      *
-     * @param veritransSDK
+     * @param veritransSDK  Veritrans SDK instance
      */
     private void bankTransferTransaction(VeritransSDK veritransSDK) {
         veritransSDK.paymentUsingPermataBank();
@@ -421,7 +421,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      * It execute mandiri bill payment transaction and in onSuccess() of callback method it will
      * call {@link #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
      *
-     * @param veritransSDK
+     * @param veritransSDK  Veritrans SDK instance
      */
     private void mandiriBillPayTransaction(VeritransSDK veritransSDK) {
 

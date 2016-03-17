@@ -100,7 +100,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mButtonConfirmPayment.setOnClickListener(this);
     }
@@ -164,7 +164,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
      * 2) if current fragment is status fragment  then it will send result back to {@link
      * PaymentMethodsActivity}.
      *
-     * @param view
+     * @param view  clicked view
      */
     @Override
     public void onClick(View view) {
@@ -238,7 +238,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
      * execute payment code and on success set status fragment to show payment information.
      * and in onFailure displays error message.
      *
-     * @param mandiriClickPayModel
+     * @param mandiriClickPayModel  Mandiri click pay request object
      */
     private void makeTransaction(MandiriClickPayModel mandiriClickPayModel) {
 
@@ -249,7 +249,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
     /**
      * Displays status of transaction from {@link TransactionResponse} object.
      *
-     * @param transactionResponse
+     * @param transactionResponse   response of transaction call
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {

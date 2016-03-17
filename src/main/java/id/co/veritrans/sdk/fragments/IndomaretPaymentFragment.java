@@ -57,7 +57,7 @@ public class IndomaretPaymentFragment extends Fragment {
     /**
      * initializes view and adds click listener for it.
      *
-     * @param view
+     * @param view  view that needed to be initialized
      */
     private void initializeViews(View view) {
         mTextViewValidity = (TextViewFont) view.findViewById(R.id.text_validaty);
@@ -71,8 +71,6 @@ public class IndomaretPaymentFragment extends Fragment {
             if (transactionResponse.getPaymentCodeIndomaret() != null)
                 mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeIndomaret());
 
-        } else {
-            //TODO..what to do here...
         }
     }
 }
