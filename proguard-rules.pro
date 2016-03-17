@@ -15,6 +15,11 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontpreverify
+-repackageclasses ''
+-allowaccessmodification
+-optimizations !code/simplification/arithmetic
+-keepattributes *Annotation*
 
 ## GreenRobot EventBus specific rules ##
 # https://github.com/greenrobot/EventBus/blob/master/HOWTO.md#proguard-configuration
@@ -54,6 +59,11 @@
     public <init>(android.content.Context);
 }
 
+-keepclassmembers class * extends android.content.Context {
+   public void *(android.view.View);
+   public void *(android.view.MenuItem);
+}
+
 -dontwarn android.support.design.**
 -keep class android.support.design.** { *; }
 -keep interface android.support.design.** { *; }
@@ -82,7 +92,21 @@
 
 # Also you must note that if you are using GSON for conversion from JSON to POJO representation, you must ignore those POJO classes from being obfuscated.
 # Here include the POJO's that have you have created for mapping JSON response to POJO for example.
--keep class id.co.veritrans.sdk.** { *; }
+#-keep class id.co.veritrans.sdk.activities.**{ *;}
+#-keep class id.co.veritrans.sdk.fragments.**{*;}
+-keep class id.co.veritrans.sdk.models.** { *; }
+-keep class id.co.veritrans.sdk.eventbus.**{*;}
+-keep class id.co.veritrans.sdk.core.VeritransSDK {*;}
+-keep class id.co.veritrans.sdk.core.VeritransBuilder {*;}
+-keep class id.co.veritrans.sdk.core.TransactionRequest {*;}
+-keep class id.co.veritrans.sdk.core.LocalDataHandler {*;}
+-keep class id.co.veritrans.sdk.core.Logger {*;}
+-keep class id.co.veritrans.sdk.core.Constants {*;}
+-keep class id.co.veritrans.sdk.core.SdkUtil {*;}
+
+#-keep class id.co.veritrans.sdk.widget.**{*;}
+#-keep class id.co.veritrans.sdk.** {*;}
+
 
 # RxJava 0.21
 
@@ -136,7 +160,12 @@
 -dontwarn com.flurry.**
 -keepattributes *Annotation*,EnclosingMethod
 -keepclasseswithmembers class * {
-public <init>(android.content.Context, android.util.AttributeSet, int); }
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
 
 # Google Play Services library
 -keep class * extends java.util.ListResourceBundle {
@@ -148,3 +177,10 @@ public static final *** NULL; }
 -keepnames @com.google.android.gms.common.annotation.KeepName class *
 -keepclassmembernames class * {
 @com.google.android.gms.common.annotation.KeepName *; }
+
+-keepattributes InnerClasses
+
+-keep class **.R
+-keep class **.R$* {
+   <fields>;
+}
