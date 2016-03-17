@@ -3,7 +3,7 @@
 ## 1 Overview
 ### 1.1 Description 
 
-Veritrans SDK is an android library project which supports to perform transaction using variouse payment methods supported by Veritrans payment gateway. 
+Veritrans SDK is an android library project which supports performing transaction using various payment methods supported by Veritrans payment gateway. 
 
 **Before using this SDK, please familiarize yourself with our [documentation](http://docs.veritrans.co.id/en/welcome/index.html)**
 
@@ -23,7 +23,7 @@ Veritrans SDK supports following payment methods -
 11) Offers - supports offers like BIN, Discount etc.
 12) Register Card - 
 
-Instantiate sdk after application finishes launching processes. This can be done on Application class or your Main Activity class then call it at `OnCreate` method.
+Instantiate sdk after application finishes launching processes. This can be done on Application class or your Main Activity class then call it at `onCreate` method.
 Following are  configurable parameters of sdk that can be used while performing transaction -
 1) Server Endpoint- url of server to which transaction data will be sent.
 2) Transaction details - contains payment information like amount, order Id, payment method etc.
@@ -251,7 +251,7 @@ VeritransSDK.getVeritransSDK();
 
 This SDK using Event Bus implementation which don't require activity as a parameter. Instead, you need to register your subscribed class using `Event Bus`.
 
-For default implementation of the `core flow` please add this code blocks into `onCreate` and `onDestroy` method on your Activity/Fragment that needs to implement this SDK. This to ensure Activity/Fragment only receiving response when active on screen.
+For default implementation of the `core flow` please add this code blocks into `onCreate` and `onDestroy` method on your Activity/Fragment that needs to implement this SDK. This to ensure only one event bus registered for each shown activity.
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -404,7 +404,7 @@ There are two steps for registering credit card.
 2. Save `saved_token_id` into merchant server storage.
 _
 
-You can get `saved_token_id` that will be used at a later time by using the method `cardRegistration` below on the VeritransSDK object. 
+You can get `saved_token_id` -- that will be used at a later time -- by using the method `cardRegistration` below on the VeritransSDK object. 
 
 ```
 VeritransSDK.getVeritransSDK().cardRegistration(
