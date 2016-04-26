@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.util.concurrent.TimeUnit;
 
 import id.co.veritrans.sdk.BuildConfig;
+import id.co.veritrans.sdk.analytics.MixpanelApi;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.utilities.Utils;
@@ -21,9 +22,11 @@ import retrofit.converter.GsonConverter;
  * Created by chetan on 16/10/15.
  */
 class VeritransRestAdapter {
+    private static final RestAdapter.LogLevel LOG_LEVEL = BuildConfig.FLAVOR.equalsIgnoreCase("development") ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
     private static final String TAG = VeritransRestAdapter.class.getName();
     private static PaymentAPI paymentAPI;
     private static PaymentAPI merchantPaymentAPI;
+    private static MixpanelApi mixpanelApi;
 
     /**
      * It will return instance of PaymentAPI using that we can execute api calls.
@@ -109,4 +112,30 @@ class VeritransRestAdapter {
         }
         return null;
     }
+
+    public static MixpanelApi getMixpanelApi() {
+        VeritransSDK paymentSdk = VeritransSDK.getVeritransSDK();
+        if (paymentSdk != null
+                && paymentSdk.getContext() != null
+                && Utils.isNetworkAvailable(paymentSdk.getContext())) {
+            if (mixpanelApi == null) {
+                OkHttpClient okHttpClient = new OkHttpClient();
+                okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+
+                RestAdapter.Builder builder = new RestAdapter.Builder()
+                        .setLogLevel(LOG_LEVEL)
+                        .setClient(new OkClient(okHttpClient));
+                RestAdapter restAdapter;
+
+                builder.setEndpoint(BuildConfig.MIXPANEL_URL);
+                restAdapter = builder.build();
+                mixpanelApi = restAdapter.create(MixpanelApi.class);
+            }
+            return mixpanelApi;
+        } else {
+            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+        }
+        return null;
+    }
+
 }
