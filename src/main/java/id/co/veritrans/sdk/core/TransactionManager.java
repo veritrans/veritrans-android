@@ -2,6 +2,10 @@ package id.co.veritrans.sdk.core;
 
 import android.text.TextUtils;
 
+import java.security.cert.CertPathValidatorException;
+
+import javax.net.ssl.SSLHandshakeException;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.eventbus.events.AuthenticationEvent;
@@ -18,6 +22,7 @@ import id.co.veritrans.sdk.eventbus.events.GetTokenFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.GetTokenSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.RegisterCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.RegisterCardSuccessEvent;
+import id.co.veritrans.sdk.eventbus.events.SSLErrorEvent;
 import id.co.veritrans.sdk.eventbus.events.SaveCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
@@ -49,7 +54,6 @@ import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
 import rx.Observable;
 import rx.Observer;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -59,13 +63,6 @@ import rx.schedulers.Schedulers;
  * Created by shivam on 10/29/15.
  */
 class TransactionManager {
-
-    private static Subscription subscription = null;
-    private static Subscription cardPaymentSubscription = null;
-    private static Subscription paymentStatusSubscription = null;
-    private static Subscription cardSubscription = null;
-    private static Subscription deleteCardSubscription = null;
-    private static Subscription offersSubscription = null;
 
     public static void cardRegistration(String cardNumber,
                                         int cardCvv,
@@ -77,15 +74,11 @@ class TransactionManager {
             if (paymentAPI != null) {
                 final Observable<CardRegistrationResponse> observable = paymentAPI.registerCard(cardNumber, cardCvv, cardExpMonth, cardExpYear, veritransSDK.getClientKey());
 
-                subscription = observable.subscribeOn(Schedulers.io())
+                observable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<CardRegistrationResponse>() {
                             @Override
                             public void onCompleted() {
-                                if (subscription != null && !subscription.isUnsubscribed()) {
-                                    subscription.unsubscribe();
-                                }
-
                                 releaseResources();
                             }
 
@@ -93,8 +86,14 @@ class TransactionManager {
                             public void onError(Throwable e) {
                                 Logger.e("error while getting token : ", "" +
                                         e.getMessage());
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
-                                releaseResources();
+
+                                if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                    VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                    Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                } else {
+                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                    Logger.i("General error occurred " + e.getMessage());
+                                }
                             }
 
                             @Override
@@ -147,27 +146,28 @@ class TransactionManager {
                         cardTokenRequest.getClientKey()
                 );
 
-                subscription = observable.subscribeOn(Schedulers
+                observable.subscribeOn(Schedulers
                         .io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<RegisterCardResponse>() {
 
                             @Override
                             public void onCompleted() {
-
-                                if (subscription != null && !subscription.isUnsubscribed()) {
-                                    subscription.unsubscribe();
-                                }
-
                                 releaseResources();
                             }
 
                             @Override
-                            public void onError(Throwable throwable) {
+                            public void onError(Throwable e) {
 
                                 Logger.e("error while getting token : ", "" +
-                                        throwable.getMessage());
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                        e.getMessage());
+                                if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                    VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                    Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                } else {
+                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                    Logger.i("General error occurred " + e.getMessage());
+                                }
                                 releaseResources();
                             }
 
@@ -194,7 +194,7 @@ class TransactionManager {
                                             Observable<CardResponse> registerCard = apiInterface
                                                     .registerCard(merchantToken, registerCardResponse);
 
-                                            cardSubscription = registerCard.subscribeOn(Schedulers.io())
+                                            registerCard.subscribeOn(Schedulers.io())
                                                     .observeOn(AndroidSchedulers.mainThread())
                                                     .subscribe(new Observer<CardResponse>() {
                                                         @Override
@@ -315,27 +315,28 @@ class TransactionManager {
 
                 }
 
-                subscription = observable.subscribeOn(Schedulers
+                observable.subscribeOn(Schedulers
                         .io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<TokenDetailsResponse>() {
 
                             @Override
                             public void onCompleted() {
-
-                                if (subscription != null && !subscription.isUnsubscribed()) {
-                                    subscription.unsubscribe();
-                                }
-
                                 releaseResources();
                             }
 
                             @Override
-                            public void onError(Throwable throwable) {
+                            public void onError(Throwable e) {
 
                                 Logger.e("error while getting token : ", "" +
-                                        throwable.getMessage());
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                        e.getMessage());
+                                if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                    VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                    Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                } else {
+                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                    Logger.i("General error occurred " + e.getMessage());
+                                }
                                 releaseResources();
                             }
 
@@ -412,25 +413,26 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingPermataBank(merchantToken,
                             permataBankTransfer);
 
-                    subscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (subscription != null && !subscription.isUnsubscribed()) {
-                                        subscription.unsubscribe();
-                                    }
-
                                     releaseResources();
 
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(throwable.getMessage(), null));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -509,25 +511,26 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingBCAVA(merchantToken,
                             bcaBankTransfer);
 
-                    subscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (subscription != null && !subscription.isUnsubscribed()) {
-                                        subscription.unsubscribe();
-                                    }
-
                                     releaseResources();
 
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(throwable.getMessage(), null));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -608,24 +611,24 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingCard(merchantToken,
                             cardTransfer);
 
-                    cardPaymentSubscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
                                 @Override
                                 public void onCompleted() {
-
-                                    if (cardPaymentSubscription != null &&
-                                            !cardPaymentSubscription.isUnsubscribed()) {
-                                        cardPaymentSubscription.unsubscribe();
-                                    }
-
                                     releaseResources();
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -694,31 +697,31 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingMandiriClickPay(merchantToken,
                             mandiriClickPayRequestModel);
 
-                    subscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
+                                    releaseResources();
 
-                                    if (subscription != null && !subscription.isUnsubscribed()) {
-                                        subscription.unsubscribe();
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
                                     }
-
                                     releaseResources();
-
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    releaseResources();
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
-                                }
-
-                                @Override
-                                public void onNext(TransactionResponse
-                                                           mandiriTransferResponse) {
+                                public void onNext(TransactionResponse mandiriTransferResponse) {
 
                                     releaseResources();
 
@@ -789,26 +792,26 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingBCAKlikPay(merchantToken,
                             bcaKlikPayModel);
 
-                    subscription = observable.subscribeOn(Schedulers
-                            .io())
+                    observable.subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (subscription != null && !subscription.isUnsubscribed()) {
-                                        subscription.unsubscribe();
-                                    }
-
                                     releaseResources();
 
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
                                 }
 
                                 @Override
@@ -889,25 +892,26 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingMandiriBillPay(merchantToken,
                             mandiriBillPayTransferModel);
 
-                    subscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (subscription != null && !subscription.isUnsubscribed()) {
-                                        subscription.unsubscribe();
-                                    }
-
                                     releaseResources();
 
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -975,21 +979,24 @@ class TransactionManager {
 
                     observable = apiInterface.paymentUsingCIMBClickPay(merchantToken,
                             cimbClickPayModel);
-                    subscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
                                 @Override
                                 public void onCompleted() {
-                                    if (subscription != null && !subscription.isUnsubscribed()) {
-                                        subscription.unsubscribe();
-                                    }
                                     releaseResources();
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -1048,21 +1055,24 @@ class TransactionManager {
                 if (merchantToken != null) {
                     observable = apiInterface.paymentUsingMandiriECash(merchantToken,
                             mandiriECashModel);
-                    subscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
                                 @Override
                                 public void onCompleted() {
-                                    if (subscription != null && !subscription.isUnsubscribed()) {
-                                        subscription.unsubscribe();
-                                    }
                                     releaseResources();
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -1127,25 +1137,26 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingEpayBri(merchantToken,
                             epayBriTransfer);
 
-                    subscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (subscription != null && !subscription.isUnsubscribed()) {
-                                        subscription.unsubscribe();
-                                    }
-
                                     releaseResources();
 
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -1215,23 +1226,25 @@ class TransactionManager {
                 if (merchantToken != null) {
                     observable = apiInterface.transactionStatus(merchantToken,
                             id);
-                    paymentStatusSubscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionStatusResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-                                    if (paymentStatusSubscription != null &&
-                                            !paymentStatusSubscription.isUnsubscribed()) {
-                                        paymentStatusSubscription.unsubscribe();
-                                    }
                                     releaseResources();
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -1296,25 +1309,26 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingIndosatDompetku(merchantToken,
                             indosatDompetkuRequest);
 
-                    subscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (subscription != null && !subscription.isUnsubscribed()) {
-                                        subscription.unsubscribe();
-                                    }
-
                                     releaseResources();
 
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -1387,25 +1401,26 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingIndomaret(merchantToken,
                             indomaretRequestModel);
 
-                    subscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (subscription != null && !subscription.isUnsubscribed()) {
-                                        subscription.unsubscribe();
-                                    }
-
                                     releaseResources();
 
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -1477,23 +1492,25 @@ class TransactionManager {
                     observable = apiInterface.paymentUsingBBMMoney(merchantToken,
                             bbmMoneyRequestModel);
 
-                    subscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<TransactionResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (subscription != null && !subscription.isUnsubscribed()) {
-                                        subscription.unsubscribe();
-                                    }
                                     releaseResources();
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -1567,25 +1584,26 @@ class TransactionManager {
                     observable = apiInterface.saveCard(auth,
                             cardTokenRequest);
 
-                    cardSubscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<SaveCardResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (cardSubscription != null && !cardSubscription.isUnsubscribed()) {
-                                        cardSubscription.unsubscribe();
-                                    }
-
                                     releaseResources();
 
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -1645,25 +1663,26 @@ class TransactionManager {
 
                     observable = apiInterface.getCard(auth);
 
-                    cardSubscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<CardResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (cardSubscription != null && !cardSubscription.isUnsubscribed()) {
-                                        cardSubscription.unsubscribe();
-                                    }
-
                                     releaseResources();
 
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -1768,25 +1787,26 @@ class TransactionManager {
                     observable = apiInterface.deleteCard(auth,
                             creditCard.getSavedTokenId());
 
-                    deleteCardSubscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<DeleteCardResponse>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (deleteCardSubscription != null && !deleteCardSubscription.isUnsubscribed()) {
-                                        deleteCardSubscription.unsubscribe();
-                                    }
-
                                     releaseResources();
 
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -1846,25 +1866,26 @@ class TransactionManager {
                     observable = apiInterface.getOffers(merchantToken
                     );
 
-                    offersSubscription = observable.subscribeOn(Schedulers
+                    observable.subscribeOn(Schedulers
                             .io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<GetOffersResponseModel>() {
 
                                 @Override
                                 public void onCompleted() {
-
-                                    if (offersSubscription != null && !offersSubscription.isUnsubscribed()) {
-                                        offersSubscription.unsubscribe();
-                                    }
-
                                     releaseResources();
 
                                 }
 
                                 @Override
-                                public void onError(Throwable throwable) {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(throwable.getMessage()));
+                                public void onError(Throwable e) {
+                                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                        VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                        Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                        Logger.i("General error occurred " + e.getMessage());
+                                    }
                                     releaseResources();
                                 }
 
@@ -1917,21 +1938,23 @@ class TransactionManager {
             PaymentAPI paymentAPI = VeritransRestAdapter.getMerchantApiClient(true);
             if (paymentAPI != null) {
                 Observable<AuthModel> observable = paymentAPI.getAuthenticationToken();
-                subscription = observable.subscribeOn(Schedulers.io())
+                observable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AuthModel>() {
                             @Override
                             public void onCompleted() {
-                                if (subscription != null && !subscription.isUnsubscribed()) {
-                                    subscription.unsubscribe();
-                                }
-
                                 releaseResources();
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                    VeritransBusProvider.getInstance().post(new SSLErrorEvent());
+                                    Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                } else {
+                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage()));
+                                    Logger.i("General error occurred " + e.getMessage());
+                                }
                                 releaseResources();
                             }
 
