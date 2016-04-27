@@ -4,11 +4,12 @@ buildscript {
     }
     dependencies {
       classpath 'com.android.tools.build:gradle:1.5.0'
-      classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
     }
 }
 apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 
 group = 'id.co.veritrans'
 version = '0.9.2'
@@ -47,11 +48,13 @@ android {
         development {
             buildConfigField "String", "BASE_URL", "\"https://api.sandbox.veritrans.co.id/v2/\""
             buildConfigField "String", "FLURRY_API_KEY", "\"NNB5NK9TP5HNJCZCYXNJ\""
+            buildConfigField "String", "MIXPANEL_TOKEN", "\"cc005b296ca4ce612fe3939177c668bb\""
         }
 
         production {
             buildConfigField "String", "BASE_URL", "\"https://api.veritrans.co.id/v2/\""
             buildConfigField "String", "FLURRY_API_KEY", "\"KYKDDMDXDVJ96B5S9HBS\""
+            buildConfigField "String", "MIXPANEL_TOKEN", "\"0269722c477a0e085fde32e0248c6003\""
         }
     }
 
@@ -90,5 +93,23 @@ bintray {
         publish = true
         publicDownloadNumbers = true
     }
+    publications = ['BintrayPublication']
 
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "source"
+}
+
+publishing {
+    publications {
+        BintrayPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/androidsdk-private-development-release.aar")
+            groupId group
+            artifactId 'androidsdk'
+            version version
+        }
+    }
 }
