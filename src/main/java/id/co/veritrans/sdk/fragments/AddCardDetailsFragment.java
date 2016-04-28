@@ -116,14 +116,13 @@ public class AddCardDetailsFragment extends Fragment {
         cbStoreCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                isValid();
+                checkCardValidity();
             }
         });
         payNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isValid()) {
-
+                if (checkCardValidity()) {
                     CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
                             .parseInt(cvv),
                             expMonth, expYear,
@@ -248,7 +247,7 @@ public class AddCardDetailsFragment extends Fragment {
         );
     }
 
-    private boolean isValid() {
+    private boolean checkCardValidity() {
         cardNumber = etCardNo.getText().toString().trim().replace(" ", "");
         expiryDate = etExpiryDate.getText().toString().trim();
         cvv = etCvv.getText().toString().trim();
@@ -347,7 +346,7 @@ public class AddCardDetailsFragment extends Fragment {
 
     public void focusChange() {
         Logger.i("onFocus change has not focus");
-        isValid();
+        checkCardValidity();
     }
 
     private void setCardType() {
