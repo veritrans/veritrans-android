@@ -29,7 +29,7 @@ import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.MandiriClickPayFragment;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Created by shivam on 11/3/15.
@@ -45,10 +45,10 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
     private MandiriClickPayFragment mMandiriClickPayFragment = null;
     private Button mButtonConfirmPayment = null;
     private Toolbar mToolbar = null;
-    private TextViewFont mTextViewAppli = null;
-    private TextViewFont mTextViewInput1 = null;
-    private TextViewFont mTextViewInput2 = null;
-    private TextViewFont mTextViewInput3 = null;
+    private TextView mTextViewAppli = null;
+    private TextView mTextViewInput1 = null;
+    private TextView mTextViewInput2 = null;
+    private TextView mTextViewInput3 = null;
     private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
     private VeritransSDK mVeritransSDK = null;
     // for result
@@ -94,9 +94,9 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
-        mTextViewInput1 = (TextViewFont) findViewById(R.id.text_input_1);
-        mTextViewInput2 = (TextViewFont) findViewById(R.id.text_input_2);
-        mTextViewInput3 = (TextViewFont) findViewById(R.id.text_input_3);
+        mTextViewInput1 = (TextView) findViewById(R.id.text_input_1);
+        mTextViewInput2 = (TextView) findViewById(R.id.text_input_2);
+        mTextViewInput3 = (TextView) findViewById(R.id.text_input_3);
 
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);

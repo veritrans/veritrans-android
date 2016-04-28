@@ -13,15 +13,13 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:orientation="vertical"
-        android:paddingTop="@dimen/sixteen_dp"
-
-        >
+        android:paddingTop="@dimen/sixteen_dp" >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:id="@+id/text_empty_saved_cards"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,7 +41,6 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/sixteen_dp"
             app:fillColor="@android:color/white"
-            app:font="@string/font_open_sans_semibold"
             app:pageColor="@color/colorSecondary"
             app:radius="4dp"
             app:strokeColor="@color/colorSecondary"
@@ -57,14 +54,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/sixteen_dp"
         >
-      <!--  <id.co.veritrans.sdk.widgets.MorphingButton
-            android:id="@+id/btnMorph1"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_width="@dimen/btn_height"
-            android:layout_height="@dimen/btn_height"
-            android:visibility="gone"
-            android:textColor="@android:color/white"/>-->
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/btn_add_card"
             android:layout_width="wrap_content"
@@ -90,7 +79,7 @@
             android:src="@drawable/curve_arrow"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.SemiBoldTextView
             android:id="@+id/text_card_number"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
@@ -100,8 +89,7 @@
             android:text="@string/add_card_message"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size"
-            app:font="@string/font_open_sans_semibold"
-
+            android:textStyle="bold"
             />
 
 

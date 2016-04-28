@@ -32,23 +32,6 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
-            <!-- <android.support.design.widget.TextInputLayout
-                 android:id="@+id/til_user_name"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_below="@id/til_card_no"
-                 android:layout_marginTop="@dimen/eight_dp">
-
-
-                 <EditText
-                     android:id="@+id/et_holder_name"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:hint="@string/hint_name_on_card"
-                     android:maxLength="50"
-                     android:singleLine="true"/>
-             </android.support.design.widget.TextInputLayout>-->
-
             <LinearLayout
                 android:id="@+id/expiry_date_layout"
                 android:layout_width="match_parent"
@@ -149,15 +132,6 @@
                     android:layout_alignParentRight="true"
                     android:textColor="@android:color/white"
                     android:visibility="gone" />
-                <!-- <android.support.design.widget.FloatingActionButton
-                     android:id="@+id/btn_add_card"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     app:borderWidth="0dp"
-                     app:elevation="0dp"
-                     android:layout_alignParentBottom="true"
-                     android:layout_alignParentRight="true"
-                     android:src="@drawable/ic_plus_action"/>-->
 
                 <Button
                     android:id="@+id/btn_pay_now"

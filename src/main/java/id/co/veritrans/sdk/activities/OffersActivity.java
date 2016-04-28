@@ -71,7 +71,7 @@ import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.MorphingButton;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -95,10 +95,10 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
     public ArrayList<OffersListModel> offersListModels = new ArrayList<>();
     public ArrayList<SaveCardRequest> creditCards = new ArrayList<>();
     private Toolbar toolbar = null;
-    private TextViewFont textViewTitleOffers = null;
+    private TextView textViewTitleOffers = null;
     private VeritransSDK veritransSDK = null;
-    private TextViewFont textViewTitleCardDetails = null;
-    private TextViewFont textViewOfferName = null;
+    private TextView textViewTitleCardDetails = null;
+    private TextView textViewOfferName = null;
     private OffersListFragment offersListFragment = null;
     private int position = Constants.PAYMENT_METHOD_OFFERS;
     private OffersListModel selectedOffer;
@@ -119,7 +119,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
     private String errorMessage = null;
     private CardPagerAdapter cardPagerAdapter;
     private CirclePageIndicator circlePageIndicator;
-    private TextViewFont emptyCardsTextViewFont;
+    private TextView emptyCardsTextView;
     private MorphingButton btnMorph;
 
     public OffersListModel getSelectedOffer() {
@@ -174,9 +174,9 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
 
     private void initializeView() {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        textViewTitleOffers = (TextViewFont) findViewById(R.id.text_title);
-        textViewTitleCardDetails = (TextViewFont) findViewById(R.id.text_title_card_details);
-        textViewOfferName = (TextViewFont) findViewById(R.id.text_title_offer_name);
+        textViewTitleOffers = (TextView) findViewById(R.id.text_title);
+        textViewTitleCardDetails = (TextView) findViewById(R.id.text_title_card_details);
+        textViewOfferName = (TextView) findViewById(R.id.text_title_offer_name);
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
@@ -522,10 +522,10 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         this.RESULT_CODE = resultCode;
     }
 
-    public void setAdapterViews(CardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, TextViewFont emptyCardsTextViewFont) {
+    public void setAdapterViews(CardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, TextView emptyCardsTextView) {
         this.cardPagerAdapter = cardPagerAdapter;
         this.circlePageIndicator = circlePageIndicator;
-        this.emptyCardsTextViewFont = emptyCardsTextViewFont;
+        this.emptyCardsTextView = emptyCardsTextView;
     }
 
     public void morphingAnimation(){
@@ -750,11 +750,11 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
                 circlePageIndicator.notifyDataSetChanged();
             }
             //processingLayout.setVisibility(View.GONE);
-            if (emptyCardsTextViewFont != null) {
+            if (emptyCardsTextView != null) {
                 if (!creditCards.isEmpty()) {
-                    emptyCardsTextViewFont.setVisibility(View.GONE);
+                    emptyCardsTextView.setVisibility(View.GONE);
                 } else {
-                    emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+                    emptyCardsTextView.setVisibility(View.VISIBLE);
                 }
 
             }

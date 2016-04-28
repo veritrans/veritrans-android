@@ -72,7 +72,7 @@ public class AddCardDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextViewFont().setText(getString(R.string.card_details));
+        ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.card_details));
         veritransSDK = ((CreditDebitCardFlowActivity) getActivity()).getVeritransSDK();
         userDetail = ((CreditDebitCardFlowActivity) getActivity()).getUserDetail();
         bankDetails = ((CreditDebitCardFlowActivity) getActivity()).getBankDetails();

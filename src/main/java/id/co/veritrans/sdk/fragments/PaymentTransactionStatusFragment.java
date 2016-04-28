@@ -21,7 +21,7 @@ import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Created by shivam on 10/27/15.
@@ -36,12 +36,12 @@ public class PaymentTransactionStatusFragment extends Fragment {
     // views
     private Button actionBt = null;
     private ImageView paymentIv = null;
-    private TextViewFont paymentStatusTv = null;
-    private TextViewFont paymentMessageTv = null;
-    private TextViewFont amountTextViewFont = null;
-    private TextViewFont orderIdTextViewFont = null;
-    private TextViewFont transactionTimeTextViewFont = null;
-    private TextViewFont paymentTypeTextViewFont = null;
+    private TextView paymentStatusTv = null;
+    private TextView paymentMessageTv = null;
+    private TextView amountTextView = null;
+    private TextView orderIdTextView = null;
+    private TextView transactionTimeTextView = null;
+    private TextView paymentTypeTextView = null;
     private int count = 1;
     private TableLayout detailsTable;
 
@@ -87,14 +87,14 @@ public class PaymentTransactionStatusFragment extends Fragment {
     }
 
     private void initializeViews(View view) {
-        amountTextViewFont = (TextViewFont) view.findViewById(R.id.text_amount);
-        orderIdTextViewFont = (TextViewFont) view.findViewById(R.id.text_order_id);
-        transactionTimeTextViewFont = (TextViewFont) view.findViewById(R.id.text_transaction_time);
-        paymentTypeTextViewFont = (TextViewFont) view.findViewById(R.id.text_payment_type);
+        amountTextView = (TextView) view.findViewById(R.id.text_amount);
+        orderIdTextView = (TextView) view.findViewById(R.id.text_order_id);
+        transactionTimeTextView = (TextView) view.findViewById(R.id.text_transaction_time);
+        paymentTypeTextView = (TextView) view.findViewById(R.id.text_payment_type);
         actionBt = (Button) view.findViewById(R.id.btn_action);
         paymentIv = (ImageView) view.findViewById(R.id.image_payment);
-        paymentStatusTv = (TextViewFont) view.findViewById(R.id.text_payment_status);
-        paymentMessageTv = (TextViewFont) view.findViewById(R.id.text_payment_message);
+        paymentStatusTv = (TextView) view.findViewById(R.id.text_payment_status);
+        paymentMessageTv = (TextView) view.findViewById(R.id.text_payment_message);
         detailsTable = (TableLayout) view.findViewById(R.id.transaction_info_layout);
     }
 
@@ -132,9 +132,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
             setUiForFailure();
         }
         try {
-            transactionTimeTextViewFont.setText(transactionResponse.getTransactionTime());
-            amountTextViewFont.setText(transactionResponse.getGrossAmount());
-            orderIdTextViewFont.setText(transactionResponse.getOrderId());
+            transactionTimeTextView.setText(transactionResponse.getTransactionTime());
+            amountTextView.setText(transactionResponse.getGrossAmount());
+            orderIdTextView.setText(transactionResponse.getOrderId());
         } catch (NullPointerException e) {
             e.printStackTrace();
 
@@ -232,21 +232,21 @@ public class PaymentTransactionStatusFragment extends Fragment {
             return;
         }
         if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_epay_bri))) {
-            paymentTypeTextViewFont.setText(getString(R.string.epay_bri));
+            paymentTypeTextView.setText(getString(R.string.epay_bri));
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
-            paymentTypeTextViewFont.setText(getString(R.string.mandiri_bill_payment));
+            paymentTypeTextView.setText(getString(R.string.mandiri_bill_payment));
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_cimb_clicks))) {
-            paymentTypeTextViewFont.setText(getString(R.string.cimb_clicks));
+            paymentTypeTextView.setText(getString(R.string.cimb_clicks));
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_mandiri_ecash))) {
-            paymentTypeTextViewFont.setText(getString(R.string.mandiri_e_cash));
+            paymentTypeTextView.setText(getString(R.string.mandiri_e_cash));
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_mandiri_clickpay))) {
-            paymentTypeTextViewFont.setText(getString(R.string.mandiri_click_pay));
+            paymentTypeTextView.setText(getString(R.string.mandiri_click_pay));
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_indomaret))) {
-            paymentTypeTextViewFont.setText(getString(R.string.indomaret));
+            paymentTypeTextView.setText(getString(R.string.indomaret));
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_credit_debit))) {
-            paymentTypeTextViewFont.setText(getString(R.string.credit_card));
+            paymentTypeTextView.setText(getString(R.string.credit_card));
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_indosat_dompetku))) {
-            paymentTypeTextViewFont.setText(getString(R.string.indosat_dompetku));
+            paymentTypeTextView.setText(getString(R.string.indosat_dompetku));
         }
 
     }

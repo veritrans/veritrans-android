@@ -28,7 +28,7 @@ import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.fragments.InstructionIndosatFragment;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Created to show and handle bank transfer and mandiri bill pay details.
@@ -57,7 +57,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
     public String currentFragment = "home";
 
     private Button mButtonConfirmPayment = null;
-    private TextViewFont mTextViewTitle = null;
+    private TextView mTextViewTitle = null;
 
     private VeritransSDK mVeritransSDK = null;
     private Toolbar mToolbar = null;
@@ -144,7 +144,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
     private void initializeView() {
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mTextViewTitle = (TextViewFont) findViewById(R.id.text_title);
+        mTextViewTitle = (TextView) findViewById(R.id.text_title);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
 
         //setup tool bar

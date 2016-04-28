@@ -13,7 +13,7 @@
         android:orientation="vertical"
         >
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -22,10 +22,9 @@
             android:text="@string/instruction"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -37,10 +36,9 @@
             android:text="@string/cimb_instruction_step1"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -50,11 +48,10 @@
             android:text="@string/cimb_instruction_step2"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -67,7 +64,6 @@
             android:text="@string/cimb_instruction_step3"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
 
             />
 

@@ -48,26 +48,25 @@
 
                             <TableRow>
 
-                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                <id.co.veritrans.sdk.widgets.DefaultTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
                                     android:layout_weight="0.3"
                                     android:text="@string/orderId"
                                     android:textColor="@color/white_little_transparent"
-                                    android:textSize="@dimen/secondary_text_size"
-                                    app:font="@string/font_open_sans_regular" />
+                                    android:textSize="@dimen/secondary_text_size" />
 
-                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                <id.co.veritrans.sdk.widgets.BoldTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.3"
                                     android:text="@string/text_colon"
                                     android:textColor="@color/white_little_transparent"
                                     android:textSize="@dimen/secondary_text_size"
-                                    app:font="@string/font_open_sans_bold" />
+                                    android:textStyle="bold"/>
 
-                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                <id.co.veritrans.sdk.widgets.DefaultTextView
                                     android:id="@+id/text_order_id"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -75,33 +74,31 @@
                                     android:gravity="left"
                                     android:text="@string/text_order_id_here"
                                     android:textColor="@android:color/white"
-                                    android:textSize="@dimen/secondary_text_size"
-                                    app:font="@string/font_open_sans_regular" />
+                                    android:textSize="@dimen/secondary_text_size"/>
 
                             </TableRow>
 
                             <TableRow android:layout_marginTop="@dimen/eight_dp">
 
-                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                <id.co.veritrans.sdk.widgets.DefaultTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
                                     android:layout_weight="0.3"
                                     android:text="@string/text_amount"
                                     android:textColor="@color/white_little_transparent"
-                                    android:textSize="@dimen/secondary_text_size"
-                                    app:font="@string/font_open_sans_regular" />
+                                    android:textSize="@dimen/secondary_text_size"/>
 
-                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                <id.co.veritrans.sdk.widgets.BoldTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.3"
                                     android:text="@string/text_colon"
                                     android:textColor="@color/white_little_transparent"
                                     android:textSize="@dimen/secondary_text_size"
-                                    app:font="@string/font_open_sans_bold" />
+                                    android:textStyle="bold"/>
 
-                                <id.co.veritrans.sdk.widgets.TextViewFont
+                                <id.co.veritrans.sdk.widgets.DefaultTextView
                                     android:id="@+id/text_amount"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -109,8 +106,7 @@
                                     android:layout_weight="1.5"
                                     android:text="@string/text_amount_here"
                                     android:textColor="@android:color/white"
-                                    android:textSize="@dimen/secondary_text_size"
-                                    app:font="@string/font_open_sans_regular" />
+                                    android:textSize="@dimen/secondary_text_size" />
 
                             </TableRow>
 
@@ -142,14 +138,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <id.co.veritrans.sdk.widgets.TextViewFont
+                <id.co.veritrans.sdk.widgets.DefaultTextView
                     android:id="@+id/text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/virtual_account"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/tool_bar_title_size"
-                    app:font="@string/font_open_sans_regular" />
+                    android:textSize="@dimen/tool_bar_title_size" />
 
             </LinearLayout>
         </android.support.v7.widget.Toolbar>

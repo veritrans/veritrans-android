@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:id="@+id/text_empty_saved_cards"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,7 +45,6 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/sixteen_dp"
             app:fillColor="@android:color/white"
-            app:font="@string/font_open_sans_semibold"
             app:pageColor="@color/colorSecondary"
             app:radius="4dp"
             app:strokeColor="@color/colorSecondary"
@@ -63,22 +62,22 @@
         android:paddingRight="@dimen/sixteen_dp"
         >
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
-            android:gravity="left"
+            android:gravity="start"
             android:text="@string/pay_with_instalments"
             android:textColor="@color/black"
             android:textSize="@dimen/seventeen_sp"
-            app:font="@string/font_open_sans_regular"
             tools:ignore="RelativeOverlap" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:weightSum="1"
@@ -94,7 +93,7 @@
                 android:padding="@dimen/sixteen_dp"
                 />
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:id="@+id/text_instalment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -106,7 +105,6 @@
                 android:text="@string/zero_month"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/tertiary_text_size"
-                app:font="@string/font_open_sans_regular"
                 />
 
             <ImageView
@@ -135,6 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:src="@drawable/ic_plus_action"
             app:borderWidth="0dp"
             app:elevation="0dp"/>
@@ -151,7 +150,7 @@
             android:src="@drawable/curve_arrow"
             android:visibility="gone" />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.SemiBoldTextView
             android:id="@+id/text_card_number"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
@@ -162,7 +161,7 @@
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size"
             android:visibility="gone"
-            app:font="@string/font_open_sans_semibold"
+            android:textStyle="bold"
             />
     </RelativeLayout>
 </LinearLayout>

@@ -65,7 +65,7 @@ public class RegisterCardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((SaveCreditCardActivity) getActivity()).getTitleHeaderTextViewFont().setText(getString(R.string.card_details));
+        ((SaveCreditCardActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.card_details));
         veritransSDK = ((SaveCreditCardActivity) getActivity()).getVeritransSDK();
     }
 

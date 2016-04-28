@@ -12,7 +12,7 @@ import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Displays status information about bank transfer's api call .
@@ -26,9 +26,9 @@ public class BankTransferPaymentFragment extends Fragment {
     private static TransactionResponse sPermataBankTransferResponse = null;
 
     //views
-    private TextViewFont mTextViewVirtualAccountNumber = null;
-    private TextViewFont mTextViewSeeInstruction = null;
-    private TextViewFont mTextViewValidity = null;
+    private TextView mTextViewVirtualAccountNumber = null;
+    private TextView mTextViewSeeInstruction = null;
+    private TextView mTextViewValidity = null;
 
 
     /**
@@ -70,11 +70,11 @@ public class BankTransferPaymentFragment extends Fragment {
      */
     private void initializeViews(View view) {
 
-        mTextViewVirtualAccountNumber = (TextViewFont)
+        mTextViewVirtualAccountNumber = (TextView)
                 view.findViewById(R.id.text_virtual_account_number);
 
-        mTextViewSeeInstruction = (TextViewFont) view.findViewById(R.id.text_see_instruction);
-        mTextViewValidity = (TextViewFont) view.findViewById(R.id.text_validaty);
+        mTextViewSeeInstruction = (TextView) view.findViewById(R.id.text_see_instruction);
+        mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
 
         if (sPermataBankTransferResponse != null) {
             if (sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
