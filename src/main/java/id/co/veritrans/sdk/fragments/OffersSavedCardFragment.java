@@ -36,21 +36,21 @@ import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCallback {
 
     private final String MONTH = "Month";
     int currentPosition, totalPositions;
-    private TextViewFont textViewTitleOffers = null;
-    private TextViewFont textViewTitleCardDetails = null;
-    private TextViewFont textViewOfferName = null;
+    private TextView textViewTitleOffers = null;
+    private TextView textViewTitleCardDetails = null;
+    private TextView textViewOfferName = null;
     private int offerPosition = 0;
     private String offerName = null;
     private String offerType = null;
     private ImageView imageViewPlus = null;
     private ImageView imageViewMinus = null;
-    private TextViewFont textViewInstalment = null;
+    private TextView textViewInstalment = null;
     private RelativeLayout layoutPayWithInstalment = null;
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
@@ -58,7 +58,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
     private VeritransSDK veritransSDK;
     private ArrayList<SaveCardRequest> creditCards;
     private CardPagerAdapter cardPagerAdapter;
-    private TextViewFont emptyCardsTextViewFont;
+    private TextView emptyCardsTextView;
     private boolean isInstalment = false;
     private LinearLayout creditCardLayout;
     private RelativeLayout newCardButtonLayout;
@@ -205,16 +205,16 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             }
         });*/
 
-        textViewTitleOffers = (TextViewFont) getActivity().findViewById(R.id.text_title);
-        textViewTitleCardDetails = (TextViewFont) getActivity().findViewById(R.id
+        textViewTitleOffers = (TextView) getActivity().findViewById(R.id.text_title);
+        textViewTitleCardDetails = (TextView) getActivity().findViewById(R.id
                 .text_title_card_details);
-        textViewOfferName = (TextViewFont) getActivity().findViewById(R.id.text_title_offer_name);
+        textViewOfferName = (TextView) getActivity().findViewById(R.id.text_title_offer_name);
 
         setToolbar();
 
         imageViewPlus = (ImageView) view.findViewById(R.id.img_plus);
         imageViewMinus = (ImageView) view.findViewById(R.id.img_minus);
-        textViewInstalment = (TextViewFont) view.findViewById(R.id.text_instalment);
+        textViewInstalment = (TextView) view.findViewById(R.id.text_instalment);
 
 
         if (offerType.equalsIgnoreCase(OffersActivity.OFFER_TYPE_INSTALMENTS)) {
@@ -237,7 +237,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             }
         });
 
-        emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
+        emptyCardsTextView = (TextView) view.findViewById(R.id.text_empty_saved_cards);
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
         addCardBt = (FloatingActionButton) view.findViewById(R.id.btn_add_card);
         addCardBt.setOnClickListener(new View.OnClickListener() {
@@ -284,7 +284,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                 });
                 circlePageIndicator.setViewPager(savedCardPager);
                 //to notify adapter when credit card details received
-                ((OffersActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyCardsTextViewFont);
+                ((OffersActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyCardsTextView);
                 showHideNoCardMessage();
             }
         }
@@ -292,10 +292,10 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
 
     private void showHideNoCardMessage() {
         if (creditCards.isEmpty()) {
-            emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+            emptyCardsTextView.setVisibility(View.VISIBLE);
             //savedCardPager.setVisibility(View.GONE);
         } else {
-            emptyCardsTextViewFont.setVisibility(View.GONE);
+            emptyCardsTextView.setVisibility(View.GONE);
             //savedCardPager.setVisibility(View.VISIBLE);
         }
     }
@@ -511,9 +511,9 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                 cardPagerAdapter.notifyDataSetChanged();
                 circlePageIndicator.notifyDataSetChanged();
                 if (creditCards.isEmpty()) {
-                    emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+                    emptyCardsTextView.setVisibility(View.VISIBLE);
                 } else {
-                    emptyCardsTextViewFont.setVisibility(View.GONE);
+                    emptyCardsTextView.setVisibility(View.GONE);
                 }
             }
         }

@@ -30,7 +30,7 @@ import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.HeaderView;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Displays list of available payment methods.
@@ -58,9 +58,9 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private RecyclerView mRecyclerView = null;
     private HeaderView toolbarHeaderView = null;
     private HeaderView floatHeaderView = null;
-    private TextViewFont headerTextView = null;
+    private TextView headerTextView = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
-    private TextViewFont textViewMeasureHeight = null;
+    private TextView textViewMeasureHeight = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,8 +191,8 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
         toolbarHeaderView = (HeaderView) findViewById(R.id.toolbar_header_view);
         floatHeaderView = (HeaderView) findViewById(R.id.float_header_view);
-        headerTextView = (TextViewFont) findViewById(R.id.title_header);
-        textViewMeasureHeight = (TextViewFont) findViewById(R.id.textview_to_compare);
+        headerTextView = (TextView) findViewById(R.id.title_header);
+        textViewMeasureHeight = (TextView) findViewById(R.id.textview_to_compare);
     }
 
     /**

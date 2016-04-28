@@ -15,7 +15,7 @@ import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.UserDetail;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * It displays payment related instructions on the screen.
@@ -23,7 +23,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
  */
 public class BankTransferFragment extends Fragment {
 
-    private TextViewFont mTextViewSeeInstruction = null;
+    private TextView mTextViewSeeInstruction = null;
     private EditText mEditTextEmailId = null;
     private StorageDataHandler storageDataHandler;
     private UserDetail userDetail;
@@ -50,7 +50,7 @@ public class BankTransferFragment extends Fragment {
      */
     private void initializeViews(View view) {
 
-        mTextViewSeeInstruction = (TextViewFont)
+        mTextViewSeeInstruction = (TextView)
                 view.findViewById(R.id.text_see_instruction);
         storageDataHandler = new StorageDataHandler();
         try {

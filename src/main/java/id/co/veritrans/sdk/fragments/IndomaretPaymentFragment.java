@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Displays status information about bank transfer's api call .
@@ -25,8 +25,8 @@ public class IndomaretPaymentFragment extends Fragment {
 
     //views
 
-    private TextViewFont mTextViewValidity = null;
-    private TextViewFont mTextViewPaymentCode = null;
+    private TextView mTextViewValidity = null;
+    private TextView mTextViewPaymentCode = null;
 
 
 
@@ -60,8 +60,8 @@ public class IndomaretPaymentFragment extends Fragment {
      * @param view  view that needed to be initialized
      */
     private void initializeViews(View view) {
-        mTextViewValidity = (TextViewFont) view.findViewById(R.id.text_validaty);
-        mTextViewPaymentCode = (TextViewFont) view.findViewById(R.id.text_payment_code);
+        mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
+        mTextViewPaymentCode = (TextView) view.findViewById(R.id.text_payment_code);
 
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))

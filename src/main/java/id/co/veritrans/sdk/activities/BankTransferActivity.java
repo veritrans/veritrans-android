@@ -33,7 +33,7 @@ import id.co.veritrans.sdk.fragments.MandiriBillPayFragment;
 import id.co.veritrans.sdk.models.TransactionDetails;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Created to show and handle bank transfer and mandiri bill pay details.
@@ -64,11 +64,11 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public String currentFragment = "home";
 
-    private TextViewFont mTextViewOrderId = null;
-    private TextViewFont mTextViewAmount = null;
+    private TextView mTextViewOrderId = null;
+    private TextView mTextViewAmount = null;
     private Button mButtonConfirmPayment = null;
     private AppBarLayout mAppBarLayout = null;
-    private TextViewFont mTextViewTitle = null;
+    private TextView mTextViewTitle = null;
 
     private VeritransSDK mVeritransSDK = null;
     private Toolbar mToolbar = null;
@@ -176,9 +176,9 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      */
     private void initializeView() {
 
-        mTextViewOrderId = (TextViewFont) findViewById(R.id.text_order_id);
-        mTextViewAmount = (TextViewFont) findViewById(R.id.text_amount);
-        mTextViewTitle = (TextViewFont) findViewById(R.id.text_title);
+        mTextViewOrderId = (TextView) findViewById(R.id.text_order_id);
+        mTextViewAmount = (TextView) findViewById(R.id.text_amount);
+        mTextViewTitle = (TextView) findViewById(R.id.text_title);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);

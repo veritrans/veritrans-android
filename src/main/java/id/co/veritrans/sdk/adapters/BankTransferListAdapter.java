@@ -17,7 +17,7 @@ import id.co.veritrans.sdk.activities.BankTransferActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.models.BankTransferModel;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * @author rakawm
@@ -54,12 +54,12 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
 
 
     public static class BankTransferViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextViewFont bankName;
+        TextView bankName;
         ImageView bankIcon;
 
         public BankTransferViewHolder(View itemView) {
             super(itemView);
-            bankName = (TextViewFont)itemView.findViewById(R.id.text_bank_name);
+            bankName = (TextView)itemView.findViewById(R.id.text_bank_name);
             bankIcon = (ImageView)itemView.findViewById(R.id.img_bank_icon);
             itemView.setOnClickListener(this);
         }
@@ -67,7 +67,7 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
 
         @Override
         public void onClick(View v) {
-            TextViewFont nameText = (TextViewFont) v.findViewById(R.id.text_bank_name);
+            TextView nameText = (TextView) v.findViewById(R.id.text_bank_name);
             String name = nameText.getText().toString().trim();
             Activity activity = (Activity)sContext;
             if(name.equals(sContext.getString(R.string.bca_bank_transfer))) {

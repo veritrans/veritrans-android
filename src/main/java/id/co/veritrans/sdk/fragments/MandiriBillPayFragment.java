@@ -12,7 +12,7 @@ import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Displays status information about mandiri bill pay's api call .
@@ -25,10 +25,10 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
     private TransactionResponse mTransactionResponse = null;
 
     //views
-    private TextViewFont mTextViewCompanyCode = null;
-    private TextViewFont mTextViewBillpayCode = null;
-    private TextViewFont mTextViewSeeInstruction = null;
-    private TextViewFont mTextViewValidity = null;
+    private TextView mTextViewCompanyCode = null;
+    private TextView mTextViewBillpayCode = null;
+    private TextView mTextViewSeeInstruction = null;
+    private TextView mTextViewValidity = null;
 
 
     /**
@@ -77,11 +77,11 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
      */
     private void initializeViews(View view) {
 
-        mTextViewCompanyCode = (TextViewFont) view.findViewById(R.id.text_company_code);
-        mTextViewBillpayCode = (TextViewFont) view.findViewById(R.id.text_bill_pay_code);
+        mTextViewCompanyCode = (TextView) view.findViewById(R.id.text_company_code);
+        mTextViewBillpayCode = (TextView) view.findViewById(R.id.text_bill_pay_code);
 
-        mTextViewSeeInstruction = (TextViewFont) view.findViewById(R.id.text_see_instruction);
-        mTextViewValidity = (TextViewFont) view.findViewById(R.id.text_validaty);
+        mTextViewSeeInstruction = (TextView) view.findViewById(R.id.text_see_instruction);
+        mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
 
 
         if (mTransactionResponse != null) {

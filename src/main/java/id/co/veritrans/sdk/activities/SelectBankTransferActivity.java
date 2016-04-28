@@ -25,7 +25,7 @@ import id.co.veritrans.sdk.models.BankTransferModel;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.HeaderView;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * @author rakawm
@@ -44,7 +44,7 @@ public class SelectBankTransferActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView = null;
     private HeaderView toolbarHeaderView = null;
     private HeaderView floatHeaderView = null;
-    private TextViewFont headerTextView = null;
+    private TextView headerTextView = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
     @Override
@@ -94,7 +94,7 @@ public class SelectBankTransferActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
         toolbarHeaderView = (HeaderView) findViewById(R.id.toolbar_header_view);
-        headerTextView = (TextViewFont) findViewById(R.id.title_header);
+        headerTextView = (TextView) findViewById(R.id.title_header);
     }
 
     /**

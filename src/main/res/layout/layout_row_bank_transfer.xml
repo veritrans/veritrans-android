@@ -25,14 +25,13 @@
         android:layout_toEndOf="@id/img_bank_icon"
         android:layout_toRightOf="@id/img_bank_icon">
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:id="@+id/text_bank_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center|start"
             android:text="@string/text_demo"
-            android:textColor="@color/black"
-            app:font="@string/font_open_sans_regular" />
+            android:textColor="@color/black"/>
 
         <View
             android:id="@+id/divider"

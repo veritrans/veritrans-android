@@ -34,14 +34,13 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 >
 
-                <id.co.veritrans.sdk.widgets.TextViewFont
+                <id.co.veritrans.sdk.widgets.DefaultTextView
                     android:id="@+id/title_header"
                     android:textColor="@android:color/white"
                     android:text="@string/payment_instrution"
                     android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:font="@string/font_open_sans_regular"
                     android:textSize="@dimen/tool_bar_title_size"
                     />
 

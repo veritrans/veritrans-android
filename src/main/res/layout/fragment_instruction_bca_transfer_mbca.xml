@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -21,9 +21,9 @@
             android:text="@string/instruction"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size"
-            app:font="@string/font_open_sans_regular" />
+              />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -35,9 +35,9 @@
             android:text="@string/bca_mbanking_instruction_step1"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular" />
+              />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -47,10 +47,10 @@
             android:text="@string/bca_mbanking_instruction_step2"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular" />
+              />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -63,10 +63,10 @@
             android:text="@string/bca_mbanking_instruction_step3"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular" />
+              />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -76,10 +76,10 @@
             android:text="@string/bca_mbanking_instruction_step4"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular" />
+              />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -92,10 +92,10 @@
             android:text="@string/bca_mbanking_instruction_step5"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular" />
+              />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -105,8 +105,8 @@
             android:text="@string/bca_mbanking_instruction_step6"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular" />
-        <id.co.veritrans.sdk.widgets.TextViewFont
+              />
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -119,10 +119,10 @@
             android:text="@string/bca_mbanking_instruction_step7"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular" />
+              />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -132,6 +132,6 @@
             android:text="@string/bca_mbanking_instruction_step8"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular" />
+              />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

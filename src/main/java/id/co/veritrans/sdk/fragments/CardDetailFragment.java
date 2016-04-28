@@ -26,7 +26,7 @@ import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.utilities.FlipAnimation;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
 public class CardDetailFragment extends Fragment {
@@ -36,9 +36,9 @@ public class CardDetailFragment extends Fragment {
     private RelativeLayout rootLayout;
     private RelativeLayout cardContainerBack;
     private RelativeLayout cardContainerFront;
-    private TextViewFont bankNameTv;
-    private TextViewFont cardNoTv;
-    private TextViewFont expTv;
+    private TextView bankNameTv;
+    private TextView cardNoTv;
+    private TextView expTv;
     /*private ImageView cvvCircle1;
     private ImageView cvvCircle2;
     private ImageView cvvCircle3;*/
@@ -128,9 +128,9 @@ public class CardDetailFragment extends Fragment {
                 flipCard();
             }
         });
-        bankNameTv = (TextViewFont) view.findViewById(R.id.text_bank_name);
-        cardNoTv = (TextViewFont) view.findViewById(R.id.text_card_number);
-        expTv = (TextViewFont) view.findViewById(R.id.text_exp_date);
+        bankNameTv = (TextView) view.findViewById(R.id.text_bank_name);
+        cardNoTv = (TextView) view.findViewById(R.id.text_card_number);
+        expTv = (TextView) view.findViewById(R.id.text_exp_date);
         /*cvvCircle1 = (ImageView) view.findViewById(R.id.image_cvv1);
         cvvCircle2 = (ImageView) view.findViewById(R.id.image_cvv2);
         cvvCircle3 = (ImageView) view.findViewById(R.id.image_cvv3);*/

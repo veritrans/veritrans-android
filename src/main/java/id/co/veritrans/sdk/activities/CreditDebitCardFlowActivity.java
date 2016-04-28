@@ -71,7 +71,7 @@ import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.MorphingButton;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -101,8 +101,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
     private String errorMessage = null;
     private CardPagerAdapter cardPagerAdapter;
     private CirclePageIndicator circlePageIndicator;
-    private TextViewFont emptyCardsTextViewFont;
-    private TextViewFont titleHeaderTextViewFont;
+    private TextView emptyCardsTextView;
+    private TextView titleHeaderTextView;
     private int fabHeight;
     private MorphingButton btnMorph;
 
@@ -114,8 +114,8 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
         this.btnMorph = btnMorph;
     }*/
 
-    public TextViewFont getTitleHeaderTextViewFont() {
-        return titleHeaderTextViewFont;
+    public TextView getTitleHeaderTextView() {
+        return titleHeaderTextView;
     }
 
     @Override
@@ -127,7 +127,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        titleHeaderTextViewFont = (TextViewFont) findViewById(R.id.title_header);
+        titleHeaderTextView = (TextView) findViewById(R.id.title_header);
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
         morphToCircle(0);
         setSupportActionBar(toolbar);
@@ -202,7 +202,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
         SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
         //getSupportActionBar().setTitle(getString(R.string.processing_payment));
-        titleHeaderTextViewFont.setText(getString(R.string.processing_payment));
+        titleHeaderTextView.setText(getString(R.string.processing_payment));
         CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
                 userDetail.getEmail(), userDetail.getPhoneNumber());
 
@@ -485,10 +485,10 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
 
 
 
-    public void setAdapterViews(CardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, TextViewFont emptyCardsTextViewFont) {
+    public void setAdapterViews(CardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, TextView emptyCardsTextView) {
         this.cardPagerAdapter = cardPagerAdapter;
         this.circlePageIndicator = circlePageIndicator;
-        this.emptyCardsTextViewFont = emptyCardsTextViewFont;
+        this.emptyCardsTextView = emptyCardsTextView;
     }
 
     public int getFabHeight() {
@@ -616,7 +616,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
-            titleHeaderTextViewFont.setText(getString(R.string.title_payment_status));
+            titleHeaderTextView.setText(getString(R.string.title_payment_status));
 
             if (cardTokenRequest.isSaved()) {
                 if (!creditCards.isEmpty()) {
@@ -673,7 +673,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
         replaceFragment(paymentTransactionStatusFragment, true, false);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
-        titleHeaderTextViewFont.setText(getString(R.string.title_payment_status));
+        titleHeaderTextView.setText(getString(R.string.title_payment_status));
     }
 
     @Subscribe
@@ -713,17 +713,17 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
                 circlePageIndicator.notifyDataSetChanged();
             }
             //processingLayout.setVisibility(View.GONE);
-            if (emptyCardsTextViewFont != null) {
+            if (emptyCardsTextView != null) {
                 if (!creditCards.isEmpty()) {
-                    emptyCardsTextViewFont.setVisibility(View.GONE);
+                    emptyCardsTextView.setVisibility(View.GONE);
                 } else {
-                    emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+                    emptyCardsTextView.setVisibility(View.VISIBLE);
                 }
 
             }
             SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
             //getSupportActionBar().setTitle(getString(R.string.saved_card));
-            titleHeaderTextViewFont.setText(getString(R.string.saved_card));
+            titleHeaderTextView.setText(getString(R.string.saved_card));
             replaceFragment(savedCardFragment, true, false);
 
         } else {
@@ -732,7 +732,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
             replaceFragment
                     (addCardDetailsFragment, true, false);
             //getSupportActionBar().setTitle(getString(R.string.card_details));
-            titleHeaderTextViewFont.setText(getString(R.string.card_details));
+            titleHeaderTextView.setText(getString(R.string.card_details));
 
         }
     }

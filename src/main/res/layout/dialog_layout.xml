@@ -21,7 +21,7 @@
             android:paddingBottom="8dp"
             android:paddingTop="8dp">
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.BoldTextView
                 android:id="@+id/title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/primary_text_size"
                 android:visibility="visible"
-                app:font="@string/font_open_sans_semibold" />
+                android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/title_image"
@@ -43,14 +43,13 @@
                 />
         </RelativeLayout>
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:id="@+id/message_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:textColor="@color/dark_gray"
-            android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular" />
+            android:textSize="@dimen/secondary_text_size" />
 
         <LinearLayout
             android:layout_width="match_parent"

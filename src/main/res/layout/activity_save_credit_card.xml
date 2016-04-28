@@ -14,15 +14,14 @@
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
         app:theme="@style/ToolBarStyle">
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:id="@+id/title_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/activity_save_credit_card"
             android:textColor="@android:color/white"
             android:textSize="@dimen/tool_bar_title_size"
-            android:visibility="visible"
-            app:font="@string/font_open_sans_regular" />
+            android:visibility="visible"/>
 
     </android.support.v7.widget.Toolbar>
 

@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
-import android.graphics.Typeface;
+
 import android.text.TextUtils;
 
 import com.flurry.android.FlurryAgent;
@@ -48,17 +47,10 @@ public class VeritransSDK {
 
     public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
             "details are necessary.";
-    private static final String FONTS_OPEN_SANS_BOLD_TTF = "fonts/open_sans_bold.ttf";
-    private static final String FONTS_OPEN_SANS_REGULAR_TTF = "fonts/open_sans_regular.ttf";
-    private static final String FONTS_OPEN_SANS_SEMI_BOLD_TTF = "fonts/open_sans_semibold.ttf";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
 
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static Context context = null;
-
-    private static Typeface typefaceOpenSansRegular = null;
-    private static Typeface typefaceOpenSansSemiBold = null;
-    private static Typeface typefaceOpenSansBold = null;
 
     private static VeritransSDK veritransSDK = new VeritransSDK();
     private static boolean isLogEnabled = true;
@@ -66,6 +58,9 @@ public class VeritransSDK {
     private static String clientKey = null;
     private static String merchantServerUrl = null;
     private static SharedPreferences mPreferences = null;
+    private static String defaultText = null;
+    private static String boldText = null;
+    private static String semiBoldText = null;
     protected boolean isRunning = false;
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
@@ -83,24 +78,12 @@ public class VeritransSDK {
             /*serverKey = veritransBuilder.serverKey;*/
             clientKey = veritransBuilder.clientKey;
             merchantServerUrl = veritransBuilder.merchantServerUrl;
-            initializeFonts();
             initializeSharedPreferences();
             initializeFlurry();
             return veritransSDK;
         } else {
             return null;
         }
-    }
-
-    /***
-     * It will initialize all fonts that are available in sdk.
-     */
-    private static void initializeFonts() {
-        AssetManager assets = context.getAssets();
-        typefaceOpenSansBold = Typeface.createFromAsset(assets, FONTS_OPEN_SANS_BOLD_TTF);
-        typefaceOpenSansRegular = Typeface.createFromAsset(assets, FONTS_OPEN_SANS_REGULAR_TTF);
-        typefaceOpenSansSemiBold = Typeface.createFromAsset(assets,
-                FONTS_OPEN_SANS_SEMI_BOLD_TTF);
     }
 
     private static void initializeSharedPreferences() {
@@ -135,16 +118,28 @@ public class VeritransSDK {
         return mPreferences;
     }
 
-    public Typeface getTypefaceOpenSansRegular() {
-        return typefaceOpenSansRegular;
+    public static String getDefaultText() {
+        return VeritransSDK.defaultText;
     }
 
-    public Typeface getTypefaceOpenSansSemiBold() {
-        return typefaceOpenSansSemiBold;
+    public void setDefaultText(String defaultText) {
+        VeritransSDK.defaultText = defaultText;
     }
 
-    public Typeface getTypefaceOpenSansBold() {
-        return typefaceOpenSansBold;
+    public String getBoldText() {
+        return VeritransSDK.boldText;
+    }
+
+    public void setBoldText(String boldText) {
+        VeritransSDK.boldText = boldText;
+    }
+
+    public String getSemiBoldText() {
+        return VeritransSDK.semiBoldText;
+    }
+
+    public void setSemiBoldText(String semiBoldText) {
+        VeritransSDK.semiBoldText = semiBoldText;
     }
 
     public boolean isRunning() {
