@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -153,7 +154,9 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         if (veritransSDK != null) {
             textViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
             textViewOrderId.setText("" + veritransSDK.getTransactionRequest().getOrderId());
-            buttonConfirmPayment.setTypeface(veritransSDK.getTypefaceOpenSansSemiBold());
+            if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
+                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), veritransSDK.getSemiBoldText()));
+            }
             buttonConfirmPayment.setOnClickListener(this);
             layoutPayWithBBM.setOnClickListener(this);
         }

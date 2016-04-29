@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -28,7 +30,6 @@ import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.fragments.InstructionIndosatFragment;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import android.widget.TextView;
 
 /**
  * Created to show and handle bank transfer and mandiri bill pay details.
@@ -160,8 +161,9 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
     private void bindDataToView() {
 
         if (mVeritransSDK != null) {
-
-            mButtonConfirmPayment.setTypeface(mVeritransSDK.getTypefaceOpenSansSemiBold());
+            if (mVeritransSDK.getSemiBoldText() != null) {
+                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+            }
             mButtonConfirmPayment.setOnClickListener(this);
             mTextViewTitle.setText(getResources().getString(R.string.indosat_dompetku));
 

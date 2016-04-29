@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -33,7 +35,6 @@ import id.co.veritrans.sdk.fragments.InstructionIndomaretFragment;
 import id.co.veritrans.sdk.models.CstoreEntity;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
-import android.widget.TextView;
 
 /**
  * Created by Ankit on 12/01/15.
@@ -151,7 +152,9 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
             textViewAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
             textViewOrderId.setText("" + veritransSDK.getTransactionRequest().getOrderId());
-            buttonConfirmPayment.setTypeface(veritransSDK.getTypefaceOpenSansSemiBold());
+            if (veritransSDK.getSemiBoldText() != null) {
+                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), veritransSDK.getSemiBoldText()));
+            }
             buttonConfirmPayment.setOnClickListener(this);
         }
     }

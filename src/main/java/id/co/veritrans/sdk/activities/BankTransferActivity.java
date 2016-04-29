@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -33,7 +35,6 @@ import id.co.veritrans.sdk.fragments.MandiriBillPayFragment;
 import id.co.veritrans.sdk.models.TransactionDetails;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
-import android.widget.TextView;
 
 /**
  * Created to show and handle bank transfer and mandiri bill pay details.
@@ -201,7 +202,9 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
             mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
             mTextViewOrderId.setText("" + mVeritransSDK.getTransactionRequest().getOrderId());
-            mButtonConfirmPayment.setTypeface(mVeritransSDK.getTypefaceOpenSansSemiBold());
+            if (mVeritransSDK.getSemiBoldText() != null) {
+                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+            }
             mButtonConfirmPayment.setOnClickListener(this);
 
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
