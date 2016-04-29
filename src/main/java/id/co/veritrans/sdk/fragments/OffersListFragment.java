@@ -26,16 +26,16 @@ import id.co.veritrans.sdk.eventbus.events.GetOfferFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.GetOfferSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.models.GetOffersResponseModel;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Created by Ankit on 12/7/15.
  */
 public class OffersListFragment extends Fragment implements AnyOfferClickedListener, GetOfferBusCallback {
 
-    private TextViewFont textViewTitleOffers = null;
-    private TextViewFont textViewTitleCardDetails = null;
-    private TextViewFont textViewOfferName = null;
+    private TextView textViewTitleOffers = null;
+    private TextView textViewTitleCardDetails = null;
+    private TextView textViewOfferName = null;
     private RecyclerView recyclerViewOffers = null;
     private OffersAdapter offersAdapter = null;
     private VeritransSDK veritransSDK = null;
@@ -70,10 +70,10 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     }
 
     private void initialiseView(View view) {
-        textViewTitleOffers = (TextViewFont) getActivity().findViewById(R.id.text_title);
-        textViewTitleCardDetails = (TextViewFont) getActivity().findViewById(R.id
+        textViewTitleOffers = (TextView) getActivity().findViewById(R.id.text_title);
+        textViewTitleCardDetails = (TextView) getActivity().findViewById(R.id
                 .text_title_card_details);
-        textViewOfferName = (TextViewFont) getActivity().findViewById(R.id.text_title_offer_name);
+        textViewOfferName = (TextView) getActivity().findViewById(R.id.text_title_offer_name);
         setToolbar();
         recyclerViewOffers = (RecyclerView) view.findViewById(R.id.rv_offers);
         emptyOffersLayout = (RelativeLayout)view.findViewById(R.id.empty_offers_layout);

@@ -45,7 +45,7 @@
         </android.support.design.widget.TextInputLayout>
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.SemiBoldTextView
             android:id="@+id/text_see_instruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_semibold"
+            android:textStyle="bold"
             />
 
     </LinearLayout>

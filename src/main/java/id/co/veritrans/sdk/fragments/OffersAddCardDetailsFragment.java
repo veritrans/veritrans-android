@@ -36,7 +36,7 @@ import id.co.veritrans.sdk.models.BankDetail;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.models.UserDetail;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
 /**
@@ -45,18 +45,18 @@ import id.co.veritrans.sdk.widgets.VeritransDialog;
 public class OffersAddCardDetailsFragment extends Fragment {
     private final String MONTH = "Month";
     int currentPosition, totalPositions;
-    private TextViewFont textViewTitleOffers = null;
-    private TextViewFont textViewTitleCardDetails = null;
-    private TextViewFont textViewOfferName = null;
-    private TextViewFont textViewOfferApplied = null;
-    private TextViewFont textViewOfferNotApplied = null;
+    private TextView textViewTitleOffers = null;
+    private TextView textViewTitleCardDetails = null;
+    private TextView textViewOfferName = null;
+    private TextView textViewOfferApplied = null;
+    private TextView textViewOfferNotApplied = null;
     private LinearLayout layoutOfferStatus = null;
     private int offerPosition = 0;
     private String offerName = null;
     private String offerType = null;
     private ImageView imageViewPlus = null;
     private ImageView imageViewMinus = null;
-    private TextViewFont textViewInstalment = null;
+    private TextView textViewInstalment = null;
     private RelativeLayout layoutPayWithInstalment = null;
     private String lastExpDate = "";
     private EditText etCardNo;
@@ -128,21 +128,21 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private void initialiseView(View view) {
 
         if (view != null && getActivity() != null) {
-            textViewTitleOffers = (TextViewFont) getActivity().findViewById(R.id.text_title);
-            textViewTitleCardDetails = (TextViewFont) getActivity().findViewById(R.id
+            textViewTitleOffers = (TextView) getActivity().findViewById(R.id.text_title);
+            textViewTitleCardDetails = (TextView) getActivity().findViewById(R.id
                     .text_title_card_details);
-            textViewOfferName = (TextViewFont) getActivity().findViewById(R.id.text_title_offer_name);
+            textViewOfferName = (TextView) getActivity().findViewById(R.id.text_title_offer_name);
 
             setToolbar();
 
-            textViewOfferApplied = (TextViewFont) view.findViewById(R.id.text_offer_status_applied);
-            textViewOfferNotApplied = (TextViewFont) view.findViewById(R.id
+            textViewOfferApplied = (TextView) view.findViewById(R.id.text_offer_status_applied);
+            textViewOfferNotApplied = (TextView) view.findViewById(R.id
                     .text_offer_status_not_applied);
             layoutOfferStatus = (LinearLayout) view.findViewById(R.id.layout_offer_status);
 
             imageViewPlus = (ImageView) view.findViewById(R.id.img_plus);
             imageViewMinus = (ImageView) view.findViewById(R.id.img_minus);
-            textViewInstalment = (TextViewFont) view.findViewById(R.id.text_instalment);
+            textViewInstalment = (TextView) view.findViewById(R.id.text_instalment);
             layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id
                     .layout_pay_with_instalments);
 

@@ -3,16 +3,15 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:selectableItemBackground"
-    >
+                android:background="?android:selectableItemBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/sixteen_dp"
-        >
+        android:layout_marginRight="@dimen/sixteen_dp">
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:id="@+id/text_offer_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,9 +21,7 @@
             android:gravity="start"
             android:text="@string/text_demo"
             android:textColor="@color/black"
-            android:textSize="@dimen/seventeen_sp"
-            app:font="@string/font_open_sans_regular"
-            />
+            android:textSize="@dimen/seventeen_sp" />
 
         <View
             android:id="@+id/divider"

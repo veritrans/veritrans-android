@@ -36,15 +36,14 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin">
 
-                <id.co.veritrans.sdk.widgets.TextViewFont
+                <id.co.veritrans.sdk.widgets.DefaultTextView
                     android:id="@+id/title_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/select_payment_method"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/tool_bar_title_size"
-                    android:visibility="visible"
-                    app:font="@string/font_open_sans_regular" />
+                    android:visibility="visible"/>
 
                 <include
                     layout="@layout/layout_tool_bar_titles"
@@ -60,7 +59,7 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <id.co.veritrans.sdk.widgets.TextViewFont
+    <id.co.veritrans.sdk.widgets.DefaultTextView
         android:id="@+id/textview_to_compare"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
