@@ -318,10 +318,12 @@ public class OffersAddCardDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isValid(true)) {
-
+                    String date = etExpiryDate.getText().toString();
+                    String month = date.split("/")[0];
+                    String year = "20" + date.split("/")[1];
                     CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
                             .parseInt(cvv),
-                            expMonth, expYear,
+                            month, year,
                             veritransSDK.getClientKey());
 
                     int instalmentTerm = 0;

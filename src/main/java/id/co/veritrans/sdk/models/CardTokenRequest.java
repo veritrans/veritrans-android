@@ -27,8 +27,8 @@ public class CardTokenRequest implements Serializable {
 
     private String cardNumber;
     private int cardCVV;
-    private int cardExpiryMonth;
-    private int cardExpiryYear;
+    private String cardExpiryMonth;
+    private String cardExpiryYear;
     private boolean secure;
     private boolean twoClick;
     private String bank = null;
@@ -46,7 +46,7 @@ public class CardTokenRequest implements Serializable {
     }
 
     public CardTokenRequest(String cardNumber, int cardCVV,
-                            int cardExpiryMonth, int cardExpiryYear, String clientKey) {
+                            String cardExpiryMonth, String cardExpiryYear, String clientKey) {
 
         this.cardNumber = cardNumber;
         this.cardCVV = cardCVV;
@@ -83,19 +83,19 @@ public class CardTokenRequest implements Serializable {
         this.cardCVV = cardCVV;
     }
 
-    public int getCardExpiryMonth() {
+    public String getCardExpiryMonth() {
         return cardExpiryMonth;
     }
 
-    public void setCardExpiryMonth(int cardExpiryMonth) {
+    public void setCardExpiryMonth(String cardExpiryMonth) {
         this.cardExpiryMonth = cardExpiryMonth;
     }
 
-    public int getCardExpiryYear() {
+    public String getCardExpiryYear() {
         return cardExpiryYear;
     }
 
-    public void setCardExpiryYear(int cardExpiryYear) {
+    public void setCardExpiryYear(String cardExpiryYear) {
         this.cardExpiryYear = cardExpiryYear;
     }
 
@@ -185,7 +185,7 @@ public class CardTokenRequest implements Serializable {
     }
 
     public String getFormatedExpiryDate() {
-        if (getCardExpiryYear() > 0) {
+        if (Integer.parseInt(getCardExpiryYear()) > 0) {
             return "XX/" + getCardExpiryYear();
 
         }

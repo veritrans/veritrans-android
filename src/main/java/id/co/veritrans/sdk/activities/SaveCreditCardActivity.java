@@ -188,7 +188,7 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
         }
     }
 
-    public void registerCard(String cardNumber, int cvv, int expMonth, int expYear) {
+    public void registerCard(String cardNumber, int cvv, String expMonth, String expYear) {
         veritransSDK.cardRegistration(cardNumber, cvv, expMonth, expYear);
     }
 

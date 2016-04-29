@@ -622,8 +622,8 @@ public class VeritransSDK {
     }
 
     public void cardRegistration(String cardNumber,
-                                 int cardCvv, int cardExpMonth,
-                                 int cardExpYear) {
+                                 int cardCvv, String cardExpMonth,
+                                 String cardExpYear) {
         TransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear);
         isRunning = true;
     }

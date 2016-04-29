@@ -66,8 +66,8 @@ class TransactionManager {
 
     public static void cardRegistration(String cardNumber,
                                         int cardCvv,
-                                        int cardExpMonth,
-                                        int cardExpYear) {
+                                        String cardExpMonth,
+                                        String cardExpYear) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
             PaymentAPI paymentAPI = VeritransRestAdapter.getApiClient(true);
