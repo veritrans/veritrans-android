@@ -18,14 +18,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:id="@+id/text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bca_klik"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/tool_bar_title_size"
-                app:font="@string/font_open_sans_regular" />
+                android:textSize="@dimen/tool_bar_title_size" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 

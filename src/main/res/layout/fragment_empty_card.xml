@@ -33,14 +33,13 @@
                     android:contentDescription="@string/no_card_yet"
                     android:src="@drawable/bankcard" />
 
-                <id.co.veritrans.sdk.widgets.TextViewFont
+                <id.co.veritrans.sdk.widgets.DefaultTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/no_card_yet"
-                    android:textSize="16sp"
-                    app:font="@string/font_open_sans_regular" />
+                    android:textSize="16sp" />
 
-                <id.co.veritrans.sdk.widgets.TextViewFont
+                <id.co.veritrans.sdk.widgets.DefaultTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/eight_dp"
@@ -48,8 +47,7 @@
                     android:layout_marginRight="@dimen/thirtytwo_dp"
                     android:layout_marginTop="@dimen/eight_dp"
                     android:gravity="center_horizontal"
-                    android:text="@string/save_time_save_credit"
-                    app:font="@string/font_open_sans_regular" />
+                    android:text="@string/save_time_save_credit"/>
             </LinearLayout>
 
             <android.support.v4.view.ViewPager
@@ -65,7 +63,6 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/sixteen_dp"
             app:fillColor="@color/colorPrimary"
-            app:font="@string/font_open_sans_semibold"
             app:pageColor="@color/white"
             app:radius="4dp"
             app:strokeColor="@color/colorSecondary" />
@@ -102,7 +99,7 @@
             android:padding="@dimen/sixteen_dp"
             android:src="@drawable/curve_arrow" />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.SemiBoldTextView
             android:id="@+id/text_card_number"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
@@ -112,6 +109,6 @@
             android:text="@string/add_card_message"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size"
-            app:font="@string/font_open_sans_semibold" />
+            android:textStyle="bold"/>
     </RelativeLayout>
 </LinearLayout>

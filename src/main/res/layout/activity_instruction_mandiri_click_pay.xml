@@ -30,14 +30,13 @@
                 android:layout_height="wrap_content"
                 >
 
-                <id.co.veritrans.sdk.widgets.TextViewFont
+                <id.co.veritrans.sdk.widgets.DefaultTextView
                     android:id="@+id/text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/payment_instrution"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/tool_bar_title_size"
-                    app:font="@string/font_open_sans_regular"
                     />
 
             </LinearLayout>
@@ -46,7 +45,7 @@
         </android.support.v7.widget.Toolbar>
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -55,10 +54,9 @@
             android:text="@string/instruction"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -70,10 +68,9 @@
             android:text="@string/mandiri_click_pay_instruction_step1"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -82,13 +79,11 @@
             android:paddingRight="@dimen/sixteen_dp"
             android:text="@string/mandiri_click_pay_instruction_step2"
             android:textColor="@color/black"
-
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -101,7 +96,6 @@
             android:text="@string/mandiri_click_pay_instruction_step3"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
 
@@ -113,18 +107,14 @@
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp">
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="2dp"
                 android:paddingTop="@dimen/eight_dp"
                 android:text="@string/mandiri_click_pay_instruction_step4"
                 android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size"
-
-                app:font="@string/font_open_sans_regular"
-
-                />
+                android:textSize="@dimen/secondary_text_size"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -132,15 +122,13 @@
                 android:contentDescription="@string/description_mandiri_token_instruction"
                 android:src="@drawable/ic_mandiri_instrcn"/>
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="2dp"
                 android:text="@string/for_three_seconds"
                 android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size"
-                app:font="@string/font_open_sans_regular"
-                />
+                android:textSize="@dimen/secondary_text_size"/>
 
         </LinearLayout>
 
@@ -156,16 +144,14 @@
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/four_dp">
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="2dp"
                 android:paddingTop="@dimen/eight_dp"
                 android:text="@string/mandiri_click_pay_instruction_step5"
                 android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size"
-                app:font="@string/font_open_sans_regular"
-                />
+                android:textSize="@dimen/secondary_text_size"/>
 
 
             <ImageView
@@ -174,15 +160,13 @@
                 android:contentDescription="@string/description_mandiri_token_instruction"
                 android:src="@drawable/ic_mandiri_instrcn"/>
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="2dp"
                 android:text="@string/for_three_seconds"
                 android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size"
-                app:font="@string/font_open_sans_regular"
-                />
+                android:textSize="@dimen/secondary_text_size"/>
 
 
         </LinearLayout>
@@ -196,16 +180,14 @@
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp">
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="2dp"
                 android:paddingTop="@dimen/eight_dp"
                 android:text="@string/mandiri_click_pay_instruction_step6"
                 android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size"
-                app:font="@string/font_open_sans_regular"
-                />
+                android:textSize="@dimen/secondary_text_size"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -213,20 +195,18 @@
                 android:contentDescription="@string/description_mandiri_token_instruction"
                 android:src="@drawable/ic_mandiri_instrcn"/>
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="2dp"
                 android:text="@string/for_three_seconds"
                 android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size"
-                app:font="@string/font_open_sans_regular"
-                />
+                android:textSize="@dimen/secondary_text_size" />
 
         </LinearLayout>
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -238,9 +218,7 @@
             android:paddingTop="@dimen/five_dp"
             android:text="@string/mandiri_click_pay_instruction_step7"
             android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
-            />
+            android:textSize="@dimen/secondary_text_size"/>
 
 
     </LinearLayout>

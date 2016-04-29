@@ -27,7 +27,7 @@ import id.co.veritrans.sdk.activities.SelectBankTransferActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * adapter for payment methods recycler view.
@@ -80,12 +80,12 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
     public static class PaymentViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        TextViewFont name;
+        TextView name;
         ImageView mImageView;
 
         public PaymentViewHolder(View itemView) {
             super(itemView);
-            name = (TextViewFont) itemView.findViewById(R.id.text_payment_method_name);
+            name = (TextView) itemView.findViewById(R.id.text_payment_method_name);
             mImageView = (ImageView) itemView.findViewById(R.id.img_payment_method_icon);
             itemView.setOnClickListener(this);
         }
@@ -100,7 +100,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
         @Override
         public void onClick(View view) {
 
-            TextViewFont nameText = (TextViewFont) view.findViewById(R.id.text_payment_method_name);
+            TextView nameText = (TextView) view.findViewById(R.id.text_payment_method_name);
             String name = nameText.getText().toString().trim();
 
             if (name.equalsIgnoreCase(sActivity.getResources()

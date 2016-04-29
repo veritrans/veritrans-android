@@ -16,7 +16,7 @@ import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.activities.MandiriClickPayInstructionActivity;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Created by shivam on 10/28/15.
@@ -27,7 +27,7 @@ public class MandiriClickPayFragment extends Fragment {
     private static final String DUMMY_CARD_NUMBER = "4811111111111114";
     private EditText mEditTextDebitCardNumber = null;
     private EditText mEditTextChallengeToken = null;
-    private TextViewFont mTextViewSeeInstruction = null;
+    private TextView mTextViewSeeInstruction = null;
 
     @Nullable
     @Override
@@ -42,7 +42,7 @@ public class MandiriClickPayFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mEditTextChallengeToken = (EditText) view.findViewById(R.id.et_challenge_token);
         mEditTextDebitCardNumber = (EditText) view.findViewById(R.id.et_debit_card_no);
-        mTextViewSeeInstruction = (TextViewFont) view.findViewById(R.id.text_see_instruction);
+        mTextViewSeeInstruction = (TextView) view.findViewById(R.id.text_see_instruction);
 
         setTextWatcher();
 

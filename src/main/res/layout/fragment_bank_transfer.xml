@@ -33,32 +33,29 @@
                 android:textColorHint="@color/colorAccent"/>
         </android.support.design.widget.TextInputLayout>
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/email_instruction"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/tertiary_text_size"
-
-            app:font="@string/font_open_sans_regular"
             android:paddingLeft="@dimen/twenty_dp"
             android:paddingRight="@dimen/sixteen_dp"
             />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/twenty_four_dp"
             android:text="@string/atm_transfer_steps"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size"
-            app:font="@string/font_open_sans_regular"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -69,11 +66,10 @@
             android:text="@string/bank_atm_transfer_step1"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             android:background="@color/light_gray"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -81,13 +77,12 @@
             android:text="@string/bank_atm_transfer_step2"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -95,7 +90,6 @@
             android:text="@string/bank_atm_transfer_step3"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             android:background="@color/light_gray"
@@ -105,7 +99,7 @@
 
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -113,13 +107,12 @@
             android:text="@string/bank_atm_transfer_step4"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.SemiBoldTextView
             android:id="@+id/text_see_instruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -131,7 +124,7 @@
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_semibold"
+            android:textStyle="bold"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             />

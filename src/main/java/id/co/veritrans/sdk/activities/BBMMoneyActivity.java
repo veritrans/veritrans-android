@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -34,7 +35,6 @@ import id.co.veritrans.sdk.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.fragments.InstructionBBMMoneyFragment;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
-import id.co.veritrans.sdk.widgets.TextViewFont;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
 /**
@@ -48,11 +48,11 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public String currentFragment = "home";
 
-    private TextViewFont textViewOrderId = null;
-    private TextViewFont textViewAmount = null;
+    private TextView textViewOrderId = null;
+    private TextView textViewAmount = null;
     private Button buttonConfirmPayment = null;
     private AppBarLayout appBarLayout = null;
-    private TextViewFont textViewTitle = null;
+    private TextView textViewTitle = null;
     private LinearLayout layoutPayWithBBM = null;
 
     private VeritransSDK veritransSDK = null;
@@ -134,9 +134,9 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void initializeView() {
-        textViewOrderId = (TextViewFont) findViewById(R.id.text_order_id);
-        textViewAmount = (TextViewFont) findViewById(R.id.text_amount);
-        textViewTitle = (TextViewFont) findViewById(R.id.text_title);
+        textViewOrderId = (TextView) findViewById(R.id.text_order_id);
+        textViewAmount = (TextView) findViewById(R.id.text_amount);
+        textViewTitle = (TextView) findViewById(R.id.text_title);
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);

@@ -48,7 +48,7 @@ import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.MorphingButton;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * @author rakawm
@@ -62,7 +62,7 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
     private float cardWidth;
     private FragmentManager fragmentManager;
     private LinearLayout emptyContainer;
-    private TextViewFont titleHeaderTextViewFont;
+    private TextView titleHeaderTextView;
     private int fabHeight;
     private MorphingButton btnMorph;
     private CirclePageIndicator circlePageIndicator;
@@ -75,8 +75,8 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
         return btnMorph;
     }
 
-    public TextViewFont getTitleHeaderTextViewFont() {
-        return titleHeaderTextViewFont;
+    public TextView getTitleHeaderTextView() {
+        return titleHeaderTextView;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        titleHeaderTextViewFont = (TextViewFont) findViewById(R.id.title_header);
+        titleHeaderTextView = (TextView) findViewById(R.id.title_header);
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
         morphToCircle(0);
         setSupportActionBar(toolbar);
@@ -330,7 +330,7 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
 
             }
             //getSupportActionBar().setTitle(getString(R.string.saved_card));
-            titleHeaderTextViewFont.setText(getString(R.string.saved_card));
+            titleHeaderTextView.setText(getString(R.string.saved_card));
             replaceFragment(savedCardFragment, true, false);
 
         }

@@ -13,22 +13,20 @@
     tools:ignore="RtlSymmetry">
 
     <!-- Title -->
-    <id.co.veritrans.sdk.widgets.TextViewFont
+    <id.co.veritrans.sdk.widgets.DefaultTextView
         android:id="@+id/header_view_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1.5dp"
         android:textColor="@color/white"
-        android:textSize="@dimen/secondary_text_size"
-        app:font="@string/font_open_sans_regular" />
+        android:textSize="@dimen/secondary_text_size"/>
 
     <!-- Subtitle -->
-    <id.co.veritrans.sdk.widgets.TextViewFont
+    <id.co.veritrans.sdk.widgets.DefaultTextView
         android:id="@+id/header_view_sub_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="@dimen/header_text_size"
-        app:font="@string/font_open_sans_regular" />
+        android:textSize="@dimen/header_text_size" />
 
 </id.co.veritrans.sdk.widgets.HeaderView>

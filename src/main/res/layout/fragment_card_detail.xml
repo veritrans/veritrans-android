@@ -18,7 +18,7 @@
         android:clickable="true"
         android:padding="@dimen/sixteen_dp"
         android:visibility="visible">
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.SemiBoldTextView
             android:id="@+id/text_bank_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="@dimen/header_text_size"
-            app:font="@string/font_open_sans_semibold"
+            android:textStyle="bold"
 
             />
         <ImageView
@@ -45,7 +45,7 @@
             android:paddingRight="@dimen/twenty_four_dp"
             android:src="@drawable/delete"/>
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.SemiBoldTextView
             android:id="@+id/text_card_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             android:text="@string/text_sample_masked_credit_card"
             android:textColor="@android:color/white"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_semibold"/>
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -92,27 +92,24 @@
                 android:orientation="vertical"
                 >
 
-                <id.co.veritrans.sdk.widgets.TextViewFont
+                <id.co.veritrans.sdk.widgets.DefaultTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
-
+                    android:gravity="start"
                     android:text="@string/valid_thru"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/primary_text_size"
-                    app:font="@string/font_open_sans_regular"
 
                     />
 
-                <id.co.veritrans.sdk.widgets.TextViewFont
+                <id.co.veritrans.sdk.widgets.DefaultTextView
                     android:id="@+id/text_exp_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="@string/text_sample_card_expiry"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/secondary_text_size"
-                    app:font="@string/font_open_sans_regular" />
+                    android:textSize="@dimen/secondary_text_size" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -137,7 +134,7 @@
             android:orientation="vertical"
             android:padding="@dimen/sixteen_dp"
             android:visibility="visible">
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:id="@+id/tv_enter_cvv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -145,8 +142,7 @@
                 android:gravity="center"
                 android:text="@string/enter_cvv"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/big_text"
-                app:font="@string/font_open_sans_regular"/>
+                android:textSize="@dimen/big_text"/>
 
             <ImageView
                 android:id="@+id/image_questionmark"
@@ -179,32 +175,6 @@
                 android:textColor="@android:color/white"
                 android:textCursorDrawable="@null"
                 />
-
-            <!--   <ImageView
-                   android:id="@+id/image_cvv2"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_centerHorizontal="true"
-                   android:paddingRight="12dp"
-                   android:src="@drawable/hollow_circle"
-                   />
-
-               <ImageView
-                   android:id="@+id/image_cvv1"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_toLeftOf="@id/image_cvv2"
-                   android:paddingRight="12dp"
-                   android:src="@drawable/hollow_circle"
-                   />
-
-               <ImageView
-                   android:id="@+id/image_cvv3"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_toRightOf="@id/image_cvv2"
-                   android:src="@drawable/hollow_circle"
-                   />-->
 
             <View
                 android:layout_width="100dp"

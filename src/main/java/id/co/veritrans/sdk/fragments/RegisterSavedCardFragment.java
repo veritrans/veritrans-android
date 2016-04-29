@@ -305,7 +305,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
             @Override
             public void run() {
                 ((SaveCreditCardActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
-                ((SaveCreditCardActivity) getActivity()).getTitleHeaderTextViewFont().setText(R.string.saved_card);
+                ((SaveCreditCardActivity) getActivity()).getTitleHeaderTextView().setText(R.string.saved_card);
             }
         }, Constants.CARD_ANIMATION_TIME);
     }
