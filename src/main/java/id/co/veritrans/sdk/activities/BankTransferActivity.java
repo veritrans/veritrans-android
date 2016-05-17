@@ -7,7 +7,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -57,7 +56,7 @@ import id.co.veritrans.sdk.utilities.Utils;
  * <p/>
  * Created by shivam on 10/26/15.
  */
-public class BankTransferActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class BankTransferActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -103,6 +102,11 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         initializeView();
         bindDataToView();
 
+        initializeTheme();
+        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+        if (toolbarLayout != null) {
+            toolbarLayout.setContentScrimColor(mVeritransSDK.getThemeColor());
+        }
         setUpHomeFragment();
         if(!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);

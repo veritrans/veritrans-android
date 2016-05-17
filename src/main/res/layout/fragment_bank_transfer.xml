@@ -17,9 +17,9 @@
             android:id="@+id/email_til"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/sixteen_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/sixteen_dp"
             >
 
             <EditText
@@ -29,18 +29,17 @@
                 android:hint="@string/hint_email_optional"
                 android:inputType="textEmailAddress"
                 android:maxLength="100"
-                android:singleLine="true"
-                android:textColorHint="@color/colorAccent"/>
+                android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 
         <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/twenty_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             android:text="@string/email_instruction"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/tertiary_text_size"
-            android:paddingLeft="@dimen/twenty_dp"
-            android:paddingRight="@dimen/sixteen_dp"
             />
 
 
@@ -48,25 +47,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/twenty_four_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             android:text="@string/atm_transfer_steps"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
             />
 
         <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
+            android:background="@color/light_gray"
+            android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/five_dp"
-            android:paddingBottom="@dimen/five_dp"
             android:text="@string/bank_atm_transfer_step1"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            android:background="@color/light_gray"
             />
 
         <id.co.veritrans.sdk.widgets.DefaultTextView
@@ -74,11 +73,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
             android:lineSpacingExtra="2dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             android:text="@string/bank_atm_transfer_step2"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
             />
 
 
@@ -86,15 +85,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
+            android:background="@color/light_gray"
             android:lineSpacingExtra="2dp"
+            android:paddingBottom="@dimen/five_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/five_dp"
             android:text="@string/bank_atm_transfer_step3"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:background="@color/light_gray"
-            android:paddingTop="@dimen/five_dp"
-            android:paddingBottom="@dimen/five_dp"
             />
 
 
@@ -104,11 +103,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
             android:lineSpacingExtra="2dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             android:text="@string/bank_atm_transfer_step4"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
             />
 
 
@@ -119,14 +118,13 @@
             android:layout_marginTop="@dimen/twenty_four_dp"
             android:clickable="true"
             android:paddingBottom="@dimen/eight_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/eight_dp"
             android:text="@string/see_instruction"
             android:textAllCaps="true"
-            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/secondary_text_size"
             android:textStyle="bold"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
             />
 
     </LinearLayout>

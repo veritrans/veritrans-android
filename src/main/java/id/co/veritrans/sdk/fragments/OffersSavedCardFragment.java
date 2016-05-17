@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -36,7 +37,6 @@ import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
-import android.widget.TextView;
 
 public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCallback {
 
@@ -191,6 +191,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
 
     private void bindViews(View view) {
         creditCardLayout = (LinearLayout)view.findViewById(R.id.credit_card_holder);
+        creditCardLayout.setBackgroundColor(veritransSDK.getThemeColor());
         newCardButtonLayout = (RelativeLayout)view.findViewById(R.id.new_card_button_layout);
         layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id
                 .layout_pay_with_instalments);
@@ -254,6 +255,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                 .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
+        circlePageIndicator.setFillColor(veritransSDK.getThemeColor());
         creditCards = ((OffersActivity) getActivity()).getCreditCardList();
 
         setViewPagerValues();

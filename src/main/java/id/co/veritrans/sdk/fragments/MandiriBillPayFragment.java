@@ -7,12 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
+import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
-import android.widget.TextView;
 
 /**
  * Displays status information about mandiri bill pay's api call .
@@ -100,7 +101,10 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
                     (mTransactionResponse.getTransactionTime()));
 
         }
-
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            mTextViewSeeInstruction.setTextColor(veritransSDK.getThemeColor());
+        }
         mTextViewSeeInstruction.setOnClickListener(this);
     }
 

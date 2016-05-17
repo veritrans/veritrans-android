@@ -6,13 +6,13 @@ import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -30,14 +30,13 @@ import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.HeaderView;
-import android.widget.TextView;
 
 /**
  * Displays list of available payment methods.
  * <p/>
  * Created by shivam on 10/16/15.
  */
-public class PaymentMethodsActivity extends AppCompatActivity implements AppBarLayout
+public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         .OnOffsetChangedListener {
 
     public static final String PAYABLE_AMOUNT = "Payable Amount";
@@ -67,7 +66,12 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments_method);
-
+        veritransSDK = VeritransSDK.getVeritransSDK();
+        initializeTheme();
+        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+        if (toolbarLayout != null) {
+            toolbarLayout.setContentScrimColor(veritransSDK.getThemeColor());
+        }
         storageDataHandler = new StorageDataHandler();
 
         UserDetail userDetail = null;
@@ -76,8 +80,6 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        veritransSDK = VeritransSDK.getVeritransSDK();
         TransactionRequest transactionRequest = null;
         if (veritransSDK != null) {
             transactionRequest = veritransSDK.getTransactionRequest();

@@ -9,7 +9,6 @@ import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -18,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -48,12 +48,11 @@ import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.MorphingButton;
-import android.widget.TextView;
 
 /**
  * @author rakawm
  */
-public class SaveCreditCardActivity extends AppCompatActivity implements SaveCardBusCallback, CardRegistrationBusCallback, GetCardBusCallback {
+public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusCallback, CardRegistrationBusCallback, GetCardBusCallback {
     private int RESULT_CODE = RESULT_CANCELED;
     private Toolbar toolbar;
     private VeritransSDK veritransSDK;
@@ -83,7 +82,7 @@ public class SaveCreditCardActivity extends AppCompatActivity implements SaveCar
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_credit_card);
-
+        initializeTheme();
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();

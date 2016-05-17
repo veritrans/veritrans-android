@@ -62,10 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/sixteen_dp"
-            app:fillColor="@color/colorPrimary"
             app:pageColor="@color/white"
-            app:radius="4dp"
-            app:strokeColor="@color/colorSecondary" />
+            app:radius="4dp" />
 
     </LinearLayout>
 

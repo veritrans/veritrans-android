@@ -7,7 +7,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +38,7 @@ import id.co.veritrans.sdk.utilities.Utils;
 /**
  * Created by Ankit on 12/01/15.
  */
-public class IndomaretActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class IndomaretActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -84,6 +83,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         }
 
         initializeView();
+        initializeTheme();
         bindDataToView();
         setUpHomeFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {

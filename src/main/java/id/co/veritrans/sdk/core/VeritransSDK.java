@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
+import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.flurry.android.FlurryAgent;
@@ -51,6 +51,8 @@ public class VeritransSDK {
 
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static Context context = null;
+    private static String themeColorString = null;
+    private static int themeColor;
 
     private static VeritransSDK veritransSDK = new VeritransSDK();
     private static boolean isLogEnabled = true;
@@ -78,6 +80,10 @@ public class VeritransSDK {
             /*serverKey = veritransBuilder.serverKey;*/
             clientKey = veritransBuilder.clientKey;
             merchantServerUrl = veritransBuilder.merchantServerUrl;
+            if (veritransBuilder.colorTheme != null) {
+                themeColorString = veritransBuilder.colorTheme;
+            }
+            initializeTheme();
             initializeSharedPreferences();
             initializeFlurry();
             return veritransSDK;
@@ -114,6 +120,14 @@ public class VeritransSDK {
         return null;
     }
 
+    private static void initializeTheme() {
+        if (themeColorString != null) {
+            themeColor = Color.parseColor(themeColorString);
+        } else {
+            themeColor = context.getResources().getColor(R.color.colorPrimary);
+        }
+    }
+
     public static SharedPreferences getmPreferences() {
         return mPreferences;
     }
@@ -124,6 +138,10 @@ public class VeritransSDK {
 
     public void setDefaultText(String defaultText) {
         VeritransSDK.defaultText = defaultText;
+    }
+
+    public int getThemeColor() {
+        return themeColor;
     }
 
     public String getBoldText() {

@@ -90,7 +90,6 @@
             android:paddingTop="@dimen/eight_dp"
             android:text="@string/see_instruction"
             android:textAllCaps="true"
-            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/secondary_text_size"
             android:textStyle="bold"
             />

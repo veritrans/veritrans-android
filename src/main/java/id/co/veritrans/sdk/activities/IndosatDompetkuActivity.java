@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -50,7 +49,7 @@ import id.co.veritrans.sdk.models.TransactionResponse;
  * <p/>
  * Created by shivam on 11/30/15.
  */
-public class IndosatDompetkuActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class IndosatDompetkuActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String STATUS_FRAGMENT = "transaction_status";
@@ -79,6 +78,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         mVeritransSDK = VeritransSDK.getVeritransSDK();
 
         initializeView();
+        initializeTheme();
         bindDataToView();
 
         setUpHomeFragment();

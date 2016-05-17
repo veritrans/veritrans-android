@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
@@ -15,7 +16,6 @@ import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.UserDetail;
-import android.widget.TextView;
 
 /**
  * It displays payment related instructions on the screen.
@@ -64,6 +64,10 @@ public class BankTransferFragment extends Fragment {
             mEditTextEmailId.setText(userDetail.getEmail());
         } catch (NullPointerException e) {
             e.printStackTrace();
+        }
+        if (veritransSDK != null) {
+            mEditTextEmailId.setHintTextColor(veritransSDK.getThemeColor());
+            mTextViewSeeInstruction.setTextColor(veritransSDK.getThemeColor());
         }
         mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override

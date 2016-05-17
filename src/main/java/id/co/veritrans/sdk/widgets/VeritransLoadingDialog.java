@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.core.VeritransSDK;
 
 /**
  * Created by chetan on 29/10/15.
@@ -36,6 +37,7 @@ public class VeritransLoadingDialog extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.layout_material_progress);
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         progressWheel = (ProgressWheel) findViewById(R.id.progress_wheel);
         messageTv = (TextView) findViewById(R.id.text_loading_message);
         if(!TextUtils.isEmpty(message)){
@@ -43,6 +45,10 @@ public class VeritransLoadingDialog extends Dialog {
             messageTv.setText(message);
         } else {
             messageTv.setVisibility(View.GONE);
+        }
+        if (veritransSDK != null) {
+            progressWheel.setBarColor(veritransSDK.getThemeColor());
+            messageTv.setTextColor(veritransSDK.getThemeColor());
         }
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);

@@ -43,7 +43,29 @@ Veritrans SDK has 2 types of payment flows first is using default ui proived by 
      II) Register a **Broadcast Receiver** to handle payment response.  
      III) Specify which transaction method that is supported by merchant. 
      IV) Call the startPaymentUiFlow().
-  
+     
+The UI can be customized by color and font.
+
+#### Custom color
+
+When setup the SDK builder, set the color theme by using this code.
+
+```
+VeritransBuilder builder = new VeritransBuilder...
+builder.setColorTheme("#COLORHEX);
+```
+
+#### Custom font
+When setup the SDK, set custom font by using this code.
+
+```
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK.setDefaultText("open_sans_regular.ttf");
+        veritransSDK.setSemiBoldText("open_sans_semibold.ttf");
+        veritransSDK.setBoldText("open_sans_bold.ttf");
+```
+Note: open_sans_regular.ttf, open_sans_semibold.ttf, open_sans_bold.ttf is path of the custom font on the assets directory.
+
 
 **Note** Need to specify which payment method that is supported by merchant. For example, this code add Bank Transfer payment support on SDK. 
                 
