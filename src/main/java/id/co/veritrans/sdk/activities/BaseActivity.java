@@ -19,9 +19,9 @@ public class BaseActivity extends AppCompatActivity {
                 toolbar.setBackgroundColor(mVeritransSDK.getThemeColor());
             }
 
-            Toolbar toolbar1 = (Toolbar) findViewById(R.id.main_toolbar);
-            if (toolbar1 != null) {
-                toolbar1.setBackgroundColor(mVeritransSDK.getThemeColor());
+            Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+            if (mainToolbar != null) {
+                mainToolbar.setBackgroundColor(mVeritransSDK.getThemeColor());
             }
         }
     }
