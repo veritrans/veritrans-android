@@ -16,7 +16,6 @@
             android:id="@+id/main_collapsing"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:title="">
 

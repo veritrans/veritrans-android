@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -35,7 +34,7 @@ import id.co.veritrans.sdk.models.TransactionResponse;
 /**
  * @author rakawm
  */
-public class BCAKlikPayActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback{
+public class BCAKlikPayActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     private static final int PAYMENT_WEB_INTENT = 152;
     private BCAKlikPayInstructionFragment bcaKlikPayInstructionFragment = null;
@@ -63,6 +62,7 @@ public class BCAKlikPayActivity extends AppCompatActivity implements View.OnClic
             finish();
         }
         initializeViews();
+        initializeTheme();
         setUpFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);

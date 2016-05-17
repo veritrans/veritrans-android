@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import id.co.veritrans.sdk.R;
@@ -15,7 +14,7 @@ import id.co.veritrans.sdk.models.TransactionResponse;
 /**
  * Created by chetan on 01/12/15.
  */
-public class NotificationActivity extends AppCompatActivity {
+public class NotificationActivity extends BaseActivity {
     private PaymentTransactionStatusFragment paymentStatusFragment;
     private FragmentManager fragmentManager;
     private String currentFragmentName;
@@ -28,6 +27,7 @@ public class NotificationActivity extends AppCompatActivity {
         transactionResponse = (TransactionResponse) getIntent().getSerializableExtra(getString(R.string.payment_status));
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_notification);
+        initializeTheme();
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)

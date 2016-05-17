@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -22,7 +21,7 @@ import id.co.veritrans.sdk.fragments.InstructionMandiriInternetFragment;
  *
  * Created by shivam on 10/28/15.
  */
-public class BankTransferInstructionActivity extends AppCompatActivity {
+public class BankTransferInstructionActivity extends BaseActivity {
 
     public static final String BANK = "bank";
     public static final String TYPE_BCA = "bank.bca";
@@ -40,7 +39,7 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_bank_transfer_instruction);
         initializeViews();
-
+        initializeTheme();
     }
 
 

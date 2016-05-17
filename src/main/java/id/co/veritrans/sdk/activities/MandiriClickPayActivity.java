@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -29,12 +29,11 @@ import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.MandiriClickPayFragment;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import android.widget.TextView;
 
 /**
  * Created by shivam on 11/3/15.
  */
-public class MandiriClickPayActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class MandiriClickPayActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
 
     public static final String DENY = "202";
@@ -73,6 +72,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
 
         initializeViews();
+        initializeTheme();
         bindDataToView();
         setUpHomeFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {

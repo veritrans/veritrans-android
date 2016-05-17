@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
@@ -26,7 +27,6 @@ import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.utilities.FlipAnimation;
-import android.widget.TextView;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
 public class CardDetailFragment extends Fragment {
@@ -177,6 +177,7 @@ public class CardDetailFragment extends Fragment {
         cardNoTv.setText(cardDetail.getMaskedCard().replace("-", "XXXXXX"));
 
         payNowBt = (Button) view.findViewById(R.id.btn_pay_now);
+        payNowBt.setTextColor(veritransSDK.getThemeColor());
         payNowBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,6 +196,7 @@ public class CardDetailFragment extends Fragment {
             }
         });
         payNowFrontBt = (Button) view.findViewById(R.id.btn_pay_now_front);
+        payNowFrontBt.setTextColor(veritransSDK.getThemeColor());
         payNowFrontBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

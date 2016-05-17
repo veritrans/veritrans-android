@@ -17,7 +17,8 @@ public class VeritransBuilder {
     protected String clientKey = null;
     protected Context context = null;
     protected boolean enableLog = true;
-    protected  String merchantServerUrl = null;
+    protected String merchantServerUrl = null;
+    protected String colorTheme = null;
 
     /**
      * It  will initialize an data required to sdk.
@@ -41,6 +42,11 @@ public class VeritransBuilder {
      */
     public VeritransBuilder enableLog(boolean enableLog) {
         this.enableLog = enableLog;
+        return this;
+    }
+
+    public VeritransBuilder setColorTheme(String colorTheme) {
+        this.colorTheme = colorTheme;
         return this;
     }
 

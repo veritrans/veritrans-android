@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -31,7 +30,7 @@ import id.co.veritrans.sdk.fragments.InstructionEpayBriFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.models.TransactionResponse;
 
-public class EpayBriActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class EpayBriActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     private static final int PAYMENT_WEB_INTENT = 150;
     private static int RESULT_CODE = RESULT_CANCELED;
@@ -58,6 +57,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         initializeViews();
+        initializeTheme();
         setUpFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);

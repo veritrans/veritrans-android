@@ -28,7 +28,6 @@
                     android:id="@+id/main_framelayout_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
                     app:layout_collapseMode="parallax">
 
 
@@ -129,7 +128,6 @@
             android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
             app:layout_anchor="@id/main_framelayout_title"
             app:theme="@style/ThemeOverlay.AppCompat.Dark"
             app:title="">
