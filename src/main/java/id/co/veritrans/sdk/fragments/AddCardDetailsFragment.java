@@ -123,9 +123,12 @@ public class AddCardDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (checkCardValidity()) {
+                    String date = etExpiryDate.getText().toString();
+                    String month = date.split("/")[0];
+                    String year = "20" + date.split("/")[1];
                     CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
                             .parseInt(cvv),
-                            expMonth, expYear,
+                            month, year,
                             veritransSDK.getClientKey());
                     cardTokenRequest.setIsSaved(cbStoreCard.isChecked());
                     cardTokenRequest.setSecure(veritransSDK.getTransactionRequest().isSecureCard());

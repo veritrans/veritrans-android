@@ -164,8 +164,11 @@ public class RegisterCardFragment extends Fragment {
                     // Save card
                     SdkUtil.showProgressDialog(getActivity(), false);
                     SaveCreditCardActivity activity = (SaveCreditCardActivity) getActivity();
+                    String date = etExpiryDate.getText().toString();
+                    String month = date.split("/")[0];
+                    String year = "20" + date.split("/")[1];
                     if (activity != null) {
-                        activity.registerCard(cardNumber, Integer.parseInt(cvv), expMonth, 2000 + expYear);
+                        activity.registerCard(cardNumber, Integer.parseInt(cvv), month, year);
                     }
                 }
             }
