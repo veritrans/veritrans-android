@@ -9,7 +9,6 @@ import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -17,6 +16,7 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -71,13 +71,12 @@ import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.MorphingButton;
-import android.widget.TextView;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class CreditDebitCardFlowActivity extends AppCompatActivity implements TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
+public class CreditDebitCardFlowActivity extends BaseActivity implements TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
     private static final int PAYMENT_WEB_INTENT = 100;
     private static final int PAY_USING_CARD = 51;
     private int RESULT_CODE = RESULT_CANCELED;
@@ -129,6 +128,7 @@ public class CreditDebitCardFlowActivity extends AppCompatActivity implements Tr
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.title_header);
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
+        initializeTheme();
         morphToCircle(0);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);

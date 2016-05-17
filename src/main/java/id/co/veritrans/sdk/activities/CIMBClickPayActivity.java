@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -35,7 +34,7 @@ import id.co.veritrans.sdk.models.TransactionResponse;
 /**
  * Created by Ankit on 11/26/15.
  */
-public class CIMBClickPayActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class CIMBClickPayActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     private static final int PAYMENT_WEB_INTENT = 151;
     private InstructionCIMBFragment cimbClickPayFragment = null;
@@ -64,6 +63,7 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
             finish();
         }
         initializeViews();
+        initializeTheme();
         setUpFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);

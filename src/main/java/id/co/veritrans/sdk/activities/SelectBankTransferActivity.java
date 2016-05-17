@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -25,12 +25,11 @@ import id.co.veritrans.sdk.models.BankTransferModel;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.widgets.HeaderView;
-import android.widget.TextView;
 
 /**
  * @author rakawm
  */
-public class SelectBankTransferActivity extends AppCompatActivity {
+public class SelectBankTransferActivity extends BaseActivity {
 
     private static final String TAG = SelectBankTransferActivity.class.getSimpleName();
 
@@ -51,7 +50,7 @@ public class SelectBankTransferActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_bank_transfer);
-
+        initializeTheme();
         mVeritransSDK = VeritransSDK.getVeritransSDK();
         TransactionRequest transactionRequest = null;
         if (mVeritransSDK != null) {

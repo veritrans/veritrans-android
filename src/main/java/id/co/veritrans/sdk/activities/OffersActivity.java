@@ -9,7 +9,6 @@ import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -17,6 +16,7 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -71,7 +71,6 @@ import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.MorphingButton;
-import android.widget.TextView;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -80,7 +79,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Ankit on 12/7/15.
  */
-public class OffersActivity extends AppCompatActivity implements TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
+public class OffersActivity extends BaseActivity implements TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
 
     public static final String OFFERS_FRAGMENT = "offersList";
     public static final String ADD_CARD_FRAGMENT = "addCard";
@@ -151,10 +150,10 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         }
 
         initializeView();
+        initializeTheme();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
         }
-//        setUpHomeFragment();
         OffersListFragment offersListFragment = new OffersListFragment();
         replaceFragment(offersListFragment, true, false);
         calculateScreenWidth();

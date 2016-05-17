@@ -8,11 +8,11 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,7 +41,7 @@ import id.co.veritrans.sdk.widgets.VeritransDialog;
 /**
  * Created by Ankit on 12/3/15.
  */
-public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class BBMMoneyActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -86,6 +86,7 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         }
 
         initializeView();
+        initializeTheme();
         bindDataToView();
         setUpHomeFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
@@ -148,6 +149,12 @@ public class BBMMoneyActivity extends AppCompatActivity implements View.OnClickL
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Set color theme for title frame layout
+        FrameLayout frameTitle = (FrameLayout) findViewById(R.id.main_framelayout_title);
+        if (frameTitle != null) {
+            frameTitle.setBackgroundColor(veritransSDK.getThemeColor());
+        }
     }
 
     private void bindDataToView() {

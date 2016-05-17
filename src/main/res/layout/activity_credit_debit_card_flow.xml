@@ -11,7 +11,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
         app:theme="@style/ToolBarStyle">
 
@@ -48,8 +47,8 @@
         android:layout_width="@dimen/btn_height"
         android:layout_height="@dimen/btn_height"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/sixteen_dp"
         android:textColor="@android:color/white"
         android:visibility="gone" />
