@@ -1,7 +1,6 @@
 package id.co.veritrans.sdk.core;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,6 +10,7 @@ import java.io.ObjectOutputStream;
 
 /**
  * Created by chetan on 19/10/15.
+ * @deprecated
  */
 public class StorageDataHandler {
 
@@ -34,7 +34,7 @@ public class StorageDataHandler {
                                                 final Object object) throws IOException {
 
         if (context == null || key == null || object == null) {
-            Log.e(TAG + " Error ", "invalid input to Storage handler.");
+            Logger.e(TAG + " Error ", "invalid input to Storage handler.");
         } else {
             final FileOutputStream fileOutputStream = context.openFileOutput(key,
                     Context.MODE_PRIVATE);
@@ -60,7 +60,7 @@ public class StorageDataHandler {
             ClassNotFoundException, IOException {
 
         if (context == null || key == null) {
-            Log.e(TAG + " Error ", "invalid input to Storage handler.");
+            Logger.e(TAG + " Error ", "invalid input to Storage handler.");
             return null;
         } else {
             final FileInputStream fileInputStream = context.openFileInput(key);

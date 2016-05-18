@@ -9,15 +9,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
-import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
-import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.models.UserDetail;
 
 public class UserDetailFragment extends Fragment {
@@ -49,8 +47,10 @@ public class UserDetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        ((UserDetailsActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string
-                .title_user_details));
+        UserDetailsActivity userDetailsActivity = (UserDetailsActivity) getActivity();
+        if (userDetailsActivity != null && userDetailsActivity.getSupportActionBar() != null) {
+            userDetailsActivity.getSupportActionBar().setTitle(getString(R.string.title_user_details));
+        }
         fullnameEt = (EditText) view.findViewById(R.id.et_full_name);
         phoneEt = (EditText) view.findViewById(R.id.et_phone);
         emailEt = (EditText) view.findViewById(R.id.et_email);
@@ -97,12 +97,9 @@ public class UserDetailFragment extends Fragment {
             return;
         }
         UserDetail userDetail = null;
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
         try {
-            userDetail = (UserDetail) storageDataHandler.readObject(getActivity(), Constants.USER_DETAILS);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }catch (FileNotFoundException e){
+            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if(userDetail == null) {
@@ -112,7 +109,7 @@ public class UserDetailFragment extends Fragment {
         userDetail.setEmail(email);
         userDetail.setPhoneNumber(phoneNo);
         Logger.i("writting in file");
-        storageDataHandler.writeObject(getActivity(), Constants.USER_DETAILS, userDetail);
+        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
         ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);
 

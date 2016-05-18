@@ -6,20 +6,20 @@ import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
@@ -30,22 +30,21 @@ import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.HeaderView;
-import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
  * Displays list of available payment methods.
  * <p/>
  * Created by shivam on 10/16/15.
  */
-public class PaymentMethodsActivity extends AppCompatActivity implements AppBarLayout
+public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         .OnOffsetChangedListener {
 
+    public static final String PAYABLE_AMOUNT = "Payable Amount";
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.7f;
     private static final float ALPHA = 0.6f;
     private static final String TAG = PaymentMethodsActivity.class.getSimpleName();
     private static final float PERCENTAGE_TOTAL = 1f;
-    public static final String PAYABLE_AMOUNT = "Payable Amount";
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
 
     private VeritransSDK veritransSDK = null;
@@ -58,33 +57,40 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
     private RecyclerView mRecyclerView = null;
     private HeaderView toolbarHeaderView = null;
     private HeaderView floatHeaderView = null;
-    private TextViewFont headerTextView = null;
+    private TextView headerTextView = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
-    private TextViewFont textViewMeasureHeight = null;
+    private TextView textViewMeasureHeight = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments_method);
-
+        veritransSDK = VeritransSDK.getVeritransSDK();
+        initializeTheme();
+        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+        if (toolbarLayout != null) {
+            toolbarLayout.setContentScrimColor(veritransSDK.getThemeColor());
+        }
         storageDataHandler = new StorageDataHandler();
 
         UserDetail userDetail = null;
         try {
-            userDetail = (UserDetail) storageDataHandler.readObject(this, Constants.USER_DETAILS);
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
+            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        veritransSDK = VeritransSDK.getVeritransSDK();
-        TransactionRequest transactionRequest = veritransSDK.getTransactionRequest();
-        CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
-                userDetail.getEmail(), userDetail.getPhoneNumber());
-        transactionRequest.setCustomerDetails(customerDetails);
-        setUpPaymentMethods();
+        TransactionRequest transactionRequest = null;
+        if (veritransSDK != null) {
+            transactionRequest = veritransSDK.getTransactionRequest();
+            CustomerDetails customerDetails = null;
+            if (userDetail != null) {
+                customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
+                        userDetail.getEmail(), userDetail.getPhoneNumber());
+                transactionRequest.setCustomerDetails(customerDetails);
+            }
+            setUpPaymentMethods();
+        } else Logger.e("Veritrans SDK is not started.");
     }
 
     /**
@@ -139,7 +145,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         mAppBarLayout.addOnOffsetChangedListener(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bindDataToView();
 
@@ -165,8 +171,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-            String amount = Constants.CURRENCY_PREFIX + " "
-                    + Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount());
+            String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount()));
 
             collapsingToolbarLayout.setTitle(" ");
             toolbarHeaderView.bindTo(PAYABLE_AMOUNT, "" + amount);
@@ -188,8 +193,8 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
         toolbarHeaderView = (HeaderView) findViewById(R.id.toolbar_header_view);
         floatHeaderView = (HeaderView) findViewById(R.id.float_header_view);
-        headerTextView = (TextViewFont) findViewById(R.id.title_header);
-        textViewMeasureHeight = (TextViewFont) findViewById(R.id.textview_to_compare);
+        headerTextView = (TextView) findViewById(R.id.title_header);
+        textViewMeasureHeight = (TextView) findViewById(R.id.textview_to_compare);
     }
 
     /**
@@ -313,11 +318,7 @@ public class PaymentMethodsActivity extends AppCompatActivity implements AppBarL
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-                data.setAction(Constants.EVENT_TRANSACTION_COMPLETE);
-                sendBroadcast(data);
                 finish();
-            } else {
-                //transaction failed.
             }
 
         } else {

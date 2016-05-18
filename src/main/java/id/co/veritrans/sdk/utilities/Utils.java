@@ -4,6 +4,7 @@ package id.co.veritrans.sdk.utilities;
  * Created by shivam on 10/26/15.
  */
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -24,7 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Logger;
 
 /**
@@ -174,7 +175,7 @@ public class Utils {
                 //request.setDestinationInExternalFilesDir(activity, path, "" + fileName);
                 request.setNotificationVisibility(DownloadManager.Request
                         .VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                String path = Constants.DIR_APP + File.separator + "" + directoryName;
+                String path = activity.getString(R.string.app_directory) + File.separator + "" + directoryName;
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, path +
                         File.separator + fileName + ".mp4");
                 return downloadManager.enqueue(request);
@@ -221,9 +222,10 @@ public class Utils {
 
             //2015-10-30 20:32:51
             String data[] = transactionTime.split(" ");
-            if (data != null && data.length > 1) {
+            if (data.length > 1) {
 
                 try {
+                    @SuppressLint("SimpleDateFormat")
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(simpleDateFormat.parse(data[0]));

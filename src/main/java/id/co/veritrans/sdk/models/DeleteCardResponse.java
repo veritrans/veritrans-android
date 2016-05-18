@@ -1,11 +1,17 @@
 package id.co.veritrans.sdk.models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
- * Created by chetan on 04/12/15.
+ * @author rakawm
  */
 public class DeleteCardResponse {
+    @SerializedName("status_message")
     private String message;
+    @SerializedName("message")
     private String error;
+    @SerializedName("status_code")
+    private int code;
 
     public String getMessage() {
         return message;
@@ -21,5 +27,13 @@ public class DeleteCardResponse {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

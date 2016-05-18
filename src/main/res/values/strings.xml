@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">VeritransSdk</string>
     <!--user detail-->
     <string name="hint_full_name">Full name</string>
@@ -10,7 +10,49 @@
     <string name="validation_email_invalid">Please enter valid email</string>
     <string name="validation_phone_no_empty">Please enter phone number.</string>
     <string name="validation_phone_no_invalid">Please enter valid phone number</string>
+    <string name="my_credit_card">My Credit Card</string>
 
+    <string name="description_btn_bbm">BBM Button</string>
+    <string name="description_mandiri_token_instruction">Mandiri Token Instruction</string>
+    <string name="description_payment_method_cover">Payment Method List</string>
+    <string name="description_dialog_title">Dialog title image</string>
+    <string name="description_help_icon">Show help</string>
+    <string name="description_transaction_status">Transaction status</string>
+    <string name="description_delete_card">Delete card</string>
+    <string name="description_question_mark">Question Mark</string>
+    <string name="description_google_play">Get on Google Play</string>
+    <string name="description_minus_button">Minus</string>
+    <string name="description_plus_button">Plus</string>
+    <string name="description_success_transaction">Success</string>
+    <string name="description_arrow">Arrow</string>
+    <string name="description_bank_icon">Bank icon</string>
+    <string name="description_payment_method_icon">Payment method icon</string>
+    <string name="text_payment_type_here">Payment Type here</string>
+    <string name="text_transaction_time_here">Transaction Time Here</string>
+    <string name="text_sample_card_expiry">XX/12</string>
+    <string name="text_billpay_code_here">billpay code here</string>
+    <string name="text_sample_masked_credit_card" tools:ignore="Typos">XXXX XXXX XXXX 1234</string>
+    <string name="text_company_code_here">company code here</string>
+    <string name="text_bank_name">Bank name</string>
+    <string name="text_sample_valid_date">Valid Until : 10 September 2015, 16:00</string>
+    <string name="text_demo">demo</string>
+    <string name="text_test">test</string>
+    <string name="text_input_one_here">Input 1 here</string>
+    <string name="text_input_two_here">Input 2 here</string>
+    <string name="text_input_three_here">Input 3 here</string>
+    <string name="text_three">3</string>
+    <string name="text_amount_here">Amount here</string>
+    <string name="text_amount">Amount </string>
+    <string name="text_order_id_here">Order Id here</string>
+    <string name="text_colon">:</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_accept">Accept</string>
+    <!--Activities-->
+    <string name="activity_select_bank">Select Bank</string>
+    <string name="activity_bank_transfer_bca">BCA Bank Transfer</string>
+    <string name="activity_bank_transfer_mandiri">Mandiri Bank Transfer</string>
+    <string name="activity_bank_transfer_permata">Permata Bank Transfer</string>
+    <string name="activity_save_credit_card">Registered Credit Card</string>
     <!-- User Address -->
     <string name="title_user_details">User Details</string>
     <string name="hint_address">Address</string>
@@ -95,6 +137,11 @@
     <string name="bank_transfer">Bank Transfer</string>
     <string name="mandiri_bill_payment">Mandiri Bill Payment</string>
 
+    <!--Bank Transfer-->
+    <string name="bca_bank_transfer">BCA</string>
+    <string name="permata_bank_transfer">Permata</string>
+
+
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
     <string name="transfer_amount">Transfer Amount</string>
@@ -123,24 +170,51 @@
 
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
-    <string name="mandiri_instruction_step1">1.\tEnter Your PIN.</string>
-    <string name="mandiri_instruction_step2">2.\tOn the main menu, Choose \'others\'.</string>
-    <string name="mandiri_instruction_step3">3.\tChoose Transfer.</string>
-    <string name="mandiri_instruction_step4">4.\tChoose \'Online Transfer\'.</string>
-    <string name="mandiri_instruction_step5">5.\tEnter the number 013 (code 013 and 16-digit account number).</string>
-    <string name="mandiri_instruction_step6">6.\tThe reference number can be left blank and then choose correct.</string>
+
+    <string name="mandiri_instruction_step1">1.\tOn the main menu, Choose \'Pay/Buy\'.</string>
+    <string name="mandiri_instruction_step2">2.\tChoose \'Others\'.</string>
+    <string name="mandiri_instruction_step3">3.\tChoose \'Multi Payment\'.</string>
+    <string name="mandiri_instruction_step4">4.\tEnter 70012 (Veritrans company code) and press \'Correct\'.</string>
+    <string name="mandiri_instruction_step5">5.\tEnter your Payment code and press \'Correct\'.</string>
+    <string name="mandiri_instruction_step6">6.\tYour payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
+
+    <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (ib.bankmandiri.co.id).</string>
+    <string name="mandiri_internet_instruction_step2">2.\tFrom the main menu choose \'Payment\', then choose \'Multi Payment\'.</string>
+    <string name="mandiri_internet_instruction_step3">3.\tSelect your account in \'From Account\', then \'Billing Name\' select \'Veritrans\'.</string>
+    <string name="mandiri_internet_instruction_step4">4.\tEnter the \'Payment Code\' and you will receive your payment details.</string>
+    <string name="mandiri_internet_instruction_step5">5.\tConfirm your payment using Mandiri Token.</string>
 
 
     <!-- bca/ prima bank transfer Instruction-->
-    <string name="bca_instruction_step1">1.\tEnter Your PIN.</string>
-    <string name="bca_instruction_step2">2.\tOn the main menu, Choose \'Other Transaction\'.</string>
-    <string name="bca_instruction_step3">3.\tChoose \'Transfer\'.</string>
-    <string name="bca_instruction_step4">4.\tChoose \'Other Bank Account\'.</string>
-    <string name="bca_instruction_step5">5.\tEnter the number 013 (Bank Permata) and choose \'Correct\'.</string>
-    <string name="bca_instruction_step6">6.\tEnter full amount to be paid (if the amount entered is not the same as the invoiced amount, the transaction will be declined).</string>
-    <string name="bca_instruction_step7">7.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
+    <!--BCA Transfer-->
+    <string name="bca_instruction_step1">1.\tOn the main menu, Choose \'Other Transaction\'.</string>
+    <string name="bca_instruction_step2">2.\tChoose \'Transfer\'.</string>
+    <string name="bca_instruction_step3">3.\tChoose \'To BCA Virtual Account\'.</string>
+    <string name="bca_instruction_step4">4.\tEnter your payment code (11 digit code) and press \'Correct\'.</string>
+    <string name="bca_instruction_step5">5.\tEnter full amount to be paid and press \'Correct\'.</string>
+    <string name="bca_instruction_step6">6.\tYour payment details will appear on the confirmation page. If information is correct press \'Yes\'.</string>
+    <!--Klik BCA-->
+    <string name="bca_klik_instruction_step1">1.\tChoose menu \'Fund Transfer\'.</string>
+    <string name="bca_klik_instruction_step2">2.\tChoose \'Transfer to BCA Virtual Account\'.</string>
+    <string name="bca_klik_instruction_step3">3.\t\'Input BCA Virtual Account Number\' or \'Choose from Transfer List\' and click \'Continue\'.</string>
+    <string name="bca_klik_instruction_step4">4.\tAmount to be paid, account number and Merchant name will appear on the payment confirmation page, if information is right click \'Continue\'.</string>
+    <string name="bca_klik_instruction_step5">5.\tGet your \'BCA token\' and input KEYBCA Response \'APPLI 1\' and click \'Submit\'.</string>
+    <string name="bca_klik_instruction_step6">6.\tYour transaction is Done.</string>
 
+    <!--KLIK BCA PAYMENT-->
+    <string name="bca_klik_pay_instruction_step1">1.\tYou will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
+    <string name="bca_klik_pay_instruction_step2">2.\tFor payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
+    <string name="bca_klik_pay_instruction_step3">3.\tFor more information about BCA KlikPay please contact Halo BCA at (021) 500888 or visit www.bca.co.id.</string>
 
+    <!--m-BCA-->
+    <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
+    <string name="bca_mbanking_instruction_step2">2.\tChoose \'Transfer\'</string>
+    <string name="bca_mbanking_instruction_step3">3.\tChoose \'BCA Virtual Account\'.</string>
+    <string name="bca_mbanking_instruction_step4">4.\tChoose \'account number\' that you want to use for payment.</string>
+    <string name="bca_mbanking_instruction_step5">5.\tInput BCA Virtual Account Number and click \'OK\'.</string>
+    <string name="bca_mbanking_instruction_step6">6.\tBCA Virtual Account Number and your account information will appear on the payment confirmation page and then click \'Send\'.</string>
+    <string name="bca_mbanking_instruction_step7">7.\tClick \'OK\' on the payment confirmation page.</string>
+    <string name="bca_mbanking_instruction_step8">8.\tEnter amount to be transferred then click \'OK\'.</string>
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">1.\tPlease make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
     <string name="cimb_instruction_step2">2.\tTransaction will be cancelled if payment is not completed within 2 hours.</string>
@@ -225,8 +299,10 @@
     <string name="company_code">Company Code</string>
     <string name="bill_code">Billpay Code</string>
     <string name="processing_payment">Processing Payment</string>
+    <string name="processing_delete">Deleting Card</string>
     <string name="fetching_offers">Fetching Offers</string>
-
+    <string name="no_card_yet">No Card Yet</string>
+    <string name="save_time_save_credit">Save your time by adding credit card that can be used for every transaction</string>
 
     <string name="credit_card">Credit/Debit Card</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
@@ -235,6 +311,7 @@
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="mandiri_e_cash">Mandiri e-Cash</string>
+    <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Offers</string>
     <string name="loading">Loading</string>
@@ -280,9 +357,74 @@
     <string name="payment_deny">Payment deny.</string>
     <string name="success">success</string>
     <string name="fetching_cards">Fetching cards</string>
+    <string name="btn_save_card">Register Card</string>
 
     <string name="offer_applied">Offer Applied Successfully !</string>
     <string name="offer_not_applied">Offer is not applicable on this card</string>
     <string name="no_offers">No offers found</string>
 
+    <!--String Constanst-->
+    <string name="position">position</string>
+    <string name="user_details">user_details</string>
+    <string name="user_address_details">user_address_details</string>
+    <string name="app_directory">VeritransData</string>
+    <string name="success_code_200">200</string>
+    <string name="success_code_201">201</string>
+    <string name="success_code_202">202</string>
+
+    <string name="card_click_type_none">normal</string>
+    <string name="card_click_type_one_click">one_click</string>
+    <string name="card_click_type_two_click">two_click</string>
+    <string name="users_saved_card">users_saved_card</string>
+    <string name="bank_details">bank_details</string>
+    <string name="visa">VISA</string>
+    <string name="mastercard">MASTERCARD</string>
+    <string name="capital_success">SUCCESS</string>
+    <string name="transaction_response">transaction_response</string>
+    <string name="event_transaction_complete">veritrans_transaction_complete</string>
+    <string name="payment_status">payment_status</string>
+    <string name="veritrans_response">Android</string>
+    <string name="settlement">settlement</string>
+    <string name="pending">pending</string>
+    <string name="payment_response">payment_response</string>
+    <string name="deny">deny</string>
+    <string name="challenge">challenge</string>
+    <string name="prefix_money">Rp %1$s</string>
+
+    <!--Payment List-->
+    <string name="payment_epay_bri">bri_epay</string>
+    <string name="payment_bank_transfer">bank_transfer</string>
+    <string name="payment_mandiri_bill_payment">echannel</string>
+    <string name="payment_mandiri_clickpay">mandiri_clickpay</string>
+    <string name="payment_cimb_clicks">cimb_clicks</string>
+    <string name="payment_bca_click">bca_klikpay</string>
+    <string name="payment_bbm_money">bbm_money</string>
+    <string name="payment_indosat_dompetku">indosat_dompetku</string>
+    <string name="payment_mandiri_ecash">mandiri_ecash</string>
+    <string name="payment_indomaret">cstore</string>
+    <string name="payment_credit_debit">credit_card</string>
+    <string name="payment_permata">permata</string>
+    <string name="payment_bca">bca</string>
+    <!--Error Response-->
+    <string name="error_empty_response">failed to retrieve response from server.</string>
+    <string name="error_sdk_not_initialized">sdk is not initialized.</string>
+    <string name="error_invalid_data_supplied">invalid data supplied to sdk.</string>
+    <string name="error_unable_to_connect">failed to connect to server.</string>
+    <string name="error_invalid_email_id">invalid email id.</string>
+    <string name="error_invalid_phone_number">invalid phone number.</string>
+    <string name="error_something_wrong">Please try again, something went wrong!</string>
+    <string name="error_already_running">Already running!</string>
+    <string name="error_description_required">add description model</string>
+    <string name="error_transaction">transaction_error</string>
+    <string name="retrofit_network_message">Unable to resolve host</string>
+
+    <!--TAB TITLE-->
+    <string name="tab_bca_atm">ATM BCA</string>
+    <string name="tab_bca_klik">Klik BCA</string>
+    <string name="tab_bca_mobile">m-BCA</string>
+    <string name="tab_mandiri_atm">ATM Mandiri</string>
+    <string name="tab_mandiri_internet">Mandiri Internet</string>
+    <string name="tab_permata_atm">ATM Permata</string>
+    <string name="tab_alto">Alto</string>
+    <string name="tab_mandiri_bill">Mandiri Bill</string>
 </resources>

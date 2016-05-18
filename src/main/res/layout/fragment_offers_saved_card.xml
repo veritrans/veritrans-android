@@ -1,18 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@android:color/white"
               android:orientation="vertical"
     >
 
     <LinearLayout
+        android:id="@+id/credit_card_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:orientation="vertical"
-        android:id="@+id/credit_card_holder"
         android:paddingTop="@dimen/sixteen_dp"
 
         >
@@ -21,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:id="@+id/text_empty_saved_cards"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,7 +35,6 @@
                 android:id="@+id/saved_card_pager"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_weight="1"
                 />
         </RelativeLayout>
 
@@ -46,10 +44,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/sixteen_dp"
             app:fillColor="@android:color/white"
-            app:font="@string/font_open_sans_semibold"
-            app:pageColor="@color/colorSecondary"
             app:radius="4dp"
-            app:strokeColor="@color/colorSecondary"
             />
 
     </LinearLayout>
@@ -58,29 +53,27 @@
         android:id="@+id/layout_pay_with_instalments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/expiry_date_layout"
         android:layout_marginBottom="@dimen/eight_dp"
         android:layout_marginTop="@dimen/sixteen_dp"
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp"
         >
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
-            android:gravity="left"
+            android:gravity="start"
             android:text="@string/pay_with_instalments"
             android:textColor="@color/black"
             android:textSize="@dimen/seventeen_sp"
-            app:font="@string/font_open_sans_regular"
-            />
+            tools:ignore="RelativeOverlap" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
@@ -93,10 +86,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:background="@drawable/ic_minus_button_selector"
+                android:contentDescription="@string/description_minus_button"
                 android:padding="@dimen/sixteen_dp"
                 />
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:id="@+id/text_instalment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -108,7 +102,6 @@
                 android:text="@string/zero_month"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/tertiary_text_size"
-                app:font="@string/font_open_sans_regular"
                 />
 
             <ImageView
@@ -117,6 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:background="@drawable/ic_plus_button_selector"
+                android:contentDescription="@string/description_plus_button"
                 android:padding="@dimen/sixteen_dp"
                 />
 
@@ -124,10 +118,10 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/new_card_button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/sixteen_dp"
-        android:id="@+id/new_card_button_layout"
         >
 
         <android.support.design.widget.FloatingActionButton
@@ -135,6 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_plus_action"
             app:borderWidth="0dp"
@@ -146,12 +141,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@id/btn_add_card"
+            android:layout_toStartOf="@id/btn_add_card"
+            android:contentDescription="@string/description_arrow"
             android:padding="@dimen/sixteen_dp"
             android:src="@drawable/curve_arrow"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.SemiBoldTextView
             android:id="@+id/text_card_number"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
@@ -161,8 +157,8 @@
             android:text="@string/add_card_message"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size"
+            android:textStyle="bold"
             android:visibility="gone"
-            app:font="@string/font_open_sans_semibold"
             />
     </RelativeLayout>
 </LinearLayout>

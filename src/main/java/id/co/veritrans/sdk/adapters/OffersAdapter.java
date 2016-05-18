@@ -12,7 +12,7 @@ import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.callbacks.AnyOfferClickedListener;
 import id.co.veritrans.sdk.models.OffersListModel;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * adapter for offers list recycler view.
@@ -60,11 +60,11 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
     public static class OfferViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        TextViewFont textViewOfferTitle;
+        TextView textViewOfferTitle;
 
         public OfferViewHolder(View itemView) {
             super(itemView);
-            textViewOfferTitle = (TextViewFont) itemView.findViewById(R.id.text_offer_title);
+            textViewOfferTitle = (TextView) itemView.findViewById(R.id.text_offer_title);
             itemView.setOnClickListener(this);
         }
 

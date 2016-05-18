@@ -9,7 +9,6 @@
         android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
         app:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:title=""
         >
@@ -20,27 +19,25 @@
             android:orientation="vertical"
             >
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:id="@+id/text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/offers"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/tool_bar_title_size"
-                app:font="@string/font_open_sans_regular"
                 />
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:id="@+id/text_title_card_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/card_details"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/primary_text_size"
-                app:font="@string/font_open_sans_regular"
                 />
 
-            <id.co.veritrans.sdk.widgets.TextViewFont
+            <id.co.veritrans.sdk.widgets.DefaultTextView
                 android:id="@+id/text_title_offer_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,7 +45,6 @@
                 android:text="@string/offers"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/tertiary_text_size"
-                app:font="@string/font_open_sans_regular"
                 />
 
         </LinearLayout>
@@ -66,18 +62,18 @@
         android:id="@+id/processing_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/main_toolbar"
         android:background="@android:color/white"
-        android:visibility="gone"
-        ></RelativeLayout>
+        android:visibility="gone" />
     <id.co.veritrans.sdk.widgets.MorphingButton
         android:id="@+id/btnMorph1"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_width="@dimen/btn_height"
         android:layout_height="@dimen/btn_height"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/sixteen_dp"
-        android:visibility="gone"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
 
 </RelativeLayout>

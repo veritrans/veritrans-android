@@ -14,21 +14,20 @@
         android:orientation="vertical"
         >
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:id="@+id/text_validaty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@color/faint_yellow"
-            android:gravity="left"
+            android:gravity="start"
             android:padding="@dimen/sixteen_dp"
-            android:text="Valid Until : 10 September 2015, 16:00"
+            android:text="@string/text_sample_valid_date"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -38,32 +37,30 @@
             android:text="@string/payment_code"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:id="@+id/text_payment_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
             android:text="@string/payment_code"
             android:textColor="@color/black"
             android:textSize="@dimen/header_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/sixteen_dp"
             android:background="@color/gray_divider"
             />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -72,10 +69,9 @@
             android:text="@string/instruction"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -87,10 +83,9 @@
             android:text="@string/bbm_money_instruction_step1"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -100,11 +95,10 @@
             android:text="@string/bbm_money_instruction_step2"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -117,10 +111,9 @@
             android:text="@string/bbm_money_instruction_step3"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -132,10 +125,9 @@
             android:text="@string/bbm_money_instruction_step4"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -148,10 +140,9 @@
             android:text="@string/bbm_money_instruction_step5"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -163,7 +154,6 @@
             android:text="@string/bbm_money_instruction_step6"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size"
-            app:font="@string/font_open_sans_regular"
             />
 
 

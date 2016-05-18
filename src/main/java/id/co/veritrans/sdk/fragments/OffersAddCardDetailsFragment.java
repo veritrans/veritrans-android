@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.fragments;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,30 +36,28 @@ import id.co.veritrans.sdk.models.BankDetail;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.models.UserDetail;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
 /**
  * Created by Ankit on 12/8/15.
  */
 public class OffersAddCardDetailsFragment extends Fragment {
-    private TextViewFont textViewTitleOffers = null;
-    private TextViewFont textViewTitleCardDetails = null;
-    private TextViewFont textViewOfferName = null;
-
-    private TextViewFont textViewOfferApplied = null;
-    private TextViewFont textViewOfferNotApplied = null;
+    private final String MONTH = "Month";
+    int currentPosition, totalPositions;
+    private TextView textViewTitleOffers = null;
+    private TextView textViewTitleCardDetails = null;
+    private TextView textViewOfferName = null;
+    private TextView textViewOfferApplied = null;
+    private TextView textViewOfferNotApplied = null;
     private LinearLayout layoutOfferStatus = null;
-
     private int offerPosition = 0;
     private String offerName = null;
     private String offerType = null;
     private ImageView imageViewPlus = null;
     private ImageView imageViewMinus = null;
-    private TextViewFont textViewInstalment = null;
+    private TextView textViewInstalment = null;
     private RelativeLayout layoutPayWithInstalment = null;
-
-
     private String lastExpDate = "";
     private EditText etCardNo;
     private EditText etCvv;
@@ -76,27 +75,11 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private UserDetail userDetail;
     private ArrayList<BankDetail> bankDetails;
     private String cardType = "";
-    int currentPosition, totalPositions;
-
-    private final String MONTH = "Month";
     private boolean isInstalment = false;
     private RelativeLayout formLayout;
-
-    public ArrayList<String> getBins() {
-        return bins;
-    }
-
     private ArrayList<String> bins = new ArrayList<>();
 
     public OffersAddCardDetailsFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        veritransSDK = ((OffersActivity) getActivity()).getVeritransSDK();
-        userDetail = ((OffersActivity) getActivity()).getUserDetail();
-        bankDetails = ((OffersActivity) getActivity()).getBankDetails();
     }
 
     public static OffersAddCardDetailsFragment newInstance(int position, String offerName, String
@@ -108,6 +91,18 @@ public class OffersAddCardDetailsFragment extends Fragment {
         data.putString(OffersActivity.OFFER_TYPE, offerType);
         fragment.setArguments(data);
         return fragment;
+    }
+
+    public ArrayList<String> getBins() {
+        return bins;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        veritransSDK = ((OffersActivity) getActivity()).getVeritransSDK();
+        userDetail = ((OffersActivity) getActivity()).getUserDetail();
+        bankDetails = ((OffersActivity) getActivity()).getBankDetails();
     }
 
     @Nullable
@@ -133,21 +128,21 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private void initialiseView(View view) {
 
         if (view != null && getActivity() != null) {
-            textViewTitleOffers = (TextViewFont) getActivity().findViewById(R.id.text_title);
-            textViewTitleCardDetails = (TextViewFont) getActivity().findViewById(R.id
+            textViewTitleOffers = (TextView) getActivity().findViewById(R.id.text_title);
+            textViewTitleCardDetails = (TextView) getActivity().findViewById(R.id
                     .text_title_card_details);
-            textViewOfferName = (TextViewFont) getActivity().findViewById(R.id.text_title_offer_name);
+            textViewOfferName = (TextView) getActivity().findViewById(R.id.text_title_offer_name);
 
             setToolbar();
 
-            textViewOfferApplied = (TextViewFont) view.findViewById(R.id.text_offer_status_applied);
-            textViewOfferNotApplied = (TextViewFont) view.findViewById(R.id
+            textViewOfferApplied = (TextView) view.findViewById(R.id.text_offer_status_applied);
+            textViewOfferNotApplied = (TextView) view.findViewById(R.id
                     .text_offer_status_not_applied);
             layoutOfferStatus = (LinearLayout) view.findViewById(R.id.layout_offer_status);
 
             imageViewPlus = (ImageView) view.findViewById(R.id.img_plus);
             imageViewMinus = (ImageView) view.findViewById(R.id.img_minus);
-            textViewInstalment = (TextViewFont) view.findViewById(R.id.text_instalment);
+            textViewInstalment = (TextView) view.findViewById(R.id.text_instalment);
             layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id
                     .layout_pay_with_instalments);
 
@@ -318,20 +313,17 @@ public class OffersAddCardDetailsFragment extends Fragment {
                 isValid(false);
             }
         });
-        if (veritransSDK.isLogEnabled()) {
-            /*etExpiryDate.setText("12/20");
-            etCardNo.setText("4811 1111 1111 1114");
-            // etCardHolderName.setText("Chetan");
-            etCvv.setText("123");*/
-        }
+
         payNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isValid(true)) {
-
+                    String date = etExpiryDate.getText().toString();
+                    String month = date.split("/")[0];
+                    String year = "20" + date.split("/")[1];
                     CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
                             .parseInt(cvv),
-                            expMonth, expYear,
+                            month, year,
                             veritransSDK.getClientKey());
 
                     int instalmentTerm = 0;
@@ -373,7 +365,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
         questionImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image, null),
+                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
                 veritransDialog.show();
             }
@@ -532,7 +524,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
                 etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
             }
             return false;
-        } else if (expDateArray != null && expDateArray.length == 2) {
+        } else if (expDateArray != null) {
             try {
                 expMonth = Integer.parseInt(expDateArray[0]);
             } catch (NumberFormatException e) {
@@ -565,7 +557,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
             }
             Calendar calendar = Calendar.getInstance();
             Date date = calendar.getTime();
-            SimpleDateFormat format = new SimpleDateFormat("yy");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yy");
             String year = format.format(date);
 
             int currentMonth = calendar.get(Calendar.MONTH) + 1;
@@ -645,12 +637,12 @@ public class OffersAddCardDetailsFragment extends Fragment {
         if (cardNo.charAt(0) == '4') {
             Drawable visa = getResources().getDrawable(R.drawable.visa_non_transperent);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, visa, null);
-            cardType = Constants.CARD_TYPE_VISA;
+            cardType = getString(R.string.visa);
         } else if ((cardNo.charAt(0) == '5') && ((cardNo.charAt(1) == '1') || (cardNo.charAt(1) == '2')
                 || (cardNo.charAt(1) == '3') || (cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '5'))) {
             Drawable masterCard = getResources().getDrawable(R.drawable.mastercard_non_transperent);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, masterCard, null);
-            cardType = Constants.CARD_TYPE_MASTERCARD;
+            cardType = getString(R.string.mastercard);
 
         } else if ((cardNo.charAt(0) == '3') && ((cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '7'))) {
             Drawable amex = getResources().getDrawable(R.drawable.amex_non_transperent);
@@ -681,7 +673,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
                 for (int loop = 0; loop < ((OffersActivity) getActivity()).offersListModels.get
                         (offerPosition).getBins().size(); loop++) {
                     String binValue = ((OffersActivity) getActivity()).offersListModels.get
-                            (offerPosition).getBins().get(loop).toString();
+                            (offerPosition).getBins().get(loop);
 
                     int binInt = 0;
                     try {

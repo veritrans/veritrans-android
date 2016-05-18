@@ -1,18 +1,19 @@
 package id.co.veritrans.sdk.activities;
 
-import com.google.gson.Gson;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
@@ -29,7 +30,7 @@ import id.co.veritrans.sdk.fragments.InstructionEpayBriFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.models.TransactionResponse;
 
-public class EpayBriActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class EpayBriActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     private static final int PAYMENT_WEB_INTENT = 150;
     private static int RESULT_CODE = RESULT_CANCELED;
@@ -56,6 +57,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         initializeViews();
+        initializeTheme();
         setUpFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
@@ -75,7 +77,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         btConfirmPayment.setVisibility(View.VISIBLE);
         btConfirmPayment.setOnClickListener(this);
     }
@@ -149,7 +151,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
         if (resultCode == RESULT_OK && data!=null ) {
-            String responseStr = data.getStringExtra(Constants.PAYMENT_RESPONSE);
+            String responseStr = data.getStringExtra(getString(R.string.payment_response));
             if(TextUtils.isEmpty(responseStr)){
                 return;
             }
@@ -208,9 +210,9 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         Intent data = new Intent();
         if (transactionResponseFromMerchant != null) {
             Logger.i("transactionResponseFromMerchant:"+transactionResponseFromMerchant.getString());
-            data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponseFromMerchant);
+            data.putExtra(getString(R.string.transaction_response), transactionResponseFromMerchant);
         }
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
@@ -219,6 +221,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         RESULT_CODE = resultCode;
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -233,6 +236,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         EpayBriActivity.this.errorMessage = event.getMessage();
@@ -241,6 +245,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         SdkUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         EpayBriActivity.this.errorMessage = getString(R.string.no_network_msg);
@@ -249,6 +254,7 @@ public class EpayBriActivity extends AppCompatActivity implements View.OnClickLi
         SdkUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         EpayBriActivity.this.errorMessage = event.getMessage();

@@ -11,13 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.core.VeritransSDK;
 
 public class VeritransDialog extends android.app.Dialog {
 
     private String title;
     private String message;
-    private TextViewFont titleTextView;
-    private TextViewFont messageTextView;
+    private TextView titleTextView;
+    private TextView messageTextView;
     private Button buttonAccept;
     private Button buttonCancel;
     private View.OnClickListener onAcceptButtonClickListener;
@@ -60,9 +61,9 @@ public class VeritransDialog extends android.app.Dialog {
 
         setContentView(R.layout.dialog_layout);
 
-        this.titleTextView = (TextViewFont) findViewById(R.id.title_tv);
+        this.titleTextView = (TextView) findViewById(R.id.title_tv);
         this.titleImage = (ImageView) findViewById(R.id.title_image);
-        this.messageTextView = (TextViewFont) findViewById(R.id.message_tv);
+        this.messageTextView = (TextView) findViewById(R.id.message_tv);
 
         if (title == null) {
             titleImage.setImageDrawable(drawable);
@@ -79,6 +80,11 @@ public class VeritransDialog extends android.app.Dialog {
         this.buttonAccept = (Button) findViewById(R.id.btn_accept);
         this.buttonCancel = (Button) findViewById(R.id.btn_cancel);
 
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            buttonAccept.setTextColor(veritransSDK.getThemeColor());
+            buttonCancel.setTextColor(veritransSDK.getThemeColor());
+        }
 
         if (TextUtils.isEmpty(positiveButtonText)) {
             this.buttonAccept.setVisibility(View.GONE);
@@ -142,7 +148,7 @@ public class VeritransDialog extends android.app.Dialog {
         return titleTextView;
     }
 
-    public void setTitleTextView(TextViewFont titleTextView) {
+    public void setTitleTextView(TextView titleTextView) {
         this.titleTextView = titleTextView;
     }
 

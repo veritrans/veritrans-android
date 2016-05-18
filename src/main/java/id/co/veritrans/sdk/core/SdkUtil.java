@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -19,15 +18,20 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.models.BBMUrlEncodeJson;
+import id.co.veritrans.sdk.models.BCABankTransfer;
+import id.co.veritrans.sdk.models.BCAKlikPayDescriptionModel;
+import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.BankTransfer;
 import id.co.veritrans.sdk.models.BillingAddress;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardPaymentDetails;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.CstoreEntity;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
@@ -57,7 +61,7 @@ public class SdkUtil {
     /**
      * it will validate an given email-id.
      *
-     * @param email
+     * @param email email string
      * @return true if given email-id is valid else returns false
      */
     public static boolean isEmailValid(String email) {
@@ -74,7 +78,7 @@ public class SdkUtil {
     /**
      * it will validate an given phone number.
      *
-     * @param phoneNo
+     * @param phoneNo   phone number string
      * @return true if given phone number is valid else returns false
      */
     public static boolean isPhoneNumberValid(String phoneNo) {
@@ -107,7 +111,7 @@ public class SdkUtil {
     /**
      * Utility method which will help to close the keyboard.
      *
-     * @param activity
+     * @param activity  activity instance
      */
     public static void hideKeyboard(Activity activity) {
         try {
@@ -126,7 +130,7 @@ public class SdkUtil {
     /**
      * it will validate an given card number.
      *
-     * @param ccNumber
+     * @param ccNumber  credit card number
      * @return true if given card number is valid else returns false.
      */
     public static boolean isValidCardNumber(String ccNumber) {
@@ -166,8 +170,6 @@ public class SdkUtil {
                 progressDialog.show();
             } catch (WindowManager.BadTokenException ex) {
                 Logger.e("error while creating progress dialog : " + ex.getMessage());
-            } catch (NullPointerException ex) {
-                Logger.e("error while creating progress dialog : " + ex.getMessage());
             }
         } else {
             Logger.e("error while creating progress dialog : Context cann't be null.");
@@ -195,8 +197,6 @@ public class SdkUtil {
                 progressDialog.show();
             } catch (WindowManager.BadTokenException ex) {
                 Logger.e("error while creating progress dialog : " + ex.getMessage());
-            } catch (NullPointerException ex) {
-                Logger.e("error while creating progress dialog : " + ex.getMessage());
             }
         } else {
             Logger.e("error while creating progress dialog : Context cann't be null.");
@@ -222,8 +222,6 @@ public class SdkUtil {
                 progressDialog.dismiss();
             } catch (IllegalArgumentException ex) {
                 Logger.e("error while hiding progress dialog : " + ex.getMessage());
-            } catch (NullPointerException ex) {
-                Logger.e("error while hiding progress dialog : " + ex.getMessage());
             }
             progressDialog = null;
         }
@@ -232,18 +230,26 @@ public class SdkUtil {
     /**
      * display snackbar with message about failed api call.
      *
-     * @param activity
-     * @param errorMessage
+     * @param activity      activity instance
+     * @param errorMessage  error message
      */
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
             if (!TextUtils.isEmpty(errorMessage)) {
-                if (errorMessage.contains(Constants
-                        .RETROFIT_NETWORK_MESSAGE)) {
-                    SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+                VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+                if (veritransSDK != null) {
+                    Context context = veritransSDK.getContext();
+                    if (context != null) {
+                        if (errorMessage.contains(context.getString(R.string.retrofit_network_message))) {
+                            SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+                        } else {
+                            SdkUtil.showSnackbar(activity, errorMessage);
+                        }
+                    } else Logger.e("Context is not available.");
                 } else {
-                    SdkUtil.showSnackbar(activity, errorMessage);
+                    Logger.e("Veritrans SDK is not started.");
                 }
+
             } else {
                 SdkUtil.showSnackbar(activity, activity.getString(R.string.api_fail_message));
             }
@@ -255,7 +261,7 @@ public class SdkUtil {
     /**
      * It will generate random 5 digit number. It is used as input3 in mandiri click pay.
      *
-     * @return
+     * @return random number
      */
     public static int generateRandomNumber() {
         int number = 0;
@@ -271,8 +277,8 @@ public class SdkUtil {
     /**
      * helper method to extract {@link MandiriBillPayTransferModel} from {@link TransactionRequest}.
      *
-     * @param request
-     * @return
+     * @param request   transaction request object
+     * @return Transfer model object
      */
     protected static MandiriBillPayTransferModel getMandiriBillPayModel(TransactionRequest
                                                                                 request) {
@@ -297,8 +303,8 @@ public class SdkUtil {
     /**
      * helper method to extract {@link MandiriClickPayModel} from {@link TransactionRequest}.
      *
-     * @param request
-     * @return
+     * @param request   transaction request object
+     * @return Transfer model object
      */
     protected static MandiriClickPayRequestModel getMandiriClickPayRequestModel(TransactionRequest
                                                                                         request,
@@ -320,12 +326,31 @@ public class SdkUtil {
         return model;
     }
 
+    protected static BCAKlikPayModel getBCAKlikPayModel(TransactionRequest request,
+                                                        BCAKlikPayDescriptionModel descriptionModel) {
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(), request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        return new BCAKlikPayModel(
+          descriptionModel,
+                transactionDetails,
+                request.getItemDetails(),
+                request.getBillingAddressArrayList(),
+                request.getShippingAddressArrayList(),
+                request.getCustomerDetails()
+        );
+    }
+
 
     /**
      * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
      *
-     * @param request
-     * @return
+     * @param request   transaction request
+     * @return Transfer model object
      */
     protected static PermataBankTransfer getPermataBankModel(TransactionRequest request) {
 
@@ -339,10 +364,47 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(Constants.PAYMENT_PERMATA);
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            if (veritransSDK.getContext() != null)
+                bankTransfer.setBank(veritransSDK.getContext().getString(R.string.payment_permata));
+            else Logger.e("Context is not available");
+        } else Logger.e("Veritrans SDK is not started.");
 
-        PermataBankTransfer model =
-                new PermataBankTransfer(bankTransfer,
+
+        return new PermataBankTransfer(bankTransfer,
+                        transactionDetails, request.getItemDetails(),
+                        request.getBillingAddressArrayList(),
+                        request.getShippingAddressArrayList(),
+                        request.getCustomerDetails());
+
+    }
+
+    /**
+     * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
+     *
+     * @param request   Transaction request
+     * @return Transfer model object
+     */
+    protected static BCABankTransfer getBcaBankTransferRequest(TransactionRequest request) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        // bank name
+        BankTransfer bankTransfer = new BankTransfer();
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            bankTransfer.setBank(veritransSDK.getContext().getString(R.string.payment_bca));
+        }
+
+        BCABankTransfer model =
+                new BCABankTransfer(bankTransfer,
                         transactionDetails, request.getItemDetails(),
                         request.getBillingAddressArrayList(),
                         request.getShippingAddressArrayList(),
@@ -356,13 +418,11 @@ public class SdkUtil {
      * helper method to extract {@link id.co.veritrans.sdk.models.IndomaretRequestModel} from
      * {@link TransactionRequest}.
      *
-     * @param request
-     * @return
+     * @param request   transaction request object
+     * @return transfer model object
      */
     protected static IndomaretRequestModel getIndomaretRequestModel(TransactionRequest request,
-                                                                    IndomaretRequestModel
-                                                                            .CstoreEntity
-                                                                            cstoreEntity) {
+                                                                    CstoreEntity cstoreEntity) {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
@@ -374,7 +434,10 @@ public class SdkUtil {
 
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
-        model.setPaymentType(Constants.PAYMENT_INDOMARET);
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            model.setPaymentType(veritransSDK.getContext().getString(R.string.payment_indomaret));
+        }
         model.setItem_details(request.getItemDetails());
         model.setCustomerDetails(request.getCustomerDetails());
         model.setTransactionDetails(transactionDetails);
@@ -407,8 +470,8 @@ public class SdkUtil {
      * helper method to extract {@link id.co.veritrans.sdk.models.IndosatDompetkuRequest} from
      * {@link TransactionRequest}.
      *
-     * @param request
-     * @return
+     * @param request   transaction request object
+     * @return transfer model object
      */
     protected static IndosatDompetkuRequest getIndosatDompetkuRequestModel(TransactionRequest
                                                                                    request,
@@ -435,7 +498,10 @@ public class SdkUtil {
 
         model.setCustomerDetails(request.getCustomerDetails(), request
                 .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        model.setPaymentType(Constants.PAYMENT_INDOSAT_DOMPETKU);
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            model.setPaymentType(veritransSDK.getContext().getString(R.string.payment_indosat_dompetku));
+        }
 
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();
@@ -453,7 +519,9 @@ public class SdkUtil {
     /**
      * helper method to extract {@link CIMBClickPayModel} from {@link TransactionRequest}.
      *
-     * @return
+     * @param cimbDescription   CIMB bank description
+     * @param request           transaction request
+     * @return transfer model object
      */
 
     protected static CIMBClickPayModel getCIMBClickPayModel(TransactionRequest request,
@@ -477,9 +545,9 @@ public class SdkUtil {
     }
 
     /**
-     * helper method to extract {@link CIMBClickPayModel} from {@link TransactionRequest}.
+     * helper method to extract {@link MandiriECashModel} from {@link TransactionRequest}.
      *
-     * @return
+     * @return Mandiri E Cash Model object
      */
 
     protected static MandiriECashModel getMandiriECashModel(TransactionRequest request,
@@ -505,8 +573,9 @@ public class SdkUtil {
     /**
      * helper method to extract {@link CardTransfer} from {@link TransactionRequest}.
      *
-     * @param request
-     * @return
+     * @param request   transaction request
+     * @param cardPaymentDetails   payment details
+     * @return Card transfer model object
      */
     public static CardTransfer getCardTransferModel(TransactionRequest request,
                                                     CardPaymentDetails cardPaymentDetails) {
@@ -532,7 +601,7 @@ public class SdkUtil {
     /**
      * helper method to add {@link CustomerDetails} in {@link TransactionRequest}.
      *
-     * @param transactionRequest
+     * @param transactionRequest    transaction request
      * @return transactionRequest with  {@link CustomerDetails}.
      */
     protected static TransactionRequest initializeUserInfo(TransactionRequest transactionRequest) {
@@ -544,7 +613,7 @@ public class SdkUtil {
      * it extracts customer information from TransactionRequest.
      *
      * @param request instance of TransactionRequest
-     * @return
+     * @return transaction request with {@link UserDetail}
      */
     private static TransactionRequest getUserDetails(TransactionRequest request) {
 
@@ -552,8 +621,10 @@ public class SdkUtil {
         CustomerDetails mCustomerDetails = null;
 
         try {
-            userDetail = (UserDetail) StorageDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext(),
-                    Constants.USER_DETAILS);
+            VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+            if (veritransSDK != null) {
+                userDetail = LocalDataHandler.readObject(veritransSDK.getContext().getString(R.string.user_details), UserDetail.class);
+            }
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
 
@@ -579,9 +650,7 @@ public class SdkUtil {
                 //SdkUtil.showSnackbar(VeritransSDK.getVeritransSDK().getContext(), "User details not available.");
                 //request.getActivity().finish();
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.e("Error while fetching user details : " + ex.getMessage());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.e("Error while fetching user details : " + ex.getMessage());
         }
 
@@ -651,8 +720,8 @@ public class SdkUtil {
     /**
      * shows keyboard on screen forcefully.
      *
-     * @param activity
-     * @param editText
+     * @param activity  activity instance
+     * @param editText  edittext instance
      */
     public static void showKeyboard(Activity activity, EditText editText) {
         Logger.i("show keyboard");
@@ -671,31 +740,30 @@ public class SdkUtil {
     /**
      * return user details if available else return null
      *
-     * @param context
+     * @param context   Application context
      * @return UserDetail
      */
     protected static UserDetail getUserDetails(Context context) {
 
         StorageDataHandler storageDataHandler = new StorageDataHandler();
         try {
-            UserDetail userDetail = (UserDetail) StorageDataHandler.readObject(context, Constants
-                    .USER_DETAILS);
+            VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+            if (veritransSDK != null) {
+                UserDetail userDetail = LocalDataHandler.readObject(veritransSDK.getContext().getString(R.string.user_details), UserDetail.class);
+                return userDetail;
+            }
 
-            return userDetail;
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
     /**
-     * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
+     * helper method to extract {@link EpayBriTransfer} from {@link TransactionRequest}.
      *
-     * @param request
-     * @return
+     * @param request   transaction request object
+     * @return E Pay BRI transfer model
      */
     protected static EpayBriTransfer getEpayBriBankModel(TransactionRequest request) {
 
@@ -726,7 +794,7 @@ public class SdkUtil {
 
             PackageManager pm = activity.getPackageManager();
             try {
-                pm.getPackageInfo(Constants.BBM_MONEY_PACKAGE, PackageManager.GET_ACTIVITIES);
+                pm.getPackageInfo(BuildConfig.BBM_MONEY_PACKAGE, PackageManager.GET_ACTIVITIES);
                 isInstalled = true;
             } catch (PackageManager.NameNotFoundException e) {
                 isInstalled = false;
@@ -737,9 +805,9 @@ public class SdkUtil {
     }
 
     /**
-     * it retuns the encoded url in string format.
+     * it returns the encoded url in string format.
      *
-     * @param permataVA
+     * @param permataVA Permata virtual account
      * @return url in encoded format
      */
     public static String createEncodedUrl(String permataVA, String checkStatus, String
@@ -754,9 +822,7 @@ public class SdkUtil {
                     userCancel);
             BBMUrlEncodeJson bbmUrlEncodeJson = new BBMUrlEncodeJson();
 
-            if (permataVA != null) {
-                bbmUrlEncodeJson.setReference(permataVA);
-            }
+            bbmUrlEncodeJson.setReference(permataVA);
 
             bbmUrlEncodeJson.setCallbackUrl(bbmCallBackUrl);
             String jsonString = bbmUrlEncodeJson.getString();

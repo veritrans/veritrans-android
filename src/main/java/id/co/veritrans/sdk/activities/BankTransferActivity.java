@@ -1,17 +1,20 @@
 package id.co.veritrans.sdk.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
@@ -30,7 +33,7 @@ import id.co.veritrans.sdk.fragments.BankTransferPaymentFragment;
 import id.co.veritrans.sdk.fragments.MandiriBillPayFragment;
 import id.co.veritrans.sdk.models.TransactionDetails;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import id.co.veritrans.sdk.utilities.Utils;
 
 /**
  * Created to show and handle bank transfer and mandiri bill pay details.
@@ -53,7 +56,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
  * <p/>
  * Created by shivam on 10/26/15.
  */
-public class BankTransferActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class BankTransferActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -61,11 +64,11 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public String currentFragment = "home";
 
-    private TextViewFont mTextViewOrderId = null;
-    private TextViewFont mTextViewAmount = null;
+    private TextView mTextViewOrderId = null;
+    private TextView mTextViewAmount = null;
     private Button mButtonConfirmPayment = null;
     private AppBarLayout mAppBarLayout = null;
-    private TextViewFont mTextViewTitle = null;
+    private TextView mTextViewTitle = null;
 
     private VeritransSDK mVeritransSDK = null;
     private Toolbar mToolbar = null;
@@ -89,16 +92,21 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         // get position of selected payment method
         Intent data = getIntent();
         if (data != null) {
-            position = data.getIntExtra(Constants.POSITION, Constants
+            position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
         } else {
-            SdkUtil.showSnackbar(BankTransferActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
         initializeView();
         bindDataToView();
 
+        initializeTheme();
+        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+        if (toolbarLayout != null) {
+            toolbarLayout.setContentScrimColor(mVeritransSDK.getThemeColor());
+        }
         setUpHomeFragment();
         if(!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
@@ -122,7 +130,18 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         bankTransferFragment = new BankTransferFragment();
+        Bundle bundle = new Bundle();
+        if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
+            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
+            bankTransferFragment.setArguments(bundle);
+        } else if (position == Constants.BANK_TRANSFER_PERMATA){
+            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
+            bankTransferFragment.setArguments(bundle);
+        } else if(position == Constants.BANK_TRANSFER_BCA) {
+            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+            bankTransferFragment.setArguments(bundle);
 
+        }
         fragmentTransaction.add(R.id.bank_transfer_container,
                 bankTransferFragment, HOME_FRAGMENT);
         fragmentTransaction.commit();
@@ -162,9 +181,9 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      */
     private void initializeView() {
 
-        mTextViewOrderId = (TextViewFont) findViewById(R.id.text_order_id);
-        mTextViewAmount = (TextViewFont) findViewById(R.id.text_amount);
-        mTextViewTitle = (TextViewFont) findViewById(R.id.text_title);
+        mTextViewOrderId = (TextView) findViewById(R.id.text_order_id);
+        mTextViewAmount = (TextView) findViewById(R.id.text_amount);
+        mTextViewTitle = (TextView) findViewById(R.id.text_title);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
@@ -174,7 +193,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         //setup tool bar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -185,20 +204,23 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
         if (mVeritransSDK != null) {
 
-            mTextViewAmount.setText(Constants.CURRENCY_PREFIX + " " + mVeritransSDK
-                    .getTransactionRequest().getAmount());
+            mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
             mTextViewOrderId.setText("" + mVeritransSDK.getTransactionRequest().getOrderId());
-            mButtonConfirmPayment.setTypeface(mVeritransSDK.getTypefaceOpenSansSemiBold());
+            if (mVeritransSDK.getSemiBoldText() != null) {
+                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+            }
             mButtonConfirmPayment.setOnClickListener(this);
 
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
                 mTextViewTitle.setText(getResources().getString(R.string.mandiri_bill_payment));
-            } else {
-                mTextViewTitle.setText(getResources().getString(R.string.bank_transfer));
+            } else if(position == Constants.BANK_TRANSFER_BCA){
+                mTextViewTitle.setText(getResources().getString(R.string.activity_bank_transfer_bca));
+            } else if( position == Constants.BANK_TRANSFER_PERMATA) {
+                mTextViewTitle.setText(getResources().getString(R.string.activity_bank_transfer_permata));
             }
 
         } else {
-            SdkUtil.showSnackbar(BankTransferActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
             Logger.e(BankTransferActivity.class.getSimpleName(), Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -214,7 +236,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      * 3) if current fragment is status fragment  then it will send result back to {@link
      * PaymentMethodsActivity}.
      *
-     * @param view
+     * @param view  clicked view
      */
     @Override
     public void onClick(View view) {
@@ -248,7 +270,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
     /**
      * Displays status of transaction from {@link TransactionResponse} object.
      *
-     * @param transactionResponse
+     * @param transactionResponse   response of the transaction call
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
@@ -280,7 +302,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      * if selected payment method is bank transfer then it will set {@link
      * BankTransferPaymentFragment} to manage it.
      *
-     * @param transactionResponse
+     * @param transactionResponse   response of the transaction call
      */
     private void setUpTransactionFragment(final TransactionResponse
                                                   transactionResponse) {
@@ -294,15 +316,29 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
                 MandiriBillPayFragment bankTransferPaymentFragment =
                         MandiriBillPayFragment.newInstance(transactionResponse);
-
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("data", transactionResponse);
+                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
+                bankTransferPaymentFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.bank_transfer_container,
                         bankTransferPaymentFragment, PAYMENT_FRAGMENT);
-            } else {
-
+            } else if (position == Constants.BANK_TRANSFER_PERMATA){
                 BankTransferPaymentFragment bankTransferPaymentFragment =
                         BankTransferPaymentFragment.newInstance(transactionResponse);
+                Bundle bundle = new Bundle();
+                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
+                bankTransferPaymentFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.bank_transfer_container,
                         bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+            } else if(position == Constants.BANK_TRANSFER_BCA) {
+                BankTransferPaymentFragment bankTransferPaymentFragment =
+                        BankTransferPaymentFragment.newInstance(transactionResponse);
+                Bundle bundle = new Bundle();
+                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+                bankTransferPaymentFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.bank_transfer_container,
+                        bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+
             }
 
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
@@ -334,8 +370,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
             if (!TextUtils.isEmpty(emailId) && SdkUtil.isEmailValid(emailId)) {
                 mVeritransSDK.getTransactionRequest().getCustomerDetails().setEmail(emailId.trim());
             } else if (!TextUtils.isEmpty(emailId) && emailId.trim().length() > 0) {
-                SdkUtil.showSnackbar(BankTransferActivity.this, Constants
-                        .ERROR_INVALID_EMAIL_ID);
+                SdkUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_invalid_email_id));
                 return;
             }
         }
@@ -352,8 +387,10 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
 
             SdkUtil.showProgressDialog(BankTransferActivity.this, getString(R.string.processing_payment), false);
 
-            if (position == Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER) {
+            if (position == Constants.BANK_TRANSFER_PERMATA) {
                 bankTransferTransaction(veritransSDK);
+            } else if(position == Constants.BANK_TRANSFER_BCA) {
+                bcaBankTransferTransaction(veritransSDK);
             } else {
                 mandiriBillPayTransaction(veritransSDK);
             }
@@ -365,12 +402,22 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /**
+     * it performs BCA bank transfer and in onSuccess() of callback method it will call {@link
+     * #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
+     *
+     * @param veritransSDK  Veritrans SDK instance
+     */
+    private void bcaBankTransferTransaction(VeritransSDK veritransSDK) {
+        veritransSDK.paymentUsingBcaBankTransfer();
+    }
+
 
     /**
      * it performs bank transfer and in onSuccess() of callback method it will call {@link
      * #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
      *
-     * @param veritransSDK
+     * @param veritransSDK  Veritrans SDK instance
      */
     private void bankTransferTransaction(VeritransSDK veritransSDK) {
         veritransSDK.paymentUsingPermataBank();
@@ -381,7 +428,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      * It execute mandiri bill payment transaction and in onSuccess() of callback method it will
      * call {@link #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
      *
-     * @param veritransSDK
+     * @param veritransSDK  Veritrans SDK instance
      */
     private void mandiriBillPayTransaction(VeritransSDK veritransSDK) {
 
@@ -411,12 +458,13 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), transactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -430,6 +478,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         BankTransferActivity.this.errorMessage = event.getMessage();
@@ -437,6 +486,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         try {
@@ -450,6 +500,7 @@ public class BankTransferActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         BankTransferActivity.this.errorMessage = getString(R.string.no_network_msg);

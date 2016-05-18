@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
@@ -27,12 +29,11 @@ import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.MandiriClickPayFragment;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
  * Created by shivam on 11/3/15.
  */
-public class MandiriClickPayActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class MandiriClickPayActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
 
     public static final String DENY = "202";
@@ -43,10 +44,10 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
     private MandiriClickPayFragment mMandiriClickPayFragment = null;
     private Button mButtonConfirmPayment = null;
     private Toolbar mToolbar = null;
-    private TextViewFont mTextViewAppli = null;
-    private TextViewFont mTextViewInput1 = null;
-    private TextViewFont mTextViewInput2 = null;
-    private TextViewFont mTextViewInput3 = null;
+    private TextView mTextViewAppli = null;
+    private TextView mTextViewInput1 = null;
+    private TextView mTextViewInput2 = null;
+    private TextView mTextViewInput3 = null;
     private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
     private VeritransSDK mVeritransSDK = null;
     // for result
@@ -71,6 +72,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
 
 
         initializeViews();
+        initializeTheme();
         bindDataToView();
         setUpHomeFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
@@ -92,13 +94,13 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
-        mTextViewInput1 = (TextViewFont) findViewById(R.id.text_input_1);
-        mTextViewInput2 = (TextViewFont) findViewById(R.id.text_input_2);
-        mTextViewInput3 = (TextViewFont) findViewById(R.id.text_input_3);
+        mTextViewInput1 = (TextView) findViewById(R.id.text_input_1);
+        mTextViewInput2 = (TextView) findViewById(R.id.text_input_2);
+        mTextViewInput3 = (TextView) findViewById(R.id.text_input_3);
 
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mButtonConfirmPayment.setOnClickListener(this);
     }
@@ -162,7 +164,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
      * 2) if current fragment is status fragment  then it will send result back to {@link
      * PaymentMethodsActivity}.
      *
-     * @param view
+     * @param view  clicked view
      */
     @Override
     public void onClick(View view) {
@@ -226,8 +228,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
             }
 
         } else {
-            SdkUtil.showSnackbar(MandiriClickPayActivity.this, Constants
-                    .ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(MandiriClickPayActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -237,7 +238,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
      * execute payment code and on success set status fragment to show payment information.
      * and in onFailure displays error message.
      *
-     * @param mandiriClickPayModel
+     * @param mandiriClickPayModel  Mandiri click pay request object
      */
     private void makeTransaction(MandiriClickPayModel mandiriClickPayModel) {
 
@@ -248,7 +249,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
     /**
      * Displays status of transaction from {@link TransactionResponse} object.
      *
-     * @param transactionResponse
+     * @param transactionResponse   response of transaction call
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
@@ -279,8 +280,8 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), transactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_OK, data);
         finish();
     }
@@ -296,6 +297,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -310,6 +312,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         MandiriClickPayActivity.this.transactionResponse = event.getResponse();
@@ -327,6 +330,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         SdkUtil.hideProgressDialog();
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         MandiriClickPayActivity.this.errorMessage = getString(R.string.no_network_msg);
@@ -336,6 +340,7 @@ public class MandiriClickPayActivity extends AppCompatActivity implements View.O
         SdkUtil.hideProgressDialog();
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         MandiriClickPayActivity.this.errorMessage = event.getMessage();

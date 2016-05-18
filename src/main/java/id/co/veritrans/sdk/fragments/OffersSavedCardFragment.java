@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -30,33 +33,32 @@ import id.co.veritrans.sdk.eventbus.events.DeleteCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.DeleteCardSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.OffersListModel;
+import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
-import id.co.veritrans.sdk.widgets.TextViewFont;
 
 public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCallback {
 
     private final String MONTH = "Month";
     int currentPosition, totalPositions;
-    private TextViewFont textViewTitleOffers = null;
-    private TextViewFont textViewTitleCardDetails = null;
-    private TextViewFont textViewOfferName = null;
+    private TextView textViewTitleOffers = null;
+    private TextView textViewTitleCardDetails = null;
+    private TextView textViewOfferName = null;
     private int offerPosition = 0;
     private String offerName = null;
     private String offerType = null;
     private ImageView imageViewPlus = null;
     private ImageView imageViewMinus = null;
-    private TextViewFont textViewInstalment = null;
+    private TextView textViewInstalment = null;
     private RelativeLayout layoutPayWithInstalment = null;
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
     private VeritransSDK veritransSDK;
-    private ArrayList<CardTokenRequest> creditCards;
+    private ArrayList<SaveCardRequest> creditCards;
     private CardPagerAdapter cardPagerAdapter;
-    private TextViewFont emptyCardsTextViewFont;
+    private TextView emptyCardsTextView;
     private boolean isInstalment = false;
     private LinearLayout creditCardLayout;
     private RelativeLayout newCardButtonLayout;
@@ -189,6 +191,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
 
     private void bindViews(View view) {
         creditCardLayout = (LinearLayout)view.findViewById(R.id.credit_card_holder);
+        creditCardLayout.setBackgroundColor(veritransSDK.getThemeColor());
         newCardButtonLayout = (RelativeLayout)view.findViewById(R.id.new_card_button_layout);
         layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id
                 .layout_pay_with_instalments);
@@ -203,16 +206,16 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             }
         });*/
 
-        textViewTitleOffers = (TextViewFont) getActivity().findViewById(R.id.text_title);
-        textViewTitleCardDetails = (TextViewFont) getActivity().findViewById(R.id
+        textViewTitleOffers = (TextView) getActivity().findViewById(R.id.text_title);
+        textViewTitleCardDetails = (TextView) getActivity().findViewById(R.id
                 .text_title_card_details);
-        textViewOfferName = (TextViewFont) getActivity().findViewById(R.id.text_title_offer_name);
+        textViewOfferName = (TextView) getActivity().findViewById(R.id.text_title_offer_name);
 
         setToolbar();
 
         imageViewPlus = (ImageView) view.findViewById(R.id.img_plus);
         imageViewMinus = (ImageView) view.findViewById(R.id.img_minus);
-        textViewInstalment = (TextViewFont) view.findViewById(R.id.text_instalment);
+        textViewInstalment = (TextView) view.findViewById(R.id.text_instalment);
 
 
         if (offerType.equalsIgnoreCase(OffersActivity.OFFER_TYPE_INSTALMENTS)) {
@@ -235,7 +238,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             }
         });
 
-        emptyCardsTextViewFont = (TextViewFont) view.findViewById(R.id.text_empty_saved_cards);
+        emptyCardsTextView = (TextView) view.findViewById(R.id.text_empty_saved_cards);
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
         addCardBt = (FloatingActionButton) view.findViewById(R.id.btn_add_card);
         addCardBt.setOnClickListener(new View.OnClickListener() {
@@ -252,6 +255,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                 .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
+        circlePageIndicator.setFillColor(veritransSDK.getThemeColor());
         creditCards = ((OffersActivity) getActivity()).getCreditCardList();
 
         setViewPagerValues();
@@ -282,7 +286,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                 });
                 circlePageIndicator.setViewPager(savedCardPager);
                 //to notify adapter when credit card details received
-                ((OffersActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyCardsTextViewFont);
+                ((OffersActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyCardsTextView);
                 showHideNoCardMessage();
             }
         }
@@ -290,17 +294,17 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
 
     private void showHideNoCardMessage() {
         if (creditCards.isEmpty()) {
-            emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+            emptyCardsTextView.setVisibility(View.VISIBLE);
             //savedCardPager.setVisibility(View.GONE);
         } else {
-            emptyCardsTextViewFont.setVisibility(View.GONE);
+            emptyCardsTextView.setVisibility(View.GONE);
             //savedCardPager.setVisibility(View.VISIBLE);
         }
     }
 
-    public void deleteCreditCard(String cardNumber) {
+    public void deleteCreditCard(String tokenId) {
         showHideNoCardMessage();
-        deleteCards(cardNumber);
+        deleteCards(tokenId);
 
     }
 
@@ -326,25 +330,23 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
         return isInstalmentValue;
     }
 
-    public void deleteCards(final String cardNumber) {
-        this.cardNumber = cardNumber;
-        CardTokenRequest creditCard = null;
+    public void deleteCards(final String tokenId) {
+        this.cardNumber = tokenId;
+        SaveCardRequest creditCard = null;
         Logger.i("cardNumber:" + cardNumber);
         if (creditCards != null && !creditCards.isEmpty()) {
 
             for (int i = 0; i < creditCards.size(); i++) {
-                if (creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)) {
+                if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(tokenId)) {
                     creditCard = creditCards.get(i);
                 }
             }
-            try {
-                Logger.i("position to delete:" + creditCard.getCardNumber() + ",creditCard size:" + creditCards.size());
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
         }
         if (creditCard != null) {
-            veritransSDK.deleteCard(creditCard);
+            Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
+            SaveCardRequest saveCardRequest = new SaveCardRequest();
+            saveCardRequest.setSavedTokenId(creditCard.getSavedTokenId());
+            veritransSDK.deleteCard(saveCardRequest);
         }
     }
 
@@ -463,6 +465,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
         }, Constants.CARD_ANIMATION_TIME);
     }
 
+    @Subscribe
     @Override
     public void onEvent(DeleteCardSuccessEvent event) {
 
@@ -472,7 +475,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
         }
         int position = -1;
         for (int i = 0; i < creditCards.size(); i++) {
-            if (creditCards.get(i).getCardNumber().equalsIgnoreCase(cardNumber)) {
+            if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
                 position = i;
             }
         }
@@ -480,7 +483,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             Logger.i("position to delete:" + position + "," + creditCards.size());
             if (!creditCards.isEmpty()) {
                 for (int i = 0; i < creditCards.size(); i++) {
-                    Logger.i("cards before:" + creditCards.get(i).getCardNumber());
+                    Logger.i("cards before:" + creditCards.get(i).getSavedTokenId());
                 }
             }
 
@@ -490,7 +493,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             if (!creditCards.isEmpty()) {
                 for (int i = 0; i < creditCards.size(); i++) {
 
-                    Logger.i("cards after:" + creditCards.get(i).getCardNumber());
+                    Logger.i("cards after:" + creditCards.get(i).getSavedTokenId());
                 }
             }
 
@@ -510,24 +513,27 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                 cardPagerAdapter.notifyDataSetChanged();
                 circlePageIndicator.notifyDataSetChanged();
                 if (creditCards.isEmpty()) {
-                    emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+                    emptyCardsTextView.setVisibility(View.VISIBLE);
                 } else {
-                    emptyCardsTextViewFont.setVisibility(View.GONE);
+                    emptyCardsTextView.setVisibility(View.GONE);
                 }
             }
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(DeleteCardFailedEvent event) {
         SdkUtil.showSnackbar(getActivity(), event.getMessage());
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         SdkUtil.showSnackbar(getActivity(), getString(R.string.no_network_msg));
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         SdkUtil.showSnackbar(getActivity(), event.getMessage());

@@ -18,12 +18,14 @@
                     android:layout_centerInParent="true"
                     android:visibility="gone">
 
-        <id.co.veritrans.sdk.widgets.TextViewFont android:layout_width="wrap_content"
-                                                  android:layout_height="wrap_content"
-                                                  android:layout_centerInParent="true"
-                                                  android:layout_marginTop="5dp"
-                                                  android:paddingRight="16dp"
-                                                  android:text="@string/no_offers"
-                                                  android:textSize="@dimen/header_text_size"/>
+        <id.co.veritrans.sdk.widgets.DefaultTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:text="@string/no_offers"
+            android:textSize="@dimen/header_text_size" />
     </RelativeLayout>
 </RelativeLayout>

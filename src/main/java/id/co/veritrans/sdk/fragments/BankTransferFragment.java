@@ -8,16 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
-import java.io.IOException;
+import android.widget.TextView;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
-import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.UserDetail;
-import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
  * It displays payment related instructions on the screen.
@@ -25,7 +23,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
  */
 public class BankTransferFragment extends Fragment {
 
-    private TextViewFont mTextViewSeeInstruction = null;
+    private TextView mTextViewSeeInstruction = null;
     private EditText mEditTextEmailId = null;
     private StorageDataHandler storageDataHandler;
     private UserDetail userDetail;
@@ -48,19 +46,16 @@ public class BankTransferFragment extends Fragment {
     /**
      * initializes view and adds click listener for it.
      *
-     * @param view
+     * @param view  view that needed to be initialized
      */
     private void initializeViews(View view) {
 
-        mTextViewSeeInstruction = (TextViewFont)
+        mTextViewSeeInstruction = (TextView)
                 view.findViewById(R.id.text_see_instruction);
         storageDataHandler = new StorageDataHandler();
         try {
-            userDetail = (UserDetail) storageDataHandler.readObject(getActivity(),
-                    Constants.USER_DETAILS);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         mEditTextEmailId = (EditText) view.findViewById(R.id.et_email);
@@ -70,6 +65,10 @@ public class BankTransferFragment extends Fragment {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        if (veritransSDK != null) {
+            mEditTextEmailId.setHintTextColor(veritransSDK.getThemeColor());
+            mTextViewSeeInstruction.setTextColor(veritransSDK.getThemeColor());
+        }
         mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +77,7 @@ public class BankTransferFragment extends Fragment {
 
                     Intent intent = new Intent(getActivity(),
                             BankTransferInstructionActivity.class);
-                    intent.putExtra(Constants.POSITION, 0);
+                    intent.putExtra(BankTransferInstructionActivity.BANK, getArguments().getString(BankTransferInstructionActivity.BANK));
                     getActivity().startActivity(intent);
 
                 }
@@ -91,7 +90,7 @@ public class BankTransferFragment extends Fragment {
      * created to give access to email id field from {@link id.co.veritrans.sdk.activities
      * .BankTransferActivity}.
      *
-     * @return
+     * @return email identifier
      */
     public String getEmailId() {
         if (mEditTextEmailId != null) {

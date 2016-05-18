@@ -27,8 +27,8 @@ public class CardTokenRequest implements Serializable {
 
     private String cardNumber;
     private int cardCVV;
-    private int cardExpiryMonth;
-    private int cardExpiryYear;
+    private String cardExpiryMonth;
+    private String cardExpiryYear;
     private boolean secure;
     private boolean twoClick;
     private String bank = null;
@@ -46,7 +46,7 @@ public class CardTokenRequest implements Serializable {
     }
 
     public CardTokenRequest(String cardNumber, int cardCVV,
-                            int cardExpiryMonth, int cardExpiryYear, String clientKey) {
+                            String cardExpiryMonth, String cardExpiryYear, String clientKey) {
 
         this.cardNumber = cardNumber;
         this.cardCVV = cardCVV;
@@ -83,12 +83,20 @@ public class CardTokenRequest implements Serializable {
         this.cardCVV = cardCVV;
     }
 
-    public int getCardExpiryMonth() {
+    public String getCardExpiryMonth() {
         return cardExpiryMonth;
     }
 
-    public int getCardExpiryYear() {
+    public void setCardExpiryMonth(String cardExpiryMonth) {
+        this.cardExpiryMonth = cardExpiryMonth;
+    }
+
+    public String getCardExpiryYear() {
         return cardExpiryYear;
+    }
+
+    public void setCardExpiryYear(String cardExpiryYear) {
+        this.cardExpiryYear = cardExpiryYear;
     }
 
     public String getClientKey() {
@@ -111,7 +119,7 @@ public class CardTokenRequest implements Serializable {
     /**
      * if 3ds transaction set it true.
      *
-     * @param secure
+     * @param secure    is secure or not
      */
     public void setSecure(boolean secure) {
         this.secure = secure;
@@ -177,7 +185,7 @@ public class CardTokenRequest implements Serializable {
     }
 
     public String getFormatedExpiryDate() {
-        if (getCardExpiryYear() > 0) {
+        if (Integer.parseInt(getCardExpiryYear()) > 0) {
             return "XX/" + getCardExpiryYear();
 
         }
@@ -200,14 +208,6 @@ public class CardTokenRequest implements Serializable {
             e.printStackTrace();
             return "";
         }
-    }
-
-    public void setCardExpiryMonth(int cardExpiryMonth) {
-        this.cardExpiryMonth = cardExpiryMonth;
-    }
-
-    public void setCardExpiryYear(int cardExpiryYear) {
-        this.cardExpiryYear = cardExpiryYear;
     }
 
     public boolean isInstalment() {

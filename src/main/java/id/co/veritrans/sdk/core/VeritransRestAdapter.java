@@ -4,13 +4,13 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
-
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
 import java.util.concurrent.TimeUnit;
 
 import id.co.veritrans.sdk.BuildConfig;
+import id.co.veritrans.sdk.analytics.MixpanelApi;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.utilities.Utils;
@@ -22,22 +22,25 @@ import retrofit.converter.GsonConverter;
  * Created by chetan on 16/10/15.
  */
 class VeritransRestAdapter {
+    private static final RestAdapter.LogLevel LOG_LEVEL = BuildConfig.FLAVOR.equalsIgnoreCase("development") ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
     private static final String TAG = VeritransRestAdapter.class.getName();
-    private static VeritranceApiInterface veritranceApiInterface;
-    private static VeritranceApiInterface merchantVeritranceApiInterface;
+    private static PaymentAPI paymentAPI;
+    private static PaymentAPI merchantPaymentAPI;
+    private static MixpanelApi mixpanelApi;
 
     /**
-     * It will return instance of VeritranceApiInterface using that we can execute api calls.
+     * It will return instance of PaymentAPI using that we can execute api calls.
      *
      * @param showNetworkNotAvailableDialog boolean , whether to show network not available
      *                                      dialog or not.
-     * @return
+     * @return Payment API implementation
      */
-    public static VeritranceApiInterface getApiClient(boolean showNetworkNotAvailableDialog) {
-        if (VeritransSDK.getVeritransSDK() != null
-                && VeritransSDK.getVeritransSDK().getContext() != null
-                && Utils.isNetworkAvailable(VeritransSDK.getVeritransSDK().getContext())) {
-            if (veritranceApiInterface == null) {
+    public static PaymentAPI getApiClient(boolean showNetworkNotAvailableDialog) {
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null
+                && veritransSDK.getContext() != null
+                && Utils.isNetworkAvailable(veritransSDK.getContext())) {
+            if (paymentAPI == null) {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
                 Gson gson = new GsonBuilder()
@@ -45,21 +48,20 @@ class VeritransRestAdapter {
                         .registerTypeAdapter(Date.class, new DateTypeAdapter())
                         .create();
                 RestAdapter.Builder builder = new RestAdapter.Builder()
+                        .setEndpoint(BuildConfig.BASE_URL)
                         .setConverter(new GsonConverter(gson))
                         .setLogLevel(RestAdapter.LogLevel.FULL)
                         .setClient(new OkClient(okHttpClient));
                 RestAdapter restAdapter;
                 if (BuildConfig.DEBUG) {
-                    builder.setEndpoint(Constants.BASE_URL_FOR_DEBUG);
                     restAdapter = builder.build();
                     restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
                 } else {
-                    builder.setEndpoint(Constants.BASE_URL_FOR_RELEASE);
                     restAdapter = builder.build();
                 }
-                veritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
+                paymentAPI = restAdapter.create(PaymentAPI.class);
             }
-            return veritranceApiInterface;
+            return paymentAPI;
         } else {
             if (showNetworkNotAvailableDialog) {
                 VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
@@ -68,12 +70,13 @@ class VeritransRestAdapter {
         return null;
     }
 
-    public static VeritranceApiInterface getMerchantApiClient(boolean showNetworkNotAvailableDialog) {
-        if (VeritransSDK.getVeritransSDK() != null
-                && VeritransSDK.getVeritransSDK().getContext() != null
-                && Utils.isNetworkAvailable(VeritransSDK.getVeritransSDK().getContext())) {
+    public static PaymentAPI getMerchantApiClient(boolean showNetworkNotAvailableDialog) {
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null
+                && veritransSDK.getContext() != null
+                && Utils.isNetworkAvailable(veritransSDK.getContext())) {
 
-            if (merchantVeritranceApiInterface == null && VeritransSDK.getVeritransSDK() != null) {
+            if (merchantPaymentAPI == null && VeritransSDK.getVeritransSDK() != null) {
 
                 OkHttpClient okHttpClient = new OkHttpClient();
                 okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
@@ -94,13 +97,13 @@ class VeritransRestAdapter {
                     restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
                 }
 
-                merchantVeritranceApiInterface = restAdapter.create(VeritranceApiInterface.class);
+                merchantPaymentAPI = restAdapter.create(PaymentAPI.class);
 
             } else if (VeritransSDK.getVeritransSDK() == null) {
                 Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
             }
 
-            return merchantVeritranceApiInterface;
+            return merchantPaymentAPI;
 
         } else {
             if (showNetworkNotAvailableDialog) {
@@ -109,4 +112,30 @@ class VeritransRestAdapter {
         }
         return null;
     }
+
+    public static MixpanelApi getMixpanelApi() {
+        VeritransSDK paymentSdk = VeritransSDK.getVeritransSDK();
+        if (paymentSdk != null
+                && paymentSdk.getContext() != null
+                && Utils.isNetworkAvailable(paymentSdk.getContext())) {
+            if (mixpanelApi == null) {
+                OkHttpClient okHttpClient = new OkHttpClient();
+                okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+
+                RestAdapter.Builder builder = new RestAdapter.Builder()
+                        .setLogLevel(LOG_LEVEL)
+                        .setClient(new OkClient(okHttpClient));
+                RestAdapter restAdapter;
+
+                builder.setEndpoint(BuildConfig.MIXPANEL_URL);
+                restAdapter = builder.build();
+                mixpanelApi = restAdapter.create(MixpanelApi.class);
+            }
+            return mixpanelApi;
+        } else {
+            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+        }
+        return null;
+    }
+
 }

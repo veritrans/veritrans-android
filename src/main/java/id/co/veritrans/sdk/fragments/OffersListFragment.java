@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.adapters.OffersAdapter;
@@ -24,16 +26,16 @@ import id.co.veritrans.sdk.eventbus.events.GetOfferFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.GetOfferSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.models.GetOffersResponseModel;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Created by Ankit on 12/7/15.
  */
 public class OffersListFragment extends Fragment implements AnyOfferClickedListener, GetOfferBusCallback {
 
-    private TextViewFont textViewTitleOffers = null;
-    private TextViewFont textViewTitleCardDetails = null;
-    private TextViewFont textViewOfferName = null;
+    private TextView textViewTitleOffers = null;
+    private TextView textViewTitleCardDetails = null;
+    private TextView textViewOfferName = null;
     private RecyclerView recyclerViewOffers = null;
     private OffersAdapter offersAdapter = null;
     private VeritransSDK veritransSDK = null;
@@ -68,10 +70,10 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     }
 
     private void initialiseView(View view) {
-        textViewTitleOffers = (TextViewFont) getActivity().findViewById(R.id.text_title);
-        textViewTitleCardDetails = (TextViewFont) getActivity().findViewById(R.id
+        textViewTitleOffers = (TextView) getActivity().findViewById(R.id.text_title);
+        textViewTitleCardDetails = (TextView) getActivity().findViewById(R.id
                 .text_title_card_details);
-        textViewOfferName = (TextViewFont) getActivity().findViewById(R.id.text_title_offer_name);
+        textViewOfferName = (TextView) getActivity().findViewById(R.id.text_title_offer_name);
         setToolbar();
         recyclerViewOffers = (RecyclerView) view.findViewById(R.id.rv_offers);
         emptyOffersLayout = (RelativeLayout)view.findViewById(R.id.empty_offers_layout);
@@ -101,9 +103,8 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         }
 
         //Call OffersApi if the model is empty...
-        if (((OffersActivity) getActivity()).offersListModels == null || ((OffersActivity)
-                getActivity()).offersListModels.isEmpty
-                ()) {
+        OffersActivity offersActivity = (OffersActivity) getActivity();
+        if (offersActivity != null && (offersActivity.offersListModels == null || offersActivity.offersListModels.isEmpty())) {
             initialiseAdapterData();
         }
     }
@@ -158,6 +159,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetOfferSuccessEvent event) {
         GetOffersResponseModel getOffersResponseModel = event.getResponse();
@@ -188,6 +190,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetOfferFailedEvent event) {
         SdkUtil.hideProgressDialog();
@@ -196,6 +199,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         showHideEmptyOffersMessage(true);
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         SdkUtil.hideProgressDialog();
@@ -204,6 +208,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         showHideEmptyOffersMessage(true);
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         SdkUtil.hideProgressDialog();

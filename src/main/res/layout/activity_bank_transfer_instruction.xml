@@ -34,15 +34,14 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 >
 
-                <id.co.veritrans.sdk.widgets.TextViewFont
+                <id.co.veritrans.sdk.widgets.DefaultTextView
                     android:id="@+id/title_header"
-                    android:textColor="@android:color/white"
-                    android:text="@string/payment_instrution"
-                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:font="@string/font_open_sans_regular"
+                    android:text="@string/payment_instrution"
+                    android:textColor="@android:color/white"
                     android:textSize="@dimen/tool_bar_title_size"
+                    android:visibility="visible"
                     />
 
             </android.support.v7.widget.Toolbar>
@@ -53,7 +52,6 @@
                 android:id="@+id/instruction_tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
                 app:tabGravity="fill"
                 app:tabIndicatorColor="@color/white"
                 app:tabIndicatorHeight="3dp"

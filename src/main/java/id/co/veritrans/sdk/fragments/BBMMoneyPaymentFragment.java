@@ -8,10 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import android.widget.TextView;
 
 /**
  * Created by Ankit on 12/03/15.
@@ -26,8 +25,8 @@ public class BBMMoneyPaymentFragment extends Fragment {
 
     //views
 
-    private TextViewFont mTextViewValidity = null;
-    private TextViewFont mTextViewPaymentCode = null;
+    private TextView mTextViewValidity = null;
+    private TextView mTextViewPaymentCode = null;
 
     public static BBMMoneyPaymentFragment newInstance(TransactionResponse mTransactionResponse) {
         transactionResponse = mTransactionResponse;
@@ -55,25 +54,23 @@ public class BBMMoneyPaymentFragment extends Fragment {
     /**
      * initializes view and adds click listener for it.
      *
-     * @param view
+     * @param view  view that needed to be initialized
      */
     private void initializeViews(View view) {
-        mTextViewValidity = (TextViewFont) view.findViewById(R.id.text_validaty);
-        mTextViewPaymentCode = (TextViewFont) view.findViewById(R.id.text_payment_code);
+        mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
+        mTextViewPaymentCode = (TextView) view.findViewById(R.id.text_payment_code);
 
         if (transactionResponse != null) {
-            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants
-                    .SUCCESS_CODE_200) || transactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants.SUCCESS_CODE_201))
-            mTextViewValidity.setText(VALID_UNTILL+"\n" + Utils.getValidityTime
-                    (transactionResponse.getTransactionTime()));
+            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
+                    || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
+                mTextViewValidity.setText(VALID_UNTILL + "\n" + Utils.getValidityTime(transactionResponse.getTransactionTime()));
+            }
 
             if (transactionResponse.getPermataVANumber() != null){
                 mTextViewPaymentCode.setText(transactionResponse.getPermataVANumber());
                 PERMATA_VA = transactionResponse.getPermataVANumber();
             }
 
-        } else {
-            //TODO..what to do here...
         }
     }
 }

@@ -1,7 +1,5 @@
 package id.co.veritrans.sdk.activities;
 
-import com.google.gson.Gson;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +9,6 @@ import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -19,6 +16,11 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +30,7 @@ import java.util.List;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
@@ -58,6 +61,7 @@ import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.OffersListModel;
+import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.models.ShippingAddress;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionDetails;
@@ -67,7 +71,6 @@ import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.widgets.MorphingButton;
-import id.co.veritrans.sdk.widgets.TextViewFont;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -76,7 +79,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Ankit on 12/7/15.
  */
-public class OffersActivity extends AppCompatActivity implements TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
+public class OffersActivity extends BaseActivity implements TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
 
     public static final String OFFERS_FRAGMENT = "offersList";
     public static final String ADD_CARD_FRAGMENT = "addCard";
@@ -89,12 +92,12 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
     private static final int PAY_USING_CARD = 61;
     public String currentFragment = "offersList";
     public ArrayList<OffersListModel> offersListModels = new ArrayList<>();
-    public ArrayList<CardTokenRequest> creditCards = new ArrayList<>();
+    public ArrayList<SaveCardRequest> creditCards = new ArrayList<>();
     private Toolbar toolbar = null;
-    private TextViewFont textViewTitleOffers = null;
+    private TextView textViewTitleOffers = null;
     private VeritransSDK veritransSDK = null;
-    private TextViewFont textViewTitleCardDetails = null;
-    private TextViewFont textViewOfferName = null;
+    private TextView textViewTitleCardDetails = null;
+    private TextView textViewOfferName = null;
     private OffersListFragment offersListFragment = null;
     private int position = Constants.PAYMENT_METHOD_OFFERS;
     private OffersListModel selectedOffer;
@@ -115,7 +118,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
     private String errorMessage = null;
     private CardPagerAdapter cardPagerAdapter;
     private CirclePageIndicator circlePageIndicator;
-    private TextViewFont emptyCardsTextViewFont;
+    private TextView emptyCardsTextView;
     private MorphingButton btnMorph;
 
     public OffersListModel getSelectedOffer() {
@@ -139,18 +142,18 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         // get position of selected payment method
         Intent data = getIntent();
         if (data != null) {
-            position = data.getIntExtra(Constants.POSITION, Constants
+            position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_OFFERS);
         } else {
-            SdkUtil.showSnackbar(OffersActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(OffersActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
         initializeView();
+        initializeTheme();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
         }
-//        setUpHomeFragment();
         OffersListFragment offersListFragment = new OffersListFragment();
         replaceFragment(offersListFragment, true, false);
         calculateScreenWidth();
@@ -170,13 +173,13 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
 
     private void initializeView() {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        textViewTitleOffers = (TextViewFont) findViewById(R.id.text_title);
-        textViewTitleCardDetails = (TextViewFont) findViewById(R.id.text_title_card_details);
-        textViewOfferName = (TextViewFont) findViewById(R.id.text_title_offer_name);
+        textViewTitleOffers = (TextView) findViewById(R.id.text_title);
+        textViewTitleCardDetails = (TextView) findViewById(R.id.text_title_card_details);
+        textViewOfferName = (TextView) findViewById(R.id.text_title_offer_name);
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
 
@@ -271,7 +274,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
             }
             //for one click
             if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
-                    (Constants.CARD_CLICK_TYPE_ONE_CLICK) &&
+                    (getString(R.string.card_click_type_one_click)) &&
                     !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
                 if (cardTokenRequest.isInstalment()) {
                     cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
@@ -364,7 +367,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         }
     }
 
-    public void saveCreditCards(CardTokenRequest creditCard) {
+    public void saveCreditCards(SaveCardRequest creditCard) {
         /*try {
             storageDataHandler.writeObject(this, Constants.USERS_SAVED_CARD, creditCards);
         } catch (IOException e) {
@@ -384,14 +387,14 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         }
     }
 
-    public ArrayList<CardTokenRequest> getCreditCards() {
+    public ArrayList<SaveCardRequest> getCreditCards() {
         if (creditCards == null || creditCards.isEmpty()) {
             fetchCreditCards();
         }
         return creditCards;
     }
 
-    public ArrayList<CardTokenRequest> getCreditCardList() {
+    public ArrayList<SaveCardRequest> getCreditCardList() {
         return creditCards;
     }
 
@@ -439,26 +442,16 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
                         @Override
                         public void call(Subscriber<? super List<BankDetail>> sub) {
                             try {
-                                userDetail = (UserDetail) StorageDataHandler.readObject(OffersActivity.this,
-                                        Constants.USER_DETAILS);
+                                userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
                                 Logger.i("userDetail:" + userDetail.getUserFullName());
-                            } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (NullPointerException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            ArrayList<BankDetail> bankDetails = new ArrayList<BankDetail>();
+                            ArrayList<BankDetail> bankDetails = new ArrayList<>();
                             try {
-                                bankDetails = (ArrayList<BankDetail>) StorageDataHandler.readObject(
-                                        OffersActivity.this, Constants.BANK_DETAILS);
+                                bankDetails = LocalDataHandler.readObject(getString(R.string.bank_details), BankDetailArray.class).getBankDetails();
                                 Logger.i("bankDetails:" + bankDetails.size());
-                            } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (NullPointerException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             if (bankDetails.isEmpty()) {
@@ -481,11 +474,8 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
                                     Gson gson = new Gson();
                                     bankDetails = gson.fromJson(json, BankDetailArray.class).getBankDetails();
                                     Logger.i("bankDetails:" + bankDetails.size());
-                                    StorageDataHandler.writeObject(OffersActivity.this, Constants
-                                            .BANK_DETAILS, bankDetails);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } catch (NullPointerException e) {
+                                    LocalDataHandler.saveObject(getString(R.string.bank_details), bankDetails);
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -521,8 +511,8 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
 
     public void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), transactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
@@ -531,10 +521,10 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         this.RESULT_CODE = resultCode;
     }
 
-    public void setAdapterViews(CardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, TextViewFont emptyCardsTextViewFont) {
+    public void setAdapterViews(CardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, TextView emptyCardsTextView) {
         this.cardPagerAdapter = cardPagerAdapter;
         this.circlePageIndicator = circlePageIndicator;
-        this.emptyCardsTextViewFont = emptyCardsTextViewFont;
+        this.emptyCardsTextView = emptyCardsTextView;
     }
 
     public void morphingAnimation(){
@@ -593,6 +583,7 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         btnMorph.morph(circle);
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetTokenSuccessEvent event) {
         TokenDetailsResponse tokenDetailsResponse = event.getResponse();
@@ -600,27 +591,33 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
             cardTokenRequest.setBank(tokenDetailsResponse.getBank());
         }
         this.tokenDetailsResponse = tokenDetailsResponse;
-        Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
-                + veritransSDK.getTransactionRequest().isSecureCard());
-        if (veritransSDK.getTransactionRequest().isSecureCard()) {
-            SdkUtil.hideProgressDialog();
-            if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
-                Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
-                intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
-                startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+        if (tokenDetailsResponse != null) {
+            Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
+                    + veritransSDK.getTransactionRequest().isSecureCard());
+            if (veritransSDK.getTransactionRequest().isSecureCard()) {
+                SdkUtil.hideProgressDialog();
+                if (tokenDetailsResponse.getRedirectUrl() != null &&
+                        !tokenDetailsResponse.getRedirectUrl().equals("")) {
+                    Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
+                    intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
+                    startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                }
+            } else {
+                SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+                payUsingCard();
             }
-        } else {
-            SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-            payUsingCard();
         }
+
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetTokenFailedEvent event) {
         SdkUtil.hideProgressDialog();
         SdkUtil.showApiFailedMessage(this, event.getMessage());
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         TransactionResponse cardPaymentResponse = event.getResponse();
@@ -635,15 +632,16 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         SdkUtil.hideProgressDialog();
         Logger.i("cardPaymentResponse:" + cardPaymentResponse.getStatusCode());
 
-        if (cardPaymentResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_200) ||
-                cardPaymentResponse.getStatusCode().equalsIgnoreCase(Constants.SUCCESS_CODE_201)) {
+        if (cardPaymentResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200)) ||
+                cardPaymentResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_201))) {
 
             transactionResponse = cardPaymentResponse;
 
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
             replaceFragment(paymentTransactionStatusFragment, true, false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
             textViewTitleOffers.setText(getString(R.string.title_payment_status));
 
@@ -651,9 +649,8 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
                 if (!creditCards.isEmpty()) {
                     int position = -1;
                     for (int i = 0; i < creditCards.size(); i++) {
-                        CardTokenRequest card = creditCards.get(i);
-                        if (card.getCardNumber().equalsIgnoreCase(cardTokenRequest.getCardNumber
-                                ())) {
+                        SaveCardRequest card = creditCards.get(i);
+                        if (card.getSavedTokenId().equalsIgnoreCase(cardTokenRequest.getSavedTokenId())) {
                             position = i;
                             break;
                         }
@@ -686,12 +683,16 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
                     cardTokenRequest.setSavedTokenId(cardPaymentResponse.getSavedTokenId());
                 }
                 Logger.i("Card:" + cardTokenRequest.getString());
-                creditCards.add(cardTokenRequest);
-                saveCreditCards(cardTokenRequest);
+
+                SaveCardRequest saveCardRequest = new SaveCardRequest();
+                saveCardRequest.setSavedTokenId(cardTokenRequest.getSavedTokenId());
+                saveCreditCards(saveCardRequest);
+                creditCards.add(saveCardRequest);
             }
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         TransactionResponse transactionResponse = event.getResponse();
@@ -708,21 +709,24 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
         replaceFragment(paymentTransactionStatusFragment, true, false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
         textViewTitleOffers.setText(getString(R.string.title_payment_status));
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
 
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
 
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetCardsSuccessEvent event) {
         CardResponse cardResponse = event.getResponse();
@@ -736,28 +740,28 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         }, 200);
 
         Logger.i("cards api successful" + cardResponse);
-        if (cardResponse != null && !cardResponse.getCreditCards().isEmpty()) {
+        if (cardResponse != null && !cardResponse.getData().isEmpty()) {
 
             creditCards.clear();
-            creditCards.addAll(cardResponse.getCreditCards());
+            creditCards.addAll(cardResponse.getData());
             if (cardPagerAdapter != null && circlePageIndicator != null) {
                 cardPagerAdapter.notifyDataSetChanged();
                 circlePageIndicator.notifyDataSetChanged();
             }
             //processingLayout.setVisibility(View.GONE);
-            if (emptyCardsTextViewFont != null) {
+            if (emptyCardsTextView != null) {
                 if (!creditCards.isEmpty()) {
-                    emptyCardsTextViewFont.setVisibility(View.GONE);
+                    emptyCardsTextView.setVisibility(View.GONE);
                 } else {
-                    emptyCardsTextViewFont.setVisibility(View.VISIBLE);
+                    emptyCardsTextView.setVisibility(View.VISIBLE);
                 }
 
             }
 
-        } else {
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GetCardFailedEvent event) {
         SdkUtil.hideProgressDialog();
@@ -765,11 +769,13 @@ public class OffersActivity extends AppCompatActivity implements TransactionBusC
         processingLayout.setVisibility(View.GONE);
     }
 
+    @Subscribe
     @Override
     public void onEvent(SaveCardSuccessEvent event) {
         Logger.i("card saved");
     }
 
+    @Subscribe
     @Override
     public void onEvent(SaveCardFailedEvent event) {
 

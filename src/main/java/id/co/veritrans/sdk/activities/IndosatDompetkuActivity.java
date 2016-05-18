@@ -1,15 +1,18 @@
 package id.co.veritrans.sdk.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
@@ -26,7 +29,6 @@ import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.fragments.InstructionIndosatFragment;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
  * Created to show and handle bank transfer and mandiri bill pay details.
@@ -47,7 +49,7 @@ import id.co.veritrans.sdk.widgets.TextViewFont;
  * <p/>
  * Created by shivam on 11/30/15.
  */
-public class IndosatDompetkuActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class IndosatDompetkuActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String STATUS_FRAGMENT = "transaction_status";
@@ -55,7 +57,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
     public String currentFragment = "home";
 
     private Button mButtonConfirmPayment = null;
-    private TextViewFont mTextViewTitle = null;
+    private TextView mTextViewTitle = null;
 
     private VeritransSDK mVeritransSDK = null;
     private Toolbar mToolbar = null;
@@ -76,6 +78,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         mVeritransSDK = VeritransSDK.getVeritransSDK();
 
         initializeView();
+        initializeTheme();
         bindDataToView();
 
         setUpHomeFragment();
@@ -142,13 +145,13 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
     private void initializeView() {
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mTextViewTitle = (TextViewFont) findViewById(R.id.text_title);
+        mTextViewTitle = (TextView) findViewById(R.id.text_title);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
 
         //setup tool bar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -158,14 +161,14 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
     private void bindDataToView() {
 
         if (mVeritransSDK != null) {
-
-            mButtonConfirmPayment.setTypeface(mVeritransSDK.getTypefaceOpenSansSemiBold());
+            if (mVeritransSDK.getSemiBoldText() != null) {
+                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+            }
             mButtonConfirmPayment.setOnClickListener(this);
             mTextViewTitle.setText(getResources().getString(R.string.indosat_dompetku));
 
         } else {
-            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, Constants
-                    .ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_something_wrong));
             Logger.e(IndosatDompetkuActivity.class.getSimpleName(), Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -180,7 +183,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
      * 2) if current fragment is status fragment  then it will send result back to {@link
      * PaymentMethodsActivity}.
      *
-     * @param view
+     * @param view  clicked view
      */
     @Override
     public void onClick(View view) {
@@ -215,8 +218,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
                 mVeritransSDK.getTransactionRequest().getCustomerDetails().setPhone(phoneNumber
                         .trim());
             } else {
-                SdkUtil.showSnackbar(IndosatDompetkuActivity.this, Constants
-                        .ERROR_INVALID_PHONE_NUMBER);
+                SdkUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_invalid_phone_number));
                 return;
             }
         }
@@ -242,7 +244,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
      * call {@link #setUpTransactionStatusFragment(TransactionResponse)}  to display appropriate
      * message.
      *
-     * @param veritransSDK
+     * @param veritransSDK  Veritrans SDK instance
      */
     private void transactionUsingIndosat(final VeritransSDK veritransSDK) {
 
@@ -288,7 +290,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
     /**
      * Displays status of transaction from {@link TransactionResponse} object.
      *
-     * @param transactionResponse
+     * @param transactionResponse   response of transaction call
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
@@ -329,12 +331,13 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, mTransactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), mTransactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -350,6 +353,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         mTransactionResponse = event.getResponse();
@@ -362,6 +366,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         IndosatDompetkuActivity.this.errorMessage = getString(R.string.no_network_msg);
@@ -373,6 +378,7 @@ public class IndosatDompetkuActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         IndosatDompetkuActivity.this.errorMessage = event.getMessage();

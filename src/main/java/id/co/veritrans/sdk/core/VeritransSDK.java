@@ -1,21 +1,32 @@
 package id.co.veritrans.sdk.core;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.graphics.Typeface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.Log;
 
-import java.io.IOException;
+import com.flurry.android.FlurryAgent;
+
 import java.util.ArrayList;
 
+import id.co.veritrans.sdk.BuildConfig;
+import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.activities.SaveCreditCardActivity;
+import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
+import id.co.veritrans.sdk.models.BCABankTransfer;
+import id.co.veritrans.sdk.models.BCAKlikPayDescriptionModel;
+import id.co.veritrans.sdk.models.BCAKlikPayModel;
+import id.co.veritrans.sdk.models.BankTransferModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
+import id.co.veritrans.sdk.models.CstoreEntity;
 import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
@@ -26,6 +37,7 @@ import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
+import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.models.UserDetail;
 
 /**
@@ -35,29 +47,26 @@ public class VeritransSDK {
 
     public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
             "details are necessary.";
-    private static final String FONTS_OPEN_SANS_BOLD_TTF = "fonts/open_sans_bold.ttf";
-    private static final String FONTS_OPEN_SANS_REGULAR_TTF = "fonts/open_sans_regular.ttf";
-    private static final String FONTS_OPEN_SANS_SEMI_BOLD_TTF = "fonts/open_sans_semibold.ttf";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
 
+    private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static Context context = null;
-
-    private static Typeface typefaceOpenSansRegular = null;
-    private static Typeface typefaceOpenSansSemiBold = null;
-    private static Typeface typefaceOpenSansBold = null;
+    private static String themeColorString = null;
+    private static int themeColor;
 
     private static VeritransSDK veritransSDK = new VeritransSDK();
     private static boolean isLogEnabled = true;
     /*private static String serverKey = null;*/
     private static String clientKey = null;
     private static String merchantServerUrl = null;
-
+    private static SharedPreferences mPreferences = null;
+    private static String defaultText = null;
+    private static String boldText = null;
+    private static String semiBoldText = null;
     protected boolean isRunning = false;
-
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
     private String TRANSACTION_RESPONSE_NOT_AVAILABLE = "Transaction response not available.";
-
     private BBMCallBackUrl mBBMCallBackUrl = null;
 
     private VeritransSDK() {
@@ -71,28 +80,30 @@ public class VeritransSDK {
             /*serverKey = veritransBuilder.serverKey;*/
             clientKey = veritransBuilder.clientKey;
             merchantServerUrl = veritransBuilder.merchantServerUrl;
-            initializeFonts();
+            if (veritransBuilder.colorTheme != null) {
+                themeColorString = veritransBuilder.colorTheme;
+            }
+            initializeTheme();
+            initializeSharedPreferences();
+            initializeFlurry();
             return veritransSDK;
         } else {
             return null;
         }
     }
 
-    /***
-     * It will initialize all fonts that are available in sdk.
-     */
-    private static void initializeFonts() {
-        AssetManager assets = context.getAssets();
-        typefaceOpenSansBold = Typeface.createFromAsset(assets, FONTS_OPEN_SANS_BOLD_TTF);
-        typefaceOpenSansRegular = Typeface.createFromAsset(assets, FONTS_OPEN_SANS_REGULAR_TTF);
-        typefaceOpenSansSemiBold = Typeface.createFromAsset(assets,
-                FONTS_OPEN_SANS_SEMI_BOLD_TTF);
+    private static void initializeSharedPreferences() {
+        mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
+    }
+
+    private static void initializeFlurry() {
+        FlurryAgent.init(context, BuildConfig.FLURRY_API_KEY);
     }
 
     /**
      * Returns instance of veritrans sdk.
      *
-     * @return
+     * @return VeritransSDK instance
      */
     public static VeritransSDK getVeritransSDK() {
 
@@ -105,20 +116,48 @@ public class VeritransSDK {
             return veritransSDK;
         }
 
-        Log.e(Constants.TAG, Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+        Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
         return null;
     }
 
-    public Typeface getTypefaceOpenSansRegular() {
-        return typefaceOpenSansRegular;
+    private static void initializeTheme() {
+        if (themeColorString != null) {
+            themeColor = Color.parseColor(themeColorString);
+        } else {
+            themeColor = context.getResources().getColor(R.color.colorPrimary);
+        }
     }
 
-    public Typeface getTypefaceOpenSansSemiBold() {
-        return typefaceOpenSansSemiBold;
+    public static SharedPreferences getmPreferences() {
+        return mPreferences;
     }
 
-    public Typeface getTypefaceOpenSansBold() {
-        return typefaceOpenSansBold;
+    public static String getDefaultText() {
+        return VeritransSDK.defaultText;
+    }
+
+    public void setDefaultText(String defaultText) {
+        VeritransSDK.defaultText = defaultText;
+    }
+
+    public int getThemeColor() {
+        return themeColor;
+    }
+
+    public String getBoldText() {
+        return VeritransSDK.boldText;
+    }
+
+    public void setBoldText(String boldText) {
+        VeritransSDK.boldText = boldText;
+    }
+
+    public String getSemiBoldText() {
+        return VeritransSDK.semiBoldText;
+    }
+
+    public void setSemiBoldText(String semiBoldText) {
+        VeritransSDK.semiBoldText = semiBoldText;
     }
 
     public boolean isRunning() {
@@ -134,16 +173,11 @@ public class VeritransSDK {
     }
 
     public String getMerchantToken() {
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
         UserDetail userDetail = null;
         try {
-            userDetail = (UserDetail) StorageDataHandler.readObject(context, Constants
-                    .USER_DETAILS);
+            userDetail = LocalDataHandler.readObject(context.getString(R.string.user_details), UserDetail.class);
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return "";
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
@@ -151,6 +185,10 @@ public class VeritransSDK {
         Logger.i("merchantToken:" + merchantToken);
         return merchantToken;
         //return serverKey;
+    }
+
+    public String readAuthenticationToken() {
+        return LocalDataHandler.readString(Constants.AUTH_TOKEN);
     }
 
     public String getClientKey() {
@@ -161,6 +199,12 @@ public class VeritransSDK {
         return merchantServerUrl;
     }
 
+    public ArrayList<BankTransferModel> getBankTransferList() {
+        ArrayList<BankTransferModel> models = new ArrayList<>();
+        models.add(new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true));
+        models.add(new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true));
+        return models;
+    }
 
     public ArrayList<PaymentMethodsModel> getSelectedPaymentMethods() {
         return selectedPaymentMethods;
@@ -173,7 +217,7 @@ public class VeritransSDK {
     /**
      * It will execute an api request to retrieve a token.
      *
-     * @param cardTokenRequest
+     * @param cardTokenRequest  token request object
      */
     public void getToken(CardTokenRequest cardTokenRequest) {
 
@@ -183,7 +227,7 @@ public class VeritransSDK {
             TransactionManager.getToken(cardTokenRequest);
 
         } else {
-            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+            Logger.e(context.getString(R.string.error_invalid_data_supplied));
             isRunning = false;
         }
     }
@@ -191,7 +235,7 @@ public class VeritransSDK {
     /**
      * It will execute an api request to register credit card info.
      *
-     * @param cardTokenRequest
+     * @param cardTokenRequest  request token object
      */
     public void registerCard(CardTokenRequest cardTokenRequest, String userId) {
 
@@ -200,7 +244,7 @@ public class VeritransSDK {
             isRunning = true;
             TransactionManager.registerCard(cardTokenRequest, userId);
         } else {
-            Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+            Logger.e(context.getString(R.string.error_invalid_data_supplied));
             isRunning = false;
         }
     }
@@ -223,7 +267,27 @@ public class VeritransSDK {
             TransactionManager.paymentUsingPermataBank(permataBankTransfer);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    /**
+     * It will execute an transaction for bca bank .
+     *
+     */
+    public void paymentUsingBcaBankTransfer() {
+
+        if (transactionRequest != null) {
+
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
+
+            BCABankTransfer bcaBankTransfer = SdkUtil.getBcaBankTransferRequest(transactionRequest);
+
+            isRunning = true;
+            TransactionManager.paymentUsingBCATransfer(bcaBankTransfer);
+        } else {
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -242,7 +306,7 @@ public class VeritransSDK {
             TransactionManager.paymentUsingCard(cardTransfer);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -268,9 +332,28 @@ public class VeritransSDK {
         } else {
 
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
+
+    /**
+     * It will execute an transaction for mandiri click pay.
+     *
+     * @param descriptionModel       information about BCA Klikpay
+     */
+    public void paymentUsingBCAKlikPay(BCAKlikPayDescriptionModel descriptionModel) {
+
+        if (transactionRequest != null && descriptionModel != null) {
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
+            BCAKlikPayModel bcaKlikPayModel = SdkUtil.getBCAKlikPayModel(transactionRequest, descriptionModel);
+            isRunning = true;
+            TransactionManager.paymentUsingBCAKlikPay(bcaKlikPayModel);
+        } else {
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
 
     /**
      * It will execute an transaction for mandiri bill pay.
@@ -298,7 +381,7 @@ public class VeritransSDK {
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
 
         }
     }
@@ -326,10 +409,10 @@ public class VeritransSDK {
             isRunning = false;
 
             if (descriptionModel == null) {
-                Logger.e(Constants.ERROR_DESCRIPTION_REQUIRED);
+                Logger.e(context.getString(R.string.error_description_required));
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
             }
         }
     }
@@ -355,9 +438,9 @@ public class VeritransSDK {
             isRunning = false;
 
             if (descriptionModel == null) {
-                Logger.e(Constants.ERROR_DESCRIPTION_REQUIRED);
+                Logger.e(context.getString(R.string.error_description_required));
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
             }
         }
     }
@@ -369,7 +452,7 @@ public class VeritransSDK {
     /**
      * Set transaction information that you want to execute.
      *
-     * @param transactionRequest
+     * @param transactionRequest    request token object
      */
     public void setTransactionRequest(TransactionRequest transactionRequest) {
 
@@ -382,7 +465,7 @@ public class VeritransSDK {
             }
 
         } else {
-            Logger.e(Constants.ERROR_ALREADY_RUNNING);
+            Logger.e(context.getString(R.string.error_already_running));
         }
 
     }
@@ -392,14 +475,24 @@ public class VeritransSDK {
             Logger.e(ADD_TRANSACTION_DETAILS);
         }
 
-        Logger.e(Constants.ERROR_INVALID_DATA_SUPPLIED);
+        Logger.e(context.getString(R.string.error_invalid_data_supplied));
     }
 
     /**
+     * This will start actual execution of save card UI flow.
+     *
+     * @param activity current activity.
+     */
+    public void startRegisterCardUIFlow(Activity activity) {
+        Intent intent = new Intent(activity, SaveCreditCardActivity.class);
+        activity.startActivity(intent);
+    }
+    /**
      * This will start actual execution of transaction. if you have enabled an ui then it will
      * start activity according to it.
+     * @param activity current activity.
      */
-    public void startPaymentUiFlow() {
+    public void startPaymentUiFlow(Activity activity) {
 
         if (transactionRequest != null && !isRunning) {
 
@@ -408,20 +501,18 @@ public class VeritransSDK {
 
                 transactionRequest.enableUi(true);
 
-                /*Intent userDetailsIntent = new Intent(transactionRequest.getActivity(),
-                        UserDetailsActivity.class);*/
-                //transactionRequest.getActivity().startActivity(userDetailsIntent);
+                Intent userDetailsIntent = new Intent(activity,
+                        UserDetailsActivity.class);
+                activity.startActivity(userDetailsIntent);
 
-            } else {
-                // start specific activity depending  on payment type.
-            }
+            } 
 
         } else {
 
             if (transactionRequest == null) {
                 Logger.e(ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(Constants.ERROR_ALREADY_RUNNING);
+                Logger.e(context.getString(R.string.error_already_running));
             }
         }
     }
@@ -443,7 +534,7 @@ public class VeritransSDK {
             TransactionManager.paymentUsingEpayBri(epayBriTransfer);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -464,7 +555,7 @@ public class VeritransSDK {
             TransactionManager.paymentUsingIndosatDompetku(indosatDompetkuRequest);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -479,7 +570,7 @@ public class VeritransSDK {
      *
      * @param cstoreEntity transaction details
      */
-    public void paymentUsingIndomaret(IndomaretRequestModel.CstoreEntity cstoreEntity) {
+    public void paymentUsingIndomaret(CstoreEntity cstoreEntity) {
 
         if (transactionRequest != null
                 && cstoreEntity != null) {
@@ -493,7 +584,7 @@ public class VeritransSDK {
             TransactionManager.paymentUsingIndomaret(indomaretRequestModel);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -511,7 +602,7 @@ public class VeritransSDK {
      *
      * @param cardTokenRequest card details
      */
-    public void saveCards(CardTokenRequest cardTokenRequest) {
+    public void saveCards(SaveCardRequest cardTokenRequest) {
         if (cardTokenRequest != null) {
             TransactionManager.saveCards(cardTokenRequest);
         }
@@ -533,16 +624,22 @@ public class VeritransSDK {
             TransactionManager.paymentUsingBBMMoney(bbmMoneyRequestModel);
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_INVALID_DATA_SUPPLIED));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
-    public void deleteCard(CardTokenRequest creditCard) {
+    public void deleteCard(SaveCardRequest creditCard) {
         if (creditCard != null) {
             TransactionManager.deleteCard(creditCard);
         }
     }
 
+    public void cardRegistration(String cardNumber,
+                                 int cardCvv, String cardExpMonth,
+                                 String cardExpYear) {
+        TransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear);
+        isRunning = true;
+    }
     public BBMCallBackUrl getBBMCallBackUrl() {
         return mBBMCallBackUrl;
     }
@@ -557,5 +654,12 @@ public class VeritransSDK {
      */
     public void getOffersList() {
         TransactionManager.getOffers();
+    }
+
+    /**
+     * It will run background task to get authentication token.
+     */
+    public void getAuthenticationToken() {
+        TransactionManager.getAuthenticationToken();
     }
 }

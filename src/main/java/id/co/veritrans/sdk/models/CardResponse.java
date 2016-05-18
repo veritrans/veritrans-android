@@ -1,36 +1,40 @@
 package id.co.veritrans.sdk.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
  * Created by chetan on 04/12/15.
  */
 public class CardResponse {
-    private String error;
-    private String message;
-    private ArrayList<CardTokenRequest> cards;
+    @SerializedName("status_message")
+    private String status;
+    @SerializedName("status_code")
+    private int code;
+    private ArrayList<SaveCardRequest> data;
 
-    public String getError() {
-        return error;
+    public String getStatus() {
+        return status;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getMessage() {
-        return message;
+    public int getCode() {
+        return code;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public ArrayList<CardTokenRequest> getCreditCards() {
-        return cards;
+    public ArrayList<SaveCardRequest> getData() {
+        return data;
     }
 
-    public void setCreditCards(ArrayList<CardTokenRequest> creditCards) {
-        this.cards = creditCards;
+    public void setData(ArrayList<SaveCardRequest> data) {
+        this.data = data;
     }
 }

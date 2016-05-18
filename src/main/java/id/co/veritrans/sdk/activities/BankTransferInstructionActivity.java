@@ -6,23 +6,28 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.fragments.InstructionBCAFragment;
+import id.co.veritrans.sdk.fragments.InstructionBCAKlikFragment;
+import id.co.veritrans.sdk.fragments.InstructionBCAMobileFragment;
 import id.co.veritrans.sdk.fragments.InstructionMandiriFragment;
-import id.co.veritrans.sdk.fragments.InstructionPermataFragment;
+import id.co.veritrans.sdk.fragments.InstructionMandiriInternetFragment;
 
 /**
  * It display information related to mandiri bill pay , bank transfer and BCA/Prima transaction.
  *
  * Created by shivam on 10/28/15.
  */
-public class BankTransferInstructionActivity extends AppCompatActivity {
+public class BankTransferInstructionActivity extends BaseActivity {
 
+    public static final String BANK = "bank";
+    public static final String TYPE_BCA = "bank.bca";
+    public static final String TYPE_PERMATA = "bank.permata";
+    public static final String TYPE_MANDIRI = "bank.mandiri";
+    public static final String TYPE_MANDIRI_BILL = "bank.mandiri.bill";
     private static final int PAGE_MARGIN = 20;
     private Toolbar mToolbar = null;
     private ViewPager mViewPager = null;
@@ -34,20 +39,15 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_bank_transfer_instruction);
         initializeViews();
-
-        if (getIntent() != null) {
-            int position = getIntent().getIntExtra(Constants.POSITION, 0);
-            mViewPager.setCurrentItem(position);
-        }
-
+        initializeTheme();
     }
 
 
     /**
      * handles click of back arrow given on action bar.
      *
-     * @param item
-     * @return
+     * @param item  selected menu
+     * @return is handled or not
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -70,7 +70,7 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
         mToolbar.setNavigationIcon(R.drawable.ic_close);
         mToolbar.setTitle(getResources().getString(R.string.payment_instrution));
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mTabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager_bank_instruction);
@@ -115,8 +115,26 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
     private void setUpViewPager() {
 
         mViewPager.setPageMargin(PAGE_MARGIN);
+        int pageNumber = 0;
+        switch (getIntent().getStringExtra(BANK)) {
+            case TYPE_BCA:
+                pageNumber = 3;
+                break;
+            case TYPE_PERMATA:
+                pageNumber = 2;
+                break;
+            case TYPE_MANDIRI:
+                pageNumber = 2;
+                break;
+            case TYPE_MANDIRI_BILL:
+                pageNumber = 2;
+                break;
+            default:
+                pageNumber = 0;
+                break;
+        }
         InstructionFragmentPagerAdapter adapter = new InstructionFragmentPagerAdapter(
-                getSupportFragmentManager());
+                getSupportFragmentManager(), pageNumber);
         mViewPager.setAdapter(adapter);
     }
 
@@ -130,10 +148,11 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
         /**
          * number of pages / tabs.
          */
-        private static final int NUMBER_OF_PAGES = 3;
+        private final int pages;
 
-        public InstructionFragmentPagerAdapter(FragmentManager fragmentManager) {
+        public InstructionFragmentPagerAdapter(FragmentManager fragmentManager, int number) {
             super(fragmentManager);
+            this.pages = number;
         }
 
         @Override
@@ -141,22 +160,20 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
 
             Fragment fragment;
 
-            if (position == 0) {
-
-                InstructionMandiriFragment instructionMandiriFragment = new
-                        InstructionMandiriFragment();
-                fragment = instructionMandiriFragment;
-
-            } else if (position == 1) {
-
-                InstructionBCAFragment instructionBCAFragment = new
-                        InstructionBCAFragment();
-                fragment = instructionBCAFragment;
-
+            if(getIntent().getStringExtra(BANK).equals(TYPE_BCA)) {
+                if(position == 0) {
+                    fragment = new InstructionBCAFragment();
+                } else if(position == 1) {
+                    fragment = new InstructionBCAKlikFragment();
+                } else fragment = new InstructionBCAMobileFragment();
+            } else if(getIntent().getStringExtra(BANK).equals(TYPE_PERMATA)){
+                fragment = new InstructionMandiriFragment();
             } else {
-                InstructionPermataFragment instructionPermataFragment = new
-                        InstructionPermataFragment();
-                fragment = instructionPermataFragment;
+                if(position == 0) {
+                    fragment = new InstructionMandiriFragment();
+                } else {
+                    fragment = new InstructionMandiriInternetFragment();
+                }
             }
 
             return fragment;
@@ -164,7 +181,7 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return NUMBER_OF_PAGES;
+            return pages;
         }
 
 
@@ -177,12 +194,21 @@ public class BankTransferInstructionActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
 
-            if (position == 0) {
-                return getString(R.string.tab_mandiri);
-            } else if (position == 1) {
-                return getString(R.string.tab_bca_prima);
+            if(getIntent().getStringExtra(BANK).equals(TYPE_BCA)) {
+                if(position == 0) {
+                    return getString(R.string.tab_bca_atm);
+                } else if(position == 1) {
+                    return getString(R.string.tab_bca_klik);
+                } else return getString(R.string.tab_bca_mobile);
+            } else if(getIntent().getStringExtra(BANK).equals(TYPE_PERMATA)){
+                if(position==0) return getString(R.string.tab_permata_atm);
+                else return getString(R.string.tab_alto);
             } else {
-                return getString(R.string.tab_permata_alto);
+                if(position == 0) {
+                    return getString(R.string.tab_mandiri_atm);
+                } else {
+                    return getString(R.string.tab_mandiri_internet);
+                }
             }
         }
     }

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -15,7 +14,7 @@ import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.fragments.WebviewFragment;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
-public class PaymentWebActivity extends AppCompatActivity {
+public class PaymentWebActivity extends BaseActivity {
     private Toolbar toolbar;
     private String currentFragmentName;
     private FragmentManager fragmentManager;
@@ -28,6 +27,7 @@ public class PaymentWebActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_web);
+        initializeTheme();
         webUrl = getIntent().getStringExtra(Constants.WEBURL);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         fragmentManager = getSupportFragmentManager();

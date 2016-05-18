@@ -13,7 +13,6 @@ import android.support.v4.app.NotificationCompat;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.NotificationActivity;
-import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.models.TransactionResponse;
 
@@ -35,7 +34,7 @@ public class NotificationUtils {
     public static final String PREF_NOTIFICATION_COUNT = "pref_notification_count";
     /**
      * Create and show a notification containing the received notification message.
-     * @param context
+     * @param context   application context
      * @param data message received from notification.
      */
     public static void sendNotification(Context context, Bundle data) {
@@ -52,7 +51,7 @@ public class NotificationUtils {
         Intent intent = new Intent(context, NotificationActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(Constants.PAYMENT_STATUS,transactionResponse);
+        intent.putExtra(context.getString(R.string.payment_status), transactionResponse);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

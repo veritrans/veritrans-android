@@ -1,18 +1,19 @@
 package id.co.veritrans.sdk.activities;
 
-import com.google.gson.Gson;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
@@ -33,7 +34,7 @@ import id.co.veritrans.sdk.models.TransactionResponse;
 /**
  * Created by Ankit on 11/26/15.
  */
-public class CIMBClickPayActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class CIMBClickPayActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     private static final int PAYMENT_WEB_INTENT = 151;
     private InstructionCIMBFragment cimbClickPayFragment = null;
@@ -62,6 +63,7 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
             finish();
         }
         initializeViews();
+        initializeTheme();
         setUpFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
@@ -81,7 +83,7 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
     }
 
@@ -127,7 +129,7 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
 
         if (resultCode == RESULT_OK && data != null) {
-            String responseStr = data.getStringExtra(Constants.PAYMENT_RESPONSE);
+            String responseStr = data.getStringExtra(getString(R.string.payment_response));
             if (TextUtils.isEmpty(responseStr)) {
                 return;
             }
@@ -169,9 +171,9 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
 
         Intent data = new Intent();
         if (transactionResponseFromMerchant != null) {
-            data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponseFromMerchant);
+            data.putExtra(getString(R.string.transaction_response), transactionResponseFromMerchant);
         }
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
@@ -180,6 +182,7 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
         this.RESULT_CODE = resultCode;
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
@@ -196,6 +199,7 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         try {
@@ -209,6 +213,7 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         CIMBClickPayActivity.this.errorMessage = getString(R.string.no_network_msg);
@@ -217,6 +222,7 @@ public class CIMBClickPayActivity extends AppCompatActivity implements View.OnCl
         SdkUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         CIMBClickPayActivity.this.errorMessage = event.getMessage();

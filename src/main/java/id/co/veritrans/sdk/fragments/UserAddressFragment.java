@@ -13,13 +13,13 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.PaymentMethodsActivity;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
@@ -53,10 +53,11 @@ public class UserAddressFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((UserDetailsActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string
-                .title_shipping_billing_address));
-
-
+        UserDetailsActivity userDetailsActivity = (UserDetailsActivity) getActivity();
+        if (userDetailsActivity != null) {
+            if (userDetailsActivity.getSupportActionBar() != null)
+                userDetailsActivity.getSupportActionBar().setTitle(getString(R.string.title_shipping_billing_address));
+        }
     }
 
     @Override
@@ -106,21 +107,9 @@ public class UserAddressFragment extends Fragment {
     private void validateAndSaveAddress() {
         SdkUtil.hideKeyboard(getActivity());
         StorageDataHandler storageDataHandler = new StorageDataHandler();
-        UserDetail userDetail = null;
-        try {
-            userDetail = (UserDetail) storageDataHandler.readObject(getActivity(), Constants
-                    .USER_DETAILS);
+        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        if (userDetail != null) Logger.i("userDetails:" + userDetail.getUserFullName());
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Logger.i("userDetails:" + userDetail.getUserFullName());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
         ArrayList<UserAddress> userAddresses = new ArrayList<>();
         String billingAddress = etAddress.getText().toString().trim();
         String billingCity = etCity.getText().toString().trim();
@@ -213,11 +202,11 @@ public class UserAddressFragment extends Fragment {
                 userDetail = new UserDetail();
             }
             userDetail.setUserAddresses(userAddresses);
-            storageDataHandler.writeObject(getActivity(), Constants.USER_DETAILS, userDetail);
+            LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
             Intent selectPaymentIntent = new Intent(getActivity(), PaymentMethodsActivity.class);
             startActivity(selectPaymentIntent);
             getActivity().finish();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

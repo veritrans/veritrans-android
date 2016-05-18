@@ -5,24 +5,21 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.core.Constants;
-import id.co.veritrans.sdk.core.StorageDataHandler;
+import id.co.veritrans.sdk.core.LocalDataHandler;
+import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.fragments.UserAddressFragment;
 import id.co.veritrans.sdk.fragments.UserDetailFragment;
 import id.co.veritrans.sdk.models.UserAddress;
 import id.co.veritrans.sdk.models.UserDetail;
 
-public class UserDetailsActivity extends AppCompatActivity {
+public class UserDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,17 +27,15 @@ public class UserDetailsActivity extends AppCompatActivity {
     }
 
     public void checkUserDetails() {
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
         try {
-            UserDetail userDetail = (UserDetail) storageDataHandler.readObject(this, Constants
-                    .USER_DETAILS);
+            UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
                 //TODO check user have address filled
                 //if no take user to select address
 
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
                 if (userAddresses != null && !userAddresses.isEmpty()) {
-                    Log.i("UserdetailActivity", "userAddresses:" + userAddresses.size());
+                    Logger.i("UserDetailActivity", "userAddresses:" + userAddresses.size());
                     Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
                     startActivity(paymentOptionIntent);
                     finish();
@@ -56,9 +51,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                 replaceFragment(userDetailFragment);
                 return;
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         setView();
@@ -68,9 +61,10 @@ public class UserDetailsActivity extends AppCompatActivity {
 
     private void setView() {
         setContentView(R.layout.activity_user_details);
+        initializeTheme();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 

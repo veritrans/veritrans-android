@@ -1,9 +1,12 @@
 package id.co.veritrans.sdk.core;
 
+import id.co.veritrans.sdk.models.AuthModel;
 import id.co.veritrans.sdk.models.BBMMoneyRequestModel;
+import id.co.veritrans.sdk.models.BCABankTransfer;
+import id.co.veritrans.sdk.models.BCAKlikPayModel;
 import id.co.veritrans.sdk.models.CIMBClickPayModel;
+import id.co.veritrans.sdk.models.CardRegistrationResponse;
 import id.co.veritrans.sdk.models.CardResponse;
-import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
@@ -15,24 +18,23 @@ import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
 import id.co.veritrans.sdk.models.PermataBankTransfer;
 import id.co.veritrans.sdk.models.RegisterCardResponse;
+import id.co.veritrans.sdk.models.SaveCardRequest;
+import id.co.veritrans.sdk.models.SaveCardResponse;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionCancelResponse;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.TransactionStatusResponse;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import retrofit.http.QueryMap;
 import rx.Observable;
 
-/**
- * Created by shivam on 10/26/15.
- */
-public interface VeritranceApiInterface {
+public interface PaymentAPI {
 
     //token?card_number=4811111111111114&card_cvv=123&card_exp_month=06&card_exp_year=2020
     // &client_key=VT-client-Lre_JFh5klhfGefF
@@ -49,6 +51,8 @@ public interface VeritranceApiInterface {
     /**
      * card_cvv, token_id, two_click, bank, secure, gross_amount
      * this api call hit veritrans server
+     *
+     * @return observable of transaction response
      */
     @GET("/token/")
     Observable<TokenDetailsResponse> getTokenTwoClick(
@@ -63,8 +67,8 @@ public interface VeritranceApiInterface {
     @GET("/token/")
     Observable<TokenDetailsResponse> get3DSToken(@Query("card_number") String cardNumber,
                                                  @Query("card_cvv") int cardCVV,
-                                                 @Query("card_exp_month") int cardExpiryMonth,
-                                                 @Query("card_exp_year") int cardExpiryYear,
+                                                 @Query("card_exp_month") String cardExpiryMonth,
+                                                 @Query("card_exp_year") String cardExpiryYear,
                                                  @Query("client_key") String clientKey,
                                                  @Query("bank") String bank,
                                                  @Query("secure") boolean secure,
@@ -95,6 +99,18 @@ public interface VeritranceApiInterface {
                                                             @Body PermataBankTransfer
                                                                     permataBankTransfer);
 
+    /**
+     * Do the payment using BCA VA.
+     * @param authorization     authorization token.
+     * @param bcaBankTransfer   transaction details
+     * @return observable of transaction response
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingBCAVA(
+            @Header("x-auth") String authorization,
+            @Body BCABankTransfer bcaBankTransfer);
+
     //debit card
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
@@ -109,6 +125,20 @@ public interface VeritranceApiInterface {
             @Header("x-auth") String auth
             , @Body MandiriClickPayRequestModel
                     mandiriClickPayRequestModel);
+
+    /**
+     * Do payment using BCA Klik Pay.
+     *
+     * @param auth              Client authentication key.
+     * @param bcaKlikPayModel   Request body.
+     * @return                  Observable of the Transaction Response object.
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingBCAKlikPay(
+           @Header("x-auth") String auth,
+           @Body BCAKlikPayModel bcaKlikPayModel
+    );
 
     //mandiri bill pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -160,9 +190,9 @@ public interface VeritranceApiInterface {
     //save cards or get cards
     @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/card/")
-    Observable<CardResponse> saveCard(@Header("x-auth") String auth,
-                                      @Body CardTokenRequest cardTokenRequest);
+    @POST("/card/register")
+    Observable<SaveCardResponse> saveCard(@Header("x-auth") String auth,
+                                      @Body SaveCardRequest cardTokenRequest);
 
     //save cards or get cards
     @Deprecated
@@ -173,8 +203,8 @@ public interface VeritranceApiInterface {
     //delete card
     @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/card/delete")
-    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Body CardTokenRequest cardTokenRequest);
+    @DELETE("/card/{saved_token_id}")
+    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Path("saved_token_id") String savedTokenId);
 
     //BBMMoney Payment
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -191,24 +221,24 @@ public interface VeritranceApiInterface {
     // register credit card info
     @GET("/card/register")
     Observable<RegisterCardResponse> registerCard(@Query("card_number") String cardNumber,
-                                                 @Query("card_exp_month") int cardExpMonth,
-                                                 @Query("card_exp_year") int cardExpYear,
+                                                 @Query("card_exp_month") String cardExpMonth,
+                                                 @Query("card_exp_year") String cardExpYear,
                                                  @Query("client_key") String clientKey);
 
 
     /**
      * For instalment offers get token
      *
-     * @param cardCVV
-     * @param tokenId
-     * @param twoClick
-     * @param secure
-     * @param grossAmount
-     * @param bank
-     * @param clientKey
-     * @param instalment
-     * @param instalmentTerm
-     * @return
+     * @param cardCVV       card cvv number
+     * @param tokenId       token identifier
+     * @param twoClick      is two click or not
+     * @param secure        is secure or not
+     * @param grossAmount   gross amount
+     * @param bank          bank name
+     * @param clientKey     client key
+     * @param instalment    installment
+     * @param instalmentTerm    installment terms
+     * @return observable of transaction response
      */
 
     @GET("/token/")
@@ -227,23 +257,23 @@ public interface VeritranceApiInterface {
     /***
      * Get instalment offers 3ds token
      *
-     * @param cardNumber
-     * @param cardCVV
-     * @param cardExpiryMonth
-     * @param cardExpiryYear
-     * @param clientKey
-     * @param bank
-     * @param secure
-     * @param twoClick
-     * @param grossAmount
-     * @return
+     * @param cardNumber        card number
+     * @param cardCVV           card cvv number
+     * @param cardExpiryMonth   card expiry's month
+     * @param cardExpiryYear    card expiry's year
+     * @param clientKey         client key
+     * @param bank              bank name
+     * @param secure            is secure
+     * @param twoClick          is two click
+     * @param grossAmount       gross amount
+     * @return observable of transaction response
      */
 
     @GET("/token/")
     Observable<TokenDetailsResponse> get3DSTokenInstalmentOffers(@Query("card_number") String cardNumber,
                                                                  @Query("card_cvv") int cardCVV,
-                                                                 @Query("card_exp_month") int cardExpiryMonth,
-                                                                 @Query("card_exp_year") int cardExpiryYear,
+                                                                 @Query("card_exp_month") String cardExpiryMonth,
+                                                                 @Query("card_exp_year") String cardExpiryYear,
                                                                  @Query("client_key") String clientKey,
                                                                  @Query("bank") String bank,
                                                                  @Query("secure") boolean secure,
@@ -254,4 +284,32 @@ public interface VeritranceApiInterface {
                                                                          instalmentTerm
     );
 
+    /**
+     * Register card into Veritrans API.
+     *
+     * @param cardNumber        credit card number
+     * @param cardCVV           credit card cvv number
+     * @param cardExpiryMonth   credit card expiry month in number
+     * @param cardExpiryYear    credit card expiry year in 4 digit (example: 2020)
+     * @param clientKey         veritrans API client key
+     *
+     * @return observable of token
+     */
+    @Headers({"Content-Type: application/json", "x-auth: da53847171259b511488cf366e701050"})
+    @GET("/card/register")
+    Observable<CardRegistrationResponse> registerCard(
+            @Query("card_number") String cardNumber,
+            @Query("card_cvv") int cardCVV,
+            @Query("card_exp_month") String cardExpiryMonth,
+            @Query("card_exp_year") String cardExpiryYear,
+            @Query("client_key") String clientKey
+    );
+
+    /**
+     * Get authentication token.
+     *
+     * @return authentication token.
+     */
+    @POST("/auth")
+    Observable<AuthModel> getAuthenticationToken();
 }

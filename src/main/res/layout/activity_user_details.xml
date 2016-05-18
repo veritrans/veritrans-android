@@ -1,31 +1,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:background="@android:color/white"
-              tools:context=".UserDetailsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context=".activities.UserDetailsActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        android:background="@color/colorPrimary"
-        app:theme="@style/ToolBarStyle"
-        >
+        app:theme="@style/ToolBarStyle">
 
-        <id.co.veritrans.sdk.widgets.TextViewFont
+        <id.co.veritrans.sdk.widgets.DefaultTextView
             android:id="@+id/title_header"
-            android:textColor="@android:color/white"
-            android:text="@string/title_user_details"
-            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:font="@string/font_open_sans_regular"
+            android:text="@string/title_user_details"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/tool_bar_title_size"
-            />
+            android:visibility="visible" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -33,8 +29,5 @@
     <RelativeLayout
         android:id="@+id/user_detail_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ></RelativeLayout>
-
-
+        android:layout_height="match_parent" />
 </LinearLayout>

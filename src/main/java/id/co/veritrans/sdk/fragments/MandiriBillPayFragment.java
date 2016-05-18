@@ -7,13 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
-import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
-import id.co.veritrans.sdk.widgets.TextViewFont;
 
 /**
  * Displays status information about mandiri bill pay's api call .
@@ -26,10 +26,10 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
     private TransactionResponse mTransactionResponse = null;
 
     //views
-    private TextViewFont mTextViewCompanyCode = null;
-    private TextViewFont mTextViewBillpayCode = null;
-    private TextViewFont mTextViewSeeInstruction = null;
-    private TextViewFont mTextViewValidity = null;
+    private TextView mTextViewCompanyCode = null;
+    private TextView mTextViewBillpayCode = null;
+    private TextView mTextViewSeeInstruction = null;
+    private TextView mTextViewValidity = null;
 
 
     /**
@@ -37,7 +37,7 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
      * later it can
      * be accessible using fragments getArgument().
      *
-     * @param permataBankTransferResponse
+     * @param permataBankTransferResponse           response of transaction call
      * @return instance of MandiriBillPayFragment.
      */
     public static MandiriBillPayFragment newInstance(TransactionResponse
@@ -74,25 +74,25 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
     /**
      * initializes view and adds click listener for it.
      *
-     * @param view
+     * @param view  view that needed to be initialized
      */
     private void initializeViews(View view) {
 
-        mTextViewCompanyCode = (TextViewFont) view.findViewById(R.id.text_company_code);
-        mTextViewBillpayCode = (TextViewFont) view.findViewById(R.id.text_bill_pay_code);
+        mTextViewCompanyCode = (TextView) view.findViewById(R.id.text_company_code);
+        mTextViewBillpayCode = (TextView) view.findViewById(R.id.text_bill_pay_code);
 
-        mTextViewSeeInstruction = (TextViewFont) view.findViewById(R.id.text_see_instruction);
-        mTextViewValidity = (TextViewFont) view.findViewById(R.id.text_validaty);
+        mTextViewSeeInstruction = (TextView) view.findViewById(R.id.text_see_instruction);
+        mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
 
 
         if (mTransactionResponse != null) {
-            if (mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants
-                    .SUCCESS_CODE_200) ||
-                    mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(Constants
-                            .SUCCESS_CODE_201)
-                    )
+            if (mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200)) ||
+                    mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
                 mTextViewCompanyCode.setText(mTransactionResponse
                         .getCompanyCode());
+            } else {
+                mTextViewCompanyCode.setText(mTransactionResponse.getCompanyCode());
+            }
 
             mTextViewBillpayCode.setText(mTransactionResponse
                     .getPaymentCode());
@@ -100,10 +100,11 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
             mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime
                     (mTransactionResponse.getTransactionTime()));
 
-        } else {
-            mTextViewCompanyCode.setText(mTransactionResponse.getCompanyCode());
         }
-
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            mTextViewSeeInstruction.setTextColor(veritransSDK.getThemeColor());
+        }
         mTextViewSeeInstruction.setOnClickListener(this);
     }
 
@@ -113,7 +114,7 @@ public class MandiriBillPayFragment extends Fragment implements View.OnClickList
     private void showInstruction() {
         Intent intent = new Intent(getActivity(),
                 BankTransferInstructionActivity.class);
-        intent.putExtra(Constants.POSITION, 0);
+        intent.putExtra(BankTransferInstructionActivity.BANK, getArguments().getString(BankTransferInstructionActivity.BANK));
         getActivity().startActivity(intent);
     }
 

@@ -12,6 +12,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -350,7 +351,7 @@ public class ProgressWheel extends View {
     }
 
     @Override
-    protected void onVisibilityChanged(View changedView, int visibility) {
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
 
         if (visibility == VISIBLE) {
@@ -701,7 +702,7 @@ public class ProgressWheel extends View {
          *
          * @param progress a double value between 0.00 and 1.00 both included
          */
-        public void onProgressUpdate(float progress);
+        void onProgressUpdate(float progress);
     }
 
     static class WheelSavedState extends BaseSavedState {

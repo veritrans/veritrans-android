@@ -1,17 +1,20 @@
 package id.co.veritrans.sdk.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.core.Constants;
@@ -28,14 +31,14 @@ import id.co.veritrans.sdk.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.fragments.IndomaretPaymentFragment;
 import id.co.veritrans.sdk.fragments.IndomaretPaymentStatusFragment;
 import id.co.veritrans.sdk.fragments.InstructionIndomaretFragment;
-import id.co.veritrans.sdk.models.IndomaretRequestModel;
+import id.co.veritrans.sdk.models.CstoreEntity;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import id.co.veritrans.sdk.widgets.TextViewFont;
+import id.co.veritrans.sdk.utilities.Utils;
 
 /**
  * Created by Ankit on 12/01/15.
  */
-public class IndomaretActivity extends AppCompatActivity implements View.OnClickListener, TransactionBusCallback {
+public class IndomaretActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -43,11 +46,11 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public String currentFragment = "home";
 
-    private TextViewFont textViewOrderId = null;
-    private TextViewFont textViewAmount = null;
+    private TextView textViewOrderId = null;
+    private TextView textViewAmount = null;
     private Button buttonConfirmPayment = null;
     private AppBarLayout appBarLayout = null;
-    private TextViewFont textViewTitle = null;
+    private TextView textViewTitle = null;
 
     private VeritransSDK veritransSDK = null;
     private Toolbar toolbar = null;
@@ -72,14 +75,15 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         // get position of selected payment method
         Intent data = getIntent();
         if (data != null) {
-            position = data.getIntExtra(Constants.POSITION, Constants
+            position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_INDOMARET);
         } else {
-            SdkUtil.showSnackbar(IndomaretActivity.this, Constants.ERROR_SOMETHING_WENT_WRONG);
+            SdkUtil.showSnackbar(IndomaretActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
         initializeView();
+        initializeTheme();
         bindDataToView();
         setUpHomeFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
@@ -129,9 +133,9 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initializeView() {
-        textViewOrderId = (TextViewFont) findViewById(R.id.text_order_id);
-        textViewAmount = (TextViewFont) findViewById(R.id.text_amount);
-        textViewTitle = (TextViewFont) findViewById(R.id.text_title);
+        textViewOrderId = (TextView) findViewById(R.id.text_order_id);
+        textViewAmount = (TextView) findViewById(R.id.text_amount);
+        textViewTitle = (TextView) findViewById(R.id.text_title);
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
@@ -140,15 +144,17 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void bindDataToView() {
         if (veritransSDK != null) {
-            textViewAmount.setText(Constants.CURRENCY_PREFIX + " " + veritransSDK
-                    .getTransactionRequest().getAmount());
+            textViewAmount.setText(getString(R.string.prefix_money,
+                    Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
             textViewOrderId.setText("" + veritransSDK.getTransactionRequest().getOrderId());
-            buttonConfirmPayment.setTypeface(veritransSDK.getTypefaceOpenSansSemiBold());
+            if (veritransSDK.getSemiBoldText() != null) {
+                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), veritransSDK.getSemiBoldText()));
+            }
             buttonConfirmPayment.setOnClickListener(this);
         }
     }
@@ -228,7 +234,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         SdkUtil.showProgressDialog(IndomaretActivity.this, getString(R.string.processing_payment),
                 false);
 
-        IndomaretRequestModel.CstoreEntity cstoreEntity = new IndomaretRequestModel.CstoreEntity();
+        CstoreEntity cstoreEntity = new CstoreEntity();
         cstoreEntity.setMessage("demo_message");
         cstoreEntity.setStore("indomaret");
 
@@ -296,12 +302,13 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(Constants.TRANSACTION_RESPONSE, transactionResponse);
-        data.putExtra(Constants.TRANSACTION_ERROR_MESSAGE, errorMessage);
+        data.putExtra(getString(R.string.transaction_response), transactionResponse);
+        data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         Toast.makeText(IndomaretActivity.this, "Transaction success:  " +
@@ -318,6 +325,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
         Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
@@ -334,6 +342,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
@@ -349,6 +358,7 @@ public class IndomaretActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
