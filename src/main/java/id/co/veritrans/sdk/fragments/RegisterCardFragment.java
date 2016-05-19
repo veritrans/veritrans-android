@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.fragments;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -156,7 +157,9 @@ public class RegisterCardFragment extends Fragment {
                 isValid(false);
             }
         });
-
+        if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
+            saveBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
+        }
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

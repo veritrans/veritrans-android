@@ -13,14 +13,13 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/main_appbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:layout_height="wrap_content">
 
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/main_collapsing"
                 android:layout_width="match_parent"
-                android:layout_height="125dp"
+                android:layout_height="150dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
@@ -39,77 +38,71 @@
                         android:paddingLeft="@dimen/sixteen_dp"
                         android:paddingRight="@dimen/sixteen_dp">
 
-
-                        <TableLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:weightSum="3">
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                            <TableRow>
+                            <id.co.veritrans.sdk.widgets.DefaultTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:text="@string/orderId"
+                                android:textColor="@color/colorSecondary"
+                                android:textSize="@dimen/secondary_text_size" />
 
-                                <id.co.veritrans.sdk.widgets.DefaultTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
-                                    android:layout_weight="0.3"
-                                    android:text="@string/orderId"
-                                    android:textColor="@color/white_little_transparent"
-                                    android:textSize="@dimen/secondary_text_size" />
+                            <id.co.veritrans.sdk.widgets.BoldTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.1"
+                                android:text="@string/text_colon"
+                                android:textColor="@color/colorSecondary"
+                                android:textSize="@dimen/secondary_text_size"
+                                android:textStyle="bold" />
 
-                                <id.co.veritrans.sdk.widgets.BoldTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="0.3"
-                                    android:text="@string/text_colon"
-                                    android:textColor="@color/white_little_transparent"
-                                    android:textSize="@dimen/secondary_text_size"
-                                    android:textStyle="bold"/>
+                            <id.co.veritrans.sdk.widgets.DefaultTextView
+                                android:id="@+id/text_order_id"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.7"
+                                android:text="@string/text_order_id_here"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/secondary_text_size" />
+                        </LinearLayout>
 
-                                <id.co.veritrans.sdk.widgets.DefaultTextView
-                                    android:id="@+id/text_order_id"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1.5"
-                                    android:gravity="left"
-                                    android:text="@string/text_order_id_here"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="@dimen/secondary_text_size"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                            </TableRow>
+                            <id.co.veritrans.sdk.widgets.DefaultTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:text="@string/transfer_amount"
+                                android:textColor="@color/colorSecondary"
+                                android:textSize="@dimen/secondary_text_size" />
 
-                            <TableRow android:layout_marginTop="@dimen/eight_dp">
+                            <id.co.veritrans.sdk.widgets.BoldTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.1"
+                                android:text="@string/text_colon"
+                                android:textColor="@color/colorSecondary"
+                                android:textSize="@dimen/secondary_text_size"
+                                android:textStyle="bold" />
 
-                                <id.co.veritrans.sdk.widgets.DefaultTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
-                                    android:layout_weight="0.3"
-                                    android:text="@string/text_amount"
-                                    android:textColor="@color/white_little_transparent"
-                                    android:textSize="@dimen/secondary_text_size"/>
-
-                                <id.co.veritrans.sdk.widgets.BoldTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="0.3"
-                                    android:text="@string/text_colon"
-                                    android:textColor="@color/white_little_transparent"
-                                    android:textSize="@dimen/secondary_text_size"
-                                    android:textStyle="bold"/>
-
-                                <id.co.veritrans.sdk.widgets.DefaultTextView
-                                    android:id="@+id/text_amount"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
-                                    android:layout_weight="1.5"
-                                    android:text="@string/text_amount_here"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="@dimen/secondary_text_size" />
-
-                            </TableRow>
-
-                        </TableLayout>
+                            <id.co.veritrans.sdk.widgets.DefaultTextView
+                                android:id="@+id/text_amount"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.7"
+                                android:text="@string/text_amount_here"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/secondary_text_size" />
+                        </LinearLayout>
                     </LinearLayout>
                 </FrameLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
@@ -128,6 +121,7 @@
             android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_anchor="@id/main_framelayout_title"
             app:title="">
 

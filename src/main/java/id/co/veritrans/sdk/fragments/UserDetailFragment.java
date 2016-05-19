@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.fragments;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
+import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.UserDetail;
 
 public class UserDetailFragment extends Fragment {
@@ -47,6 +49,7 @@ public class UserDetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         UserDetailsActivity userDetailsActivity = (UserDetailsActivity) getActivity();
         if (userDetailsActivity != null && userDetailsActivity.getSupportActionBar() != null) {
             userDetailsActivity.getSupportActionBar().setTitle(getString(R.string.title_user_details));
@@ -55,6 +58,9 @@ public class UserDetailFragment extends Fragment {
         phoneEt = (EditText) view.findViewById(R.id.et_phone);
         emailEt = (EditText) view.findViewById(R.id.et_email);
         nextBtn = (Button) view.findViewById(R.id.btn_next);
+        if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
+            nextBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
+        }
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

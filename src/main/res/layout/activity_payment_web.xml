@@ -10,11 +10,10 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        style="@style/ToolBarStyle"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed"
-
-        >
+        app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
         <id.co.veritrans.sdk.widgets.DefaultTextView
             android:id="@+id/title_header"
@@ -23,8 +22,7 @@
             android:text="@string/processing_payment"
             android:textColor="@android:color/white"
             android:textSize="@dimen/tool_bar_title_size"
-            android:visibility="visible"
-            />
+            android:visibility="visible" />
 
     </android.support.v7.widget.Toolbar>
 
