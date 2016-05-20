@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +37,6 @@ import id.co.veritrans.sdk.models.BankDetail;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.models.UserDetail;
-import android.widget.TextView;
 import id.co.veritrans.sdk.widgets.VeritransDialog;
 
 /**
@@ -321,8 +321,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
                     String date = etExpiryDate.getText().toString();
                     String month = date.split("/")[0];
                     String year = "20" + date.split("/")[1];
-                    CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
-                            .parseInt(cvv),
+                    CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv,
                             month, year,
                             veritransSDK.getClientKey());
 

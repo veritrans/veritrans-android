@@ -659,7 +659,7 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
                         creditCards.remove(position);
                     }
                 }
-                cardTokenRequest.setCardCVV(0);
+                cardTokenRequest.setCardCVV("0");
                 cardTokenRequest.setClientKey("");
                 cardTokenRequest.setGrossAmount(0);
                 //to save card number in xxxxxxxxxxxx1118 format

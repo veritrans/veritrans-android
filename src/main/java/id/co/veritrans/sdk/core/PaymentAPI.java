@@ -56,7 +56,7 @@ public interface PaymentAPI {
      */
     @GET("/token/")
     Observable<TokenDetailsResponse> getTokenTwoClick(
-            @Query("card_cvv") int cardCVV,
+            @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
             @Query("two_click") boolean twoClick,
             @Query("secure") boolean secure,
@@ -66,7 +66,7 @@ public interface PaymentAPI {
 
     @GET("/token/")
     Observable<TokenDetailsResponse> get3DSToken(@Query("card_number") String cardNumber,
-                                                 @Query("card_cvv") int cardCVV,
+                                                 @Query("card_cvv") String cardCVV,
                                                  @Query("card_exp_month") String cardExpiryMonth,
                                                  @Query("card_exp_year") String cardExpiryYear,
                                                  @Query("client_key") String clientKey,
@@ -243,7 +243,7 @@ public interface PaymentAPI {
 
     @GET("/token/")
     Observable<TokenDetailsResponse> getTokenInstalmentOfferTwoClick(
-            @Query("card_cvv") int cardCVV,
+            @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
             @Query("two_click") boolean twoClick,
             @Query("secure") boolean secure,
@@ -271,7 +271,7 @@ public interface PaymentAPI {
 
     @GET("/token/")
     Observable<TokenDetailsResponse> get3DSTokenInstalmentOffers(@Query("card_number") String cardNumber,
-                                                                 @Query("card_cvv") int cardCVV,
+                                                                 @Query("card_cvv") String cardCVV,
                                                                  @Query("card_exp_month") String cardExpiryMonth,
                                                                  @Query("card_exp_year") String cardExpiryYear,
                                                                  @Query("client_key") String clientKey,
@@ -299,7 +299,7 @@ public interface PaymentAPI {
     @GET("/card/register")
     Observable<CardRegistrationResponse> registerCard(
             @Query("card_number") String cardNumber,
-            @Query("card_cvv") int cardCVV,
+            @Query("card_cvv") String cardCVV,
             @Query("card_exp_month") String cardExpiryMonth,
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey

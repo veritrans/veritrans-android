@@ -26,7 +26,7 @@ public class CardTokenRequest implements Serializable {
     // &two_click=false
 
     private String cardNumber;
-    private int cardCVV;
+    private String cardCVV;
     private String cardExpiryMonth;
     private String cardExpiryYear;
     private boolean secure;
@@ -45,7 +45,7 @@ public class CardTokenRequest implements Serializable {
     public CardTokenRequest() {
     }
 
-    public CardTokenRequest(String cardNumber, int cardCVV,
+    public CardTokenRequest(String cardNumber, String cardCVV,
                             String cardExpiryMonth, String cardExpiryYear, String clientKey) {
 
         this.cardNumber = cardNumber;
@@ -75,11 +75,11 @@ public class CardTokenRequest implements Serializable {
         this.cardNumber = cardNumber;
     }
 
-    public int getCardCVV() {
+    public String getCardCVV() {
         return cardCVV;
     }
 
-    public void setCardCVV(int cardCVV) {
+    public void setCardCVV(String cardCVV) {
         this.cardCVV = cardCVV;
     }
 

@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager_bank_instruction"
@@ -18,21 +16,18 @@
             android:descendantFocusability="beforeDescendants"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                >
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <id.co.veritrans.sdk.widgets.DefaultTextView
                     android:id="@+id/title_header"
@@ -41,12 +36,9 @@
                     android:text="@string/payment_instrution"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/tool_bar_title_size"
-                    android:visibility="visible"
-                    />
+                    android:visibility="visible" />
 
             </android.support.v7.widget.Toolbar>
-
-
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/instruction_tabs"
@@ -57,9 +49,7 @@
                 app:tabIndicatorHeight="3dp"
                 app:tabMode="scrollable"
                 app:tabSelectedTextColor="@color/white"
-                app:tabTextColor="@color/faint_white"
-
-                />
+                app:tabTextColor="@color/colorSecondary" />
         </android.support.design.widget.AppBarLayout>
 
     </android.support.design.widget.CoordinatorLayout>

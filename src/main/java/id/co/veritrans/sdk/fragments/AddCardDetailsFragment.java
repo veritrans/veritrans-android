@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.fragments;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -119,6 +120,9 @@ public class AddCardDetailsFragment extends Fragment {
                 checkCardValidity();
             }
         });
+        if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
+            payNowBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
+        }
         payNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,8 +130,7 @@ public class AddCardDetailsFragment extends Fragment {
                     String date = etExpiryDate.getText().toString();
                     String month = date.split("/")[0];
                     String year = "20" + date.split("/")[1];
-                    CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
-                            .parseInt(cvv),
+                    CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv,
                             month, year,
                             veritransSDK.getClientKey());
                     cardTokenRequest.setIsSaved(cbStoreCard.isChecked());
