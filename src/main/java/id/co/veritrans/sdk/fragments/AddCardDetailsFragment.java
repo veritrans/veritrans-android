@@ -130,8 +130,7 @@ public class AddCardDetailsFragment extends Fragment {
                     String date = etExpiryDate.getText().toString();
                     String month = date.split("/")[0];
                     String year = "20" + date.split("/")[1];
-                    CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, Integer
-                            .parseInt(cvv),
+                    CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv,
                             month, year,
                             veritransSDK.getClientKey());
                     cardTokenRequest.setIsSaved(cbStoreCard.isChecked());

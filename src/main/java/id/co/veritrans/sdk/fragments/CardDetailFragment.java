@@ -277,7 +277,7 @@ public class CardDetailFragment extends Fragment {
             if (activity != null) {
                 CardTokenRequest request = new CardTokenRequest();
                 request.setSavedTokenId(cardDetail.getSavedTokenId());
-                request.setCardCVV(Integer.parseInt(cvv));
+                request.setCardCVV(cvv);
                 if (activity instanceof CreditDebitCardFlowActivity) {
                     ((CreditDebitCardFlowActivity) getActivity()).twoClickPayment(request);
                 } else if (activity instanceof OffersActivity) {

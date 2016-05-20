@@ -187,7 +187,7 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
         }
     }
 
-    public void registerCard(String cardNumber, int cvv, String expMonth, String expYear) {
+    public void registerCard(String cardNumber, String cvv, String expMonth, String expYear) {
         veritransSDK.cardRegistration(cardNumber, cvv, expMonth, expYear);
     }
 
