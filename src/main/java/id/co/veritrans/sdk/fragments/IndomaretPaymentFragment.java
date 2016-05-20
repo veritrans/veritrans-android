@@ -6,11 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
-import android.widget.TextView;
 
 /**
  * Displays status information about bank transfer's api call .
@@ -19,9 +19,9 @@ import android.widget.TextView;
  */
 public class IndomaretPaymentFragment extends Fragment {
 
-
+    public static final String KEY_ARG = "arg";
     public static final String VALID_UNTILL = "Valid Untill : ";
-    private static TransactionResponse transactionResponse = null;
+    private TransactionResponse transactionResponse;
 
     //views
 
@@ -29,11 +29,11 @@ public class IndomaretPaymentFragment extends Fragment {
     private TextView mTextViewPaymentCode = null;
 
 
-
-    public static IndomaretPaymentFragment newInstance(TransactionResponse
-                                                                  mTransactionResponse) {
-        transactionResponse = mTransactionResponse;
+    public static IndomaretPaymentFragment newInstance(TransactionResponse mTransactionResponse) {
         IndomaretPaymentFragment fragment = new IndomaretPaymentFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_ARG, mTransactionResponse);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
