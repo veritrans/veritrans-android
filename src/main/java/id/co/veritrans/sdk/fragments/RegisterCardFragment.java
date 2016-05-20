@@ -171,7 +171,7 @@ public class RegisterCardFragment extends Fragment {
                     String month = date.split("/")[0];
                     String year = "20" + date.split("/")[1];
                     if (activity != null) {
-                        activity.registerCard(cardNumber, Integer.parseInt(cvv), month, year);
+                        activity.registerCard(cardNumber, cvv, month, year);
                     }
                 }
             }

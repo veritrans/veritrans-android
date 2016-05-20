@@ -65,7 +65,7 @@ import rx.schedulers.Schedulers;
 class TransactionManager {
 
     public static void cardRegistration(String cardNumber,
-                                        int cardCvv,
+                                        String cardCvv,
                                         String cardExpMonth,
                                         String cardExpYear) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();

@@ -632,7 +632,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
                         creditCards.remove(position);
                     }
                 }
-                cardTokenRequest.setCardCVV(0);
+                cardTokenRequest.setCardCVV("0");
                 cardTokenRequest.setClientKey("");
                 cardTokenRequest.setGrossAmount(0);
 
