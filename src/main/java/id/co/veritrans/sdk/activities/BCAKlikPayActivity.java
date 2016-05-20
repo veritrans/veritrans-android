@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -84,6 +85,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
+        if (mVeritransSDK != null && mVeritransSDK.getSemiBoldText() != null) {
+            buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+        }
     }
 
     private void setUpFragment() {

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import id.co.veritrans.sdk.R;
+import id.co.veritrans.sdk.core.VeritransSDK;
 
 /**
  * Created by chetan on 24/11/15.
@@ -170,7 +171,11 @@ public class MorphingButton extends Button {
         int cornerRadius = (int) resources.getDimension(R.dimen.mb_corner_radius_2);
         int blue = resources.getColor(R.color.colorPrimary);
         int blueDark = resources.getColor(R.color.colorSecondary);
-
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null && veritransSDK.getThemeColor() != 0) {
+            blue = veritransSDK.getThemeColor();
+            blueDark = veritransSDK.getThemeColor();
+        }
         StateListDrawable background = new StateListDrawable();
         mDrawableNormal = createDrawable(blue, cornerRadius, 0);
         mDrawablePressed = createDrawable(blueDark, cornerRadius, 0);

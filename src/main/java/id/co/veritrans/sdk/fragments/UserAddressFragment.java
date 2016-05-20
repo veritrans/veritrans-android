@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.fragments;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -23,11 +24,13 @@ import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
+import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.UserAddress;
 import id.co.veritrans.sdk.models.UserDetail;
 
 public class UserAddressFragment extends Fragment {
 
+    VeritransSDK veritransSDK;
     private EditText etAddress;
     private EditText etCity;
     private EditText etZipcode;
@@ -68,6 +71,7 @@ public class UserAddressFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        veritransSDK = VeritransSDK.getVeritransSDK();
         findViews(view);
         super.onViewCreated(view, savedInstanceState);
     }
@@ -85,6 +89,9 @@ public class UserAddressFragment extends Fragment {
         etShippingZipcode = (EditText) view.findViewById(R.id.et_shipping_zipcode);
         etShippingCountry = (EditText) view.findViewById(R.id.et_shipping_country);
         btnNext = (Button) view.findViewById(R.id.btn_next);
+        if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
+            btnNext.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
+        }
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
