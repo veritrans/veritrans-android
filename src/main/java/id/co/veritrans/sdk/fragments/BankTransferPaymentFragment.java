@@ -22,9 +22,9 @@ import id.co.veritrans.sdk.utilities.Utils;
  */
 public class BankTransferPaymentFragment extends Fragment {
 
-
+    public static final String KEY_ARG = "args";
     public static final String VALID_UNTILL = "Valid Untill : ";
-    private static TransactionResponse sPermataBankTransferResponse = null;
+    private TransactionResponse transactionResponse;
 
     //views
     private TextView mTextViewVirtualAccountNumber = null;
@@ -37,22 +37,24 @@ public class BankTransferPaymentFragment extends Fragment {
      * it creates new BankTransferPaymentFragment object and set TransactionResponse object to it,
      * so later it can be accessible using fragments getArgument().
      *
-     *  @param permataBankTransferResponse  response of transaction call
+     *  @param transactionResponse  response of transaction call
      * @return instance of BankTransferPaymentFragment
      */
     public static BankTransferPaymentFragment newInstance(TransactionResponse
-                                                                  permataBankTransferResponse) {
-        sPermataBankTransferResponse = permataBankTransferResponse;
+                                                                  transactionResponse) {
         BankTransferPaymentFragment fragment = new BankTransferPaymentFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_ARG, transactionResponse);
+        fragment.setArguments(bundle);
         return fragment;
     }
+
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_bank_transfer_payment, container, false);
         return view;
     }
@@ -60,6 +62,8 @@ public class BankTransferPaymentFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        transactionResponse = (TransactionResponse) getArguments().getSerializable(KEY_ARG);
         initializeViews(view);
     }
 
@@ -77,17 +81,20 @@ public class BankTransferPaymentFragment extends Fragment {
         mTextViewSeeInstruction = (TextView) view.findViewById(R.id.text_see_instruction);
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
 
-        if (sPermataBankTransferResponse != null) {
-            if (sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
-                    || sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
-                mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse.getPermataVANumber());
+        if (transactionResponse != null) {
+            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
+                    || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
+                if (transactionResponse.getAccountNumbers() != null && transactionResponse.getAccountNumbers().size() > 0) {
+                    mTextViewVirtualAccountNumber.setText(transactionResponse.getAccountNumbers().get(0).getAccountNumber());
+                } else {
+                    mTextViewVirtualAccountNumber.setText(transactionResponse.getPermataVANumber());
+                }
             } else {
-                mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse.getStatusMessage());
+                mTextViewVirtualAccountNumber.setText(transactionResponse.getStatusMessage());
             }
 
             mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime
-                    (sPermataBankTransferResponse.getTransactionTime()));
-
+                    (transactionResponse.getTransactionTime()));
         }
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
