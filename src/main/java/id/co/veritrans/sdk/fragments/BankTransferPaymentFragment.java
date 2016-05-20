@@ -24,7 +24,7 @@ public class BankTransferPaymentFragment extends Fragment {
 
 
     public static final String VALID_UNTILL = "Valid Untill : ";
-    private static TransactionResponse sPermataBankTransferResponse = null;
+    private static TransactionResponse transactionResponse = null;
 
     //views
     private TextView mTextViewVirtualAccountNumber = null;
@@ -42,7 +42,7 @@ public class BankTransferPaymentFragment extends Fragment {
      */
     public static BankTransferPaymentFragment newInstance(TransactionResponse
                                                                   permataBankTransferResponse) {
-        sPermataBankTransferResponse = permataBankTransferResponse;
+        transactionResponse = permataBankTransferResponse;
         BankTransferPaymentFragment fragment = new BankTransferPaymentFragment();
         return fragment;
     }
@@ -77,17 +77,20 @@ public class BankTransferPaymentFragment extends Fragment {
         mTextViewSeeInstruction = (TextView) view.findViewById(R.id.text_see_instruction);
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
 
-        if (sPermataBankTransferResponse != null) {
-            if (sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
-                    || sPermataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
-                mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse.getPermataVANumber());
+        if (transactionResponse != null) {
+            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
+                    || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
+                if (transactionResponse.getAccountNumbers() != null && transactionResponse.getAccountNumbers().size() > 0) {
+                    mTextViewVirtualAccountNumber.setText(transactionResponse.getAccountNumbers().get(0).getAccountNumber());
+                } else {
+                    mTextViewVirtualAccountNumber.setText(transactionResponse.getPermataVANumber());
+                }
             } else {
-                mTextViewVirtualAccountNumber.setText(sPermataBankTransferResponse.getStatusMessage());
+                mTextViewVirtualAccountNumber.setText(transactionResponse.getStatusMessage());
             }
 
             mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime
-                    (sPermataBankTransferResponse.getTransactionTime()));
-
+                    (transactionResponse.getTransactionTime()));
         }
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {

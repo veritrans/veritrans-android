@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * contains information about payment charge api call like,
@@ -65,6 +66,8 @@ public class TransactionResponse implements Serializable {
     private boolean secureToken;
     @SerializedName("permata_va_number")
     private String permataVANumber;
+    @SerializedName("va_numbers")
+    private List<BCAVANumber> accountNumbers;
 
     @SerializedName("redirect_url")
     private String redirectUrl;
@@ -279,5 +282,13 @@ public class TransactionResponse implements Serializable {
 
     public void setPaymentCodeIndomaret(String paymentCodeIndomaret) {
         this.paymentCodeIndomaret = paymentCodeIndomaret;
+    }
+
+    public List<BCAVANumber> getAccountNumbers() {
+        return accountNumbers;
+    }
+
+    public void setAccountNumbers(List<BCAVANumber> accountNumbers) {
+        this.accountNumbers = accountNumbers;
     }
 }
