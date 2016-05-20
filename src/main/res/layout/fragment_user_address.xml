@@ -7,8 +7,9 @@
     tools:context="id.co.veritrans.sdk.fragments.UserAddressFragment">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/colorAccentLight"
         android:fillViewport="true"
         tools:context="id.co.veritrans.sdk.fragments.UserAddressFragment">
@@ -220,30 +221,27 @@
                     </RelativeLayout>
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/sixtyfour_dp"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@id/shipping_address_view"
-                android:background="@color/colorAccentLight"
-                android:paddingBottom="@dimen/eight_dp"
-                android:paddingTop="@dimen/eight_dp">
-
-                <Button
-                    android:id="@+id/btn_next"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_height"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/blue_button_selector"
-                    android:text="@string/next"
-                    android:textColor="@android:color/white" />
-
-            </RelativeLayout>
         </RelativeLayout>
 
 
     </android.support.v4.widget.NestedScrollView>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sixtyfour_dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccentLight"
+        android:paddingBottom="@dimen/eight_dp"
+        android:paddingTop="@dimen/eight_dp">
 
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/blue_button_selector"
+            android:text="@string/next"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
 </RelativeLayout>
