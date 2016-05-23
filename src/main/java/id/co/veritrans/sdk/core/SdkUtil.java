@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.core;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
@@ -836,5 +837,20 @@ public class SdkUtil {
             }
         }
         return encodedUrl;
+    }
+
+    /**
+     * Get device identifier using SDK context.
+     *
+     * @return device identifier
+     */
+    public static String getDeviceId() {
+        String deviceId = "UNKNOWN";
+        try {
+            deviceId = Settings.Secure.getString(VeritransSDK.getVeritransSDK().getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        } catch (Exception ex) {
+            Logger.e(ex.toString());
+        }
+        return deviceId;
     }
 }
