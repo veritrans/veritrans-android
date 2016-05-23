@@ -1,5 +1,8 @@
 package id.co.veritrans.sdk.fragments;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferInstructionActivity;
@@ -23,13 +27,15 @@ import id.co.veritrans.sdk.utilities.Utils;
 public class BankTransferPaymentFragment extends Fragment {
 
     public static final String KEY_ARG = "args";
-    public static final String VALID_UNTILL = "Valid Untill : ";
+    public static final String VALID_UNTIL = "Valid Until : ";
+    private static final String LABEL_VA_NUMBER = "Virtual Account Number";
     private TransactionResponse transactionResponse;
 
     //views
     private TextView mTextViewVirtualAccountNumber = null;
     private TextView mTextViewSeeInstruction = null;
     private TextView mTextViewValidity = null;
+    private TextView mTextViewCopyToClipboard = null;
 
 
     /**
@@ -40,11 +46,11 @@ public class BankTransferPaymentFragment extends Fragment {
      *  @param transactionResponse  response of transaction call
      * @return instance of BankTransferPaymentFragment
      */
-    public static BankTransferPaymentFragment newInstance(TransactionResponse
-                                                                  transactionResponse) {
+    public static BankTransferPaymentFragment newInstance(TransactionResponse transactionResponse, String bank) {
         BankTransferPaymentFragment fragment = new BankTransferPaymentFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_ARG, transactionResponse);
+        bundle.putString(BankTransferInstructionActivity.BANK, bank);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -53,10 +59,8 @@ public class BankTransferPaymentFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
-            savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bank_transfer_payment, container, false);
-        return view;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_bank_transfer_payment, container, false);
     }
 
 
@@ -75,17 +79,18 @@ public class BankTransferPaymentFragment extends Fragment {
      */
     private void initializeViews(View view) {
 
-        mTextViewVirtualAccountNumber = (TextView)
-                view.findViewById(R.id.text_virtual_account_number);
-
+        mTextViewVirtualAccountNumber = (TextView) view.findViewById(R.id.text_virtual_account_number);
         mTextViewSeeInstruction = (TextView) view.findViewById(R.id.text_see_instruction);
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
+        mTextViewCopyToClipboard = (TextView) view.findViewById(R.id.text_copy_va);
 
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
                     || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
-                if (transactionResponse.getAccountNumbers() != null && transactionResponse.getAccountNumbers().size() > 0) {
-                    mTextViewVirtualAccountNumber.setText(transactionResponse.getAccountNumbers().get(0).getAccountNumber());
+                if (getArguments() != null && getArguments().getString(BankTransferInstructionActivity.BANK) != null && getArguments().getString(BankTransferInstructionActivity.BANK).equals(BankTransferInstructionActivity.TYPE_BCA)) {
+                    if (transactionResponse.getAccountNumbers() != null && transactionResponse.getAccountNumbers().size() > 0) {
+                        mTextViewVirtualAccountNumber.setText(transactionResponse.getAccountNumbers().get(0).getAccountNumber());
+                    }
                 } else {
                     mTextViewVirtualAccountNumber.setText(transactionResponse.getPermataVANumber());
                 }
@@ -93,17 +98,23 @@ public class BankTransferPaymentFragment extends Fragment {
                 mTextViewVirtualAccountNumber.setText(transactionResponse.getStatusMessage());
             }
 
-            mTextViewValidity.setText(VALID_UNTILL + Utils.getValidityTime
-                    (transactionResponse.getTransactionTime()));
+            mTextViewValidity.setText(VALID_UNTIL + Utils.getValidityTime(transactionResponse.getTransactionTime()));
         }
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
             mTextViewSeeInstruction.setTextColor(veritransSDK.getThemeColor());
+            mTextViewCopyToClipboard.setTextColor(veritransSDK.getThemeColor());
         }
         mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showInstruction();
+            }
+        });
+        mTextViewCopyToClipboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                copyVANumber();
             }
         });
     }
@@ -112,10 +123,19 @@ public class BankTransferPaymentFragment extends Fragment {
      * starts {@link BankTransferInstructionActivity} to show payment instruction.
      */
     private void showInstruction() {
-        Intent intent = new Intent(getActivity(),
-                BankTransferInstructionActivity.class);
+        Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
         intent.putExtra(BankTransferInstructionActivity.BANK, getArguments().getString(BankTransferInstructionActivity.BANK));
         getActivity().startActivity(intent);
     }
 
+    /**
+     * Copy generated Virtual Account Number to clipboard.
+     */
+    private void copyVANumber() {
+        ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(LABEL_VA_NUMBER, mTextViewVirtualAccountNumber.getText().toString());
+        clipboard.setPrimaryClip(clip);
+        // Show toast
+        Toast.makeText(getContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+    }
 }
