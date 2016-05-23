@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -240,45 +239,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
 
         //Execute transaction
         veritransSDK.paymentUsingIndomaret(cstoreEntity);
-        /*veritransSDK.paymentUsingIndomaret(IndomaretActivity.this, cstoreEntity, new
-                TransactionCallback() {
-
-                    @Override
-                    public void onSuccess(TransactionResponse transactionResponse) {
-                        Toast.makeText(IndomaretActivity.this, "Transaction success:  " +
-                                transactionResponse.getStatusMessage(), Toast.LENGTH_SHORT).show();
-
-                        SdkUtil.hideProgressDialog();
-
-                        if (transactionResponse != null) {
-                            IndomaretActivity.this.transactionResponse = transactionResponse;
-                            appBarLayout.setExpanded(true);
-                            setUpTransactionFragment(transactionResponse);
-                        } else {
-                            onBackPressed();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(String errorMessage, TransactionResponse
-                            transactionResponse) {
-
-                        Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
-                                        errorMessage,
-                                Toast.LENGTH_SHORT).show();
-                        try {
-                            IndomaretActivity.this.errorMessage = errorMessage;
-                            IndomaretActivity.this.transactionResponse = transactionResponse;
-
-                            SdkUtil.hideProgressDialog();
-                            SdkUtil.showSnackbar(IndomaretActivity.this, "" + errorMessage);
-                        } catch (NullPointerException ex) {
-                            Logger.e("transaction error is " + errorMessage);
-                        }
-
-                    }
-                });*/
     }
 
 
@@ -311,9 +271,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
-        Toast.makeText(IndomaretActivity.this, "Transaction success:  " +
-                event.getResponse().getStatusMessage(), Toast.LENGTH_SHORT).show();
-
         SdkUtil.hideProgressDialog();
 
         if (event.getResponse() != null) {
@@ -328,9 +285,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
-        Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
-                        event.getMessage(),
-                Toast.LENGTH_SHORT).show();
         try {
             IndomaretActivity.this.errorMessage = event.getMessage();
             IndomaretActivity.this.transactionResponse = event.getResponse();
@@ -345,9 +299,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
-        Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
-                        getString(R.string.no_network_msg),
-                Toast.LENGTH_SHORT).show();
         try {
             IndomaretActivity.this.errorMessage = getString(R.string.no_network_msg);
 
@@ -361,9 +312,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
-        Toast.makeText(IndomaretActivity.this, "Transaction failed: " +
-                        event.getMessage(),
-                Toast.LENGTH_SHORT).show();
         try {
             IndomaretActivity.this.errorMessage = event.getMessage();
 
