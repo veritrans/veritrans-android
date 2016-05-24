@@ -49,7 +49,7 @@
                 app:tabIndicatorHeight="3dp"
                 app:tabMode="scrollable"
                 app:tabSelectedTextColor="@color/white"
-                app:tabTextColor="@color/colorSecondary" />
+                app:tabTextColor="@color/inactiveTabColor" />
         </android.support.design.widget.AppBarLayout>
 
     </android.support.design.widget.CoordinatorLayout>

@@ -7,11 +7,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.text.TextUtils;
 
-import com.flurry.android.FlurryAgent;
-
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.BuildConfig;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.activities.UserDetailsActivity;
@@ -85,7 +82,6 @@ public class VeritransSDK {
             }
             initializeTheme();
             initializeSharedPreferences();
-            initializeFlurry();
             return veritransSDK;
         } else {
             return null;
@@ -94,10 +90,6 @@ public class VeritransSDK {
 
     private static void initializeSharedPreferences() {
         mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
-    }
-
-    private static void initializeFlurry() {
-        FlurryAgent.init(context, BuildConfig.FLURRY_API_KEY);
     }
 
     /**
