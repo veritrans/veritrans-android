@@ -25,6 +25,8 @@ public class MixpanelProperties {
     private String deviceId;
     @SerializedName("Payment Type")
     private String paymentType;
+    @SerializedName("Bank")
+    private String bank;
 
     public String getDistinctId() {
         return distinctId;
@@ -104,5 +106,13 @@ public class MixpanelProperties {
 
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
     }
 }

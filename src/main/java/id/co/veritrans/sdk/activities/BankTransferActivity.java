@@ -92,8 +92,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         // get position of selected payment method
         Intent data = getIntent();
         if (data != null) {
-            position = data.getIntExtra(getString(R.string.position), Constants
-                    .PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
+            position = data.getIntExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
         } else {
             SdkUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
             finish();
@@ -245,7 +244,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
 
-                performTrsansaction();
+                performTransaction();
 
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
 
@@ -311,31 +310,16 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             FragmentManager fragmentManager = getSupportFragmentManager();
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
-
                 MandiriBillPayFragment bankTransferPaymentFragment =
                         MandiriBillPayFragment.newInstance(transactionResponse);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("data", transactionResponse);
-                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
-                bankTransferPaymentFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.bank_transfer_container,
                         bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             } else if (position == Constants.BANK_TRANSFER_PERMATA){
-                BankTransferPaymentFragment bankTransferPaymentFragment =
-                        BankTransferPaymentFragment.newInstance(transactionResponse);
-                Bundle bundle = new Bundle();
-                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
-                bankTransferPaymentFragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.bank_transfer_container,
-                        bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+                BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_PERMATA);
+                fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             } else if(position == Constants.BANK_TRANSFER_BCA) {
-                BankTransferPaymentFragment bankTransferPaymentFragment =
-                        BankTransferPaymentFragment.newInstance(transactionResponse);
-                Bundle bundle = new Bundle();
-                bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
-                bankTransferPaymentFragment.setArguments(bundle);
+                BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_BCA);
                 fragmentTransaction.replace(R.id.bank_transfer_container,
                         bankTransferPaymentFragment, PAYMENT_FRAGMENT);
 
@@ -361,7 +345,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * {@see }
      *
      */
-    private void performTrsansaction() {
+    private void performTransaction() {
 
         // for sending instruction on email only if email-Id is entered.
         if (bankTransferFragment != null && !bankTransferFragment.isDetached()) {
@@ -379,7 +363,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
-
             //transaction details
             TransactionDetails transactionDetails =
                     new TransactionDetails("" + mVeritransSDK.getTransactionRequest().getAmount(),
@@ -431,7 +414,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void mandiriBillPayTransaction(VeritransSDK veritransSDK) {
-
         veritransSDK.paymentUsingMandiriBillPay();
     }
 
@@ -468,7 +450,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUtil.hideProgressDialog();
-
         if (event.getResponse() != null) {
             transactionResponse = event.getResponse();
             mAppBarLayout.setExpanded(true);

@@ -66,5 +66,17 @@
             android:textSize="@dimen/header_text_size"
             />
 
+        <id.co.veritrans.sdk.widgets.SemiBoldTextView
+            android:id="@+id/text_copy_va"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:clickable="true"
+            android:paddingTop="@dimen/eight_dp"
+            android:text="@string/copy_payment_code"
+            android:textAllCaps="true"
+            android:textSize="@dimen/secondary_text_size"
+            android:textStyle="bold" />
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

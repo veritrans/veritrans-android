@@ -79,6 +79,29 @@
             android:textSize="@dimen/secondary_text_size"
             />
 
+        <id.co.veritrans.sdk.widgets.SemiBoldTextView
+            android:id="@+id/text_copy_company_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:clickable="true"
+            android:paddingTop="@dimen/eight_dp"
+            android:text="@string/copy_billpay_code"
+            android:textAllCaps="true"
+            android:textSize="@dimen/secondary_text_size"
+            android:textStyle="bold" />
+
+        <id.co.veritrans.sdk.widgets.SemiBoldTextView
+            android:id="@+id/text_copy_va"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:clickable="true"
+            android:paddingTop="@dimen/eight_dp"
+            android:text="@string/copy_billpay_code"
+            android:textAllCaps="true"
+            android:textSize="@dimen/secondary_text_size"
+            android:textStyle="bold" />
 
         <id.co.veritrans.sdk.widgets.SemiBoldTextView
             android:id="@+id/text_see_instruction"

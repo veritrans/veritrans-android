@@ -74,9 +74,7 @@ public class BankTransferFragment extends Fragment {
             public void onClick(View v) {
 
                 if (getActivity() != null) {
-
-                    Intent intent = new Intent(getActivity(),
-                            BankTransferInstructionActivity.class);
+                    Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
                     intent.putExtra(BankTransferInstructionActivity.BANK, getArguments().getString(BankTransferInstructionActivity.BANK));
                     getActivity().startActivity(intent);
 
