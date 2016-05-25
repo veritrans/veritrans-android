@@ -96,6 +96,8 @@
 #-keep class id.co.veritrans.sdk.fragments.**{*;}
 -keep class id.co.veritrans.sdk.models.** { *; }
 -keep class id.co.veritrans.sdk.eventbus.**{*;}
+-keep class id.co.veritrans.sdk.analytics.MixpanelEvent{*;}
+-keep class id.co.veritrans.sdk.analytics.MixpanelProperties{*;}
 -keep class id.co.veritrans.sdk.core.VeritransSDK {*;}
 -keep class id.co.veritrans.sdk.core.VeritransBuilder {*;}
 -keep class id.co.veritrans.sdk.core.TransactionRequest {*;}
