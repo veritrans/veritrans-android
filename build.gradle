@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-      classpath 'com.android.tools.build:gradle:1.5.0'
+      classpath 'com.android.tools.build:gradle:2.1.0'
       classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
     }
 }
@@ -24,9 +24,9 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName version
         buildConfigField "String", "MIXPANEL_URL", "\"https://api.mixpanel.com/\""
         buildConfigField "String", "CALLBACK_STRING", "\"/token/callback/\""
         buildConfigField "String", "CALLBACK_URL", "\"https://hangout.betas.in/veritrans/api/paymentstatus\""

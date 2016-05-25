@@ -1909,6 +1909,10 @@ class TransactionManager {
             properties.setBank(bankType);
         }
         properties.setResponseTime(responseTime);
+
+        event.setProperties(properties);
+
+        MixpanelAnalyticsManager.trackEvent(event);
     }
 
     private static void trackMixpanel(String eventName, String paymentType, long responseTime) {
@@ -1923,7 +1927,9 @@ class TransactionManager {
         properties.setToken(BuildConfig.MIXPANEL_TOKEN);
         properties.setPaymentType(paymentType);
         properties.setResponseTime(responseTime);
+
         event.setProperties(properties);
+
         MixpanelAnalyticsManager.trackEvent(event);
     }
 
@@ -1940,7 +1946,9 @@ class TransactionManager {
         properties.setPaymentType(paymentType);
         properties.setResponseTime(responseTime);
         properties.setMessage(errorMessage);
+
         event.setProperties(properties);
+
         MixpanelAnalyticsManager.trackEvent(event);
     }
 
@@ -1958,7 +1966,9 @@ class TransactionManager {
         properties.setBank(bank);
         properties.setResponseTime(responseTime);
         properties.setMessage(errorMessage);
+
         event.setProperties(properties);
+
         MixpanelAnalyticsManager.trackEvent(event);
     }
 }
