@@ -86,7 +86,7 @@
             android:layout_marginTop="@dimen/twenty_four_dp"
             android:clickable="true"
             android:paddingTop="@dimen/eight_dp"
-            android:text="@string/copy_billpay_code"
+            android:text="@string/copy_company_code"
             android:textAllCaps="true"
             android:textSize="@dimen/secondary_text_size"
             android:textStyle="bold" />
