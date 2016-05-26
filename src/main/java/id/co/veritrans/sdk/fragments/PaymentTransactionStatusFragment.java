@@ -21,6 +21,7 @@ import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.TransactionResponse;
+
 import android.widget.TextView;
 
 /**
@@ -49,8 +50,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static PaymentTransactionStatusFragment newInstance(TransactionResponse
-                                                                       transactionResponse) {
+    public static PaymentTransactionStatusFragment newInstance(TransactionResponse transactionResponse) {
         Logger.i("payment status get instance called");
         PaymentTransactionStatusFragment fragment = new PaymentTransactionStatusFragment();
         Bundle args = new Bundle();
@@ -63,8 +63,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            transactionResponse = (TransactionResponse) getArguments().getSerializable
-                    (TRANSACTION_RESPONSE_PARAM);
+            transactionResponse = (TransactionResponse) getArguments().getSerializable(TRANSACTION_RESPONSE_PARAM);
         }
         veritrans = VeritransSDK.getVeritransSDK();
     }
@@ -222,6 +221,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
             }
         }
     }
+
     private void setPaymentType() {
         try {
             Logger.i("PaymentType:" + transactionResponse.getPaymentType());
@@ -232,21 +232,23 @@ public class PaymentTransactionStatusFragment extends Fragment {
             return;
         }
         if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_epay_bri))) {
-            paymentTypeTextView.setText(getString(R.string.epay_bri));
+            paymentTypeTextView.setText(R.string.epay_bri);
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
-            paymentTypeTextView.setText(getString(R.string.mandiri_bill_payment));
+            paymentTypeTextView.setText(R.string.mandiri_bill_payment);
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_cimb_clicks))) {
-            paymentTypeTextView.setText(getString(R.string.cimb_clicks));
+            paymentTypeTextView.setText(R.string.cimb_clicks);
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_mandiri_ecash))) {
-            paymentTypeTextView.setText(getString(R.string.mandiri_e_cash));
+            paymentTypeTextView.setText(R.string.mandiri_e_cash);
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_mandiri_clickpay))) {
-            paymentTypeTextView.setText(getString(R.string.mandiri_click_pay));
+            paymentTypeTextView.setText(R.string.mandiri_click_pay);
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_indomaret))) {
-            paymentTypeTextView.setText(getString(R.string.indomaret));
+            paymentTypeTextView.setText(R.string.indomaret);
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_credit_debit))) {
-            paymentTypeTextView.setText(getString(R.string.credit_card));
+            paymentTypeTextView.setText(R.string.credit_card);
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_indosat_dompetku))) {
-            paymentTypeTextView.setText(getString(R.string.indosat_dompetku));
+            paymentTypeTextView.setText(R.string.indosat_dompetku);
+        } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_bank_transfer))) {
+            paymentTypeTextView.setText(R.string.bank_transfer);
         }
 
     }

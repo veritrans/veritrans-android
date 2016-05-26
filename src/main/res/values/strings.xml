@@ -268,13 +268,13 @@
 
 
     <!-- Permata/Alto bank transfer Instruction-->
-    <string name="permata_instruction_step1">1.\tEnter Your PIN.</string>
-    <string name="permata_instruction_step2">2.\tOn the main menu, Choose \'Other Transaction\'.</string>
-    <string name="permata_instruction_step3">3.\tChoose \'Payment\'.</string>
-    <string name="permata_instruction_step4">4.\tChoose \'Other Payment\'.</string>
-    <string name="permata_instruction_step5">5.\tChoose \'Virtual Account\'.</string>
-    <string name="permata_instruction_step6">6.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
-    <string name="permata_instruction_step7">7.\tTransaction information will appear on the payment confirmation page. If the information is right, press \'Correct\'.</string>
+    <string name="permata_instruction_step1">1.\tOn the main menu, Choose \'Other Transaction\'.</string>
+    <string name="permata_instruction_step2">2.\tChoose \'Payment\'.</string>
+    <string name="permata_instruction_step3">3.\tChoose \'Other Payment\'.</string>
+    <string name="permata_instruction_step4">4.\tChoose \'Virtual Account\'.</string>
+    <string name="permata_instruction_step5">5.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
+    <string name="permata_instruction_step6">6.\tAmount to be paid, account number, and merchant name will appear on confirmation page. If the confirmation page is right, press \'Correct\'.</string>
+    <string name="permata_instruction_step7">7.\tChoose your payment account and press \'Correct\'.</string>
     <string name="bank_transfer_dummy_text">* Subject to preferred bank\'s transfer fee and a minimum transaction of Rp50,000, - for bank mandiri</string>
 
 

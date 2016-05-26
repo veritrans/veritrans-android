@@ -15,6 +15,7 @@ import id.co.veritrans.sdk.fragments.InstructionBCAKlikFragment;
 import id.co.veritrans.sdk.fragments.InstructionBCAMobileFragment;
 import id.co.veritrans.sdk.fragments.InstructionMandiriFragment;
 import id.co.veritrans.sdk.fragments.InstructionMandiriInternetFragment;
+import id.co.veritrans.sdk.fragments.InstructionPermataFragment;
 
 /**
  * It display information related to mandiri bill pay , bank transfer and BCA/Prima transaction.
@@ -167,7 +168,7 @@ public class BankTransferInstructionActivity extends BaseActivity {
                     fragment = new InstructionBCAKlikFragment();
                 } else fragment = new InstructionBCAMobileFragment();
             } else if(getIntent().getStringExtra(BANK).equals(TYPE_PERMATA)){
-                fragment = new InstructionMandiriFragment();
+                fragment = new InstructionPermataFragment();
             } else {
                 if(position == 0) {
                     fragment = new InstructionMandiriFragment();

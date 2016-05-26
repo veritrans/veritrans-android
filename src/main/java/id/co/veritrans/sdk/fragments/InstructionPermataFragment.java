@@ -21,7 +21,7 @@ public class InstructionPermataFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_instruction_bca, container, false);
+        View view = inflater.inflate(R.layout.fragment_instruction_permata, container, false);
         return view;
     }
 }
