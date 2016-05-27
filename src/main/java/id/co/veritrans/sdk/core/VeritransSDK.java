@@ -50,6 +50,7 @@ public class VeritransSDK {
     private static Context context = null;
     private static String themeColorString = null;
     private static int themeColor;
+    private static ExternalScanner externalScanner = null;
 
     private static VeritransSDK veritransSDK = new VeritransSDK();
     private static boolean isLogEnabled = true;
@@ -79,6 +80,9 @@ public class VeritransSDK {
             merchantServerUrl = veritransBuilder.merchantServerUrl;
             if (veritransBuilder.colorTheme != null) {
                 themeColorString = veritransBuilder.colorTheme;
+            }
+            if(veritransBuilder.scanner!=null) {
+                externalScanner = veritransBuilder.scanner;
             }
             initializeTheme();
             initializeSharedPreferences();
@@ -126,6 +130,10 @@ public class VeritransSDK {
 
     public static String getDefaultText() {
         return VeritransSDK.defaultText;
+    }
+
+    public  ExternalScanner getExternalScanner() {
+        return VeritransSDK.externalScanner;
     }
 
     public void setDefaultText(String defaultText) {
