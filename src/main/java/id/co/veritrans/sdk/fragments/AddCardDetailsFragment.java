@@ -33,7 +33,7 @@ import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.eventbus.events.UpdateCreditCardDataFromScan;
+import id.co.veritrans.sdk.eventbus.events.UpdateCreditCardDataFromScanEvent;
 import id.co.veritrans.sdk.models.BankDetail;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.UserDetail;
@@ -443,7 +443,7 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     @Subscribe
-    public void onEvent(UpdateCreditCardDataFromScan event) {
+    public void onEvent(UpdateCreditCardDataFromScanEvent event) {
         etCardNo.setText(event.getCardNumber());
         etCvv.setText(event.getCvv());
         etExpiryDate.setText(event.getExpired());

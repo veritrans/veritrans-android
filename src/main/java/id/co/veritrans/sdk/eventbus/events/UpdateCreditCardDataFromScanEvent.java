@@ -5,12 +5,12 @@ import id.co.veritrans.sdk.core.ExternalScanner;
 /**
  * @author rakawm
  */
-public class UpdateCreditCardDataFromScan {
+public class UpdateCreditCardDataFromScanEvent {
     private String cardNumber;
     private String cvv;
     private String expired;
 
-    public UpdateCreditCardDataFromScan(String cardNumber, String cvv, String expired) {
+    public UpdateCreditCardDataFromScanEvent(String cardNumber, String cvv, String expired) {
         setCardNumber(cardNumber);
         setCvv(cvv);
         setExpired(expired);

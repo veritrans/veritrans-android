@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,7 +51,7 @@ import id.co.veritrans.sdk.eventbus.events.SaveCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
-import id.co.veritrans.sdk.eventbus.events.UpdateCreditCardDataFromScan;
+import id.co.veritrans.sdk.eventbus.events.UpdateCreditCardDataFromScanEvent;
 import id.co.veritrans.sdk.fragments.AddCardDetailsFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.SavedCardFragment;
@@ -364,7 +363,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
 
     private void updateCreditCardData(String cardNumber, String cvv, String expired) {
         // Update credit card data in AddCardDetailsFragment
-        VeritransBusProvider.getInstance().post(new UpdateCreditCardDataFromScan(cardNumber, cvv, expired));
+        VeritransBusProvider.getInstance().post(new UpdateCreditCardDataFromScanEvent(cardNumber, cvv, expired));
     }
 
     public ArrayList<SaveCardRequest> getCreditCards() {
