@@ -97,6 +97,32 @@ here in this flow just set transaction request information to sdk and start paym
 
 This will start Payment flow if all information is valid.
 
+#### Add external card scanner (Using Card.io library)
+
+You can add external card scanner using `ScanCardLibrary` implementation by following these steps.
+
+##### Setup `ScanCardLibrary` in `build.gradle`.
+
+Add this code block into your `build.gradle`.
+
+```
+compile 'id.co.veritrans:scancardlibrary:0.9.2@aar { 
+            transitive = true
+         }
+```
+
+##### Add `ExternalScanner` into your SDK initialization.
+
+Add this code block into your `build.gradle`.
+
+```
+VeritransBuilder builder = new VeritransBuilder...
+builder.setExternalScanner(new ScanCard());
+...
+```
+
+**Note**: The external scanner button will be shown at Credit Card form if you set the external scanner.
+ 
 2) **Registering card using UI Flow**
 
 To use default UI of Registering Card, you can call `startRegisterCardUIFlow` using current activity instance.
@@ -158,10 +184,10 @@ To enable secure transacion
 transactionRequest.setCardPaymentInfo(CARD_CLRDICK_TYPE, isSecure);
 
 where - 
-CARD_CLRDICK_TYPE -  type of card use Constants, 
-        Constants.CARD_CLICK_TYPE_ONE_CLICK - for one click
-        Constants.CARD_CLICK_TYPE_TWO_CLICK - for two click
-        Constants.CARD_CLICK_TYPE_NONE  - for normal transaction
+CARD_CARDICK_TYPE -  type of card use these resource strings: 
+        R.string.card_click_type_one_click - for one click
+        R.string.card_click_type_two_click - for two click
+        R.string.card_click_type_none  - for normal transaction
 
 isSecure - set it to true for secure transaction.
 ```
@@ -208,9 +234,11 @@ To use Veritrans SDK  in your android application perform following steps.
 **Step 1 -**  Add the library as a gradle dependency:
        
 you can simply declare it as dependency in  **build.gradle** file as follow
-```sh
+```
        dependencies {
-         compile 'id.co.veritrans:androidsdk:0.9.2@aar' // Add the android sdk as a dependency.
+         compile 'id.co.veritrans:androidsdk:0.9.2@aar' { // Add the android sdk as a dependency.
+            transitive = true
+         }
         }
 
     repositories {
@@ -861,7 +889,7 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data!=null ) {
         // get data from intent.
-            String responseStr = data.getStringExtra(Constants.PAYMENT_RESPONSE);
+            String responseStr = data.getStringExtra(getString(R.string.payment_response));
              Gson gson = new Gson();
             TransactionResponse transactionResponse = gson.fromJson(responseStr, TransactionResponse.class);
             // handle response here
@@ -888,7 +916,7 @@ private void initwebview() {
         webView.setWebChromeClient(new WebChromeClient());
        
        // java script interface to intercept the request and get paymet status data from server.
-        webView.addJavascriptInterface(new JsInterface(), Constants.VERITRANS_RESPONSE);
+        webView.addJavascriptInterface(new JsInterface(), getString(R.string.payment_response));
        
        // don't change the second paramter. It is constant used in sdk to find response status.
     }
@@ -909,7 +937,7 @@ private void initwebview() {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            if (url.contains(Constants.CALLBACK_STRING)) {
+            if (url.contains(BuildConfig.CALLBACK_STRING)) {
                 Intent returnIntent = new Intent();
                 getActivity().setResult(getActivity().RESULT_OK, returnIntent);
                 getActivity().finish();
@@ -946,7 +974,7 @@ Use this interface in your web view to get response back.
         public void paymentResponse(String data) {
             // finish activity and return payment response.
             Intent intent = new Intent();
-            intent.putExtra(Constants.PAYMENT_RESPONSE, data);
+            intent.putExtra(getString(R.string.payment_response), data);
             getActivity().setResult(getActivity().RESULT_OK, intent);
             getActivity().finish();
         }

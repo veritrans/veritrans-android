@@ -19,6 +19,7 @@ public class VeritransBuilder {
     protected boolean enableLog = true;
     protected String merchantServerUrl = null;
     protected String colorTheme = null;
+    protected ExternalScanner scanner = null;
 
     /**
      * It  will initialize an data required to sdk.
@@ -50,6 +51,10 @@ public class VeritransBuilder {
         return this;
     }
 
+    public VeritransBuilder setExternalScanner(ExternalScanner externalScanner) {
+        this.scanner = externalScanner;
+        return this;
+    }
 
     /**
      * This method will start payment flow if you have set useUi field to true.

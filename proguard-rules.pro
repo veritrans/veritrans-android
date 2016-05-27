@@ -105,6 +105,7 @@
 -keep class id.co.veritrans.sdk.core.Logger {*;}
 -keep class id.co.veritrans.sdk.core.Constants {*;}
 -keep class id.co.veritrans.sdk.core.SdkUtil {*;}
+-keep class id.co.veritrans.sdk.core.ExternalScanner{*;}
 
 #-keep class id.co.veritrans.sdk.widget.**{*;}
 #-keep class id.co.veritrans.sdk.** {*;}

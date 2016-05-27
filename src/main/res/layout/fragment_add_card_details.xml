@@ -118,6 +118,16 @@
                 android:paddingRight="@dimen/sixteen_dp"
                 android:src="@drawable/ic_cvvinfo" />
 
+            <Button
+                android:id="@+id/scan_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_scan_card"
+                android:layout_below="@id/cb_store_card"
+                android:textColor="@color/colorPrimary"
+                style="?borderlessButtonStyle"
+                android:visibility="gone"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
