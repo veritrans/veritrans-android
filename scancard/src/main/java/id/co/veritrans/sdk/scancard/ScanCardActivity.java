@@ -15,7 +15,7 @@ import io.card.payment.CreditCard;
  */
 public class ScanCardActivity extends AppCompatActivity {
 
-    public static final int SCAN_REQUEST_CODE = 10004;
+    private static final int SCAN_REQUEST_CODE = 10004;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
