@@ -236,9 +236,16 @@ To use Veritrans SDK  in your android application perform following steps.
 you can simply declare it as dependency in  **build.gradle** file as follow
 ```
        dependencies {
-         compile 'id.co.veritrans:androidsdk:0.9.2@aar' { // Add the android sdk as a dependency.
-            transitive = true
-         }
+         // Sandbox version
+         compile ('id.co.veritrans:scancardlibrary:0.10.0-SANDBOX@aar') { transitive = true }
+         // Production version
+         compile ('id.co.veritrans:scancardlibrary:0.10.0@aar') { transitive = true }
+         
+         // Another dependencies
+         compile 'org.greenrobot:eventbus:3.0.0'
+         compile 'com.squareup.retrofit:retrofit:1.9.0'
+         compile 'com.squareup.okhttp:okhttp:2.3.0'
+         compile 'io.reactivex:rxandroid:0.24.0'
         }
 
     repositories {
