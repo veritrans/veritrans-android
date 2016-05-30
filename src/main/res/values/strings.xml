@@ -222,6 +222,7 @@
     <string name="bca_mbanking_instruction_step6">6.\tBCA Virtual Account Number and your account information will appear on the payment confirmation page and then click \'Send\'.</string>
     <string name="bca_mbanking_instruction_step7">7.\tClick \'OK\' on the payment confirmation page.</string>
     <string name="bca_mbanking_instruction_step8">8.\tEnter amount to be transferred then click \'OK\'.</string>
+    <string name="bca_mbanking_instruction_step9">9.\tYour transaction is done.</string>
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">1.\tPlease make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
     <string name="cimb_instruction_step2">2.\tTransaction will be cancelled if payment is not completed within 2 hours.</string>
@@ -431,7 +432,7 @@
     <string name="tab_bca_klik">Klik BCA</string>
     <string name="tab_bca_mobile">m-BCA</string>
     <string name="tab_mandiri_atm">ATM Mandiri</string>
-    <string name="tab_mandiri_internet">Mandiri Internet</string>
+    <string name="tab_mandiri_internet">Internet Banking</string>
     <string name="tab_permata_atm">ATM Permata</string>
     <string name="tab_alto">Alto</string>
     <string name="tab_mandiri_bill">Mandiri Bill</string>
