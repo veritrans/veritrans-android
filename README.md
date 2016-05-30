@@ -1,6 +1,11 @@
 # **Veritrans SDK**
 
 ## 1 Overview
+
+For sample usage. You can see this repository.
+
+[https://github.com/veritrans/veritrans-android-example](https://github.com/veritrans/veritrans-android-example)
+
 ### 1.1 Description 
 
 Veritrans SDK is an android library project which supports performing transaction using various payment methods supported by Veritrans payment gateway. 
