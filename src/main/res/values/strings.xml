@@ -369,7 +369,8 @@
     <string name="offer_applied">Offer Applied Successfully !</string>
     <string name="offer_not_applied">Offer is not applicable on this card</string>
     <string name="no_offers">No offers found</string>
-
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
     <!--String Constanst-->
     <string name="position">position</string>
     <string name="user_details">user_details</string>
