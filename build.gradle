@@ -47,12 +47,12 @@ android {
     productFlavors {
         development {
             buildConfigField "String", "BASE_URL", "\"https://api.sandbox.veritrans.co.id/v2/\""
-            buildConfigField "String", "MIXPANEL_TOKEN", "\"cc005b296ca4ce612fe3939177c668bb\""
+            buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_SANDBOX
         }
 
         production {
             buildConfigField "String", "BASE_URL", "\"https://api.veritrans.co.id/v2/\""
-            buildConfigField "String", "MIXPANEL_TOKEN", "\"0269722c477a0e085fde32e0248c6003\""
+            buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_PRODUCTION
         }
     }
 

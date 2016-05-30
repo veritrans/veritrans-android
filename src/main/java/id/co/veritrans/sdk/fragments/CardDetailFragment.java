@@ -216,9 +216,7 @@ public class CardDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Logger.i("Card to delete:" + cardDetail.getMaskedCard());
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getString(R.string.delete)
-                        , getString(R.string.card_delete_message), getString(android.R.string.yes),
-                        getString(android.R.string.no));
+                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getString(R.string.delete), getString(R.string.card_delete_message), getString(R.string.text_yes), getString(R.string.text_no));
                 View.OnClickListener positiveClickListner = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
