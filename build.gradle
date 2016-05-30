@@ -84,13 +84,13 @@ bintray {
         name = project.name
         userOrg = 'pt-midtrans'
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/veritrans/androidsdk.git'
+        vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
         desc = 'Android SDK for integrating with veritrans.co.id'
         websiteUrl = "https://veritrans.co.id"
         publish = true
         publicDownloadNumbers = true
     }
-    publications = ['BintrayPublication']
+    publications = ['BintrayProductionPublication', 'BintrayPublication']
 
 }
 
@@ -103,7 +103,15 @@ publishing {
     publications {
         BintrayPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/androidsdk-private-development-release.aar")
+            artifact("$buildDir/outputs/aar/veritrans-android-development-release.aar")
+            groupId group
+            artifactId 'androidsdk'
+            version version + "-SNAPSHOT"
+        }
+
+        BintrayProductionPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/veritrans-android-production-release.aar")
             groupId group
             artifactId 'androidsdk'
             version version
