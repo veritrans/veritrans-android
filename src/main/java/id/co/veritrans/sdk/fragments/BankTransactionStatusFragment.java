@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.regex.Pattern;
+
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BankTransferActivity;
 import id.co.veritrans.sdk.activities.IndosatDompetkuActivity;
@@ -126,7 +128,7 @@ public class BankTransactionStatusFragment extends Fragment {
             mTextViewTransactionTime.setText(mTransactionResponse.getTransactionTime());
             mTextViewOrderId.setText(mTransactionResponse.getOrderId());
             String amount = mTransactionResponse.getGrossAmount();
-            String formattedAmount = amount.split(".").length == 2 ? amount.split(".")[0] : amount;
+            String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
             mTextViewAmount.setText(formattedAmount);
 
             //noinspection StatementWithEmptyBody
