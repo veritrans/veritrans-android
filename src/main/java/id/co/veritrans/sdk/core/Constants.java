@@ -28,8 +28,8 @@ public class Constants {
 
     public static final String TAG = "VeritransSDK";
 
-    public static final int PHONE_NUMBER_LENGTH = 10;
-    public static final int PHONE_NUMBER_MAX_LENGTH = 12;
+    public static final int PHONE_NUMBER_LENGTH = 9;
+    public static final int PHONE_NUMBER_MAX_LENGTH = 15;
     public static final int ZIPCODE_LENGTH = 5;
 
 
