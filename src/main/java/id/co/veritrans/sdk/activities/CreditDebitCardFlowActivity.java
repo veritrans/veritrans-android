@@ -138,7 +138,15 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
-        getCreditCards();
+        if (!veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+            getCreditCards();
+        } else {
+            AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
+                    .newInstance();
+            replaceFragment
+                    (addCardDetailsFragment, true, false);
+            titleHeaderTextView.setText(getString(R.string.card_details));
+        }
         readBankDetails();
 
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
@@ -148,10 +156,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().unregister(this);
         }
-        super.onDestroy();
     }
 
     public void morphToCircle(int time) {

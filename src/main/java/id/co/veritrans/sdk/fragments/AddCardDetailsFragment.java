@@ -107,7 +107,7 @@ public class AddCardDetailsFragment extends Fragment {
         bindViews(view);
 
         // Register bus
-        if(!VeritransBusProvider.getInstance().isRegistered(this)) {
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
         }
         ((CreditDebitCardFlowActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
@@ -118,7 +118,7 @@ public class AddCardDetailsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         // Unregister bus
-        if(VeritransBusProvider.getInstance().isRegistered(this)) {
+        if (VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().unregister(this);
         }
     }
@@ -132,7 +132,7 @@ public class AddCardDetailsFragment extends Fragment {
         questionImg = (ImageView) view.findViewById(R.id.image_question);
         questionSaveCardImg = (ImageView) view.findViewById(R.id.image_question_save_card);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
-        scanCardBtn = (Button)view.findViewById(R.id.scan_card);
+        scanCardBtn = (Button) view.findViewById(R.id.scan_card);
         //formLayout.setAlpha(0);
         cbStoreCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -142,8 +142,8 @@ public class AddCardDetailsFragment extends Fragment {
         });
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
             payNowBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
-            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getDefaultText()));
-            if(veritransSDK.getExternalScanner()!=null) {
+            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), VeritransSDK.getDefaultText()));
+            if (veritransSDK.getExternalScanner() != null) {
                 scanCardBtn.setVisibility(View.VISIBLE);
                 scanCardBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -153,6 +153,13 @@ public class AddCardDetailsFragment extends Fragment {
                 });
             } else {
                 scanCardBtn.setVisibility(View.GONE);
+            }
+            if (veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+                cbStoreCard.setVisibility(View.GONE);
+                cbStoreCard.setVisibility(View.GONE);
+            } else {
+                cbStoreCard.setVisibility(View.VISIBLE);
+                questionSaveCardImg.setVisibility(View.VISIBLE);
             }
         }
         payNowBtn.setOnClickListener(new View.OnClickListener() {
@@ -237,50 +244,48 @@ public class AddCardDetailsFragment extends Fragment {
             }
         });
 
-        etExpiryDate.addTextChangedListener(new
+        etExpiryDate.addTextChangedListener(new TextWatcher() {
+                                                @Override
+                                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                                                    TextWatcher() {
-                                                        @Override
-                                                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                                }
 
+                                                @Override
+                                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                                                }
+
+                                                @Override
+                                                public void afterTextChanged(Editable s) {
+                                                    String input = s.toString();
+                                                    if (s.length() == 2 && !lastExpDate.endsWith("/")) {
+                                                        int month = Integer.parseInt(input);
+                                                        if (month <= 12) {
+                                                            etExpiryDate.setText(etExpiryDate.getText().toString() + "/");
+                                                            etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                                        } else {
+                                                            etExpiryDate.setText(Constants.MONTH_COUNT + "/");
+                                                            etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                                                         }
-
-                                                        @Override
-                                                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                                                    } else if (s.length() == 2 && lastExpDate.endsWith("/")) {
+                                                        int month = Integer.parseInt(input);
+                                                        if (month <= 12) {
+                                                            etExpiryDate.setText(etExpiryDate.getText().toString().substring(0, 1));
+                                                            etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                                        } else {
+                                                            etExpiryDate.setText("");
+                                                            etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                                                         }
-
-                                                        @Override
-                                                        public void afterTextChanged(Editable s) {
-                                                            String input = s.toString();
-                                                            if (s.length() == 2 && !lastExpDate.endsWith("/")) {
-                                                                int month = Integer.parseInt(input);
-                                                                if (month <= 12) {
-                                                                    etExpiryDate.setText(etExpiryDate.getText().toString() + "/");
-                                                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                                } else {
-                                                                    etExpiryDate.setText(Constants.MONTH_COUNT + "/");
-                                                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                                }
-                                                            } else if (s.length() == 2 && lastExpDate.endsWith("/")) {
-                                                                int month = Integer.parseInt(input);
-                                                                if (month <= 12) {
-                                                                    etExpiryDate.setText(etExpiryDate.getText().toString().substring(0, 1));
-                                                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                                } else {
-                                                                    etExpiryDate.setText("");
-                                                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                                }
-                                                            } else if (s.length() == 1) {
-                                                                int month = Integer.parseInt(input);
-                                                                if (month > 1) {
-                                                                    etExpiryDate.setText("0" + etExpiryDate.getText().toString() + "/");
-                                                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                                }
-                                                            }
-                                                            lastExpDate = etExpiryDate.getText().toString();
+                                                    } else if (s.length() == 1) {
+                                                        int month = Integer.parseInt(input);
+                                                        if (month > 1) {
+                                                            etExpiryDate.setText("0" + etExpiryDate.getText().toString() + "/");
+                                                            etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                                                         }
                                                     }
+                                                    lastExpDate = etExpiryDate.getText().toString();
+                                                }
+                                            }
 
         );
     }
