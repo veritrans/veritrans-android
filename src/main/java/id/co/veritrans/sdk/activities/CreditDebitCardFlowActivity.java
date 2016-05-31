@@ -142,8 +142,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
             getCreditCards();
         } else {
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
-            replaceFragment
-                    (addCardDetailsFragment, true, false);
+            replaceFragment(addCardDetailsFragment, true, false);
             titleHeaderTextView.setText(getString(R.string.card_details));
         }
         readBankDetails();
