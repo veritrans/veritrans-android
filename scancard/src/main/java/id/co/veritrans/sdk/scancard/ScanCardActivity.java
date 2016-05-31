@@ -53,8 +53,6 @@ public class ScanCardActivity extends AppCompatActivity {
         } else {
             finishWithResult(RESULT_CANCELED, data);
         }
-
-
     }
 
     private void finishWithResult(int resultCode, Intent data) {
