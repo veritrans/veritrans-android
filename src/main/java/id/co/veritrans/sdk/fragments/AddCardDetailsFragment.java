@@ -156,7 +156,7 @@ public class AddCardDetailsFragment extends Fragment {
             }
             if (veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
                 cbStoreCard.setVisibility(View.GONE);
-                cbStoreCard.setVisibility(View.GONE);
+                questionSaveCardImg.setVisibility(View.GONE);
             } else {
                 cbStoreCard.setVisibility(View.VISIBLE);
                 questionSaveCardImg.setVisibility(View.VISIBLE);
