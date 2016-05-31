@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TableLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.regex.Pattern;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.CIMBClickPayActivity;
@@ -21,8 +24,6 @@ import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.VeritransSDK;
 import id.co.veritrans.sdk.models.TransactionResponse;
-
-import android.widget.TextView;
 
 /**
  * Created by shivam on 10/27/15.
@@ -44,7 +45,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private TextView transactionTimeTextView = null;
     private TextView paymentTypeTextView = null;
     private int count = 1;
-    private TableLayout detailsTable;
+    private LinearLayout detailsTable;
 
     public PaymentTransactionStatusFragment() {
         // Required empty public constructor
@@ -94,7 +95,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         paymentIv = (ImageView) view.findViewById(R.id.image_payment);
         paymentStatusTv = (TextView) view.findViewById(R.id.text_payment_status);
         paymentMessageTv = (TextView) view.findViewById(R.id.text_payment_message);
-        detailsTable = (TableLayout) view.findViewById(R.id.transaction_info_layout);
+        detailsTable = (LinearLayout) view.findViewById(R.id.transaction_info_layout);
     }
 
     private void bindDataForNotificationData() {
@@ -132,7 +133,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
         }
         try {
             transactionTimeTextView.setText(transactionResponse.getTransactionTime());
-            amountTextView.setText(transactionResponse.getGrossAmount());
+            String amount = transactionResponse.getGrossAmount();
+            String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
+            amountTextView.setText(formattedAmount);
             orderIdTextView.setText(transactionResponse.getOrderId());
         } catch (NullPointerException e) {
             e.printStackTrace();
