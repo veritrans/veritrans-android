@@ -60,7 +60,16 @@ We publish our SDK to [bintray repository](www.bintray.com). Please add bintray 
 
 ```groovy
 dependencies {
-    compile 'id.co.veritrans:android-sdk:0.10.+@aar'
+    compile 'id.co.veritrans:androidsdk:0.10.+@aar'
+    // Dependencies needed by this SDK
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'io.reactivex:rxandroid:0.24.0'
+    // The UI flow relied on Android Support Library
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:cardview-v7:23.4.0'
 }
 
 repositories {
@@ -172,13 +181,22 @@ VeritransBuilder builder = new VeritransBuilder...
 builder.setColorTheme("#COLORHEX);
 ```
 
+Also you can set the color primary in your theme in `styles.xml`.
+
+```
+<!-- Base application theme. -->
+<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimary">@color/colorPrimary</item> 
+</style>
+```
+
 To apply a Custom font
 
 ```Java
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        veritransSDK.setDefaultText("open_sans_regular.ttf");
-        veritransSDK.setSemiBoldText("open_sans_semibold.ttf");
-        veritransSDK.setBoldText("open_sans_bold.ttf");
+VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+veritransSDK.setDefaultText("open_sans_regular.ttf");
+veritransSDK.setSemiBoldText("open_sans_semibold.ttf");
+veritransSDK.setBoldText("open_sans_bold.ttf");
 ```
 Note: open_sans_regular.ttf, open_sans_semibold.ttf, open_sans_bold.ttf is path of the custom font on the assets directory.
 
@@ -223,9 +241,9 @@ You can add external card scanner using `ScanCardLibrary` implementation by foll
 Add this code block into your `build.gradle`.
 
 ```
-compile 'id.co.veritrans:scancardlibrary:0.9.2@aar {
-            transitive = true
-         }
+compile 'id.co.veritrans:scancard:0.10.+'
+// Dependencies needed by scan card library
+compile 'io.card:android-sdk:5.3.4'
 ```
 
 ##### Add `ExternalScanner` into your SDK initialization.
