@@ -1,4 +1,9 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+group = 'id.co.veritrans'
+version = '0.10.1'
 
 android {
     compileSdkVersion 23
@@ -17,20 +22,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
-        development {
-        }
-
-        production {
-        }
-    }
 }
 
 repositories {
     jcenter()
-    flatDir {
-        dirs 'libs'
-    }
+    maven { url "http://dl.bintray.com/pt-midtrans/maven" }
 }
 dependencies {
     compile 'com.android.support:appcompat-v7:23.+'
@@ -40,6 +36,41 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'io.card:android-sdk:5.3.4'
-    developmentCompile(name: 'androidsdk-lib-development-release', ext: 'aar') { transitive = true }
-    productionCompile(name: 'androidsdk-lib-production-release', ext: 'aar') { transitive = true }
+    compile 'id.co.veritrans:androidsdk:0.10.1-SANDBOX'
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'scan-card'
+        userOrg = 'pt-midtrans'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
+        desc = 'External scanner plugin for Veritrans Android SDK'
+        websiteUrl = "https://veritrans.co.id"
+        publish = true
+        publicDownloadNumbers = true
+    }
+    publications = ['BintrayPublication']
+
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "source"
+}
+
+publishing {
+    publications {
+        BintrayPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/scancard-release.aar")
+            groupId group
+            artifactId 'scancard'
+            version version
+        }
+    }
 }

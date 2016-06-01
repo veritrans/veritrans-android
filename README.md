@@ -111,9 +111,8 @@ You can add external card scanner using `ScanCardLibrary` implementation by foll
 Add this code block into your `build.gradle`.
 
 ```
-compile 'id.co.veritrans:scancardlibrary:0.9.2@aar { 
-            transitive = true
-         }
+compile 'io.card:android-sdk:5.3.4'
+compile 'id.co.veritrans:scancard:0.10.1'
 ```
 
 ##### Add `ExternalScanner` into your SDK initialization.
@@ -242,9 +241,9 @@ you can simply declare it as dependency in  **build.gradle** file as follow
 ```
        dependencies {
          // Sandbox version
-         compile 'id.co.veritrans:scancardlibrary:0.10.1-SANDBOX'
+         compile 'id.co.veritrans:androidsdk:0.10.1-SANDBOX'
          // Production version
-         compile 'id.co.veritrans:scancardlibrary:0.10.1'
+         compile 'id.co.veritrans:androidsdk:0.10.1'
          
          // Another dependencies
          compile 'org.greenrobot:eventbus:3.0.0'
