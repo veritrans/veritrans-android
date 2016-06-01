@@ -299,10 +299,10 @@ The main difference between the core and ui flow is that
 
 #### 2.3.1 Card Type details -
 
-* There are **3 types** of flow for **card payments**.
-**1. _One click_**
-**2. _Two click_**
-**3. _Normal_**
+There are **3 types** of flow for **card payments**.
+1. _One click_: Allows merchants to securely tokenize the credit card, and use it for transactions later, without users entering the card details again.
+2. _Two click_ : Allows merchants to securely tokenize the credit card and use it for the later transactions, with the user entering the CVV.
+3. _Normal_ : This is the simple case where user enters his credit card information every time a transaction is needed to be done.
 
 We will go in detail about these flows ahead.
 
@@ -311,10 +311,11 @@ We will go in detail about these flows ahead.
         Secure : With 3d secure validation.
         Insecure : Without 3d secure validation.
 
-* **One click** and **two click** use **secure** flow only.
+* **One click** and **two click** can only be done in **secure** flow only(ie. 3DS validation)
 
 To enable secure transacion
-```
+
+```Java
 transactionRequest.setCardPaymentInfo(CARD_CLRDICK_TYPE, isSecure);
 
 where -
