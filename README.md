@@ -235,7 +235,7 @@ here in this flow just set transaction request information to sdk and start paym
 
 This will start Payment flow if all information is valid.
 
-### Adding external card scanner (Using Card.io library)
+#### Adding external card scanner (Using Card.io library)
 
 We provide a plugin to integrate card.io for allowing customers to read the credit card/debit card information using the mobile phone camera.
 
