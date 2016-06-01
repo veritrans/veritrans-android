@@ -360,7 +360,6 @@ you can simply declare it as dependency in  **build.gradle** file as follow
          compile 'id.co.veritrans:scancard:0.10.1'
          compile 'id.co.veritrans:androidsdk:0.10.1'
 
->>>>>>> feb82297376de15e1e6053eb5691938f610b0872
          // Another dependencies
          compile 'org.greenrobot:eventbus:3.0.0'
          compile 'com.squareup.retrofit:retrofit:1.9.0'
