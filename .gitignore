@@ -3,6 +3,4 @@
 local.properties
 .gradle
 .idea
-gradle/
-gradlew*
-**/.DS_Store
+.DS_Store

@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.regex.Pattern;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.activities.BBMMoneyActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.models.TransactionResponse;
-import android.widget.TextView;
 
 /**
  * Created by shivam on 10/27/15.
@@ -108,7 +110,9 @@ public class BBMMoneyPaymentStatusFragment extends Fragment {
 
             mTextViewTransactionTime.setText(transactionResponse.getTransactionTime());
             mTextViewOrderId.setText(transactionResponse.getOrderId());
-            mTextViewAmount.setText(transactionResponse.getGrossAmount());
+            String amount = transactionResponse.getGrossAmount();
+            String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
+            mTextViewAmount.setText(formattedAmount);
 
             //noinspection StatementWithEmptyBody
             if (transactionResponse.getTransactionStatus().contains("Pending") ||

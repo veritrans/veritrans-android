@@ -46,13 +46,17 @@ public class ScanCardActivity extends AppCompatActivity {
                 Log.d("ScanCardActivity", "Card Number: " + scanResult.cardNumber + "\n");
                 ScannerModel model = new ScannerModel(scanResult.cardNumber, scanResult.cvv, scanResult.expiryMonth, scanResult.expiryYear);
                 data.putExtra(ExternalScanner.EXTRA_SCAN_DATA, model);
-                finishWithResult(data);
+                finishWithResult(RESULT_OK, data);
+            } else {
+                finishWithResult(RESULT_CANCELED, data);
             }
+        } else {
+            finishWithResult(RESULT_CANCELED, data);
         }
     }
 
-    private void finishWithResult(Intent data) {
-        setResult(RESULT_OK, data);
+    private void finishWithResult(int resultCode, Intent data) {
+        setResult(resultCode, data);
         finish();
     }
 }

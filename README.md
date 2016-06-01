@@ -354,10 +354,15 @@ you can simply declare it as dependency in  **build.gradle** file as follow
 ```
        dependencies {
          // Sandbox version
-         compile ('id.co.veritrans:scancardlibrary:0.10.0-SANDBOX@aar') { transitive = true }
+         compile 'id.co.veritrans:androidsdk:0.10.1-SANDBOX'
          // Production version
+<<<<<<< HEAD
          compile ('id.co.veritrans:scancardlibrary:0.10.0@aar') { transitive = true }
 
+=======
+         compile 'id.co.veritrans:androidsdk:0.10.1'
+
+>>>>>>> feb82297376de15e1e6053eb5691938f610b0872
          // Another dependencies
          compile 'org.greenrobot:eventbus:3.0.0'
          compile 'com.squareup.retrofit:retrofit:1.9.0'
