@@ -46,10 +46,10 @@ Veritrans SDK is an android library that simplifies the process of making transa
 
 Following are  configurable parameters of sdk that can be used while performing transaction -
 
-1) Server Endpoint- url of server to which transaction data will be sent.
-2) Transaction details - contains payment information like amount, order Id, payment method etc.
-3) Veritrans Client Key - token that specified by merchant server to enable the transaction using `credit card`.
-4
+1. Merchant erver Endpoint- url of server to which transaction data will be sent. This will also be referred to as a merchant server
+2. Transaction details - contains payment information like amount, order Id, payment method etc.
+3. Veritrans Client Key - token that specified by merchant server to enable the transaction using `credit card`. Available on the [MAP](https://my.veritrans.co.id)
+
 
 
 ### Setting up Android SDK
@@ -59,16 +59,30 @@ We publish our SDK to [bintray repository](www.bintray.com). Please add bintray 
 1. Add the following into your _build.gradle_
 
 ```groovy
-dependencies {
-    compile 'id.co.veritrans:android-sdk:0.10.+@aar'
-}
 
+dependencies {
+// For using the Veritrans Sandbox
+compile 'id.co.veritrans:androidsdk:0.10.1-SANDBOX'
+// For using the Veritrans Production
+
+    compile 'id.co.veritrans:androidsdk:0.10.1'
+
+    // Other dependencies
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'io.reactivex:rxandroid:0.24.0'
+
+}
+```
+Following bintray repository needs to be added to your repository section in _build.gradle_
+
+```groovy
 repositories {
     jcenter()
         maven { url "http://dl.bintray.com/pt-midtrans/maven" } // Add the midtrans repository into the list of repositories
     }
 ```
-
 
 
 2. Add the Merchant server URL and the Veritrans client Key in the configuration into your _build.gradle_ file (Note: We have different CLIENT_KEY values for *sandbox* and *production*)
@@ -107,6 +121,14 @@ productFlavors {
 
 
 #### IDE Setup
+
+##### Eclipse:
+**Note** - To add this library project in eclipse follow the instructions given on following link
+ http://developer.android.com/tools/projects/projects-eclipse.html
+
+##### Android Studio
+TBD
+
 
 #### Initializing the SDK
 
@@ -156,12 +178,11 @@ Veritrans SDK has 2 types of payment flows first is using default ui proived by 
 
     In this flow sdk provides an UI to take required information from user to execute transaction.
     To perform transaction using this, follow the steps given below:
-     I) Set transaction request information to sdk.
-     II) Register a **Broadcast Receiver** to handle payment response.
-     III) Specify which transaction method that is supported by merchant.
-     IV) Call the startPaymentUiFlow().
+     1. Set transaction request information to sdk.
+     2. Register a **Broadcast Receiver** to handle payment response.
+     3. Specify which transaction method that is supported by merchant.
+     4. Call the startPaymentUiFlow().
 
-The UI can be customized by color and font.
 
 #### Customization
 
@@ -185,7 +206,7 @@ Note: open_sans_regular.ttf, open_sans_semibold.ttf, open_sans_bold.ttf is path 
 #### Selecting Payment types
 
 To specify which payment method that is supported by merchant. For example, this code add Bank Transfer payment support on SDK.
-
+```Java
                 // Set Payment Model using Permata VA/Bank Transfer
                 ArrayList<PaymentMethodsModel> models = new ArrayList<>();
                 PaymentMethodsModel model = new PaymentMethodsModel(getString(R.string.bank_transfer), id.co.veritrans.sdk.R.drawable.ic_atm, Constants.PAYMENT_METHOD_NOT_SELECTED);
@@ -193,12 +214,12 @@ To specify which payment method that is supported by merchant. For example, this
                 models.add(model);
                 selectedPaymentMethods = models;
                 VeritransSDK.getVeritransSDK().setSelectedPaymentMethods(selectedPaymentMethods);
-
+```
 **Note** don't call any payment specific method in this flow, Sdk provides an UI to user with all available methods.
 
 here in this flow just set transaction request information to sdk and start payment flow using following code-
 
-```
+```Java
     if (transactionRequest != null && mVeritransSDK != null) {
 
                     // create transaction request information as shown above.
@@ -214,7 +235,9 @@ here in this flow just set transaction request information to sdk and start paym
 
 This will start Payment flow if all information is valid.
 
-#### Add external card scanner (Using Card.io library)
+### Adding external card scanner (Using Card.io library)
+
+We provide a plugin to integrate card.io for allowing customers to read the credit card/debit card information using the mobile phone camera.
 
 You can add external card scanner using `ScanCardLibrary` implementation by following these steps.
 
@@ -238,55 +261,49 @@ builder.setExternalScanner(new ScanCard());
 ...
 ```
 
-**Note**: The external scanner button will be shown at Credit Card form if you set the external scanner.
+**Note**: The external scanner button will only be shown on Credit Card form if you set the external scanner.
+It is also only available in the UI flow mode.
 
 2) **Registering card using UI Flow**
 
 To use default UI of Registering Card, you can call `startRegisterCardUIFlow` using current activity instance.
 
-```
+```Java
 // start ui flow using activity instance
 mVeritransSDK.startPaymentUiFlow(activity);
 ```
 
-3) **Payment flow using core structure**
+#### Payment flow using core structure
 
-    In this flow we are assuming that you have created ui to take required information from user to execute transaction.
-    To perform transaction using core, follow the steps given below:
-     I) Set transaction request information to sdk.
-     II) Implement  TransactionCallback  to handle payment response.
-     III) Call the implemented method of the desired payment mode.
-
-     **Note** don't call  mVeritransSDK.startPaymentUiFlow(); for core.
-
-    The main difference between the core and ui flow is that
-    I) Get payment response -
-        In Core Flow - Use TransactionCallback.
-        In UI Flow - Use Broadcast Receiver.
-
-    II) Payment Selection Method -
-        In Core Flow - Call paymentUsingXXX().
-        In UI Flow - Call startPaymentUiFlow() to see all payment methods.
+This flow assumes that the App Developer implements the User inteface necessary for receiving user inputs to and library only provides the payments infrastructure.
 
 
-### 2.2 Deciding which flow to use
-When payment method is already known and have all required information to execute transaction then go for core flow, else use Ui flow and let user choose the payment method.
+To perform transaction using core, follow the steps given below:
+1. Set transaction request information to sdk.
+2. Implement  TransactionCallback  to handle payment response.
+3. Call the implemented method of the desired payment mode.
 
-### 2.3 Making Payments
-In case of core flow use following information to do transactions -
+**Note** don't call  mVeritransSDK.startPaymentUiFlow(); for core flow.
 
-1) Credit/Debit -
-    For credit/debit card transaction follow the steps given bellow:
-    *1) Add card type information in transaction request object.
-    *2) Get token using getToken() of sdk.
-    *3) If secure flow is enabled then we will get redirect_url which will take user to web page for 3d secure validation.
-    *4) After successful validation do charge api call using paymentUsingCard().
+#### Differences between core flow and the ui flow.
+The main difference between the core and ui flow is that
+* Get payment response -
+  * In Core Flow - Use TransactionCallback.
+  * In UI Flow - Use Broadcast Receiver.
+
+* Payment Selection Method -
+  * In Core Flow - Call paymentUsingXXX().
+  * In UI Flow - Call startPaymentUiFlow() to see all specified payment methods.
+
+
 
 #### 2.3.1 Card Type details -
+
 * There are **3 types** of flow for **card payments**.
 **1. _One click_**
 **2. _Two click_**
 **3. _Normal_**
+
 We will go in detail about these flows ahead.
 
 * For **normal flow** we can do secure and Insecure way.
@@ -342,84 +359,6 @@ If secure flow is available then it will return redirect_url which will take use
 After successful validation do charge api call.
 
 
-## 3 SDK Instalation
-
-To use Veritrans SDK  in your android application perform following steps.
-
-### 3.1 Install Veritrans SDK library
-
-**Step 1 -**  Add the library as a gradle dependency:
-
-you can simply declare it as dependency in  **build.gradle** file as follow
-```
-       dependencies {
-         // Sandbox version
-         compile 'id.co.veritrans:androidsdk:0.10.1-SANDBOX'
-         // Production version
-
-         compile 'id.co.veritrans:scancard:0.10.1'
-         compile 'id.co.veritrans:androidsdk:0.10.1'
-
-         // Another dependencies
-         compile 'org.greenrobot:eventbus:3.0.0'
-         compile 'com.squareup.retrofit:retrofit:1.9.0'
-         compile 'com.squareup.okhttp:okhttp:2.3.0'
-         compile 'io.reactivex:rxandroid:0.24.0'
-        }
-
-    repositories {
-        jcenter()
-        maven { url "http://dl.bintray.com/pt-midtrans/maven" } // Add the midtrans repository into the list of repositories
-    }
-
-```
-
-**Step 2 -** Add internet permissions to  **_AndroidManifest.xml_**
-  These permissions are required to allow the application to send
-  events.
-  ```
-  <uses-permission
-    android:name="android.permission.INTERNET" />
-
-  <uses-permission
-    android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <!--GCM permissions-->
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="id.co.veritrans.sdk.example.permission.C2D_MESSAGE"/>
-
- ```
-
-**Note** - To add this library project in eclipse follow the instructions given on following link
- http://developer.android.com/tools/projects/projects-eclipse.html
-
- That's it! now you are ready to use Veritrans Sdk in your application.
-
-### 3.2 Initializing the library
-Once you've setup your build system or IDE to use the Veritrans sdk library. Veritrans SDK requires a merchant key and server key, to get these keys register to veritrans server at https://my.veritrans.co.id/register .
-
-Now initialize sdk
-```
-// SDK initialization process
-VeritransBuilder veritransBuilder = new VeritransBuilder(context, VT_CLIENT_KEY, BASE_URL_MERCHANT);
-veritransBuilder.enableLog(true);   // enable logs for debugging purpose.
-veritransBuilder.buildSDK();
-
-/*
-WHERE
-VeritransBuilder - builder class which helps to create sdk instance.
-Context - application context.
-VT_CLIENT_KEY - merchant/client key received from veritrans server.
-*/
-```
-
-Instance of Veritrans SDK is singleton. In order to perform transactions set appropriate details to it using variouse setter methods, finally invoke payment method to perform transaction. You can perform only one transaction at a time.
-
-You can also access already created sdk instance using following static method -
-```
-VeritransSDK.getVeritransSDK();
-```
 
 ## 3.3 Setup Event Bus
 
@@ -639,97 +578,19 @@ The **saved_token_id** may then be used for a getToken() request similar to a **
     cardTokenRequest.setClientKey(CLIENT_KEY);
 ```
 
-### 4.3 Implementation of GCM
- Please visit following link for installtion steps of GCM
- * https://developers.google.com/cloud-messaging/android/client
- *  Create configuration file and add to your root of your project.
+###  Offers for credit cards
+Offers allows merchants to provide special discounts and offers to the consumers for using cards from a specific bank(also called BIN Promos)
+This is available only for Credit/Debit Cards.
 
- Add the following dependency to your project-level build.gradle:
- ```
- classpath 'com.google.gms:google-services:1.5.0-beta2'
- ```
- Add the plugin to your app-level build.gradle:
- ```
- apply plugin: 'com.google.gms.google-services'
- ```
-  Add following permissions to manifest file
+#### Implementation
 
- ```
- <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
- <uses-permission android:name="android.permission.WAKE_LOCK" />
- <uses-permission android:name="<your app's package name>.permission.C2D_MESSAGE"/>
- ```
 
- Add following receivers and services for receiving push notification and registeration purpose
 
- ```
- <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="<your app's package name>" />
-            </intent-filter>
-        </receiver>
-        <service
-            android:name="id.co.veritrans.sdk.example.gcmutils.VeritransGcmListenerService"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
-        <!-- [END gcm_listener] -->
-        <!-- [START instanceId_listener] -->
-        <service
-            android:name="id.co.veritrans.sdk.example.gcmutils.VeritransInstanceIDListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
-            </intent-filter>
-        </service>
-        <!-- [END instanceId_listener] -->
-        <service
-            android:name="id.co.veritrans.sdk.example.gcmutils.RegistrationIntentService"
-            android:exported="false">
-        </service>
- ```
-
- * Now  start registeration service in first activity or application class. Check availability of GoogleApi in device.
- Here is code for checking availability of code
-
-```
-private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
-                        .show();
-            } else {
-                Log.i(TAG, "This device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }
-```
-
-For registeration functionality you can refer RegistrationIntentService from sdk example app.
-After registeration we get token from google services, we are sending this token to merchant server.
-
-**VeritransGcmListenerService** will catch the push sent by gcm. In push we will receive detaile of payments which are pending.
-
-### 4.4 Offers for credit cards
-####  Get offers from merchant server
- * We have implemented offers for credit and debit card transaction.
- * The flow of credit and debit card is same with inclusion of offer functionality.
  * Register Activity/Fragment into `VeritransBus` See: *Setup Event Bus*.
  * Call function `getOffersList` from  `VeritransSDK` class.
  * Implement `GetOfferBusCallback` interface.
 
-```
+```Java
     @Subscribe
     @Override
     public void onEvent(GetOfferSuccessEvent event) {
@@ -749,12 +610,15 @@ After registeration we get token from google services, we are sending this token
 ```
 
  * Like credit card flow get saved cards using **veritransSDK.getSavedCard()**.
- * There are two types of offers
 
- **1. Normal offers**
- **2. Installments**
- Here is response format for offers
- ```
+ There can be 2 types of offers.
+
+ *  Normal offers: eg. offering a 10% discount if the Credit card is from BCA
+ * Installments: Provide Installment schemes if the card is mastercard
+
+ Merchants can implement the callback with the response similar to the following JSON
+
+```JSON
  {
     "message": "success",
     "offers": {
