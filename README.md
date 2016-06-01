@@ -356,10 +356,8 @@ you can simply declare it as dependency in  **build.gradle** file as follow
          // Sandbox version
          compile 'id.co.veritrans:androidsdk:0.10.1-SANDBOX'
          // Production version
-<<<<<<< HEAD
-         compile ('id.co.veritrans:scancardlibrary:0.10.0@aar') { transitive = true }
 
-=======
+         compile 'id.co.veritrans:scancard:0.10.1'
          compile 'id.co.veritrans:androidsdk:0.10.1'
 
 >>>>>>> feb82297376de15e1e6053eb5691938f610b0872
