@@ -304,6 +304,10 @@ There are **3 types** of flow for **card payments**.
 2. _Two click_ : Allows merchants to securely tokenize the credit card and use it for the later transactions, with the user entering the CVV.
 3. _Normal_ : This is the simple case where user enters his credit card information every time a transaction is needed to be done.
 
+##### notes
+* for 1 and 2) some API must be implemented on the Merchant server backend.
+* These features are available on special MID's from Banks and may not be available to all merchants.
+
 We will go in detail about these flows ahead.
 
 * For **normal flow** we can do secure and Insecure way.
