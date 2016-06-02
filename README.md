@@ -59,20 +59,11 @@ We publish our SDK to [bintray repository](www.bintray.com). Please add bintray 
 1. Add the following into your _build.gradle_
 
 ```groovy
-
 dependencies {
-// For using the Veritrans Sandbox
-compile 'id.co.veritrans:androidsdk:0.10.1-SANDBOX'
-// For using the Veritrans Production
-
-    compile 'id.co.veritrans:androidsdk:0.10.1'
-
-    // Other dependencies
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.squareup.okhttp:okhttp:2.3.0'
-    compile 'io.reactivex:rxandroid:0.24.0'
-
+    // For using the Veritrans Sandbox
+    compile 'id.co.veritrans:androidsdk:0.10.2-SANDBOX'
+    // For using the Veritrans Production
+    compile 'id.co.veritrans:androidsdk:0.10.2'
 }
 ```
 Following bintray repository needs to be added to your repository section in _build.gradle_
@@ -193,13 +184,22 @@ VeritransBuilder builder = new VeritransBuilder...
 builder.setColorTheme("#COLORHEX);
 ```
 
+Also you can set the color primary in your theme in `styles.xml`.
+
+```
+<!-- Base application theme. -->
+<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimary">@color/colorPrimary</item> 
+</style>
+```
+
 To apply a Custom font
 
 ```Java
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        veritransSDK.setDefaultText("open_sans_regular.ttf");
-        veritransSDK.setSemiBoldText("open_sans_semibold.ttf");
-        veritransSDK.setBoldText("open_sans_bold.ttf");
+VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+veritransSDK.setDefaultText("open_sans_regular.ttf");
+veritransSDK.setSemiBoldText("open_sans_semibold.ttf");
+veritransSDK.setBoldText("open_sans_bold.ttf");
 ```
 Note: open_sans_regular.ttf, open_sans_semibold.ttf, open_sans_bold.ttf is path of the custom font on the assets directory.
 
@@ -246,9 +246,7 @@ You can add external card scanner using `ScanCardLibrary` implementation by foll
 Add this code block into your `build.gradle`.
 
 ```
-compile 'id.co.veritrans:scancardlibrary:0.9.2@aar {
-            transitive = true
-         }
+compile 'id.co.veritrans:scancard:0.10.2'
 ```
 
 ##### Add `ExternalScanner` into your SDK initialization.
@@ -658,15 +656,15 @@ This is available only for Credit/Debit Cards.
         ]
     }
  }
- ```
-
+```
+ 
  * We can validate offers with comparing bin numbers with first characters of credit card.
  * If card number matches then offer valid for given card number.
  * When we are applying the offer for normal flow make function call **getToken** from  **VeritransSdk** class as same as credit card flow.
  * Pass **cardTokenRequest** params to function.
  * Implement `GetCardBusCallback`interface.
 
- ```
+```
      @Subscribe
      @Override
      public void onEvent(GetCardsSuccessEvent event){
@@ -683,7 +681,7 @@ This is available only for Credit/Debit Cards.
 
      //There are two more onEvent methods which handles generic error and unavailable network error.
      ...
- ```
+```
 
  * After successful call do charge api call with bins string array as new param.
  * Here is code for setting the bins value.
@@ -734,7 +732,7 @@ After successful transaction card information will be get saved if user permits.
 shipping address etc.
 * Then add Transaction details in previously created veritrans object using
 
-        mVeritransSDK.setTransactionRequest(TransactionRequest);
+    `mVeritransSDK.setTransactionRequest(TransactionRequest);`
 
 * Then execute Transaction using following method to get response back.
 
@@ -745,6 +743,7 @@ shipping address etc.
 ### 5.3 Mandiri bill payment
 
 ###### To perform transaction using mandiri bill payment method follow the steps given below:
+
 * Create the instance of veritrans library using **VeritransBuilder** class.
 * Create instance of **TransactionRequest** and add required fields like item details,
    shipping address etc.
@@ -752,19 +751,18 @@ shipping address etc.
 
 ```
 mVeritransSDK.setTransactionRequest(TransactionRequest);
-
 ```
 
 * Then execute Transaction using following method to get response back
 
 ```
 mVeritransSDK.paymentUsingMandiriBillPay();
-
 ```
 
 ### 5.4 Indosat Dompetku
 
 ###### To perform transaction using indosat dompetku payment method follow the steps given below:
+
 * Create the instance of veritrans library using **VeritransBuilder** class.
 * Create instance of **TransactionRequest** and add required fields like item details,
    shipping address etc. This payment method requires **MSISDN** number which is registered mobile number of user.
@@ -772,17 +770,13 @@ mVeritransSDK.paymentUsingMandiriBillPay();
 
 ```
 mVeritransSDK.setTransactionRequest(TransactionRequest);
-
 ```
 
 * Then execute Transaction using following method to get response back
 
 ```
 mVeritransSDK.paymentUsingIndosatDompetku(MSISDN);
-
-
 where - msisdn  is registered user mobile number, must be less than 12. for debug you can use 08123456789
-
 ```
 
 
@@ -1131,7 +1125,6 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 
         //Call function paymentUsingMandiriECash
         mVeritransSDK.paymentUsingMandiriECash(description);
-
 ```
 
 ### 5.11 Payment using BCA KlikPay
@@ -1147,7 +1140,6 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 * Then execute Transaction using following method to get response back. In success implementation you will get redirect url from server, start webview to handle the redirect url.
 * Handle the further process and response same as performed in ePay BRI.
-
 
 ```
         //add Description for transaction
@@ -1166,26 +1158,31 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 
         //Call function paymentUsingBCAKlikPay
         mVeritransSDK.paymentUsingBCAKlikPay(descriptionModel);
-
 ```
 
 ### 5.12 Payment using Installments Flow
  * Make api call for **get token** with 2 new params
- ```
+ 
+```
   'installment' : true,
   'installment_term' : 12,
-  ```
+```
+ 
   * In **cardTokenRequest** object set this 2 param
- ```
+  
+```
  //for installment flow
  cardTokenRequest.setInstalment(true);
  cardTokenRequest.setInstalmentTerm(instalmentTerm);
- ```
+```
+ 
  * When we are doing **charge api** call we have to set 2 param
- ```
+ 
+```
  'installment_term' : 12,
  'bins' : ["mandiri","48111111", "3111", "5"]
- ```
+```
+ 
  * You can find this code in **payUsingCard** function on OffersActivity in VeritransSDK.
  * If offer is valid then payment will take place else respective error is given.
 
