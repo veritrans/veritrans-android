@@ -1,5 +1,7 @@
 # Veritrans Android SDK
 
+[![Join the chat at https://gitter.im/veritrans/veritrans-android](https://badges.gitter.im/veritrans/veritrans-android.svg)](https://gitter.im/veritrans/veritrans-android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Overview
 
 Veritrans SDK is an android library that simplifies the process of making transactions on [Veritrans Payment gateway](https://veritrans.co.id).
