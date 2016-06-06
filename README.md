@@ -6,6 +6,19 @@
 
 Veritrans SDK is an android library that simplifies the process of making transactions on [Veritrans Payment gateway](https://veritrans.co.id).
 
+### Transaction Flow 
+
+![Transaction Flow Figure](http://docs.veritrans.co.id/images/vtdirect-mobile-flow.png "Transaction Flow Figure")
+
+There are three parties involved in the payment process for VT-Direct: merchant, customers, and Veritrans. Here is an explanation of how VT-Direct work.
+
+1. **Click Pay**: Customers enter credit card details on your android application, and press the button `PAY` to complete the payment.
+2. **Sending data**: when customers press the button `PAY`, android library will incorporate sensitive credit card information with a key client. The combined data is sent to the Veritrans server that is exchanged into *onetime-token* ( "token").
+3. **Getting Token**: Veritrans Token will return the application to customers android phone. Token will be valid for **3 minutes** at a regular credit card transactions and **10 minutes** if the feature is 3D Secure is used. Token can not be used again if the expired time was passed.
+4. **Sending Token**: Then Token is sent to merchant server. Please note, merchant will only receive a token in as the exchange for credit card details. **Merchant will not store or process information from credit cards**. Because of that, you do not have to deal with the PCI DSS compliance.
+5. **Request Charge**: You do charge transaction to Veritrans using Token plus some other information (example: customer details, product details, address).
+6. **Transaction Response Handling**: Veritrans returns the response status of the transaction, such as: Capture, Settlement
+7. **Transaction information**: Merchant tell the transaction results to customers.
 
 ### Payment types Supported
 1. Credit/Debit - Support for making payments via credit cards and or debit cards using our one-click or two-clicks feature
@@ -34,9 +47,23 @@ Veritrans SDK is an android library that simplifies the process of making transa
 2. Create a merchant account in [MAP](https://my.veritrans.co.id)
 3. Setup your merchant accounts settings, in particular Notification URL.
 4. Checkout the [Veritrans SDK Demo App](https://github.com/veritrans/veritrans-android-example) and walk through the implementation.
-5. Checkout the [Veritrans Merchant server Reference Implementation](https://github.com/abudargo/vt-merchant/), and walk through the API's that you may need to implement on your backend server
+5. Checkout the [Veritrans Merchant server Reference Implementation](https://github.com/abudargo/vt-merchant/), and walk through the API's that you may need to implement on your backend server.
 
+#### Merchant Server 
 
+There is only one endpoint from the merchant server that are required to use this SDK.
+
+1. `/charge` - used to do the charging of the transactions.
+
+There are several optional endpoint that can be implemented.
+
+1. Credit card one click and two click feature 
+    1. `GET /card` - used to get all saved card from specific user
+    2. `POST /card/register` - used to save a card token for next payment
+    3. `DELETE /card/{token}` - used to delete a saved card token
+    4. `/auth` - used to get authentication to access the merchant token
+2. Offers
+    TBD
 
 ### Security Aspects
 
@@ -48,7 +75,7 @@ Veritrans SDK is an android library that simplifies the process of making transa
 
 Following are  configurable parameters of sdk that can be used while performing transaction -
 
-1. Merchant erver Endpoint- url of server to which transaction data will be sent. This will also be referred to as a merchant server
+1. Merchant server Endpoint- url of server to which transaction data will be sent. This will also be referred to as a merchant server
 2. Transaction details - contains payment information like amount, order Id, payment method etc.
 3. Veritrans Client Key - token that specified by merchant server to enable the transaction using `credit card`. Available on the [MAP](https://my.veritrans.co.id)
 
@@ -73,12 +100,13 @@ Following bintray repository needs to be added to your repository section in _bu
 ```groovy
 repositories {
     jcenter()
-        maven { url "http://dl.bintray.com/pt-midtrans/maven" } // Add the midtrans repository into the list of repositories
+        // Add the midtrans repository into the list of repositories
+        maven { url "http://dl.bintray.com/pt-midtrans/maven" } 
     }
 ```
 
 
-2. Add the Merchant server URL and the Veritrans client Key in the configuration into your _build.gradle_ file (Note: We have different CLIENT_KEY values for *sandbox* and *production*)
+2. Add the Merchant server URL and the Veritrans client Key in the configuration into your _build.gradle_ file (Note: We have different CLIENT_KEY values for *sandbox* and *production* so it's better if you have two flavors in `build.gradle` script and define them here.)
 
 ```groovy
 productFlavors {
@@ -105,7 +133,7 @@ productFlavors {
   <uses-permission
     android:name="android.permission.ACCESS_NETWORK_STATE" />
 
- ```
+  ```
 
 
 4. Setup Proguard Rules
@@ -132,10 +160,19 @@ Instantiate sdk after application finishes launching processes. This can be done
 VeritransBuilder veritransBuilder = new VeritransBuilder(context, VT_CLIENT_KEY, BASE_URL_MERCHANT);
 veritransBuilder.enableLog(true);   // enable logs for debugging purpose.
 veritransBuilder.buildSDK();
-
 ```
-> context - application context.
 
+Or if you have defined the client key and in your `build.gradle` script just like installation tutorial above.
+
+```Java
+VeritransBuilder veritransBuilder = new VeritransBuilder(context, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL);
+veritransBuilder.enableLog(true);   // enable logs for debugging purpose.
+veritransBuilder.buildSDK();
+```
+
+- context - Application context.
+- CLIENT_KEY - Provided by MAP
+- BASE_URL - Merchant server Base URL
 
 
 Instance of Veritrans SDK is singleton.
@@ -207,16 +244,27 @@ Note: open_sans_regular.ttf, open_sans_semibold.ttf, open_sans_bold.ttf is path 
 
 #### Selecting Payment types
 
-To specify which payment method that is supported by merchant. For example, this code add Bank Transfer payment support on SDK.
+To support all payment methods, just call this:
+
 ```Java
-                // Set Payment Model using Permata VA/Bank Transfer
-                ArrayList<PaymentMethodsModel> models = new ArrayList<>();
-                PaymentMethodsModel model = new PaymentMethodsModel(getString(R.string.bank_transfer), id.co.veritrans.sdk.R.drawable.ic_atm, Constants.PAYMENT_METHOD_NOT_SELECTED);
-                model.setIsSelected(true);
-                models.add(model);
-                selectedPaymentMethods = models;
-                VeritransSDK.getVeritransSDK().setSelectedPaymentMethods(selectedPaymentMethods);
+// Do it after initialize the SDK
+VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));
 ```
+
+Or customize supported payment methods by adding the static variable in `PaymentMethods` class into a list.
+
+```Java
+// Customize the list
+List<PaymentMethodsModel> supportedPaymentMethods = new ArrayList<>();
+supportedPaymentMethods.add(PaymentMethods.CREDIT_CARD);
+supportedPaymentMethods.add(PaymentMethods.BANK_TRANSFER);
+supportedPaymentMethods.add(PaymentMethods.MANDIRI_BILL_PAYMENT);
+// Set supported payment methods
+VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+veritransSDK.setSelectedPaymentMethods(supportedPaymentMethods);
+```
+
 **Note** don't call any payment specific method in this flow, Sdk provides an UI to user with all available methods.
 
 here in this flow just set transaction request information to sdk and start payment flow using following code-
@@ -320,21 +368,20 @@ We will go in detail about these flows ahead.
 To enable secure transacion
 
 ```Java
-transactionRequest.setCardPaymentInfo(CARD_CLRDICK_TYPE, isSecure);
+transactionRequest.setCardPaymentInfo(CARD_CLICK_TYPE, isSecure);
 
 where -
-CARD_CARDICK_TYPE -  type of card use these resource strings:
+CARD_CLICK_TYPE -  type of card use these resource strings:
         R.string.card_click_type_one_click - for one click
         R.string.card_click_type_two_click - for two click
         R.string.card_click_type_none  - for normal transaction
 
-isSecure - set it to true for secure transaction.
+isSecure - set to true if using 3D secure
 ```
-
 
 #### 2.3.2 Get token
 ```
-    veritransSDK.getToken(cardTokenRequest, tokenCallBack);
+    veritransSDK.getToken(cardTokenRequest);
 ```
 
 ***CardTokenRequest*** class contains card details required for getting token.
