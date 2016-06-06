@@ -166,7 +166,38 @@
     
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">1.\tPastikan bahwa Anda memiliki User ID untuk CIMB Clicks dan telah mendaftarkan mPIN Anda sebelum melanjutkan pembayaran.</string>
-    <string name="cimb_instruction_step2">2.\tTransaksi akan dibatlkan apabila pembayaran tidak diselesaikan dalam 2 jam.</string>
+    <string name="cimb_instruction_step2">2.\tTransaksi akan dibatalkan apabila pembayaran tidak diselesaikan dalam 2 jam.</string>
     <string name="cimb_instruction_step3">3.\tPastikan bahwa tidak ada pop-up blocker pada browser Anda.</string>
+    
+    <!-- Mandiri E Cash transfer Instruction-->
+    <string name="mandiri__e_cash_instruction_step1">1.\tPastikan no. HP anda telah terdaftar untuk Mandiri e-cash.</string>
+    <string name="mandiri__e_cash_instruction_step2">2.\tKlik \'Confirm Payment\'.</string>
+    <string name="mandiri__e_cash_instruction_step3">3.\tMasukkan no. HP dan PIN Anda.</string>
+    <string name="mandiri__e_cash_instruction_step4">4.\tHarap tunggu sampai Anda menerima SMS dari Mandiri e-cash berisi One Time Password (OTP).</string>
+    <string name="mandiri__e_cash_instruction_step5">5.\tMasukkan 6 digit OTP, lalu klik
+        \'pay\' untuk melakukan pembayaran.</string>
+    <string name="mandiri__e_cash_instruction_step6">6.\tJika Anda belum menerima OTP atau jika
+        OTP sudah kadaluarsa, klik \'cancel\' dan ulangi transaksi.</string>
+
+    <!-- Indomaret Instruction-->
+    <string name="indomaret_instruction_step1">1.\tSetelah pembayaran dikonfirmasi, kami akan mengirimkan nomor Payment Code yang unik.</string>
+    <string name="indomaret_instruction_step2">2.\tCatat Payment Code and jumlah total.
+       Jangan khawatir, kami juga akan mengirimkan instruksi pembayaran melalui email.</string>
+    <string name="indomaret_instruction_step3">3.\tKunjungi Indomaret terdekat dan berikan nomor Payment Code kepada kasir.</string>
+    <string name="indomaret_instruction_step4">4.\tKasir akan melakukan konfirmasi transaksi dengan menanyakan jumlah transaksi dan nama merchant.</string>
+    <string name="indomaret_instruction_step5">5.\tKonfirmasi Pembayaran melalui kasir.</string>
+    <string name="indomaret_instruction_step6">6.\tTransaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Indomaret Anda apabila anda memerlukan bantuan via support.</string>
+
+ <!-- Permata/Alto bank transfer Instruction-->
+    <string name="permata_instruction_step1">1.\tPada main menu, pilih \'Other Transaction\'.</string>
+    <string name="permata_instruction_step2">2.\tPilih \'Payment\'.</string>
+    <string name="permata_instruction_step3">3.\tPilih \'Other Payment\'.</string>
+    <string name="permata_instruction_step4">4.\tPilih \'Virtual Account\'.</string>
+    <string name="permata_instruction_step5">5.\tMasukkan 16 digits rekening pembayaran. lalu klik \'Correct\'.</string>
+    <string name="permata_instruction_step6">6.\tJumlah yang perlu dibayarkan, no. rekening, dan nama merchant akan tampil pada halaman konfirmasi. Jika informasi tersebut benar, klik \'Correct\'.</string>
+    <string name="permata_instruction_step7">7.\tPilih rekening pembayaran Anda dan klik \'Correct\'.</string>
+    <string name="bank_transfer_dummy_text">* Bergantung pada biaya bank/transfer dan transaksi minimum sebesar Rp50,000, - untuk bank mandiri</string>
+
+
 
 </resources>
