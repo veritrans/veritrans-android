@@ -49,22 +49,6 @@ There are three parties involved in the payment process for VT-Direct: merchant,
 4. Checkout the [Veritrans SDK Demo App](https://github.com/veritrans/veritrans-android-example) and walk through the implementation.
 5. Checkout the [Veritrans Merchant server Reference Implementation](https://github.com/veritrans/mobile-merchant-server), and walk through the API's that you may need to implement on your backend server.
 
-#### Merchant Server 
-
-There is only one endpoint from the merchant server that are required to use this SDK.
-
-1. `/charge` - used to do the charging of the transactions.
-
-There are several optional endpoint that can be implemented.
-
-1. Credit card one click and two click feature 
-    1. `GET /card` - used to get all saved card from specific user
-    2. `POST /card/register` - used to save a card token for next payment
-    3. `DELETE /card/{token}` - used to delete a saved card token
-    4. `/auth` - used to get authentication to access the merchant token
-2. Offers
-    TBD
-
 ### Security Aspects
 
 * We use CLIENT_KEY and SERVER_KEY (available on [MAP](https://my.veritrans.co.id)) for the making requests to the Veritrans API. The CLIENT_KEY can only be used from the Device, the SERVER_KEY is not used on the Device, all API requests that use the SERVER_KEY need to be made from the Merchant Backend.
