@@ -198,6 +198,94 @@
     <string name="permata_instruction_step7">7.\tPilih rekening pembayaran Anda dan klik \'Correct\'.</string>
     <string name="bank_transfer_dummy_text">* Bergantung pada biaya bank/transfer dan transaksi minimum sebesar Rp50,000, - untuk bank mandiri</string>
 
+ <string name="bri_instruction_step1">1.Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran </string>
+    <string name="bri_instruction_step2">2.Untuk mendapatkan User ID untuk BRI e-Pay, harap mendaftar pada ATM BRI terdekat
+    </string>
+    <string name="bri_instruction_step3">3.Harap kunjungi kantor cabang BRI terdekat untuk mendaftar mTOKEN.
+    </string>
+    <string name="bri_instruction_step4">4.Pembayaran melalui BRI e-Pay akan diproses secara online dan saldo rekening BRI akan dikurangi secara otomatis berdasarkan total harga.
+    </string>
+    <string name="bri_instruction_step5">5.Transaksi akan dibatalkan apabila pembayaran tidak dilakukan dalam 2 jam.
+    </string>
 
+ <!--credit card -->
+    <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
+    <string name="saved_card">Saved card</string>
+    <string name="card_details">Card details</string>
+    <string name="retry">Retry</string>
+    <string name="coming_soon">Coming soon!!</string>
+    <string name="successful">Successful</string>
+    <string name="unsuccessful">Unsuccessful</string>
+    <string name="payment_successful">Pembayaran Berhasil :)</string>
+    <string name="payment_unsuccessful_msg">Payment gateway error</string>
+    <string name="payment_unsuccessful">Pembayaran Tidak Berhasil :(</string>
+    <string name="validation_message_invalid_expiry_date">Masukkan expiry date yang valid</string>
+    <string name="api_fail_message">Something went wrong. Please try later.</string>
+    <string name="title_payment_failed">Pembayaran Gagal</string>
+    <string name="title_payment_successful">Pembayaran Berhasil</string>
+    <string name="card_details_error_message">Card details not found.</string>
+    <string name="no_saved_cards">Belum ada kartu yang disimpan.</string>
+
+ <string name="appli">APPLI</string>
+    <string name="input_1">Input 1</string>
+    <string name="input_2">Input 2</string>
+    <string name="input_3">Input 3</string>
+    <string name="mandiri_click_pay">Mandiri Clickpay</string>
+    <string name="hint_mandiri_debit_card_no">Mandiri Debit Card Number</string>
+    <string name="hint_challenge_token">Challenge Token</string>
+    <string name="company_code">Company Code</string>
+    <string name="bill_code">Billpay Code</string>
+    <string name="processing_payment">Processing Payment</string>
+    <string name="processing_delete">Deleting Card</string>
+    <string name="fetching_offers">Fetching Offers</string>
+    <string name="no_card_yet">No Card Yet</string>
+    <string name="save_time_save_credit">Hemat waktu memasukkan kartu kredit yang dapat digunakan untuk transaksi</string>
+    
+    <string name="credit_card">Credit/Debit Card</string>
+    <string name="mandiri_clickpay">Mandiri Clickpay</string>
+    <string name="cimb_clicks">CIMB Clicks</string>
+    <string name="epay_bri">ePay BRI</string>
+    <string name="bbm_money">BBM Money</string>
+    <string name="indosat_dompetku">Indosat Dompetku</string>
+    <string name="mandiri_e_cash">Mandiri e-Cash</string>
+    <string name="bca_klik">BCA KlikPay</string>
+    <string name="indomaret">Indomaret</string>
+    <string name="offers">Offers</string>
+    <string name="loading">Loading</string>
+    <string name="delete">Delete</string>
+    <string name="card_delete_message">Anda yakin ingin menghapus kartu ini?</string>
+    <string name="message_save_card">Simpan kartu anda untuk proses checkout lebih cepat.</string>
+    <string name="got_it">Got it</string>
+    
+<string name="empty_transaction_response">Payment failed! Please try again.</string>
+    <string name="cancel_transaction">Cancel Transaction?</string>
+    <string name="cancel_transaction_message">Anda yakin ingin membatalkan transaksi?
+    </string>
+    <string name="indosat_instruction_step1">1.\tMasukkan No. Indosat yang terdaftar.</string>
+    <string name="indosat_instruction_step2">2.\tPastikan terdapat dana yang mencukupi pada rekening Anda.</string>
+    <string name="indosat_instruction_step3">3.\tKlik \'Confirm Payment\'.</string>
+    <string name="indosat_instruction_step4">4.\tAnda akan menerima pesan USSD dari \nIndosat untuk menyelesaikan transaksi melalui Dompetku app.</string>
+    <string name="indosat_instruction_step5">5.\tMasukkan PIN Anda.</string>
+    <string name="indosat_instruction_step6">6.\tPembayaran Selesai.</string>
+    <string name="hint_indosat_phone_number">Indosat Phone Number</string>
+    <string name="mandiri_click_pay_instruction_step1">1.\tAktifkan token Mandiri Anda dengan menekan.</string>
+    <string name="mandiri_click_pay_instruction_step2">2.\tMasukkan password token Mandiri Anda.</string>
+    <string name="mandiri_click_pay_instruction_step3">3.\tTekan 3 ketika APPLI ditampilkan</string>
+    <string name="mandiri_click_pay_instruction_step4">4.\tMasukkan \'intput 1\' dan tekan</string>
+    <string name="mandiri_click_pay_instruction_step5">5.\tMasukkan \'intput 2\' dan tekan</string>
+    <string name="mandiri_click_pay_instruction_step6">6.\tMasukkan \'intput 3\' dan tekan</string>
+    <string name="mandiri_click_pay_instruction_step7">7.\tMasukkan response code pada token Mandiri Anda \n pada kolom challenge token.</string>
+    <string name="for_three_seconds">selama 3 detik</string>
+    <string name="title_payment_status">Payment Status</string>
+    <string name="payment_deny">Payment deny.</string>
+    <string name="success">success</string>
+    <string name="fetching_cards">Fetching cards</string>
+    <string name="btn_save_card">Register Card</string>
+    <string name="btn_scan_card">Scan Card Using Camera</string>
+    <string name="offer_applied">Offer Applied Successfully !</string>
+    <string name="offer_not_applied">Offer is not applicable on this card</string>
+    <string name="no_offers">No offers found</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
 
 </resources>
