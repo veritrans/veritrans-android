@@ -664,8 +664,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
                 cardTokenRequest.setGrossAmount(0);
 
                 if (cardTokenRequest.isSaved()) {
-                    if (!TextUtils.isEmpty(tokenDetailsResponse.getTokenId())) {
-                        cardTokenRequest.setSavedTokenId(tokenDetailsResponse.getTokenId());
+                    if (!TextUtils.isEmpty(cardPaymentResponse.getSavedTokenId())) {
+                        cardTokenRequest.setSavedTokenId(cardPaymentResponse.getSavedTokenId());
                     }
                 }
                 Logger.i("Card:" + cardTokenRequest.getString());
