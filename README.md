@@ -61,9 +61,9 @@ We publish our SDK to [bintray repository](www.bintray.com). Please add bintray 
 ```groovy
 dependencies {
     // For using the Veritrans Sandbox
-    compile 'id.co.veritrans:androidsdk:0.10.2-SANDBOX'
+    compile 'id.co.veritrans:androidsdk:0.10.3-SANDBOX'
     // For using the Veritrans Production
-    compile 'id.co.veritrans:androidsdk:0.10.2'
+    compile 'id.co.veritrans:androidsdk:0.10.3'
 }
 ```
 Following bintray repository needs to be added to your repository section in _build.gradle_
