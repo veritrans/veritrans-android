@@ -47,7 +47,7 @@ There are three parties involved in the payment process for VT-Direct: merchant,
 2. Create a merchant account in [MAP](https://my.veritrans.co.id)
 3. Setup your merchant accounts settings, in particular Notification URL.
 4. Checkout the [Veritrans SDK Demo App](https://github.com/veritrans/veritrans-android-example) and walk through the implementation.
-5. Checkout the [Veritrans Merchant server Reference Implementation](https://github.com/abudargo/vt-merchant/), and walk through the API's that you may need to implement on your backend server.
+5. Checkout the [Veritrans Merchant server Reference Implementation](https://github.com/veritrans/mobile-merchant-server), and walk through the API's that you may need to implement on your backend server.
 
 #### Merchant Server 
 
