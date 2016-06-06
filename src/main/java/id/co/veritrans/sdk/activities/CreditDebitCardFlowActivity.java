@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.CardPagerAdapter;
@@ -662,9 +663,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
                 cardTokenRequest.setClientKey("");
                 cardTokenRequest.setGrossAmount(0);
 
-                if (cardTokenRequest.isSaved() && !TextUtils.isEmpty(cardPaymentResponse
-                        .getSavedTokenId())) {
-                    cardTokenRequest.setSavedTokenId(cardPaymentResponse.getSavedTokenId());
+                if (cardTokenRequest.isSaved()) {
+                    if (!TextUtils.isEmpty(tokenDetailsResponse.getTokenId())) {
+                        cardTokenRequest.setSavedTokenId(tokenDetailsResponse.getTokenId());
+                    }
                 }
                 Logger.i("Card:" + cardTokenRequest.getString());
 
@@ -674,6 +676,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
                 String secondPart = cardTokenRequest.getCardNumber().substring(12);
                 saveCardRequest.setMaskedCard(firstPart + "-" + secondPart);
                 saveCardRequest.setCode("200");
+                saveCardRequest.setTransactionId(UUID.randomUUID().toString());
                 saveCreditCards(saveCardRequest);
                 creditCards.add(saveCardRequest);
             }
