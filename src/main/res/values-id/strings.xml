@@ -1,5 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">VeritransSdk</string>
+    <!--user detail-->
+    <string name="hint_full_name">Nama Lengkap</string>
+    <string name="hint_email">Email</string>
+    <string name="next">Next</string>
+    <string name="hint_phone_number">No. Telepon </string>
+    <string name="validation_full_name_empty">Masukkan nama lengkap</string>
+    <string name="validation_email_empty">Masukkan alamat email</string>
+    <string name="validation_email_invalid">Masukkan alamat email yang valid</string>
+    <string name="validation_phone_no_empty">Masukkan No. Telepon</string>
+    <string name="validation_phone_no_invalid">Masukkan No. Telepon yang valid</string>
+    <string name="my_credit_card">My Credit Card</string>
+    
+     <!-- User Address -->
+    <string name="title_user_details">User Details</string>
+    <string name="hint_address">Alamat</string>
+    <string name="hint_city">Kota</string>
+    <string name="hint_zip_code">Kode Pos</string>
+    <string name="hint_country">Negara</string>
+    <string name="billing_address">Alamat Penagihan</string>
+    <string name="title_shipping_billing_address"><![CDATA[Shipping & Billing address]]></string>
+    <string name="shipping_address">Alamat Pengiriman</string>
+    <string name="shipping_cb_message">Sama dengan alamat penagihan</string>
+    <string name="validation_billingaddress_empty">Masukkan alamat penagihan</string>
+    <string name="validation_billingcity_empty">Masukkan kota alamat penagihan</string>
+    <string name="validation_billingzipcode_empty">Masukkan kode pos alamat penagihan</string>
+    <string name="validation_billingcountry_empty">Masukkan negara alamat penagihan</string>
+    <string name="validation_billingzipcode_invalid">Masukkan kode pos yang valid</string>
+    <string name="validation_shippingaddress_empty">Masukkan alamat pengiriman</string>
+    <string name="validation_shippingcity_empty">Masukkan kota pengiriman</string>
+    <string name="validation_shippingzipcode_empty">Masukkan kode pos pengiriman</string>
+    <string name="validation_shippingcountry_empty">Masukkan negara pengiriman</string>
+    <string name="validation_shippingzipcode_invalid">Masukkan kode pos pengiriman yang valid</string>
+    
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="pay_with">Bayar Dengan</string>
+    <string name="payable_amount">Jumlah Yang Harus Dibayarkan</string>
+    <string name="select_payment_method">Pilih Metode Pembayaran</string>
+    
+    <!-- name of payment methods -->
+    <string-array name="payment_methods">
+        <item>Offers</item>
+        <item>Credit/Debit Card</item>
+        <item>Mandiri Clickpay</item>
+
+        <item>CIMB Clicks</item>
+        <item>ePay BRI</item>
+        <item>BBM Money</item>
+
+        <item>Indosat Dompetku</item>
+        <item>Mandiri e-Cash</item>
+        <item>Bank Transfer</item>
+        <item>Mandiri Bill Payment</item>
+        <item>Indomaret</item>
+    </string-array>
+    
+    <!--add credicard-->
+    <string name="hint_name_on_card">Nama pada kartu</string>
+    <string name="hint_card_number">Nomer Kartu</string>
+    <string name="hint_cvv">CVV</string>
+    <string name="save_card_message">Simpan kartu ini untuk transaksi selanjutnya</string>
+    <string name="pay_now">Pay now</string>
+    <string name="pay_with_instalments">Bayar dengan cicilan</string>
+    <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
+    <string name="hint_expiry_date">Expiry(mm/yy)</string>
+    <string name="validation_message_card_number">Masukkan nomor kartu</string>
+    <string name="validation_message_invalid_card_no">Masukkan nomor kartu yang valid</string>
+    <string name="validation_message_invalid_token_no">Challenge token harus terdiri dari 6 karakter.</string>
+    <string name="validation_message_cvv">Masukan CVV.</string>
+    <string name="validation_message_invalid_cvv">Masukkan CVV yang valid</string>
+    <string name="validation_message_empty_expiry_date">Masukkan expiry date</string>
+    <string name="message_cvv">CVV adalah 3 or 4 digit angka yang tertera pada bagian belakang kartu.</string>
+    
+    <!-- Permata VA Bank Transfer-->
+    <string name="virtual_account">Virtual Account</string>
+    <string name="bank_transfer">Bank Transfer</string>
+    <string name="mandiri_bill_payment">Mandiri Bill Payment</string>
+
+    <!--Bank Transfer-->
+    <string name="bca_bank_transfer">BCA</string>
+    <string name="permata_bank_transfer">Permata</string>
+
+    <string name="orderId">Order ID</string>
+    <string name="amount">Jumlah</string>
+    <string name="transfer_amount">Jumlah Transfer</string>
+    <string name="hint_email_optional">Alamat Email (Opsional)</string>
+    <string name="email_instruction">Kami akan mengirimkan instruksi pembayaran melalui email</string>
+    <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
+    <string name="bank_atm_transfer_step1">1.\t Klik tombol Confirm Payment.</string>
+    <string name="bank_atm_transfer_step2">2.\t Anda akan menerima nomor akun yang unik instruksi pembayaran
+        (Anda dapat menerima instruksi via email jika memasukkan alamat email anda pada kolom di atas).</string>
+
+    <string name="bank_atm_transfer_step3">3.\t Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
+    <string name="bank_atm_transfer_step4">4.\t Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
+    <string name="see_instruction">lihat instruksi</string>
+    <string name="confirm_payment">Confirm Payment</string>
+    <string name="copy_payment_code">Copy Payment Code</string>
+    <string name="copy_va_number">Copy Virtual Account Number</string>
+    <string name="copy_billpay_code">Copy Bill Pay Code</string>
+    <string name="copy_company_code">Copy Company Code</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="copied_bill_code">Billpay code was copied to clipboard</string>
+    <string name="copied_company_code">Company code was copied to clipboard</string>
+    <string name="complete_payment_at_atm">Complete Payment At ATM</string>
+    <string name="done">Done</string>
+    <string name="virtual_account_number">Virtual Account Number</string>
+    <string name="payment_pending">Payment Pending !</string>
+    <string name="transactionTime">Transaction Time</string>
+    <string name="paymentType">Payment Type</string>
+    <string name="tab_mandiri">Mandiri/ATM Bersana</string>
+    <string name="tab_bca_prima">BCA/Prima</string>
+    <string name="tab_permata_alto">Permata/Alto</string>
+    <string name="payment_instrution">Instruksi Pembayaran</string>
+    <string name="payment_code">Payment Code</string>
+    
+     <!-- Mandiri bank transfer Instruction-->
+    <string name="instruction">Instruksi</string>
+
+    <string name="mandiri_instruction_step1">1.\tPada main menu, Pilih \'Pay/Buy\'.</string>
+    <string name="mandiri_instruction_step2">2.\tPilih \'Others\'.</string>
+    <string name="mandiri_instruction_step3">3.\tPilih \'Multi Payment\'.</string>
+    <string name="mandiri_instruction_step4">4.\tMasukan 70012 (Veritrans company code) dan tekan \'Correct\'.</string>
+    <string name="mandiri_instruction_step5">5.\tMasukkan kode pembayaran Anda dan tekan \'Correct\'.</string>
+    <string name="mandiri_instruction_step6">6.\tRincian pembayaran Anda akan tampil pada halaman konfirmasi. Jika informasi tersebut benar tekan \'Yes\'.</string>
+
+    <string name="mandiri_internet_instruction_step1">1.\tLogin ke Internet Banking Mandiri (ib.bankmandiri.co.id).</string>
+    <string name="mandiri_internet_instruction_step2">2.\tPada main menu, pilih \'Payment\', kemudian pilih \'Multi Payment\'.</string>
+    <string name="mandiri_internet_instruction_step3">3.\tPilih akun Anda di \'From Account\', kemudian \'Billing Name\' pilih \'Veritrans\'.</string>
+    <string name="mandiri_internet_instruction_step4">4.\tMasukkan \'Payment Code\' dan Anda akan menerima rincian pembayaran.</string>
+    <string name="mandiri_internet_instruction_step5">5.\tKonfirmasi pembayaran melalui Mandiri Token.</string>
+    
     <!-- bca/ prima bank transfer Instruction-->
     <string name="bca_instruction_step1">1.\tPada menu utama, pilih Transaksi lainnya.</string>
     <string name="bca_instruction_step2">2.\tPilih \'Transfer\'.</string>
