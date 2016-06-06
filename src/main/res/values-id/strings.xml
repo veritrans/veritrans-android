@@ -89,7 +89,7 @@
     <string name="email_instruction">Kami akan mengirimkan instruksi pembayaran melalui email</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
     <string name="bank_atm_transfer_step1">1.\t Klik tombol Confirm Payment.</string>
-    <string name="bank_atm_transfer_step2">2.\t Anda akan menerima nomor akun yang unik instruksi pembayaran
+    <string name="bank_atm_transfer_step2">2.\t Anda akan menerima nomor rekening yang unik instruksi pembayaran
         (Anda dapat menerima instruksi via email jika memasukkan alamat email anda pada kolom di atas).</string>
 
     <string name="bank_atm_transfer_step3">3.\t Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
@@ -127,15 +127,46 @@
 
     <string name="mandiri_internet_instruction_step1">1.\tLogin ke Internet Banking Mandiri (ib.bankmandiri.co.id).</string>
     <string name="mandiri_internet_instruction_step2">2.\tPada main menu, pilih \'Payment\', kemudian pilih \'Multi Payment\'.</string>
-    <string name="mandiri_internet_instruction_step3">3.\tPilih akun Anda di \'From Account\', kemudian \'Billing Name\' pilih \'Veritrans\'.</string>
+    <string name="mandiri_internet_instruction_step3">3.\tPilih rekening Anda di \'From Account\', kemudian \'Billing Name\' pilih \'Veritrans\'.</string>
     <string name="mandiri_internet_instruction_step4">4.\tMasukkan \'Payment Code\' dan Anda akan menerima rincian pembayaran.</string>
     <string name="mandiri_internet_instruction_step5">5.\tKonfirmasi pembayaran melalui Mandiri Token.</string>
     
     <!-- bca/ prima bank transfer Instruction-->
+     <!--BCA Transfer-->
     <string name="bca_instruction_step1">1.\tPada menu utama, pilih Transaksi lainnya.</string>
     <string name="bca_instruction_step2">2.\tPilih \'Transfer\'.</string>
     <string name="bca_instruction_step3">3.\tPilih \'Ke Rek BCA Virtual Account\'.</string>
     <string name="bca_instruction_step4">4.\tMasukkan nomor (11 digit No. Rekening pembayaran) lalu tekan \'Benar\'.</string>
     <string name="bca_instruction_step5">5.\tMasukkan jumlah tagihan yang akan anda bayar.</string>
     <string name="bca_instruction_step6">6.\tPada halaman konfirmasi transfer akan muncul detail pembayaran anda. Jika informasi telah sesuai tekan \'Ya\'.</string>
+
+  <!--Klik BCA-->
+    <string name="bca_klik_instruction_step1">1.\Pilih menu \'Fund Transfer\'.</string>
+    <string name="bca_klik_instruction_step2">2.\tPilih \'Transfer to BCA Virtual Account\'.</string>
+    <string name="bca_klik_instruction_step3">3.\t\'Masukkan Nomor Virtual Account BCA\' atau \'Pilih dari daftar transfer\' dan klik \'Continue\'.</string>
+    <string name="bca_klik_instruction_step4">4.\tJumlah yang harus dibayarkan, nomor rekening dan nama merchant akan tampil pada halaman konfirmasi pembayaran, jika informasi tersebut benar, klik \'Continue\'.</string>
+    <string name="bca_klik_instruction_step5">5.\tDapatkan \'BCA token\' dan masukkan KEYBCA Response \'APPLI 1\' dan klik \'Submit\'.</string>
+    <string name="bca_klik_instruction_step6">6.\tTransaksi Anda selesai.</string>
+
+    <!--KLIK BCA PAYMENT-->
+    <string name="bca_klik_pay_instruction_step1">1.\tAnda akan dialihkan ke halaman BCA KlikPay setelah menekan tombol \'Confirm Payment\' .</string>
+    <string name="bca_klik_pay_instruction_step2">2.\tUntuk pembayaran, Anda dapat memilih Rekening KlikBCA Individu atau kartu BCA.</string>
+    <string name="bca_klik_pay_instruction_step3">3.\tUntuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 500888 atau kunjungi www.bca.co.id.</string>
+
+     <!--m-BCA-->
+    <string name="bca_mbanking_instruction_step1">1.\tPilih \'m-transfer\'.</string>
+    <string name="bca_mbanking_instruction_step2">2.\tPilih \'Transfer\'</string>
+    <string name="bca_mbanking_instruction_step3">3.\tPilih \'BCA Virtual Account\'.</string>
+    <string name="bca_mbanking_instruction_step4">4.\tPilih \'account number\' yang ingin anda gunakan untuk pembayaran.</string>
+    <string name="bca_mbanking_instruction_step5">5.\tMasukkan Nomor Virtual Account BCA dan klik \'OK\'.</string>
+    <string name="bca_mbanking_instruction_step6">6.\tInformasi nomor Virtual Account dan rekening anda information akan tampil pada halaman konfirmasi pembayaran dan kemudian klik \'Send\'.</string>
+    <string name="bca_mbanking_instruction_step7">7.\tKlik \'OK\' pada halaman konfirmasi pembayaran.</string>
+    <string name="bca_mbanking_instruction_step8">8.\tMasukkan jumlah yang ingin ditransfer kemudian klik \'OK\'.</string>
+    <string name="bca_mbanking_instruction_step9">9.\tTransaksi Anda telah selesai</string>
+    
+    <!-- cimb transfer Instructions -->
+    <string name="cimb_instruction_step1">1.\tPastikan bahwa Anda memiliki User ID untuk CIMB Clicks dan telah mendaftarkan mPIN Anda sebelum melanjutkan pembayaran.</string>
+    <string name="cimb_instruction_step2">2.\tTransaksi akan dibatlkan apabila pembayaran tidak diselesaikan dalam 2 jam.</string>
+    <string name="cimb_instruction_step3">3.\tPastikan bahwa tidak ada pop-up blocker pada browser Anda.</string>
+
 </resources>
