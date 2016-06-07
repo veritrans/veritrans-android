@@ -6,19 +6,24 @@
 
 Veritrans SDK is an android library that simplifies the process of making transactions on [Veritrans Payment gateway](https://veritrans.co.id).
 
-### Transaction Flow 
+### Transaction Flow
 
 ![Transaction Flow Figure](http://docs.veritrans.co.id/images/vtdirect-mobile-flow.png "Transaction Flow Figure")
 
-There are three parties involved in the payment process for VT-Direct: merchant, customers, and Veritrans. Here is an explanation of how VT-Direct work.
+There are three parties involved in the payment process for making a payment:
+* merchant,
+* customers
+* Veritrans.
 
-1. **Click Pay**: Customers enter credit card details on your android application, and press the button `PAY` to complete the payment.
-2. **Sending data**: when customers press the button `PAY`, android library will incorporate sensitive credit card information with a key client. The combined data is sent to the Veritrans server that is exchanged into *onetime-token* ( "token").
-3. **Getting Token**: Veritrans Token will return the application to customers android phone. Token will be valid for **3 minutes** at a regular credit card transactions and **10 minutes** if the feature is 3D Secure is used. Token can not be used again if the expired time was passed.
-4. **Sending Token**: Then Token is sent to merchant server. Please note, merchant will only receive a token in as the exchange for credit card details. **Merchant will not store or process information from credit cards**. Because of that, you do not have to deal with the PCI DSS compliance.
-5. **Request Charge**: You do charge transaction to Veritrans using Token plus some other information (example: customer details, product details, address).
+This is how the Mobile SDK works
+
+1. *Click Pay*: Customers enter credit card details on your mobile application, and press the button `PAY` to complete the payment.
+2. *Sending data*: When customers press the button `PAY`, our mobile SDK will incorporate sensitive credit card information with a key client. The combined data is sent to the Veritrans server that is exchanged into *onetime-token* ( "token").
+3. **Getting Token**: Veritrans Token will return the application to customers android phone. Token will be valid for **3 minutes** at a regular credit card transactions and **10 minutes** if the feature is 3D Secure is used. Token cannot be used again if the expired time was passed.
+4. **Sending Token**: Then Token is sent to merchant server. Please note, merchant will only receive a token in as the exchange for credit card details. **Merchant should not store or process information from credit cards**. This ensures that the merchant is PCI-DSS compliant.
+5. **Request Charge**: Merchant server requests a charge transaction to Veritrans using Token plus some other information (example: customer details, product details, address).
 6. **Transaction Response Handling**: Veritrans returns the response status of the transaction, such as: Capture, Settlement
-7. **Transaction information**: Merchant tell the transaction results to customers.
+7. **Transaction information**: Merchant tells the transaction results to customers, ie.The purchase is confirmed.
 
 ### Payment types Supported
 1. Credit/Debit - Support for making payments via credit cards and or debit cards using our one-click or two-clicks feature
@@ -51,10 +56,11 @@ There are three parties involved in the payment process for VT-Direct: merchant,
 
 ### Security Aspects
 
-* We use CLIENT_KEY and SERVER_KEY (available on [MAP](https://my.veritrans.co.id)) for the making requests to the Veritrans API. The CLIENT_KEY can only be used from the Device, the SERVER_KEY is not used on the Device, all API requests that use the SERVER_KEY need to be made from the Merchant Backend.
-* We use strong encryption for making connections to your backend server, please make sure you use a Valid Https Certificate.
-* Please be careful logging payment related information to the Logs(especialy when using Core flow)
-
+* There are 2 seperate keys *CLIENT_KEY* and *SERVER_KEY* (available on [MAP](https://my.veritrans.co.id))
+  * CLIENT_KEY is used for tokenizing the credit card. It can only be used from the Client(mobile device)
+  * SERVER_KEY is *not* to be used from the Device, all API requests that use the SERVER_KEY need to be made from the Merchant Server.
+* We use strong encryption for making connections to Merchant server, please make sure it has valid https Certificate.
+* Please be careful logging payment related information to the Logs(especialy when using Core flow).
 
 
 Following are  configurable parameters of sdk that can be used while performing transaction -
@@ -85,7 +91,7 @@ Following bintray repository needs to be added to your repository section in _bu
 repositories {
     jcenter()
         // Add the midtrans repository into the list of repositories
-        maven { url "http://dl.bintray.com/pt-midtrans/maven" } 
+        maven { url "http://dl.bintray.com/pt-midtrans/maven" }
     }
 ```
 
@@ -256,14 +262,13 @@ here in this flow just set transaction request information to sdk and start paym
 ```Java
     if (transactionRequest != null && mVeritransSDK != null) {
 
-                    // create transaction request information as shown above.
-                    //set transaction information to sdk
-                    mVeritransSDK.setTransactionRequest(transactionRequest);
+        // create transaction request information as shown above.
+        //set transaction information to sdk
+        mVeritransSDK.setTransactionRequest(transactionRequest);
 
-                    // start ui flow using activity instance
-                    mVeritransSDK.startPaymentUiFlow(activity);
-
-                }
+    // start ui flow using activity instance
+        mVeritransSDK.startPaymentUiFlow(activity);
+    }
 
 ```
 
