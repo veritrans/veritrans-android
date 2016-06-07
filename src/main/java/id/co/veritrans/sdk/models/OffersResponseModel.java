@@ -9,9 +9,9 @@ import java.util.ArrayList;
  */
 public class OffersResponseModel {
 
-    @SerializedName("binpromo")
+    @SerializedName("discount")
     private ArrayList<OffersListModel> binpromo = new ArrayList<>();
-    @SerializedName("installments")
+    @SerializedName("installment")
     private ArrayList<OffersListModel> installments = new ArrayList<>();
 
     /**

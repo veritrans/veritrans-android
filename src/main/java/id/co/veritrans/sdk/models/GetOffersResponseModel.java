@@ -7,9 +7,11 @@ import com.google.gson.annotations.SerializedName;
  */
 public class GetOffersResponseModel {
 
-    @SerializedName("message")
+    @SerializedName("status_code")
+    private int code;
+    @SerializedName("status_message")
     private String message;
-    @SerializedName("offers")
+    @SerializedName("data")
     private OffersResponseModel offers;
 
     /**
@@ -46,5 +48,19 @@ public class GetOffersResponseModel {
      */
     public void setOffers(OffersResponseModel offers) {
         this.offers = offers;
+    }
+
+    /**
+     * @return status code
+     */
+    public int getCode() {
+        return code;
+    }
+
+    /**
+     * @param code status code
+     */
+    public void setCode(int code) {
+        this.code = code;
     }
 }

@@ -215,7 +215,7 @@ public interface PaymentAPI {
 
     //get offers
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @GET("/offers")
+    @GET("/promotions")
     Observable<GetOffersResponseModel> getOffers(@Header("x-auth") String auth);
 
     // register credit card info

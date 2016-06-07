@@ -30,6 +30,7 @@ import java.util.List;
 import id.co.veritrans.sdk.R;
 import id.co.veritrans.sdk.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.core.Constants;
+import id.co.veritrans.sdk.core.ExternalScanner;
 import id.co.veritrans.sdk.core.LocalDataHandler;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
@@ -50,6 +51,7 @@ import id.co.veritrans.sdk.eventbus.events.SaveCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
+import id.co.veritrans.sdk.eventbus.events.UpdateCreditCardDataFromScanEvent;
 import id.co.veritrans.sdk.fragments.OffersListFragment;
 import id.co.veritrans.sdk.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.models.BankDetail;
@@ -62,6 +64,7 @@ import id.co.veritrans.sdk.models.CardTransfer;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.models.SaveCardRequest;
+import id.co.veritrans.sdk.models.ScannerModel;
 import id.co.veritrans.sdk.models.ShippingAddress;
 import id.co.veritrans.sdk.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.models.TransactionDetails;
@@ -81,6 +84,7 @@ import rx.schedulers.Schedulers;
  */
 public class OffersActivity extends BaseActivity implements TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
 
+    public static final int SCAN_REQUEST_CODE = 101;
     public static final String OFFERS_FRAGMENT = "offersList";
     public static final String ADD_CARD_FRAGMENT = "addCard";
     public static final String OFFER_POSITION = "offer_position";
@@ -157,10 +161,11 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
         OffersListFragment offersListFragment = new OffersListFragment();
         replaceFragment(offersListFragment, true, false);
         calculateScreenWidth();
-        getCreditCards();
+        // Only fetch credit card when card click type is two click or one click
+        if (!veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+            getCreditCards();
+        }
         readBankDetails();
-
-
     }
 
     @Override
@@ -383,8 +388,21 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
         if (resultCode == RESULT_OK) {
             if (requestCode == PAYMENT_WEB_INTENT) {
                 payUsingCard();
+            } else if (requestCode == SCAN_REQUEST_CODE) {
+                if (data != null && data.hasExtra(ExternalScanner.EXTRA_SCAN_DATA)) {
+                    ScannerModel scanData = (ScannerModel) data.getSerializableExtra(ExternalScanner.EXTRA_SCAN_DATA);
+                    Logger.i(String.format("Card Number: %s, Card Expire: %s/%d", scanData.getCardNumber(), scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
+                    updateCreditCardData(Utils.getFormattedCreditCardNumber(scanData.getCardNumber()), scanData.getCvv(), String.format("%s/%d", scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
+                } else {
+                    Logger.d("No result");
+                }
             }
         }
+    }
+
+    private void updateCreditCardData(String cardNumber, String cvv, String expired) {
+        // Update credit card data in AddCardDetailsFragment
+        VeritransBusProvider.getInstance().post(new UpdateCreditCardDataFromScanEvent(cardNumber, cvv, expired));
     }
 
     public ArrayList<SaveCardRequest> getCreditCards() {

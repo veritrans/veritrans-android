@@ -1,5 +1,4 @@
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -214,7 +213,16 @@
                     android:layout_marginTop="16dp"
                     android:text="@string/save_card_message" />
 
-
+                <Button
+                    android:id="@+id/scan_card"
+                    style="?borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cb_store_card"
+                    android:text="@string/btn_scan_card"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -234,4 +242,4 @@
                 android:textStyle="bold" />
         </RelativeLayout>
     </RelativeLayout>
-</android.support.v4.widget.NestedScrollView>
+</ScrollView>

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -26,7 +27,7 @@ import id.co.veritrans.sdk.eventbus.events.GetOfferFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.GetOfferSuccessEvent;
 import id.co.veritrans.sdk.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.models.GetOffersResponseModel;
-import android.widget.TextView;
+import id.co.veritrans.sdk.utilities.RecyclerItemClickListener;
 
 /**
  * Created by Ankit on 12/7/15.
@@ -94,12 +95,23 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
 
         // setUp recyclerView
         if (getActivity() != null) {
-            offersAdapter = new
-                    OffersAdapter(getActivity(), ((OffersActivity) getActivity()).offersListModels, this);
+            offersAdapter = new OffersAdapter(((OffersActivity) getActivity()).offersListModels);
             recyclerViewOffers.setHasFixedSize(true);
-            recyclerViewOffers.setLayoutManager(
-                    new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            recyclerViewOffers.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             recyclerViewOffers.setAdapter(offersAdapter);
+            recyclerViewOffers.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    String offerType = null;
+                    if (offersAdapter.getItemAtPosition(position).getDuration() != null && !offersAdapter.getItemAtPosition(position).getDuration().isEmpty()) {
+                        offerType = OffersActivity.OFFER_TYPE_INSTALMENTS;
+                    } else {
+                        offerType = OffersActivity.OFFER_TYPE_BINPROMO;
+                    }
+
+                    onOfferClicked(position, offersAdapter.getItemAtPosition(position).getOfferName(), offerType);
+                }
+            }));
         }
 
         //Call OffersApi if the model is empty...
