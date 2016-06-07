@@ -389,18 +389,18 @@ For default implementation of the `core flow` please add this code blocks into `
 
 Each API usage has its own `onEvent` interface to capture finished API access. Please implement one of this Event interface on Activity or Fragment that accessing the SDK.
 
-- `TokenBusCallback`
-- `GetCardBusCallback`
-- `SaveCardBusCallback`
-- `DeleteCardBusCallback`
-- `GetOfferBusCallback`
-- `TransactionBusCallback`
-- `CardRegistrationBusCallback`
-- `GetAuthenticationBusCallback`
+* `TokenBusCallback`
+* `GetCardBusCallback`
+* `SaveCardBusCallback`
+* `DeleteCardBusCallback`
+* `GetOfferBusCallback`
+* `TransactionBusCallback`
+* `CardRegistrationBusCallback`
+* `GetAuthenticationBusCallback`
 
 This interface will implement 2 general error handler, success event and failed event.
 
-For example, `TransactionBusCallback` will implement these methods.
+For example, `TransactionBusCallback` will have to implement these methods.
 
     // Need to attach @Subscribe annotation to enable Event Bus registration
     @Subscribe
@@ -429,67 +429,76 @@ For example, `TransactionBusCallback` will implement these methods.
 
 **Note**: Need to add `@Subscribe` annotation on implemented methods above.
 
-## 4 Important Informations
 
-### 4.1 Common request information
-Customer details , item details , billing and shipping  address these are common paramteres which requires in every type of transaction.
 
-1) Set customer details -
+##### Common request information
+
+These are common paramteres which are required in all types of transaction.
+* Customer details
+* Item details
+* billing and shipping  address
+
+1. Set customer details -
 
 **CustomerDetails** class holds information about customer. To set information about customer in TransactionRequest use following code -
-```
-CustomerDetails customer = new CustomerDetails(String firstName, String lastName, String email, String phone);
-transactionRequest.setCustomerDetails(customer);
+
+```Java
+    CustomerDetails customer = new CustomerDetails(String firstName, String lastName, String email, String phone);
+    transactionRequest.setCustomerDetails(customer);
 ```
 
-2) Set Item details
+2. Set Item details
 
 **ItemDetails** class holds information about item purchased by user. TransactionRequest takes an array list of item details. To set this in TransactionRequest use following code -
 
-```
-ItemDetails itemDetails1 = new CustomerDetailsItemDetails(String id, double price, double quantity, String name);
-ItemDetails itemDetails2 = new CustomerDetailsItemDetails(String id, double price, double quantity, String name);
-.
-.
-//todo create array list and add above item details in it and then set it to transaction request.
+```Java
+    ItemDetails itemDetails1 = new CustomerDetailsItemDetails(String id, double price, double quantity, String name);
+    ItemDetails itemDetails2 = new CustomerDetailsItemDetails(String id, double price, double quantity, String name);
+    .
+    .
+    //todo create array list and add above item details in it and then set it to transaction request.
 
-transactionRequest.setItemDetails(ArrayList<ItemDetails>);
+    transactionRequest.setItemDetails(ArrayList<ItemDetails>);
 ```
 
-3) Set Billing Address -
+3. Set Billing Address -
+
 **BillingAddress** class holds information about billing. TransactionRequest takes an array list of billing details. To set this in TransactionRequest use following code -
 
+```Java
+
+    BillingAddress billingAddress1 = new BillingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
+
+    BillingAddress billingAddress2 =new BillingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
+    .
+    .
+    //todo create array list and add above billing details in it and then set it to transaction request.
+
+    transactionRequest.setItemDetails(ArrayList<BillingAddress>);
+
 ```
 
-BillingAddress billingAddress1 = new BillingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
+4. Set Shipping Address -
 
-BillingAddress billingAddress2 =new BillingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
-.
-.
-//todo create array list and add above billing details in it and then set it to transaction request.
-
-transactionRequest.setItemDetails(ArrayList<BillingAddress>);
-
-```
-
-4) Set Shipping Address -
 **ShippingAddress** class holds information about billing. TransactionRequest takes an array list of shipping details. To set this in TransactionRequest use following code -
 
+```Java
+
+    ShippingAddress shippingAddress1 = new ShippingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
+
+    ShippingAddress shippingAddress2 =new ShippingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
+    .
+    .
+    //todo create array list and add above shipping details in it and then set it to transaction request.
+
+    transactionRequest.setItemDetails(ArrayList<ShippingAddress>);
+
 ```
 
-ShippingAddress shippingAddress1 = new ShippingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
+#####  Setting Transaction Details
 
-ShippingAddress shippingAddress2 =new ShippingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
-.
-.
-//todo create array list and add above shipping details in it and then set it to transaction request.
-
-transactionRequest.setItemDetails(ArrayList<ShippingAddress>);
-
-```
-
-### Setting Transaction Details
 Set required transaction information to sdk instance.
+
 TransactionRequest contains following information -
 - Order Id - _unique order id to identify this transaction_.
 - Amount - _amount to charge_.
@@ -503,28 +512,30 @@ All of the above parameters are not nesseccessary to set, It depends on which ty
 Sdk will throw error message in case you missed some information right before starting an payment flow.
 
 Create instance of **TransactionRequest** class.
-```
-TransactionRequest transactionRequest =
-                new TransactionRequest(order id, amount);
 
-/*
-where -
-order id - unique order id for this transaction.
-amount - amount to charge.
-*/
+```Java
+    TransactionRequest transactionRequest = new TransactionRequest(order id, amount);
+
+    /*
+    where -
+    order id - unique order id for this transaction.
+    amount - amount to charge.
+    */
 ```
 
-## 4.2 Registering Credit Cards
+####  Registering Credit Cards
+
+Card registration is the process by which credit cards can be stored (on the merchant server) for later use.
 
 There are two steps for registering credit card.
 
 1. Need to get `saved_token_id` from Veritrans Payment API.
-2. Save `saved_token_id` into merchant server storage.
+2. Save `saved_token_id` into merchant server.
 _
 
 You can get `saved_token_id` -- that will be used at a later time -- by using the method `cardRegistration` below on the VeritransSDK object.
 
-```
+```Java
 VeritransSDK.getVeritransSDK().cardRegistration(
     String cardNumber,
     int cardCVV,
@@ -534,10 +545,10 @@ VeritransSDK.getVeritransSDK().cardRegistration(
 
 ```
 
-Don't forget to register your Activity/Fragment to Event Bus provider and subscribe to implemented methods from `CardRegistrationBusCallback` and `SaveCardBusCallback`.
+Note- Don't forget to register your Activity/Fragment to Event Bus provider and subscribe to implemented methods from `CardRegistrationBusCallback` and `SaveCardBusCallback`.
 
 This implementation example will receive `saved_token_id` then save it to merchant token.
-
+```Java
     @Subscribe
     @Override
     public void onEvent(CardRegistrationSuccessEvent event) {
@@ -569,10 +580,12 @@ This implementation example will receive `saved_token_id` then save it to mercha
     public void onEvent(SaveCardFailedEvent event) {
         // Handle when failed saving saved_token_id into merchant server
     }
-
-The **saved_token_id** may then be used for a getToken() request similar to a **two click** token. After that, you can use the token for charging.
-
 ```
+
+
+The **saved_token_id** may then be used for a getToken() request similar to a *two click* token.  This token can be used for making the payment(also called charge)
+
+```Java
     CardTokenRequest cardTokenRequest = new CardTokenRequest();
     cardTokenRequest.setIsSaved(true);
     cardTokenRequest.setTwoClick(true);
@@ -581,12 +594,13 @@ The **saved_token_id** may then be used for a getToken() request similar to a **
     cardTokenRequest.setClientKey(CLIENT_KEY);
 ```
 
-###  Offers for credit cards
+####  Offers for credit cards
+
 Offers allows merchants to provide special discounts and offers to the consumers for using cards from a specific bank(also called BIN Promos)
+
 This is available only for Credit/Debit Cards.
 
-#### Implementation
-
+##### Implementation
 
 
  * Register Activity/Fragment into `VeritransBus` See: *Setup Event Bus*.
@@ -657,7 +671,7 @@ This is available only for Credit/Debit Cards.
     }
  }
 ```
- 
+
  * We can validate offers with comparing bin numbers with first characters of credit card.
  * If card number matches then offer valid for given card number.
  * When we are applying the offer for normal flow make function call **getToken** from  **VeritransSdk** class as same as credit card flow.
@@ -689,14 +703,14 @@ This is available only for Credit/Debit Cards.
  cardPaymentDetails.setBinsArray(cardTokenRequest.getBins());
  ```
 
-## 5 Payment Types
+### Payment Types
 
 For each API call in payment function, you need to do this first before calling any API functions.
 
 - Register Activity/Fragment into `VeritransBus` See: *Setup Event Bus*.
 - Implement `TransactionBusCallback` interface in Activity/Fragment.
 
-```
+```Java
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
@@ -715,80 +729,87 @@ For each API call in payment function, you need to do this first before calling 
     ...
 ```
 
-### 5.1 Charge using Credit/Debit card -
-For doing charge api call we have to call this function.
+#### Payment(Charge) using Credit/Debit card -
 
-     `veritransSDK.paymentUsingCard(cardTransfer);`
+For doing a payment, call the following function.
+
+```Java
+     veritransSDK.paymentUsingCard(cardTransfer);
+```
 
 In above code we have to supply ** _CardTransfer_ ** class object.
 
-After successful transaction card information will be get saved if user permits. In TransactionResponse we get ***saved_token_id*** which is used in future transaction.
+After successful transaction card information will be saved, if user permits. In TransactionResponse a *saved_token_id* field contains a new token that can be stored and reused in future transaction.
 
-### 5.2 Bank Transfer
+#### Bank Transfer
 
 ###### To perform transaction using bank transfer method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
 * Create instance of  **TransactionRequest** and add required fields like item details,
 shipping address etc.
+
 * Then add Transaction details in previously created veritrans object using
 
-    `mVeritransSDK.setTransactionRequest(TransactionRequest);`
+```Java
+mVeritransSDK.setTransactionRequest(TransactionRequest);
+```
 
 * Then execute Transaction using following method to get response back.
 
-```
+```Java
        mVeritransSDK.paymentUsingPermataBank();
 ```
 
-### 5.3 Mandiri bill payment
+#### Mandiri bill
 
-###### To perform transaction using mandiri bill payment method follow the steps given below:
+To perform transaction using mandiri bill payment method follow the steps given below:
 
 * Create the instance of veritrans library using **VeritransBuilder** class.
 * Create instance of **TransactionRequest** and add required fields like item details,
    shipping address etc.
 * Then add Transaction details in previously created veritrans object using
 
-```
+```Java
 mVeritransSDK.setTransactionRequest(TransactionRequest);
 ```
 
 * Then execute Transaction using following method to get response back
 
-```
+```Java
 mVeritransSDK.paymentUsingMandiriBillPay();
 ```
 
-### 5.4 Indosat Dompetku
+#### Indosat Dompetku
 
-###### To perform transaction using indosat dompetku payment method follow the steps given below:
+To perform transaction using indosat dompetku payment method follow the steps given below:
 
 * Create the instance of veritrans library using **VeritransBuilder** class.
 * Create instance of **TransactionRequest** and add required fields like item details,
    shipping address etc. This payment method requires **MSISDN** number which is registered mobile number of user.
 * Then add Transaction details in previously created veritrans object using
 
-```
+```Java
 mVeritransSDK.setTransactionRequest(TransactionRequest);
 ```
 
 * Then execute Transaction using following method to get response back
 
-```
+```Java
 mVeritransSDK.paymentUsingIndosatDompetku(MSISDN);
 where - msisdn  is registered user mobile number, must be less than 12. for debug you can use 08123456789
 ```
 
 
-### 5.5 Indomaret
+#### Indomaret
 
-###### To perform transaction using indomaret payment method follow the steps given below:
+To perform transaction using indomaret payment method follow the steps given below:
+
 * Create the instance of veritrans library using **VeritransBuilder** class.
 * Create instance of **TransactionRequest** and add required fields like item details,
    shipping address etc. This payment method requires **Cstore** details.
 * Then add Transaction details in previously created veritrans object using
 
-```
+```Java
 // add cstore deatils
 IndomaretRequestModel.CstoreEntity cstoreEntity = new IndomaretRequestModel.CstoreEntity();
 cstoreEntity.setMessage("message_here");
@@ -800,20 +821,20 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 * Then execute Transaction using following method to get response back
 
-```
+```Java
 mVeritransSDK.paymentUsingIndomaret(cstoreEntity);
 
 ```
 
-### 5.6 Mandiri ClickPay
+#### Mandiri ClickPay
 
-###### To perform transaction using mandiri click pay payment method follow the steps given below:
+To perform transaction using mandiri click pay payment method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
 * Create instance of **TransactionRequest** and add required fields like item details,
    shipping address etc. This payment method also requires details about **Mandiri click pay**.
 * Then add Transaction details in previously created veritrans object using
 
-```
+```Java
 
 mVeritransSDK.setTransactionRequest(TransactionRequest);
 
@@ -845,7 +866,7 @@ mVeritransSDK.paymentUsingMandiriClickPay(mandiriClickPayModel);
 * Take appropriate action in onFailure() or onSuccess() of TransactionCallback.
 
 
-### 5.7 ePay BRI
+#### ePay BRI
 
 ###### To perform transaction using ePay BRI payment method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
@@ -853,13 +874,13 @@ mVeritransSDK.paymentUsingMandiriClickPay(mandiriClickPayModel);
    shipping address etc.
 * Then add Transaction details in previously created veritrans object using
 
-```
+```Java
 mVeritransSDK.setTransactionRequest(TransactionRequest);
 ```
 
 * Then execute Transaction using following method to get response back. In success event implementation you will get redirect url from server, start webview to handle the redirect url.
 
-```
+```Java
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
@@ -892,7 +913,7 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
     - add javaScript interface to intercept the request, to get the status of transaction.
     e.g -
 
-```
+```Java
 private void initwebview() {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setInitialScale(1);
@@ -973,42 +994,42 @@ Use this interface in your web view to get response back.
     }//end of WebviewActivity class
 ```
 
-### 5.8 CIMB Clicks
+#### CIMB Clicks
 
-###### To perform transaction using CIMB Clicks payment method follow the steps given below:
+To perform transaction using CIMB Clicks payment method follow the steps given below:
 * Create the instance of veritrans library using **VeritransBuilder** class.
 * Create instance of **TransactionRequest** and add required fields like item details,
    shipping address etc. This payment method requires **Description Model**.
 * Then add Transaction details in previously created veritrans object using
 
-```
-mVeritransSDK.setTransactionRequest(TransactionRequest);
+```Java
+    mVeritransSDK.setTransactionRequest(TransactionRequest);
 ```
 
 * Then execute Transaction using following method to get response back. In success evdent implementation you will get redirect url from server, start webview to handle the redirect url.
 * Handle the further process and response same as performed in ePay BRI.
 
-```
-        //add Description for transaction
-        DescriptionModel cimbDescription = new DescriptionModel("Any Description");
+```Java
+    //add Description for transaction
+    DescriptionModel cimbDescription = new DescriptionModel("Any Description");
 
-        @Subscribe
-        @Override
-        public void onEvent(TransactionSuccessEvent event) {
-            //Success implementation
-            TransactionResponse response = event.getResponse();
-            if (response != null && !TextUtils.isEmpty(response.getRedirectUrl())) {
-                // create Web Activity  to handle redirect url. start web activity for result
-            }
+    @Subscribe
+    @Override
+    public void onEvent(TransactionSuccessEvent event) {
+    //Success implementation
+    TransactionResponse response = event.getResponse();
+    if (response != null && !TextUtils.isEmpty(response.getRedirectUrl())) {
+        // create Web Activity  to handle redirect url. start web activity for result
         }
+    }
 
-        //Call paymentUsingCIMBClickPay method
-        mVeritransSDK.paymentUsingCIMBClickPay(cimbDescription);
-        ...
+    //Call paymentUsingCIMBClickPay method
+    mVeritransSDK.paymentUsingCIMBClickPay(cimbDescription);
+    ...
 
 ```
 
-### 5.9 BBM money -
+#### BBM money(Deprecated)
 
 ###### To perform transaction using BBM money app follow the steps given below:
 * Check Whether BBM moeny app is installed or not on device using following code : -
@@ -1162,27 +1183,27 @@ mVeritransSDK.setTransactionRequest(TransactionRequest);
 
 ### 5.12 Payment using Installments Flow
  * Make api call for **get token** with 2 new params
- 
+
 ```
   'installment' : true,
   'installment_term' : 12,
 ```
- 
+
   * In **cardTokenRequest** object set this 2 param
-  
+
 ```
  //for installment flow
  cardTokenRequest.setInstalment(true);
  cardTokenRequest.setInstalmentTerm(instalmentTerm);
 ```
- 
+
  * When we are doing **charge api** call we have to set 2 param
- 
+
 ```
  'installment_term' : 12,
  'bins' : ["mandiri","48111111", "3111", "5"]
 ```
- 
+
  * You can find this code in **payUsingCard** function on OffersActivity in VeritransSDK.
  * If offer is valid then payment will take place else respective error is given.
 
