@@ -4,6 +4,7 @@ package id.co.veritrans.sdk.fragments;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +36,8 @@ import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
 import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.events.UpdateCreditCardDataFromScanEvent;
 import id.co.veritrans.sdk.models.BankDetail;
 import id.co.veritrans.sdk.models.CardTokenRequest;
 import id.co.veritrans.sdk.models.OffersListModel;
@@ -51,6 +56,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private TextView textViewOfferApplied = null;
     private TextView textViewOfferNotApplied = null;
     private LinearLayout layoutOfferStatus = null;
+    private Button scanCardBtn = null;
     private int offerPosition = 0;
     private String offerName = null;
     private String offerType = null;
@@ -121,30 +127,40 @@ public class OffersAddCardDetailsFragment extends Fragment {
         offerName = data.getString(OffersActivity.OFFER_NAME);
         offerType = data.getString(OffersActivity.OFFER_TYPE);
         initialiseView(view);
+        // Register bus
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
         ((OffersActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
         fadeIn();
     }
 
-    private void initialiseView(View view) {
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Unregister bus
+        if (VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
+        }
+    }
 
+    private void initialiseView(View view) {
         if (view != null && getActivity() != null) {
             textViewTitleOffers = (TextView) getActivity().findViewById(R.id.text_title);
-            textViewTitleCardDetails = (TextView) getActivity().findViewById(R.id
-                    .text_title_card_details);
+            textViewTitleCardDetails = (TextView) getActivity().findViewById(R.id.text_title_card_details);
             textViewOfferName = (TextView) getActivity().findViewById(R.id.text_title_offer_name);
 
             setToolbar();
 
             textViewOfferApplied = (TextView) view.findViewById(R.id.text_offer_status_applied);
-            textViewOfferNotApplied = (TextView) view.findViewById(R.id
-                    .text_offer_status_not_applied);
+            textViewOfferNotApplied = (TextView) view.findViewById(R.id.text_offer_status_not_applied);
             layoutOfferStatus = (LinearLayout) view.findViewById(R.id.layout_offer_status);
 
             imageViewPlus = (ImageView) view.findViewById(R.id.img_plus);
             imageViewMinus = (ImageView) view.findViewById(R.id.img_minus);
             textViewInstalment = (TextView) view.findViewById(R.id.text_instalment);
-            layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id
-                    .layout_pay_with_instalments);
+            layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id.layout_pay_with_instalments);
+            scanCardBtn = (Button) view.findViewById(R.id.scan_card);
 
             if (offerType.equalsIgnoreCase(OffersActivity.OFFER_TYPE_INSTALMENTS)) {
                 hideOrShowPayWithInstalment(true);
@@ -171,6 +187,29 @@ public class OffersAddCardDetailsFragment extends Fragment {
                     onPlusClicked();
                 }
             });
+
+            if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
+                payNowBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
+                scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), VeritransSDK.getDefaultText()));
+                if (veritransSDK.getExternalScanner() != null) {
+                    scanCardBtn.setVisibility(View.VISIBLE);
+                    scanCardBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            veritransSDK.getExternalScanner().startScan(getActivity(), OffersActivity.SCAN_REQUEST_CODE);
+                        }
+                    });
+                } else {
+                    scanCardBtn.setVisibility(View.GONE);
+                }
+                if (veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+                    cbStoreCard.setVisibility(View.GONE);
+                    questionImg.setVisibility(View.GONE);
+                } else {
+                    cbStoreCard.setVisibility(View.VISIBLE);
+                    questionImg.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 
@@ -201,8 +240,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
             if (offersList.get(offerPosition).getDuration() != null || !offersList.get(offerPosition).getDuration().isEmpty()) {
                 currentPosition = 0;
                 totalPositions = offersList.get(offerPosition).getDuration().size() - 1;
-                textViewInstalment.setText(offersList.get(offerPosition).getDuration().get(0)
-                        .toString() + " " + MONTH);
+                textViewInstalment.setText(offersList.get(offerPosition).getDuration().get(0) + " " + MONTH);
                 disableEnableMinusPlus();
             }
         }
@@ -230,9 +268,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private void onMinusClicked() {
         if (currentPosition > 0 && currentPosition <= totalPositions) {
             currentPosition = currentPosition - 1;
-            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get
-                    (offerPosition).getDuration().get(currentPosition)
-                    .toString() + " " + MONTH);
+            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get(offerPosition).getDuration().get(currentPosition).toString() + " " + MONTH);
         }
         disableEnableMinusPlus();
     }
@@ -240,9 +276,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private void onPlusClicked() {
         if (currentPosition >= 0 && currentPosition < totalPositions) {
             currentPosition = currentPosition + 1;
-            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get
-                    (offerPosition).getDuration().get(currentPosition)
-                    .toString() + " " + MONTH);
+            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get(offerPosition).getDuration().get(currentPosition).toString() + " " + MONTH);
         }
         disableEnableMinusPlus();
     }
@@ -736,5 +770,12 @@ public class OffersAddCardDetailsFragment extends Fragment {
             }
         });
         fadeInAnimation.start();
+    }
+
+    @Subscribe
+    public void onEvent(UpdateCreditCardDataFromScanEvent event) {
+        etCardNo.setText(event.getCardNumber());
+        etCvv.setText(event.getCvv());
+        etExpiryDate.setText(event.getExpired());
     }
 }

@@ -15,12 +15,15 @@ import java.util.List;
  */
 public class OffersListModel implements Serializable{
 
-    @SerializedName("offer name")
+    @SerializedName("title")
     private String offerName;
-    @SerializedName("duration")
-    private List<Integer> duration = new ArrayList<>();
+    private String description;
+    @SerializedName("discount_percentage")
+    private int discountPercentage;
+    @SerializedName("installment_terms")
+    private List<String> duration;
     @SerializedName("bins")
-    private ArrayList<String> bins = new ArrayList<>();
+    private ArrayList<String> bins;
 
     /**
      *
@@ -45,7 +48,7 @@ public class OffersListModel implements Serializable{
      * @return
      * The duration
      */
-    public List<Integer> getDuration() {
+    public List<String> getDuration() {
         return duration;
     }
 
@@ -54,7 +57,7 @@ public class OffersListModel implements Serializable{
      * @param duration
      * The duration
      */
-    public void setDuration(List<Integer> duration) {
+    public void setDuration(List<String> duration) {
         this.duration = duration;
     }
 
@@ -74,5 +77,33 @@ public class OffersListModel implements Serializable{
      */
     public void setBins(ArrayList<String> bins) {
         this.bins = bins;
+    }
+
+    /**
+     * @return description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description promo description
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return discount percentage
+     */
+    public int getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    /**
+     * @param discountPercentage discount percentage
+     */
+    public void setDiscountPercentage(int discountPercentage) {
+        this.discountPercentage = discountPercentage;
     }
 }

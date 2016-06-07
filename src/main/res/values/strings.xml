@@ -36,6 +36,7 @@
     <string name="text_bank_name">Bank name</string>
     <string name="text_sample_valid_date">Valid Until : 10 September 2015, 16:00</string>
     <string name="text_demo">demo</string>
+    <string name="text_demo_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla nulla vel purus feugiat, ut accumsan sapien faucibus. Nullam sit amet ipsum at ipsum elementum tempus id rutrum odio. Sed fermentum lacus id sapien mollis tincidunt. Sed id elementum ipsum, sit amet ultricies risus. Nulla facilisi. Etiam sit amet tortor vitae elit eleifend molestie eu vitae odio. Etiam ut posuere arcu. Nullam tempus nisl sed metus auctor feugiat at a sapien. Pellentesque dignissim velit commodo, dapibus libero eget, lacinia tellus. Fusce congue posuere erat. Donec facilisis, massa vitae varius ultrices, metus ligula accumsan justo, eu mollis erat diam quis magna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In a pretium libero, vel bibendum quam. Ut eu lacinia erat. Suspendisse vel lacus sit amet mi placerat feugiat.</string>
     <string name="text_test">test</string>
     <string name="text_input_one_here">Input 1 here</string>
     <string name="text_input_two_here">Input 2 here</string>
