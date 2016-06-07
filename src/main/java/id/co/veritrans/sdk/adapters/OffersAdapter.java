@@ -10,8 +10,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.R;
-import id.co.veritrans.sdk.activities.OffersActivity;
-import id.co.veritrans.sdk.callbacks.AnyOfferClickedListener;
 import id.co.veritrans.sdk.models.OffersListModel;
 
 /**
@@ -22,17 +20,16 @@ import id.co.veritrans.sdk.models.OffersListModel;
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
         .OfferViewHolder> {
 
-    private static Activity sActivity;
-    private static ArrayList<OffersListModel> data = null;
-    private static AnyOfferClickedListener anyOfferClickedListener = null;
+    Activity mActivity;
+    ArrayList<OffersListModel> mData = null;
 
-    public OffersAdapter(Activity activity, ArrayList<OffersListModel> data,
-                         AnyOfferClickedListener anyOfferClickedListener) {
-        sActivity = activity;
-        OffersAdapter.data = data;
-        OffersAdapter.anyOfferClickedListener = anyOfferClickedListener;
+    public OffersAdapter(ArrayList<OffersListModel> data) {
+        mData = data;
     }
 
+    public OffersListModel getItemAtPosition(int position) {
+        return mData.get(position);
+    }
 
     @Override
     public OfferViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -46,20 +43,19 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
 
     @Override
     public void onBindViewHolder(OfferViewHolder holder, int position) {
-        holder.textViewOfferTitle.setText(data.get(position).getOfferName());
-        holder.textViewOfferDescription.setText(data.get(position).getDescription());
+        holder.textViewOfferTitle.setText(mData.get(position).getOfferName());
+        holder.textViewOfferDescription.setText(mData.get(position).getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return mData.size();
     }
 
     /**
      * public static view holder class.
      */
-    public static class OfferViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+    public static class OfferViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewOfferTitle;
         TextView textViewOfferDescription;
@@ -68,20 +64,6 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
             super(itemView);
             textViewOfferTitle = (TextView) itemView.findViewById(R.id.text_offer_title);
             textViewOfferDescription = (TextView) itemView.findViewById(R.id.text_offer_description);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            String offerType = null;
-            if (data.get(getAdapterPosition()).getDuration() != null && !data.get(getAdapterPosition()).getDuration().isEmpty()) {
-                offerType = OffersActivity.OFFER_TYPE_INSTALMENTS;
-            } else {
-                offerType = OffersActivity.OFFER_TYPE_BINPROMO;
-            }
-
-            anyOfferClickedListener.onOfferClicked(getAdapterPosition(), data.get
-                    (getAdapterPosition()).getOfferName(), offerType);
         }
     }
 }
