@@ -1,6 +1,5 @@
 package id.co.veritrans.sdk.adapters;
 
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +16,8 @@ import id.co.veritrans.sdk.models.OffersListModel;
  * <p/>
  * Created by Ankit on 12/7/15.
  */
-public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
-        .OfferViewHolder> {
+public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OfferViewHolder> {
 
-    Activity mActivity;
     ArrayList<OffersListModel> mData = null;
 
     public OffersAdapter(ArrayList<OffersListModel> data) {
@@ -34,8 +31,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter
     @Override
     public OfferViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_row_offers_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_row_offers_list, parent, false);
 
         OfferViewHolder offerViewHolder = new OfferViewHolder(view);
         return offerViewHolder;

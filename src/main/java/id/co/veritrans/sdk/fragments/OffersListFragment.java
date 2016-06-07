@@ -103,7 +103,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
                 @Override
                 public void onItemClick(View view, int position) {
                     String offerType = null;
-                    if (offersAdapter.getItemAtPosition(position).getDuration() != null && offersAdapter.getItemAtPosition(position).getDuration().isEmpty()) {
+                    if (offersAdapter.getItemAtPosition(position).getDuration() != null && !offersAdapter.getItemAtPosition(position).getDuration().isEmpty()) {
                         offerType = OffersActivity.OFFER_TYPE_INSTALMENTS;
                     } else {
                         offerType = OffersActivity.OFFER_TYPE_BINPROMO;
