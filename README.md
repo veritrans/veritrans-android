@@ -6,6 +6,8 @@
 
 Veritrans SDK is an android library that simplifies the process of making transactions on [Veritrans Payment gateway](https://veritrans.co.id).
 
+Please keep in mind that [VTAndroidLib](https://github.com/veritrans/vt-Androidlib) a different library than the current Veritrans SDK, and is not considered depricated and we provide no backward compatibility.
+
 ### Transaction Flow
 
 ![Transaction Flow Figure](http://docs.veritrans.co.id/images/vtdirect-mobile-flow.png "Transaction Flow Figure")
@@ -85,12 +87,10 @@ To se how to begin using this SDK please read [this wiki](https://github.com/ver
 
 There are two implementation modes on this SDK.
 
-## UI Flow
+### UI Flow
 
 To see the implementation guide please read [this wiki](https://github.com/veritrans/veritrans-android/wiki/UI-Flow).
 
-## Core Flow
+### Core Flow
 
 To see the implementation guide please read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Core-Flow).
-
-Please keep in mind that [VTAndroidLib](https://github.com/veritrans/vt-Androidlib) a different library than the current Veritrans SDK, and is not considered depricated and we provide no backward compatibility.
