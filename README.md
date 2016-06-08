@@ -77,7 +77,7 @@ Following are  configurable parameters of sdk that can be used while performing 
 
 To see how to install this SDK please read [this wiki](https://github.com/veritrans/veritrans-android/wiki/SDK-Installation).
 
-## SDK Initialization.
+### SDK Initialization.
 
 To se how to begin using this SDK please read [this wiki](https://github.com/veritrans/veritrans-android/wiki/SDK-Initialization).
 
