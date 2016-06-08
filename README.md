@@ -71,110 +71,15 @@ Following are  configurable parameters of sdk that can be used while performing 
 
 
 
-### Setting up Android SDK
+## Setting up Android SDK
 
-We publish our SDK to [bintray repository](www.bintray.com). Please add bintray in your repository list(as below)
+### SDK Installation
 
-1. Add the following into your _build.gradle_
+To see how to install this SDK please read [this wiki](https://github.com/veritrans/veritrans-android/wiki/SDK-Installation).
 
-```groovy
-dependencies {
-    // For using the Veritrans Sandbox
-    compile 'id.co.veritrans:androidsdk:0.10.3-SANDBOX'
-    // For using the Veritrans Production
-    compile 'id.co.veritrans:androidsdk:0.10.3'
-}
-```
-Following bintray repository needs to be added to your repository section in _build.gradle_
+## SDK Initialization.
 
-```groovy
-repositories {
-    jcenter()
-        // Add the midtrans repository into the list of repositories
-        maven { url "http://dl.bintray.com/pt-midtrans/maven" }
-    }
-```
-
-
-2. Add the Merchant server URL and the Veritrans client Key in the configuration into your _build.gradle_ file (Note: We have different CLIENT_KEY values for *sandbox* and *production* so it's better if you have two flavors in `build.gradle` script and define them here.)
-
-```groovy
-productFlavors {
-        development {
-            buildConfigField "String", "BASE_URL", <MERCHANT_BASE_URL_SANDBOX>
-            buildConfigField "String", "CLIENT_KEY", <MERCHANT_CLIENT_KEY_SANDBOX>
-        }
-        production {
-            buildConfigField "String", "BASE_URL", <MERCHANT_BASE_URL_PRODUCTION>
-            buildConfigField "String", "CLIENT_KEY", <MERCHANT_CLIENT_KEY_PRODUCTION>
-        }
-}
-```
-
-3. Modify the  **_AndroidManifest.xml_** file to allow network access
-
-  These permissions are required to allow the application to send
-  events.
-
-  ```xml
-  <uses-permission
-    android:name="android.permission.INTERNET" />
-
-  <uses-permission
-    android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-  ```
-
-
-4. Setup Proguard Rules
-
-
-
-
-#### IDE Setup
-
-##### Eclipse:
-**Note** - To add this library project in eclipse follow the instructions given on following link
- http://developer.android.com/tools/projects/projects-eclipse.html
-
-##### Android Studio
-TBD
-
-
-#### Initializing the SDK
-
-Instantiate sdk after application finishes launching processes. This can be done on Application class or your Main Activity class then call it at `onCreate` method.
-
-```Java
-// SDK initialization process
-VeritransBuilder veritransBuilder = new VeritransBuilder(context, VT_CLIENT_KEY, BASE_URL_MERCHANT);
-veritransBuilder.enableLog(true);   // enable logs for debugging purpose.
-veritransBuilder.buildSDK();
-```
-
-Or if you have defined the client key and in your `build.gradle` script just like installation tutorial above.
-
-```Java
-VeritransBuilder veritransBuilder = new VeritransBuilder(context, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL);
-veritransBuilder.enableLog(true);   // enable logs for debugging purpose.
-veritransBuilder.buildSDK();
-```
-
-- context - Application context.
-- CLIENT_KEY - Provided by MAP
-- BASE_URL - Merchant server Base URL
-
-
-Instance of Veritrans SDK is singleton.
-
-The SDK instance is accessible via
-
-```Java
-VeritransSDK.getVeritransSDK();
-```
-
-In order to perform transactions set appropriate details to it using various setter methods,
-invoke payment method to perform transaction. You can perform only one transaction at a time.
+To se how to begin using this SDK please read [this wiki](https://github.com/veritrans/veritrans-android/wiki/SDK-Initialization).
 
 ## Implementation
 
