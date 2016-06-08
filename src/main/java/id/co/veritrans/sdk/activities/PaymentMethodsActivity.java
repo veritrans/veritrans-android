@@ -25,8 +25,11 @@ import id.co.veritrans.sdk.core.SdkUtil;
 import id.co.veritrans.sdk.core.StorageDataHandler;
 import id.co.veritrans.sdk.core.TransactionRequest;
 import id.co.veritrans.sdk.core.VeritransSDK;
+import id.co.veritrans.sdk.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.eventbus.events.TransactionFinishedEvent;
 import id.co.veritrans.sdk.models.CustomerDetails;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
+import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.models.UserDetail;
 import id.co.veritrans.sdk.utilities.Utils;
 import id.co.veritrans.sdk.widgets.HeaderView;
@@ -318,6 +321,12 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
+                TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
+                if (response != null) {
+                    VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(response));
+                } else {
+                    VeritransBusProvider.getInstance().post(new TransactionFinishedEvent());
+                }
                 finish();
             }
 
