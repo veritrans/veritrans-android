@@ -12,7 +12,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 group = 'id.co.veritrans'
-version = '0.10.3'
+version = '0.10.4'
 
 android {
     compileSdkVersion 23
@@ -25,7 +25,7 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 3
+        versionCode 4
         versionName version
         buildConfigField "String", "MIXPANEL_URL", "\"https://api.mixpanel.com/\""
         buildConfigField "String", "CALLBACK_STRING", "\"/token/callback/\""
