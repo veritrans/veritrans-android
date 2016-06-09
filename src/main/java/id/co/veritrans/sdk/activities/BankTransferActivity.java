@@ -273,7 +273,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -311,17 +310,14 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
-                MandiriBillPayFragment bankTransferPaymentFragment =
-                        MandiriBillPayFragment.newInstance(transactionResponse);
-                fragmentTransaction.replace(R.id.bank_transfer_container,
-                        bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+                MandiriBillPayFragment bankTransferPaymentFragment = MandiriBillPayFragment.newInstance(transactionResponse);
+                fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             } else if (position == Constants.BANK_TRANSFER_PERMATA){
                 BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_PERMATA);
                 fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             } else if(position == Constants.BANK_TRANSFER_BCA) {
                 BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_BCA);
-                fragmentTransaction.replace(R.id.bank_transfer_container,
-                        bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+                fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
 
             }
 
@@ -440,8 +436,12 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      */
     private void setResultAndFinish() {
         Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), transactionResponse);
-        data.putExtra(getString(R.string.error_transaction), errorMessage);
+        if (transactionResponse != null) {
+            data.putExtra(getString(R.string.transaction_response), transactionResponse);
+        }
+        if (errorMessage != null && !errorMessage.equals("")) {
+            data.putExtra(getString(R.string.error_transaction), errorMessage);
+        }
         setResult(RESULT_CODE, data);
         finish();
     }

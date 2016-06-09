@@ -132,9 +132,7 @@ public class SelectBankTransferActivity extends BaseActivity {
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-                data.setAction(getString(R.string.event_transaction_complete));
-                sendBroadcast(data);
-                setResult(RESULT_OK);
+                setResult(RESULT_OK, data);
                 finish();
             }
 
