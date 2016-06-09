@@ -244,48 +244,49 @@ public class AddCardDetailsFragment extends Fragment {
             }
         });
 
-        etExpiryDate.addTextChangedListener(new TextWatcher() {
-                                                @Override
-                                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        etExpiryDate.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                                                }
+                    }
 
-                                                @Override
-                                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                                                }
+                    }
 
-                                                @Override
-                                                public void afterTextChanged(Editable s) {
-                                                    String input = s.toString();
-                                                    if (s.length() == 2 && !lastExpDate.endsWith("/")) {
-                                                        int month = Integer.parseInt(input);
-                                                        if (month <= 12) {
-                                                            etExpiryDate.setText(etExpiryDate.getText().toString() + "/");
-                                                            etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                        } else {
-                                                            etExpiryDate.setText(Constants.MONTH_COUNT + "/");
-                                                            etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                        }
-                                                    } else if (s.length() == 2 && lastExpDate.endsWith("/")) {
-                                                        int month = Integer.parseInt(input);
-                                                        if (month <= 12) {
-                                                            etExpiryDate.setText(etExpiryDate.getText().toString().substring(0, 1));
-                                                            etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                        } else {
-                                                            etExpiryDate.setText("");
-                                                            etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                        }
-                                                    } else if (s.length() == 1) {
-                                                        int month = Integer.parseInt(input);
-                                                        if (month > 1) {
-                                                            etExpiryDate.setText("0" + etExpiryDate.getText().toString() + "/");
-                                                            etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                        }
-                                                    }
-                                                    lastExpDate = etExpiryDate.getText().toString();
-                                                }
-                                            }
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        String input = s.toString();
+                        if (s.length() == 2 && !lastExpDate.endsWith("/")) {
+                            int month = Integer.parseInt(input);
+                            if (month <= 12) {
+                                etExpiryDate.setText(etExpiryDate.getText().toString() + "/");
+                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                            } else {
+                                etExpiryDate.setText(Constants.MONTH_COUNT + "/");
+                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                            }
+                        } else if (s.length() == 2 && lastExpDate.endsWith("/")) {
+                            int month = Integer.parseInt(input);
+                            if (month <= 12) {
+                                etExpiryDate.setText(etExpiryDate.getText().toString().substring(0, 1));
+                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                            } else {
+                                etExpiryDate.setText("");
+                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                            }
+                        } else if (s.length() == 1) {
+                            int month = Integer.parseInt(input);
+                            if (month > 1) {
+                                etExpiryDate.setText("0" + etExpiryDate.getText().toString() + "/");
+                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                            }
+                        }
+                        lastExpDate = etExpiryDate.getText().toString();
+                    }
+                }
 
         );
     }
@@ -310,7 +311,7 @@ public class AddCardDetailsFragment extends Fragment {
             }
             isValid = false;
         }
-        if (cardNumber.length() < 16 || !SdkUtil.isValidCardNumber(cardNumber)) {
+        if (cardNumber.length() < 15 || !SdkUtil.isValidCardNumber(cardNumber)) {
             if (!etCardNo.hasFocus()) {
                 etCardNo.setError(getString(R.string.validation_message_invalid_card_no));
             }
