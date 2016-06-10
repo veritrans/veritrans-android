@@ -159,7 +159,7 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
             VeritransBusProvider.getInstance().register(this);
         }
         OffersListFragment offersListFragment = new OffersListFragment();
-        replaceFragment(offersListFragment, true, false);
+        replaceFragment(offersListFragment, R.id.offers_container, true, false);
         calculateScreenWidth();
         // Only fetch credit card when card click type is two click or one click
         if (!veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
@@ -346,31 +346,6 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
         return cardWidth;
     }
 
-    public void replaceFragment(Fragment fragment, boolean addToBackStack, boolean clearBackStack) {
-        if (fragment != null) {
-            Logger.i("replace freagment");
-            boolean fragmentPopped = false;
-            String backStateName = fragment.getClass().getName();
-
-            if (clearBackStack) {
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            } else {
-                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
-            }
-
-            if (!fragmentPopped) { //fragment not in back stack, create it.
-                Logger.i("fragment not in back stack, create it");
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.offers_container, fragment, backStateName);
-                if (addToBackStack) {
-                    ft.addToBackStack(backStateName);
-                }
-                ft.commit();
-                currentFragmentName = backStateName;
-                //currentFragment = fragment;
-            }
-        }
-    }
 
     public void saveCreditCards(SaveCardRequest creditCard) {
         /*try {
@@ -657,7 +632,7 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
 
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
-            replaceFragment(paymentTransactionStatusFragment, true, false);
+            replaceFragment(paymentTransactionStatusFragment, R.id.offers_container,  true, false);
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
@@ -726,7 +701,7 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
         SdkUtil.hideProgressDialog();
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
-        replaceFragment(paymentTransactionStatusFragment, true, false);
+        replaceFragment(paymentTransactionStatusFragment, R.id.offers_container, true, false);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
         textViewTitleOffers.setText(getString(R.string.title_payment_status));

@@ -16,9 +16,7 @@ import id.co.veritrans.sdk.widgets.VeritransDialog;
 
 public class PaymentWebActivity extends BaseActivity {
     private Toolbar toolbar;
-    private String currentFragmentName;
     private FragmentManager fragmentManager;
-    private Fragment currentFragment;
     private VeritransSDK veritransSDK;
     private RelativeLayout webviewContainer;
     private String webUrl;
@@ -27,6 +25,7 @@ public class PaymentWebActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_web);
+        saveCurrentFragment = true;
         initializeTheme();
         webUrl = getIntent().getStringExtra(Constants.WEBURL);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -35,30 +34,9 @@ public class PaymentWebActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
         WebviewFragment webviewFragment = WebviewFragment.newInstance(webUrl);
-        replaceFragment(webviewFragment, true, false);
+        replaceFragment(webviewFragment, R.id.webview_container, true, false);
     }
 
-    public void replaceFragment(Fragment fragment, boolean addToBackStack, boolean clearBackStack) {
-        if (fragment != null) {
-            boolean fragmentPopped = false;
-            String backStateName = fragment.getClass().getName();
-
-            if (clearBackStack) {
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            } else {
-                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
-            }
-
-            if (!fragmentPopped) { //fragment not in back stack, create it.
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.webview_container, fragment, backStateName);
-                if (addToBackStack) ft.addToBackStack(backStateName);
-                ft.commit();
-                currentFragmentName = backStateName;
-                currentFragment = fragment;
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {

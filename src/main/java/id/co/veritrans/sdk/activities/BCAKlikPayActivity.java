@@ -94,7 +94,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
         // setup  fragment
         bcaKlikPayInstructionFragment = new BCAKlikPayInstructionFragment();
-        replaceFragment(bcaKlikPayInstructionFragment, true, false);
+        replaceFragment(bcaKlikPayInstructionFragment, R.id.bca_klik_pay_container, true, false);
     }
 
 
@@ -142,35 +142,11 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
             transactionResponseFromMerchant = gson.fromJson(responseStr, TransactionResponse.class);
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, true, false);
+            replaceFragment(paymentTransactionStatusFragment, R.id.bca_klik_pay_container, true, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         }
     }
 
-    public void replaceFragment(Fragment fragment, boolean addToBackStack, boolean clearBackStack) {
-        if (fragment != null) {
-            Logger.i("replace freagment");
-            boolean fragmentPopped = false;
-            String backStateName = fragment.getClass().getName();
-
-            if (clearBackStack) {
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            } else {
-                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
-            }
-
-            if (!fragmentPopped) { //fragment not in back stack, create it.
-                Logger.i("fragment not in back stack, create it");
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.bca_klik_pay_container, fragment, backStateName);
-                if (addToBackStack) {
-                    ft.addToBackStack(backStateName);
-                }
-                ft.commit();
-                currentFragmentName = backStateName;
-            }
-        }
-    }
 
     public void setResultAndFinish(){
         Intent data = new Intent();

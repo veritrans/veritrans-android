@@ -86,7 +86,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
         // setup  fragment
         instructionEpayBriFragment = new InstructionEpayBriFragment();
-        replaceFragment(instructionEpayBriFragment, true, false);
+        replaceFragment(instructionEpayBriFragment, R.id.bri_container_layout, true, false);
     }
 
     @Override
@@ -160,7 +160,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
             transactionResponseFromMerchant = gson.fromJson(responseStr, TransactionResponse.class);
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, true, false);
+            replaceFragment(paymentTransactionStatusFragment, R.id.bri_container_layout, true, false);
             btConfirmPayment.setVisibility(View.GONE);
             /*veritransSDK.getPaymentStatus(this, transactionResponse.getTransactionId(), new PaymentStatusCallback() {
                 @Override
@@ -177,32 +177,6 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
                     replaceFragment(paymentTransactionStatusFragment, true, false);
                 }
             });*/
-        }
-    }
-
-    public void replaceFragment(Fragment fragment, boolean addToBackStack, boolean clearBackStack) {
-        if (fragment != null) {
-            Logger.i("replace freagment");
-            boolean fragmentPopped = false;
-            String backStateName = fragment.getClass().getName();
-
-            if (clearBackStack) {
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            } else {
-                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
-            }
-
-            if (!fragmentPopped) { //fragment not in back stack, create it.
-                Logger.i("fragment not in back stack, create it");
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.bri_container_layout, fragment, backStateName);
-                if (addToBackStack) {
-                    ft.addToBackStack(backStateName);
-                }
-                ft.commit();
-                currentFragmentName = backStateName;
-                //currentFragment = fragment;
-            }
         }
     }
 

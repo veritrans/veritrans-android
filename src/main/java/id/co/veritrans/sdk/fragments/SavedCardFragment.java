@@ -221,7 +221,7 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
                     .newInstance();
             ((CreditDebitCardFlowActivity) getActivity()).replaceFragment
-                    (addCardDetailsFragment, true, false);
+                    (addCardDetailsFragment, R.id.card_container, true, false);
             return;
         }
         ((CreditDebitCardFlowActivity)(getActivity())).morphingAnimation();
@@ -246,7 +246,7 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
                 AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
                         .newInstance();
                 ((CreditDebitCardFlowActivity) getActivity()).replaceFragment
-                        (addCardDetailsFragment, true, false);
+                        (addCardDetailsFragment, R.id.card_container, true, false);
 
             }
 
