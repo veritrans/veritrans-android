@@ -637,7 +637,6 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
             textViewTitleOffers.setText(getString(R.string.title_payment_status));
-
             if (cardTokenRequest.isSaved()) {
                 if (!creditCards.isEmpty()) {
                     int position = -1;

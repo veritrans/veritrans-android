@@ -355,7 +355,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
                     .newInstance();
             ((OffersActivity) getActivity()).replaceFragment
-                    (addCardDetailsFragment, true, false);
+                    (addCardDetailsFragment, R.id.offers_container, true, false);
             return;
         }
         ((OffersActivity)(getActivity())).morphingAnimation();
@@ -386,7 +386,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                 OffersAddCardDetailsFragment offersAddCardDetailsFragment = OffersAddCardDetailsFragment
                         .newInstance(offerPosition, offerName, offerType);
                 ((OffersActivity) getActivity()).replaceFragment
-                        (offersAddCardDetailsFragment, true, false);
+                        (offersAddCardDetailsFragment, R.id.offers_container, true, false);
 
             }
 
