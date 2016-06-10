@@ -1904,6 +1904,10 @@ class TransactionManager {
         properties.setPlatform(PLATFORM);
         properties.setDeviceId(SdkUtil.getDeviceId());
         properties.setToken(BuildConfig.MIXPANEL_TOKEN);
+        properties.setMerchant(VeritransSDK.getVeritransSDK() != null &&
+                VeritransSDK.getVeritransSDK().getMerchantName() != null ?
+                VeritransSDK.getVeritransSDK().getMerchantName() :
+                VeritransSDK.getVeritransSDK().getClientKey());
         properties.setPaymentType(paymentType);
         if (bankType != null && !bankType.equals("")) {
             properties.setBank(bankType);
@@ -1925,6 +1929,10 @@ class TransactionManager {
         properties.setPlatform(PLATFORM);
         properties.setDeviceId(SdkUtil.getDeviceId());
         properties.setToken(BuildConfig.MIXPANEL_TOKEN);
+        properties.setMerchant(VeritransSDK.getVeritransSDK() != null &&
+                VeritransSDK.getVeritransSDK().getMerchantName() != null ?
+                VeritransSDK.getVeritransSDK().getMerchantName() :
+                VeritransSDK.getVeritransSDK().getClientKey());
         properties.setPaymentType(paymentType);
         properties.setResponseTime(responseTime);
 
@@ -1944,6 +1952,10 @@ class TransactionManager {
         properties.setDeviceId(SdkUtil.getDeviceId());
         properties.setToken(BuildConfig.MIXPANEL_TOKEN);
         properties.setPaymentType(paymentType);
+        properties.setMerchant(VeritransSDK.getVeritransSDK() != null &&
+                VeritransSDK.getVeritransSDK().getMerchantName() != null ?
+                VeritransSDK.getVeritransSDK().getMerchantName() :
+                VeritransSDK.getVeritransSDK().getClientKey());
         properties.setResponseTime(responseTime);
         properties.setMessage(errorMessage);
 
@@ -1964,6 +1976,10 @@ class TransactionManager {
         properties.setToken(BuildConfig.MIXPANEL_TOKEN);
         properties.setPaymentType(paymentType);
         properties.setBank(bank);
+        properties.setMerchant(VeritransSDK.getVeritransSDK() != null &&
+                VeritransSDK.getVeritransSDK().getMerchantName() != null ?
+                VeritransSDK.getVeritransSDK().getMerchantName() :
+                VeritransSDK.getVeritransSDK().getClientKey());
         properties.setResponseTime(responseTime);
         properties.setMessage(errorMessage);
 

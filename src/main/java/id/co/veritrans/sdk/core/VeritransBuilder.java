@@ -20,6 +20,7 @@ public class VeritransBuilder {
     protected String merchantServerUrl = null;
     protected String colorTheme = null;
     protected ExternalScanner scanner = null;
+    protected String merchantName = null;
 
     /**
      * It  will initialize an data required to sdk.
@@ -46,13 +47,35 @@ public class VeritransBuilder {
         return this;
     }
 
+    /**
+     * Set color theme using formatted hex
+     *
+     * @param colorTheme formatted hex color code
+     * @return VeritransBuilder instance.
+     */
     public VeritransBuilder setColorTheme(String colorTheme) {
         this.colorTheme = colorTheme;
         return this;
     }
 
+    /**
+     * Set external scanner.
+     * @param externalScanner   external scanner
+     * @return VeritransBuilder instance
+     */
     public VeritransBuilder setExternalScanner(ExternalScanner externalScanner) {
         this.scanner = externalScanner;
+        return this;
+    }
+
+    /**
+     * Set merchant name.
+     *
+     * @param merchantName merchant name
+     * @return VeritransBuilder instance
+     */
+    public VeritransBuilder setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
         return this;
     }
 
@@ -64,7 +87,6 @@ public class VeritransBuilder {
     public VeritransSDK buildSDK() {
 
         if (VeritransSDK.getVeritransSDK() == null && isValidData()) {
-
             VeritransSDK veritransSDK = VeritransSDK.getInstance(this);
             return veritransSDK;
 
