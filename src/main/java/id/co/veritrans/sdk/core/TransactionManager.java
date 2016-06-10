@@ -68,9 +68,9 @@ import rx.schedulers.Schedulers;
  */
 class TransactionManager {
     // Event Name
-    private static final String KEY_TRANSACTION_SUCCESS = "Transaction Successful";
+    private static final String KEY_TRANSACTION_SUCCESS = "Transaction Success";
     private static final String KEY_TRANSACTION_FAILED = "Transaction Failed";
-    private static final String KEY_TOKENIZE_SUCCESS = "Tokenize Successful";
+    private static final String KEY_TOKENIZE_SUCCESS = "Tokenize Success";
     private static final String KEY_TOKENIZE_FAILED = "Tokenize Failed";
 
     // Payment Name
