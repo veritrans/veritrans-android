@@ -61,6 +61,7 @@ public class VeritransSDK {
     private static String defaultText = null;
     private static String boldText = null;
     private static String semiBoldText = null;
+    private static String merchantName = null;
     protected boolean isRunning = false;
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
@@ -83,6 +84,9 @@ public class VeritransSDK {
             }
             if(veritransBuilder.scanner!=null) {
                 externalScanner = veritransBuilder.scanner;
+            }
+            if (veritransBuilder.merchantName != null) {
+                merchantName = veritransBuilder.merchantName;
             }
             initializeTheme();
             initializeSharedPreferences();
@@ -132,12 +136,16 @@ public class VeritransSDK {
         return VeritransSDK.defaultText;
     }
 
-    public  ExternalScanner getExternalScanner() {
-        return VeritransSDK.externalScanner;
-    }
-
     public void setDefaultText(String defaultText) {
         VeritransSDK.defaultText = defaultText;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public ExternalScanner getExternalScanner() {
+        return VeritransSDK.externalScanner;
     }
 
     public int getThemeColor() {
