@@ -87,7 +87,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
     private static final int PAY_USING_CARD = 51;
     private int RESULT_CODE = RESULT_CANCELED;
     private Toolbar toolbar;
-    private String currentFragmentName;
     private FragmentManager fragmentManager;
     private VeritransSDK veritransSDK;
     private float cardWidth;
@@ -143,7 +142,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
             getCreditCards();
         } else {
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
-            replaceFragment(addCardDetailsFragment, true, false);
+            replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
             titleHeaderTextView.setText(getString(R.string.card_details));
         }
         readBankDetails();
@@ -312,31 +311,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
         return cardWidth;
     }
 
-    public void replaceFragment(Fragment fragment, boolean addToBackStack, boolean clearBackStack) {
-        if (fragment != null) {
-            Logger.i("replace freagment");
-            boolean fragmentPopped = false;
-            String backStateName = fragment.getClass().getName();
-
-            if (clearBackStack) {
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            } else {
-                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
-            }
-
-            if (!fragmentPopped) { //fragment not in back stack, create it.
-                Logger.i("fragment not in back stack, create it");
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.card_container, fragment, backStateName);
-                if (addToBackStack) {
-                    ft.addToBackStack(backStateName);
-                }
-                ft.commit();
-                currentFragmentName = backStateName;
-                //currentFragment = fragment;
-            }
-        }
-    }
 
     public void saveCreditCards(SaveCardRequest creditCard) {
         /*try {
@@ -639,7 +613,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
 
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
-            replaceFragment(paymentTransactionStatusFragment, true, false);
+            replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
@@ -699,7 +673,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
         SdkUtil.hideProgressDialog();
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
-        replaceFragment(paymentTransactionStatusFragment, true, false);
+        replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
         titleHeaderTextView.setText(getString(R.string.title_payment_status));
@@ -753,11 +727,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
             SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
             //getSupportActionBar().setTitle(getString(R.string.saved_card));
             titleHeaderTextView.setText(getString(R.string.saved_card));
-            replaceFragment(savedCardFragment, true, false);
+            replaceFragment(savedCardFragment, R.id.card_container, true, false);
 
         } else {
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
-            replaceFragment(addCardDetailsFragment, true, false);
+            replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
             titleHeaderTextView.setText(getString(R.string.card_details));
 
         }

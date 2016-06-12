@@ -39,32 +39,8 @@ public class NotificationActivity extends BaseActivity {
         // setup  fragment
         if (transactionResponse != null) {
             paymentStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponse);
-            replaceFragment(paymentStatusFragment, true, false);
+            replaceFragment(paymentStatusFragment, R.id.notification_container_layout, false, false);
         }
     }
 
-    public void replaceFragment(Fragment fragment, boolean addToBackStack, boolean clearBackStack) {
-        if (fragment != null) {
-            Logger.i("replace freagment");
-            boolean fragmentPopped = false;
-            String backStateName = fragment.getClass().getName();
-
-            if (clearBackStack) {
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            } else {
-                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
-            }
-
-            if (!fragmentPopped) { //fragment not in back stack, create it.
-                Logger.i("fragment not in back stack, create it");
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.add(R.id.notification_container_layout, fragment, backStateName);
-                /*if (addToBackStack) {
-                    ft.addToBackStack(backStateName);
-                }*/
-                ft.commit();
-                currentFragmentName = backStateName;
-            }
-        }
-    }
 }
