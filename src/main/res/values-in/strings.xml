@@ -229,7 +229,12 @@
     <string name="card_details_error_message">Detail kartu tidak ditemukan.</string>
     <string name="no_saved_cards">Belum ada kartu yang disimpan.</string>
 
- <string name="appli">APPLI</string>
+    <string name="text_bank_name">Name Bank</string>
+    <string name="text_sample_valid_date">Valid Sampai : 10 September 2015, 16:00</string>
+    <string name="valid_thru">Valid Sampai</string>
+    <string name="enter_cvv">Masukkan CVV</string>
+
+    <string name="appli">APPLI</string>
     <string name="input_1">Masukan 1</string>
     <string name="input_2">Masukan 2</string>
     <string name="input_3">Masukan 3</string>
