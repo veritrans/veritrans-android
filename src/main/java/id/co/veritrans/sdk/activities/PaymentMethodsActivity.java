@@ -177,8 +177,8 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
             String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount()));
 
             collapsingToolbarLayout.setTitle(" ");
-            toolbarHeaderView.bindTo(PAYABLE_AMOUNT, "" + amount);
-            floatHeaderView.bindTo(PAYABLE_AMOUNT, "" + amount);
+            toolbarHeaderView.bindTo(getString(R.string.payable_amount), "" + amount);
+            floatHeaderView.bindTo(getString(R.string.payable_amount), "" + amount);
             floatHeaderView.getSubTitleTextView().setAlpha(PERCENTAGE_TOTAL);
             floatHeaderView.getTitleTextView().setAlpha(ALPHA);
             mAppBarLayout.addOnOffsetChangedListener(this);
