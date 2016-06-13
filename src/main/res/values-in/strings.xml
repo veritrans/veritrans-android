@@ -239,7 +239,7 @@
     <string name="input_2">Masukan 2</string>
     <string name="input_3">Masukan 3</string>
     <string name="mandiri_click_pay">Mandiri Clickpay</string>
-    <string name="hint_mandiri_debit_card_no">Mandiri Debit Card Number</string>
+    <string name="hint_mandiri_debit_card_no">Nomor Kartu Mandiri Debit</string>
     <string name="hint_challenge_token">Challenge Token</string>
     <string name="company_code">Kode Perusahaan</string>
     <string name="bill_code">Kode Tagihan</string>
