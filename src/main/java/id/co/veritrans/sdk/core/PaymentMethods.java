@@ -27,18 +27,53 @@ public class PaymentMethods {
     public static final String METHOD_INDOMARET = "Indomaret";
     public static final String METHOD_BCA_KLIKPAY = "BCA KlikPay";
 
-    public static final PaymentMethodsModel OFFERS = new PaymentMethodsModel(METHOD_OFFERS, R.drawable.ic_offers, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    public static final PaymentMethodsModel CREDIT_CARD = new PaymentMethodsModel(METHOD_CREDIT_CARD, R.drawable.ic_credit, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    public static final PaymentMethodsModel MANDIRI_CLICKPAY = new PaymentMethodsModel(METHOD_MANDIRI_CLICKPAY, R.drawable.ic_mandiri2, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    public static final PaymentMethodsModel CIMB_CLICKS = new PaymentMethodsModel(METHOD_CIMB_CLICKS, R.drawable.ic_cimb, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    public static final PaymentMethodsModel EPAY_BRI = new PaymentMethodsModel(METHOD_EPAY_BRI, R.drawable.ic_epay, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    public static final PaymentMethodsModel BBM_MONEY = new PaymentMethodsModel(METHOD_BBM_MONEY, R.drawable.ic_bbm, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    public static final PaymentMethodsModel INDOSAT_DOMPETKU = new PaymentMethodsModel(METHOD_INDOSAT_DOMPETKU, R.drawable.ic_indosat, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    public static final PaymentMethodsModel MANDIRI_ECASH = new PaymentMethodsModel(METHOD_MANDIRI_ECASH, R.drawable.ic_mandiri_e_cash, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    public static final PaymentMethodsModel BANK_TRANSFER = new PaymentMethodsModel(METHOD_BANK_TRANSFER, R.drawable.ic_atm, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    public static final PaymentMethodsModel MANDIRI_BILL = new PaymentMethodsModel(METHOD_MANDIRI_BILL, R.drawable.ic_mandiri_bill_payment2, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    public static final PaymentMethodsModel INDOMARET = new PaymentMethodsModel(METHOD_INDOMARET, R.drawable.ic_indomaret, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    public static final PaymentMethodsModel BCA_KLIKPAY = new PaymentMethodsModel(METHOD_BCA_KLIKPAY, R.drawable.ic_bca, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    public static PaymentMethodsModel getMethodOffers(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_offers), R.drawable.ic_offers, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
+    public static PaymentMethodsModel getMethodCreditCards(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_credit_card), R.drawable.ic_credit, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
+    public static PaymentMethodsModel getMethodMandiriClickpay(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_mandiri_clickpay), R.drawable.ic_mandiri2, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
+    public static PaymentMethodsModel getMethodCIMBClicks(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_cimb_clicks), R.drawable.ic_cimb, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
+    public static PaymentMethodsModel getMethodEpayBRI(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_bri_epay), R.drawable.ic_epay, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
+    public static PaymentMethodsModel getMethodBBMMoney(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_bbm_money), R.drawable.ic_bbm, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
+    public static PaymentMethodsModel getMethodIndosatDompetku(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_indosat_dompetku), R.drawable.ic_indosat, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
+    public static PaymentMethodsModel geMethodtMandiriECash(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_mandiri_ecash), R.drawable.ic_mandiri_e_cash, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
+    public static PaymentMethodsModel getMethodBankTransfer(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_bank_transfer), R.drawable.ic_atm, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
+    public static PaymentMethodsModel getMethodMandiriBill(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_mandiri_bill), R.drawable.ic_mandiri_bill_payment2, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
+    public static PaymentMethodsModel getMethodIndomaret(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_indomaret), R.drawable.ic_indomaret, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
+    public static PaymentMethodsModel getMethodBCAKlikpay(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_bca_klikpay), R.drawable.ic_bca, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
 
     /**
      * Get all supported payment methods by default.
@@ -47,7 +82,7 @@ public class PaymentMethods {
         ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
 
         int[] paymentImageList = getImageList();
-        String[] nameList = getStringList();
+        String[] nameList = getStringList(context);
 
         for (int i = 0; i < nameList.length; i++) {
             PaymentMethodsModel model = new PaymentMethodsModel(nameList[i], paymentImageList[i],
@@ -55,25 +90,25 @@ public class PaymentMethods {
             model.setIsSelected(true);
             selectedPaymentMethods.add(model);
         }
-        return selectedPaymentMethods;
 
+        return selectedPaymentMethods;
     }
 
-    private static String[] getStringList() {
+    private static String[] getStringList(Context context) {
         String[] paymentNameList = new String[12];
 
-        paymentNameList[0] = METHOD_OFFERS;
-        paymentNameList[1] = METHOD_CREDIT_CARD;
-        paymentNameList[2] = METHOD_MANDIRI_CLICKPAY;
-        paymentNameList[3] = METHOD_CIMB_CLICKS;
-        paymentNameList[4] = METHOD_EPAY_BRI;
-        paymentNameList[5] = METHOD_BBM_MONEY;
-        paymentNameList[6] = METHOD_INDOSAT_DOMPETKU;
-        paymentNameList[7] = METHOD_MANDIRI_ECASH;
-        paymentNameList[8] = METHOD_BANK_TRANSFER;
-        paymentNameList[9] = METHOD_MANDIRI_BILL;
-        paymentNameList[10] = METHOD_INDOMARET;
-        paymentNameList[11] = METHOD_BCA_KLIKPAY;
+        paymentNameList[0] = context.getString(R.string.payment_method_offers);
+        paymentNameList[1] = context.getString(R.string.payment_method_credit_card);
+        paymentNameList[2] = context.getString(R.string.payment_method_mandiri_clickpay);
+        paymentNameList[3] = context.getString(R.string.payment_method_cimb_clicks);
+        paymentNameList[4] = context.getString(R.string.payment_method_bri_epay);
+        paymentNameList[5] = context.getString(R.string.payment_method_bbm_money);
+        paymentNameList[6] = context.getString(R.string.payment_method_indosat_dompetku);
+        paymentNameList[7] = context.getString(R.string.payment_method_mandiri_ecash);
+        paymentNameList[8] = context.getString(R.string.payment_method_bank_transfer);
+        paymentNameList[9] = context.getString(R.string.payment_method_mandiri_bill);
+        paymentNameList[10] = context.getString(R.string.payment_method_indomaret);
+        paymentNameList[11] = context.getString(R.string.payment_method_bca_klikpay);
 
         return paymentNameList;
     }

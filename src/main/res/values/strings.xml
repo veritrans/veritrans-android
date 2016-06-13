@@ -401,6 +401,19 @@
     <string name="challenge">challenge</string>
     <string name="prefix_money">Rp %1$s</string>
 
+    <string name="payment_method_bri_epay">Epay BRI</string>
+    <string name="payment_method_offers">Offers</string>
+    <string name="payment_method_credit_card">Credit/Debit Card</string>
+    <string name="payment_method_bank_transfer">Bank Transfer</string>
+    <string name="payment_method_mandiri_bill">Mandiri Bill</string>
+    <string name="payment_method_mandiri_clickpay">Mandiri Clickpay</string>
+    <string name="payment_method_cimb_clicks">CIMB Clicks</string>
+    <string name="payment_method_bca_klikpay">BCA Klikpay</string>
+    <string name="payment_method_bbm_money">BBM Money</string>
+    <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
+    <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
+    <string name="payment_method_indomaret">Indomaret</string>
+
     <!--Payment List-->
     <string name="payment_epay_bri">bri_epay</string>
     <string name="payment_bank_transfer">bank_transfer</string>
