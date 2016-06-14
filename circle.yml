@@ -7,6 +7,8 @@ general:
         - /home/ubuntu/veritrans-android-example/app/build/outputs/apk/
 
 machine:
+    ruby:
+        version: rbx-2.3.1
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
 
