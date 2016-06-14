@@ -8,7 +8,7 @@ general:
 
 machine:
     ruby:
-        version: 2.0.0p645
+        version: 2.0.0-p648
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
 
