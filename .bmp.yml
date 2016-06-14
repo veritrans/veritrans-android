@@ -1,0 +1,6 @@
+---
+version: 0.10.5
+commit: Bump to version %.%.%
+files:
+  build.gradle: version = '%.%.%'
+  scancard/build.gradle: version = '%.%.%'
