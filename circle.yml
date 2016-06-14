@@ -36,4 +36,6 @@ deployment:
         commands:
             - bmp -p
             - ./gradlew :clean :dependencies :scancard:dependencies :assembleRelease :scancard:assembleRelease :bintrayUpload :scancard:bintrayUpload
+            - git config --global user.email $GITHUB_EMAIL
+            - git config --global user.name $GITHUB_NAME
             - bmp -c
