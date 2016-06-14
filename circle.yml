@@ -35,5 +35,7 @@ deployment:
         owner: veritrans
         commands:
             - bmp -p
-            - ./gradlew :clean :dependencies :scancard:dependencies :assembleRelease :scancard:assembleRelease :bintrayUpload :scancard:bintrayUpload
+            - source environmentSetup.sh && setGit
             - bmp -c
+            - git push origin master
+            - ./gradlew :clean :dependencies :scancard:dependencies :assembleRelease :scancard:assembleRelease :bintrayUpload :scancard:bintrayUpload
