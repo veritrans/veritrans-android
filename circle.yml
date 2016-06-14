@@ -12,12 +12,26 @@ machine:
 
 dependencies:
     pre:
-            - source environmentSetup.sh && copyEnvVarsToGradleProperties
+        # Installing auto bumping version tools
+        - gem install bmp
+        # Copy environment variables to gradle.properties
+        - source environmentSetup.sh && copyEnvVarsToGradleProperties
     override:
         - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-23.0.3,android-23,extra-google-m2repository,extra-google-google_play_services,extra-android-m2repository
         - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
 
 test:
     override:
+        # Build
         - (./gradlew assemble):
             timeout: 360
+
+# Deployment section
+deployment:
+    release:
+        branch: example
+        owner: veritrans
+        commands:
+            - bmp -p|--patch
+            - ./gradlew :clean :dependencies :scancard:dependencies :assembleRelease :scancard:assembleRelease :bintrayUpload :scancard:bintrayUpload
+            - bmp -c|--commit
