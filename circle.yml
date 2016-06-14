@@ -37,4 +37,5 @@ deployment:
             - bmp -p
             - source environmentSetup.sh && setGit
             - bmp -c
+            - git push origin sample
             - ./gradlew :clean :dependencies :scancard:dependencies :assembleRelease :scancard:assembleRelease :bintrayUpload :scancard:bintrayUpload
