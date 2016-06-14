@@ -31,17 +31,16 @@ test:
 # Deployment section
 deployment:
     release:
-        branch: release-example
+        tag: /v[0-9]+(\.[0-9]+)*/
         owner: veritrans
         commands:
             - ./gradlew :clean :dependencies :scancard:dependencies :assembleRelease :scancard:assembleRelease :bintrayUpload :scancard:bintrayUpload
 
     bump:
-      branch: example
+      branch: master
       owner: veritrans
       commands:
             - bmp -p
             - source environmentSetup.sh && setGit
-            - git checkout release-example
             - bmp -c
-            - git push origin release-example
+            - git push origin master --tag
