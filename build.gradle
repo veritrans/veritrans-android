@@ -12,7 +12,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 group = 'id.co.veritrans'
-version = '0.10.8'
+version = '0.10.5'
 
 android {
     compileSdkVersion 23
