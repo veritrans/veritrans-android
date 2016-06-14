@@ -17,6 +17,6 @@ function copyEnvVarsToGradleProperties {
 }
 
 function setGit {
-    git config --g user.name $GITHUB_NAME
-    git config --g user.email $GITHUB_EMAIL
+    git config --global user.name $GITHUB_NAME
+    git config --global user.email $GITHUB_EMAIL
 }
