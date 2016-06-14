@@ -144,5 +144,5 @@ publishing {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.10' //version required
+    gradleVersion = '2.13' //version required
 }
