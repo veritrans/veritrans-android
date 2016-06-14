@@ -34,6 +34,6 @@ deployment:
         branch: example
         owner: veritrans
         commands:
-            - bmp -p|--patch
+            - bmp -p
             - ./gradlew :clean :dependencies :scancard:dependencies :assembleRelease :scancard:assembleRelease :bintrayUpload :scancard:bintrayUpload
-            - bmp -c|--commit
+            - bmp -c
