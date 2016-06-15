@@ -140,7 +140,7 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/layout_pay_with_instalments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -148,26 +148,25 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/expiry_date_layout"
                     android:layout_marginBottom="@dimen/eight_dp"
-                    android:layout_marginTop="@dimen/sixteen_dp">
+                    android:layout_marginTop="@dimen/sixteen_dp"
+                    android:orientation="horizontal">
 
                     <id.co.veritrans.sdk.widgets.DefaultTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
-                        android:gravity="left"
+                        android:layout_weight="0.6"
+                        android:ellipsize="end"
                         android:text="@string/pay_with_instalments"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/seventeen_sp"
+                        android:textSize="14sp"
                         tools:ignore="RelativeOverlap" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="0.4"
                         android:weightSum="1">
 
                         <ImageView
@@ -202,7 +201,7 @@
                             android:padding="@dimen/sixteen_dp" />
 
                     </LinearLayout>
-                </RelativeLayout>
+                </LinearLayout>
 
                 <CheckBox
                     android:id="@+id/cb_store_card"
