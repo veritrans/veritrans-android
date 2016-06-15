@@ -42,15 +42,9 @@ class VeritransRestAdapter {
             RestAdapter.Builder builder = new RestAdapter.Builder()
                     .setEndpoint(BuildConfig.BASE_URL)
                     .setConverter(new GsonConverter(gson))
-                    .setLogLevel(RestAdapter.LogLevel.FULL)
+                    .setLogLevel(LOG_LEVEL)
                     .setClient(new OkClient(okHttpClient));
-            RestAdapter restAdapter;
-            if (BuildConfig.DEBUG) {
-                restAdapter = builder.build();
-                restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
-            } else {
-                restAdapter = builder.build();
-            }
+            RestAdapter restAdapter = builder.build();
             return restAdapter.create(PaymentAPI.class);
         } else {
             return null;
@@ -71,19 +65,11 @@ class VeritransRestAdapter {
                     .create();
             RestAdapter.Builder builder = new RestAdapter.Builder()
                     .setConverter(new GsonConverter(gson))
-                    .setLogLevel(RestAdapter.LogLevel.FULL)
-                    .setClient(new OkClient(okHttpClient));
-            RestAdapter restAdapter;
-
-            builder.setEndpoint(veritransSDK.getMerchantServerUrl());
-            restAdapter = builder.build();
-
-            if (BuildConfig.DEBUG) {
-                restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
-            }
-
+                    .setLogLevel(LOG_LEVEL)
+                    .setClient(new OkClient(okHttpClient))
+                    .setEndpoint(veritransSDK.getMerchantServerUrl());
+            RestAdapter restAdapter = builder.build();
             return restAdapter.create(PaymentAPI.class);
-
         } else {
             return null;
         }
@@ -94,18 +80,13 @@ class VeritransRestAdapter {
         if (paymentSdk != null
                 && paymentSdk.getContext() != null
                 && Utils.isNetworkAvailable(paymentSdk.getContext())) {
-
             OkHttpClient okHttpClient = new OkHttpClient();
             okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
-
             RestAdapter.Builder builder = new RestAdapter.Builder()
                     .setLogLevel(LOG_LEVEL)
-                    .setClient(new OkClient(okHttpClient));
-            RestAdapter restAdapter;
-
-            builder.setEndpoint(BuildConfig.MIXPANEL_URL);
-            restAdapter = builder.build();
-
+                    .setClient(new OkClient(okHttpClient))
+                    .setEndpoint(BuildConfig.MIXPANEL_URL);
+            RestAdapter restAdapter = builder.build();
             return restAdapter.create(MixpanelApi.class);
         } else {
             return null;
