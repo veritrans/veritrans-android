@@ -5,14 +5,13 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import id.co.veritrans.sdk.core.VeritransSDK;
 
 /**
  * @author rakawm
  */
-public class DefaultTextView extends TextView{
+public class DefaultTextView extends TextViewWithImages {
 
     public DefaultTextView(Context context) {
         super(context);
@@ -38,8 +37,8 @@ public class DefaultTextView extends TextView{
     private void init() {
         VeritransSDK paymentSdk = VeritransSDK.getVeritransSDK();
         if (paymentSdk != null) {
-            if (paymentSdk.getDefaultText() != null) {
-                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getDefaultText());
+            if (VeritransSDK.getDefaultText() != null) {
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), VeritransSDK.getDefaultText());
                 if (typeface != null) {
                     setTypeface(typeface);
                 }
