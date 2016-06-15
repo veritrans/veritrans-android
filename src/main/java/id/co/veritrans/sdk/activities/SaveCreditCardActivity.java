@@ -81,6 +81,9 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
         setContentView(R.layout.activity_save_credit_card);
         initializeTheme();
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
@@ -96,9 +99,6 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
         getCreditCards();
 
         savedCardFragment = RegisterSavedCardFragment.newInstance();
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
@@ -312,14 +312,11 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
         }, 200);
         Logger.i("cards api successful" + cardResponse);
         if (cardResponse != null) {
-
             creditCards.clear();
             creditCards.addAll(cardResponse.getData());
             if (pagerAdapter != null && circlePageIndicator != null) {
-                //cardPagerAdapter.notifyDataSetChanged();
                 circlePageIndicator.notifyDataSetChanged();
             }
-            //processingLayout.setVisibility(View.GONE);
             if (emptyContainer != null) {
                 if (!creditCards.isEmpty()) {
                     emptyContainer.setVisibility(View.GONE);
@@ -328,7 +325,6 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
                 }
 
             }
-            //getSupportActionBar().setTitle(getString(R.string.saved_card));
             titleHeaderTextView.setText(getString(R.string.saved_card));
             replaceFragment(savedCardFragment, true, false);
 

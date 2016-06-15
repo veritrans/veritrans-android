@@ -9,4 +9,8 @@ public class DeleteCardSuccessEvent extends BaseSuccessEvent<DeleteCardResponse>
     public DeleteCardSuccessEvent(DeleteCardResponse response) {
         super(response);
     }
+
+    public DeleteCardSuccessEvent(DeleteCardResponse response, String source) {
+        super(response, source);
+    }
 }

@@ -6,9 +6,7 @@ import android.os.Handler;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IntegerRes;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -42,6 +40,7 @@ import id.co.veritrans.sdk.eventbus.callback.GetCardBusCallback;
 import id.co.veritrans.sdk.eventbus.callback.SaveCardBusCallback;
 import id.co.veritrans.sdk.eventbus.callback.TokenBusCallback;
 import id.co.veritrans.sdk.eventbus.callback.TransactionBusCallback;
+import id.co.veritrans.sdk.eventbus.events.Events;
 import id.co.veritrans.sdk.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.eventbus.events.GetCardFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.GetCardsSuccessEvent;
@@ -125,6 +124,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
         setContentView(R.layout.activity_credit_debit_card_flow);
         storageDataHandler = new StorageDataHandler();
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
@@ -146,10 +148,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
             titleHeaderTextView.setText(getString(R.string.card_details));
         }
         readBankDetails();
-
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
@@ -691,6 +689,12 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
     public void onEvent(GeneralErrorEvent event) {
         SdkUtil.hideProgressDialog();
         SdkUtil.showApiFailedMessage(this, event.getMessage());
+
+        if (event.getSource().equals(Events.GET_CARD)) {
+            AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
+            replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
+            titleHeaderTextView.setText(getString(R.string.card_details));
+        }
     }
 
     @Subscribe

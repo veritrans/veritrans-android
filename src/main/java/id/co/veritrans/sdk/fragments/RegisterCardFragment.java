@@ -97,11 +97,6 @@ public class RegisterCardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void focusChange() {
-        Logger.i("onFocus change has not focus");
-        isValid(false);
-    }
-
     private void bindViews(View view) {
         formLayout = (RelativeLayout) view.findViewById(R.id.form_layout);
         etCardNo = (EditText) view.findViewById(R.id.et_card_no);
@@ -114,47 +109,11 @@ public class RegisterCardFragment extends Fragment {
         questionSaveCardImg.setVisibility(View.GONE);
         saveBtn = (Button) view.findViewById(R.id.btn_pay_now);
         saveBtn.setText(R.string.btn_save_card);
-        //formLayout.setAlpha(0);
-        etCardNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Logger.i("onFocus change etCardNo");
-                if (!hasFocus) {
-                    Logger.i("onFocus change not etCardNo");
-                    focusChange();
-                } else {
-                    Logger.i("onFocus change has focus etCardNo");
-                }
-            }
-        });
-        etCvv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Logger.i("onFocus change etCvv");
-                if (!hasFocus) {
-                    Logger.i("onFocus change not etCvv");
-                    focusChange();
-                } else {
-                    Logger.i("onFocus change has focus etCvv");
-                }
-            }
-        });
-        etExpiryDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Logger.i("onFocus change etExpiryDate");
-                if (!hasFocus) {
-                    Logger.i("onFocus change not etExpiryDate");
-                    focusChange();
-                } else {
-                    Logger.i("onFocus change has focus etExpiryDate");
-                }
-            }
-        });
+
         cbStoreCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                isValid(false);
+                checkCardValidity();
             }
         });
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
@@ -163,7 +122,7 @@ public class RegisterCardFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isValid(true)) {
+                if (checkCardValidity()) {
                     // Save card
                     SdkUtil.showProgressDialog(getActivity(), false);
                     SaveCreditCardActivity activity = (SaveCreditCardActivity) getActivity();
@@ -227,59 +186,66 @@ public class RegisterCardFragment extends Fragment {
             }
         });
 
-        etExpiryDate.addTextChangedListener(new
+        etExpiryDate.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                                                    TextWatcher() {
-                                                        @Override
-                                                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
 
-                                                        }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                                                        @Override
-                                                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
 
-                                                        }
-
-                                                        @Override
-                                                        public void afterTextChanged(Editable s) {
-                                                            String input = s.toString();
-                                                            if (s.length() == 2 && !lastExpDate.endsWith("/")) {
-                                                                int month = Integer.parseInt(input);
-                                                                if (month <= 12) {
-                                                                    etExpiryDate.setText(etExpiryDate.getText().toString() + "/");
-                                                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                                } else {
-                                                                    etExpiryDate.setText(Constants.MONTH_COUNT + "/");
-                                                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                                }
-                                                            } else if (s.length() == 2 && lastExpDate.endsWith("/")) {
-                                                                int month = Integer.parseInt(input);
-                                                                if (month <= 12) {
-                                                                    etExpiryDate.setText(etExpiryDate.getText().toString().substring(0, 1));
-                                                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                                } else {
-                                                                    etExpiryDate.setText("");
-                                                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                                }
-                                                            } else if (s.length() == 1) {
-                                                                int month = Integer.parseInt(input);
-                                                                if (month > 1) {
-                                                                    etExpiryDate.setText("0" + etExpiryDate.getText().toString() + "/");
-                                                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                                                }
-                                                            }
-                                                            lastExpDate = etExpiryDate.getText().toString();
-                                                        }
-                                                    }
-
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        String input = s.toString();
+                        if (s.length() == 2 && !lastExpDate.endsWith("/")) {
+                            int month = Integer.parseInt(input);
+                            if (month <= 12) {
+                                etExpiryDate.setText(etExpiryDate.getText().toString() + "/");
+                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                            } else {
+                                etExpiryDate.setText(Constants.MONTH_COUNT + "/");
+                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                            }
+                        } else if (s.length() == 2 && lastExpDate.endsWith("/")) {
+                            try {
+                                int month = Integer.parseInt(input);
+                                if (month <= 12) {
+                                    etExpiryDate.setText(etExpiryDate.getText().toString().substring(0, 1));
+                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                } else {
+                                    etExpiryDate.setText("");
+                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                }
+                            } catch (Exception exception) {
+                                Logger.e(exception.toString());
+                            }
+                        } else if (s.length() == 1) {
+                            try {
+                                int month = Integer.parseInt(input);
+                                if (month > 1) {
+                                    etExpiryDate.setText("0" + etExpiryDate.getText().toString() + "/");
+                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                }
+                            } catch (Exception exception) {
+                                Logger.e(exception.toString());
+                            }
+                        }
+                        lastExpDate = etExpiryDate.getText().toString();
+                    }
+                }
         );
     }
 
-    private boolean isValid(boolean isPayButtonClick) {
+    private boolean checkCardValidity() {
         cardNumber = etCardNo.getText().toString().trim().replace(" ", "");
         expiryDate = etExpiryDate.getText().toString().trim();
         cvv = etCvv.getText().toString().trim();
         questionImg.setVisibility(View.VISIBLE);
+        boolean isValid = true;
         try {
             expDateArray = expiryDate.split("/");
             Logger.i("expDate:" + expDateArray[0], "" + expDateArray[1]);
@@ -289,95 +255,47 @@ public class RegisterCardFragment extends Fragment {
             Logger.i("expiry date issue");
         }
         if (TextUtils.isEmpty(cardNumber)) {
-            if (isPayButtonClick) {
-                SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_card_number));
-                // etCardNo.requestFocus();
-            }
             if (!etCardNo.hasFocus()) {
                 etCardNo.setError(getString(R.string.validation_message_card_number));
             }
-            /*etExpiryDate.clearFocus();
-            etCvv.clearFocus();*/
-            return false;
-        } else if (cardNumber.length() < 16 || !SdkUtil.isValidCardNumber(cardNumber)) {
-            /*etCardNo.requestFocus();
-            etExpiryDate.clearFocus();
-            etCvv.clearFocus();*/
+            isValid = false;
+        }
+        if (cardNumber.length() < 15 || !SdkUtil.isValidCardNumber(cardNumber)) {
             if (!etCardNo.hasFocus()) {
                 etCardNo.setError(getString(R.string.validation_message_invalid_card_no));
             }
-            if (isPayButtonClick) {
-                SdkUtil.showSnackbar(getActivity(), getString(R.string
-                        .validation_message_invalid_card_no));
-            }
-            return false;
+            isValid = false;
         } else if (TextUtils.isEmpty(expiryDate)) {
-            /*etCardNo.clearFocus();
-            etCvv.clearFocus();
-            etExpiryDate.requestFocus();*/
-
-            if (isPayButtonClick) {
-                SdkUtil.showSnackbar(getActivity(), getString(R.string
-                        .validation_message_empty_expiry_date));
-            }
             if (!etExpiryDate.hasFocus()) {
                 etExpiryDate.setError(getString(R.string.validation_message_empty_expiry_date));
             }
-            return false;
+            isValid = false;
         } else if (!expiryDate.contains("/")) {
-            /*etCardNo.clearFocus();
-            etCvv.clearFocus();
-            etExpiryDate.requestFocus();*/
-            if (isPayButtonClick) {
-                SdkUtil.showSnackbar(getActivity(), getString(R.string
-                        .validation_message_invalid_expiry_date));
-            }
             if (!etExpiryDate.hasFocus()) {
                 etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
             }
-            return false;
+            isValid = false;
         } else if (expDateArray == null || expDateArray.length != 2) {
-            /*etCardNo.clearFocus();
-            etCvv.clearFocus();
-            etExpiryDate.requestFocus();*/
-            if (isPayButtonClick) {
-                SdkUtil.showSnackbar(getActivity(), getString(R.string
-                        .validation_message_invalid_expiry_date));
-            }
             if (!etExpiryDate.hasFocus()) {
                 etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
             }
-            return false;
+            isValid = false;
         } else if (expDateArray != null) {
             try {
                 expMonth = Integer.parseInt(expDateArray[0]);
             } catch (NumberFormatException e) {
-               /* etCardNo.clearFocus();
-                etCvv.clearFocus();
-                etExpiryDate.requestFocus();*/
-                if (isPayButtonClick) {
-                    SdkUtil.showSnackbar(getActivity(), getString(R.string
-                            .validation_message_invalid_expiry_date));
-                }
                 if (!etExpiryDate.hasFocus()) {
                     etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 }
-                return false;
+                isValid = false;
             }
             try {
                 expYear = Integer.parseInt(expDateArray[1]);
             } catch (NumberFormatException e) {
-              /*  etCardNo.clearFocus();
-                etCvv.clearFocus();
-                etExpiryDate.requestFocus();*/
-                if (isPayButtonClick) {
-                    SdkUtil.showSnackbar(getActivity(), getString(R.string
-                            .validation_message_invalid_expiry_date));
-                }
                 if (!etExpiryDate.hasFocus()) {
                     etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 }
-                return false;
+                isValid = false;
             }
             Calendar calendar = Calendar.getInstance();
             Date date = calendar.getTime();
@@ -388,63 +306,35 @@ public class RegisterCardFragment extends Fragment {
             int currentYear = Integer.parseInt(year);
             Logger.i("currentMonth:" + currentMonth + ",currentYear:" + currentYear);
             if (expYear < currentYear) {
-              /*  etCardNo.clearFocus();
-                etCvv.clearFocus();
-                etExpiryDate.requestFocus();*/
-                if (isPayButtonClick) {
-                    SdkUtil.showSnackbar(getActivity(), getString(R.string
-                            .validation_message_invalid_expiry_date));
-                }
                 if (!etExpiryDate.hasFocus()) {
                     etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 }
-                return false;
+                isValid = false;
             } else if (expYear == currentYear && currentMonth > expMonth) {
-             /*   etCardNo.clearFocus();
-                etCvv.clearFocus();
-                etExpiryDate.requestFocus();*/
-                if (isPayButtonClick) {
-                    SdkUtil.showSnackbar(getActivity(), getString(R.string
-                            .validation_message_invalid_expiry_date));
-                }
                 if (!etExpiryDate.hasFocus()) {
                     etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 }
-                return false;
-            } else if (TextUtils.isEmpty(cvv)) {
-                /*etCardNo.clearFocus();
-                etCvv.requestFocus();
-                etExpiryDate.clearFocus();*/
-                if (isPayButtonClick) {
-                    SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_cvv));
-                }
+                isValid = false;
+            }
+
+            if (TextUtils.isEmpty(cvv)) {
                 if (!etCvv.hasFocus()) {
                     etCvv.setError(getString(R.string.validation_message_cvv));
                 }
                 questionImg.setVisibility(View.GONE);
-                return false;
+                isValid = false;
             } else {
                 if (cvv.length() < 3) {
-                  /*  etCardNo.clearFocus();
-                    etCvv.requestFocus();
-                    etExpiryDate.clearFocus();*/
-                    if (isPayButtonClick) {
-                        SdkUtil.showSnackbar(getActivity(), getString(R.string
-                                .validation_message_invalid_cvv));
-                    }
                     if (!etCvv.hasFocus()) {
                         etCvv.setError(getString(R.string.validation_message_invalid_cvv));
                     }
                     questionImg.setVisibility(View.GONE);
-                    return false;
+                    isValid = false;
                 }
                 questionImg.setVisibility(View.VISIBLE);
-                /*etCvv.clearFocus();
-                cbStoreCard.requestFocus();*/
             }
-
         }
-        return true;
+        return isValid;
     }
 
     private void setCardType() {
