@@ -223,7 +223,6 @@ public class RegisterCardFragment extends Fragment {
                             } catch (Exception exception) {
                                 Logger.e(exception.toString());
                             }
-
                         } else if (s.length() == 1) {
                             try {
                                 int month = Integer.parseInt(input);
@@ -238,7 +237,6 @@ public class RegisterCardFragment extends Fragment {
                         lastExpDate = etExpiryDate.getText().toString();
                     }
                 }
-
         );
     }
 
