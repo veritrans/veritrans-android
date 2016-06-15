@@ -9,4 +9,8 @@ public class GetCardFailedEvent extends BaseFailedEvent<CardResponse> {
     public GetCardFailedEvent(String message, CardResponse response) {
         super(message, response);
     }
+
+    public GetCardFailedEvent(String message, CardResponse response, String source) {
+        super(message, response, source);
+    }
 }
