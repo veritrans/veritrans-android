@@ -130,7 +130,8 @@
     <string name="enter_cvv">Enter CVV</string>
     <string name="valid_thru">Valid Thru</string>
 
-    <string name="zero_month">0 Month</string>
+    <string name="zero_month">0 month</string>
+    <string name="formatted_month">%1$s months</string>
 
 
     <!-- Permata VA Bank Transfer-->
@@ -354,13 +355,13 @@
     <string name="indosat_instruction_step5">5.\tInput your PIN.</string>
     <string name="indosat_instruction_step6">6.\tPayment Complete.</string>
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
-    <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing.</string>
+    <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tEnter your Mandiri token password.</string>
     <string name="mandiri_click_pay_instruction_step3">3.\tPress 3 when it displays APPLI</string>
-    <string name="mandiri_click_pay_instruction_step4">4.\tEnter \'intput 1\' and press</string>
-    <string name="mandiri_click_pay_instruction_step5">5.\tEnter \'intput 2\' and press</string>
-    <string name="mandiri_click_pay_instruction_step6">6.\tEnter \'intput 3\' and press</string>
-    <string name="mandiri_click_pay_instruction_step7">7.\tPut the response code on your Mandiri token \n into the challenge token field.</string>
+    <string name="mandiri_click_pay_instruction_step4">4.\tEnter \'input 1\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
+    <string name="mandiri_click_pay_instruction_step5">5.\tEnter \'input 2\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
+    <string name="mandiri_click_pay_instruction_step6">6.\tEnter \'input 3\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
+    <string name="mandiri_click_pay_instruction_step7">7.\tPut the response code on your Mandiri token into the challenge token field.</string>
     <string name="for_three_seconds">for 3 seconds</string>
     <string name="title_payment_status">Payment Status</string>
     <string name="payment_deny">Payment deny.</string>

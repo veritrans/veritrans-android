@@ -9,4 +9,8 @@ public class GetTokenSuccessEvent extends BaseSuccessEvent<TokenDetailsResponse>
     public GetTokenSuccessEvent(TokenDetailsResponse response) {
         super(response);
     }
+
+    public GetTokenSuccessEvent(TokenDetailsResponse response, String source) {
+        super(response, source);
+    }
 }

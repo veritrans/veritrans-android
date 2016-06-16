@@ -9,4 +9,8 @@ public class GetCardsSuccessEvent extends BaseSuccessEvent<CardResponse> {
     public GetCardsSuccessEvent(CardResponse response) {
         super(response);
     }
+
+    public GetCardsSuccessEvent(CardResponse response, String source) {
+        super(response, source);
+    }
 }

@@ -17,7 +17,8 @@
         <activity
             android:name=".activities.CreditDebitCardFlowActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/VeritransAppTheme"/>
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".activities.BankTransferActivity"
             android:screenOrientation="portrait"
@@ -73,7 +74,8 @@
         <activity
             android:name=".activities.OffersActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/VeritransAppTheme"/>
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="adjustNothing" />
 
         <activity android:name=".activities.SelectBankTransferActivity"
             android:screenOrientation="portrait"
@@ -86,7 +88,8 @@
         <activity
             android:name=".activities.SaveCreditCardActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/VeritransAppTheme" />
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="adjustNothing" />
     </application>
 
 </manifest>

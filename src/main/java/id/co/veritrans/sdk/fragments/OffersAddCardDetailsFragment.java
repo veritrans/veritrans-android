@@ -63,7 +63,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private ImageView imageViewPlus = null;
     private ImageView imageViewMinus = null;
     private TextView textViewInstalment = null;
-    private RelativeLayout layoutPayWithInstalment = null;
+    private LinearLayout layoutPayWithInstalment = null;
     private String lastExpDate = "";
     private EditText etCardNo;
     private EditText etCvv;
@@ -159,7 +159,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
             imageViewPlus = (ImageView) view.findViewById(R.id.img_plus);
             imageViewMinus = (ImageView) view.findViewById(R.id.img_minus);
             textViewInstalment = (TextView) view.findViewById(R.id.text_instalment);
-            layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id.layout_pay_with_instalments);
+            layoutPayWithInstalment = (LinearLayout) view.findViewById(R.id.layout_pay_with_instalments);
             scanCardBtn = (Button) view.findViewById(R.id.scan_card);
 
             if (offerType.equalsIgnoreCase(OffersActivity.OFFER_TYPE_INSTALMENTS)) {
@@ -240,7 +240,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
             if (offersList.get(offerPosition).getDuration() != null || !offersList.get(offerPosition).getDuration().isEmpty()) {
                 currentPosition = 0;
                 totalPositions = offersList.get(offerPosition).getDuration().size() - 1;
-                textViewInstalment.setText(offersList.get(offerPosition).getDuration().get(0) + " " + MONTH);
+                textViewInstalment.setText(getString(R.string.formatted_month, offersList.get(offerPosition).getDuration().get(0)));
                 disableEnableMinusPlus();
             }
         }
@@ -268,7 +268,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private void onMinusClicked() {
         if (currentPosition > 0 && currentPosition <= totalPositions) {
             currentPosition = currentPosition - 1;
-            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get(offerPosition).getDuration().get(currentPosition).toString() + " " + MONTH);
+            textViewInstalment.setText(getString(R.string.formatted_month, ((OffersActivity) getActivity()).offersListModels.get(offerPosition).getDuration().get(currentPosition)));
         }
         disableEnableMinusPlus();
     }
@@ -276,7 +276,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private void onPlusClicked() {
         if (currentPosition >= 0 && currentPosition < totalPositions) {
             currentPosition = currentPosition + 1;
-            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get(offerPosition).getDuration().get(currentPosition).toString() + " " + MONTH);
+            textViewInstalment.setText(getString(R.string.formatted_month, ((OffersActivity) getActivity()).offersListModels.get(offerPosition).getDuration().get(currentPosition)));
         }
         disableEnableMinusPlus();
     }
