@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
@@ -123,6 +124,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
         setContentView(R.layout.activity_credit_debit_card_flow);
         storageDataHandler = new StorageDataHandler();
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
@@ -144,10 +148,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
             titleHeaderTextView.setText(getString(R.string.card_details));
         }
         readBankDetails();
-
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
@@ -689,6 +689,12 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
     public void onEvent(GeneralErrorEvent event) {
         SdkUtil.hideProgressDialog();
         SdkUtil.showApiFailedMessage(this, event.getMessage());
+
+        if (event.getSource().equals(Events.GET_CARD)) {
+            AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
+            replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
+            titleHeaderTextView.setText(getString(R.string.card_details));
+        }
     }
 
     @Subscribe

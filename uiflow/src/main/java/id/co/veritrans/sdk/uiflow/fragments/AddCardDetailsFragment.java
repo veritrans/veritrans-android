@@ -269,19 +269,28 @@ public class AddCardDetailsFragment extends Fragment {
                                 etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                             }
                         } else if (s.length() == 2 && lastExpDate.endsWith("/")) {
-                            int month = Integer.parseInt(input);
-                            if (month <= 12) {
-                                etExpiryDate.setText(etExpiryDate.getText().toString().substring(0, 1));
-                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                            } else {
-                                etExpiryDate.setText("");
-                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                            try {
+                                int month = Integer.parseInt(input);
+                                if (month <= 12) {
+                                    etExpiryDate.setText(etExpiryDate.getText().toString().substring(0, 1));
+                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                } else {
+                                    etExpiryDate.setText("");
+                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                }
+                            } catch (Exception exception) {
+                                Logger.e(exception.toString());
                             }
+
                         } else if (s.length() == 1) {
-                            int month = Integer.parseInt(input);
-                            if (month > 1) {
-                                etExpiryDate.setText("0" + etExpiryDate.getText().toString() + "/");
-                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                            try {
+                                int month = Integer.parseInt(input);
+                                if (month > 1) {
+                                    etExpiryDate.setText("0" + etExpiryDate.getText().toString() + "/");
+                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                }
+                            } catch (Exception exception) {
+                                Logger.e(exception.toString());
                             }
                         }
                         lastExpDate = etExpiryDate.getText().toString();

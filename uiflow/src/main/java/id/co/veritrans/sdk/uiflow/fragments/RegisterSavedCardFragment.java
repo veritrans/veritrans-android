@@ -96,16 +96,6 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
         creditCardLayout = (LinearLayout) view.findViewById(R.id.credit_card_holder);
         newCardButtonLayout = (RelativeLayout) view.findViewById(R.id.new_card_button_layout);
-       /* ViewTreeObserver vto = creditCardLayout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                SavedCardFragment.this.creditCardLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                //width = SavedCardFragment.this.addCardBt.getMeasuredWidth();
-
-
-            }
-        });*/
 
         addCardBt = (FloatingActionButton) view.findViewById(R.id.btn_add_card);
         addCardBt.setOnClickListener(new View.OnClickListener() {
@@ -117,16 +107,6 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
             }
         });
 
-        /*ViewTreeObserver vto = addCardBt.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                SavedCardFragment.this.addCardBt.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                //width = SavedCardFragment.this.addCardBt.getMeasuredWidth();
-                ((CreditDebitCardFlowActivity)getActivity()).setFabHeight(SavedCardFragment.this.addCardBt.getMeasuredHeight());
-
-            }
-        });*/
         float cardWidth = ((SaveCreditCardActivity) getActivity()).getScreenWidth();
         float cardHeight = cardWidth * Constants.CARD_ASPECT_RATIO;
         Logger.i("card width:" + cardWidth + ",height:" + cardHeight);
@@ -155,7 +135,6 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
 
                     @Override
                     public void onPageSelected(int position) {
-                    /*SdkUtil.hideKeyboard(getActivity());*/
                     }
 
                     @Override
@@ -212,7 +191,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     }
 
     public void hideLayouts() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             RegisterCardFragment addCardDetailsFragment = RegisterCardFragment
                     .newInstance();
             ((SaveCreditCardActivity) getActivity()).replaceFragment
@@ -236,7 +215,6 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                //payNowBtn.setVisibility(View.VISIBLE);
                 addCardBt.setVisibility(View.GONE);
                 RegisterCardFragment addCardDetailsFragment = RegisterCardFragment
                         .newInstance();
@@ -261,7 +239,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     }
 
     public void showLayouts() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             return;
         }
         ((SaveCreditCardActivity) getActivity()).getBtnMorph().setVisibility(View.VISIBLE);
@@ -340,14 +318,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
 
             //notifydataset change not worked properly for viewpager so setting it again
             Logger.i("setting view pager value");
-            // setViewPagerValues(creditCardsNew);
-                        /*if(creditCards.size()>1) {
-                            try {
-                                savedCardPager.setCurrentItem(position);
-                            } catch (ArrayIndexOutOfBoundsException e) {
-                                savedCardPager.setCurrentItem(creditCards.size() - 1);
-                            }
-                        }*/
+
             if (cardPagerAdapter != null && circlePageIndicator != null) {
                 Logger.i("notifying data");
                 cardPagerAdapter.notifyChangeInPosition(1);
