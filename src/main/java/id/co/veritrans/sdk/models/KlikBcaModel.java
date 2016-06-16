@@ -13,19 +13,19 @@ public class KlikBcaModel extends TransactionModel {
     public static final String PAYMENT_TYPE = "bca_klikbca";
 
     @SerializedName("bca_klikbca")
-    private KlikBcaDescriptionModel descriptionModel;
+    private KlikBCADescriptionModel descriptionModel;
 
     public KlikBcaModel() {
     }
 
-    public KlikBcaModel(KlikBcaDescriptionModel klikBcaDescriptionModel,
+    public KlikBcaModel(KlikBCADescriptionModel klikBCADescriptionModel,
                         TransactionDetails transactionDetails,
                         ArrayList<ItemDetails> itemDetails,
                         ArrayList<BillingAddress> billingAddresses,
                         ArrayList<ShippingAddress> shippingAddresses,
                         CustomerDetails customerDetails) {
         setTransactionDetails(transactionDetails);
-        setDescriptionModel(klikBcaDescriptionModel);
+        setDescriptionModel(klikBCADescriptionModel);
         this.paymentType = PAYMENT_TYPE;
         this.customerDetails = customerDetails;
         this.itemDetails = itemDetails;
@@ -45,11 +45,11 @@ public class KlikBcaModel extends TransactionModel {
         this.transactionDetails = transactionDetails;
     }
 
-    public KlikBcaDescriptionModel getDescriptionModel() {
+    public KlikBCADescriptionModel getDescriptionModel() {
         return descriptionModel;
     }
 
-    public void setDescriptionModel(KlikBcaDescriptionModel descriptionModel) {
+    public void setDescriptionModel(KlikBCADescriptionModel descriptionModel) {
         this.descriptionModel = descriptionModel;
     }
 }

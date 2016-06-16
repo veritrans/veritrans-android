@@ -27,7 +27,7 @@ import id.co.veritrans.sdk.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.fragments.KlikBCAFragment;
-import id.co.veritrans.sdk.models.KlikBcaDescriptionModel;
+import id.co.veritrans.sdk.models.KlikBCADescriptionModel;
 import id.co.veritrans.sdk.models.TransactionResponse;
 import id.co.veritrans.sdk.utilities.Utils;
 
@@ -119,7 +119,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
                     if (klikBCAFragment.checkUserId()) {
                         // Do the payment
                         SdkUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
-                        KlikBcaDescriptionModel model = new KlikBcaDescriptionModel("Any description", klikBCAFragment.getUserId());
+                        KlikBCADescriptionModel model = new KlikBCADescriptionModel("Any description", klikBCAFragment.getUserId());
                         mVeritransSDK.paymentUsingKlikBCA(model);
                     }
                 }

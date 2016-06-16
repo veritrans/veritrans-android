@@ -28,7 +28,7 @@ import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
-import id.co.veritrans.sdk.models.KlikBcaDescriptionModel;
+import id.co.veritrans.sdk.models.KlikBCADescriptionModel;
 import id.co.veritrans.sdk.models.KlikBcaModel;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
@@ -364,7 +364,7 @@ public class VeritransSDK {
         }
     }
 
-    public void paymentUsingKlikBCA(KlikBcaDescriptionModel descriptionModel) {
+    public void paymentUsingKlikBCA(KlikBCADescriptionModel descriptionModel) {
         if (transactionRequest != null && descriptionModel != null) {
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
             KlikBcaModel klikBcaModel = SdkUtil.getKlikBCAModel(transactionRequest, descriptionModel);
