@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
             VeritransSDK veritransSDK = new SdkUIFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
                     .setUIFlow(new SdkFlow())// initation uiflow mode
                     .setExternalScanner(new ScanCard())
-
                     .enableLog(true)
 
                     .setDefaultText("open_sans_regular.ttf")
