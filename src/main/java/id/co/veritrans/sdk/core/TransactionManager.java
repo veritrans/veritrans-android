@@ -47,6 +47,7 @@ import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.GetOffersResponseModel;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
+import id.co.veritrans.sdk.models.KlikBCAModel;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
@@ -85,6 +86,7 @@ class TransactionManager {
     private static final String PAYMENT_TYPE_BBM_MONEY = "bbm_money";
     private static final String PAYMENT_TYPE_INDOSAT_DOMPETKU = "indosat_dompetku";
     private static final String PAYMENT_TYPE_INDOMARET = "indomaret";
+    private static final String PAYMENT_TYPE_KLIK_BCA = "bca_klikbca";
 
     // Bank transfer type
     private static final String BANK_PERMATA = "permata";
@@ -1897,6 +1899,80 @@ class TransactionManager {
         }
     }
 
+    public static void paymentUsingKlikBCA(KlikBCAModel klikBCAModel) {
+        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        final long start = System.currentTimeMillis();
+
+        if (veritransSDK != null) {
+            PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
+            if (apiInterface != null) {
+                apiInterface.paymentUsingKlikBCA(klikBCAModel)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<TransactionResponse>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                long end = System.currentTimeMillis();
+
+                                if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                                    VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                                    Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                } else {
+                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                                    Logger.i("General error occurred " + e.getMessage());
+                                }
+
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, e.getMessage());
+
+                                releaseResources();
+                            }
+
+                            @Override
+                            public void onNext(TransactionResponse response) {
+                                long end = System.currentTimeMillis();
+
+                                if (response != null) {
+                                    if (veritransSDK.isLogEnabled()) {
+                                        displayResponse(response);
+                                    }
+                                    if (response.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                            || response.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                        VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(response, Events.PAYMENT));
+
+                                        // Track Mixpanel event
+                                        trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_KLIK_BCA, end - start);
+                                    } else {
+                                        VeritransBusProvider.getInstance().post(new TransactionFailedEvent(response.getStatusMessage(), response, Events.PAYMENT));
+
+                                        // Track Mixpanel event
+                                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, response.getStatusMessage());
+                                    }
+
+                                } else {
+                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                                    Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response), null);
+                                }
+                                releaseResources();
+                            }
+                        });
+            } else {
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
+                Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
+                releaseResources();
+            }
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            releaseResources();
+        }
+
+    }
 
     // Mixpanel event tracker
     private static void trackMixpanel(String eventName, String paymentType, String bankType, long responseTime) {
