@@ -16,11 +16,8 @@ public class UIFlow implements ISdkFlow {
 
     @Override
     public void runUIFlow(Context context) {
-        Log.i("xxx", "runUIFlow()>implement");
         VeritransSDK sdk = VeritransSDK.getVeritransSDK();
         if(sdk != null){
-            Log.i("xxx", "runUIFlow()>implement>notnull");
-
             context.startActivity(new Intent(context,
                     UserDetailsActivity.class));
         }

@@ -36,7 +36,7 @@ import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.sample.core.CoreFlowActivity;
 import id.co.veritrans.sdk.scancard.ScanCard;
 import id.co.veritrans.sdk.uiflow.UIFlow;
-import id.co.veritrans.sdk.uiflow.SdkFlowBuilder;
+import id.co.veritrans.sdk.uiflow.SdkUIFlowBuilder;
 
 public class MainActivity extends AppCompatActivity implements GetAuthenticationBusCallback, TransactionFinishedCallback {
     private static final int CORE_FLOW = 1;
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
 
         }else{
             //sdk initiation for UIflow
-            VeritransSDK veritransSDK = new SdkFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
+            VeritransSDK veritransSDK = new SdkUIFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
                     .setUIFlow(new UIFlow())// initation uiflow mode
                     .setExternalScanner(new ScanCard())
                     .enableLog(true)

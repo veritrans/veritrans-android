@@ -8,7 +8,7 @@ import id.co.veritrans.sdk.coreflow.core.ISdkFlow;
 /**
  * Created by ziahaqi on 15/06/2016.
  */
-public class SdkFlowBuilder extends SdkCoreFlowBuilder {
+public class SdkUIFlowBuilder extends SdkCoreFlowBuilder {
 
     /**
      * It  will initialize an data required to sdk.
@@ -17,49 +17,49 @@ public class SdkFlowBuilder extends SdkCoreFlowBuilder {
      * @param clientKey
      * @param merchantServerUrl
      */
-    public SdkFlowBuilder(Context context, String clientKey, String merchantServerUrl) {
+    public SdkUIFlowBuilder(Context context, String clientKey, String merchantServerUrl) {
         super(context, clientKey, merchantServerUrl);
 
     }
 
 
 
-    public SdkFlowBuilder setUIFlow(ISdkFlow sdkFlow){
+    public SdkUIFlowBuilder setUIFlow(ISdkFlow sdkFlow){
         this.sdkFlow = sdkFlow;
         return this;
     }
 
-    public SdkFlowBuilder setExternalScanner(IScanner externalScanner){
+    public SdkUIFlowBuilder setExternalScanner(IScanner externalScanner){
         this.externalScanner = externalScanner;
         return this;
     }
 
     @Override
-    public SdkFlowBuilder setBoldText(String boldText) {
+    public SdkUIFlowBuilder setBoldText(String boldText) {
         this.boldText = boldText;
         return this;
     }
 
     @Override
-    public SdkFlowBuilder setColorTheme(String colorTheme) {
+    public SdkUIFlowBuilder setColorTheme(String colorTheme) {
         this.colorTheme = colorTheme;
         return this;
     }
 
     @Override
-    public SdkFlowBuilder setSemiBoldText(String semiBoldText) {
+    public SdkUIFlowBuilder setSemiBoldText(String semiBoldText) {
         this.semiBoldText = semiBoldText;
         return this;
     }
 
     @Override
-    public SdkFlowBuilder setDefaultText(String defaultText) {
+    public SdkUIFlowBuilder setDefaultText(String defaultText) {
         this.defaultText = defaultText;
         return this;
     }
 
     @Override
-    public SdkFlowBuilder enableLog(boolean enableLog) {
+    public SdkUIFlowBuilder enableLog(boolean enableLog) {
        this.enableLog = enableLog;
         return this;
     }
