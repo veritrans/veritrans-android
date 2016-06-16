@@ -39,8 +39,8 @@ import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetku;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
-import id.co.veritrans.sdk.models.KlikBCADescriptionModel;
-import id.co.veritrans.sdk.models.KlikBCAModel;
+import id.co.veritrans.sdk.models.KlikBcaDescriptionModel;
+import id.co.veritrans.sdk.models.KlikBcaModel;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
@@ -328,7 +328,7 @@ public class SdkUtil {
         return model;
     }
 
-    protected static KlikBCAModel getKlikBCAModel(TransactionRequest request, KlikBCADescriptionModel descriptionModel) {
+    protected static KlikBcaModel getKlikBCAModel(TransactionRequest request, KlikBcaDescriptionModel descriptionModel) {
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(), request.getOrderId());
 
         if (request.isUiEnabled()) {
@@ -336,7 +336,7 @@ public class SdkUtil {
             request = initializeUserInfo(request);
         }
 
-        return new KlikBCAModel(
+        return new KlikBcaModel(
                 descriptionModel,
                 transactionDetails,
                 request.getItemDetails(),

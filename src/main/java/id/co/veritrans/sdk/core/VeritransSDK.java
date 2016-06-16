@@ -28,8 +28,8 @@ import id.co.veritrans.sdk.models.DescriptionModel;
 import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
-import id.co.veritrans.sdk.models.KlikBCADescriptionModel;
-import id.co.veritrans.sdk.models.KlikBCAModel;
+import id.co.veritrans.sdk.models.KlikBcaDescriptionModel;
+import id.co.veritrans.sdk.models.KlikBcaModel;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
@@ -364,12 +364,12 @@ public class VeritransSDK {
         }
     }
 
-    public void paymentUsingKlikBCA(KlikBCADescriptionModel descriptionModel) {
+    public void paymentUsingKlikBCA(KlikBcaDescriptionModel descriptionModel) {
         if (transactionRequest != null && descriptionModel != null) {
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
-            KlikBCAModel klikBCAModel = SdkUtil.getKlikBCAModel(transactionRequest, descriptionModel);
+            KlikBcaModel klikBcaModel = SdkUtil.getKlikBCAModel(transactionRequest, descriptionModel);
             isRunning = true;
-            TransactionManager.paymentUsingKlikBCA(klikBCAModel);
+            TransactionManager.paymentUsingKlikBCA(klikBcaModel);
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
