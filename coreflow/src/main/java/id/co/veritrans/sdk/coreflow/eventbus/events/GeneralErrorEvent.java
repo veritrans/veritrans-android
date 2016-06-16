@@ -5,9 +5,15 @@ package id.co.veritrans.sdk.coreflow.eventbus.events;
  */
 public class GeneralErrorEvent {
     private String message;
+    private String source;
 
     public GeneralErrorEvent(String message) {
         setMessage(message);
+    }
+
+    public GeneralErrorEvent(String message, String source) {
+        setMessage(message);
+        setSource(source);
     }
 
     public String getMessage() {
@@ -16,5 +22,13 @@ public class GeneralErrorEvent {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

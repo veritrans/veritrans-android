@@ -8,6 +8,7 @@ import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 public class TransactionFinishedEvent {
 
     private TransactionResponse response;
+    private String source;
 
     public TransactionFinishedEvent(TransactionResponse response) {
         setResponse(response);
@@ -17,11 +18,24 @@ public class TransactionFinishedEvent {
 
     }
 
+    public TransactionFinishedEvent(TransactionResponse response, String source) {
+        setResponse(response);
+        setSource(source);
+    }
+
     public TransactionResponse getResponse() {
         return response;
     }
 
     public void setResponse(TransactionResponse response) {
         this.response = response;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

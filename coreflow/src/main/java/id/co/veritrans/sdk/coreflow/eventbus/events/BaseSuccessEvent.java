@@ -6,9 +6,15 @@ package id.co.veritrans.sdk.coreflow.eventbus.events;
  */
 public abstract class BaseSuccessEvent<T> {
     private T response;
+    private String source;
 
     public BaseSuccessEvent(T response) {
         setResponse(response);
+    }
+
+    public BaseSuccessEvent(T response, String source) {
+        setResponse(response);
+        setSource(source);
     }
 
     public T getResponse() {
@@ -17,5 +23,13 @@ public abstract class BaseSuccessEvent<T> {
 
     public void setResponse(T response) {
         this.response = response;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

@@ -9,4 +9,8 @@ public class GetOfferSuccessEvent extends BaseSuccessEvent<GetOffersResponseMode
     public GetOfferSuccessEvent(GetOffersResponseModel response) {
         super(response);
     }
+
+    public GetOfferSuccessEvent(GetOffersResponseModel response, String source) {
+        super(response, source);
+    }
 }

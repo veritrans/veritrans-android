@@ -9,4 +9,8 @@ public class CardRegistrationFailedEvent extends BaseFailedEvent<CardRegistratio
     public CardRegistrationFailedEvent(String message, CardRegistrationResponse response) {
         super(message, response);
     }
+
+    public CardRegistrationFailedEvent(String message, CardRegistrationResponse response, String source) {
+        super(message, response, source);
+    }
 }

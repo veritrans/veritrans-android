@@ -9,4 +9,8 @@ public class RegisterCardSuccessEvent extends BaseSuccessEvent<RegisterCardRespo
     public RegisterCardSuccessEvent(RegisterCardResponse response) {
         super(response);
     }
+
+    public RegisterCardSuccessEvent(RegisterCardResponse response, String source) {
+        super(response, source);
+    }
 }

@@ -10,4 +10,8 @@ public class GetTokenFailedEvent extends BaseFailedEvent<TokenDetailsResponse> {
     public GetTokenFailedEvent(String message, TokenDetailsResponse response) {
         super(message, response);
     }
+
+    public GetTokenFailedEvent(String message, TokenDetailsResponse response, String source) {
+        super(message, response, source);
+    }
 }

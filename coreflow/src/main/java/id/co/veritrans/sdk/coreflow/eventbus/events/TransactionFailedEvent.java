@@ -9,4 +9,8 @@ public class TransactionFailedEvent extends BaseFailedEvent<TransactionResponse>
     public TransactionFailedEvent(String message, TransactionResponse response) {
         super(message, response);
     }
+
+    public TransactionFailedEvent(String message, TransactionResponse response, String source) {
+        super(message, response, source);
+    }
 }

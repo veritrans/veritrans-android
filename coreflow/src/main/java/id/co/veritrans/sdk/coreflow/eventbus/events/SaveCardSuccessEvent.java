@@ -9,4 +9,8 @@ public class SaveCardSuccessEvent extends BaseSuccessEvent<SaveCardResponse> {
     public SaveCardSuccessEvent(SaveCardResponse response) {
         super(response);
     }
+
+    public SaveCardSuccessEvent(SaveCardResponse response, String source) {
+        super(response, source);
+    }
 }

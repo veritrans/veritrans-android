@@ -9,4 +9,8 @@ public class TransactionStatusSuccessEvent extends BaseSuccessEvent<TransactionS
     public TransactionStatusSuccessEvent(TransactionStatusResponse response) {
         super(response);
     }
+
+    public TransactionStatusSuccessEvent(TransactionStatusResponse response, String source) {
+        super(response, source);
+    }
 }

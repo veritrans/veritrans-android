@@ -9,4 +9,8 @@ public class SaveCardFailedEvent extends BaseFailedEvent<SaveCardResponse> {
     public SaveCardFailedEvent(String message, SaveCardResponse response) {
         super(message, response);
     }
+
+    public SaveCardFailedEvent(String message, SaveCardResponse response, String source) {
+        super(message, response, source);
+    }
 }
