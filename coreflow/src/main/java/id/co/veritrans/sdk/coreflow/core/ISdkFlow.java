@@ -5,7 +5,7 @@ import android.content.Context;
 /**
  * Created by ziahaqi on 15/06/2016.
  */
-public interface SdkFlow {
+public interface ISdkFlow {
 
     public void runUIFlow(Context context);
 

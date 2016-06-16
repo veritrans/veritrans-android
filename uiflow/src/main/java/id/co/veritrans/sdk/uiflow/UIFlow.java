@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import id.co.veritrans.sdk.coreflow.core.ISdkFlow;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
@@ -11,7 +12,7 @@ import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
 /**
  * Created by HQ on 15/06/2016.
  */
-public class SdkFlow implements id.co.veritrans.sdk.coreflow.core.SdkFlow {
+public class UIFlow implements ISdkFlow {
 
     @Override
     public void runUIFlow(Context context) {

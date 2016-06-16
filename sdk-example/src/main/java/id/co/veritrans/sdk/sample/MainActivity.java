@@ -35,9 +35,8 @@ import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.sample.core.CoreFlowActivity;
 import id.co.veritrans.sdk.scancard.ScanCard;
-import id.co.veritrans.sdk.uiflow.SdkFlow;
-import id.co.veritrans.sdk.uiflow.SdkUIFlowBuilder;
-import id.co.veritrans.sdk.uiflow.UIFlowSetup;
+import id.co.veritrans.sdk.uiflow.UIFlow;
+import id.co.veritrans.sdk.uiflow.SdkFlowBuilder;
 
 public class MainActivity extends AppCompatActivity implements GetAuthenticationBusCallback, TransactionFinishedCallback {
     private static final int CORE_FLOW = 1;
@@ -83,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
 
         }else{
             //sdk initiation for UIflow
-            VeritransSDK veritransSDK = new SdkUIFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
-                    .setUIFlow(new SdkFlow())// initation uiflow mode
+            VeritransSDK veritransSDK = new SdkFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
+                    .setUIFlow(new UIFlow())// initation uiflow mode
                     .setExternalScanner(new ScanCard())
                     .enableLog(true)
 
@@ -187,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         uiCardRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIFlowSetup.initUIFlowCardRegister(MainActivity.this);
+                VeritransSDK.getVeritransSDK().startRegisterCardUIFlow(MainActivity.this);
             }
         });
 

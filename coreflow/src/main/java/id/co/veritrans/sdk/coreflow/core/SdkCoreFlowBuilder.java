@@ -24,7 +24,7 @@ public class SdkCoreFlowBuilder {
     protected String merchantServerUrl = null;
     protected String colorTheme = null;
     protected String merchantName = null;
-    protected SdkFlow sdkFlow;
+    protected ISdkFlow sdkFlow;
     protected String defaultText;
     protected String boldText;
     protected String semiBoldText;

@@ -61,7 +61,7 @@ public class VeritransSDK {
     private static String boldText = null;
     private static String semiBoldText = null;
     private static String merchantName = null;
-    private static SdkFlow uiflow;
+    private static ISdkFlow uiflow;
     private static IScanner externalScanner;
     protected boolean isRunning = false;
     private TransactionRequest transactionRequest = null;
@@ -502,12 +502,11 @@ public class VeritransSDK {
     /**
      * This will start actual execution of save card UI flow.
      *
-     * @param sdkFLow current activity.
+     * @param context current activity.
      */
-    @Deprecated
-    public void startRegisterCardUIFlow(UIFlow sdkFLow) {
-        if(sdkFLow != null && sdkFLow.getType() == UIFlow.CARD_REGISTER){
-            sdkFLow.getContext().startActivity(sdkFLow.getIntent());
+    public void startRegisterCardUIFlow(Context context) {
+        if(uiflow != null){
+            uiflow.runRegisterCard(context);
         }
     }
     /**
@@ -517,7 +516,6 @@ public class VeritransSDK {
      */
 
     public void startPaymentUiFlow(Context context) {
-        Log.i("xxx", "startPaymentUiFlow():uiflow" + uiflow);
 
         if (transactionRequest != null && !isRunning) {
 
