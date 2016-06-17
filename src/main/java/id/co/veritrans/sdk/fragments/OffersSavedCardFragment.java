@@ -51,7 +51,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
     private ImageView imageViewPlus = null;
     private ImageView imageViewMinus = null;
     private TextView textViewInstalment = null;
-    private RelativeLayout layoutPayWithInstalment = null;
+    private LinearLayout layoutPayWithInstalment = null;
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
@@ -143,8 +143,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             if (offersList.get(offerPosition).getDuration() != null || !offersList.get(offerPosition).getDuration().isEmpty()) {
                 currentPosition = 0;
                 totalPositions = offersList.get(offerPosition).getDuration().size() - 1;
-                textViewInstalment.setText(offersList.get(offerPosition).getDuration().get(0)
-                        .toString() + " " + MONTH);
+                textViewInstalment.setText(getString(R.string.formatted_month, offersList.get(offerPosition).getDuration().get(0)));
                 disableEnableMinusPlus();
             }
         }
@@ -172,9 +171,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
     private void onMinusClicked() {
         if (currentPosition > 0 && currentPosition <= totalPositions) {
             currentPosition = currentPosition - 1;
-            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get
-                    (offerPosition).getDuration().get(currentPosition)
-                    .toString() + " " + MONTH);
+            textViewInstalment.setText(getString(R.string.formatted_month, ((OffersActivity) getActivity()).offersListModels.get(offerPosition).getDuration().get(currentPosition)));
         }
         disableEnableMinusPlus();
     }
@@ -182,9 +179,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
     private void onPlusClicked() {
         if (currentPosition >= 0 && currentPosition < totalPositions) {
             currentPosition = currentPosition + 1;
-            textViewInstalment.setText(((OffersActivity) getActivity()).offersListModels.get
-                    (offerPosition).getDuration().get(currentPosition)
-                    .toString() + " " + MONTH);
+            textViewInstalment.setText(getString(R.string.formatted_month, ((OffersActivity) getActivity()).offersListModels.get(offerPosition).getDuration().get(currentPosition)));
         }
         disableEnableMinusPlus();
     }
@@ -193,22 +188,10 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
         creditCardLayout = (LinearLayout)view.findViewById(R.id.credit_card_holder);
         creditCardLayout.setBackgroundColor(veritransSDK.getThemeColor());
         newCardButtonLayout = (RelativeLayout)view.findViewById(R.id.new_card_button_layout);
-        layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id
-                .layout_pay_with_instalments);
-       /* ViewTreeObserver vto = creditCardLayout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                OffersSavedCardFragment.this.creditCardLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                //width = SavedCardFragment.this.addCardBt.getMeasuredWidth();
-
-
-            }
-        });*/
+        layoutPayWithInstalment = (LinearLayout) view.findViewById(R.id.layout_pay_with_instalments);
 
         textViewTitleOffers = (TextView) getActivity().findViewById(R.id.text_title);
-        textViewTitleCardDetails = (TextView) getActivity().findViewById(R.id
-                .text_title_card_details);
+        textViewTitleCardDetails = (TextView) getActivity().findViewById(R.id.text_title_card_details);
         textViewOfferName = (TextView) getActivity().findViewById(R.id.text_title_offer_name);
 
         setToolbar();
@@ -276,7 +259,6 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
 
                     @Override
                     public void onPageSelected(int position) {
-                    /*SdkUtil.hideKeyboard(getActivity());*/
                     }
 
                     @Override

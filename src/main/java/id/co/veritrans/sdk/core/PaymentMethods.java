@@ -14,19 +14,6 @@ import id.co.veritrans.sdk.models.PaymentMethodsModel;
  */
 public class PaymentMethods {
 
-    public static final String METHOD_OFFERS = "Offers";
-    public static final String METHOD_CREDIT_CARD = "Credit/Debit Card";
-    public static final String METHOD_MANDIRI_CLICKPAY = "Mandiri Clickpay";
-    public static final String METHOD_CIMB_CLICKS = "CIMB Clicks";
-    public static final String METHOD_EPAY_BRI = "ePay BRI";
-    public static final String METHOD_BBM_MONEY = "BBM Money";
-    public static final String METHOD_INDOSAT_DOMPETKU = "Indosat Dompetku";
-    public static final String METHOD_MANDIRI_ECASH = "Mandiri e-Cash";
-    public static final String METHOD_BANK_TRANSFER = "Bank Transfer";
-    public static final String METHOD_MANDIRI_BILL = "Mandiri Bill Payment";
-    public static final String METHOD_INDOMARET = "Indomaret";
-    public static final String METHOD_BCA_KLIKPAY = "BCA KlikPay";
-
     public static PaymentMethodsModel getMethodOffers(Context context) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_offers), R.drawable.ic_offers, Constants.PAYMENT_METHOD_NOT_SELECTED);
     }
@@ -75,6 +62,9 @@ public class PaymentMethods {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_bca_klikpay), R.drawable.ic_bca, Constants.PAYMENT_METHOD_NOT_SELECTED);
     }
 
+    public static PaymentMethodsModel getMethodKlikBCA(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_klik_bca), R.drawable.ic_klikbca, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
     /**
      * Get all supported payment methods by default.
      */
@@ -95,7 +85,7 @@ public class PaymentMethods {
     }
 
     private static String[] getStringList(Context context) {
-        String[] paymentNameList = new String[12];
+        String[] paymentNameList = new String[13];
 
         paymentNameList[0] = context.getString(R.string.payment_method_offers);
         paymentNameList[1] = context.getString(R.string.payment_method_credit_card);
@@ -109,13 +99,14 @@ public class PaymentMethods {
         paymentNameList[9] = context.getString(R.string.payment_method_mandiri_bill);
         paymentNameList[10] = context.getString(R.string.payment_method_indomaret);
         paymentNameList[11] = context.getString(R.string.payment_method_bca_klikpay);
+        paymentNameList[12] = context.getString(R.string.payment_method_klik_bca);
 
         return paymentNameList;
     }
 
     private static int[] getImageList() {
 
-        int[] paymentImageList = new int[12];
+        int[] paymentImageList = new int[13];
 
         paymentImageList[0] = id.co.veritrans.sdk.R.drawable.ic_offers;
         paymentImageList[1] = id.co.veritrans.sdk.R.drawable.ic_credit;
@@ -129,6 +120,7 @@ public class PaymentMethods {
         paymentImageList[9] = id.co.veritrans.sdk.R.drawable.ic_mandiri_bill_payment2;
         paymentImageList[10] = id.co.veritrans.sdk.R.drawable.ic_indomaret;
         paymentImageList[11] = id.co.veritrans.sdk.R.drawable.ic_bca;
+        paymentImageList[12] = id.co.veritrans.sdk.R.drawable.ic_klikbca;
 
         return paymentImageList;
     }

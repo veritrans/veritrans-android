@@ -39,6 +39,8 @@ import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetku;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
+import id.co.veritrans.sdk.models.KlikBCADescriptionModel;
+import id.co.veritrans.sdk.models.KlikBcaModel;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
@@ -324,6 +326,24 @@ public class SdkUtil {
                         request.getBillingAddressArrayList(),
                         request.getShippingAddressArrayList(), request.getCustomerDetails());
         return model;
+    }
+
+    protected static KlikBcaModel getKlikBCAModel(TransactionRequest request, KlikBCADescriptionModel descriptionModel) {
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(), request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        return new KlikBcaModel(
+                descriptionModel,
+                transactionDetails,
+                request.getItemDetails(),
+                request.getBillingAddressArrayList(),
+                request.getShippingAddressArrayList(),
+                request.getCustomerDetails()
+        );
     }
 
     protected static BCAKlikPayModel getBCAKlikPayModel(TransactionRequest request,

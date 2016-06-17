@@ -13,6 +13,7 @@ import id.co.veritrans.sdk.models.EpayBriTransfer;
 import id.co.veritrans.sdk.models.GetOffersResponseModel;
 import id.co.veritrans.sdk.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.models.IndosatDompetkuRequest;
+import id.co.veritrans.sdk.models.KlikBcaModel;
 import id.co.veritrans.sdk.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.models.MandiriECashModel;
@@ -139,6 +140,16 @@ public interface PaymentAPI {
            @Header("x-auth") String auth,
            @Body BCAKlikPayModel bcaKlikPayModel
     );
+
+    /**
+     * Do payment using Klik BCA.
+     *
+     * @param klikBcaModel Klik BCA description
+     * @return Observable of the Transaction Response object.
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/charge/")
+    Observable<TransactionResponse> paymentUsingKlikBCA(@Body KlikBcaModel klikBcaModel);
 
     //mandiri bill pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})

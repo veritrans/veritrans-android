@@ -21,13 +21,13 @@ import id.co.veritrans.sdk.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.activities.EpayBriActivity;
 import id.co.veritrans.sdk.activities.IndomaretActivity;
 import id.co.veritrans.sdk.activities.IndosatDompetkuActivity;
+import id.co.veritrans.sdk.activities.KlikBCAActivity;
 import id.co.veritrans.sdk.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.activities.MandiriECashActivity;
 import id.co.veritrans.sdk.activities.OffersActivity;
 import id.co.veritrans.sdk.activities.SelectBankTransferActivity;
 import id.co.veritrans.sdk.core.Constants;
 import id.co.veritrans.sdk.core.Logger;
-import id.co.veritrans.sdk.core.PaymentMethods;
 import id.co.veritrans.sdk.models.PaymentMethodsModel;
 
 /**
@@ -135,9 +135,13 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
             } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_offers))) {
                 Intent startOffersActivity = new Intent(sActivity, OffersActivity.class);
                 sActivity.startActivityForResult(startOffersActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(PaymentMethods.METHOD_BCA_KLIKPAY)) {
+            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_bca_klikpay))) {
                 Intent startBCAKlikPayActivity = new Intent(sActivity, BCAKlikPayActivity.class);
                 sActivity.startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_klik_bca))) {
+                Intent startKlikBcaActivity = new Intent(sActivity, KlikBCAActivity.class);
+                startKlikBcaActivity.putExtra(sActivity.getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
+                sActivity.startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else {
                 showMessage();
             }
