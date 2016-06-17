@@ -15,8 +15,8 @@
     <string name="validation_phone_no_empty">Masukkan nomor telepon</string>
     <string name="validation_phone_no_invalid">Masukkan nomor telepon yang benar</string>
     <string name="my_credit_card">Kartu Kredit Saya</string>
-    
-     <!-- User Address -->
+
+    <!-- User Address -->
     <string name="title_user_details">Detil Pengguna</string>
     <string name="hint_address">Alamat</string>
     <string name="hint_city">Kota</string>
@@ -36,12 +36,12 @@
     <string name="validation_shippingzipcode_empty">Masukkan kode pos pengiriman</string>
     <string name="validation_shippingcountry_empty">Masukkan negara pengiriman</string>
     <string name="validation_shippingzipcode_invalid">Masukkan kode pos pengiriman yang valid</string>
-    
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="pay_with">Bayar Dengan</string>
     <string name="payable_amount">Jumlah Pembayaran</string>
     <string name="select_payment_method">Pilih Metode Pembayaran</string>
-    
+
     <!-- name of payment methods -->
     <string-array name="payment_methods">
         <item>Penawaran</item>
@@ -58,7 +58,7 @@
         <item>Mandiri Bill</item>
         <item>Indomaret</item>
     </string-array>
-    
+
     <!--add credicard-->
     <string name="hint_name_on_card">Nama pada kartu</string>
     <string name="hint_card_number">Nomor Kartu</string>
@@ -75,7 +75,7 @@
     <string name="validation_message_invalid_cvv">Masukkan CVV yang benar</string>
     <string name="validation_message_empty_expiry_date">Masukkan tanggal kadaluarsa</string>
     <string name="message_cvv">CVV adalah 3 or 4 digit angka yang tertera pada bagian belakang kartu.</string>
-    
+
     <!-- Permata VA Bank Transfer-->
     <string name="virtual_account">Virtual Account</string>
     <string name="bank_transfer">Bank Transfer</string>
@@ -107,6 +107,7 @@
     <string name="copied_bill_code">Kode tagihan sudah disalin ke clipboard</string>
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>
     <string name="complete_payment_at_atm">Selesaikan Pembayaran di ATM</string>
+    <string name="complete_payment_at_klik_bca">Selesai</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
     <string name="payment_pending">Menunggu Pembayaran!</string>
@@ -117,8 +118,8 @@
     <string name="tab_permata_alto">Permata/Alto</string>
     <string name="payment_instrution">Instruksi Pembayaran</string>
     <string name="payment_code">Payment Code</string>
-    
-     <!-- Mandiri bank transfer Instruction-->
+
+    <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instruksi</string>
 
     <string name="mandiri_instruction_step1">1.\tPada main menu, Pilih \'Pay/Buy\'.</string>
@@ -133,9 +134,9 @@
     <string name="mandiri_internet_instruction_step3">3.\tPilih rekening Anda di \'From Account\', kemudian \'Billing Name\' pilih \'Veritrans\'.</string>
     <string name="mandiri_internet_instruction_step4">4.\tMasukkan \'Payment Code\' dan Anda akan menerima rincian pembayaran.</string>
     <string name="mandiri_internet_instruction_step5">5.\tKonfirmasi pembayaran melalui Mandiri Token.</string>
-    
+
     <!-- bca/ prima bank transfer Instruction-->
-     <!--BCA Transfer-->
+    <!--BCA Transfer-->
     <string name="bca_instruction_step1">1.\tPada menu utama, pilih Transaksi lainnya.</string>
     <string name="bca_instruction_step2">2.\tPilih \'Transfer\'.</string>
     <string name="bca_instruction_step3">3.\tPilih \'Ke Rek BCA Virtual Account\'.</string>
@@ -143,7 +144,7 @@
     <string name="bca_instruction_step5">5.\tMasukkan jumlah tagihan yang akan anda bayar.</string>
     <string name="bca_instruction_step6">6.\tPada halaman konfirmasi transfer akan muncul detail pembayaran anda. Jika informasi telah sesuai tekan \'Ya\'.</string>
 
-  <!--Klik BCA-->
+    <!--Klik BCA-->
     <string name="bca_klik_instruction_step1">1.\Pilih menu \'Fund Transfer\'.</string>
     <string name="bca_klik_instruction_step2">2.\tPilih \'Transfer to BCA Virtual Account\'.</string>
     <string name="bca_klik_instruction_step3">3.\t\'Masukkan Nomor Virtual Account BCA\' atau \'Pilih dari daftar transfer\' dan klik \'Continue\'.</string>
@@ -156,7 +157,7 @@
     <string name="bca_klik_pay_instruction_step2">2.\tUntuk pembayaran, Anda dapat memilih Rekening KlikBCA Individu atau kartu BCA.</string>
     <string name="bca_klik_pay_instruction_step3">3.\tUntuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 500888 atau kunjungi www.bca.co.id.</string>
 
-     <!--m-BCA-->
+    <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tPilih \'m-transfer\'.</string>
     <string name="bca_mbanking_instruction_step2">2.\tPilih \'Transfer\'</string>
     <string name="bca_mbanking_instruction_step3">3.\tPilih \'BCA Virtual Account\'.</string>
@@ -166,12 +167,12 @@
     <string name="bca_mbanking_instruction_step7">7.\tKlik \'OK\' pada halaman konfirmasi pembayaran.</string>
     <string name="bca_mbanking_instruction_step8">8.\tMasukkan jumlah yang ingin ditransfer kemudian klik \'OK\'.</string>
     <string name="bca_mbanking_instruction_step9">9.\tTransaksi Anda telah selesai</string>
-    
+
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">1.\tPastikan bahwa Anda memiliki User ID untuk CIMB Clicks dan telah mendaftarkan mPIN Anda sebelum melanjutkan pembayaran.</string>
     <string name="cimb_instruction_step2">2.\tTransaksi akan dibatalkan apabila pembayaran tidak diselesaikan dalam 2 jam.</string>
     <string name="cimb_instruction_step3">3.\tPastikan bahwa tidak ada pop-up blocker pada browser Anda.</string>
-    
+
     <!-- Mandiri E Cash transfer Instruction-->
     <string name="mandiri__e_cash_instruction_step1">1.\tPastikan no. HP anda telah terdaftar untuk Mandiri e-cash.</string>
     <string name="mandiri__e_cash_instruction_step2">2.\tKlik \'Confirm Payment\'.</string>
@@ -191,7 +192,7 @@
     <string name="indomaret_instruction_step5">5.\tKonfirmasi Pembayaran melalui kasir.</string>
     <string name="indomaret_instruction_step6">6.\tTransaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Indomaret Anda apabila anda memerlukan bantuan via support.</string>
 
- <!-- Permata/Alto bank transfer Instruction-->
+    <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">1.\tPada main menu, pilih \'Other Transaction\'.</string>
     <string name="permata_instruction_step2">2.\tPilih \'Payment\'.</string>
     <string name="permata_instruction_step3">3.\tPilih \'Other Payment\'.</string>
@@ -201,7 +202,7 @@
     <string name="permata_instruction_step7">7.\tPilih rekening pembayaran Anda dan klik \'Correct\'.</string>
     <string name="bank_transfer_dummy_text">* Bergantung pada biaya bank/transfer dan transaksi minimum sebesar Rp50,000, - untuk bank mandiri</string>
 
- <string name="bri_instruction_step1">1.Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran </string>
+    <string name="bri_instruction_step1">1.Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran </string>
     <string name="bri_instruction_step2">2.Untuk mendapatkan User ID untuk BRI e-Pay, harap mendaftar pada ATM BRI terdekat
     </string>
     <string name="bri_instruction_step3">3.Harap kunjungi kantor cabang BRI terdekat untuk mendaftar mTOKEN.
@@ -211,7 +212,7 @@
     <string name="bri_instruction_step5">5.Transaksi akan dibatalkan apabila pembayaran tidak dilakukan dalam 2 jam.
     </string>
 
- <!--credit card -->
+    <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
     <string name="saved_card">Kartu yang Tersimpan</string>
     <string name="card_details">Detil Kartu</string>
@@ -276,13 +277,13 @@
     <string name="indosat_instruction_step5">5.\tMasukkan PIN Anda.</string>
     <string name="indosat_instruction_step6">6.\tPembayaran Selesai.</string>
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
-    <string name="mandiri_click_pay_instruction_step1">1.\tAktifkan token Mandiri Anda dengan menekan.</string>
+    <string name="mandiri_click_pay_instruction_step1">1.\tAktifkan token Mandiri Anda dengan menekan [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tMasukkan password token Mandiri Anda.</string>
     <string name="mandiri_click_pay_instruction_step3">3.\tTekan 3 ketika APPLI ditampilkan</string>
-    <string name="mandiri_click_pay_instruction_step4">4.\tMasukkan \'intput 1\' dan tekan</string>
-    <string name="mandiri_click_pay_instruction_step5">5.\tMasukkan \'intput 2\' dan tekan</string>
-    <string name="mandiri_click_pay_instruction_step6">6.\tMasukkan \'intput 3\' dan tekan</string>
-    <string name="mandiri_click_pay_instruction_step7">7.\tMasukkan response code pada token Mandiri Anda \n pada kolom challenge token.</string>
+    <string name="mandiri_click_pay_instruction_step4">4.\tMasukkan \'masukan 1\' dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
+    <string name="mandiri_click_pay_instruction_step5">5.\tMasukkan \'masukan 2\' dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
+    <string name="mandiri_click_pay_instruction_step6">6.\tMasukkan \'masukan 3\' dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
+    <string name="mandiri_click_pay_instruction_step7">7.\tMasukkan response code pada token Mandiri Anda pada kolom challenge token.</string>
     <string name="for_three_seconds">selama 3 detik</string>
     <string name="title_payment_status">Status Pembayaran</string>
     <string name="payment_deny">Pembayaran Ditolak.</string>
@@ -295,6 +296,8 @@
     <string name="no_offers">Tidak ada penawaran</string>
     <string name="text_yes">Ya</string>
     <string name="text_no">Tidak</string>
+    <string name="zero_month">0 Bulan</string>
+    <string name="formatted_month">%1$s bulan</string>
 
     <string name="payment_method_bri_epay">Epay BRI</string>
     <string name="payment_method_offers">Penawaran</string>
@@ -308,4 +311,10 @@
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
     <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
+    <string name="payment_method_klik_bca">KlikBCA</string>
+    <!--KlikBCA Payment Instructions-->
+    <string name="klikbca_instruction_1">1.\tPastikan bahwa UserID sudah aktif dan terdaftar di BCA.</string>
+    <string name="klikbca_instruction_2">2.\tSetelah anda menekan Continue Payment anda akan diarahkan ke website KlikBCA menggunakan UserID yang sama dengan yang dimasukkan sebelumnya.</string>
+
+    <string name="error_user_id">Mohon isikan UserID.</string>
 </resources>

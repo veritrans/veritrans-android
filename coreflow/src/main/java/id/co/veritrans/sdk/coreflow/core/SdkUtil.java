@@ -39,6 +39,8 @@ import id.co.veritrans.sdk.coreflow.models.EpayBriTransfer;
 import id.co.veritrans.sdk.coreflow.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetku;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest;
+import id.co.veritrans.sdk.coreflow.models.KlikBcaDescriptionModel;
+import id.co.veritrans.sdk.coreflow.models.KlikBcaModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
@@ -326,6 +328,24 @@ public class SdkUtil {
         return model;
     }
 
+    protected static KlikBcaModel getKlikBCAModel(TransactionRequest request, KlikBcaDescriptionModel descriptionModel) {
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(), request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+        return new KlikBcaModel(
+                descriptionModel,
+                transactionDetails,
+                request.getItemDetails(),
+                request.getBillingAddressArrayList(),
+                request.getShippingAddressArrayList(),
+                request.getCustomerDetails()
+        );
+    }
+
     protected static BCAKlikPayModel getBCAKlikPayModel(TransactionRequest request,
                                                         BCAKlikPayDescriptionModel descriptionModel) {
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(), request.getOrderId());
@@ -467,7 +487,7 @@ public class SdkUtil {
 
 
     /**
-     * helper method to extract {@link id.co.veritrans.sdk.models.IndosatDompetkuRequest} from
+     * helper method to extract {@link id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest} from
      * {@link TransactionRequest}.
      *
      * @param request   transaction request object

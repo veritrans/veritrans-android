@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -28,6 +27,8 @@ import id.co.veritrans.sdk.coreflow.models.DescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.EpayBriTransfer;
 import id.co.veritrans.sdk.coreflow.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest;
+import id.co.veritrans.sdk.coreflow.models.KlikBcaDescriptionModel;
+import id.co.veritrans.sdk.coreflow.models.KlikBcaModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
@@ -375,6 +376,17 @@ public class VeritransSDK {
         }
     }
 
+    public void paymentUsingKlikBCA(KlikBcaDescriptionModel descriptionModel) {
+        if (transactionRequest != null && descriptionModel != null) {
+            transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
+            KlikBcaModel klikBcaModel = SdkUtil.getKlikBCAModel(transactionRequest, descriptionModel);
+            isRunning = true;
+            TransactionManager.paymentUsingKlikBCA(klikBcaModel);
+        } else {
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
 
     /**
      * It will execute an transaction for mandiri bill pay.

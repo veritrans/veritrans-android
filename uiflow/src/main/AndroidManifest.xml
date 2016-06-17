@@ -89,6 +89,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing"
             android:theme="@style/VeritransAppTheme" />
+        <activity
+            android:name=".activities.KlikBCAActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="adjustNothing" />
     </application>
 
 </manifest>
