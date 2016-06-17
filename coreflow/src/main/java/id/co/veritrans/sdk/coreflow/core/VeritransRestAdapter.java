@@ -51,6 +51,7 @@ class VeritransRestAdapter {
         }
     }
 
+    //
     public static PaymentAPI getMerchantApiClient() {
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null

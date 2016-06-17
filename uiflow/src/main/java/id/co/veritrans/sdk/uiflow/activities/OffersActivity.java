@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorRes;
@@ -70,17 +71,15 @@ import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.scancard.ExternalScanner;
+import id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask;
+import id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask.ReadBankDetailCallback;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Ankit on 12/7/15.
  */
-public class OffersActivity extends BaseActivity implements TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
+public class OffersActivity extends BaseActivity implements ReadBankDetailTask.ReadBankDetailCallback,TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
 
     public static final int SCAN_REQUEST_CODE = 101;
     public static final String OFFERS_FRAGMENT = "offersList";
@@ -114,7 +113,6 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
     private StorageDataHandler storageDataHandler;
     private RelativeLayout processingLayout;
     private ArrayList<BankDetail> bankDetails;
-    private Subscription subscription;
     //for setResult
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
@@ -122,6 +120,7 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
     private CirclePageIndicator circlePageIndicator;
     private TextView emptyCardsTextView;
     private MorphingButton btnMorph;
+    private ReadBankDetailTask readBankDetailTask;
 
     public OffersListModel getSelectedOffer() {
         return selectedOffer;
@@ -420,86 +419,28 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
     @Override
     protected void onStop() {
         super.onStop();
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if(this.readBankDetailTask != null && this.readBankDetailTask.getStatus().equals(AsyncTask.Status.RUNNING)){
+            this.readBankDetailTask.cancel(true);
         }
     }
 
     private void readBankDetails() {
-
         if (bankDetails == null || bankDetails.isEmpty()) {
-            rx.Observable<List<BankDetail>> banksObservable = rx.Observable.create(
-                    new rx.Observable.OnSubscribe<List<BankDetail>>() {
-                        @Override
-                        public void call(Subscriber<? super List<BankDetail>> sub) {
-                            try {
-                                userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-                                Logger.i("userDetail:" + userDetail.getUserFullName());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            ArrayList<BankDetail> bankDetails = new ArrayList<>();
-                            try {
-                                bankDetails = LocalDataHandler.readObject(getString(R.string.bank_details), BankDetailArray.class).getBankDetails();
-                                Logger.i("bankDetails:" + bankDetails.size());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            if (bankDetails.isEmpty()) {
-                                String json = null;
-                                try {
-                                    InputStream is = OffersActivity.this.getAssets().open("bank_details" +
-                                            ".json");
-                                    int size = is.available();
-                                    byte[] buffer = new byte[size];
-                                    is.read(buffer);
-                                    is.close();
-                                    json = new String(buffer, "UTF-8");
-                                    Logger.i("json:" + json);
-                                } catch (IOException ex) {
-                                    ex.printStackTrace();
-
-                                }
-
-                                try {
-                                    Gson gson = new Gson();
-                                    bankDetails = gson.fromJson(json, BankDetailArray.class).getBankDetails();
-                                    Logger.i("bankDetails:" + bankDetails.size());
-                                    LocalDataHandler.saveObject(getString(R.string.bank_details), bankDetails);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                            sub.onNext(bankDetails);
-                            sub.onCompleted();
-                        }
-                    }
-            );
-            Subscriber<List<BankDetail>> subscriber = new Subscriber<List<BankDetail>>() {
-
-                @Override
-                public void onCompleted() {
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Logger.i("error:" + e.getMessage());
-                }
-
-                @Override
-                public void onNext(List<BankDetail> bankDetails) {
-                    OffersActivity.this.bankDetails = (ArrayList<BankDetail>) bankDetails;
-                    Logger.i("bankdetail getter onnext" + bankDetails.size());
-                }
-            };
-            subscription = banksObservable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(subscriber);
-
+            this.readBankDetailTask = new ReadBankDetailTask(this, this);
+            readBankDetailTask.execute();
         }
     }
 
+
+    @Override
+    public void onReadBankDetailsFinish(ArrayList<BankDetail> bankDetails, UserDetail userDetail) {
+        if(userDetail != null){
+            this.userDetail = userDetail;
+        }
+        if(bankDetails != null){
+            this.bankDetails = bankDetails;
+        }
+    }
     public void setResultAndFinish() {
         Intent data = new Intent();
         data.putExtra(getString(R.string.transaction_response), transactionResponse);
@@ -770,5 +711,6 @@ public class OffersActivity extends BaseActivity implements TransactionBusCallba
     public void onEvent(SaveCardFailedEvent event) {
 
     }
+
 }
 

@@ -24,6 +24,7 @@ import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionCancelResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionStatusResponse;
+import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
@@ -32,7 +33,6 @@ import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import rx.Observable;
 
 public interface PaymentAPI {
 
@@ -52,197 +52,215 @@ public interface PaymentAPI {
      * card_cvv, token_id, two_click, bank, secure, gross_amount
      * this api call hit veritrans server
      *
-     * @return observable of transaction response
+     * @return callback of transaction response
      */
     @GET("/token/")
-    Observable<TokenDetailsResponse> getTokenTwoClick(
+    void getTokenTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
             @Query("two_click") boolean twoClick,
             @Query("secure") boolean secure,
             @Query("gross_amount") double grossAmount,
             @Query("bank") String bank,
-            @Query("client_key") String clientKey);
+            @Query("client_key") String clientKey, Callback<TokenDetailsResponse> callback);
 
     @GET("/token/")
-    Observable<TokenDetailsResponse> get3DSToken(@Query("card_number") String cardNumber,
-                                                 @Query("card_cvv") String cardCVV,
-                                                 @Query("card_exp_month") String cardExpiryMonth,
-                                                 @Query("card_exp_year") String cardExpiryYear,
-                                                 @Query("client_key") String clientKey,
-                                                 @Query("bank") String bank,
-                                                 @Query("secure") boolean secure,
-                                                 @Query("two_click") boolean twoClick,
-                                                 @Query("gross_amount") double grossAmount
+    void get3DSToken(@Query("card_number") String cardNumber,
+                     @Query("card_cvv") String cardCVV,
+                     @Query("card_exp_month") String cardExpiryMonth,
+                     @Query("card_exp_year") String cardExpiryYear,
+                     @Query("client_key") String clientKey,
+                     @Query("bank") String bank,
+                     @Query("secure") boolean secure,
+                     @Query("two_click") boolean twoClick,
+                     @Query("gross_amount") double grossAmount,
+                     Callback<TokenDetailsResponse> callback
     );
 
     //http://api.sandbox.veritrans.co.id/v2/10938010/cancel/
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
     @POST("/{id}/cancel/")
-    Observable<TransactionCancelResponse> cancelTransaction(
+    void cancelTransaction(
             @Header("x-auth") String auth,
-            @Path("id") String transactionId);
+            @Path("id") String transactionId,
+            Callback<TransactionCancelResponse> callback);
 
     //http://api.sandbox.veritrans.co.id/v2/39b690a3-d626-4577-a6ab-14e29a1c74ac/status/
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
     @POST("/{id}/status/")
-    Observable<TransactionStatusResponse> transactionStatus(
-            @Header("x-auth") String auth, @Path("id") String transactionId);
+    void  transactionStatus(
+            @Header("x-auth") String auth, @Path("id") String transactionId,
+            Callback<TransactionStatusResponse> callback);
 
     //bank transfer
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingPermataBank(@Header("x-auth")
+    void paymentUsingPermataBank(@Header("x-auth")
                                                             String authorization,
                                                             @Body PermataBankTransfer
-                                                                    permataBankTransfer);
+                                                                    permataBankTransfer,
+                                         Callback<TransactionResponse> callback);
 
     /**
      * Do the payment using BCA VA.
-     * @param authorization     authorization token.
-     * @param bcaBankTransfer   transaction details
-     * @return observable of transaction response
+     *
+     * @param authorization   authorization token.
+     * @param bcaBankTransfer transaction details
+     * @return callback of transaction response
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingBCAVA(
+    void paymentUsingBCAVA(
             @Header("x-auth") String authorization,
-            @Body BCABankTransfer bcaBankTransfer);
+            @Body BCABankTransfer bcaBankTransfer,
+            Callback<TransactionResponse> callback);
 
     //debit card
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingCard(
+    void paymentUsingCard(
             @Header("x-auth") String auth, @Body CardTransfer
-            cardTransfer);
+            cardTransfer, Callback<TransactionResponse> callback);
 
     //mandiri click pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingMandiriClickPay(
+    void paymentUsingMandiriClickPay(
             @Header("x-auth") String auth
             , @Body MandiriClickPayRequestModel
-                    mandiriClickPayRequestModel);
+                    mandiriClickPayRequestModel, Callback<TransactionResponse> callback);
 
     /**
      * Do payment using BCA Klik Pay.
      *
-     * @param auth              Client authentication key.
-     * @param bcaKlikPayModel   Request body.
-     * @return                  Observable of the Transaction Response object.
+     * @param auth            Client authentication key.
+     * @param bcaKlikPayModel Request body.
+     * @return callback of the Transaction Response object.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingBCAKlikPay(
+    void paymentUsingBCAKlikPay(
             @Header("x-auth") String auth,
-            @Body BCAKlikPayModel bcaKlikPayModel
+            @Body BCAKlikPayModel bcaKlikPayModel,
+            Callback<TransactionResponse> callback
     );
 
     //mandiri bill pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingMandiriBillPay(@Header("x-auth") String auth,
+    void paymentUsingMandiriBillPay(@Header("x-auth") String auth,
                                                                @Body MandiriBillPayTransferModel
-                                                                       mandiriBillPayTransferModel);
+                                                                       mandiriBillPayTransferModel,
+                                            Callback<TransactionResponse> callback);
 
     //epay bri transaction flow
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingEpayBri(@Header("x-auth") String auth,
-                                                        @Body EpayBriTransfer
-                                                                epayBriTransfer);
+    void paymentUsingEpayBri(@Header("x-auth") String auth,
+                                     @Body EpayBriTransfer
+                                             epayBriTransfer,
+                                     Callback<TransactionResponse> callback);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingIndosatDompetku(@Header("x-auth") String auth,
-                                                                @Body IndosatDompetkuRequest
-                                                                        indosatDompetkuRequest);
+    void paymentUsingIndosatDompetku(@Header("x-auth") String auth,
+                                     @Body IndosatDompetkuRequest
+                                             indosatDompetkuRequest,
+                                     Callback<TransactionResponse> callback);
 
     //CIMB transaction flow
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingCIMBClickPay(@Header("x-auth") String auth,
-                                                             @Body CIMBClickPayModel
-                                                                     cimbClickPayModel);
+    void paymentUsingCIMBClickPay(@Header("x-auth") String auth,
+                                  @Body CIMBClickPayModel
+                                          cimbClickPayModel,
+                                  Callback<TransactionResponse> callback);
 
     //Mandiri E Cash transaction flow
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingMandiriECash(@Header("x-auth") String auth,
-                                                             @Body MandiriECashModel
-                                                                     mandiriECashModel);
+    void paymentUsingMandiriECash(@Header("x-auth") String auth,
+                                  @Body MandiriECashModel
+                                          mandiriECashModel,
+                                  Callback<TransactionResponse> callback);
 
     //indomaret payment
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingIndomaret(@Header("x-auth") String auth,
-                                                          @Body IndomaretRequestModel
-                                                                  indomaretRequestModel);
+    void paymentUsingIndomaret(@Header("x-auth") String auth,
+                               @Body IndomaretRequestModel
+                                       indomaretRequestModel,
+                               Callback<TransactionResponse> callback);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/creditcard")
-    Observable<CardResponse> registerCard(@Header("x-auth") String auth,
-                                          @Body RegisterCardResponse registerCardResponse);
+    void registerCard(@Header("x-auth") String auth,
+                      @Body RegisterCardResponse registerCardResponse,
+                      Callback<CardResponse> callback);
 
 
     //save cards or get cards
     @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/register")
-    Observable<SaveCardResponse> saveCard(@Header("x-auth") String auth,
-                                          @Body SaveCardRequest cardTokenRequest);
+    void saveCard(@Header("x-auth") String auth,
+                  @Body SaveCardRequest cardTokenRequest,
+                  Callback<SaveCardResponse> callback);
 
     //save cards or get cards
     @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("/card/")
-    Observable<CardResponse> getCard(@Header("x-auth") String auth);
+    void getCard(@Header("x-auth") String auth, Callback<CardResponse> callback);
 
     //delete card
     @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @DELETE("/card/{saved_token_id}")
-    Observable<DeleteCardResponse> deleteCard(@Header("x-auth") String auth, @Path("saved_token_id") String savedTokenId);
+    void deleteCard(@Header("x-auth") String auth, @Path("saved_token_id") String savedTokenId,
+                    Callback<DeleteCardResponse> callback);
 
     //BBMMoney Payment
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    Observable<TransactionResponse> paymentUsingBBMMoney(@Header("x-auth") String auth,
-                                                         @Body BBMMoneyRequestModel
-                                                                 bbmMoneyRequestModel);
+    void paymentUsingBBMMoney(@Header("x-auth") String auth,
+                              @Body BBMMoneyRequestModel
+                                      bbmMoneyRequestModel,
+                              Callback<TransactionResponse> callback);
 
     //get offers
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("/promotions")
-    Observable<GetOffersResponseModel> getOffers(@Header("x-auth") String auth);
+    void getOffers(@Header("x-auth") String auth, Callback<GetOffersResponseModel> callback);
 
     // register credit card info
     @GET("/card/register")
-    Observable<RegisterCardResponse> registerCard(@Query("card_number") String cardNumber,
-                                                  @Query("card_exp_month") String cardExpMonth,
-                                                  @Query("card_exp_year") String cardExpYear,
-                                                  @Query("client_key") String clientKey);
+    void registerCard(@Query("card_number") String cardNumber,
+                      @Query("card_exp_month") String cardExpMonth,
+                      @Query("card_exp_year") String cardExpYear,
+                      @Query("client_key") String clientKey,
+                      Callback<RegisterCardResponse> callback);
 
 
     /**
      * For instalment offers get token
      *
-     * @param cardCVV       card cvv number
-     * @param tokenId       token identifier
-     * @param twoClick      is two click or not
-     * @param secure        is secure or not
-     * @param grossAmount   gross amount
-     * @param bank          bank name
-     * @param clientKey     client key
-     * @param instalment    installment
-     * @param instalmentTerm    installment terms
-     * @return observable of transaction response
+     * @param cardCVV        card cvv number
+     * @param tokenId        token identifier
+     * @param twoClick       is two click or not
+     * @param secure         is secure or not
+     * @param grossAmount    gross amount
+     * @param bank           bank name
+     * @param clientKey      client key
+     * @param instalment     installment
+     * @param instalmentTerm installment terms
+     * @return callback of transaction response
      */
 
     @GET("/token/")
-    Observable<TokenDetailsResponse> getTokenInstalmentOfferTwoClick(
+    void getTokenInstalmentOfferTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
             @Query("two_click") boolean twoClick,
@@ -251,65 +269,66 @@ public interface PaymentAPI {
             @Query("bank") String bank,
             @Query("client_key") String clientKey,
             @Query("installment") boolean instalment,
-            @Query("installment_term") String instalmentTerm
+            @Query("installment_term") String instalmentTerm,
+            Callback<TokenDetailsResponse> callback
     );
 
     /***
      * Get instalment offers 3ds token
      *
-     * @param cardNumber        card number
-     * @param cardCVV           card cvv number
-     * @param cardExpiryMonth   card expiry's month
-     * @param cardExpiryYear    card expiry's year
-     * @param clientKey         client key
-     * @param bank              bank name
-     * @param secure            is secure
-     * @param twoClick          is two click
-     * @param grossAmount       gross amount
-     * @return observable of transaction response
+     * @param cardNumber      card number
+     * @param cardCVV         card cvv number
+     * @param cardExpiryMonth card expiry's month
+     * @param cardExpiryYear  card expiry's year
+     * @param clientKey       client key
+     * @param bank            bank name
+     * @param secure          is secure
+     * @param twoClick        is two click
+     * @param grossAmount     gross amount
+     * @return callback of transaction response
      */
 
     @GET("/token/")
-    Observable<TokenDetailsResponse> get3DSTokenInstalmentOffers(@Query("card_number") String cardNumber,
-                                                                 @Query("card_cvv") String cardCVV,
-                                                                 @Query("card_exp_month") String cardExpiryMonth,
-                                                                 @Query("card_exp_year") String cardExpiryYear,
-                                                                 @Query("client_key") String clientKey,
-                                                                 @Query("bank") String bank,
-                                                                 @Query("secure") boolean secure,
-                                                                 @Query("two_click") boolean twoClick,
-                                                                 @Query("gross_amount") double grossAmount,
-                                                                 @Query("installment") boolean instalment,
-                                                                 @Query("installment_term") String
-                                                                         instalmentTerm
+    void get3DSTokenInstalmentOffers(@Query("card_number") String cardNumber,
+                                     @Query("card_cvv") String cardCVV,
+                                     @Query("card_exp_month") String cardExpiryMonth,
+                                     @Query("card_exp_year") String cardExpiryYear,
+                                     @Query("client_key") String clientKey,
+                                     @Query("bank") String bank,
+                                     @Query("secure") boolean secure,
+                                     @Query("two_click") boolean twoClick,
+                                     @Query("gross_amount") double grossAmount,
+                                     @Query("installment") boolean instalment,
+                                     @Query("installment_term") String
+                                             instalmentTerm,
+                                     Callback<TokenDetailsResponse> callback
     );
 
     /**
      * Register card into Veritrans API.
      *
-     * @param cardNumber        credit card number
-     * @param cardCVV           credit card cvv number
-     * @param cardExpiryMonth   credit card expiry month in number
-     * @param cardExpiryYear    credit card expiry year in 4 digit (example: 2020)
-     * @param clientKey         veritrans API client key
-     *
-     * @return observable of token
+     * @param cardNumber      credit card number
+     * @param cardCVV         credit card cvv number
+     * @param cardExpiryMonth credit card expiry month in number
+     * @param cardExpiryYear  credit card expiry year in 4 digit (example: 2020)
+     * @param clientKey       veritrans API client key
+     * @return callback of token
      */
     @Headers({"Content-Type: application/json", "x-auth: da53847171259b511488cf366e701050"})
     @GET("/card/register")
-    Observable<CardRegistrationResponse> registerCard(
+    void registerCard(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
             @Query("card_exp_month") String cardExpiryMonth,
             @Query("card_exp_year") String cardExpiryYear,
-            @Query("client_key") String clientKey
+            @Query("client_key") String clientKey, Callback<CardRegistrationResponse> callback
     );
 
     /**
-     * Get authentication token.
+     * Get authentication token from merchant server
      *
      * @return authentication token.
      */
     @POST("/auth")
-    Observable<AuthModel> getAuthenticationToken();
+    void getAuthenticationToken(Callback<AuthModel> callback);
 }

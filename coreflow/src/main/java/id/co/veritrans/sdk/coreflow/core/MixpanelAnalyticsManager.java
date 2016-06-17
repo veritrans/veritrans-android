@@ -6,10 +6,9 @@ import com.google.gson.Gson;
 
 import id.co.veritrans.sdk.coreflow.analytics.MixpanelApi;
 import id.co.veritrans.sdk.coreflow.analytics.MixpanelEvent;
-import rx.Observable;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * @author rakawm
@@ -28,24 +27,19 @@ public class MixpanelAnalyticsManager {
             Gson gson = new Gson();
             String eventObject = gson.toJson(event);
             String data = Base64.encodeToString(eventObject.getBytes(), Base64.DEFAULT);
-            Observable<Integer> observable = api.trackEvent(data);
-            observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Integer>() {
-                        @Override
-                        public void onCompleted() {
-                        }
+            api.trackEvent(data, new Callback<Integer>() {
+                @Override
+                public void success(Integer integer, Response response) {
+                    Logger.i("Response: " + Integer.toString(integer));
 
-                        @Override
-                        public void onError(Throwable e) {
-                            Logger.e(e.getMessage());
-                        }
+                }
 
-                        @Override
-                        public void onNext(Integer responseBody) {
-                            Logger.i("Response: " + Integer.toString(responseBody));
-                        }
-                    });
+                @Override
+                public void failure(RetrofitError error) {
+                    Logger.i("Response>error: " + error.getMessage());
+
+                }
+            });
         } else {
             Logger.e("No network connection");
         }

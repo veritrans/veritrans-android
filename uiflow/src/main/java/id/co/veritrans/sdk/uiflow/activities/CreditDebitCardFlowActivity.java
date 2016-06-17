@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorRes;
@@ -16,12 +17,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +27,6 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.SdkUtil;
 import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
@@ -55,7 +51,6 @@ import id.co.veritrans.sdk.uiflow.fragments.AddCardDetailsFragment;
 import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.uiflow.fragments.SavedCardFragment;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
-import id.co.veritrans.sdk.coreflow.models.BankDetailArray;
 import id.co.veritrans.sdk.coreflow.models.BillingAddress;
 import id.co.veritrans.sdk.coreflow.models.CardPaymentDetails;
 import id.co.veritrans.sdk.coreflow.models.CardResponse;
@@ -72,14 +67,13 @@ import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.scancard.ExternalScanner;
+import id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import static id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask.ReadBankDetailCallback;
 
-public class CreditDebitCardFlowActivity extends BaseActivity implements TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
+
+public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBankDetailCallback,TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
 
     public static final int SCAN_REQUEST_CODE = 101;
     private static final int PAYMENT_WEB_INTENT = 100;
@@ -97,7 +91,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
     private ArrayList<SaveCardRequest> creditCards = new ArrayList<>();
     private RelativeLayout processingLayout;
     private ArrayList<BankDetail> bankDetails;
-    private Subscription subscription;
+    private ReadBankDetailTask readBankDetailTask;
 
     //for setResult
     private TransactionResponse transactionResponse = null;
@@ -391,82 +385,25 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
     @Override
     protected void onStop() {
         super.onStop();
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if(readBankDetailTask != null && readBankDetailTask.getStatus().equals(AsyncTask.Status.RUNNING)){
+            readBankDetailTask.cancel(true);
         }
     }
 
     private void readBankDetails() {
-
         if (bankDetails == null || bankDetails.isEmpty()) {
-            rx.Observable<List<BankDetail>> banksObservable = rx.Observable.create(
-                    new rx.Observable.OnSubscribe<List<BankDetail>>() {
-                        @Override
-                        public void call(Subscriber<? super List<BankDetail>> sub) {
-                            try {
-                                userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-                                Logger.i("userDetail:" + userDetail.getUserFullName());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            ArrayList<BankDetail> bankDetails = new ArrayList<>();
-                            try {
-                                bankDetails = LocalDataHandler.readObject(getString(R.string.bank_details), BankDetailArray.class).getBankDetails();
-                                Logger.i("bankDetails:" + bankDetails.size());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            if (bankDetails.isEmpty()) {
-                                String json = null;
-                                try {
-                                    InputStream is = CreditDebitCardFlowActivity.this.getAssets().open("bank_details.json");
-                                    int size = is.available();
-                                    byte[] buffer = new byte[size];
-                                    is.read(buffer);
-                                    is.close();
-                                    json = new String(buffer, "UTF-8");
-                                    Logger.i("json:" + json);
-                                } catch (IOException ex) {
-                                    ex.printStackTrace();
-
-                                }
-
-                                try {
-                                    Gson gson = new Gson();
-                                    bankDetails = gson.fromJson(json, BankDetailArray.class).getBankDetails();
-                                    Logger.i("bankDetails:" + bankDetails.size());
-                                    LocalDataHandler.saveObject(getString(R.string.bank_details), bankDetails);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                            sub.onNext(bankDetails);
-                            sub.onCompleted();
-                        }
-                    }
-            );
-            Subscriber<List<BankDetail>> subscriber = new Subscriber<List<BankDetail>>() {
-
-                @Override
-                public void onCompleted() {
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Logger.i("error:" + e.getMessage());
-                }
-
-                @Override
-                public void onNext(List<BankDetail> bankDetails) {
-                    CreditDebitCardFlowActivity.this.bankDetails = (ArrayList<BankDetail>) bankDetails;
-                    Logger.i("bankdetail getter onnext" + bankDetails.size());
-                }
-            };
-            subscription = banksObservable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(subscriber);
-
+            readBankDetailTask = new ReadBankDetailTask(this, this);
+            readBankDetailTask.execute();
+        }
+    }
+    @Override
+    public void onReadBankDetailsFinish(ArrayList<BankDetail> bankDetails, UserDetail userDetail) {
+        if(userDetail != null){
+            this.userDetail = userDetail;
+        }
+        if(this.bankDetails != null){
+            this.bankDetails = bankDetails;
+            Logger.i("bankdetail getter onnext" + bankDetails.size());
         }
     }
 
@@ -748,4 +685,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements Transac
         Logger.i("card fetching failed :" + event.getMessage());
         processingLayout.setVisibility(View.GONE);
     }
+
+
 }
