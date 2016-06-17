@@ -1,5 +1,5 @@
 ---
-version: 0.10.7
+version: 0.10.8
 commit: Bump to version %.%.%
 files:
   build.gradle: version = '%.%.%'
