@@ -84,6 +84,9 @@ public class SdkCoreFlowBuilder {
      * @return it returns fully initialized object of veritrans sdk.
      */
     public VeritransSDK buildSDK() {
+        if(VeritransSDK.getVeritransSDK() != null){
+            return VeritransSDK.getVeritransSDK();
+        }
         if (VeritransSDK.getVeritransSDK() == null && isValidData()) {
             VeritransSDK veritransSDK = VeritransSDK.getInstance(this);
             return veritransSDK;

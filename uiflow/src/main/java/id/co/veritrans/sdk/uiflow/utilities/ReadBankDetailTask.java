@@ -66,7 +66,8 @@ public class ReadBankDetailTask extends AsyncTask<Void, Void ,ArrayList<BankDeta
             try {
                 Gson gson = new Gson();
                 bankDetails = gson.fromJson(json, BankDetailArray.class).getBankDetails();
-                Logger.i("bankDetails:" + bankDetails.size());
+                Logger.i("bankDetails>fromfile:" + bankDetails.size());
+
                 LocalDataHandler.saveObject(context.getString(R.string.bank_details), bankDetails);
             } catch (Exception e) {
                 e.printStackTrace();

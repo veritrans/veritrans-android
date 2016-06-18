@@ -133,7 +133,6 @@ public class VeritransSDK {
         if (context != null) {
             return veritransSDK;
         }
-
         Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
         return null;
     }

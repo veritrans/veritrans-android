@@ -10,7 +10,7 @@ import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
 
 /**
- * Created by HQ on 15/06/2016.
+ * Created by ziahaqi on 15/06/2016.
  */
 public class UIFlow implements ISdkFlow {
 

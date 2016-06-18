@@ -11,9 +11,6 @@ import android.widget.TextView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by HQ on 16/06/2016.
- */
 public class TextViewWithImages extends TextView {
 
     private static final Spannable.Factory spannableFactory = Spannable.Factory.getInstance();

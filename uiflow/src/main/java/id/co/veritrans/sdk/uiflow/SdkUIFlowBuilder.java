@@ -22,8 +22,6 @@ public class SdkUIFlowBuilder extends SdkCoreFlowBuilder {
 
     }
 
-
-
     public SdkUIFlowBuilder setUIFlow(ISdkFlow sdkFlow){
         this.sdkFlow = sdkFlow;
         return this;
