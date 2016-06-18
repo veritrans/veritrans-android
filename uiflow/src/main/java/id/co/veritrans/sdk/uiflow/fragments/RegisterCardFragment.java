@@ -28,7 +28,7 @@ import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
@@ -124,7 +124,7 @@ public class RegisterCardFragment extends Fragment {
             public void onClick(View v) {
                 if (checkCardValidity()) {
                     // Save card
-                    SdkUtil.showProgressDialog(getActivity(), false);
+                    SdkUIFlowUtil.showProgressDialog(getActivity(), false);
                     SaveCreditCardActivity activity = (SaveCreditCardActivity) getActivity();
                     String date = etExpiryDate.getText().toString();
                     String month = date.split("/")[0];
@@ -260,7 +260,7 @@ public class RegisterCardFragment extends Fragment {
             }
             isValid = false;
         }
-        if (cardNumber.length() < 15 || !SdkUtil.isValidCardNumber(cardNumber)) {
+        if (cardNumber.length() < 15 || !SdkUIFlowUtil.isValidCardNumber(cardNumber)) {
             if (!etCardNo.hasFocus()) {
                 etCardNo.setError(getString(R.string.validation_message_invalid_card_no));
             }

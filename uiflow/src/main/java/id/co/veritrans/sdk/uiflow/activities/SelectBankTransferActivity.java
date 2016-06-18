@@ -18,7 +18,7 @@ import id.co.veritrans.sdk.uiflow.adapters.BankTransferListAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.BankTransferModel;
@@ -113,7 +113,7 @@ public class SelectBankTransferActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            SdkUtil.hideKeyboard(this);
+            SdkUIFlowUtil.hideKeyboard(this);
             finish();
         }
 

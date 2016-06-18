@@ -1,4 +1,4 @@
-package id.co.veritrans.sdk.coreflow.widgets;
+package id.co.veritrans.sdk.uiflow.widgets;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -18,7 +18,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 
-import id.co.veritrans.sdk.coreflow.R;
+import id.co.veritrans.sdk.uiflow.R;
 
 /**
  * Created by chetan on 29/10/15.

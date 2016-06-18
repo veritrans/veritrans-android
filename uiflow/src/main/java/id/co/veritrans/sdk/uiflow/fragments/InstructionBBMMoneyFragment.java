@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
  * Created by Ankit on 12/03/15.
@@ -37,7 +37,7 @@ public class InstructionBBMMoneyFragment extends Fragment implements View.OnClic
 
         layoutGetBBMMoneyApp = (LinearLayout) view.findViewById(R.id.layout_get_bbm__money_app);
 
-        if (SdkUtil.isBBMMoneyInstalled(getActivity())){
+        if (SdkUIFlowUtil.isBBMMoneyInstalled(getActivity())){
             layoutGetBBMMoneyApp.setVisibility(View.GONE);
         } else {
             layoutGetBBMMoneyApp.setVisibility(View.VISIBLE);

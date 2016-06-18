@@ -14,7 +14,7 @@
         android:orientation="vertical"
         >
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_validaty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:textSize="@dimen/secondary_text_size"
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -39,7 +39,7 @@
             android:textSize="@dimen/secondary_text_size"
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_payment_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             />
 
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -71,7 +71,7 @@
             android:textSize="@dimen/primary_text_size"
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -85,7 +85,7 @@
             android:textSize="@dimen/secondary_text_size"
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -98,7 +98,7 @@
             />
 
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -113,7 +113,7 @@
             android:textSize="@dimen/secondary_text_size"
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -127,7 +127,7 @@
             android:textSize="@dimen/secondary_text_size"
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -142,7 +142,7 @@
             android:textSize="@dimen/secondary_text_size"
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"

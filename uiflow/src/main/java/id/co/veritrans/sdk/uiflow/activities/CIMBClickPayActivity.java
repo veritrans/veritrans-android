@@ -16,7 +16,7 @@ import org.greenrobot.eventbus.Subscribe;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -56,7 +56,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         mVeritransSDK = VeritransSDK.getVeritransSDK();
 
         if (mVeritransSDK == null) {
-            SdkUtil.showSnackbar(CIMBClickPayActivity.this, Constants
+            SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
@@ -115,7 +115,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void makeTransaction() {
-        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         DescriptionModel cimbDescription = new DescriptionModel("Any Description");
 
         mVeritransSDK.paymentUsingCIMBClickPay(cimbDescription);
@@ -160,7 +160,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
 
         if (event.getResponse() != null &&
                 !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
@@ -169,7 +169,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
             intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
             startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
         } else {
-            SdkUtil.showApiFailedMessage(CIMBClickPayActivity.this, getString(R.string
+            SdkUIFlowUtil.showApiFailedMessage(CIMBClickPayActivity.this, getString(R.string
                     .empty_transaction_response));
         }
     }
@@ -181,10 +181,10 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
             CIMBClickPayActivity.this.errorMessage = event.getMessage();
             CIMBClickPayActivity.this.transactionResponse = event.getResponse();
 
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
         } catch (NullPointerException ex) {
-            SdkUtil.showApiFailedMessage(CIMBClickPayActivity.this, getString(R.string.empty_transaction_response));
+            SdkUIFlowUtil.showApiFailedMessage(CIMBClickPayActivity.this, getString(R.string.empty_transaction_response));
         }
     }
 
@@ -193,8 +193,8 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     public void onEvent(NetworkUnavailableEvent event) {
         CIMBClickPayActivity.this.errorMessage = getString(R.string.no_network_msg);
 
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
     }
 
     @Subscribe
@@ -202,8 +202,8 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     public void onEvent(GeneralErrorEvent event) {
         CIMBClickPayActivity.this.errorMessage = event.getMessage();
 
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
     }
 }
 

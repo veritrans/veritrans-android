@@ -21,7 +21,7 @@ import id.co.veritrans.sdk.uiflow.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
@@ -222,7 +222,7 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            SdkUtil.hideKeyboard(this);
+            SdkUIFlowUtil.hideKeyboard(this);
             finish();
         }
 

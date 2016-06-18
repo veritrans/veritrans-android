@@ -18,7 +18,7 @@ import org.greenrobot.eventbus.Subscribe;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -77,7 +77,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_INDOMARET);
         } else {
-            SdkUtil.showSnackbar(IndomaretActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -175,7 +175,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
                     RESULT_CODE = RESULT_OK;
-                    SdkUtil.showSnackbar(IndomaretActivity.this, SOMETHING_WENT_WRONG);
+                    SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, SOMETHING_WENT_WRONG);
                     onBackPressed();
                 }
             } else {
@@ -223,14 +223,14 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             fragmentTransaction.commit();
             currentFragment = PAYMENT_FRAGMENT;
         } else {
-            SdkUtil.showSnackbar(IndomaretActivity.this, SOMETHING_WENT_WRONG);
+            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, SOMETHING_WENT_WRONG);
             onBackPressed();
         }
     }
 
     private void performTransaction() {
 
-        SdkUtil.showProgressDialog(IndomaretActivity.this, getString(R.string.processing_payment),
+        SdkUIFlowUtil.showProgressDialog(IndomaretActivity.this, getString(R.string.processing_payment),
                 false);
 
         CstoreEntity cstoreEntity = new CstoreEntity();
@@ -271,7 +271,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
 
         if (event.getResponse() != null) {
             IndomaretActivity.this.transactionResponse = event.getResponse();
@@ -289,8 +289,8 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             IndomaretActivity.this.errorMessage = event.getMessage();
             IndomaretActivity.this.transactionResponse = event.getResponse();
 
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(IndomaretActivity.this, "" + event.getMessage());
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + event.getMessage());
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + event.getMessage());
         }
@@ -302,8 +302,8 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         try {
             IndomaretActivity.this.errorMessage = getString(R.string.no_network_msg);
 
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(IndomaretActivity.this, "" + getString(R.string.no_network_msg));
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + getString(R.string.no_network_msg));
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + getString(R.string.no_network_msg));
         }
@@ -315,8 +315,8 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         try {
             IndomaretActivity.this.errorMessage = event.getMessage();
 
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(IndomaretActivity.this, "" + event.getMessage());
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + event.getMessage());
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + event.getMessage());
         }

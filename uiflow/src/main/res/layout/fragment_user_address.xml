@@ -127,7 +127,7 @@
                     android:background="@android:color/white"
                     android:padding="@dimen/sixteen_dp">
 
-                    <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                    <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                         android:id="@+id/text_shipping"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

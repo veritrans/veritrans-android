@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.Subscribe;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -56,7 +56,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         mVeritransSDK = VeritransSDK.getVeritransSDK();
 
         if (mVeritransSDK == null) {
-            SdkUtil.showSnackbar(BCAKlikPayActivity.this, Constants
+            SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
@@ -120,7 +120,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     }
 
     private void makeTransaction(){
-        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
 
         BCAKlikPayDescriptionModel descriptionModel = new BCAKlikPayDescriptionModel("Any description");
         mVeritransSDK.paymentUsingBCAKlikPay(descriptionModel);
@@ -163,7 +163,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
 
         if (event.getResponse() != null &&
                 !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
@@ -172,7 +172,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
             intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
             startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
         } else {
-            SdkUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string
+            SdkUIFlowUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string
                     .empty_transaction_response));
         }
     }
@@ -184,10 +184,10 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
             BCAKlikPayActivity.this.errorMessage = event.getMessage();
             BCAKlikPayActivity.this.transactionResponse = event.getResponse();
 
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
         } catch (NullPointerException ex) {
-            SdkUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string.empty_transaction_response));
+            SdkUIFlowUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string.empty_transaction_response));
         }
     }
 
@@ -195,15 +195,15 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         BCAKlikPayActivity.this.errorMessage = getString(R.string.no_network_msg);
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
     }
 
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         BCAKlikPayActivity.this.errorMessage = event.getMessage();
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
     }
 }

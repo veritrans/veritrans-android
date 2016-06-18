@@ -1,4 +1,4 @@
-package id.co.veritrans.sdk.coreflow.widgets;
+package id.co.veritrans.sdk.uiflow.widgets;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import id.co.veritrans.sdk.coreflow.R;
+import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 
 /**

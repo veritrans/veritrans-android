@@ -20,7 +20,7 @@
             android:orientation="vertical"
             >
 
-            <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -43,7 +43,7 @@
 
         </LinearLayout>
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -54,7 +54,7 @@
             android:textSize="@dimen/primary_text_size"
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -68,7 +68,7 @@
             android:textSize="@dimen/secondary_text_size"
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -82,7 +82,7 @@
             />
 
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -98,7 +98,7 @@
              
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -113,7 +113,7 @@
              
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
@@ -129,7 +129,7 @@
              
             />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"

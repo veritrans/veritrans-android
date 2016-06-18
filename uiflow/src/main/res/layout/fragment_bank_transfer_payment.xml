@@ -15,7 +15,7 @@
         android:padding="@dimen/sixteen_dp">
 
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -27,7 +27,7 @@
             />
 
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_virtual_account_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             />
 
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_validaty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             />
 
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

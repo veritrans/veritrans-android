@@ -45,7 +45,7 @@
 
                             <TableRow>
 
-                                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
@@ -64,7 +64,7 @@
                                     android:textSize="@dimen/primary_text_size"
                                     android:textStyle="bold" />
 
-                                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                                     android:layout_width="120dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
@@ -79,7 +79,7 @@
 
                             <TableRow android:layout_marginTop="@dimen/eight_dp">
 
-                                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
@@ -98,7 +98,7 @@
                                     android:textSize="@dimen/primary_text_size"
                                     android:textStyle="bold" />
 
-                                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                                     android:id="@+id/text_input_1"
                                     android:layout_width="120dp"
                                     android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
 
                             <TableRow android:layout_marginTop="@dimen/eight_dp">
 
-                                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
@@ -131,7 +131,7 @@
                                     android:textSize="@dimen/primary_text_size"
                                     android:textStyle="bold" />
 
-                                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                                     android:id="@+id/text_input_2"
                                     android:layout_width="120dp"
                                     android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
 
                             <TableRow android:layout_marginTop="@dimen/eight_dp">
 
-                                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
@@ -165,7 +165,7 @@
                                     android:textSize="@dimen/primary_text_size"
                                     android:textStyle="bold" />
 
-                                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                                     android:id="@+id/text_input_3"
                                     android:layout_width="120dp"
                                     android:layout_height="wrap_content"
@@ -203,7 +203,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                     android:id="@+id/text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

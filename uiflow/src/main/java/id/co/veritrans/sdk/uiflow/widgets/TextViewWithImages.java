@@ -1,4 +1,4 @@
-package id.co.veritrans.sdk.coreflow.widgets;
+package id.co.veritrans.sdk.uiflow.widgets;
 
 import android.annotation.TargetApi;
 import android.content.Context;

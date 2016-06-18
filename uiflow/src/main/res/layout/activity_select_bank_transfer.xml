@@ -16,7 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                 android:id="@+id/title_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

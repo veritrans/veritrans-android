@@ -1,18 +1,17 @@
-package id.co.veritrans.sdk.coreflow.widgets;
+package id.co.veritrans.sdk.uiflow.widgets;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 
 /**
  * @author rakawm
  */
-public class DefaultTextView extends TextViewWithImages{
+public class DefaultTextView extends TextViewWithImages {
 
     public DefaultTextView(Context context) {
         super(context);

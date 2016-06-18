@@ -16,7 +16,7 @@ import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 
@@ -76,29 +76,29 @@ public class UserDetailFragment extends Fragment {
     }
 
     private void validateSaveData() throws IOException {
-        SdkUtil.hideKeyboard(getActivity());
+        SdkUIFlowUtil.hideKeyboard(getActivity());
         String fullName = fullnameEt.getText().toString().trim();
         String email = emailEt.getText().toString().trim();
         String phoneNo = phoneEt.getText().toString().trim();
 
         if (TextUtils.isEmpty(fullName)) {
-            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_full_name_empty));
+            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_full_name_empty));
             fullnameEt.requestFocus();
             return;
         } else if (TextUtils.isEmpty(email)) {
-            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_email_empty));
+            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_email_empty));
             emailEt.requestFocus();
             return;
-        } else if (!SdkUtil.isEmailValid(email)) {
-            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_email_invalid));
+        } else if (!SdkUIFlowUtil.isEmailValid(email)) {
+            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_email_invalid));
             emailEt.requestFocus();
             return;
         } else if (TextUtils.isEmpty(phoneNo)) {
-            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_phone_no_empty));
+            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_phone_no_empty));
             phoneEt.requestFocus();
             return;
-        } else if (!SdkUtil.isPhoneNumberValid(phoneNo)) {
-            SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_phone_no_invalid));
+        } else if (!SdkUIFlowUtil.isPhoneNumberValid(phoneNo)) {
+            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_phone_no_invalid));
             phoneEt.requestFocus();
             return;
         }

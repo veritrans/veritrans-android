@@ -17,7 +17,7 @@ import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
@@ -73,7 +73,7 @@ public class RegisterCardDetailsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        SdkUtil.hideKeyboard(getActivity());
+        SdkUIFlowUtil.hideKeyboard(getActivity());
     }
 
     @Override
@@ -190,7 +190,7 @@ public class RegisterCardDetailsFragment extends Fragment {
                 VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
                 veritransDialog.show();
-                SdkUtil.hideKeyboard(getActivity()); // hide keyboard if visible.
+                SdkUIFlowUtil.hideKeyboard(getActivity()); // hide keyboard if visible.
             }
         });
 

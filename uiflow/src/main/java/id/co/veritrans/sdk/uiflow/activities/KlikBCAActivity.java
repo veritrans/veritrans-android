@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -119,7 +119,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
                     // Check klik BCA user ID
                     if (klikBCAFragment.checkUserId()) {
                         // Do the payment
-                        SdkUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
+                        SdkUIFlowUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
                         KlikBcaDescriptionModel model = new KlikBcaDescriptionModel("Any description", klikBCAFragment.getUserId());
                         mVeritransSDK.paymentUsingKlikBCA(model);
                     }
@@ -170,7 +170,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     @Override
     public void onEvent(TransactionSuccessEvent event) {
         if (event.getSource().equals(Events.PAYMENT)) {
-            SdkUtil.hideProgressDialog();
+            SdkUIFlowUtil.hideProgressDialog();
             this.transactionResponse = event.getResponse();
             this.errorMessage = event.getResponse().getStatusMessage();
             setUpTransactionStatusFragment(event.getResponse());
@@ -181,8 +181,8 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     @Override
     public void onEvent(TransactionFailedEvent event) {
         if (event.getSource().equals(Events.PAYMENT)) {
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(this, event.getMessage());
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(this, event.getMessage());
         }
     }
 
@@ -190,8 +190,8 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         if (event.getSource().equals(Events.PAYMENT)) {
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(this, getString(R.string.error_unable_to_connect));
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(this, getString(R.string.error_unable_to_connect));
         }
     }
 
@@ -199,8 +199,8 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     @Override
     public void onEvent(GeneralErrorEvent event) {
         if (event.getSource().equals(Events.PAYMENT)) {
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(this, event.getMessage());
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(this, event.getMessage());
         }
     }
 

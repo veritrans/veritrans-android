@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                 android:id="@+id/text_empty_saved_cards"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp">
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -83,7 +83,7 @@
                 android:padding="@dimen/sixteen_dp"
                 />
 
-            <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                 android:id="@+id/text_instalment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

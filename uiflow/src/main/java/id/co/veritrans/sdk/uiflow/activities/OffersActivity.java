@@ -17,21 +17,15 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
@@ -53,7 +47,6 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScan
 import id.co.veritrans.sdk.uiflow.fragments.OffersListFragment;
 import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
-import id.co.veritrans.sdk.coreflow.models.BankDetailArray;
 import id.co.veritrans.sdk.coreflow.models.BillingAddress;
 import id.co.veritrans.sdk.coreflow.models.CardPaymentDetails;
 import id.co.veritrans.sdk.coreflow.models.CardResponse;
@@ -72,7 +65,6 @@ import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.scancard.ExternalScanner;
 import id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask;
-import id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask.ReadBankDetailCallback;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
 
@@ -146,7 +138,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
             position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_OFFERS);
         } else {
-            SdkUtil.showSnackbar(OffersActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showSnackbar(OffersActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -201,7 +193,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
 
     @Override
     public void onBackPressed() {
-        SdkUtil.hideKeyboard(this);
+        SdkUIFlowUtil.hideKeyboard(this);
         if (fragmentManager.getBackStackEntryCount() == 1) {
             setResultAndFinish();
         } else {
@@ -216,7 +208,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     }
 
     public void getToken(CardTokenRequest cardTokenRequest) {
-        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardTokenRequest;
         Logger.i("isSecure:" + this.cardTokenRequest.isSecure());
         veritransSDK.getToken(cardTokenRequest);
@@ -224,7 +216,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
 
     public void payUsingCard() {
 
-        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
         //getSupportActionBar().setTitle(getString(R.string.processing_payment));
         textViewTitleOffers.setText(getString(R.string.processing_payment));
@@ -304,7 +296,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
 
 
             } else {
-                SdkUtil.hideProgressDialog();
+                SdkUIFlowUtil.hideProgressDialog();
                 processingLayout.setVisibility(View.GONE);
                 return;
             }
@@ -389,7 +381,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     }
 
     public void fetchCreditCards() {
-      //  SdkUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
+      //  SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
         textViewTitleOffers.setText(getString(R.string.fetching_cards));
         //  processingLayout.setVisibility(View.VISIBLE);
         veritransSDK.getSavedCard();
@@ -401,7 +393,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     }
 
     public void twoClickPayment(CardTokenRequest cardDetail) {
-        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardDetail;
         this.cardTokenRequest.setTwoClick(true);
         this.cardTokenRequest.setClientKey(veritransSDK.getClientKey());
@@ -527,7 +519,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
             Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
                     + veritransSDK.getTransactionRequest().isSecureCard());
             if (veritransSDK.getTransactionRequest().isSecureCard()) {
-                SdkUtil.hideProgressDialog();
+                SdkUIFlowUtil.hideProgressDialog();
                 if (tokenDetailsResponse.getRedirectUrl() != null &&
                         !tokenDetailsResponse.getRedirectUrl().equals("")) {
                     Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
@@ -535,7 +527,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                     startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
                 }
             } else {
-                SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+                SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
                 payUsingCard();
             }
         }
@@ -545,8 +537,8 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     @Subscribe
     @Override
     public void onEvent(GetTokenFailedEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(this, event.getMessage());
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
     }
 
     @Subscribe
@@ -561,7 +553,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
             }
         }, 200);
 
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         Logger.i("cardPaymentResponse:" + cardPaymentResponse.getStatusCode());
 
         if (cardPaymentResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200)) ||
@@ -636,7 +628,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         }, 200);
         OffersActivity.this.transactionResponse = transactionResponse;
         OffersActivity.this.errorMessage = event.getMessage();
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
         replaceFragment(paymentTransactionStatusFragment, R.id.offers_container, true, false);
@@ -661,7 +653,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     @Override
     public void onEvent(GetCardsSuccessEvent event) {
         CardResponse cardResponse = event.getResponse();
-        //  SdkUtil.hideProgressDialog();
+        //  SdkUIFlowUtil.hideProgressDialog();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -695,7 +687,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     @Subscribe
     @Override
     public void onEvent(GetCardFailedEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         Logger.i("card fetching failed :" + event.getMessage());
         processingLayout.setVisibility(View.GONE);
     }

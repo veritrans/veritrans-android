@@ -22,7 +22,7 @@ import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -81,7 +81,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
             position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_BBM_MONEY);
         } else {
-            SdkUtil.showSnackbar(BBMMoneyActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -173,7 +173,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         if (view.getId() == R.id.btn_confirm_payment) {
 
-            if (SdkUtil.isBBMMoneyInstalled(BBMMoneyActivity.this)) {
+            if (SdkUIFlowUtil.isBBMMoneyInstalled(BBMMoneyActivity.this)) {
 
                 if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
 
@@ -185,7 +185,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
 
                     if (transactionResponse == null) {
                         RESULT_CODE = RESULT_OK;
-                        SdkUtil.showSnackbar(BBMMoneyActivity.this, SOMETHING_WENT_WRONG);
+                        SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, SOMETHING_WENT_WRONG);
                         onBackPressed();
                     }
                 } else {
@@ -206,14 +206,14 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
 
             if (veritransSDK != null && veritransSDK.getBBMCallBackUrl() != null) {
 
-                String encodedUrl = SdkUtil.createEncodedUrl(bbmMoneyPaymentFragment.PERMATA_VA,
+                String encodedUrl = SdkUIFlowUtil.createEncodedUrl(bbmMoneyPaymentFragment.PERMATA_VA,
                         veritransSDK.getBBMCallBackUrl().getCheckStatus(),
                         veritransSDK.getBBMCallBackUrl().getBeforePaymentError(),
                         veritransSDK.getBBMCallBackUrl().getUserCancel());
 
                 String feedUrl = BuildConfig.BBM_PREFIX_URL + encodedUrl;
 
-                if (SdkUtil.isBBMMoneyInstalled(BBMMoneyActivity.this)) {
+                if (SdkUIFlowUtil.isBBMMoneyInstalled(BBMMoneyActivity.this)) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(feedUrl)));
                 } else {
                     instructionBBMMoneyFragment.openPlayStore();
@@ -224,7 +224,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
 
     private void performTransaction() {
 
-        SdkUtil.showProgressDialog(BBMMoneyActivity.this, false);
+        SdkUIFlowUtil.showProgressDialog(BBMMoneyActivity.this, false);
 
         //Execute transaction
         veritransSDK.paymentUsingBBMMoney();
@@ -268,7 +268,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
             layoutPayWithBBM.setVisibility(View.VISIBLE);
             currentFragment = PAYMENT_FRAGMENT;
         } else {
-            SdkUtil.showSnackbar(BBMMoneyActivity.this, SOMETHING_WENT_WRONG);
+            SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, SOMETHING_WENT_WRONG);
             onBackPressed();
         }
     }
@@ -295,7 +295,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
 
         if (transactionResponse != null) {
             BBMMoneyActivity.this.transactionResponse = event.getResponse();
@@ -313,8 +313,8 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
             BBMMoneyActivity.this.errorMessage = event.getMessage();
             BBMMoneyActivity.this.transactionResponse = event.getResponse();
 
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);
         }
@@ -325,8 +325,8 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
     public void onEvent(NetworkUnavailableEvent event) {
         BBMMoneyActivity.this.errorMessage = getString(R.string.no_network_msg);
 
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
     }
 
     @Subscribe
@@ -334,7 +334,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
     public void onEvent(GeneralErrorEvent event) {
         BBMMoneyActivity.this.errorMessage = event.getMessage();
 
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
     }
 }

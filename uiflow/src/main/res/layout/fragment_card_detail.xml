@@ -88,7 +88,7 @@
                 android:orientation="vertical"
                 >
 
-                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
@@ -98,7 +98,7 @@
 
                     />
 
-                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                     android:id="@+id/text_exp_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
             android:orientation="vertical"
             android:padding="@dimen/sixteen_dp"
             android:visibility="visible">
-            <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                 android:id="@+id/tv_enter_cvv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

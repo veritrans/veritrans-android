@@ -1,29 +1,14 @@
 package id.co.veritrans.sdk.coreflow.core;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.coreflow.R;
-import id.co.veritrans.sdk.coreflow.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
-import id.co.veritrans.sdk.coreflow.models.BBMUrlEncodeJson;
 import id.co.veritrans.sdk.coreflow.models.BCABankTransfer;
 import id.co.veritrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.BCAKlikPayModel;
@@ -50,232 +35,11 @@ import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
-import id.co.veritrans.sdk.coreflow.widgets.VeritransLoadingDialog;
 
 /**
- * It contains utility methods required for sdk.
- * <p/>
- * Created by chetan on 19/10/15.
+ * Created by ziahaqi on 18/06/2016.
  */
 public class SdkUtil {
-
-    private static VeritransLoadingDialog progressDialog;
-
-    /**
-     * it will validate an given email-id.
-     *
-     * @param email email string
-     * @return true if given email-id is valid else returns false
-     */
-    public static boolean isEmailValid(String email) {
-
-        if (!TextUtils.isEmpty(email)) {
-            Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(email.trim());
-            return matcher.matches();
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * it will validate an given phone number.
-     *
-     * @param phoneNo   phone number string
-     * @return true if given phone number is valid else returns false
-     */
-    public static boolean isPhoneNumberValid(String phoneNo) {
-        if (!TextUtils.isEmpty(phoneNo)) {
-            return phoneNo.length() >= Constants.PHONE_NUMBER_LENGTH || phoneNo.length() <= Constants.PHONE_NUMBER_MAX_LENGTH;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Show snack bar with given message.
-     *
-     * @param activity instance of an activity.
-     * @param message  message to display on snackbar.
-     */
-    public static void showSnackbar(Activity activity, String message) {
-
-        try {
-            Snackbar.make(activity.getWindow().findViewById(android.R.id.content), message,
-                    Snackbar.LENGTH_LONG)
-                    .show();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    /**
-     * Utility method which will help to close the keyboard.
-     *
-     * @param activity  activity instance
-     */
-    public static void hideKeyboard(Activity activity) {
-        try {
-            Logger.i("hide keyboard");
-            View view = activity.getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context
-                        .INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * it will validate an given card number.
-     *
-     * @param ccNumber  credit card number
-     * @return true if given card number is valid else returns false.
-     */
-    public static boolean isValidCardNumber(String ccNumber) {
-        int sum = 0;
-        boolean alternate = false;
-        for (int i = ccNumber.length() - 1; i >= 0; i--) {
-            int n = Integer.parseInt(ccNumber.substring(i, i + 1));
-            if (alternate) {
-                n *= 2;
-                if (n > 9) {
-                    n = (n % 10) + 1;
-                }
-            }
-            sum += n;
-            alternate = !alternate;
-        }
-        boolean isvalid = (sum % 10 == 0);
-        Logger.i("isValid:" + isvalid);
-        return isvalid;
-    }
-
-    /**
-     * Displays an progress dialog.
-     *
-     * @param activity     instance of an activity
-     * @param isCancelable set whether dialog is cancellable or not.
-     */
-    public static void showProgressDialog(Activity activity, boolean isCancelable) {
-
-        hideProgressDialog();
-
-        if (activity != null) {
-            try {
-                progressDialog = new VeritransLoadingDialog(activity);
-                progressDialog.setCanceledOnTouchOutside(true);
-                progressDialog.setCancelable(isCancelable);
-                progressDialog.show();
-            } catch (WindowManager.BadTokenException ex) {
-                Logger.e("error while creating progress dialog : " + ex.getMessage());
-            }
-        } else {
-            Logger.e("error while creating progress dialog : Context cann't be null.");
-        }
-
-    }
-
-
-    /**
-     * Displays an progress dialog with an message.
-     *
-     * @param activity     instance of an activity
-     * @param message      message to display information about on going task.
-     * @param isCancelable set whether dialog is cancellable or not.
-     */
-    public static void showProgressDialog(Activity activity, String message, boolean isCancelable) {
-
-        hideProgressDialog();
-
-        if (activity != null) {
-            try {
-                progressDialog = new VeritransLoadingDialog(activity, message);
-                progressDialog.setCanceledOnTouchOutside(true);
-                progressDialog.setCancelable(isCancelable);
-                progressDialog.show();
-            } catch (WindowManager.BadTokenException ex) {
-                Logger.e("error while creating progress dialog : " + ex.getMessage());
-            }
-        } else {
-            Logger.e("error while creating progress dialog : Context cann't be null.");
-        }
-
-    }
-
-    /**
-     * @return an instance of progress dialog if visible any else returns null.
-     */
-    public static VeritransLoadingDialog getProgressDialog() {
-        return progressDialog;
-    }
-
-    /**
-     * It will close the progress dialog if visible any.
-     */
-    public static void hideProgressDialog() {
-
-        if (progressDialog != null && progressDialog.isShowing()) {
-
-            try {
-                progressDialog.dismiss();
-            } catch (IllegalArgumentException ex) {
-                Logger.e("error while hiding progress dialog : " + ex.getMessage());
-            }
-            progressDialog = null;
-        }
-    }
-
-    /**
-     * display snackbar with message about failed api call.
-     *
-     * @param activity      activity instance
-     * @param errorMessage  error message
-     */
-    public static void showApiFailedMessage(Activity activity, String errorMessage) {
-        try {
-            if (!TextUtils.isEmpty(errorMessage)) {
-                VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-                if (veritransSDK != null) {
-                    Context context = veritransSDK.getContext();
-                    if (context != null) {
-                        if (errorMessage.contains(context.getString(R.string.retrofit_network_message))) {
-                            SdkUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
-                        } else {
-                            SdkUtil.showSnackbar(activity, errorMessage);
-                        }
-                    } else Logger.e("Context is not available.");
-                } else {
-                    Logger.e("Veritrans SDK is not started.");
-                }
-
-            } else {
-                SdkUtil.showSnackbar(activity, activity.getString(R.string.api_fail_message));
-            }
-        } catch (NullPointerException e) {
-            Logger.i("Nullpointer:" + e.getMessage());
-        }
-    }
-
-    /**
-     * It will generate random 5 digit number. It is used as input3 in mandiri click pay.
-     *
-     * @return random number
-     */
-    public static int generateRandomNumber() {
-        int number = 0;
-        int high = 99999;
-        int low = 10000;
-
-        Random random = new Random();
-        number = random.nextInt(high - low) + low;
-        return number;
-    }
-
-
     /**
      * helper method to extract {@link MandiriBillPayTransferModel} from {@link TransactionRequest}.
      *
@@ -356,7 +120,7 @@ public class SdkUtil {
         }
 
         return new BCAKlikPayModel(
-          descriptionModel,
+                descriptionModel,
                 transactionDetails,
                 request.getItemDetails(),
                 request.getBillingAddressArrayList(),
@@ -393,10 +157,10 @@ public class SdkUtil {
 
 
         return new PermataBankTransfer(bankTransfer,
-                        transactionDetails, request.getItemDetails(),
-                        request.getBillingAddressArrayList(),
-                        request.getShippingAddressArrayList(),
-                        request.getCustomerDetails());
+                transactionDetails, request.getItemDetails(),
+                request.getBillingAddressArrayList(),
+                request.getShippingAddressArrayList(),
+                request.getCustomerDetails());
 
     }
 
@@ -486,55 +250,6 @@ public class SdkUtil {
     }
 
 
-    /**
-     * helper method to extract {@link id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest} from
-     * {@link TransactionRequest}.
-     *
-     * @param request   transaction request object
-     * @return transfer model object
-     */
-    protected static IndosatDompetkuRequest getIndosatDompetkuRequestModel(TransactionRequest
-                                                                                   request,
-                                                                           String msisdn) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        //if (request.isUiEnabled()) {
-        //get user details only if using default ui.
-        request = initializeUserInfo(request);
-        //}
-
-
-        IndosatDompetku indosatDompetku = null;
-
-        if (msisdn != null && !TextUtils.isEmpty(msisdn)) {
-            indosatDompetku = new IndosatDompetku(msisdn.trim());
-        }
-
-
-        IndosatDompetkuRequest model =
-                new IndosatDompetkuRequest();
-
-        model.setCustomerDetails(request.getCustomerDetails(), request
-                .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            model.setPaymentType(veritransSDK.getContext().getString(R.string.payment_indosat_dompetku));
-        }
-
-        IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
-                .IndosatDompetkuEntity();
-        entity.setMsisdn("" + msisdn);
-
-        model.setIndosatDompetku(entity);
-        model.setItemDetails(request.getItemDetails());
-        model.setTransactionDetails(transactionDetails);
-
-        return model;
-
-    }
-
 
     /**
      * helper method to extract {@link CIMBClickPayModel} from {@link TransactionRequest}.
@@ -619,6 +334,82 @@ public class SdkUtil {
 
 
     /**
+     * helper method to extract {@link EpayBriTransfer} from {@link TransactionRequest}.
+     *
+     * @param request   transaction request object
+     * @return E Pay BRI transfer model
+     */
+    protected static EpayBriTransfer getEpayBriBankModel(TransactionRequest request) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        if (request.isUiEnabled()) {
+            //get user details only if using default ui.
+            request = initializeUserInfo(request);
+        }
+
+
+        EpayBriTransfer model =
+                new EpayBriTransfer(transactionDetails, request.getItemDetails(),
+                        request.getBillingAddressArrayList(),
+                        request.getShippingAddressArrayList(),
+                        request.getCustomerDetails());
+        return model;
+
+    }
+
+
+    /**
+     * helper method to extract {@link id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest} from
+     * {@link TransactionRequest}.
+     *
+     * @param request   transaction request object
+     * @return transfer model object
+     */
+    protected static IndosatDompetkuRequest getIndosatDompetkuRequestModel(TransactionRequest
+                                                                                   request,
+                                                                           String msisdn) {
+
+        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
+                request.getOrderId());
+
+        //if (request.isUiEnabled()) {
+        //get user details only if using default ui.
+        request = initializeUserInfo(request);
+        //}
+
+
+        IndosatDompetku indosatDompetku = null;
+
+        if (msisdn != null && !TextUtils.isEmpty(msisdn)) {
+            indosatDompetku = new IndosatDompetku(msisdn.trim());
+        }
+
+
+        IndosatDompetkuRequest model =
+                new IndosatDompetkuRequest();
+
+        model.setCustomerDetails(request.getCustomerDetails(), request
+                .getShippingAddressArrayList(), request.getBillingAddressArrayList());
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            model.setPaymentType(veritransSDK.getContext().getString(R.string.payment_indosat_dompetku));
+        }
+
+        IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
+                .IndosatDompetkuEntity();
+        entity.setMsisdn("" + msisdn);
+
+        model.setIndosatDompetku(entity);
+        model.setItemDetails(request.getItemDetails());
+        model.setTransactionDetails(transactionDetails);
+
+        return model;
+
+    }
+
+    /**
      * helper method to add {@link CustomerDetails} in {@link TransactionRequest}.
      *
      * @param transactionRequest    transaction request
@@ -628,6 +419,8 @@ public class SdkUtil {
         transactionRequest = getUserDetails(transactionRequest);
         return transactionRequest;
     }
+
+
 
     /**
      * it extracts customer information from TransactionRequest.
@@ -667,7 +460,7 @@ public class SdkUtil {
 
             } else {
                 Logger.e("User details not available.");
-                //SdkUtil.showSnackbar(VeritransSDK.getVeritransSDK().getContext(), "User details not available.");
+                //SdkUIFlowUtil.showSnackbar(VeritransSDK.getVeritransSDK().getContext(), "User details not available.");
                 //request.getActivity().finish();
             }
         } catch (Exception ex) {
@@ -675,6 +468,28 @@ public class SdkUtil {
         }
 
         return request;
+    }
+
+    /**
+     * return user details if available else return null
+     *
+     * @param context   Application context
+     * @return UserDetail
+     */
+    protected static UserDetail getUserDetails(Context context) {
+
+        StorageDataHandler storageDataHandler = new StorageDataHandler();
+        try {
+            VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+            if (veritransSDK != null) {
+                UserDetail userDetail = LocalDataHandler.readObject(veritransSDK.getContext().getString(R.string.user_details), UserDetail.class);
+                return userDetail;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static TransactionRequest extractUserAddress(UserDetail userDetail,
@@ -712,19 +527,6 @@ public class SdkUtil {
     }
 
     @NonNull
-    private static ShippingAddress getShippingAddress(UserDetail userDetail, UserAddress
-            userAddress) {
-        ShippingAddress shippingAddress = new ShippingAddress();
-        shippingAddress.setCity(userAddress.getCity());
-        shippingAddress.setFirstName(userDetail.getUserFullName());
-        shippingAddress.setLastName("");
-        shippingAddress.setPhone(userDetail.getPhoneNumber());
-        shippingAddress.setCountryCode(userAddress.getCountry());
-        shippingAddress.setPostalCode(userAddress.getZipcode());
-        return shippingAddress;
-    }
-
-    @NonNull
     private static BillingAddress getBillingAddress(UserDetail userDetail, UserAddress
             userAddress) {
         BillingAddress billingAddress = new BillingAddress();
@@ -737,125 +539,18 @@ public class SdkUtil {
         return billingAddress;
     }
 
-    /**
-     * shows keyboard on screen forcefully.
-     *
-     * @param activity  activity instance
-     * @param editText  edittext instance
-     */
-    public static void showKeyboard(Activity activity, EditText editText) {
-        Logger.i("show keyboard");
-        if (editText != null) {
-            editText.requestFocus();
-            editText.setFocusable(true);
-            editText.setFocusableInTouchMode(true);
-        }
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context
-                .INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
 
-    }
-
-
-    /**
-     * return user details if available else return null
-     *
-     * @param context   Application context
-     * @return UserDetail
-     */
-    protected static UserDetail getUserDetails(Context context) {
-
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
-        try {
-            VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-            if (veritransSDK != null) {
-                UserDetail userDetail = LocalDataHandler.readObject(veritransSDK.getContext().getString(R.string.user_details), UserDetail.class);
-                return userDetail;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * helper method to extract {@link EpayBriTransfer} from {@link TransactionRequest}.
-     *
-     * @param request   transaction request object
-     * @return E Pay BRI transfer model
-     */
-    protected static EpayBriTransfer getEpayBriBankModel(TransactionRequest request) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-
-        EpayBriTransfer model =
-                new EpayBriTransfer(transactionDetails, request.getItemDetails(),
-                        request.getBillingAddressArrayList(),
-                        request.getShippingAddressArrayList(),
-                        request.getCustomerDetails());
-        return model;
-
-    }
-
-
-    public static boolean isBBMMoneyInstalled(Activity activity) {
-
-        boolean isInstalled = false;
-
-        if (activity != null) {
-
-            PackageManager pm = activity.getPackageManager();
-            try {
-                pm.getPackageInfo(BuildConfig.BBM_MONEY_PACKAGE, PackageManager.GET_ACTIVITIES);
-                isInstalled = true;
-            } catch (PackageManager.NameNotFoundException e) {
-                isInstalled = false;
-            }
-        }
-
-        return isInstalled;
-    }
-
-    /**
-     * it returns the encoded url in string format.
-     *
-     * @param permataVA Permata virtual account
-     * @return url in encoded format
-     */
-    public static String createEncodedUrl(String permataVA, String checkStatus, String
-            beforePaymentError, String userCancel) {
-
-        String encodedUrl = null;
-
-        if (permataVA != null && checkStatus != null && beforePaymentError != null && userCancel
-                != null) {
-
-            BBMCallBackUrl bbmCallBackUrl = new BBMCallBackUrl(checkStatus, beforePaymentError,
-                    userCancel);
-            BBMUrlEncodeJson bbmUrlEncodeJson = new BBMUrlEncodeJson();
-
-            bbmUrlEncodeJson.setReference(permataVA);
-
-            bbmUrlEncodeJson.setCallbackUrl(bbmCallBackUrl);
-            String jsonString = bbmUrlEncodeJson.getString();
-            Logger.i("JSON String: " + jsonString);
-
-            try {
-                encodedUrl = URLEncoder.encode(jsonString, "UTF-8");
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-        return encodedUrl;
+    @NonNull
+    private static ShippingAddress getShippingAddress(UserDetail userDetail, UserAddress
+            userAddress) {
+        ShippingAddress shippingAddress = new ShippingAddress();
+        shippingAddress.setCity(userAddress.getCity());
+        shippingAddress.setFirstName(userDetail.getUserFullName());
+        shippingAddress.setLastName("");
+        shippingAddress.setPhone(userDetail.getPhoneNumber());
+        shippingAddress.setCountryCode(userAddress.getCountry());
+        shippingAddress.setPostalCode(userAddress.getZipcode());
+        return shippingAddress;
     }
 
     /**
@@ -872,4 +567,5 @@ public class SdkUtil {
         }
         return deviceId;
     }
+
 }

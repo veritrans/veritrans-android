@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.Subscribe;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -94,7 +94,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         if (data != null) {
             position = data.getIntExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
         } else {
-            SdkUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -219,7 +219,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             }
 
         } else {
-            SdkUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
             Logger.e(BankTransferActivity.class.getSimpleName(), Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -254,7 +254,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
                     RESULT_CODE = RESULT_OK;
-                    SdkUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
+                    SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
                     onBackPressed();
                 }
             } else {
@@ -328,7 +328,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             mButtonConfirmPayment.setText(R.string.complete_payment_at_atm);
 
         } else {
-            SdkUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
+            SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
             onBackPressed();
         }
     }
@@ -347,10 +347,10 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         if (bankTransferFragment != null && !bankTransferFragment.isDetached()) {
 
             String emailId = bankTransferFragment.getEmailId();
-            if (!TextUtils.isEmpty(emailId) && SdkUtil.isEmailValid(emailId)) {
+            if (!TextUtils.isEmpty(emailId) && SdkUIFlowUtil.isEmailValid(emailId)) {
                 mVeritransSDK.getTransactionRequest().getCustomerDetails().setEmail(emailId.trim());
             } else if (!TextUtils.isEmpty(emailId) && emailId.trim().length() > 0) {
-                SdkUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_invalid_email_id));
+                SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_invalid_email_id));
                 return;
             }
         }
@@ -364,7 +364,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                     new TransactionDetails("" + mVeritransSDK.getTransactionRequest().getAmount(),
                             mVeritransSDK.getTransactionRequest().getOrderId());
 
-            SdkUtil.showProgressDialog(BankTransferActivity.this, getString(R.string.processing_payment), false);
+            SdkUIFlowUtil.showProgressDialog(BankTransferActivity.this, getString(R.string.processing_payment), false);
 
             if (position == Constants.BANK_TRANSFER_PERMATA) {
                 bankTransferTransaction(veritransSDK);
@@ -449,7 +449,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         if (event.getResponse() != null) {
             transactionResponse = event.getResponse();
             mAppBarLayout.setExpanded(true);
@@ -463,8 +463,8 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onEvent(GeneralErrorEvent event) {
         BankTransferActivity.this.errorMessage = event.getMessage();
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
     }
 
     @Subscribe
@@ -474,8 +474,8 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             BankTransferActivity.this.errorMessage = event.getMessage();
             BankTransferActivity.this.transactionResponse = event.getResponse();
 
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);
         }
@@ -485,7 +485,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         BankTransferActivity.this.errorMessage = getString(R.string.no_network_msg);
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
     }
 }

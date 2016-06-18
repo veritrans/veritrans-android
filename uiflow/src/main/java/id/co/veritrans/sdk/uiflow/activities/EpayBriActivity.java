@@ -16,7 +16,7 @@ import org.greenrobot.eventbus.Subscribe;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -49,7 +49,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_epay_bri);
         veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK == null) {
-            SdkUtil.showSnackbar(EpayBriActivity.this, Constants
+            SdkUIFlowUtil.showSnackbar(EpayBriActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
@@ -112,7 +112,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
     private void makeTransaction() {
 
-        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         veritransSDK.paymentUsingEpayBri();
         /*veritransSDK.paymentUsingEpayBri(EpayBriActivity.this,
                 new TransactionCallback() {
@@ -120,15 +120,15 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public void onFailure(String errorMessage, TransactionResponse
                             transactionResponse) {
-                        SdkUtil.hideProgressDialog();
-                        SdkUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
+                        SdkUIFlowUtil.hideProgressDialog();
+                        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
                         EpayBriActivity.this.errorMessage = errorMessage;
 
                     }
 
                     @Override
                     public void onSuccess(TransactionResponse transactionResponse) {
-                        SdkUtil.hideProgressDialog();
+                        SdkUIFlowUtil.hideProgressDialog();
                         if (transactionResponse != null &&
                                 !TextUtils.isEmpty(transactionResponse.getRedirectUrl())) {
                             EpayBriActivity.this.transactionResponse = transactionResponse;
@@ -136,7 +136,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
                             intentPaymentWeb.putExtra(Constants.WEBURL, transactionResponse.getRedirectUrl());
                             startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
                         } else {
-                            SdkUtil.showApiFailedMessage(EpayBriActivity.this, getString(R.string.empty_transaction_response));
+                            SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, getString(R.string.empty_transaction_response));
                         }
 
                     }
@@ -196,7 +196,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         if (event.getResponse() != null &&
                 !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
             EpayBriActivity.this.transactionResponse = event.getResponse();
@@ -204,7 +204,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
             intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
             startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
         } else {
-            SdkUtil.showApiFailedMessage(EpayBriActivity.this, getString(R.string.empty_transaction_response));
+            SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, getString(R.string.empty_transaction_response));
         }
     }
 
@@ -213,8 +213,8 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     public void onEvent(TransactionFailedEvent event) {
         EpayBriActivity.this.errorMessage = event.getMessage();
 
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
     }
 
     @Subscribe
@@ -222,8 +222,8 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     public void onEvent(NetworkUnavailableEvent event) {
         EpayBriActivity.this.errorMessage = getString(R.string.no_network_msg);
 
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
     }
 
     @Subscribe
@@ -231,7 +231,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     public void onEvent(GeneralErrorEvent event) {
         EpayBriActivity.this.errorMessage = event.getMessage();
 
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(EpayBriActivity.this, event.getMessage());
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, event.getMessage());
     }
 }

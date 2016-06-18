@@ -33,13 +33,13 @@
                     android:contentDescription="@string/no_card_yet"
                     android:src="@drawable/bankcard" />
 
-                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/no_card_yet"
                     android:textSize="16sp" />
 
-                <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/eight_dp"

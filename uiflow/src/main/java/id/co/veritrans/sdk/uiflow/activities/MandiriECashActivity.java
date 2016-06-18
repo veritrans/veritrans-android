@@ -16,7 +16,7 @@ import org.greenrobot.eventbus.Subscribe;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -55,7 +55,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         mVeritransSDK = VeritransSDK.getVeritransSDK();
 
         if (mVeritransSDK == null) {
-            SdkUtil.showSnackbar(MandiriECashActivity.this, Constants
+            SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
@@ -115,7 +115,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void makeTransaction(){
-        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
 
         DescriptionModel description = new DescriptionModel("Any Description");
 
@@ -159,7 +159,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
 
         if (event.getResponse() != null &&
                 !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
@@ -168,7 +168,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
             startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
         } else {
-            SdkUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string
+            SdkUIFlowUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string
                     .empty_transaction_response));
         }
     }
@@ -180,10 +180,10 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             MandiriECashActivity.this.errorMessage = event.getMessage();
             MandiriECashActivity.this.transactionResponse = event.getResponse();
 
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
         } catch (NullPointerException ex) {
-            SdkUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string.empty_transaction_response));
+            SdkUIFlowUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string.empty_transaction_response));
         }
     }
 
@@ -191,16 +191,16 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
         MandiriECashActivity.this.errorMessage = getString(R.string.no_network_msg);
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
     }
 
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
         MandiriECashActivity.this.errorMessage = event.getMessage();
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
     }
 }
 

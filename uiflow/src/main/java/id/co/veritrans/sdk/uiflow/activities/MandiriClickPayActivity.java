@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.Subscribe;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -65,7 +65,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         mVeritransSDK = VeritransSDK.getVeritransSDK();
 
         if (mVeritransSDK == null) {
-            SdkUtil.showSnackbar(MandiriClickPayActivity.this, Constants
+            SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
@@ -108,7 +108,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     private void bindDataToView() {
         mTextViewInput1.setText("");
         mTextViewInput2.setText("" + mVeritransSDK.getTransactionRequest().getAmount());
-        mTextViewInput3.setText("" + SdkUtil.generateRandomNumber());
+        mTextViewInput3.setText("" + SdkUIFlowUtil.generateRandomNumber());
     }
 
     private void setUpHomeFragment() {
@@ -200,11 +200,11 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
                 debitCardNumber = debitCardNumber.replace(" ", "");
 
-                if (debitCardNumber.length() < 16 || !SdkUtil.isValidCardNumber(debitCardNumber)) {
-                    SdkUtil.showSnackbar(MandiriClickPayActivity.this,
+                if (debitCardNumber.length() < 16 || !SdkUIFlowUtil.isValidCardNumber(debitCardNumber)) {
+                    SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this,
                             getString(R.string.validation_message_invalid_card_no));
                 } else if (challengeToken.trim().length() != 6) {
-                    SdkUtil.showSnackbar(MandiriClickPayActivity.this,
+                    SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this,
                             getString(R.string.validation_message_invalid_token_no));
                 } else {
 
@@ -215,20 +215,20 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                     mandiriClickPayModel.setInput3(mTextViewInput3.getText().toString());
                     mandiriClickPayModel.setToken(challengeToken);
 
-                    SdkUtil.showProgressDialog(MandiriClickPayActivity.this, getString(R.string.processing_payment), false);
+                    SdkUIFlowUtil.showProgressDialog(MandiriClickPayActivity.this, getString(R.string.processing_payment), false);
                     makeTransaction(mandiriClickPayModel);
 
                 }
 
             } else {
-                SdkUtil.showSnackbar(
+                SdkUIFlowUtil.showSnackbar(
                         MandiriClickPayActivity.this,
                         "Please fill up information properly."
                 );
             }
 
         } else {
-            SdkUtil.showSnackbar(MandiriClickPayActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -300,14 +300,14 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
 
         MandiriClickPayActivity.this.transactionResponse = event.getResponse();
 
         if (transactionResponse != null) {
             setUpTransactionStatusFragment(transactionResponse);
         } else {
-            SdkUtil.showSnackbar(MandiriClickPayActivity.this,
+            SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this,
                     SOMETHING_WENT_WRONG);
         }
     }
@@ -327,7 +327,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         }
 
 
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
     }
 
     @Subscribe
@@ -337,7 +337,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
 
         Logger.e("Error is ", "" + errorMessage);
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
     }
 
     @Subscribe
@@ -347,6 +347,6 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
 
         Logger.e("Error is ", "" + errorMessage);
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
     }
 }

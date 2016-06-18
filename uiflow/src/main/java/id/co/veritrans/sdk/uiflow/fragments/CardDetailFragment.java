@@ -22,7 +22,7 @@ import id.co.veritrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
@@ -79,7 +79,7 @@ public class CardDetailFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        SdkUtil.hideKeyboard(getActivity());
+        SdkUIFlowUtil.hideKeyboard(getActivity());
     }
 
     @Override
@@ -181,13 +181,13 @@ public class CardDetailFragment extends Fragment {
         payNowBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SdkUtil.hideKeyboard(getActivity());
+                SdkUIFlowUtil.hideKeyboard(getActivity());
                 final String cvv = cvvEt.getText().toString().trim();
                 if (TextUtils.isEmpty(cvv)) {
-                    SdkUtil.showSnackbar(getActivity(), getString(R.string.validation_message_cvv));
+                    SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_message_cvv));
                     return;
                 } else if (cvv.length() < 3) {
-                    SdkUtil.showSnackbar(getActivity(), getString(R.string
+                    SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
                             .validation_message_invalid_cvv));
                     return;
                 }
@@ -239,7 +239,7 @@ public class CardDetailFragment extends Fragment {
                 VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
                 veritransDialog.show();
-                SdkUtil.hideKeyboard(getActivity()); // hide keyboard if visible.
+                SdkUIFlowUtil.hideKeyboard(getActivity()); // hide keyboard if visible.
             }
         });
 
@@ -327,9 +327,9 @@ public class CardDetailFragment extends Fragment {
         if (cardContainerFront.getVisibility() == View.GONE) {
             flipAnimation.reverse();
             /*if(cvvEt!=null) {
-                SdkUtil.showKeyboard(getActivity(), cvvEt);
+                SdkUIFlowUtil.showKeyboard(getActivity(), cvvEt);
             }*/
-            SdkUtil.hideKeyboard(getActivity());
+            SdkUIFlowUtil.hideKeyboard(getActivity());
         }
         flipAnimation.setAnimationListener(new Animation.AnimationListener() {
                                                @Override
@@ -341,9 +341,9 @@ public class CardDetailFragment extends Fragment {
                                                public void onAnimationEnd(Animation animation) {
                                                    /*if (cardContainerFront.getVisibility() == View
                                                            .VISIBLE) {
-                                                       SdkUtil.hideKeyboard(getActivity());
+                                                       SdkUIFlowUtil.hideKeyboard(getActivity());
                                                    } else {
-                                                       SdkUtil.showKeyboard(getActivity(), cvvEt);
+                                                       SdkUIFlowUtil.showKeyboard(getActivity(), cvvEt);
                                                    }*/
                                                    Handler handler = new Handler();
                                                    handler.postDelayed(new Runnable() {
@@ -352,9 +352,9 @@ public class CardDetailFragment extends Fragment {
                                                            if (cardContainerFront.getVisibility() == View
                                                                    .VISIBLE) {
 
-                                                               SdkUtil.hideKeyboard(getActivity());
+                                                               SdkUIFlowUtil.hideKeyboard(getActivity());
                                                            } else {
-                                                               SdkUtil.showKeyboard(getActivity(), cvvEt);
+                                                               SdkUIFlowUtil.showKeyboard(getActivity(), cvvEt);
                                                            }
                                                        }
                                                    }, 50);

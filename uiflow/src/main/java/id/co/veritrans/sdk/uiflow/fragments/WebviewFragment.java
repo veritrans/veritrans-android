@@ -18,7 +18,7 @@ import android.webkit.WebViewClient;
 import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 public class WebviewFragment extends Fragment {
 
@@ -62,7 +62,7 @@ public class WebviewFragment extends Fragment {
 
     @SuppressLint("AddJavascriptInterface")
     private void initwebview() {
-        SdkUtil.showProgressDialog(getActivity(), true);
+        SdkUIFlowUtil.showProgressDialog(getActivity(), true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setInitialScale(1);
         webView.getSettings().setLoadWithOverviewMode(true);
@@ -92,7 +92,7 @@ public class WebviewFragment extends Fragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            SdkUtil.hideProgressDialog();
+            SdkUIFlowUtil.hideProgressDialog();
             if (url.contains(BuildConfig.CALLBACK_STRING)) {
                 Intent returnIntent = new Intent();
                 getActivity().setResult(getActivity().RESULT_OK, returnIntent);
@@ -108,7 +108,7 @@ public class WebviewFragment extends Fragment {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             Logger.i("Url:" + url);
             super.onPageStarted(view, url, favicon);
-            SdkUtil.showProgressDialog(getActivity(), false);
+            SdkUIFlowUtil.showProgressDialog(getActivity(), false);
         }
     }
 

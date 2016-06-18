@@ -20,7 +20,6 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
@@ -28,7 +27,7 @@ import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
@@ -169,7 +168,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     @Override
     public void onBackPressed() {
-        SdkUtil.hideKeyboard(this);
+        SdkUIFlowUtil.hideKeyboard(this);
         if (fragmentManager.getBackStackEntryCount() == 1) {
             setResultAndFinish();
         } else {
@@ -184,7 +183,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void getToken(CardTokenRequest cardTokenRequest) {
-        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardTokenRequest;
         Logger.i("isSecure:" + this.cardTokenRequest.isSecure());
         veritransSDK.getToken(cardTokenRequest);
@@ -193,16 +192,16 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     /*public void getToken() {
         if (cardTokenRequest != null) {
             this.cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
-            SdkUtil.showProgressDialog(this, false);
+            SdkUIFlowUtil.showProgressDialog(this, false);
             veritransSDK.getToken(CreditDebitCardFlowActivity.this, this.cardTokenRequest, this);
         } else {
-            SdkUtil.showSnackbar(this, getString(R.string.card_details_error_message));
+            SdkUIFlowUtil.showSnackbar(this, getString(R.string.card_details_error_message));
         }
     }*/
 
     public void payUsingCard() {
 
-        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
         //getSupportActionBar().setTitle(getString(R.string.processing_payment));
         titleHeaderTextView.setText(getString(R.string.processing_payment));
@@ -264,7 +263,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
                         tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved());
             } else {
-                SdkUtil.hideProgressDialog();
+                SdkUIFlowUtil.hideProgressDialog();
                 processingLayout.setVisibility(View.GONE);
                 return;
             }
@@ -351,7 +350,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void fetchCreditCards() {
-        SdkUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
         //  processingLayout.setVisibility(View.VISIBLE);
         veritransSDK.getSavedCard();
     }
@@ -362,7 +361,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void twoClickPayment(CardTokenRequest cardDetail) {
-        SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = new CardTokenRequest();
         this.cardTokenRequest.setSavedTokenId(cardDetail.getSavedTokenId());
         this.cardTokenRequest.setCardCVV(cardDetail.getCardCVV());
@@ -505,7 +504,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         this.tokenDetailsResponse = tokenDetailsResponse;
 
         if (veritransSDK.getTransactionRequest().isSecureCard()) {
-            SdkUtil.hideProgressDialog();
+            SdkUIFlowUtil.hideProgressDialog();
             if (tokenDetailsResponse != null) {
                 if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
                     Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
@@ -514,7 +513,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 }
             }
         } else {
-            SdkUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+            SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
             payUsingCard();
         }
     }
@@ -522,8 +521,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Subscribe
     @Override
     public void onEvent(GetTokenFailedEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(this, event.getMessage());
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
     }
 
     @Subscribe
@@ -538,7 +537,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             }
         }, 200);
 
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         Logger.i("cardPaymentResponse:" + cardPaymentResponse.getStatusCode());
 
         if (cardPaymentResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200)) ||
@@ -605,7 +604,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }, 200);
         CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
         CreditDebitCardFlowActivity.this.errorMessage = event.getMessage();
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
         replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
@@ -617,15 +616,15 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(this, getString(R.string.no_network_msg));
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.no_network_msg));
     }
 
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(this, event.getMessage());
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
 
         if (event.getSource().equals(Events.GET_CARD)) {
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
@@ -638,7 +637,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Override
     public void onEvent(GetCardsSuccessEvent event) {
         CardResponse cardResponse = event.getResponse();
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         //
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -681,7 +680,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Subscribe
     @Override
     public void onEvent(GetCardFailedEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         Logger.i("card fetching failed :" + event.getMessage());
         processingLayout.setVisibility(View.GONE);
     }

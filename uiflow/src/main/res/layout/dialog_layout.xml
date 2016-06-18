@@ -42,7 +42,7 @@
                 />
         </RelativeLayout>
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/message_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

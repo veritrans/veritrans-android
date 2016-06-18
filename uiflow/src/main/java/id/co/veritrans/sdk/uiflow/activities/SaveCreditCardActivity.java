@@ -27,7 +27,7 @@ import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.adapters.RegisterCardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.CardRegistrationBusCallback;
@@ -126,7 +126,7 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
 
     @Override
     public void onBackPressed() {
-        SdkUtil.hideKeyboard(this);
+        SdkUIFlowUtil.hideKeyboard(this);
         if (fragmentManager.getBackStackEntryCount() == 1) {
             setResultAndFinish();
         } else {
@@ -207,7 +207,7 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
     }
 
     public void fetchCreditCards() {
-        SdkUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
         //  processingLayout.setVisibility(View.VISIBLE);
         veritransSDK.getSavedCard();
     }
@@ -293,15 +293,15 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
     @Subscribe
     @Override
     public void onEvent(CardRegistrationFailedEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(this, event.getMessage());
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
     }
 
     @Subscribe
     @Override
     public void onEvent(GetCardsSuccessEvent event) {
         CardResponse cardResponse = event.getResponse();
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         //
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -334,7 +334,7 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
     @Subscribe
     @Override
     public void onEvent(GetCardFailedEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         Logger.i("card fetching failed :" + event.getMessage());
         processingLayout.setVisibility(View.GONE);
     }
@@ -342,22 +342,22 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
     @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(this, getString(R.string.no_network_msg));
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.no_network_msg));
     }
 
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(this, event.getMessage());
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
     }
 
     @Subscribe
     @Override
     public void onEvent(SaveCardSuccessEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(this, "Your card has been successfully saved");
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(this, "Your card has been successfully saved");
         savedCardFragment.addCreditCard(cardRequest);
         replaceFragment(savedCardFragment, true, false);
     }
@@ -365,8 +365,8 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
     @Subscribe
     @Override
     public void onEvent(SaveCardFailedEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showApiFailedMessage(this, event.getMessage());
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
     }
 
 }

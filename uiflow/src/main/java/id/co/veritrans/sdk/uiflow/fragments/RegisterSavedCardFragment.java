@@ -23,7 +23,7 @@ import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.uiflow.adapters.RegisterCardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.DeleteCardBusCallback;
@@ -160,7 +160,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     }
 
     public void deleteCreditCard(String cardNumber) {
-        SdkUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+        SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
         showHideNoCardMessage();
         deleteCards(cardNumber);
     }
@@ -292,7 +292,7 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     @Subscribe
     @Override
     public void onEvent(DeleteCardSuccessEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         int position = -1;
         for (int i = 0; i < creditCards.size(); i++) {
             if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
@@ -336,21 +336,21 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     @Subscribe
     @Override
     public void onEvent(DeleteCardFailedEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(getActivity(), event.getMessage());
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(getActivity(), event.getMessage());
     }
 
     @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(getActivity(), getString(R.string.no_network_msg));
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.no_network_msg));
     }
 
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
-        SdkUtil.hideProgressDialog();
-        SdkUtil.showSnackbar(getActivity(), event.getMessage());
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showSnackbar(getActivity(), event.getMessage());
     }
 }

@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.Subscribe;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -168,7 +168,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
             mTextViewTitle.setText(getResources().getString(R.string.indosat_dompetku));
 
         } else {
-            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_something_wrong));
             Logger.e(IndosatDompetkuActivity.class.getSimpleName(), Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -213,12 +213,12 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
             phoneNumber = mIndosatFragment.getPhoneNumber();
 
-            if (!TextUtils.isEmpty(phoneNumber) && SdkUtil.isPhoneNumberValid(phoneNumber)) {
+            if (!TextUtils.isEmpty(phoneNumber) && SdkUIFlowUtil.isPhoneNumberValid(phoneNumber)) {
                 Logger.i("setting phone number " + phoneNumber);
                 mVeritransSDK.getTransactionRequest().getCustomerDetails().setPhone(phoneNumber
                         .trim());
             } else {
-                SdkUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_invalid_phone_number));
+                SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_invalid_phone_number));
                 return;
             }
         }
@@ -228,7 +228,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
         if (veritransSDK != null) {
 
-            SdkUtil.showProgressDialog(IndosatDompetkuActivity.this, getString(R.string
+            SdkUIFlowUtil.showProgressDialog(IndosatDompetkuActivity.this, getString(R.string
                     .processing_payment), false);
             transactionUsingIndosat(veritransSDK);
 
@@ -256,14 +256,14 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                     public void onSuccess(TransactionResponse
                                                   indosatTransferStatus) {
 
-                        SdkUtil.hideProgressDialog();
+                        SdkUIFlowUtil.hideProgressDialog();
                         mTransactionResponse = indosatTransferStatus;
 
                         if (indosatTransferStatus != null) {
                             setUpTransactionStatusFragment(indosatTransferStatus);
                         } else {
 
-                            SdkUtil.showSnackbar(IndosatDompetkuActivity.this,
+                            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this,
                                     SOMETHING_WENT_WRONG);
                             onBackPressed();
                         }
@@ -277,8 +277,8 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                         mTransactionResponse = transactionResponse;
                         IndosatDompetkuActivity.this.errorMessage = errorMessage;
                         try {
-                            SdkUtil.hideProgressDialog();
-                            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+                            SdkUIFlowUtil.hideProgressDialog();
+                            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
                         } catch (NullPointerException ex) {
                             Logger.e("transaction error is " + errorMessage);
                         }
@@ -340,14 +340,14 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         mTransactionResponse = event.getResponse();
 
         if (event.getResponse() != null) {
             setUpTransactionStatusFragment(event.getResponse());
         } else {
 
-            SdkUtil.showSnackbar(IndosatDompetkuActivity.this,
+            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this,
                     SOMETHING_WENT_WRONG);
             onBackPressed();
         }
@@ -359,8 +359,8 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         mTransactionResponse = event.getResponse();
         IndosatDompetkuActivity.this.errorMessage = event.getMessage();
         try {
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);
         }
@@ -371,8 +371,8 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     public void onEvent(NetworkUnavailableEvent event) {
         IndosatDompetkuActivity.this.errorMessage = getString(R.string.no_network_msg);
         try {
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);
         }
@@ -383,8 +383,8 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     public void onEvent(GeneralErrorEvent event) {
         IndosatDompetkuActivity.this.errorMessage = event.getMessage();
         try {
-            SdkUtil.hideProgressDialog();
-            SdkUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);
         }

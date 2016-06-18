@@ -25,7 +25,7 @@ import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.DeleteCardBusCallback;
@@ -523,18 +523,18 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
     @Subscribe
     @Override
     public void onEvent(DeleteCardFailedEvent event) {
-        SdkUtil.showSnackbar(getActivity(), event.getMessage());
+        SdkUIFlowUtil.showSnackbar(getActivity(), event.getMessage());
     }
 
     @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
-        SdkUtil.showSnackbar(getActivity(), getString(R.string.no_network_msg));
+        SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.no_network_msg));
     }
 
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
-        SdkUtil.showSnackbar(getActivity(), event.getMessage());
+        SdkUIFlowUtil.showSnackbar(getActivity(), event.getMessage());
     }
 }

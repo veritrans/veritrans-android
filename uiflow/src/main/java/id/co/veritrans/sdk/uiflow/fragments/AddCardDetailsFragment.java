@@ -30,7 +30,7 @@ import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
@@ -188,7 +188,7 @@ public class AddCardDetailsFragment extends Fragment {
                         }
                     }
                     //make payment
-                    SdkUtil.showProgressDialog(getActivity(), false);
+                    SdkUIFlowUtil.showProgressDialog(getActivity(), false);
                     ((CreditDebitCardFlowActivity) getActivity()).getToken(cardTokenRequest);
                 }
             }
@@ -320,7 +320,7 @@ public class AddCardDetailsFragment extends Fragment {
             }
             isValid = false;
         }
-        if (cardNumber.length() < 15 || !SdkUtil.isValidCardNumber(cardNumber)) {
+        if (cardNumber.length() < 15 || !SdkUIFlowUtil.isValidCardNumber(cardNumber)) {
             if (!etCardNo.hasFocus()) {
                 etCardNo.setError(getString(R.string.validation_message_invalid_card_no));
             }

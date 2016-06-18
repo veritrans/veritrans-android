@@ -11,14 +11,14 @@
         android:background="@drawable/loading_background"
         android:padding="@dimen/eight_dp">
 
-        <id.co.veritrans.sdk.coreflow.widgets.ProgressWheel
+        <id.co.veritrans.sdk.uiflow.widgets.ProgressWheel
             android:id="@+id/progress_wheel"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerVertical="true"
             wheel:matProg_progressIndeterminate="true" />
 
-        <id.co.veritrans.sdk.coreflow.widgets.DefaultTextView
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_loading_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

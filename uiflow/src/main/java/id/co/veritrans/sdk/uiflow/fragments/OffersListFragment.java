@@ -18,7 +18,7 @@ import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.uiflow.adapters.OffersAdapter;
 import id.co.veritrans.sdk.uiflow.callbacks.AnyOfferClickedListener;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkUtil;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.GetOfferBusCallback;
@@ -127,7 +127,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     private void initialiseAdapterData() {
 
         if (getActivity() != null) {
-            SdkUtil.showProgressDialog(getActivity(), getString(R.string.fetching_offers),
+            SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.fetching_offers),
                     false);
             showHideEmptyOffersMessage(false);
             if (veritransSDK != null) {
@@ -175,7 +175,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     @Override
     public void onEvent(GetOfferSuccessEvent event) {
         GetOffersResponseModel getOffersResponseModel = event.getResponse();
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
 
         Logger.i("offers api successful" + getOffersResponseModel);
         if (getOffersResponseModel != null && getOffersResponseModel.getOffers()
@@ -205,7 +205,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     @Subscribe
     @Override
     public void onEvent(GetOfferFailedEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         Logger.i("offers fetching failed :" + event.getMessage());
         //todo
         showHideEmptyOffersMessage(true);
@@ -214,7 +214,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         Logger.i("offers fetching failed :" + getString(R.string.no_network_msg));
         //todo
         showHideEmptyOffersMessage(true);
@@ -223,7 +223,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
-        SdkUtil.hideProgressDialog();
+        SdkUIFlowUtil.hideProgressDialog();
         Logger.i("offers fetching failed :" + event.getMessage());
         //todo
         showHideEmptyOffersMessage(true);
