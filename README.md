@@ -6,7 +6,8 @@
 
 ### Overview of Payments and Mobile SDK
  To see a overview of Veritrans SDK read [here](https://github.com/veritrans/veritrans-android/wiki/Getting-started-with-the-Veritrans-SDK)
-## Setting up Android SDK
+ 
+### Setting up Android SDK
 
 ### SDK Installation
 
