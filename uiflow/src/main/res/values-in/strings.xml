@@ -7,7 +7,7 @@
     <!--user detail-->
     <string name="hint_full_name">Nama Lengkap</string>
     <string name="hint_email">Email</string>
-    <string name="next">Next</string>
+    <string name="next">Selanjutnya</string>
     <string name="hint_phone_number">No. Telepon </string>
     <string name="validation_full_name_empty">Masukkan nama lengkap</string>
     <string name="validation_email_empty">Masukkan alamat email</string>
