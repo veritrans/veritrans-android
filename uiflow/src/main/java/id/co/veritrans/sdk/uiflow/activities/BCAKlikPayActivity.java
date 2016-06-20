@@ -3,7 +3,9 @@ package id.co.veritrans.sdk.uiflow.activities;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.util.TimeUtils;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -14,9 +16,15 @@ import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
+import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
@@ -131,13 +139,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
-        if (resultCode == RESULT_OK && data != null ) {
-            String responseStr = data.getStringExtra(getString(R.string.payment_response));
-            if(TextUtils.isEmpty(responseStr)){
-                return;
-            }
-            Gson gson = new Gson();
-            transactionResponseFromMerchant = gson.fromJson(responseStr, TransactionResponse.class);
+        if (resultCode == RESULT_OK) {
+            transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
+                    mVeritransSDK.getTransactionRequest().getOrderId(), String.valueOf(mVeritransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_bca_click), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
             replaceFragment(paymentTransactionStatusFragment, R.id.bca_klik_pay_container, true, false);
@@ -170,6 +174,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
             BCAKlikPayActivity.this.transactionResponse = event.getResponse();
             Intent intentPaymentWeb = new Intent(BCAKlikPayActivity.this, PaymentWebActivity.class);
             intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
+            intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_BCA_KLIKPAY);
             startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
         } else {
             SdkUIFlowUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string

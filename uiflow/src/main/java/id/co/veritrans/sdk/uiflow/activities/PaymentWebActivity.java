@@ -18,6 +18,7 @@ public class PaymentWebActivity extends BaseActivity {
     private VeritransSDK veritransSDK;
     private RelativeLayout webviewContainer;
     private String webUrl;
+    private String type = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +27,20 @@ public class PaymentWebActivity extends BaseActivity {
         saveCurrentFragment = true;
         initializeTheme();
         webUrl = getIntent().getStringExtra(Constants.WEBURL);
+        if (getIntent().getStringExtra(Constants.TYPE) != null && !getIntent().getStringExtra(Constants.TYPE).equals("")) {
+            type = getIntent().getStringExtra(Constants.TYPE);
+        }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         fragmentManager = getSupportFragmentManager();
         toolbar.setTitle(R.string.processing_payment);
 
         setSupportActionBar(toolbar);
-        WebviewFragment webviewFragment = WebviewFragment.newInstance(webUrl);
+        WebviewFragment webviewFragment;
+        if (!type.equals("")) {
+            webviewFragment = WebviewFragment.newInstance(webUrl, type);
+        } else {
+            webviewFragment = WebviewFragment.newInstance(webUrl);
+        }
         replaceFragment(webviewFragment, R.id.webview_container, true, false);
     }
 

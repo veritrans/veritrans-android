@@ -67,6 +67,7 @@ public class Constants {
 
     public static final int MONTH_COUNT = 12;
     public static final String WEBURL = "weburl";
+    public static final String TYPE = "type";
 
     /**
      * result code used for payment transfer activities
