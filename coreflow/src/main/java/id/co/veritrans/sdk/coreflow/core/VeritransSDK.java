@@ -9,8 +9,6 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.R;
-//import id.co.veritrans.sdk.activities.SaveCreditCardActivity;
-//import id.co.veritrans.sdk.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.models.BBMCallBackUrl;
@@ -27,8 +25,8 @@ import id.co.veritrans.sdk.coreflow.models.DescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.EpayBriTransfer;
 import id.co.veritrans.sdk.coreflow.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest;
-import id.co.veritrans.sdk.coreflow.models.KlikBcaDescriptionModel;
-import id.co.veritrans.sdk.coreflow.models.KlikBcaModel;
+import id.co.veritrans.sdk.coreflow.models.KlikBCADescriptionModel;
+import id.co.veritrans.sdk.coreflow.models.KlikBCAModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
@@ -37,6 +35,9 @@ import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+
+//import id.co.veritrans.sdk.activities.SaveCreditCardActivity;
+//import id.co.veritrans.sdk.activities.UserDetailsActivity;
 
 /**
  * Created by shivam on 10/19/15.
@@ -375,12 +376,12 @@ public class VeritransSDK {
         }
     }
 
-    public void paymentUsingKlikBCA(KlikBcaDescriptionModel descriptionModel) {
+    public void paymentUsingKlikBCA(KlikBCADescriptionModel descriptionModel) {
         if (transactionRequest != null && descriptionModel != null) {
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
-            KlikBcaModel klikBcaModel = SdkUtil.getKlikBCAModel(transactionRequest, descriptionModel);
+            KlikBCAModel klikBCAModel = SdkUtil.getKlikBCAModel(transactionRequest, descriptionModel);
             isRunning = true;
-            TransactionManager.paymentUsingKlikBCA(klikBcaModel);
+            TransactionManager.paymentUsingKlikBCA(klikBCAModel);
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -563,13 +564,9 @@ public class VeritransSDK {
     }
 
     public boolean havePaymentMethod(){
-        if (transactionRequest.getPaymentMethod() == Constants
-                .PAYMENT_METHOD_NOT_SELECTED) {
+        return transactionRequest.getPaymentMethod() != Constants
+                .PAYMENT_METHOD_NOT_SELECTED;
 
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -723,11 +720,11 @@ public class VeritransSDK {
     }
 
     public static class UIFlow{
-        private Intent intent;
-        private Context context;
         public static int PAYMENT  = 1;
         public static int CARD_REGISTER = 2;
         int type = 0;
+        private Intent intent;
+        private Context context;
 
         public Intent getIntent() {
             return intent;

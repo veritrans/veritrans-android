@@ -47,7 +47,7 @@ import id.co.veritrans.sdk.coreflow.models.EpayBriTransfer;
 import id.co.veritrans.sdk.coreflow.models.GetOffersResponseModel;
 import id.co.veritrans.sdk.coreflow.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest;
-import id.co.veritrans.sdk.coreflow.models.KlikBcaModel;
+import id.co.veritrans.sdk.coreflow.models.KlikBCAModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriECashModel;
@@ -1803,14 +1803,14 @@ class TransactionManager {
     }
 
 
-    public static void paymentUsingKlikBCA(KlikBcaModel klikBcaModel) {
+    public static void paymentUsingKlikBCA(KlikBCAModel klikBCAModel) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                apiInterface.paymentUsingKlikBCA(klikBcaModel, new Callback<TransactionResponse>() {
+                apiInterface.paymentUsingKlikBCA(klikBCAModel, new Callback<TransactionResponse>() {
                     @Override
                     public void success(TransactionResponse response, Response r) {
                         long end = System.currentTimeMillis();

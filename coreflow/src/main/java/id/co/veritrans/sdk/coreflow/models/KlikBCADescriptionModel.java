@@ -7,17 +7,17 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author rakawm
  */
-public class KlikBcaDescriptionModel {
+public class KlikBCADescriptionModel {
 
     private String description;
     @SerializedName("user_id")
     private String userId;
 
-    public KlikBcaDescriptionModel() {
+    public KlikBCADescriptionModel() {
 
     }
 
-    public KlikBcaDescriptionModel(String description, String userId) {
+    public KlikBCADescriptionModel(String description, String userId) {
         setDescription(description);
         setUserId(userId);
     }

@@ -24,8 +24,8 @@ import id.co.veritrans.sdk.coreflow.models.EpayBriTransfer;
 import id.co.veritrans.sdk.coreflow.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetku;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest;
-import id.co.veritrans.sdk.coreflow.models.KlikBcaDescriptionModel;
-import id.co.veritrans.sdk.coreflow.models.KlikBcaModel;
+import id.co.veritrans.sdk.coreflow.models.KlikBCADescriptionModel;
+import id.co.veritrans.sdk.coreflow.models.KlikBCAModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
@@ -92,7 +92,7 @@ public class SdkUtil {
         return model;
     }
 
-    protected static KlikBcaModel getKlikBCAModel(TransactionRequest request, KlikBcaDescriptionModel descriptionModel) {
+    protected static KlikBCAModel getKlikBCAModel(TransactionRequest request, KlikBCADescriptionModel descriptionModel) {
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(), request.getOrderId());
 
         if (request.isUiEnabled()) {
@@ -100,7 +100,7 @@ public class SdkUtil {
             request = initializeUserInfo(request);
         }
 
-        return new KlikBcaModel(
+        return new KlikBCAModel(
                 descriptionModel,
                 transactionDetails,
                 request.getItemDetails(),

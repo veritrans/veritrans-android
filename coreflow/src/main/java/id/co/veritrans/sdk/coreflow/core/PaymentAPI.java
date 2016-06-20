@@ -13,7 +13,7 @@ import id.co.veritrans.sdk.coreflow.models.EpayBriTransfer;
 import id.co.veritrans.sdk.coreflow.models.GetOffersResponseModel;
 import id.co.veritrans.sdk.coreflow.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest;
-import id.co.veritrans.sdk.coreflow.models.KlikBcaModel;
+import id.co.veritrans.sdk.coreflow.models.KlikBCAModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriECashModel;
@@ -151,13 +151,13 @@ public interface PaymentAPI {
     /**
      * Do payment using Klik BCA.
      *
-     * @param klikBcaModel Klik BCA description
+     * @param klikBCAModel Klik BCA description
      * @return Observable of the Transaction Response object.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge/")
-    void paymentUsingKlikBCA(@Body KlikBcaModel klikBcaModel,
-                                     Callback<TransactionResponse> callback);
+    void paymentUsingKlikBCA(@Body KlikBCAModel klikBCAModel,
+                             Callback<TransactionResponse> callback);
 
     //mandiri bill pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})

@@ -15,9 +15,7 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -26,11 +24,13 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
-import id.co.veritrans.sdk.uiflow.fragments.BankTransactionStatusFragment;
-import id.co.veritrans.sdk.uiflow.fragments.KlikBCAFragment;
-import id.co.veritrans.sdk.coreflow.models.KlikBcaDescriptionModel;
+import id.co.veritrans.sdk.coreflow.models.KlikBCADescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.fragments.BankTransactionStatusFragment;
+import id.co.veritrans.sdk.uiflow.fragments.KlikBCAFragment;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
  * @author rakawm
@@ -120,7 +120,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
                     if (klikBCAFragment.checkUserId()) {
                         // Do the payment
                         SdkUIFlowUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
-                        KlikBcaDescriptionModel model = new KlikBcaDescriptionModel("Any description", klikBCAFragment.getUserId());
+                        KlikBCADescriptionModel model = new KlikBCADescriptionModel("Any description", klikBCAFragment.getUserId());
                         mVeritransSDK.paymentUsingKlikBCA(model);
                     }
                 }

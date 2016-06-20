@@ -151,7 +151,7 @@
                     android:layout_marginTop="@dimen/sixteen_dp"
                     android:orientation="horizontal">
 
-                    <id.co.veritrans.sdk.widgets.DefaultTextView
+                    <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -178,7 +178,7 @@
                             android:contentDescription="@string/description_minus_button"
                             android:padding="@dimen/sixteen_dp" />
 
-                        <id.co.veritrans.sdk.widgets.DefaultTextView
+                        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                             android:id="@+id/text_instalment"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
