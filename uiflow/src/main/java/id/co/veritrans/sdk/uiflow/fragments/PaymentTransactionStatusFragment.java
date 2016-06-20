@@ -15,6 +15,9 @@ import android.widget.TextView;
 
 import java.util.regex.Pattern;
 
+import id.co.veritrans.sdk.coreflow.core.Logger;
+import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
+import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.BCAKlikPayActivity;
 import id.co.veritrans.sdk.uiflow.activities.CIMBClickPayActivity;
@@ -23,9 +26,6 @@ import id.co.veritrans.sdk.uiflow.activities.EpayBriActivity;
 import id.co.veritrans.sdk.uiflow.activities.MandiriECashActivity;
 import id.co.veritrans.sdk.uiflow.activities.NotificationActivity;
 import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 
 /**
  * Created by shivam on 10/27/15.
@@ -257,6 +257,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
             paymentTypeTextView.setText(R.string.indosat_dompetku);
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_bank_transfer))) {
             paymentTypeTextView.setText(R.string.bank_transfer);
+        } else if (transactionResponse.getPaymentType().equalsIgnoreCase(getString(R.string.payment_bca_click))) {
+            paymentTypeTextView.setText(getString(R.string.payment_method_bca_klikpay));
         }
 
     }
