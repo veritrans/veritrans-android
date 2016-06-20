@@ -296,6 +296,10 @@
     <string name="text_yes">Ya</string>
     <string name="text_no">Tidak</string>
 
+    <!--KlikBCA Payment Instructions-->
+    <string name="klikbca_instruction_1">1.\tPastikan bahwa UserID sudah aktif dan terdaftar di BCA.</string>
+    <string name="klikbca_instruction_2">2.\tSilakan lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com pada browser anda, menggunakan User ID yang sama dengan yang anda masukkan di atas.</string>
+
     <string name="payment_method_bri_epay">Epay BRI</string>
     <string name="payment_method_offers">Penawaran</string>
     <string name="payment_method_credit_card">Kartu Kredit/Debit</string>
