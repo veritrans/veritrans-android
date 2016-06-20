@@ -19,19 +19,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
+import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
 
 /**
@@ -47,6 +51,7 @@ public class RegisterCardFragment extends Fragment {
     private ImageView questionImg;
     private ImageView questionSaveCardImg;
     private Button saveBtn;
+    private Button scanCardBtn;
     private String cardNumber;
     private String cvv;
     private String expiryDate;
@@ -66,6 +71,9 @@ public class RegisterCardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
         ((SaveCreditCardActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.card_details));
         veritransSDK = ((SaveCreditCardActivity) getActivity()).getVeritransSDK();
     }
@@ -75,6 +83,14 @@ public class RegisterCardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_card_details, container, false);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
+        }
     }
 
     @Override
@@ -109,6 +125,7 @@ public class RegisterCardFragment extends Fragment {
         questionSaveCardImg.setVisibility(View.GONE);
         saveBtn = (Button) view.findViewById(R.id.btn_pay_now);
         saveBtn.setText(R.string.btn_save_card);
+        scanCardBtn = (Button) view.findViewById(R.id.scan_card);
 
         cbStoreCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -118,6 +135,19 @@ public class RegisterCardFragment extends Fragment {
         });
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
             saveBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
+            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), VeritransSDK.getDefaultText()));
+
+            if (veritransSDK.getExternalScanner() != null) {
+                scanCardBtn.setVisibility(View.VISIBLE);
+                scanCardBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        veritransSDK.getExternalScanner().startScan(getActivity(), SaveCreditCardActivity.SCAN_REQUEST_CODE);
+                    }
+                });
+            } else {
+                scanCardBtn.setVisibility(View.GONE);
+            }
         }
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -390,5 +420,12 @@ public class RegisterCardFragment extends Fragment {
             }
         });
         fadeInAnimation.start();
+    }
+
+    @Subscribe
+    public void onEvent(UpdateCreditCardDataFromScanEvent event) {
+        etCardNo.setText(event.getCardNumber());
+        etCvv.setText(event.getCvv());
+        etExpiryDate.setText(event.getExpired());
     }
 }

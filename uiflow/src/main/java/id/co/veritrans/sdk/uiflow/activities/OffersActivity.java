@@ -21,11 +21,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
@@ -44,8 +41,6 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
-import id.co.veritrans.sdk.uiflow.fragments.OffersListFragment;
-import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.BillingAddress;
 import id.co.veritrans.sdk.coreflow.models.CardPaymentDetails;
@@ -55,7 +50,6 @@ import id.co.veritrans.sdk.coreflow.models.CardTransfer;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
 import id.co.veritrans.sdk.coreflow.models.OffersListModel;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
-import id.co.veritrans.sdk.uiflow.scancard.ScannerModel;
 import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
 import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
@@ -63,8 +57,14 @@ import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
+import id.co.veritrans.sdk.uiflow.fragments.OffersListFragment;
+import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.uiflow.scancard.ExternalScanner;
+import id.co.veritrans.sdk.uiflow.scancard.ScannerModel;
 import id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
 
@@ -218,7 +218,6 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
 
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
-        //getSupportActionBar().setTitle(getString(R.string.processing_payment));
         textViewTitleOffers.setText(getString(R.string.processing_payment));
         CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
                 userDetail.getEmail(), userDetail.getPhoneNumber());
@@ -267,9 +266,8 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                 e.printStackTrace();
             }
             //for one click
-            if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
-                    (getString(R.string.card_click_type_one_click)) &&
-                    !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
+            if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
+                    && !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
                 if (cardTokenRequest.isInstalment()) {
                     cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
                             cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved(),
@@ -279,7 +277,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                             cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved());
                     cardPaymentDetails.setBinsArray(cardTokenRequest.getBins());
                 }
-
+                cardPaymentDetails.setRecurring(true);
             } else if (tokenDetailsResponse != null) {
 
                 if (cardTokenRequest.isInstalment()) {
@@ -302,7 +300,6 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
             }
             cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails,
                     null, billingAddresses, shippingAddresses, customerDetails);
-            //currentApiCallNumber = PAY_USING_CARD;
 
         }
 
@@ -381,9 +378,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     }
 
     public void fetchCreditCards() {
-      //  SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
         textViewTitleOffers.setText(getString(R.string.fetching_cards));
-        //  processingLayout.setVisibility(View.VISIBLE);
         veritransSDK.getSavedCard();
     }
 
@@ -395,7 +390,12 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     public void twoClickPayment(CardTokenRequest cardDetail) {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardDetail;
+        this.cardTokenRequest.setSavedTokenId(cardDetail.getSavedTokenId());
+        this.cardTokenRequest.setCardCVV(cardDetail.getCardCVV());
         this.cardTokenRequest.setTwoClick(true);
+        this.cardTokenRequest.setSecure(veritransSDK.getTransactionRequest().isSecureCard());
+        this.cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
+        this.cardTokenRequest.setBank("");
         this.cardTokenRequest.setClientKey(veritransSDK.getClientKey());
         veritransSDK.getToken(cardTokenRequest);
     }
@@ -585,11 +585,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                 cardTokenRequest.setCardCVV("0");
                 cardTokenRequest.setClientKey("");
                 cardTokenRequest.setGrossAmount(0);
-                //to save card number in xxxxxxxxxxxx1118 format
-                /*String formatedCardNumber = cardTokenRequest.getFormatedCardNumber();
-                formatedCardNumber = formatedCardNumber.replace("-","");
-                cardTokenRequest.setCardNumber(formatedCardNumber);*/
-                //cardTokenRequest.setBank(Constants.BANK_NAME);
+
                 if (bankDetails != null && !bankDetails.isEmpty()) {
                     String firstSix = cardTokenRequest.getCardNumber().substring(0, 6);
                     for (BankDetail bankDetail : bankDetails) {
@@ -601,14 +597,17 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                     }
                 }
 
-                if (cardTokenRequest.isSaved() && !TextUtils.isEmpty(cardPaymentResponse
-                        .getSavedTokenId())) {
+                if (cardTokenRequest.isSaved() && !TextUtils.isEmpty(cardPaymentResponse.getSavedTokenId())) {
                     cardTokenRequest.setSavedTokenId(cardPaymentResponse.getSavedTokenId());
                 }
                 Logger.i("Card:" + cardTokenRequest.getString());
 
                 SaveCardRequest saveCardRequest = new SaveCardRequest();
                 saveCardRequest.setSavedTokenId(cardTokenRequest.getSavedTokenId());
+                saveCardRequest.setCode("200");
+                String firstPart = cardTokenRequest.getCardNumber().substring(0, 6);
+                String secondPart = cardTokenRequest.getCardNumber().substring(12);
+                saveCardRequest.setMaskedCard(firstPart + "-" + secondPart);
                 saveCreditCards(saveCardRequest);
                 creditCards.add(saveCardRequest);
             }

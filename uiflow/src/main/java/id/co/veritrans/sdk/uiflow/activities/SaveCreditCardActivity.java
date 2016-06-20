@@ -23,11 +23,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.adapters.RegisterCardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.CardRegistrationBusCallback;
@@ -41,11 +38,17 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GetCardsSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
-import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
-import id.co.veritrans.sdk.uiflow.fragments.RegisterSavedCardFragment;
+import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
 import id.co.veritrans.sdk.coreflow.models.CardResponse;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.adapters.RegisterCardPagerAdapter;
+import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
+import id.co.veritrans.sdk.uiflow.fragments.RegisterSavedCardFragment;
+import id.co.veritrans.sdk.uiflow.scancard.ExternalScanner;
+import id.co.veritrans.sdk.uiflow.scancard.ScannerModel;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
 
@@ -53,6 +56,7 @@ import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
  * @author rakawm
  */
 public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusCallback, CardRegistrationBusCallback, GetCardBusCallback {
+    public static final int SCAN_REQUEST_CODE = 101;
     private int RESULT_CODE = RESULT_CANCELED;
     private Toolbar toolbar;
     private VeritransSDK veritransSDK;
@@ -112,6 +116,28 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
     public void morphToCircle(int time) {
         MorphingButton.Params circle = morphCicle(time);
         btnMorph.morph(circle);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SCAN_REQUEST_CODE) {
+                if (data != null && data.hasExtra(ExternalScanner.EXTRA_SCAN_DATA)) {
+                    ScannerModel scanData = (ScannerModel) data.getSerializableExtra(ExternalScanner.EXTRA_SCAN_DATA);
+                    Logger.i(String.format("Card Number: %s, Card Expire: %s/%d", scanData.getCardNumber(), scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
+                    updateCreditCardData(Utils.getFormattedCreditCardNumber(scanData.getCardNumber()), scanData.getCvv(), String.format("%s/%d", scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
+                } else {
+                    Logger.d("No result");
+                }
+            }
+        }
+    }
+
+    private void updateCreditCardData(String cardNumber, String cvv, String expired) {
+        // Update credit card data in AddCardDetailsFragment
+        VeritransBusProvider.getInstance().post(new UpdateCreditCardDataFromScanEvent(cardNumber, cvv, expired));
     }
 
     @Override
