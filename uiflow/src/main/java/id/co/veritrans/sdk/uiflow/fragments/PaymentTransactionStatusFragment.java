@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.uiflow.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import java.util.regex.Pattern;
 
 import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.BCAKlikPayActivity;
 import id.co.veritrans.sdk.uiflow.activities.CIMBClickPayActivity;
 import id.co.veritrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.uiflow.activities.EpayBriActivity;
@@ -189,6 +191,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
                     ((OffersActivity) getActivity())
                             .setResultCode(getActivity().RESULT_OK);
                     ((OffersActivity) getActivity()).setResultAndFinish();
+                } else if (getActivity().getClass().getName().equals(BCAKlikPayActivity.class.getName())) {
+                    ((BCAKlikPayActivity) getActivity()).setResultCode(Activity.RESULT_OK);
+                    ((BCAKlikPayActivity) getActivity()).setResultAndFinish();
                 }
 
             }

@@ -27,6 +27,7 @@ import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
+import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
@@ -509,6 +510,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
                     Intent intentPaymentWeb = new Intent(this, PaymentWebActivity.class);
                     intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
+                    intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_CREDIT_CARD);
                     startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
                 }
             }
