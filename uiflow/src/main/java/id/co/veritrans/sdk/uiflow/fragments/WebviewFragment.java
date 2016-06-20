@@ -16,14 +16,17 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import id.co.veritrans.sdk.coreflow.BuildConfig;
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Logger;
+import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 public class WebviewFragment extends Fragment {
 
     public static final String TYPE_CREDIT_CARD = "credit";
     public static final String TYPE_BCA_KLIKPAY = "bca_klikpay";
+    public static final String TYPE_MANDIRI_ECASH = "mandiri_ecash";
+    public static final String TYPE_CIMB_CLICK = "cimb_click";
+    public static final String TYPE_EPAY_BRI = "epay_bri";
 
     private static final String URL_PARAM = "url_param";
     private static final String TYPE_PARAM = "type_param";
@@ -98,6 +101,7 @@ public class WebviewFragment extends Fragment {
     }
 
     private class VeritransWebViewClient extends WebViewClient {
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
@@ -112,11 +116,7 @@ public class WebviewFragment extends Fragment {
                 Intent returnIntent = new Intent();
                 getActivity().setResult(getActivity().RESULT_OK, returnIntent);
                 getActivity().finish();
-            } /*else if (url.contains(Constants.CALLBACK_URL)) {
-                Intent returnIntent = new Intent();
-                getActivity().setResult(getActivity().RESULT_OK, returnIntent);
-                getActivity().finish();
-            }*/
+            }
         }
 
         @Override
@@ -125,6 +125,27 @@ public class WebviewFragment extends Fragment {
             super.onPageStarted(view, url, favicon);
             if (type != null && type.equals(TYPE_BCA_KLIKPAY)) {
                 if (url.contains("?id=")) {
+                    Intent returnIntent = new Intent();
+                    getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                    getActivity().finish();
+                    return;
+                }
+            } else if (type != null && type.equals(TYPE_MANDIRI_ECASH)) {
+                if (url.contains("notify?id=")) {
+                    Intent returnIntent = new Intent();
+                    getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                    getActivity().finish();
+                    return;
+                }
+            } else if (type != null && type.equals(TYPE_EPAY_BRI)) {
+                if (url.contains("briPayment?tid=")) {
+                    Intent returnIntent = new Intent();
+                    getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                    getActivity().finish();
+                    return;
+                }
+            } else if (type != null && type.equals(TYPE_CIMB_CLICK)) {
+                if (url.contains("cimb-clicks/response")) {
                     Intent returnIntent = new Intent();
                     getActivity().setResult(getActivity().RESULT_OK, returnIntent);
                     getActivity().finish();

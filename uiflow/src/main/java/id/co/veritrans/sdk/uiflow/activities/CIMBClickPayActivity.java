@@ -9,14 +9,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.Subscribe;
 
-import id.co.veritrans.sdk.uiflow.R;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -24,10 +24,13 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
-import id.co.veritrans.sdk.uiflow.fragments.InstructionCIMBFragment;
-import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.coreflow.models.DescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.fragments.InstructionCIMBFragment;
+import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
+import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
  * Created by Ankit on 11/26/15.
@@ -126,15 +129,10 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
 
-        if (resultCode == RESULT_OK && data != null) {
-            String responseStr = data.getStringExtra(getString(R.string.payment_response));
-            if (TextUtils.isEmpty(responseStr)) {
-                return;
-            }
-            Gson gson = new Gson();
-            transactionResponseFromMerchant = gson.fromJson(responseStr, TransactionResponse.class);
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
+        if (resultCode == RESULT_OK) {
+            transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
+                    mVeritransSDK.getTransactionRequest().getOrderId(), String.valueOf(mVeritransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_cimb_clicks), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
+            PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
             replaceFragment(paymentTransactionStatusFragment, R.id.cimb_clickpay_container, true, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         }
@@ -167,6 +165,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
             CIMBClickPayActivity.this.transactionResponse = event.getResponse();
             Intent intentPaymentWeb = new Intent(CIMBClickPayActivity.this, PaymentWebActivity.class);
             intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
+            intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_CIMB_CLICK);
             startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
         } else {
             SdkUIFlowUtil.showApiFailedMessage(CIMBClickPayActivity.this, getString(R.string
