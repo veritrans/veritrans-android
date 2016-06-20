@@ -135,10 +135,13 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
             PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
             replaceFragment(paymentTransactionStatusFragment, R.id.cimb_clickpay_container, true, false);
             buttonConfirmPayment.setVisibility(View.GONE);
+        } else if (resultCode == RESULT_CANCELED) {
+            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
+                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
+            replaceFragment(paymentTransactionStatusFragment, R.id.cimb_clickpay_container, true, false);
+            buttonConfirmPayment.setVisibility(View.GONE);
         }
     }
-
-
 
     public void setResultAndFinish() {
 

@@ -461,4 +461,6 @@
     <string name="klikbca_instruction_2">2.\tAfter you click Continue Payment you will be redirected to KlikBCA\'s website using same UserID that you entered above.</string>
 
     <string name="error_user_id">Please fill user ID.</string>
+    <string name="btn_close">Close</string>
+    <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
 </resources>

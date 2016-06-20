@@ -308,4 +308,7 @@
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
     <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
+
+    <string name="btn_close">Tutup</string>
+    <string name="payment_canceled">3D Secure authorization has been cancelled.</string>
 </resources>

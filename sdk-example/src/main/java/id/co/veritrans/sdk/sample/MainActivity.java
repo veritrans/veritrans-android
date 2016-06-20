@@ -19,7 +19,6 @@ import java.util.UUID;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
-import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.PaymentMethods;
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
@@ -36,15 +35,14 @@ import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.sample.core.CoreFlowActivity;
 import id.co.veritrans.sdk.scancard.ScanCard;
-import id.co.veritrans.sdk.uiflow.UIFlow;
 import id.co.veritrans.sdk.uiflow.SdkUIFlowBuilder;
+import id.co.veritrans.sdk.uiflow.UIFlow;
 
 public class MainActivity extends AppCompatActivity implements GetAuthenticationBusCallback, TransactionFinishedCallback {
     private static final int CORE_FLOW = 1;
     private static final int UI_FLOW = 2;
-
-    private int mysdkFlow = UI_FLOW;
     ProgressDialog dialog;
+    private int mysdkFlow = UI_FLOW;
     private TextView authToken;
     private Button coreBtn, uiBtn;
     private Button coreCardRegistration, uiCardRegistration,
@@ -246,7 +244,11 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
     @Subscribe
     @Override
     public void onEvent(TransactionFinishedEvent transactionFinishedEvent) {
-        Log.i(MainActivity.class.getSimpleName(), "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId());
-        Toast.makeText(this, "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
+        if (transactionFinishedEvent.getResponse() != null) {
+            Toast.makeText(this, "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
+            Log.i(MainActivity.class.getSimpleName(), "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId());
+        } else {
+            Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
+        }
     }
 }
