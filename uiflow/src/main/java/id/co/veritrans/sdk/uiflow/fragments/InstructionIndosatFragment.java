@@ -9,16 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
-import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.uiflow.R;
 
 public class InstructionIndosatFragment extends Fragment {
 
     private EditText mEditTextPhoneNumber = null;
     private UserDetail userDetail;
-    private StorageDataHandler storageDataHandler;
 
     @Nullable
     @Override

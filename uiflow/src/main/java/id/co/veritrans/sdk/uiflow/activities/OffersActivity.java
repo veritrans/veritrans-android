@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.GetCardBusCallback;
@@ -102,7 +101,6 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     private TokenDetailsResponse tokenDetailsResponse;
     private CardTokenRequest cardTokenRequest;
     private CardTransfer cardTransfer;
-    private StorageDataHandler storageDataHandler;
     private RelativeLayout processingLayout;
     private ArrayList<BankDetail> bankDetails;
     //for setResult
@@ -126,7 +124,6 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offers);
-        storageDataHandler = new StorageDataHandler();
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
