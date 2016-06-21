@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.BankTransferInstructionActivity;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
-import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.BankTransferInstructionActivity;
 
 /**
  * It displays payment related instructions on the screen.
@@ -25,7 +24,6 @@ public class BankTransferFragment extends Fragment {
 
     private TextView mTextViewSeeInstruction = null;
     private EditText mEditTextEmailId = null;
-    private StorageDataHandler storageDataHandler;
     private UserDetail userDetail;
 
     @Nullable
@@ -52,7 +50,6 @@ public class BankTransferFragment extends Fragment {
 
         mTextViewSeeInstruction = (TextView)
                 view.findViewById(R.id.text_see_instruction);
-        storageDataHandler = new StorageDataHandler();
         try {
             userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         } catch (Exception e) {

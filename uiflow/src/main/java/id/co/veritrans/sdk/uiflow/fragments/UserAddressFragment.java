@@ -16,17 +16,16 @@ import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.PaymentMethodsActivity;
-import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
-import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.PaymentMethodsActivity;
+import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 public class UserAddressFragment extends Fragment {
 
@@ -113,7 +112,6 @@ public class UserAddressFragment extends Fragment {
 
     private void validateAndSaveAddress() {
         SdkUIFlowUtil.hideKeyboard(getActivity());
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         if (userDetail != null) Logger.i("userDetails:" + userDetail.getUserFullName());
 

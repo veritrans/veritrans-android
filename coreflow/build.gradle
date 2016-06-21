@@ -19,7 +19,6 @@ repositories {
 }
 
 android {
-    def DEFAULT_PUBLISH
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
@@ -42,25 +41,24 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            consumerProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
     productFlavors {
         development {
-            DEFAULT_PUBLISH = "developmentRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.sandbox.veritrans.co.id/v2/\""
             buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_SANDBOX
         }
 
         production {
-            DEFAULT_PUBLISH = "productionRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.veritrans.co.id/v2/\""
             buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_PRODUCTION
         }
     }
-    defaultPublishConfig DEFAULT_PUBLISH
     publishNonDefault true
 }
 
