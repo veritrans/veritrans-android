@@ -3,7 +3,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 group = 'id.co.veritrans'
-version = '0.10.7'
+version = '0.10.8'
 
 android {
     compileSdkVersion 23
@@ -15,7 +15,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 2
-        versionName "1.0"
+        versionName version
     }
     buildTypes {
         release {
@@ -37,7 +37,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.+'
     testCompile 'junit:junit:4.12'
     compile 'io.card:android-sdk:5.3.4'
-    compile project(path: ':uiflow', configuration: 'developmentRelease')
+    compile project(path: ':uiflow')
 
 }
 

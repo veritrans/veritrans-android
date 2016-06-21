@@ -2,6 +2,9 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
+group = 'id.co.veritrans'
+version = '0.10.8'
+
 buildscript {
     repositories {
         jcenter()
@@ -16,9 +19,7 @@ repositories {
 }
 
 android {
-    defaultPublishConfig "developmentRelease"
-    publishNonDefault true
-
+    def DEFAULT_PUBLISH
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
@@ -29,8 +30,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName version
         buildConfigField "String", "MIXPANEL_URL", "\"https://api.mixpanel.com/\""
         buildConfigField "String", "CALLBACK_STRING", "\"/token/callback/\""
         buildConfigField "String", "CALLBACK_URL", "\"https://hangout.betas.in/veritrans/api/paymentstatus\""
@@ -48,15 +49,19 @@ android {
 
     productFlavors {
         development {
+            DEFAULT_PUBLISH = "developmentRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.sandbox.veritrans.co.id/v2/\""
-            buildConfigField "String", "MIXPANEL_TOKEN", "\"123123\""
+            buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_SANDBOX
         }
 
         production {
+            DEFAULT_PUBLISH = "productionRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.veritrans.co.id/v2/\""
-            buildConfigField "String", "MIXPANEL_TOKEN", "\"23423\""
+            buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_PRODUCTION
         }
     }
+    defaultPublishConfig DEFAULT_PUBLISH
+    publishNonDefault true
 }
 
 task sourceJar(type: Jar) {
@@ -67,7 +72,6 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.10' //version required
 }
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
 
