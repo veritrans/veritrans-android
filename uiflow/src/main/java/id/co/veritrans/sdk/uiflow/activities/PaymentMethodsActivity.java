@@ -16,13 +16,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
-import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
@@ -32,6 +28,9 @@ import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.adapters.PaymentMethodsAdapter;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.HeaderView;
 
 /**
@@ -51,7 +50,6 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
 
     private VeritransSDK veritransSDK = null;
-    private StorageDataHandler storageDataHandler = null;
     private boolean isHideToolbarView = false;
 
     //Views
@@ -75,7 +73,6 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         if (toolbarLayout != null) {
             toolbarLayout.setContentScrimColor(veritransSDK.getThemeColor());
         }
-        storageDataHandler = new StorageDataHandler();
 
         UserDetail userDetail = null;
         try {

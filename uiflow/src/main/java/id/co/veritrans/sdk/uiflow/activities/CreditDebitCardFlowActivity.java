@@ -24,7 +24,6 @@ import java.util.UUID;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.GetCardBusCallback;
@@ -88,7 +87,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private TokenDetailsResponse tokenDetailsResponse;
     private CardTokenRequest cardTokenRequest;
     private CardTransfer cardTransfer;
-    private StorageDataHandler storageDataHandler;
     private ArrayList<SaveCardRequest> creditCards = new ArrayList<>();
     private RelativeLayout processingLayout;
     private ArrayList<BankDetail> bankDetails;
@@ -123,7 +121,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             VeritransBusProvider.getInstance().register(this);
         }
         setContentView(R.layout.activity_credit_debit_card_flow);
-        storageDataHandler = new StorageDataHandler();
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();

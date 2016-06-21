@@ -175,7 +175,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                     setResultAndFinish();
                 }else {
                     RESULT_CODE = RESULT_OK;
-                    onBackPressed();
+                    setResultAndFinish();
                 }
             }
         }
