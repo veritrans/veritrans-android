@@ -129,6 +129,11 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
             PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
             replaceFragment(paymentTransactionStatusFragment, R.id.bri_container_layout, true, false);
             btConfirmPayment.setVisibility(View.GONE);
+        } else if (resultCode == RESULT_CANCELED) {
+            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
+                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
+            replaceFragment(paymentTransactionStatusFragment, R.id.bri_container_layout, true, false);
+            btConfirmPayment.setVisibility(View.GONE);
         }
     }
 

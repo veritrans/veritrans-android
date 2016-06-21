@@ -20,12 +20,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
-import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.DeleteCardBusCallback;
@@ -33,9 +29,12 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.DeleteCardFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.DeleteCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.models.DeleteCardResponse;
 import id.co.veritrans.sdk.coreflow.models.OffersListModel;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
+import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
 
 public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCallback {
@@ -254,7 +253,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                 .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-        circlePageIndicator.setFillColor(veritransSDK.getThemeColor());
+        circlePageIndicator.setFillColor(getResources().getColor(R.color.white));
         creditCards = ((OffersActivity) getActivity()).getCreditCardList();
 
         setViewPagerValues();
@@ -467,11 +466,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
     @Subscribe
     @Override
     public void onEvent(DeleteCardSuccessEvent event) {
-
-        DeleteCardResponse deleteResponse = event.getResponse();
-        if (deleteResponse == null || !deleteResponse.getMessage().equalsIgnoreCase(getString(R.string.success))) {
-            return;
-        }
+        SdkUIFlowUtil.hideProgressDialog();
         int position = -1;
         for (int i = 0; i < creditCards.size(); i++) {
             if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
@@ -487,7 +482,6 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
             }
 
             creditCards.remove(position);
-
 
             if (!creditCards.isEmpty()) {
                 for (int i = 0; i < creditCards.size(); i++) {

@@ -136,6 +136,11 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
             replaceFragment(paymentTransactionStatusFragment, R.id.mandiri_e_cash_container, true, false);
             buttonConfirmPayment.setVisibility(View.GONE);
+        } else if (resultCode == RESULT_CANCELED) {
+            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
+                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
+            replaceFragment(paymentTransactionStatusFragment, R.id.mandiri_e_cash_container, true, false);
+            buttonConfirmPayment.setVisibility(View.GONE);
         }
     }
 

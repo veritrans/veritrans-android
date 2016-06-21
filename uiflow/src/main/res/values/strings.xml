@@ -458,7 +458,9 @@
 
     <!--KlikBCA Payment Instructions-->
     <string name="klikbca_instruction_1">1.\tPlease make sure that the UserID is active and registered at BCA.</string>
-    <string name="klikbca_instruction_2">2.\tAfter you click Continue Payment you will be redirected to KlikBCA\'s website using same UserID that you entered above.</string>
+    <string name="klikbca_instruction_2">2.\tPlease continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
 
     <string name="error_user_id">Please fill user ID.</string>
+    <string name="btn_close">Close</string>
+    <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
 </resources>

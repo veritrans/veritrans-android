@@ -14,10 +14,8 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -25,10 +23,12 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
-import id.co.veritrans.sdk.uiflow.fragments.BankTransactionStatusFragment;
-import id.co.veritrans.sdk.uiflow.fragments.MandiriClickPayFragment;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.fragments.BankTransactionStatusFragment;
+import id.co.veritrans.sdk.uiflow.fragments.MandiriClickPayFragment;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
  * Created by shivam on 11/3/15.
@@ -125,20 +125,13 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         currentFragment = HOME_FRAGMENT;
     }
 
-
-    @Override
-    public void onBackPressed() {
-        setResultAndFinish();
-    }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
-        return false;
+        return true;
     }
 
     public void onChangeOfDebitCardNumer(CharSequence text) {

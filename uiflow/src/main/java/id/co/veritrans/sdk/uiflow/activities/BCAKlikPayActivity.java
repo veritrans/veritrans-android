@@ -3,29 +3,21 @@ package id.co.veritrans.sdk.uiflow.activities;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.util.TimeUtils;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -33,10 +25,13 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
-import id.co.veritrans.sdk.uiflow.fragments.BCAKlikPayInstructionFragment;
-import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.fragments.BCAKlikPayInstructionFragment;
+import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
+import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
  * @author rakawm
@@ -142,6 +137,11 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         if (resultCode == RESULT_OK) {
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
                     mVeritransSDK.getTransactionRequest().getOrderId(), String.valueOf(mVeritransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_bca_click), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
+            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
+                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
+            replaceFragment(paymentTransactionStatusFragment, R.id.bca_klik_pay_container, true, false);
+            buttonConfirmPayment.setVisibility(View.GONE);
+        } else if (resultCode == RESULT_CANCELED) {
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
             replaceFragment(paymentTransactionStatusFragment, R.id.bca_klik_pay_container, true, false);

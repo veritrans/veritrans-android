@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.uiflow.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,13 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
-import id.co.veritrans.sdk.uiflow.R;
 
-import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
-import id.co.veritrans.sdk.uiflow.adapters.OffersAdapter;
-import id.co.veritrans.sdk.uiflow.callbacks.AnyOfferClickedListener;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.GetOfferBusCallback;
@@ -27,7 +23,12 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GetOfferFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GetOfferSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.models.GetOffersResponseModel;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
+import id.co.veritrans.sdk.uiflow.adapters.OffersAdapter;
+import id.co.veritrans.sdk.uiflow.callbacks.AnyOfferClickedListener;
 import id.co.veritrans.sdk.uiflow.utilities.RecyclerItemClickListener;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
  * Created by ziahaqi on 14/06/2016.
@@ -52,10 +53,10 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         if (VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().unregister(this);
         }
-        super.onDestroy();
     }
 
     @Nullable
@@ -101,15 +102,21 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
             recyclerViewOffers.setAdapter(offersAdapter);
             recyclerViewOffers.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
-                public void onItemClick(View view, int position) {
-                    String offerType = null;
-                    if (offersAdapter.getItemAtPosition(position).getDuration() != null && !offersAdapter.getItemAtPosition(position).getDuration().isEmpty()) {
-                        offerType = OffersActivity.OFFER_TYPE_INSTALMENTS;
-                    } else {
-                        offerType = OffersActivity.OFFER_TYPE_BINPROMO;
-                    }
+                public void onItemClick(View view, final int position) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            String offerType = null;
+                            if (offersAdapter.getItemAtPosition(position).getDuration() != null && !offersAdapter.getItemAtPosition(position).getDuration().isEmpty()) {
+                                offerType = OffersActivity.OFFER_TYPE_INSTALMENTS;
+                            } else {
+                                offerType = OffersActivity.OFFER_TYPE_BINPROMO;
+                            }
 
-                    onOfferClicked(position, offersAdapter.getItemAtPosition(position).getOfferName(), offerType);
+                            onOfferClicked(position, offersAdapter.getItemAtPosition(position).getOfferName(), offerType);
+                        }
+                    }, 300);
                 }
             }));
         }
@@ -225,7 +232,6 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     public void onEvent(GeneralErrorEvent event) {
         SdkUIFlowUtil.hideProgressDialog();
         Logger.i("offers fetching failed :" + event.getMessage());
-        //todo
         showHideEmptyOffersMessage(true);
     }
 }

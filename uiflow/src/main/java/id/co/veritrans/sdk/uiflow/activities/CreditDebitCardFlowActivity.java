@@ -22,13 +22,8 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.StorageDataHandler;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
@@ -36,6 +31,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.callback.GetCardBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.SaveCardBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TokenBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
+import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GetCardFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GetCardsSuccessEvent;
@@ -47,9 +43,6 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
-import id.co.veritrans.sdk.uiflow.fragments.AddCardDetailsFragment;
-import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
-import id.co.veritrans.sdk.uiflow.fragments.SavedCardFragment;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.BillingAddress;
 import id.co.veritrans.sdk.coreflow.models.CardPaymentDetails;
@@ -58,7 +51,6 @@ import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.CardTransfer;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
-import id.co.veritrans.sdk.uiflow.scancard.ScannerModel;
 import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
 import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
@@ -66,10 +58,19 @@ import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
+import id.co.veritrans.sdk.uiflow.fragments.AddCardDetailsFragment;
+import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
+import id.co.veritrans.sdk.uiflow.fragments.SavedCardFragment;
+import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
 import id.co.veritrans.sdk.uiflow.scancard.ExternalScanner;
+import id.co.veritrans.sdk.uiflow.scancard.ScannerModel;
 import id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
 import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
+
 import static id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask.ReadBankDetailCallback;
 
 
@@ -330,6 +331,24 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 }
             } else {
                 Logger.d("Not available");
+            }
+        } else if (resultCode == RESULT_CANCELED) {
+            if (requestCode == PAYMENT_WEB_INTENT) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        processingLayout.setVisibility(View.GONE);
+                    }
+                }, 200);
+                CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.payment_canceled);
+                SdkUIFlowUtil.hideProgressDialog();
+                PaymentTransactionStatusFragment paymentTransactionStatusFragment =
+                        PaymentTransactionStatusFragment.newInstance(transactionResponse);
+                replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
+                if (getSupportActionBar() != null)
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                titleHeaderTextView.setText(getString(R.string.title_payment_status));
             }
         }
     }
