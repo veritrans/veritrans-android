@@ -50,5 +50,6 @@ dependencies {
     productionCompile project(path: ':uiflow', configuration: 'productionRelease')
     compile(project(':scancard')) {
         exclude group: 'id.co.veritrans.sdk.scandcard', module: 'uiflow' // without or without this one
+        transitive = false
     }
 }
