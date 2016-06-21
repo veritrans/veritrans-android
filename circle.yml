@@ -26,7 +26,7 @@ test:
     override:
         # Build
        - (./gradlew assemble -PdisablePreDex):
-            timeout: 720
+            timeout: 3600
 
 # Deployment section
 deployment:
@@ -34,7 +34,7 @@ deployment:
         tag: /v[0-9]+(\.[0-9]+)*/
         owner: veritrans
         commands:
-            - ./gradlew :clean :dependencies :scancard:dependencies :assembleRelease :scancard:assembleRelease :bintrayUpload :scancard:bintrayUpload
+            - ./gradlew :clean :dependencies :scancard:dependencies :assembleRelease :scancard:assembleRelease :bintrayUpload :scancard:bintrayUpload -PdisablePreDex
 
     bump:
       branch: master
