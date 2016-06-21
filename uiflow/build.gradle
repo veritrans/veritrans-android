@@ -50,6 +50,7 @@ android {
             DEFAULT_PUBLISH = "productionRelease"
         }
     }
+    defaultPublishConfig = DEFAULT_PUBLISH
     publishNonDefault true
 }
 
