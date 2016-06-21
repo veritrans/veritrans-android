@@ -1,1 +1,1 @@
-include ':scancard', ':coreflow', ':sdk-example', ':uiflow'
+include ':scancard', ':coreflow', ':uiflow'
