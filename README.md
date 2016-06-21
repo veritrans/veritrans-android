@@ -3,7 +3,7 @@
 
 [![Join the chat at https://gitter.im/veritrans/veritrans-android](https://badges.gitter.im/veritrans/veritrans-android.svg)](https://gitter.im/veritrans/veritrans-android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [ ![Download](https://api.bintray.com/packages/pt-midtrans/maven/veritrans-android/images/download.svg) ](https://bintray.com/pt-midtrans/maven/veritrans-android/_latestVersion)
-[![CircleCI](https://circleci.com/gh/veritrans/veritrans-android/tree/master.svg?style=svg)](https://circleci.com/gh/veritrans/veritrans-android/tree/master)
+[![CircleCI](https://circleci.com/gh/veritrans/veritrans-android/tree/release.svg?style=svg)](https://circleci.com/gh/veritrans/veritrans-android/tree/release)
 
 ### Overview of Payments and Mobile SDK
  To see a overview of Veritrans SDK read [here](https://github.com/veritrans/veritrans-android/wiki/Getting-started-with-the-Veritrans-SDK)
