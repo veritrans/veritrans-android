@@ -6,6 +6,10 @@ general:
     artifacts:
         - /home/ubuntu/veritrans-android-example/app/build/outputs/apk/
 
+  branches:
+    only:
+      - develop # list of branches to build
+
 machine:
     ruby:
         version: 2.0.0-p648
