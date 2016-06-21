@@ -28,6 +28,11 @@
     public void onEvent*(***);
 }
 
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
 # Only required if you use AsyncExecutor
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     public <init>(java.lang.Throwable);
@@ -93,6 +98,7 @@
 
 # Also you must note that if you are using GSON for conversion from JSON to POJO representation, you must ignore those POJO classes from being obfuscated.
 # Here include the POJO's that have you have created for mapping JSON response to POJO for example.
+#-keep class id.co.veritrans.sdk.activities.**{ *;}
 -keep class id.co.veritrans.sdk.uiflow.fragments.**{*;}
 -keep class id.co.veritrans.sdk.coreflow.models.** { *; }
 -keep class id.co.veritrans.sdk.uiflow.scancard.** { *; }
