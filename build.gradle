@@ -12,7 +12,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 group = 'id.co.veritrans'
-version = '0.10.9'
+version = '0.10.8'
 
 android {
     compileSdkVersion 23
@@ -47,12 +47,12 @@ android {
     productFlavors {
         development {
             buildConfigField "String", "BASE_URL", "\"https://api.sandbox.veritrans.co.id/v2/\""
-            buildConfigField "String", "MIXPANEL_TOKEN", "\"123123\""
+            buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_SANDBOX
         }
 
         production {
             buildConfigField "String", "BASE_URL", "\"https://api.veritrans.co.id/v2/\""
-            buildConfigField "String", "MIXPANEL_TOKEN", "\"23423\""
+            buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_PRODUCTION
         }
     }
 
