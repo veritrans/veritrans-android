@@ -3,7 +3,7 @@ package id.co.veritrans.sdk.scancard;
 import android.app.Activity;
 import android.content.Intent;
 
-import id.co.veritrans.sdk.core.ExternalScanner;
+import id.co.veritrans.sdk.uiflow.scancard.ExternalScanner;
 
 
 /**

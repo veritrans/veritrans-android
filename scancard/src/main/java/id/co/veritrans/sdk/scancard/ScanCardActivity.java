@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import id.co.veritrans.sdk.core.ExternalScanner;
-import id.co.veritrans.sdk.models.ScannerModel;
+import id.co.veritrans.sdk.uiflow.scancard.ExternalScanner;
+import id.co.veritrans.sdk.uiflow.scancard.ScannerModel;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="id.co.veritrans.sdk.sample">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="id.co.veritrans.sdk.sample.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".core.CoreFlowActivity" />
+        <activity android:name=".CreditCardPaymentActivity" />
+        <activity android:name=".PermataVAPaymentActivity" />
+        <activity android:name=".MandiriBillPaymentActivity" />
+        <activity android:name=".BCAPaymentActivity" />
+        <activity android:name=".MandiriClickPaymentActivity" />
+        <activity android:name=".CIMCBClickPaymentActivity" />
+        <activity android:name=".IndomaretPaymentActivity" />
+        <activity android:name=".MandiriECashActivity" />
+        <activity android:name=".BCAKlikPayActivity" />
+        <activity android:name=".CardRegistrationActivity" />
+    </application>
+
+</manifest>
