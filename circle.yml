@@ -34,7 +34,9 @@ deployment:
         tag: /v[0-9]+(\.[0-9]+)*/
         owner: veritrans
         commands:
-            - ./gradlew :clean :dependencies :scancard:dependencies :assembleRelease :scancard:assembleRelease :bintrayUpload :scancard:bintrayUpload -PdisablePreDex
+            - ./gradlew :clean :coreflow:assembleRelease :coreflow:bintrayUpload -PdisablePreDex
+            - ./gradlew :clean :uiflow:assembleRelease :uiflow:bintrayUpload -PdisablePreDex
+            - ./gradlew :clean :scancard:assembleRelease :scancard:bintrayUpload -PdisablePreDex
 
     bump:
       branch: master

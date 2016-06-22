@@ -6,6 +6,7 @@ buildscript {
 }
 repositories {
     jcenter()
+    maven { url "http://dl.bintray.com/pt-midtrans/maven" }
 }
 android {
     compileSdkVersion 23
@@ -46,12 +47,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:cardview-v7:23.4.0'
-//    developmentCompile project(path: ':uiflow', configuration: 'developmentRelease')
-//    productionCompile project(path: ':uiflow', configuration: 'productionRelease')
-    compile project(path: ':uiflow')
-
-    compile(project(':scancard')) {
-        exclude group: 'id.co.veritrans.sdk.scandcard', module: 'uiflow'
-        transitive = false
+    developmentCompile 'id.co.veritrans:uiflow:0.10.9-SANDBOX'
+    productionCompile 'id.co.veritrans:uiflow:0.10.9'
+    //compile project(path: ':uiflow')
+    compile('id.co.veritrans:scancard:0.10.9') {
+        exclude module: 'uiflow'
     }
 }
