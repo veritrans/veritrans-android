@@ -7,7 +7,7 @@
         android:supportsRtl="true">
 
         <activity android:name=".ScanCardActivity" />
-
+        <activity android:name="io.card.payment.CardIOActivity"/>
     </application>
 
 </manifest>

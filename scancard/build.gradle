@@ -37,7 +37,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.+'
     testCompile 'junit:junit:4.12'
     compile 'io.card:android-sdk:5.3.4'
-    compile project(':uiflow')
+    compile project(path: ':uiflow', configuration: 'productionRelease')
 
 }
 
