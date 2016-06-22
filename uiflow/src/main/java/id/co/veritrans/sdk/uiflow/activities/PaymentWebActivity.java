@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -47,13 +45,6 @@ public class PaymentWebActivity extends BaseActivity {
             webviewFragment = WebviewFragment.newInstance(webUrl);
         }
         replaceFragment(webviewFragment, R.id.webview_container, true, false);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_web, menu);
-        return true;
     }
 
     @Override
