@@ -37,6 +37,7 @@ import id.co.veritrans.sdk.models.DeleteCardResponse;
 import id.co.veritrans.sdk.models.OffersListModel;
 import id.co.veritrans.sdk.models.SaveCardRequest;
 import id.co.veritrans.sdk.widgets.CirclePageIndicator;
+
 public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCallback {
 
     private final String MONTH = "Month";
@@ -50,7 +51,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
     private ImageView imageViewPlus = null;
     private ImageView imageViewMinus = null;
     private TextView textViewInstalment = null;
-    private RelativeLayout layoutPayWithInstalment = null;
+    private LinearLayout layoutPayWithInstalment = null;
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
@@ -187,7 +188,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
         creditCardLayout = (LinearLayout)view.findViewById(R.id.credit_card_holder);
         creditCardLayout.setBackgroundColor(veritransSDK.getThemeColor());
         newCardButtonLayout = (RelativeLayout)view.findViewById(R.id.new_card_button_layout);
-        layoutPayWithInstalment = (RelativeLayout) view.findViewById(R.id.layout_pay_with_instalments);
+        layoutPayWithInstalment = (LinearLayout) view.findViewById(R.id.layout_pay_with_instalments);
 
         textViewTitleOffers = (TextView) getActivity().findViewById(R.id.text_title);
         textViewTitleCardDetails = (TextView) getActivity().findViewById(R.id.text_title_card_details);

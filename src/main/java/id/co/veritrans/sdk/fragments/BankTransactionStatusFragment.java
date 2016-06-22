@@ -61,10 +61,8 @@ public class BankTransactionStatusFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
-            savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bank_transaction_status, container, false);
-        return view;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_bank_transaction_status, container, false);
     }
 
 
@@ -111,17 +109,20 @@ public class BankTransactionStatusFragment extends Fragment {
 
             if (getActivity() != null) {
 
-                if ( mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT ) {
+                if (mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
                     mTextViewBankName.setText(MANDIRI_BILL);
 
-                } else if ( mPaymentType  == Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER ) {
-                    mTextViewBankName.setText(VIRTUAL_ACCOUNT);
-                } else if ( mPaymentType == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU ) {
+                } else if (mPaymentType == Constants.BANK_TRANSFER_PERMATA
+                        || mPaymentType == Constants.BANK_TRANSFER_BCA) {
+                    mTextViewBankName.setText(getString(R.string.payment_method_bank_transfer));
+                } else if (mPaymentType == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
                     mTextViewBankName.setText(getActivity().getResources().getString(R.string
                             .indosat_dompetku));
-                } else if (  mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY){
+                } else if (mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY) {
                     mTextViewBankName.setText(getActivity().getResources().getString(R.string
                             .mandiri_click_pay));
+                } else if (mPaymentType == Constants.PAYMENT_METHOD_KLIKBCA) {
+                    mTextViewBankName.setText(getString(R.string.payment_method_klik_bca));
                 }
             }
 
