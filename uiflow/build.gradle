@@ -69,8 +69,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:cardview-v7:23.4.0'
-    developmentCompile project(path:':coreflow', configuration: 'developmentRelease')
-    productionCompile project(path:':coreflow', configuration: 'productionRelease')
+    compile project(path: ':coreflow', configuration: 'developmentRelease')
 }
 
 publishing {
