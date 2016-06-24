@@ -40,7 +40,7 @@ deployment:
             # using ghr to release latest version to github
             - ./gradlew :clean :sdk-example:assemble
             - go get github.com/tcnksm/ghr
-            - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` sdk-example/build/outputs/apk/
+            - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace --prerelease `git describe --tags` sdk-example/build/outputs/apk/
 
 
     bump:
