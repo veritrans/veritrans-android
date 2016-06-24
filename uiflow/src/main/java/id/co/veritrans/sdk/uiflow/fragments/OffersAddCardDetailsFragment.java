@@ -30,11 +30,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
@@ -42,6 +39,9 @@ import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.OffersListModel;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
 
 /**
@@ -668,17 +668,17 @@ public class OffersAddCardDetailsFragment extends Fragment {
             return;
         }
         if (cardNo.charAt(0) == '4') {
-            Drawable visa = getResources().getDrawable(R.drawable.visa_non_transperent);
+            Drawable visa = getResources().getDrawable(R.drawable.ic_visa_dark);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, visa, null);
             cardType = getString(R.string.visa);
         } else if ((cardNo.charAt(0) == '5') && ((cardNo.charAt(1) == '1') || (cardNo.charAt(1) == '2')
                 || (cardNo.charAt(1) == '3') || (cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '5'))) {
-            Drawable masterCard = getResources().getDrawable(R.drawable.mastercard_non_transperent);
+            Drawable masterCard = getResources().getDrawable(R.drawable.ic_mastercard_dark);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, masterCard, null);
             cardType = getString(R.string.mastercard);
 
         } else if ((cardNo.charAt(0) == '3') && ((cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '7'))) {
-            Drawable amex = getResources().getDrawable(R.drawable.amex_non_transperent);
+            Drawable amex = getResources().getDrawable(R.drawable.ic_amex_dark);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, amex, null);
             cardType = "AMEX";
 
