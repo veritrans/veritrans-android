@@ -4,7 +4,7 @@
 
 general:
     artifacts:
-        - /home/ubuntu/veritrans-android-example/app/build/outputs/apk/
+        - /home/ubuntu/veritrans-android/sdk-example/build/outputs/apk/
 
 machine:
     ruby:
@@ -37,6 +37,11 @@ deployment:
             - ./gradlew :clean :coreflow:assembleRelease :coreflow:bintrayUpload -PdisablePreDex
             - ./gradlew :clean :uiflow:assembleRelease :uiflow:bintrayUpload -PdisablePreDex
             - ./gradlew :clean :scancard:assembleRelease :scancard:bintrayUpload -PdisablePreDex
+            # using ghr to release latest version to github
+            - ./gradlew :clean :sdk-example:assemble
+            - go get github.com/tcnksm/ghr
+            - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` sdk-example/build/outputs/apk/
+
 
     bump:
       branch: master
