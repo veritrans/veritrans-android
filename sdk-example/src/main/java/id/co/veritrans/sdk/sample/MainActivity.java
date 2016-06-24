@@ -76,18 +76,20 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
+                    .setMerchantName("merchantName")
                     .buildSDK();
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));
 
         }else{
             //sdk initiation for UIflow
             VeritransSDK veritransSDK = new SdkUIFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
-                    .setUIFlow(new UIFlow())// initation uiflow mode
-                    .setExternalScanner(new ScanCard())
+                    .setUIFlow(new UIFlow())// initialization uiflow mode
+                    .setExternalScanner(new ScanCard()) // initialization for using external scancard
                     .enableLog(true)
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
+                    .setMerchantName("merchantName")
                     .buildSDK();
 
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));
