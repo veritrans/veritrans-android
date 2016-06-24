@@ -214,7 +214,6 @@ public interface PaymentAPI {
 
 
     //save cards or get cards
-    @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/register")
     void saveCard(@Header("x-auth") String auth,
@@ -222,7 +221,6 @@ public interface PaymentAPI {
                   Callback<SaveCardResponse> callback);
 
     //save cards or get cards
-    @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("/card/")
     void getCard(@Header("x-auth") String auth, Callback<CardResponse> callback);
