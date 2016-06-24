@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
-                    .setMerchantName("merchantName")
+                    .setMerchantName("Veritrans Example Merchant")
                     .buildSDK();
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));
 
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
-                    .setMerchantName("merchantName")
+                    .setMerchantName("Veritrans Example Merchant")
                     .buildSDK();
 
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));
