@@ -13,17 +13,18 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.adapters.BankTransferListAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.BankTransferModel;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.uiflow.PaymentMethods;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.adapters.BankTransferListAdapter;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.HeaderView;
 
 /**
@@ -101,7 +102,7 @@ public class SelectBankTransferActivity extends BaseActivity {
      */
     private void initialiseAdapterData() {
         data.clear();
-        for (BankTransferModel model : mVeritransSDK.getBankTransferList()) {
+        for (BankTransferModel model : PaymentMethods.getBankTransferList(this)) {
 
             if (model.isSelected()) {
                 data.add(model);

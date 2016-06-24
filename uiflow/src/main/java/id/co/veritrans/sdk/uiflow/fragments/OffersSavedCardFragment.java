@@ -190,7 +190,6 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
 
     private void bindViews(View view) {
         creditCardLayout = (LinearLayout)view.findViewById(R.id.credit_card_holder);
-        creditCardLayout.setBackgroundColor(veritransSDK.getThemeColor());
         newCardButtonLayout = (RelativeLayout)view.findViewById(R.id.new_card_button_layout);
         layoutPayWithInstalment = (LinearLayout) view.findViewById(R.id.layout_pay_with_instalments);
        /* ViewTreeObserver vto = creditCardLayout.getViewTreeObserver();
@@ -253,7 +252,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                 .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-        circlePageIndicator.setFillColor(getResources().getColor(R.color.white));
+        circlePageIndicator.setFillColor(getResources().getColor(R.color.colorPrimary));
         creditCards = ((OffersActivity) getActivity()).getCreditCardList();
 
         setViewPagerValues();
