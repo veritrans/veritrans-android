@@ -86,20 +86,19 @@ public class PaymentMethods {
 
     private static String[] getStringList(Context context) {
         String[] paymentNameList = new String[13];
-
-        paymentNameList[0] = context.getString(R.string.payment_method_offers);
-        paymentNameList[1] = context.getString(R.string.payment_method_credit_card);
-        paymentNameList[2] = context.getString(R.string.payment_method_mandiri_clickpay);
-        paymentNameList[3] = context.getString(R.string.payment_method_cimb_clicks);
-        paymentNameList[4] = context.getString(R.string.payment_method_bri_epay);
-        paymentNameList[5] = context.getString(R.string.payment_method_bbm_money);
-        paymentNameList[6] = context.getString(R.string.payment_method_indosat_dompetku);
-        paymentNameList[7] = context.getString(R.string.payment_method_mandiri_ecash);
-        paymentNameList[8] = context.getString(R.string.payment_method_bank_transfer);
-        paymentNameList[9] = context.getString(R.string.payment_method_mandiri_bill);
-        paymentNameList[10] = context.getString(R.string.payment_method_indomaret);
-        paymentNameList[11] = context.getString(R.string.payment_method_bca_klikpay);
-        paymentNameList[12] = context.getString(R.string.payment_method_klik_bca);
+        paymentNameList[0] = context.getString(R.string.payment_method_credit_card);
+        paymentNameList[1] = context.getString(R.string.payment_method_bank_transfer);
+        paymentNameList[2] = context.getString(R.string.payment_method_klik_bca);
+        paymentNameList[3] = context.getString(R.string.payment_method_bca_klikpay);
+        paymentNameList[4] = context.getString(R.string.payment_method_mandiri_clickpay);
+        paymentNameList[5] = context.getString(R.string.payment_method_mandiri_ecash);
+        paymentNameList[6] = context.getString(R.string.payment_method_mandiri_bill);
+        paymentNameList[7] = context.getString(R.string.payment_method_bri_epay);
+        paymentNameList[8] = context.getString(R.string.payment_method_cimb_clicks);
+        paymentNameList[9] = context.getString(R.string.payment_method_offers);
+        paymentNameList[10] = context.getString(R.string.payment_method_indosat_dompetku);
+        paymentNameList[11] = context.getString(R.string.payment_method_indomaret);
+        paymentNameList[12] = context.getString(R.string.payment_method_bbm_money);
 
         return paymentNameList;
     }
@@ -107,20 +106,19 @@ public class PaymentMethods {
     private static int[] getImageList() {
 
         int[] paymentImageList = new int[13];
-
-        paymentImageList[0] = id.co.veritrans.sdk.coreflow.R.drawable.ic_offers;
-        paymentImageList[1] = id.co.veritrans.sdk.coreflow.R.drawable.ic_credit;
-        paymentImageList[2] = id.co.veritrans.sdk.coreflow.R.drawable.ic_mandiri2;
-        paymentImageList[3] = id.co.veritrans.sdk.coreflow.R.drawable.ic_cimb;
-        paymentImageList[4] = id.co.veritrans.sdk.coreflow.R.drawable.ic_epay;
-        paymentImageList[5] = id.co.veritrans.sdk.coreflow.R.drawable.ic_bbm;
-        paymentImageList[6] = id.co.veritrans.sdk.coreflow.R.drawable.ic_indosat;
-        paymentImageList[7] = id.co.veritrans.sdk.coreflow.R.drawable.ic_mandiri_e_cash; // mandiri e-Cash
-        paymentImageList[8] = id.co.veritrans.sdk.coreflow.R.drawable.ic_atm;
-        paymentImageList[9] = id.co.veritrans.sdk.coreflow.R.drawable.ic_mandiri_bill_payment2;
-        paymentImageList[10] = id.co.veritrans.sdk.coreflow.R.drawable.ic_indomaret;
-        paymentImageList[11] = id.co.veritrans.sdk.coreflow.R.drawable.ic_bca;
-        paymentImageList[12] = id.co.veritrans.sdk.coreflow.R.drawable.ic_klikbca;
+        paymentImageList[0] = id.co.veritrans.sdk.coreflow.R.drawable.ic_credit;
+        paymentImageList[1] = id.co.veritrans.sdk.coreflow.R.drawable.ic_atm;
+        paymentImageList[2] = id.co.veritrans.sdk.coreflow.R.drawable.ic_klikbca;
+        paymentImageList[3] = id.co.veritrans.sdk.coreflow.R.drawable.ic_bca;
+        paymentImageList[4] = id.co.veritrans.sdk.coreflow.R.drawable.ic_mandiri2;
+        paymentImageList[5] = id.co.veritrans.sdk.coreflow.R.drawable.ic_mandiri_e_cash; // mandiri e-Cash
+        paymentImageList[6] = id.co.veritrans.sdk.coreflow.R.drawable.ic_mandiri_bill_payment2;
+        paymentImageList[7] = id.co.veritrans.sdk.coreflow.R.drawable.ic_epay;
+        paymentImageList[8] = id.co.veritrans.sdk.coreflow.R.drawable.ic_cimb;
+        paymentImageList[9] = id.co.veritrans.sdk.coreflow.R.drawable.ic_offers;
+        paymentImageList[10] = id.co.veritrans.sdk.coreflow.R.drawable.ic_indosat;
+        paymentImageList[11] = id.co.veritrans.sdk.coreflow.R.drawable.ic_indomaret;
+        paymentImageList[12] = id.co.veritrans.sdk.coreflow.R.drawable.ic_bbm;
 
         return paymentImageList;
     }
