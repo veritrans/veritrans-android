@@ -53,7 +53,8 @@ public class VeritransSDK {
     private static String themeColorString = null;
     private static int themeColor;
 
-    private static VeritransSDK veritransSDK = new VeritransSDK();
+    private static VeritransSDK veritransSDK;
+
     private static boolean isLogEnabled = true;
     /*private static String serverKey = null;*/
     private static String clientKey = null;
@@ -65,6 +66,8 @@ public class VeritransSDK {
     private static String merchantName = null;
     private static ISdkFlow uiflow;
     private static IScanner externalScanner;
+
+
     protected boolean isRunning = false;
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
@@ -696,6 +699,7 @@ public class VeritransSDK {
         return mBBMCallBackUrl;
     }
 
+    //unused
     public void setBBMCallBackUrl(BBMCallBackUrl BBMCallBackUrl) {
         mBBMCallBackUrl = BBMCallBackUrl;
     }

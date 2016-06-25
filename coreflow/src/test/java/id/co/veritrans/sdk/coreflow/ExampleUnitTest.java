@@ -12,7 +12,7 @@ public class ExampleUnitTest {
 
     @Test
     public void sampleTest(){
-        Assert.assertEquals(2, 1+1);
+        Assert.assertEquals(2, 1);
     }
 
 }

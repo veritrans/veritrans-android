@@ -39,6 +39,9 @@ android {
         buildConfigField "String", "MARKET_URL", "\"market://details?id=\""
         buildConfigField "String", "PLAY_STORE_URL", "\"https://play.google.com/store/apps/details?id=\""
         buildConfigField "String", "BBM_PREFIX_URL", "\"bbmmoney://api/payment/imp?data=\""
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -61,6 +64,22 @@ android {
             buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_PRODUCTION
         }
     }
+
+    /*
+     * test configuration
+     */
+
+    sourceSets {
+        String sharedTestJavaDir = 'src/sharedTest/java'
+
+        test {
+            java.srcDirs += [sharedTestJavaDir]
+        }
+        androidTest {
+            java.srcDirs += [sharedTestJavaDir]
+            resources.srcDirs += ['src/test/resources']
+        }
+    }
     defaultPublishConfig = DEFAULT_PUBLISH
     publishNonDefault true
 }
@@ -80,7 +99,27 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.3.0'
 
     compile 'com.squareup.retrofit:retrofit:1.9.0'
+
+    /*
+     * test dependencies
+     */
+    // Android JUnit Runner
+    androidTestCompile 'com.android.support.test:runner:0.5'
+
+// JUnit4 Rules
+    androidTestCompile 'com.android.support.test:rules:0.5'
+
+// Espresso core
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+// Espresso-contrib for DatePicker, RecyclerView, Drawer actions, Accessibility checks, CountingIdlingResource
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
+// Espresso-web for WebView support
+    androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.2'
+// Espresso-idling-resource for synchronization with background jobs
+    androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
     testCompile 'junit:junit:4.12'
+
+    testCompile 'org.mockito:mockito-core:1.10.19'
 
 }
 
