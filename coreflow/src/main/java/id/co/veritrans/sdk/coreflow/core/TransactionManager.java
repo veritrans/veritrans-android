@@ -67,7 +67,7 @@ import retrofit.client.Response;
  * <p>
  * Created by shivam on 10/29/15.
  */
-class TransactionManager {
+public class TransactionManager {
     // Event Name
     private static final String KEY_TRANSACTION_SUCCESS = "Transaction Success";
     private static final String KEY_TRANSACTION_FAILED = "Transaction Failed";
@@ -94,6 +94,23 @@ class TransactionManager {
     // Platform properties
     private static final String PLATFORM = "Android";
 
+    private PaymentAPI veritransPaymentAPI;
+    private PaymentAPI merchantPaymentAPI;
+
+
+    public TransactionManager(PaymentAPI veritransPaymentAPI, PaymentAPI merchantPaymentAPI) {
+        this.veritransPaymentAPI = veritransPaymentAPI;
+        this.merchantPaymentAPI = merchantPaymentAPI;
+    }
+
+    public void setVeritransPaymentAPI(PaymentAPI veritransPaymentAPI) {
+        this.veritransPaymentAPI = veritransPaymentAPI;
+    }
+
+    public void setMerchantPaymentAPI(PaymentAPI merchantPaymentAPI) {
+        this.merchantPaymentAPI = merchantPaymentAPI;
+    }
+
     /**
      * It will execute API call to get token from Veritrans that can be used later.
      *
@@ -102,7 +119,7 @@ class TransactionManager {
      * @param cardExpMonth credit card expired month
      * @param cardExpYear  credit card expired year
      */
-    public static void cardRegistration(String cardNumber,
+    public void cardRegistration(String cardNumber,
                                         String cardCvv,
                                         String cardExpMonth,
                                         String cardExpYear) {
@@ -161,7 +178,7 @@ class TransactionManager {
      * @param cardTokenRequest card token request model
      * @param userId           user identifier
      */
-    public static void registerCard(CardTokenRequest cardTokenRequest, final String userId) {
+    public void registerCard(CardTokenRequest cardTokenRequest, final String userId) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
             final String merchantToken = veritransSDK.readAuthenticationToken();
@@ -262,7 +279,7 @@ class TransactionManager {
      *
      * @param cardTokenRequest information about credit card.
      */
-    public static void getToken(CardTokenRequest cardTokenRequest) {
+    public  void getToken(CardTokenRequest cardTokenRequest) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
@@ -436,7 +453,7 @@ class TransactionManager {
      *
      * @param permataBankTransfer information required perform transaction using permata bank
      */
-    public static void paymentUsingPermataBank(final PermataBankTransfer permataBankTransfer) {
+    public void paymentUsingPermataBank(final PermataBankTransfer permataBankTransfer) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
@@ -518,7 +535,7 @@ class TransactionManager {
      *
      * @param bcaBankTransfer information required perform transaction using BCA bank
      */
-    public static void paymentUsingBCATransfer(final BCABankTransfer bcaBankTransfer) {
+    public void paymentUsingBCATransfer(final BCABankTransfer bcaBankTransfer) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
@@ -600,7 +617,7 @@ class TransactionManager {
      *
      * @param cardTransfer information required perform transaction using credit card
      */
-    public static void paymentUsingCard(CardTransfer cardTransfer) {
+    public void paymentUsingCard(CardTransfer cardTransfer) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
@@ -675,7 +692,7 @@ class TransactionManager {
      *
      * @param mandiriClickPayRequestModel information required perform transaction using mandiri click pay.
      */
-    public static void paymentUsingMandiriClickPay(final MandiriClickPayRequestModel mandiriClickPayRequestModel) {
+    public void paymentUsingMandiriClickPay(final MandiriClickPayRequestModel mandiriClickPayRequestModel) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
@@ -758,7 +775,7 @@ class TransactionManager {
      *
      * @param bcaKlikPayModel information required perform transaction using BCA KlikPay.
      */
-    public static void paymentUsingBCAKlikPay(final BCAKlikPayModel bcaKlikPayModel) {
+    public void paymentUsingBCAKlikPay(final BCAKlikPayModel bcaKlikPayModel) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
@@ -842,7 +859,7 @@ class TransactionManager {
      *
      * @param mandiriBillPayTransferModel information required perform transaction using mandiri bill pay.
      */
-    public static void paymentUsingMandiriBillPay(MandiriBillPayTransferModel mandiriBillPayTransferModel) {
+    public void paymentUsingMandiriBillPay(MandiriBillPayTransferModel mandiriBillPayTransferModel) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
@@ -925,7 +942,7 @@ class TransactionManager {
      *
      * @param cimbClickPayModel CIMB click pay model
      */
-    public static void paymentUsingCIMBPay(final CIMBClickPayModel cimbClickPayModel) {
+    public void paymentUsingCIMBPay(final CIMBClickPayModel cimbClickPayModel) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
@@ -1010,7 +1027,7 @@ class TransactionManager {
      *
      * @param mandiriECashModel mandiri E-Cash model
      */
-    public static void paymentUsingMandiriECash(MandiriECashModel mandiriECashModel) {
+    public void paymentUsingMandiriECash(MandiriECashModel mandiriECashModel) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
@@ -1094,7 +1111,7 @@ class TransactionManager {
      *
      * @param epayBriTransfer BRI Epay request model
      */
-    public static void paymentUsingEpayBri(final EpayBriTransfer epayBriTransfer) {
+    public void paymentUsingEpayBri(final EpayBriTransfer epayBriTransfer) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
@@ -1175,7 +1192,7 @@ class TransactionManager {
      *
      * @param id    transaction identifier
      */
-    public static void getPaymentStatus(String id) {
+    public void getPaymentStatus(String id) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
@@ -1237,7 +1254,7 @@ class TransactionManager {
      *
      * @param indosatDompetkuRequest    Indosat Dompetku request model
      */
-    public static void paymentUsingIndosatDompetku(final IndosatDompetkuRequest indosatDompetkuRequest) {
+    public void paymentUsingIndosatDompetku(final IndosatDompetkuRequest indosatDompetkuRequest) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
@@ -1318,7 +1335,7 @@ class TransactionManager {
      *
      * @param indomaretRequestModel    Indomaret payment request model
      */
-    public static void paymentUsingIndomaret(final IndomaretRequestModel indomaretRequestModel) {
+    public void paymentUsingIndomaret(final IndomaretRequestModel indomaretRequestModel) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
@@ -1399,7 +1416,7 @@ class TransactionManager {
      *
      * @param bbmMoneyRequestModel  BBM Money payment request model
      */
-    public static void paymentUsingBBMMoney(final BBMMoneyRequestModel bbmMoneyRequestModel) {
+    public void paymentUsingBBMMoney(final BBMMoneyRequestModel bbmMoneyRequestModel) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
@@ -1482,7 +1499,7 @@ class TransactionManager {
      * It will execute API call to save card based
      * @param cardTokenRequest  card token request model
      */
-    public static void saveCards(final SaveCardRequest cardTokenRequest) {
+    public  void saveCards(final SaveCardRequest cardTokenRequest) {
 
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
@@ -1542,7 +1559,7 @@ class TransactionManager {
     /**
      * It will call execute API call to get saved cards.
      */
-    public static void getCards() {
+    public void getCards() {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
@@ -1646,7 +1663,7 @@ class TransactionManager {
      * It will execute API call to delete saved card from merchant server.
      * @param creditCard    credit card detail
      */
-    public static void deleteCard(SaveCardRequest creditCard) {
+    public void deleteCard(SaveCardRequest creditCard) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
@@ -1704,7 +1721,7 @@ class TransactionManager {
     /**
      * It will execute API call to get offers.
      */
-    public static void getOffers() {
+    public void getOffers() {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
@@ -1764,7 +1781,7 @@ class TransactionManager {
     /**
      * It will execute API call to get authentication token from merchant server.
      */
-    public static void getAuthenticationToken() {
+    public void getAuthenticationToken() {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
 
         if (veritransSDK != null) {
@@ -1803,7 +1820,7 @@ class TransactionManager {
     }
 
 
-    public static void paymentUsingKlikBCA(KlikBCAModel klikBCAModel) {
+    public void paymentUsingKlikBCA(KlikBCAModel klikBCAModel) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 

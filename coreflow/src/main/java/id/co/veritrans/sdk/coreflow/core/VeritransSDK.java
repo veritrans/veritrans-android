@@ -1,7 +1,6 @@
 package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.text.TextUtils;
@@ -66,6 +65,7 @@ public class VeritransSDK {
     private static String merchantName = null;
     private static ISdkFlow uiflow;
     private static IScanner externalScanner;
+    private static TransactionManager mTransactionManager;
 
 
     protected boolean isRunning = false;
@@ -110,6 +110,7 @@ public class VeritransSDK {
             }
             initializeTheme();
             initializeSharedPreferences();
+            mTransactionManager = new TransactionManager(VeritransRestAdapter.getApiClient(), VeritransRestAdapter.getMerchantApiClient());
             return veritransSDK;
         } else {
             return null;
@@ -247,9 +248,8 @@ public class VeritransSDK {
     public void getToken(CardTokenRequest cardTokenRequest) {
 
         if (cardTokenRequest != null) {
-
             isRunning = true;
-            TransactionManager.getToken(cardTokenRequest);
+            mTransactionManager.getToken(cardTokenRequest);
 
         } else {
             Logger.e(context.getString(R.string.error_invalid_data_supplied));
@@ -267,7 +267,7 @@ public class VeritransSDK {
         if (cardTokenRequest != null) {
 
             isRunning = true;
-            TransactionManager.registerCard(cardTokenRequest, userId);
+            mTransactionManager.registerCard(cardTokenRequest, userId);
         } else {
             Logger.e(context.getString(R.string.error_invalid_data_supplied));
             isRunning = false;
@@ -289,7 +289,7 @@ public class VeritransSDK {
                     (transactionRequest);
 
             isRunning = true;
-            TransactionManager.paymentUsingPermataBank(permataBankTransfer);
+            mTransactionManager.paymentUsingPermataBank(permataBankTransfer);
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -309,7 +309,7 @@ public class VeritransSDK {
             BCABankTransfer bcaBankTransfer = SdkUtil.getBcaBankTransferRequest(transactionRequest);
 
             isRunning = true;
-            TransactionManager.paymentUsingBCATransfer(bcaBankTransfer);
+            mTransactionManager.paymentUsingBCATransfer(bcaBankTransfer);
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -328,7 +328,7 @@ public class VeritransSDK {
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT;
 
             isRunning = true;
-            TransactionManager.paymentUsingCard(cardTransfer);
+            mTransactionManager.paymentUsingCard(cardTransfer);
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -353,7 +353,7 @@ public class VeritransSDK {
 
             isRunning = true;
 
-            TransactionManager.paymentUsingMandiriClickPay(mandiriClickPayRequestModel);
+            mTransactionManager.paymentUsingMandiriClickPay(mandiriClickPayRequestModel);
         } else {
 
             isRunning = false;
@@ -372,7 +372,7 @@ public class VeritransSDK {
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
             BCAKlikPayModel bcaKlikPayModel = SdkUtil.getBCAKlikPayModel(transactionRequest, descriptionModel);
             isRunning = true;
-            TransactionManager.paymentUsingBCAKlikPay(bcaKlikPayModel);
+            mTransactionManager.paymentUsingBCAKlikPay(bcaKlikPayModel);
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -384,7 +384,7 @@ public class VeritransSDK {
             transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
             KlikBCAModel klikBCAModel = SdkUtil.getKlikBCAModel(transactionRequest, descriptionModel);
             isRunning = true;
-            TransactionManager.paymentUsingKlikBCA(klikBCAModel);
+            mTransactionManager.paymentUsingKlikBCA(klikBCAModel);
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -407,7 +407,7 @@ public class VeritransSDK {
                         SdkUtil.getMandiriBillPayModel(transactionRequest);
 
                 isRunning = true;
-                TransactionManager.paymentUsingMandiriBillPay(mandiriBillPayTransferModel);
+                mTransactionManager.paymentUsingMandiriBillPay(mandiriBillPayTransferModel);
 
             } else {
 
@@ -440,7 +440,7 @@ public class VeritransSDK {
 
             isRunning = true;
 
-            TransactionManager.paymentUsingCIMBPay(cimbClickPayModel);
+            mTransactionManager.paymentUsingCIMBPay(cimbClickPayModel);
         } else {
             isRunning = false;
 
@@ -469,7 +469,7 @@ public class VeritransSDK {
 
             isRunning = true;
 
-            TransactionManager.paymentUsingMandiriECash(mandiriECashModel);
+            mTransactionManager.paymentUsingMandiriECash(mandiriECashModel);
         } else {
             isRunning = false;
 
@@ -566,7 +566,7 @@ public class VeritransSDK {
             EpayBriTransfer epayBriTransfer = SdkUtil.getEpayBriBankModel(transactionRequest);
 
             isRunning = true;
-            TransactionManager.paymentUsingEpayBri(epayBriTransfer);
+            mTransactionManager.paymentUsingEpayBri(epayBriTransfer);
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -587,7 +587,7 @@ public class VeritransSDK {
                     SdkUtil.getIndosatDompetkuRequestModel(transactionRequest, msisdn);
 
             isRunning = true;
-            TransactionManager.paymentUsingIndosatDompetku(indosatDompetkuRequest);
+            mTransactionManager.paymentUsingIndosatDompetku(indosatDompetkuRequest);
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -596,7 +596,7 @@ public class VeritransSDK {
 
     public void getPaymentStatus(String transactionId) {
         if (TextUtils.isEmpty(transactionId)) {
-            TransactionManager.getPaymentStatus(transactionId);
+            mTransactionManager.getPaymentStatus(transactionId);
         }
     }
 
@@ -616,7 +616,7 @@ public class VeritransSDK {
                     SdkUtil.getIndomaretRequestModel(transactionRequest, cstoreEntity);
 
             isRunning = true;
-            TransactionManager.paymentUsingIndomaret(indomaretRequestModel);
+            mTransactionManager.paymentUsingIndomaret(indomaretRequestModel);
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -629,7 +629,7 @@ public class VeritransSDK {
      *
      */
     public void getSavedCard() {
-        TransactionManager.getCards();
+        mTransactionManager.getCards();
     }
 
     /**
@@ -639,7 +639,7 @@ public class VeritransSDK {
      */
     public void saveCards(SaveCardRequest cardTokenRequest) {
         if (cardTokenRequest != null) {
-            TransactionManager.saveCards(cardTokenRequest);
+            mTransactionManager.saveCards(cardTokenRequest);
         }
     }
 
@@ -656,7 +656,7 @@ public class VeritransSDK {
                     SdkUtil.getBBMMoneyRequestModel(transactionRequest);
 
             isRunning = true;
-            TransactionManager.paymentUsingBBMMoney(bbmMoneyRequestModel);
+            mTransactionManager.paymentUsingBBMMoney(bbmMoneyRequestModel);
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -665,14 +665,14 @@ public class VeritransSDK {
 
     public void deleteCard(SaveCardRequest creditCard) {
         if (creditCard != null) {
-            TransactionManager.deleteCard(creditCard);
+            mTransactionManager.deleteCard(creditCard);
         }
     }
 
     public void cardRegistration(String cardNumber,
                                  String cardCvv, String cardExpMonth,
                                  String cardExpYear) {
-        TransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear);
+        mTransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear);
         isRunning = true;
     }
     public BBMCallBackUrl getBBMCallBackUrl() {
@@ -689,14 +689,14 @@ public class VeritransSDK {
      *
      */
     public void getOffersList() {
-        TransactionManager.getOffers();
+        mTransactionManager.getOffers();
     }
 
     /**
      * It will run background task to get authentication token.
      */
     public void getAuthenticationToken() {
-        TransactionManager.getAuthenticationToken();
+        mTransactionManager.getAuthenticationToken();
     }
 
     public IScanner getExternalScanner() {
