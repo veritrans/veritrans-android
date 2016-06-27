@@ -125,7 +125,7 @@ public class TransactionManager {
                                         String cardExpYear) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
-            PaymentAPI paymentAPI = VeritransRestAdapter.getApiClient();
+            PaymentAPI paymentAPI = veritransPaymentAPI;
             if (paymentAPI != null) {
                 paymentAPI.registerCard(cardNumber, cardCvv, cardExpMonth, cardExpYear, veritransSDK.getClientKey(), new Callback<CardRegistrationResponse>() {
                     @Override
@@ -390,6 +390,8 @@ public class TransactionManager {
     }
 
     private static void consumeTokenSuccesResponse(VeritransSDK veritransSDK, long start, TokenDetailsResponse tokenDetailsResponse) {
+        releaseResources();
+
         long end = System.currentTimeMillis();
 
         if (tokenDetailsResponse != null) {
@@ -425,10 +427,10 @@ public class TransactionManager {
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.TOKENIZE));
             Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
         }
-        releaseResources();
     }
 
     private static void consumeTokenErrorResponse(long start, RetrofitError e) {
+        releaseResources();
         long end = System.currentTimeMillis();
 
         Logger.e("error while getting token : ", "" + e.getMessage());
@@ -443,7 +445,6 @@ public class TransactionManager {
         // Track Mixpanel event
         trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, e.getMessage());
 
-        releaseResources();
     }
 
     /**

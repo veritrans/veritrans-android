@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
@@ -192,6 +193,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity implements Toke
         String orderId = UUID.randomUUID().toString();
         TransactionRequest request = new TransactionRequest(orderId.toString(), 360000);
         request.setCardPaymentInfo(getString(R.string.card_click_type_none), false);
+        Logger.e("rls", "run>post>another");
         VeritransSDK.getVeritransSDK().setTransactionRequest(request);
         ItemDetails itemDetails = new ItemDetails("1", 360000, 1, "shoes");
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();

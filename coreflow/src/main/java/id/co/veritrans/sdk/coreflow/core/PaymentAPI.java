@@ -213,7 +213,7 @@ public interface PaymentAPI {
                       Callback<CardResponse> callback);
 
 
-    //save cards or get cards
+    //save cards or get cards from/to merchantAPI
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/register")
     void saveCard(@Header("x-auth") String auth,
@@ -246,6 +246,7 @@ public interface PaymentAPI {
     void getOffers(@Header("x-auth") String auth, Callback<GetOffersResponseModel> callback);
 
     // register credit card info
+    //unused
     @GET("/card/register")
     void registerCard(@Query("card_number") String cardNumber,
                       @Query("card_exp_month") String cardExpMonth,

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.coreflow.utilities.Utils;
 
 //import id.co.veritrans.sdk.activities.SaveCreditCardActivity;
 //import id.co.veritrans.sdk.activities.UserDetailsActivity;
@@ -52,7 +54,7 @@ public class VeritransSDK {
     private static String themeColorString = null;
     private static int themeColor;
 
-    private static VeritransSDK veritransSDK;
+    private static VeritransSDK veritransSDK = new VeritransSDK();
 
     private static boolean isLogEnabled = true;
     /*private static String serverKey = null;*/
@@ -116,6 +118,8 @@ public class VeritransSDK {
             return null;
         }
     }
+
+
 
 
 
@@ -250,7 +254,6 @@ public class VeritransSDK {
         if (cardTokenRequest != null) {
             isRunning = true;
             mTransactionManager.getToken(cardTokenRequest);
-
         } else {
             Logger.e(context.getString(R.string.error_invalid_data_supplied));
             isRunning = false;
@@ -472,7 +475,6 @@ public class VeritransSDK {
             mTransactionManager.paymentUsingMandiriECash(mandiriECashModel);
         } else {
             isRunning = false;
-
             if (descriptionModel == null) {
                 Logger.e(context.getString(R.string.error_description_required));
             } else {
@@ -702,5 +704,10 @@ public class VeritransSDK {
     public IScanner getExternalScanner() {
         return externalScanner;
     }
+
+    public  TransactionManager getTransactionManager() {
+        return mTransactionManager;
+    }
+
 
 }
