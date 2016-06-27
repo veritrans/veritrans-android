@@ -19,7 +19,6 @@ import java.util.UUID;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
-import id.co.veritrans.sdk.coreflow.core.PaymentMethods;
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
@@ -35,6 +34,7 @@ import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.sample.core.CoreFlowActivity;
 import id.co.veritrans.sdk.scancard.ScanCard;
+import id.co.veritrans.sdk.uiflow.PaymentMethods;
 import id.co.veritrans.sdk.uiflow.SdkUIFlowBuilder;
 import id.co.veritrans.sdk.uiflow.UIFlow;
 

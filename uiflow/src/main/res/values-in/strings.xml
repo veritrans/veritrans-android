@@ -231,7 +231,6 @@
 
     <string name="text_bank_name">Nama Bank</string>
     <string name="text_sample_valid_date">Valid Sampai : 10 September 2015, 16:00</string>
-    <string name="valid_thru">Valid Sampai</string>
     <string name="enter_cvv">Masukkan CVV</string>
 
     <string name="appli">APPLI</string>

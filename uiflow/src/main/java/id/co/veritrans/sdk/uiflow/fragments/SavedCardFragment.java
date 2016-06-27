@@ -19,12 +19,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
-import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.DeleteCardBusCallback;
@@ -33,6 +29,10 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.DeleteCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
+import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
 
 public class SavedCardFragment extends Fragment implements DeleteCardBusCallback {
@@ -101,7 +101,6 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
         emptyCardsTextView = (TextView) view.findViewById(R.id.text_empty_saved_cards);
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
         creditCardLayout = (LinearLayout)view.findViewById(R.id.credit_card_holder);
-        creditCardLayout.setBackgroundColor(veritransSDK.getThemeColor());
         newCardButtonLayout = (RelativeLayout)view.findViewById(R.id.new_card_button_layout);
        /* ViewTreeObserver vto = creditCardLayout.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -141,7 +140,7 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
                 .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-        circlePageIndicator.setFillColor(getResources().getColor(R.color.white));
+        circlePageIndicator.setFillColor(veritransSDK.getThemeColor());
         creditCards = ((CreditDebitCardFlowActivity) getActivity()).getCreditCardList();
         setViewPagerValues();
 
