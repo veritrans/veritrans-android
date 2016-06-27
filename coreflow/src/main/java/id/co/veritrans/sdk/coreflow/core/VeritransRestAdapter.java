@@ -28,11 +28,7 @@ public class VeritransRestAdapter {
      *
      * @return Payment API implementation
      */
-    public static PaymentAPI getApiClient() {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null
-                && veritransSDK.getContext() != null
-                && Utils.isNetworkAvailable(veritransSDK.getContext())) {
+    public static VeritransRestAPI getVeritransApiClient() {
             OkHttpClient okHttpClient = new OkHttpClient();
             okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
             Gson gson = new GsonBuilder()
@@ -45,18 +41,11 @@ public class VeritransRestAdapter {
                     .setLogLevel(LOG_LEVEL)
                     .setClient(new OkClient(okHttpClient));
             RestAdapter restAdapter = builder.build();
-            return restAdapter.create(PaymentAPI.class);
-        } else {
-            return null;
-        }
+            return restAdapter.create(VeritransRestAPI.class);
     }
 
     //
-    public static PaymentAPI getMerchantApiClient() {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null
-                && veritransSDK.getContext() != null
-                && Utils.isNetworkAvailable(veritransSDK.getContext())) {
+    public static MerchantRestAPI getMerchantApiClient(String merchantBaseURL) {
 
             OkHttpClient okHttpClient = new OkHttpClient();
             okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
@@ -68,19 +57,13 @@ public class VeritransRestAdapter {
                     .setConverter(new GsonConverter(gson))
                     .setLogLevel(LOG_LEVEL)
                     .setClient(new OkClient(okHttpClient))
-                    .setEndpoint(veritransSDK.getMerchantServerUrl());
+                    .setEndpoint(merchantBaseURL);
             RestAdapter restAdapter = builder.build();
-            return restAdapter.create(PaymentAPI.class);
-        } else {
-            return null;
-        }
+            return restAdapter.create(MerchantRestAPI.class);
+
     }
 
     public static MixpanelApi getMixpanelApi() {
-        VeritransSDK paymentSdk = VeritransSDK.getVeritransSDK();
-        if (paymentSdk != null
-                && paymentSdk.getContext() != null
-                && Utils.isNetworkAvailable(paymentSdk.getContext())) {
             OkHttpClient okHttpClient = new OkHttpClient();
             okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
             RestAdapter.Builder builder = new RestAdapter.Builder()
@@ -89,9 +72,6 @@ public class VeritransRestAdapter {
                     .setEndpoint(BuildConfig.MIXPANEL_URL);
             RestAdapter restAdapter = builder.build();
             return restAdapter.create(MixpanelApi.class);
-        } else {
-            return null;
-        }
     }
 
 }

@@ -1,0 +1,14 @@
+{
+  "status_code": "200",
+  "status_message": "Success, Credit Card transaction is successful",
+  "transaction_id": "5ebd7926-05cb-494f-8acd-f9a9da17a73f",
+  "order_id": "d0721a24-8f19-47f8-be8b-0ebe1adee873",
+  "gross_amount": "360000.00",
+  "payment_type": "credit_card",
+  "transaction_time": "2016-06-27 13:44:00",
+  "transaction_status": "capture",
+  "fraud_status": "accept",
+  "approval_code": "1467009840428",
+  "masked_card": "481111-1114",
+  "bank": "bni"
+}

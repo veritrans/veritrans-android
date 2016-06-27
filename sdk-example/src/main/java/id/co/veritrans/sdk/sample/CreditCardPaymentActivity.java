@@ -90,7 +90,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity implements Toke
                             VeritransSDK.getVeritransSDK().getClientKey());
                     VeritransSDK.getVeritransSDK().getToken(cardTokenRequest);
                 }
-            }
+                }
         });
     }
 
