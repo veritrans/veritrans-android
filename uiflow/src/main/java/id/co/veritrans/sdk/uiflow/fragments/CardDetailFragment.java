@@ -13,20 +13,22 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
-import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
+import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.uiflow.utilities.FlipAnimation;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
 
 public class CardDetailFragment extends Fragment {
@@ -36,19 +38,15 @@ public class CardDetailFragment extends Fragment {
     private RelativeLayout rootLayout;
     private RelativeLayout cardContainerBack;
     private RelativeLayout cardContainerFront;
-    private TextView bankNameTv;
     private TextView cardNoTv;
     private TextView expTv;
-    /*private ImageView cvvCircle1;
-    private ImageView cvvCircle2;
-    private ImageView cvvCircle3;*/
     private EditText cvvEt;
     private Button payNowBt;
-    private ImageView deleteIv;
+    private ImageButton deleteIv;
+    private ImageView logo;
     private Button payNowFrontBt;
     private VeritransSDK veritransSDK;
     private Fragment parentFragment;
-    private ImageView imageQuestionmark;
     private Activity activity;
 
     public CardDetailFragment() {
@@ -128,7 +126,6 @@ public class CardDetailFragment extends Fragment {
                 flipCard();
             }
         });
-        bankNameTv = (TextView) view.findViewById(R.id.text_bank_name);
         cardNoTv = (TextView) view.findViewById(R.id.text_card_number);
         expTv = (TextView) view.findViewById(R.id.text_exp_date);
         /*cvvCircle1 = (ImageView) view.findViewById(R.id.image_cvv1);
@@ -174,7 +171,7 @@ public class CardDetailFragment extends Fragment {
 
             }
         });*/
-        cardNoTv.setText(cardDetail.getMaskedCard().replace("-", "XXXXXX"));
+        cardNoTv.setText(Utils.getFormattedCreditCardNumber(cardDetail.getMaskedCard().replace("-", "XXXXXX")));
 
         payNowBt = (Button) view.findViewById(R.id.btn_pay_now);
         payNowBt.setTextColor(veritransSDK.getThemeColor());
@@ -211,7 +208,7 @@ public class CardDetailFragment extends Fragment {
         } else {
             payNowFrontBt.setVisibility(View.GONE);
         }
-        deleteIv = (ImageView) view.findViewById(R.id.image_delete_card);
+        deleteIv = (ImageButton) view.findViewById(R.id.image_delete_card);
         deleteIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,17 +229,22 @@ public class CardDetailFragment extends Fragment {
                 veritransDialog.show();
             }
         });
-        imageQuestionmark = (ImageView) view.findViewById(R.id.image_questionmark);
-        imageQuestionmark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
-                        getString(R.string.message_cvv), getString(R.string.got_it), "");
-                veritransDialog.show();
-                SdkUIFlowUtil.hideKeyboard(getActivity()); // hide keyboard if visible.
-            }
-        });
-
+        logo = (ImageView) view.findViewById(R.id.logo_card);
+        String type = Utils.getCardType(cardDetail.getMaskedCard().replace("-", "XXXXXX"));
+        switch (type) {
+            case Utils.CARD_TYPE_VISA:
+                logo.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_visa));
+                break;
+            case Utils.CARD_TYPE_MASTERCARD:
+                logo.setImageResource(R.drawable.ic_mastercard);
+                break;
+            case Utils.CARD_TYPE_JCB:
+                logo.setImageResource(R.drawable.ic_jcb);
+                break;
+            case Utils.CARD_TYPE_AMEX:
+                logo.setImageResource(R.drawable.ic_amex);
+                break;
+        }
     }
 
     private void cardTransactionProcess(String cvv) {

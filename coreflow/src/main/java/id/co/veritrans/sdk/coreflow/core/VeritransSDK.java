@@ -1,7 +1,6 @@
 package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.text.TextUtils;
@@ -16,7 +15,6 @@ import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.coreflow.models.BCABankTransfer;
 import id.co.veritrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.BCAKlikPayModel;
-import id.co.veritrans.sdk.coreflow.models.BankTransferModel;
 import id.co.veritrans.sdk.coreflow.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.CardTransfer;
@@ -219,13 +217,6 @@ public class VeritransSDK {
 
     public String getMerchantServerUrl(){
         return merchantServerUrl;
-    }
-
-    public ArrayList<BankTransferModel> getBankTransferList() {
-        ArrayList<BankTransferModel> models = new ArrayList<>();
-        models.add(new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true));
-        models.add(new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true));
-        return models;
     }
 
     public ArrayList<PaymentMethodsModel> getSelectedPaymentMethods() {
@@ -548,26 +539,6 @@ public class VeritransSDK {
         }
     }
 
-    public boolean isUIFLowAvailable(){
-        if (transactionRequest != null && !isRunning) {
-
-            return true;
-        }
-
-        if (transactionRequest == null) {
-            Logger.e(ADD_TRANSACTION_DETAILS);
-        } else {
-            Logger.e(context.getString(R.string.error_already_running));
-            Logger.e(context.getString(R.string.error_already_running));
-        }
-        return false;
-    }
-
-    public boolean havePaymentMethod(){
-        return transactionRequest.getPaymentMethod() != Constants
-                .PAYMENT_METHOD_NOT_SELECTED;
-
-    }
 
     /**
      * It will execute an transaction for epay bri .
@@ -719,35 +690,4 @@ public class VeritransSDK {
         return externalScanner;
     }
 
-    public static class UIFlow{
-        public static int PAYMENT  = 1;
-        public static int CARD_REGISTER = 2;
-        int type = 0;
-        private Intent intent;
-        private Context context;
-
-        public Intent getIntent() {
-            return intent;
-        }
-
-        public void setIntent(Intent intent) {
-            this.intent = intent;
-        }
-
-        public Context getContext() {
-            return context;
-        }
-
-        public void setContext(Context context) {
-            this.context = context;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-    }
 }

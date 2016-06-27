@@ -128,7 +128,7 @@
     <string name="ok">OK</string>
 
     <string name="enter_cvv">Enter CVV</string>
-    <string name="valid_thru">Valid Thru</string>
+    <string name="valid_thru">Valid\nThru</string>
 
     <string name="zero_month">0 month</string>
     <string name="formatted_month">%1$s months</string>

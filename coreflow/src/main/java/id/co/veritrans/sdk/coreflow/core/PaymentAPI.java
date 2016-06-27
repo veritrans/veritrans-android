@@ -55,7 +55,7 @@ public interface PaymentAPI {
      *
      * @return callback of transaction response
      */
-    @GET("/token/")
+    @GET("/token")
     void getTokenTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
@@ -65,7 +65,7 @@ public interface PaymentAPI {
             @Query("bank") String bank,
             @Query("client_key") String clientKey, Callback<TokenDetailsResponse> callback);
 
-    @GET("/token/")
+    @GET("/token")
     void get3DSToken(@Query("card_number") String cardNumber,
                      @Query("card_cvv") String cardCVV,
                      @Query("card_exp_month") String cardExpiryMonth,
@@ -81,7 +81,7 @@ public interface PaymentAPI {
     //http://api.sandbox.veritrans.co.id/v2/10938010/cancel/
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("/{id}/cancel/")
+    @POST("/{id}/cancel")
     void cancelTransaction(
             @Header("x-auth") String auth,
             @Path("id") String transactionId,
@@ -90,14 +90,14 @@ public interface PaymentAPI {
     //http://api.sandbox.veritrans.co.id/v2/39b690a3-d626-4577-a6ab-14e29a1c74ac/status/
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("/{id}/status/")
+    @POST("/{id}/status")
     void  transactionStatus(
             @Header("x-auth") String auth, @Path("id") String transactionId,
             Callback<TransactionStatusResponse> callback);
 
     //bank transfer
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingPermataBank(@Header("x-auth")
                                                             String authorization,
                                                             @Body PermataBankTransfer
@@ -112,7 +112,7 @@ public interface PaymentAPI {
      * @return callback of transaction response
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingBCAVA(
             @Header("x-auth") String authorization,
             @Body BCABankTransfer bcaBankTransfer,
@@ -120,14 +120,14 @@ public interface PaymentAPI {
 
     //debit card
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingCard(
             @Header("x-auth") String auth, @Body CardTransfer
             cardTransfer, Callback<TransactionResponse> callback);
 
     //mandiri click pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingMandiriClickPay(
             @Header("x-auth") String auth
             , @Body MandiriClickPayRequestModel
@@ -141,7 +141,7 @@ public interface PaymentAPI {
      * @return callback of the Transaction Response object.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingBCAKlikPay(
             @Header("x-auth") String auth,
             @Body BCAKlikPayModel bcaKlikPayModel,
@@ -155,13 +155,13 @@ public interface PaymentAPI {
      * @return Observable of the Transaction Response object.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingKlikBCA(@Body KlikBCAModel klikBCAModel,
                              Callback<TransactionResponse> callback);
 
     //mandiri bill pay
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingMandiriBillPay(@Header("x-auth") String auth,
                                                                @Body MandiriBillPayTransferModel
                                                                        mandiriBillPayTransferModel,
@@ -169,14 +169,14 @@ public interface PaymentAPI {
 
     //epay bri transaction flow
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingEpayBri(@Header("x-auth") String auth,
                                      @Body EpayBriTransfer
                                              epayBriTransfer,
                                      Callback<TransactionResponse> callback);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingIndosatDompetku(@Header("x-auth") String auth,
                                      @Body IndosatDompetkuRequest
                                              indosatDompetkuRequest,
@@ -184,7 +184,7 @@ public interface PaymentAPI {
 
     //CIMB transaction flow
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingCIMBClickPay(@Header("x-auth") String auth,
                                   @Body CIMBClickPayModel
                                           cimbClickPayModel,
@@ -192,7 +192,7 @@ public interface PaymentAPI {
 
     //Mandiri E Cash transaction flow
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingMandiriECash(@Header("x-auth") String auth,
                                   @Body MandiriECashModel
                                           mandiriECashModel,
@@ -200,7 +200,7 @@ public interface PaymentAPI {
 
     //indomaret payment
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingIndomaret(@Header("x-auth") String auth,
                                @Body IndomaretRequestModel
                                        indomaretRequestModel,
@@ -214,7 +214,6 @@ public interface PaymentAPI {
 
 
     //save cards or get cards
-    @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/card/register")
     void saveCard(@Header("x-auth") String auth,
@@ -222,9 +221,8 @@ public interface PaymentAPI {
                   Callback<SaveCardResponse> callback);
 
     //save cards or get cards
-    @Deprecated
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @GET("/card/")
+    @GET("/card")
     void getCard(@Header("x-auth") String auth, Callback<CardResponse> callback);
 
     //delete card
@@ -236,7 +234,7 @@ public interface PaymentAPI {
 
     //BBMMoney Payment
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge/")
+    @POST("/charge")
     void paymentUsingBBMMoney(@Header("x-auth") String auth,
                               @Body BBMMoneyRequestModel
                                       bbmMoneyRequestModel,
@@ -271,7 +269,7 @@ public interface PaymentAPI {
      * @return callback of transaction response
      */
 
-    @GET("/token/")
+    @GET("/token")
     void getTokenInstalmentOfferTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
@@ -300,7 +298,7 @@ public interface PaymentAPI {
      * @return callback of transaction response
      */
 
-    @GET("/token/")
+    @GET("/token")
     void get3DSTokenInstalmentOffers(@Query("card_number") String cardNumber,
                                      @Query("card_cvv") String cardCVV,
                                      @Query("card_exp_month") String cardExpiryMonth,

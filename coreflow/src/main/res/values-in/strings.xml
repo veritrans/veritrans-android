@@ -7,7 +7,7 @@
     <!--user detail-->
     <string name="hint_full_name">Nama Lengkap</string>
     <string name="hint_email">Email</string>
-    <string name="next">Next</string>
+    <string name="next">Selanjutnya</string>
     <string name="hint_phone_number">No. Telepon </string>
     <string name="validation_full_name_empty">Masukkan nama lengkap</string>
     <string name="validation_email_empty">Masukkan alamat email</string>
@@ -107,7 +107,6 @@
     <string name="copied_bill_code">Kode tagihan sudah disalin ke clipboard</string>
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>
     <string name="complete_payment_at_atm">Selesaikan Pembayaran di ATM</string>
-    <string name="complete_payment_at_klik_bca">Selesai</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
     <string name="payment_pending">Menunggu Pembayaran!</string>
@@ -232,7 +231,6 @@
 
     <string name="text_bank_name">Nama Bank</string>
     <string name="text_sample_valid_date">Valid Sampai : 10 September 2015, 16:00</string>
-    <string name="valid_thru">Valid Sampai</string>
     <string name="enter_cvv">Masukkan CVV</string>
 
     <string name="appli">APPLI</string>
@@ -296,8 +294,10 @@
     <string name="no_offers">Tidak ada penawaran</string>
     <string name="text_yes">Ya</string>
     <string name="text_no">Tidak</string>
-    <string name="zero_month">0 Bulan</string>
-    <string name="formatted_month">%1$s bulan</string>
+
+    <!--KlikBCA Payment Instructions-->
+    <string name="klikbca_instruction_1">1.\tPastikan bahwa UserID sudah aktif dan terdaftar di BCA.</string>
+    <string name="klikbca_instruction_2">2.\tSilakan lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com pada browser anda, menggunakan User ID yang sama dengan yang anda masukkan di atas.</string>
 
     <string name="payment_method_bri_epay">Epay BRI</string>
     <string name="payment_method_offers">Penawaran</string>
@@ -311,10 +311,7 @@
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
     <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
-    <string name="payment_method_klik_bca">KlikBCA</string>
-    <!--KlikBCA Payment Instructions-->
-    <string name="klikbca_instruction_1">1.\tPastikan bahwa UserID sudah aktif dan terdaftar di BCA.</string>
-    <string name="klikbca_instruction_2">2.\tSetelah anda menekan Continue Payment anda akan diarahkan ke website KlikBCA menggunakan UserID yang sama dengan yang dimasukkan sebelumnya.</string>
 
-    <string name="error_user_id">Mohon isikan UserID.</string>
+    <string name="btn_close">Tutup</string>
+    <string name="payment_canceled">3D Secure authorization has been cancelled.</string>
 </resources>
