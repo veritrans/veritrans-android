@@ -113,6 +113,7 @@ public class VeritransSDK {
             initializeTheme();
             initializeSharedPreferences();
             mTransactionManager = new TransactionManager(context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
+            mTransactionManager.setSDKLogEnabled(isLogEnabled);
             return veritransSDK;
         } else {
             return null;
@@ -292,7 +293,7 @@ public class VeritransSDK {
         if (cardTokenRequest != null && isAvailableForTransaction(Events.CARD_REGISTRATION)) {
 
             isRunning = true;
-            mTransactionManager.registerCard(cardTokenRequest, userId);
+            mTransactionManager.registerCard(cardTokenRequest, userId, veritransSDK.readAuthenticationToken());
         } else {
             Logger.e(context.getString(R.string.error_invalid_data_supplied));
             isRunning = false;
@@ -314,7 +315,7 @@ public class VeritransSDK {
                         (transactionRequest);
 
                 isRunning = true;
-                mTransactionManager.paymentUsingPermataBank(permataBankTransfer);
+                mTransactionManager.paymentUsingPermataBank(permataBankTransfer, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
             }
@@ -337,7 +338,7 @@ public class VeritransSDK {
                 BCABankTransfer bcaBankTransfer = SdkUtil.getBcaBankTransferRequest(transactionRequest);
 
                 isRunning = true;
-                mTransactionManager.paymentUsingBCATransfer(bcaBankTransfer);
+                mTransactionManager.paymentUsingBCATransfer(bcaBankTransfer, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
             }
@@ -359,7 +360,7 @@ public class VeritransSDK {
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT;
 
                 isRunning = true;
-                mTransactionManager.paymentUsingCard(cardTransfer);
+                mTransactionManager.paymentUsingCard(cardTransfer, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
             }
@@ -385,7 +386,7 @@ public class VeritransSDK {
                         SdkUtil.getMandiriClickPayRequestModel(transactionRequest,
                                 mandiriClickPayModel);
                 isRunning = true;
-                mTransactionManager.paymentUsingMandiriClickPay(mandiriClickPayRequestModel);
+                mTransactionManager.paymentUsingMandiriClickPay(mandiriClickPayRequestModel, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
             }
@@ -408,7 +409,7 @@ public class VeritransSDK {
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
                 BCAKlikPayModel bcaKlikPayModel = SdkUtil.getBCAKlikPayModel(transactionRequest, descriptionModel);
                 isRunning = true;
-                mTransactionManager.paymentUsingBCAKlikPay(bcaKlikPayModel);
+                mTransactionManager.paymentUsingBCAKlikPay(bcaKlikPayModel, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
             }
@@ -449,7 +450,7 @@ public class VeritransSDK {
                             SdkUtil.getMandiriBillPayModel(transactionRequest);
 
                     isRunning = true;
-                    mTransactionManager.paymentUsingMandiriBillPay(mandiriBillPayTransferModel);
+                    mTransactionManager.paymentUsingMandiriBillPay(mandiriBillPayTransferModel, veritransSDK.readAuthenticationToken());
                 }else{
                     isRunning = false;
                 }
@@ -480,7 +481,7 @@ public class VeritransSDK {
                 CIMBClickPayModel cimbClickPayModel = SdkUtil.getCIMBClickPayModel
                         (transactionRequest, descriptionModel);
                 isRunning = true;
-                mTransactionManager.paymentUsingCIMBPay(cimbClickPayModel);
+                mTransactionManager.paymentUsingCIMBPay(cimbClickPayModel, veritransSDK.readAuthenticationToken());
             }
             else{
                 isRunning = false;
@@ -509,7 +510,7 @@ public class VeritransSDK {
                 MandiriECashModel mandiriECashModel = SdkUtil.getMandiriECashModel
                         (transactionRequest, descriptionModel);
                 isRunning = true;
-                mTransactionManager.paymentUsingMandiriECash(mandiriECashModel);
+                mTransactionManager.paymentUsingMandiriECash(mandiriECashModel, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
             }
@@ -608,7 +609,7 @@ public class VeritransSDK {
                 EpayBriTransfer epayBriTransfer = SdkUtil.getEpayBriBankModel(transactionRequest);
 
                 isRunning = true;
-                mTransactionManager.paymentUsingEpayBri(epayBriTransfer);
+                mTransactionManager.paymentUsingEpayBri(epayBriTransfer, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
             }
@@ -632,7 +633,7 @@ public class VeritransSDK {
                         SdkUtil.getIndosatDompetkuRequestModel(transactionRequest, msisdn);
 
                 isRunning = true;
-                mTransactionManager.paymentUsingIndosatDompetku(indosatDompetkuRequest);
+                mTransactionManager.paymentUsingIndosatDompetku(indosatDompetkuRequest, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
             }
@@ -645,7 +646,7 @@ public class VeritransSDK {
     public void getPaymentStatus(String transactionId) {
         if (TextUtils.isEmpty(transactionId)) {
             if(isAvailableForTransaction(Events.PAYMENT)){
-                mTransactionManager.getPaymentStatus(transactionId);
+                mTransactionManager.getPaymentStatus(transactionId, veritransSDK.readAuthenticationToken());
             }
         }
     }
@@ -666,7 +667,7 @@ public class VeritransSDK {
                         SdkUtil.getIndomaretRequestModel(transactionRequest, cstoreEntity);
 
                 isRunning = true;
-                mTransactionManager.paymentUsingIndomaret(indomaretRequestModel);
+                mTransactionManager.paymentUsingIndomaret(indomaretRequestModel, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
             }
@@ -683,7 +684,7 @@ public class VeritransSDK {
      */
     public void getSavedCard() {
         if(isAvailableForTransaction(Events.GET_CARD)){
-            mTransactionManager.getCards();
+            mTransactionManager.getCards(veritransSDK.readAuthenticationToken());
         }else{
             isRunning = false;
         }
@@ -697,7 +698,7 @@ public class VeritransSDK {
     public void saveCards(SaveCardRequest cardTokenRequest) {
         if (cardTokenRequest != null) {
             if(isAvailableForTransaction(Events.REGISTER_CARD)){
-                mTransactionManager.saveCards(cardTokenRequest);
+                mTransactionManager.saveCards(cardTokenRequest, veritransSDK.readAuthenticationToken());
             }
         }
     }
@@ -716,7 +717,7 @@ public class VeritransSDK {
                         SdkUtil.getBBMMoneyRequestModel(transactionRequest);
 
                 isRunning = true;
-                mTransactionManager.paymentUsingBBMMoney(bbmMoneyRequestModel);
+                mTransactionManager.paymentUsingBBMMoney(bbmMoneyRequestModel, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
             }
@@ -733,7 +734,7 @@ public class VeritransSDK {
     public void deleteCard(SaveCardRequest creditCard) {
         if (creditCard != null) {
             if(isAvailableForTransaction(Events.DELETE_CARD)){
-                mTransactionManager.deleteCard(creditCard);
+                mTransactionManager.deleteCard(creditCard, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
             }
@@ -744,7 +745,7 @@ public class VeritransSDK {
                                  String cardCvv, String cardExpMonth,
                                  String cardExpYear) {
         if(isAvailableForTransaction(Events.CARD_REGISTRATION)){
-            mTransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear);
+            mTransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey);
             isRunning = true;
         }else{
             isRunning = false;
@@ -765,7 +766,7 @@ public class VeritransSDK {
      */
     public void getOffersList() {
         if(isAvailableForTransaction(Events.GET_OFFER)){
-            mTransactionManager.getOffers();
+            mTransactionManager.getOffers(veritransSDK.readAuthenticationToken());
         }
     }
 

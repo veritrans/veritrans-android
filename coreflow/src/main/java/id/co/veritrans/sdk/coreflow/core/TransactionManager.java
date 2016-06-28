@@ -1,17 +1,13 @@
 package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
-import android.os.Build;
 import android.text.TextUtils;
 
 import java.security.cert.CertPathValidatorException;
 
 import javax.net.ssl.SSLHandshakeException;
 
-import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.coreflow.R;
-import id.co.veritrans.sdk.coreflow.analytics.MixpanelEvent;
-import id.co.veritrans.sdk.coreflow.analytics.MixpanelProperties;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.events.AuthenticationEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.CardRegistrationFailedEvent;
@@ -92,14 +88,15 @@ public class TransactionManager {
     private static final String BANK_BCA = "bca";
     private static final String BANK_MANDIRI = "mandiri";
 
-
     private  Context context;
 
     private VeritransRestAPI veritransPaymentAPI;
     private MerchantRestAPI merchantPaymentAPI;
+    private boolean isSDKLogEnabled = false;
 
 
-    public TransactionManager(Context context, VeritransRestAPI veritransPaymentAPI, MerchantRestAPI merchantPaymentAPI) {
+    public TransactionManager(Context context, VeritransRestAPI veritransPaymentAPI,
+                              MerchantRestAPI merchantPaymentAPI) {
         this.context = context;
         this.veritransPaymentAPI = veritransPaymentAPI;
         this.merchantPaymentAPI = merchantPaymentAPI;
@@ -113,6 +110,10 @@ public class TransactionManager {
         this.merchantPaymentAPI = merchantPaymentAPI;
     }
 
+    public void setSDKLogEnabled(boolean SDKLogEnabled) {
+        isSDKLogEnabled = SDKLogEnabled;
+    }
+
     /**
      * It will execute API call to get token from Veritrans that can be used later.
      *
@@ -124,21 +125,19 @@ public class TransactionManager {
     public void cardRegistration(String cardNumber,
                                  String cardCvv,
                                  String cardExpMonth,
-                                 String cardExpYear) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            veritransPaymentAPI.registerCard(cardNumber, cardCvv, cardExpMonth, cardExpYear, veritransSDK.getClientKey(), new Callback<CardRegistrationResponse>() {
+                                 String cardExpYear, String clientKey) {
+            veritransPaymentAPI.registerCard(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey, new Callback<CardRegistrationResponse>() {
                 @Override
                 public void success(CardRegistrationResponse cardRegistrationResponse, Response response) {
                     if (cardRegistrationResponse != null) {
-                        if (cardRegistrationResponse.getStatusCode().equals(veritransSDK.getContext().getString(R.string.success_code_200))) {
+                        if (cardRegistrationResponse.getStatusCode().equals(context.getString(R.string.success_code_200))) {
                             VeritransBusProvider.getInstance().post(new CardRegistrationSuccessEvent(cardRegistrationResponse, Events.CARD_REGISTRATION));
                         } else {
                             VeritransBusProvider.getInstance().post(new CardRegistrationFailedEvent(cardRegistrationResponse.getStatusMessage(), cardRegistrationResponse, Events.CARD_REGISTRATION));
                         }
                     } else {
-                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.CARD_REGISTRATION));
-                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.CARD_REGISTRATION));
+                        Logger.e(context.getString(R.string.error_empty_response));
                     }
                     releaseResources();
                 }
@@ -157,11 +156,6 @@ public class TransactionManager {
                     releaseResources();
                 }
             });
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.CARD_REGISTRATION));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
@@ -172,19 +166,17 @@ public class TransactionManager {
      * @param userId           user identifier
      */
     @Deprecated
-    public void registerCard(CardTokenRequest cardTokenRequest, final String userId) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            final String merchantToken = veritransSDK.readAuthenticationToken();
+    public void registerCard(CardTokenRequest cardTokenRequest, final String userId, String authenticationToken) {
+            final String merchantToken = authenticationToken;
                 veritransPaymentAPI.registerCard(cardTokenRequest.getCardNumber(), cardTokenRequest.getCardExpiryMonth(),
                         cardTokenRequest.getCardExpiryYear(), cardTokenRequest.getClientKey(), new Callback<RegisterCardResponse>() {
                             @Override
                             public void success(RegisterCardResponse registerCardResponse, Response response) {
                                 if (registerCardResponse != null) {
-                                    if (veritransSDK.isLogEnabled()) {
+                                    if (isSDKLogEnabled) {
                                         displayResponse(registerCardResponse);
                                     }
-                                    if (registerCardResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))) {
+                                    if (registerCardResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))) {
                                         registerCardResponse.setUserId(userId);
                                             merchantPaymentAPI.registerCard(merchantToken, registerCardResponse, new Callback<CardResponse>() {
                                                 @Override
@@ -203,13 +195,13 @@ public class TransactionManager {
                                         if (!TextUtils.isEmpty(registerCardResponse.getStatusMessage())) {
                                             VeritransBusProvider.getInstance().post(new RegisterCardFailedEvent(registerCardResponse.getStatusMessage(), registerCardResponse, Events.REGISTER_CARD));
                                         } else {
-                                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.REGISTER_CARD));
+                                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.REGISTER_CARD));
                                         }
                                     }
 
                                 } else {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.REGISTER_CARD));
-                                    Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response), Events.REGISTER_CARD);
+                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.REGISTER_CARD));
+                                    Logger.e(context.getString(R.string.error_empty_response), Events.REGISTER_CARD);
                                 }
                                 releaseResources();
                             }
@@ -227,13 +219,6 @@ public class TransactionManager {
                                 releaseResources();
                             }
                         });
-
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.REGISTER_CARD));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
-
     }
 
 
@@ -244,10 +229,7 @@ public class TransactionManager {
      * @param cardTokenRequest information about credit card.
      */
     public void getToken(CardTokenRequest cardTokenRequest) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
-
-        if (veritransSDK != null) {
                 if (cardTokenRequest.isTwoClick()) {
                     if (cardTokenRequest.isInstalment()) {
                         veritransPaymentAPI.getTokenInstalmentOfferTwoClick(
@@ -262,7 +244,7 @@ public class TransactionManager {
                                 cardTokenRequest.getFormattedInstalmentTerm(), new Callback<TokenDetailsResponse>() {
                                     @Override
                                     public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                        consumeTokenSuccesResponse(veritransSDK, start, tokenDetailsResponse);
+                                        consumeTokenSuccesResponse( start, tokenDetailsResponse);
                                     }
 
                                     @Override
@@ -281,7 +263,7 @@ public class TransactionManager {
                                 cardTokenRequest.getClientKey(), new Callback<TokenDetailsResponse>() {
                                     @Override
                                     public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                        consumeTokenSuccesResponse(veritransSDK, start, tokenDetailsResponse);
+                                        consumeTokenSuccesResponse(start, tokenDetailsResponse);
                                     }
 
                                     @Override
@@ -306,7 +288,7 @@ public class TransactionManager {
                                 cardTokenRequest.getFormattedInstalmentTerm(), new Callback<TokenDetailsResponse>() {
                                     @Override
                                     public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                        consumeTokenSuccesResponse(veritransSDK, start, tokenDetailsResponse);
+                                        consumeTokenSuccesResponse(start, tokenDetailsResponse);
 
                                     }
 
@@ -328,7 +310,7 @@ public class TransactionManager {
                                 cardTokenRequest.getGrossAmount(), new Callback<TokenDetailsResponse>() {
                                     @Override
                                     public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                        consumeTokenSuccesResponse(veritransSDK, start, tokenDetailsResponse);
+                                        consumeTokenSuccesResponse(start, tokenDetailsResponse);
                                     }
 
                                     @Override
@@ -339,24 +321,19 @@ public class TransactionManager {
                     }
 
                 }
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.TOKENIZE));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
-    private static void consumeTokenSuccesResponse(VeritransSDK veritransSDK, long start, TokenDetailsResponse tokenDetailsResponse) {
+    private  void consumeTokenSuccesResponse(long start, TokenDetailsResponse tokenDetailsResponse) {
         releaseResources();
 
         long end = System.currentTimeMillis();
 
         if (tokenDetailsResponse != null) {
-            if (veritransSDK.isLogEnabled()) {
+            if (isSDKLogEnabled) {
                 displayTokenResponse(tokenDetailsResponse);
             }
 
-            if (tokenDetailsResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))) {
+            if (tokenDetailsResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))) {
                 VeritransBusProvider.getInstance().post(new GetTokenSuccessEvent(tokenDetailsResponse, Events.TOKENIZE));
 
                 // Track Mixpanel event
@@ -372,7 +349,7 @@ public class TransactionManager {
                     MixpanelAnalyticsManager.trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, tokenDetailsResponse.getStatusMessage());
                 } else {
                     VeritransBusProvider.getInstance().post(new GetTokenFailedEvent(
-                            veritransSDK.getContext().getString(R.string.error_empty_response),
+                            context.getString(R.string.error_empty_response),
                             tokenDetailsResponse,
                             Events.TOKENIZE
                     ));
@@ -381,12 +358,12 @@ public class TransactionManager {
             }
 
         } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.TOKENIZE));
-            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.TOKENIZE));
+            Logger.e(context.getString(R.string.error_empty_response));
         }
     }
 
-    private static void consumeTokenErrorResponse(long start, RetrofitError e) {
+    private void consumeTokenErrorResponse(long start, RetrofitError e) {
         releaseResources();
         long end = System.currentTimeMillis();
 
@@ -411,12 +388,9 @@ public class TransactionManager {
      *
      * @param permataBankTransfer information required perform transaction using permata bank
      */
-    public void paymentUsingPermataBank(final PermataBankTransfer permataBankTransfer) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+    public void paymentUsingPermataBank(final PermataBankTransfer permataBankTransfer, String authenticationToken) {
         final long start = System.currentTimeMillis();
-
-        if (veritransSDK != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
+                String merchantToken = authenticationToken;
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     merchantPaymentAPI.paymentUsingPermataBank(merchantToken, permataBankTransfer, new Callback<TransactionResponse>() {
@@ -425,11 +399,11 @@ public class TransactionManager {
                             long end = System.currentTimeMillis();
 
                             if (permataBankTransferResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
+                                if (isSDKLogEnabled) {
                                     displayResponse(permataBankTransferResponse);
                                 }
-                                if (permataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || permataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                if (permataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                        || permataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                     VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(permataBankTransferResponse, Events.PAYMENT));
 
                                     // Track Mixpanel event
@@ -443,8 +417,8 @@ public class TransactionManager {
                                 }
 
                             } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                                Logger.e(context.getString(R.string.error_empty_response));
                             }
                             releaseResources();
                         }
@@ -467,16 +441,10 @@ public class TransactionManager {
                         }
                     });
                 } else {
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                    Logger.e(context.getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
                     releaseResources();
                 }
-
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
@@ -485,14 +453,12 @@ public class TransactionManager {
      * {@link TransactionFailedEvent}.
      *
      * @param bcaBankTransfer information required perform transaction using BCA bank
+     * @param authenticationToken
      */
-    public void paymentUsingBCATransfer(final BCABankTransfer bcaBankTransfer) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+    public void paymentUsingBCATransfer(final BCABankTransfer bcaBankTransfer, String authenticationToken) {
         final long start = System.currentTimeMillis();
 
-        if (veritransSDK != null) {
-
-                String merchantToken = veritransSDK.readAuthenticationToken();
+                String merchantToken = authenticationToken;
                 Logger.i("merchantToken:" + merchantToken);
                 if (merchantToken != null) {
                     merchantPaymentAPI.paymentUsingBCAVA(merchantToken, bcaBankTransfer, new Callback<TransactionResponse>() {
@@ -501,12 +467,12 @@ public class TransactionManager {
                             long end = System.currentTimeMillis();
 
                             if (bcaBankTransferResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
+                                if (isSDKLogEnabled) {
                                     displayResponse(bcaBankTransferResponse);
                                 }
 
-                                if (bcaBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || bcaBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                if (bcaBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                        || bcaBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                     VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaBankTransferResponse, Events.PAYMENT));
 
                                     // Track Mixpanel Event
@@ -519,8 +485,8 @@ public class TransactionManager {
                                 }
 
                             } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                                Logger.e(context.getString(R.string.error_empty_response));
                             }
                             releaseResources();
                         }
@@ -542,16 +508,10 @@ public class TransactionManager {
                         }
                     });
                 } else {
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                    Logger.e(context.getString(R.string.error_invalid_data_supplied));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
                     releaseResources();
                 }
-
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
@@ -560,13 +520,12 @@ public class TransactionManager {
      * {@link TransactionFailedEvent}.
      *
      * @param cardTransfer information required perform transaction using credit card
+     * @param authenticationToken
      */
-    public void paymentUsingCard(CardTransfer cardTransfer) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+    public void paymentUsingCard(CardTransfer cardTransfer, String authenticationToken) {
         final long start = System.currentTimeMillis();
 
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.paymentUsingCard(merchantToken, cardTransfer, new Callback<TransactionResponse>() {
@@ -575,8 +534,8 @@ public class TransactionManager {
                         long end = System.currentTimeMillis();
                         if (cardPaymentResponse != null) {
 
-                            if (cardPaymentResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                    || cardPaymentResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                            if (cardPaymentResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                    || cardPaymentResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(cardPaymentResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
@@ -588,9 +547,8 @@ public class TransactionManager {
                                 MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, cardPaymentResponse.getStatusMessage());
                             }
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
                         }
-
                         releaseResources();
                     }
 
@@ -614,16 +572,10 @@ public class TransactionManager {
                 });
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
@@ -633,12 +585,10 @@ public class TransactionManager {
      *
      * @param mandiriClickPayRequestModel information required perform transaction using mandiri click pay.
      */
-    public void paymentUsingMandiriClickPay(final MandiriClickPayRequestModel mandiriClickPayRequestModel) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+    public void paymentUsingMandiriClickPay(final MandiriClickPayRequestModel mandiriClickPayRequestModel, String authenticationToken) {
         final long start = System.currentTimeMillis();
 
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.paymentUsingMandiriClickPay(merchantToken, mandiriClickPayRequestModel, new Callback<TransactionResponse>() {
@@ -647,11 +597,11 @@ public class TransactionManager {
                         long end = System.currentTimeMillis();
 
                         if (mandiriTransferResponse != null) {
-                            if (veritransSDK.isLogEnabled()) {
+                            if (isSDKLogEnabled) {
                                 displayResponse(mandiriTransferResponse);
                             }
-                            if (mandiriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                    || mandiriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                            if (mandiriTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                    || mandiriTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(mandiriTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
@@ -663,8 +613,8 @@ public class TransactionManager {
                                 MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, mandiriTransferResponse.getStatusMessage());
                             }
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response), null);
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(context.getString(R.string.error_empty_response), null);
                         }
 
                         releaseResources();
@@ -690,17 +640,11 @@ public class TransactionManager {
                 });
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
 
-
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
@@ -710,13 +654,11 @@ public class TransactionManager {
      *
      * @param bcaKlikPayModel information required perform transaction using BCA KlikPay.
      */
-    public void paymentUsingBCAKlikPay(final BCAKlikPayModel bcaKlikPayModel) {
+    public void paymentUsingBCAKlikPay(final BCAKlikPayModel bcaKlikPayModel, String authenticationToken) {
 
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.paymentUsingBCAKlikPay(merchantToken, bcaKlikPayModel, new Callback<TransactionResponse>() {
@@ -725,11 +667,11 @@ public class TransactionManager {
                         long end = System.currentTimeMillis();
 
                         if (bcaKlikPayResponse != null) {
-                            if (veritransSDK.isLogEnabled()) {
+                            if (isSDKLogEnabled) {
                                 displayResponse(bcaKlikPayResponse);
                             }
-                            if (bcaKlikPayResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                    || bcaKlikPayResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                            if (bcaKlikPayResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                    || bcaKlikPayResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaKlikPayResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
@@ -742,8 +684,8 @@ public class TransactionManager {
                             }
 
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response), null);
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(context.getString(R.string.error_empty_response), null);
                         }
                         releaseResources();
                     }
@@ -767,16 +709,11 @@ public class TransactionManager {
                     }
                 });
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
 
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
 
@@ -786,14 +723,13 @@ public class TransactionManager {
      * {@link TransactionFailedEvent}.
      *
      * @param mandiriBillPayTransferModel information required perform transaction using mandiri bill pay.
+     * @param authenticationToken
      */
-    public void paymentUsingMandiriBillPay(MandiriBillPayTransferModel mandiriBillPayTransferModel) {
+    public void paymentUsingMandiriBillPay(MandiriBillPayTransferModel mandiriBillPayTransferModel, String authenticationToken) {
 
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.paymentUsingMandiriBillPay(merchantToken, mandiriBillPayTransferModel, new Callback<TransactionResponse>() {
@@ -802,11 +738,11 @@ public class TransactionManager {
                         long end = System.currentTimeMillis();
 
                         if (transactionResponse != null) {
-                            if (veritransSDK.isLogEnabled()) {
+                            if (isSDKLogEnabled) {
                                 displayResponse(transactionResponse);
                             }
-                            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                    || transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                    || transactionResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
@@ -819,8 +755,8 @@ public class TransactionManager {
                             }
 
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(context.getString(R.string.error_empty_response));
                         }
 
                         releaseResources();
@@ -846,30 +782,23 @@ public class TransactionManager {
                 });
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
 
-
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
      * It will execute API call to pay using CIMB click.
      *
      * @param cimbClickPayModel CIMB click pay model
+     * @param authenticationToken
      */
-    public void paymentUsingCIMBPay(final CIMBClickPayModel cimbClickPayModel) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+    public void paymentUsingCIMBPay(final CIMBClickPayModel cimbClickPayModel, String authenticationToken) {
         final long start = System.currentTimeMillis();
 
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.paymentUsingCIMBClickPay(merchantToken, cimbClickPayModel, new Callback<TransactionResponse>() {
@@ -878,13 +807,13 @@ public class TransactionManager {
                         long end = System.currentTimeMillis();
 
                         if (cimbPayTransferResponse != null) {
-                            if (veritransSDK.isLogEnabled()) {
+                            if (isSDKLogEnabled) {
                                 displayResponse(cimbPayTransferResponse);
                             }
                             if (cimbPayTransferResponse.getStatusCode().trim()
-                                    .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    .equalsIgnoreCase(context.getString(R.string.success_code_200))
                                     || cimbPayTransferResponse.getStatusCode()
-                                    .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                    .trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(cimbPayTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
@@ -895,15 +824,13 @@ public class TransactionManager {
                                         cimbPayTransferResponse,
                                         Events.PAYMENT
                                 ));
-
                                 // Track Mixpanel event
                                 MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, cimbPayTransferResponse.getStatusMessage());
                             }
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(context.getString(R.string.error_empty_response));
                         }
-
                         releaseResources();
                     }
 
@@ -926,28 +853,22 @@ public class TransactionManager {
                     }
                 });
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
      * It will execute API call to pay using Mandiri E-Cash.
      *
      * @param mandiriECashModel mandiri E-Cash model
+     * @param authenticationToken
      */
-    public void paymentUsingMandiriECash(MandiriECashModel mandiriECashModel) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+    public void paymentUsingMandiriECash(MandiriECashModel mandiriECashModel, String authenticationToken) {
         final long start = System.currentTimeMillis();
 
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.paymentUsingMandiriECash(merchantToken, mandiriECashModel, new Callback<TransactionResponse>() {
@@ -956,13 +877,13 @@ public class TransactionManager {
                         long end = System.currentTimeMillis();
 
                         if (transferResponse != null) {
-                            if (veritransSDK.isLogEnabled()) {
+                            if (isSDKLogEnabled) {
                                 displayResponse(transferResponse);
                             }
                             if (transferResponse.getStatusCode().trim()
-                                    .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    .equalsIgnoreCase(context.getString(R.string.success_code_200))
                                     || transferResponse.getStatusCode()
-                                    .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                    .trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
@@ -978,8 +899,8 @@ public class TransactionManager {
                                 MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, transferResponse.getStatusMessage());
                             }
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(context.getString(R.string.error_empty_response));
                         }
 
                         releaseResources();
@@ -1003,29 +924,22 @@ public class TransactionManager {
                     }
                 });
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
      * It will execute API call to pay using BRI Epay.
      *
      * @param epayBriTransfer BRI Epay request model
+     * @param authenticationToken
      */
-    public void paymentUsingEpayBri(final EpayBriTransfer epayBriTransfer) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+    public void paymentUsingEpayBri(final EpayBriTransfer epayBriTransfer, String authenticationToken) {
         final long start = System.currentTimeMillis();
 
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.paymentUsingEpayBri(merchantToken, epayBriTransfer, new Callback<TransactionResponse>() {
@@ -1033,11 +947,11 @@ public class TransactionManager {
                     public void success(TransactionResponse epayBriTransferResponse, Response response) {
                         long end = System.currentTimeMillis();
                         if (epayBriTransferResponse != null) {
-                            if (veritransSDK.isLogEnabled()) {
+                            if (isSDKLogEnabled) {
                                 displayResponse(epayBriTransferResponse);
                             }
-                            if (epayBriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                    || epayBriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                            if (epayBriTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                    || epayBriTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(epayBriTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
@@ -1050,8 +964,8 @@ public class TransactionManager {
                             }
 
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(context.getString(R.string.error_empty_response));
                         }
 
                         releaseResources();
@@ -1077,27 +991,20 @@ public class TransactionManager {
                 });
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
      * It will execute API call to get payment status based on transaction ID.
      *
      * @param id transaction identifier
+     * @param authenticationToken
      */
-    public void getPaymentStatus(String id) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+    public void getPaymentStatus(String id, String authenticationToken) {
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.transactionStatus(merchantToken, id, new Callback<TransactionStatusResponse>() {
@@ -1105,15 +1012,15 @@ public class TransactionManager {
                     public void success(TransactionStatusResponse transactionStatusResponse, Response response) {
                         if (transactionStatusResponse != null) {
                             if (TextUtils.isEmpty(transactionStatusResponse.getStatusCode())) {
-                                if (transactionStatusResponse.getStatusCode().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || transactionStatusResponse.getStatusCode().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                if (transactionStatusResponse.getStatusCode().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                        || transactionStatusResponse.getStatusCode().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                     VeritransBusProvider.getInstance().post(new TransactionStatusSuccessEvent(transactionStatusResponse, Events.PAYMENT));
                                 }
                             } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
                             }
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
                         }
                         releaseResources();
                     }
@@ -1132,29 +1039,21 @@ public class TransactionManager {
                 });
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
      * It will execute API call to pay using Indosat Dompetku.
      *
      * @param indosatDompetkuRequest Indosat Dompetku request model
+     * @param authenticationToken
      */
-    public void paymentUsingIndosatDompetku(final IndosatDompetkuRequest indosatDompetkuRequest) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+    public void paymentUsingIndosatDompetku(final IndosatDompetkuRequest indosatDompetkuRequest, String authenticationToken) {
         final long start = System.currentTimeMillis();
-
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.paymentUsingIndosatDompetku(merchantToken, indosatDompetkuRequest, new Callback<TransactionResponse>() {
@@ -1163,11 +1062,11 @@ public class TransactionManager {
                         long end = System.currentTimeMillis();
 
                         if (transactionResponse != null) {
-                            if (veritransSDK.isLogEnabled()) {
+                            if (isSDKLogEnabled) {
                                 displayResponse(transactionResponse);
                             }
-                            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                    || transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                    || transactionResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
@@ -1179,8 +1078,8 @@ public class TransactionManager {
                                 MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, transactionResponse.getStatusMessage());
                             }
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(context.getString(R.string.error_empty_response));
                         }
 
                         releaseResources();
@@ -1200,34 +1099,27 @@ public class TransactionManager {
 
                         // Track Mixpanel event
                         MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, e.getMessage());
-
                         releaseResources();
                     }
                 });
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
      * It will execute API call to pay using Indomaret.
      *
      * @param indomaretRequestModel Indomaret payment request model
+     * @param authenticationToken
      */
-    public void paymentUsingIndomaret(final IndomaretRequestModel indomaretRequestModel) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+    public void paymentUsingIndomaret(final IndomaretRequestModel indomaretRequestModel, String authenticationToken) {
         final long start = System.currentTimeMillis();
 
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.paymentUsingIndomaret(merchantToken, indomaretRequestModel, new Callback<TransactionResponse>() {
@@ -1236,11 +1128,11 @@ public class TransactionManager {
                         long end = System.currentTimeMillis();
 
                         if (indomaretTransferResponse != null) {
-                            if (veritransSDK.isLogEnabled()) {
+                            if (isSDKLogEnabled) {
                                 displayResponse(indomaretTransferResponse);
                             }
-                            if (indomaretTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                    || indomaretTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                            if (indomaretTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                    || indomaretTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(indomaretTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
@@ -1253,8 +1145,8 @@ public class TransactionManager {
                             }
 
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(context.getString(R.string.error_empty_response));
                         }
                         releaseResources();
                     }
@@ -1279,28 +1171,21 @@ public class TransactionManager {
                 });
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
      * It will execute API call to pay using BBM Money.
      *
      * @param bbmMoneyRequestModel BBM Money payment request model
+     * @param authenticationToken
      */
-    public void paymentUsingBBMMoney(final BBMMoneyRequestModel bbmMoneyRequestModel) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+    public void paymentUsingBBMMoney(final BBMMoneyRequestModel bbmMoneyRequestModel, String authenticationToken) {
         final long start = System.currentTimeMillis();
-
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.paymentUsingBBMMoney(merchantToken, bbmMoneyRequestModel, new Callback<TransactionResponse>() {
@@ -1309,11 +1194,11 @@ public class TransactionManager {
                         long end = System.currentTimeMillis();
 
                         if (bbmMoneyTransferResponse != null) {
-                            if (veritransSDK.isLogEnabled()) {
+                            if (isSDKLogEnabled) {
                                 displayResponse(bbmMoneyTransferResponse);
                             }
-                            if (bbmMoneyTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                    || bbmMoneyTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                            if (bbmMoneyTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                    || bbmMoneyTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bbmMoneyTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
@@ -1326,8 +1211,8 @@ public class TransactionManager {
                             }
 
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(context.getString(R.string.error_empty_response));
                         }
 
                         releaseResources();
@@ -1354,28 +1239,20 @@ public class TransactionManager {
                 });
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
      * It will execute API call to save card based
      *
      * @param cardTokenRequest card token request model
+     * @param authenticationToken
      */
-    public void saveCards(final SaveCardRequest cardTokenRequest) {
-
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-
-        if (veritransSDK != null) {
-            String auth = veritransSDK.readAuthenticationToken();
+    public void saveCards(final SaveCardRequest cardTokenRequest, String authenticationToken) {
+            String auth = authenticationToken;
             Logger.i("Authentication token:" + auth);
             if (auth != null && !auth.equals("")) {
                 merchantPaymentAPI.saveCard(auth, cardTokenRequest, new Callback<SaveCardResponse>() {
@@ -1388,8 +1265,8 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new SaveCardFailedEvent(cardResponse.getStatus(), cardResponse, Events.REGISTER_CARD));
                             }
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.REGISTER_CARD));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.REGISTER_CARD));
+                            Logger.e(context.getString(R.string.error_empty_response));
                         }
                         releaseResources();
                     }
@@ -1408,26 +1285,19 @@ public class TransactionManager {
                 });
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.REGISTER_CARD));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.REGISTER_CARD));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.REGISTER_CARD));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
      * It will call execute API call to get saved cards.
+     * @param authenticationToken
      */
-    public void getCards() {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+    public void getCards(String authenticationToken) {
 
-        if (veritransSDK != null) {
-            String auth = veritransSDK.readAuthenticationToken();
+            String auth = authenticationToken;
             Logger.i("Authentication token:" + auth);
             if (auth != null && !auth.equals("")) {
                 merchantPaymentAPI.getCard(auth, new Callback<CardResponse>() {
@@ -1440,8 +1310,8 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new GetCardFailedEvent(cardResponse.getStatus(), cardResponse, Events.GET_CARD));
                             }
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.GET_CARD));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.GET_CARD));
+                            Logger.e(context.getString(R.string.error_empty_response));
                         }
                         releaseResources();
                     }
@@ -1459,15 +1329,10 @@ public class TransactionManager {
                     }
                 });
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.GET_CARD));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.GET_CARD));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.GET_CARD));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     private static void displayTokenResponse(TokenDetailsResponse tokenDetailsResponse) {
@@ -1506,7 +1371,7 @@ public class TransactionManager {
                         .getTransactionStatus());
     }
 
-    private static void releaseResources() {
+    private void releaseResources() {
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
             veritransSDK.isRunning = false;
@@ -1518,12 +1383,10 @@ public class TransactionManager {
      * It will execute API call to delete saved card from merchant server.
      *
      * @param creditCard credit card detail
+     * @param authenticationToken
      */
-    public void deleteCard(SaveCardRequest creditCard) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-
-        if (veritransSDK != null) {
-            String auth = veritransSDK.readAuthenticationToken();
+    public void deleteCard(SaveCardRequest creditCard, String authenticationToken) {
+            String auth = authenticationToken;
             Logger.i("Authentication token:" + auth);
             if (auth != null) {
                 merchantPaymentAPI.deleteCard(auth, creditCard.getSavedTokenId(), new Callback<DeleteCardResponse>() {
@@ -1536,8 +1399,8 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new DeleteCardFailedEvent(deleteCardResponse.getMessage(), deleteCardResponse, Events.DELETE_CARD));
                             }
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.DELETE_CARD));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.DELETE_CARD));
+                            Logger.e(context.getString(R.string.error_empty_response));
                         }
                         releaseResources();
                     }
@@ -1556,39 +1419,32 @@ public class TransactionManager {
                 });
 
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.DELETE_CARD));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.DELETE_CARD));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.DELETE_CARD));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
      * It will execute API call to get offers.
+     * @param authenticationToken
      */
-    public void getOffers() {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-
-        if (veritransSDK != null) {
-            String merchantToken = veritransSDK.readAuthenticationToken();
+    public void getOffers(String authenticationToken) {
+            String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.getOffers(merchantToken, new Callback<GetOffersResponseModel>() {
                     @Override
                     public void success(GetOffersResponseModel getOffersResponseModel, Response response) {
                         if (getOffersResponseModel != null) {
-                            if (getOffersResponseModel.getMessage().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success))) {
+                            if (getOffersResponseModel.getMessage().equalsIgnoreCase(context.getString(R.string.success))) {
                                 VeritransBusProvider.getInstance().post(new GetOfferSuccessEvent(getOffersResponseModel, Events.GET_OFFER));
                             } else {
                                 VeritransBusProvider.getInstance().post(new GetOfferFailedEvent(getOffersResponseModel.getMessage(), getOffersResponseModel, Events.GET_OFFER));
                             }
                         } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.GET_OFFER));
-                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.GET_OFFER));
+                            Logger.e(context.getString(R.string.error_empty_response));
                         }
 
                         releaseResources();
@@ -1608,24 +1464,16 @@ public class TransactionManager {
                     }
                 });
             } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.GET_OFFER));
-                Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.GET_OFFER));
+                Logger.e(context.getString(R.string.error_invalid_data_supplied));
                 releaseResources();
             }
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.GET_OFFER));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
     /**
      * It will execute API call to get authentication token from merchant server.
      */
     public void getAuthenticationToken() {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-
-        if (veritransSDK != null) {
             merchantPaymentAPI.getAuthenticationToken(new Callback<AuthModel>() {
                 @Override
                 public void success(AuthModel authModel, Response response) {
@@ -1645,30 +1493,23 @@ public class TransactionManager {
                     releaseResources();
                 }
             });
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.AUTHENTICATION));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
     }
 
 
     public void paymentUsingKlikBCA(KlikBCAModel klikBCAModel) {
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();
 
-        if (veritransSDK != null) {
             merchantPaymentAPI.paymentUsingKlikBCA(klikBCAModel, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse response, Response r) {
                     long end = System.currentTimeMillis();
 
                     if (response != null) {
-                        if (veritransSDK.isLogEnabled()) {
+                        if (isSDKLogEnabled) {
                             displayResponse(response);
                         }
-                        if (response.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                || response.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                        if (response.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
+                                || response.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(response, Events.PAYMENT));
 
                             // Track Mixpanel event
@@ -1681,8 +1522,8 @@ public class TransactionManager {
                         }
 
                     } else {
-                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                        Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response), null);
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
+                        Logger.e(context.getString(R.string.error_empty_response), null);
                     }
                     releaseResources();
                 }
@@ -1705,11 +1546,6 @@ public class TransactionManager {
                     releaseResources();
                 }
             });
-        } else {
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, Events.PAYMENT));
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            releaseResources();
-        }
 
     }
 
