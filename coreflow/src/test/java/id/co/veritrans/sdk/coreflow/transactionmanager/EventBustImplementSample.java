@@ -14,6 +14,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.callback.DeleteCardBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.GetAuthenticationBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.GetCardBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.GetOfferBusCallback;
+import id.co.veritrans.sdk.coreflow.eventbus.callback.HttpErrorCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.SaveCardBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TokenBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -30,6 +31,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GetOfferSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.SSLErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
@@ -56,7 +58,7 @@ import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
  * Created by ziahaqi on 25/06/2016.
  */
 public class EventBustImplementSample implements GetAuthenticationBusCallback, DeleteCardBusCallback,
-        CardRegistrationBusCallback, SaveCardBusCallback,
+        CardRegistrationBusCallback, SaveCardBusCallback, HttpErrorCallback,
         TokenBusCallback, TransactionBusCallback, GetCardBusCallback,
         GetOfferBusCallback {
     BusCollaborator busCollaborator;
@@ -305,5 +307,11 @@ public class EventBustImplementSample implements GetAuthenticationBusCallback, D
     @Subscribe
     public void onEvent(SaveCardFailedEvent event) {
         busCollaborator.onsaveCardFailedEvent();
+    }
+
+    @Override
+    @Subscribe
+    public void onEvent(SSLErrorEvent errorEvent) {
+        busCollaborator.onSSLErrorEvent();
     }
 }

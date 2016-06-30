@@ -208,7 +208,8 @@ public class TmPaymentUsingMandiriClickPay extends APIClientMain {
 
         // when valid certification
         Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
-        Assert.assertNotNull(mSslHandshakeException);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+
 
     }
 

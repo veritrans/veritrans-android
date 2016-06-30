@@ -73,4 +73,8 @@ public class BusCollaborator {
     public void onsaveCardFailedEvent() {
 
     }
+
+    public void onSSLErrorEvent() {
+
+    }
 }
