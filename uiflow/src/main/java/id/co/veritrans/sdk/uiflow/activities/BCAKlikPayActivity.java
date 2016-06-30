@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -42,6 +43,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     private BCAKlikPayInstructionFragment bcaKlikPayInstructionFragment = null;
     private Button buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
+    private ImageView logo = null;
     private VeritransSDK mVeritransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
@@ -64,7 +66,6 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
             finish();
         }
         initializeViews();
-        initializeTheme();
         setUpFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
@@ -82,12 +83,16 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     private void initializeViews() {
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
+        initializeTheme();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
-        if (mVeritransSDK != null && mVeritransSDK.getSemiBoldText() != null) {
-            buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+        if (mVeritransSDK != null) {
+            if (mVeritransSDK.getSemiBoldText() != null) {
+                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+            }
         }
     }
 

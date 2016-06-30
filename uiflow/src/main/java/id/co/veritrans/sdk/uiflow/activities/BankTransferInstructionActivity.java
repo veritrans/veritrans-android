@@ -1,5 +1,7 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,7 +10,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
+import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionBCAFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionBCAKlikFragment;
@@ -33,14 +37,15 @@ public class BankTransferInstructionActivity extends BaseActivity {
     private Toolbar mToolbar = null;
     private ViewPager mViewPager = null;
     private TabLayout mTabLayout = null;
+    private ImageView logo = null;
+    private VeritransSDK veritransSDK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        veritransSDK = VeritransSDK.getVeritransSDK();
         setContentView(R.layout.activity_bank_transfer_instruction);
         initializeViews();
-        initializeTheme();
     }
 
 
@@ -68,13 +73,18 @@ public class BankTransferInstructionActivity extends BaseActivity {
     private void initializeViews() {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setNavigationIcon(R.drawable.ic_close);
+        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
+        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        mToolbar.setNavigationIcon(closeIcon);
         mToolbar.setTitle(getResources().getString(R.string.payment_instrution));
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mTabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager_bank_instruction);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
+        initializeTheme();
+
         mToolbar.setTitle(getResources().getString(R.string.payment_instrution));
         setUpViewPager();
         setUpTabLayout();

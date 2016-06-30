@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,6 +50,7 @@ import id.co.veritrans.sdk.coreflow.models.CardResponse;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.CardTransfer;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
+import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
 import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
@@ -99,6 +101,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private CirclePageIndicator circlePageIndicator;
     private TextView emptyCardsTextView;
     private TextView titleHeaderTextView;
+    private ImageView logo;
     private int fabHeight;
     private MorphingButton btnMorph;
 
@@ -127,17 +130,21 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.title_header);
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
         initializeTheme();
         morphToCircle(0);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
-        if (!veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
-            getCreditCards();
-        } else {
-            AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
-            replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
-            titleHeaderTextView.setText(getString(R.string.card_details));
+        if (veritransSDK != null) {
+
+            if (!veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+                getCreditCards();
+            } else {
+                AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
+                replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
+                titleHeaderTextView.setText(getString(R.string.card_details));
+            }
         }
         readBankDetails();
     }
@@ -188,29 +195,22 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         veritransSDK.getToken(cardTokenRequest);
     }
 
-    /*public void getToken() {
-        if (cardTokenRequest != null) {
-            this.cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
-            SdkUIFlowUtil.showProgressDialog(this, false);
-            veritransSDK.getToken(CreditDebitCardFlowActivity.this, this.cardTokenRequest, this);
-        } else {
-            SdkUIFlowUtil.showSnackbar(this, getString(R.string.card_details_error_message));
-        }
-    }*/
-
     public void payUsingCard() {
 
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
         //getSupportActionBar().setTitle(getString(R.string.processing_payment));
         titleHeaderTextView.setText(getString(R.string.processing_payment));
-        CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
-                userDetail.getEmail(), userDetail.getPhoneNumber());
+        CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "", userDetail.getEmail(), userDetail.getPhoneNumber());
 
         ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
         TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.
                 getTransactionRequest().getAmount(),
                 veritransSDK.getTransactionRequest().getOrderId());
+        ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
+        if (veritransSDK.getTransactionRequest().getItemDetails() != null && veritransSDK.getTransactionRequest().getItemDetails().size() > 0) {
+            itemDetailsArrayList = veritransSDK.getTransactionRequest().getItemDetails();
+        }
         if (userAddresses != null && !userAddresses.isEmpty()) {
             ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
             ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
@@ -241,7 +241,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     shippingAddress.setPostalCode(userAddress.getZipcode());
                     shippingAddresses.add(shippingAddress);
                 }
-
             }
 
             CardPaymentDetails cardPaymentDetails = null;
@@ -267,8 +266,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 return;
             }
             cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails,
-                    null, billingAddresses, shippingAddresses, customerDetails);
-            //currentApiCallNumber = PAY_USING_CARD;
+                    itemDetailsArrayList, billingAddresses, shippingAddresses, customerDetails);
 
         }
 

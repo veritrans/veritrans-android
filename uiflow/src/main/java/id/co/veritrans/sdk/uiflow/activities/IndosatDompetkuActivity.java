@@ -1,7 +1,9 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,14 +12,13 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -25,10 +26,12 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
+import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.uiflow.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionIndosatFragment;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
  * Created to show and handle bank transfer and mandiri bill pay details.
@@ -61,6 +64,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
     private VeritransSDK mVeritransSDK = null;
     private Toolbar mToolbar = null;
+    private ImageView logo = null;
 
     private InstructionIndosatFragment mIndosatFragment = null;
     private TransactionResponse mTransactionResponse = null;
@@ -78,7 +82,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         mVeritransSDK = VeritransSDK.getVeritransSDK();
 
         initializeView();
-        initializeTheme();
         bindDataToView();
 
         setUpHomeFragment();
@@ -89,10 +92,10 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().unregister(this);
         }
-        super.onDestroy();
     }
 
 
@@ -105,34 +108,23 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         mIndosatFragment = new InstructionIndosatFragment();
 
-        fragmentTransaction.add(R.id.indosat_container,
-                mIndosatFragment, HOME_FRAGMENT);
+        fragmentTransaction.add(R.id.indosat_container, mIndosatFragment, HOME_FRAGMENT);
         fragmentTransaction.commit();
 
         currentFragment = HOME_FRAGMENT;
     }
 
-    @Override
-    public void onBackPressed() {
-
-        //enable this code if wants to travers backward in fragment back stack
-
-        /*FragmentManager fragmentManager = getSupportFragmentManager();
-        int count = fragmentManager.getBackStackEntryCount();
-        if (count > 1) {
-            fragmentManager.popBackStack();
-        } else {
-            finish();
-        }*/
-
-        setResultAndFinish();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            if (currentFragment.equals(STATUS_FRAGMENT)) {
+                RESULT_CODE = RESULT_OK;
+                setResultAndFinish();
+            } else {
+                onBackPressed();
+            }
         }
 
         return false;
@@ -147,12 +139,12 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mTextViewTitle = (TextView) findViewById(R.id.text_title);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
-
+        logo = (ImageView) findViewById(R.id.merchant_logo);
+        initializeTheme();
         //setup tool bar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     /**
@@ -196,7 +188,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
             } else {
                 RESULT_CODE = RESULT_OK;
-                onBackPressed();
+                setResultAndFinish();
             }
 
         }
@@ -247,43 +239,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * @param veritransSDK  Veritrans SDK instance
      */
     private void transactionUsingIndosat(final VeritransSDK veritransSDK) {
-
         veritransSDK.paymentUsingIndosatDompetku(phoneNumber);
-        /*veritransSDK.paymentUsingIndosatDompetku(IndosatDompetkuActivity.this, phoneNumber, new
-                TransactionCallback() {
-
-                    @Override
-                    public void onSuccess(TransactionResponse
-                                                  indosatTransferStatus) {
-
-                        SdkUIFlowUtil.hideProgressDialog();
-                        mTransactionResponse = indosatTransferStatus;
-
-                        if (indosatTransferStatus != null) {
-                            setUpTransactionStatusFragment(indosatTransferStatus);
-                        } else {
-
-                            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this,
-                                    SOMETHING_WENT_WRONG);
-                            onBackPressed();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(String errorMessage, TransactionResponse
-                            transactionResponse) {
-
-                        mTransactionResponse = transactionResponse;
-                        IndosatDompetkuActivity.this.errorMessage = errorMessage;
-                        try {
-                            SdkUIFlowUtil.hideProgressDialog();
-                            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
-                        } catch (NullPointerException ex) {
-                            Logger.e("transaction error is " + errorMessage);
-                        }
-                    }
-                });*/
     }
 
 
@@ -301,7 +257,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
-        mToolbar.setNavigationIcon(R.drawable.ic_close);
+        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
+        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
 
         BankTransactionStatusFragment bankTransactionStatusFragment =
@@ -346,10 +304,8 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         if (event.getResponse() != null) {
             setUpTransactionStatusFragment(event.getResponse());
         } else {
-
-            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this,
-                    SOMETHING_WENT_WRONG);
-            onBackPressed();
+            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, SOMETHING_WENT_WRONG);
+            finish();
         }
     }
 

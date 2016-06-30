@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -47,6 +48,7 @@ import id.co.veritrans.sdk.coreflow.models.CardResponse;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.CardTransfer;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
+import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 import id.co.veritrans.sdk.coreflow.models.OffersListModel;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
@@ -111,7 +113,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     private TextView emptyCardsTextView;
     private MorphingButton btnMorph;
     private ReadBankDetailTask readBankDetailTask;
-
+    private ImageView logo = null;
     public OffersListModel getSelectedOffer() {
         return selectedOffer;
     }
@@ -140,7 +142,6 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         }
 
         initializeView();
-        initializeTheme();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
         }
@@ -156,17 +157,19 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().unregister(this);
         }
-        super.onDestroy();
     }
 
     private void initializeView() {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
         textViewTitleOffers = (TextView) findViewById(R.id.text_title);
         textViewTitleCardDetails = (TextView) findViewById(R.id.text_title_card_details);
         textViewOfferName = (TextView) findViewById(R.id.text_title_offer_name);
+        initializeTheme();
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
@@ -223,6 +226,10 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.
                 getTransactionRequest().getAmount(),
                 veritransSDK.getTransactionRequest().getOrderId());
+        ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
+        if (veritransSDK.getTransactionRequest().getItemDetails() != null && veritransSDK.getTransactionRequest().getItemDetails().size() > 0) {
+            itemDetailsArrayList = veritransSDK.getTransactionRequest().getItemDetails();
+        }
         if (userAddresses != null && !userAddresses.isEmpty()) {
             ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
             ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
@@ -296,7 +303,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                 return;
             }
             cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails,
-                    null, billingAddresses, shippingAddresses, customerDetails);
+                    itemDetailsArrayList, billingAddresses, shippingAddresses, customerDetails);
 
         }
 

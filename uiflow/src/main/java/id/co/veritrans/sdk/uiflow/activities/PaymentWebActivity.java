@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
@@ -19,6 +20,7 @@ public class PaymentWebActivity extends BaseActivity {
     private FragmentManager fragmentManager;
     private VeritransSDK veritransSDK;
     private RelativeLayout webviewContainer;
+    private ImageView logo;
     private String webUrl;
     private String type = "";
 
@@ -26,13 +28,16 @@ public class PaymentWebActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_web);
+        veritransSDK = VeritransSDK.getVeritransSDK();
+
         saveCurrentFragment = true;
-        initializeTheme();
         webUrl = getIntent().getStringExtra(Constants.WEBURL);
         if (getIntent().getStringExtra(Constants.TYPE) != null && !getIntent().getStringExtra(Constants.TYPE).equals("")) {
             type = getIntent().getStringExtra(Constants.TYPE);
         }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
+        initializeTheme();
 
         fragmentManager = getSupportFragmentManager();
         toolbar.setTitle(R.string.processing_payment);

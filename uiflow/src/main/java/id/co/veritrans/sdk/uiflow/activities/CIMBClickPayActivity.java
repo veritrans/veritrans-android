@@ -1,6 +1,9 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +11,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -38,9 +42,12 @@ import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 public class CIMBClickPayActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     private static final int PAYMENT_WEB_INTENT = 151;
+    private static final String STATUS_FRAGMENT = "status";
+    private static final String HOME_FRAGMENT = "home";
     private InstructionCIMBFragment cimbClickPayFragment = null;
     private Button buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
+    private ImageView logo = null;
     private VeritransSDK mVeritransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
@@ -48,7 +55,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     private int position = Constants.PAYMENT_METHOD_CIMB_CLICKS;
 
     private FragmentManager fragmentManager;
-    private String currentFragmentName = "";
+    private String currentFragmentName = HOME_FRAGMENT;
     private TransactionResponse transactionResponseFromMerchant;
 
     @Override
@@ -64,7 +71,6 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
             finish();
         }
         initializeViews();
-        initializeTheme();
         setUpFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
@@ -82,30 +88,35 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     private void initializeViews() {
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
+        initializeTheme();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
+        if (mVeritransSDK != null) {
+            if (mVeritransSDK.getSemiBoldText() != null) {
+                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+            }
+        }
     }
 
     private void setUpFragment() {
-
         // setup  fragment
         cimbClickPayFragment = new InstructionCIMBFragment();
-        replaceFragment(cimbClickPayFragment, R.id.cimb_clickpay_container, true, false);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        replaceFragment(cimbClickPayFragment, R.id.cimb_clickpay_container, false, false);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            if (currentFragmentName.equals(STATUS_FRAGMENT)) {
+                setResultCode(RESULT_OK);
+                setResultAndFinish();
+            } else {
+                onBackPressed();
+            }
         }
         return false;
     }
@@ -128,17 +139,24 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
-
+        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
+        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         if (resultCode == RESULT_OK) {
+            currentFragmentName = STATUS_FRAGMENT;
+            mToolbar.setNavigationIcon(closeIcon);
+            setSupportActionBar(mToolbar);
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
                     mVeritransSDK.getTransactionRequest().getOrderId(), String.valueOf(mVeritransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_cimb_clicks), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
             PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.cimb_clickpay_container, true, false);
+            replaceFragment(paymentTransactionStatusFragment, R.id.cimb_clickpay_container, false, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         } else if (resultCode == RESULT_CANCELED) {
+            currentFragmentName = STATUS_FRAGMENT;
+            mToolbar.setNavigationIcon(closeIcon);
+            setSupportActionBar(mToolbar);
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.cimb_clickpay_container, true, false);
+            replaceFragment(paymentTransactionStatusFragment, R.id.cimb_clickpay_container, false, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         }
     }

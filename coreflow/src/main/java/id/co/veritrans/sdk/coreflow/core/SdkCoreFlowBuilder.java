@@ -17,13 +17,15 @@ import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
  */
 public class SdkCoreFlowBuilder {
 
-    /*protected String serverKey = null;*/
     protected String clientKey = null;
     protected Context context = null;
     protected boolean enableLog = true;
     protected String merchantServerUrl = null;
     protected String colorTheme = null;
+    protected int colorThemeResourceId = 0;
     protected String merchantName = null;
+    protected String merchantLogo = null;
+    protected int merchantLogoResourceId = 0;
     protected ISdkFlow sdkFlow;
     protected String defaultText;
     protected String boldText;
@@ -52,17 +54,6 @@ public class SdkCoreFlowBuilder {
      */
     public SdkCoreFlowBuilder enableLog(boolean enableLog) {
         this.enableLog = enableLog;
-        return this;
-    }
-
-    /**
-     * Set color theme using formatted hex
-     *
-     * @param colorTheme formatted hex color code
-     * @return SdkCoreFlowBuilder instance.
-     */
-    public SdkCoreFlowBuilder setColorTheme(String colorTheme) {
-        this.colorTheme = colorTheme;
         return this;
     }
 
@@ -122,6 +113,16 @@ public class SdkCoreFlowBuilder {
 
     public SdkCoreFlowBuilder setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
         this.selectedPaymentMethods = selectedPaymentMethods;
+        return this;
+    }
+
+    public SdkCoreFlowBuilder setMerchantLogo(String merchantLogo) {
+        this.merchantLogo = merchantLogo;
+        return this;
+    }
+
+    public SdkCoreFlowBuilder setMerchantLogoResourceId(int resourceId) {
+        this.merchantLogoResourceId = resourceId;
         return this;
     }
 }
