@@ -18,6 +18,7 @@ dependencies:
         - gem install bmp
         # Copy environment variables to gradle.properties
         - source environmentSetup.sh && copyEnvVarsToGradleProperties
+    environment:
         GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
     override:
         - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-23.0.3,android-23,extra-google-m2repository,extra-google-google_play_services,extra-android-m2repository
