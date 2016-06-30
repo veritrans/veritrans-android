@@ -204,10 +204,9 @@ public class TmPaymentUsingMandiriClickPay extends APIClientMain {
 
         Mockito.verify(merchantRestAPIMock).paymentUsingMandiriClickPay(xauthCaptor.capture(), mandiriClickPayCaptor.capture(), responseCallbackCaptor.capture());
 
-
-
-        // when valid certification
         Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
+        // when valid certification
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
         Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
 
 

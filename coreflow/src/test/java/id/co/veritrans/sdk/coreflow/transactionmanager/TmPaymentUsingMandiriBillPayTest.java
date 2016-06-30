@@ -105,6 +105,21 @@ public class TmPaymentUsingMandiriBillPayTest extends APIClientMain {
     }
 
     @Test
+    public void testPaymentUsingMandiriBillPay_whenTokenNull() throws Exception {
+        MandiriBillPayTransferModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                MandiriBillPayTransferModel.class, "sample_pay_card.json");
+
+        TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                TransactionResponse.class, "sample_response_pay_card.json");
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingMandiriBillpay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+
+        responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
+    }
+
+    @Test
     public void testPaymentUsingMandiriBillPay_whenResponseNotNull() throws Exception {
         MandiriBillPayTransferModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
                 MandiriBillPayTransferModel.class, "sample_pay_card.json");
@@ -120,6 +135,23 @@ public class TmPaymentUsingMandiriBillPayTest extends APIClientMain {
         //response code 200 /201
         responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionSuccessEvent();
+
+    }
+
+
+    @Test
+    public void testPaymentUsingMandiriBillPay_whenResponseNotNull_codeNot200() throws Exception {
+        MandiriBillPayTransferModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                MandiriBillPayTransferModel.class, "sample_pay_card.json");
+
+        TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                TransactionResponse.class, "sample_response_pay_card.json");
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingMandiriBillpay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingMandiriBillPay(xauthCaptor.capture(), mandiriBillModelCaptor.capture(), responseCallbackCaptor.capture());
+
 
         //response not code 200 /201
         transactionResponse.setStatusCode("300");
@@ -145,6 +177,25 @@ public class TmPaymentUsingMandiriBillPayTest extends APIClientMain {
     }
 
     @Test
+    public void testPaymentUsingMandiriBillPayError_invalid() throws Exception {
+        MandiriBillPayTransferModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                MandiriBillPayTransferModel.class, "sample_pay_card.json");
+
+        TransactionResponse transactionResponse = null;
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingMandiriBillpay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingMandiriBillPay(xauthCaptor.capture(), mandiriBillModelCaptor.capture(), responseCallbackCaptor.capture());
+
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
+
+
+
+    }
+
+    @Test
     public void testPaymentUsingMandiriBillPayError() throws Exception {
         MandiriBillPayTransferModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
                 MandiriBillPayTransferModel.class, "sample_pay_card.json");
@@ -156,13 +207,8 @@ public class TmPaymentUsingMandiriBillPayTest extends APIClientMain {
 
         Mockito.verify(merchantRestAPIMock).paymentUsingMandiriBillPay(xauthCaptor.capture(), mandiriBillModelCaptor.capture(), responseCallbackCaptor.capture());
 
-        //when valid certification
-        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
-        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
-
-        // when invalid certification
         Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
         Assert.assertNotNull(mSslHandshakeException);
     }
-
 }
