@@ -104,6 +104,17 @@ public class TmPaymentUsingEpayBriTest extends APIClientMain {
     }
 
     @Test
+    public void testPaymentUsingBRIEpayError_whenTokenNull() throws Exception {
+        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay_card.json");
+
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingBriEpay(merchantRestAPIMock, null, requestModel, null);
+
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
+    }
+
+    @Test
     public void testPaymentUsingBRIEpaySuccess_whenResponseNotNull() throws Exception {
         EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay_card.json");
 
@@ -118,6 +129,22 @@ public class TmPaymentUsingEpayBriTest extends APIClientMain {
         //response code 200 /201
         responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionSuccessEvent();
+
+    }
+
+    @Test
+    public void testPaymentUsingBRIEpaySuccess_whenResponseNotNull_not200() throws Exception {
+        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay_card.json");
+
+        TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                TransactionResponse.class, "sample_response_pay_card.json");
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingBriEpay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingEpayBri(xauthCaptor.capture(), epayBRIModelCaptor.capture(), responseCallbackCaptor.capture());
+
+
 
         //response not code 200 /201
         transactionResponse.setStatusCode("300");
@@ -142,7 +169,7 @@ public class TmPaymentUsingEpayBriTest extends APIClientMain {
     }
 
     @Test
-    public void testPaymentUsingBRIEpayError() throws Exception {
+    public void testPaymentUsingBRIEpayError_whenValidSSL() throws Exception {
         EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay_card.json");
 
         TransactionResponse transactionResponse = null;
@@ -156,9 +183,22 @@ public class TmPaymentUsingEpayBriTest extends APIClientMain {
         responseCallbackCaptor.getValue().failure(retrofitErrorMock);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
 
-        // when invalid certification
-        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
-        Assert.assertNotNull(mSslHandshakeException);
     }
+    @Test
+    public void testPaymentUsingBRIEpayError_whenInValidSSL() throws Exception {
+        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay_card.json");
 
+        TransactionResponse transactionResponse = null;
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingBriEpay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingEpayBri(xauthCaptor.capture(), epayBRIModelCaptor.capture(), responseCallbackCaptor.capture());
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
+
+        //when valid certification
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+
+    }
 }
