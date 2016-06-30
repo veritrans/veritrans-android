@@ -102,6 +102,16 @@ public class TmPaymentUsingCIMBPayTest extends APIClientMain{
                 .buildSDK();
         transactionManager = veritransSDK.getVeritransSDK().getTransactionManager();
     }
+    @Test
+    public void testPaymentUsingCIMBPay_whenTokenNull() throws Exception {
+        CIMBClickPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                CIMBClickPayModel.class, "sample_pay_card.json");
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingCIMBPay(merchantRestAPIMock, null, requestModel, null);
+
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
+    }
 
     @Test
     public void testPaymentUsingCIMBPay_whenResponseNotNull() throws Exception {
@@ -120,12 +130,29 @@ public class TmPaymentUsingCIMBPayTest extends APIClientMain{
         responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionSuccessEvent();
 
+    }
+
+    @Test
+    public void testPaymentUsingCIMBPay_whenResponseNotNull_not200() throws Exception {
+        CIMBClickPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                CIMBClickPayModel.class, "sample_pay_card.json");
+
+        TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                TransactionResponse.class, "sample_response_pay_card.json");
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingCIMBPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingCIMBClickPay(xauthCaptor.capture(), cimbModelCaotor.capture(), responseCallbackCaptor.capture());
+
+
         //response not code 200 /201
         transactionResponse.setStatusCode("300");
         Mockito.verify(merchantRestAPIMock).paymentUsingCIMBClickPay(xauthCaptor.capture(), cimbModelCaotor.capture(), responseCallbackCaptor.capture());
         responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionFailedEvent();
     }
+
 
     @Test
     public void testPaymentUsingCIMBPay_whenResponseNull() throws Exception {
