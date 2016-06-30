@@ -445,59 +445,53 @@ class TransactionManager {
             if (apiInterface != null) {
                 String merchantToken = veritransSDK.readAuthenticationToken();
                 Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.paymentUsingPermataBank(merchantToken, permataBankTransfer, new Callback<TransactionResponse>() {
-                        @Override
-                        public void success(TransactionResponse permataBankTransferResponse, Response response) {
-                            long end = System.currentTimeMillis();
+                apiInterface.paymentUsingPermataBank(permataBankTransfer, new Callback<TransactionResponse>() {
+                    @Override
+                    public void success(TransactionResponse permataBankTransferResponse, Response response) {
+                        long end = System.currentTimeMillis();
 
-                            if (permataBankTransferResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
-                                    displayResponse(permataBankTransferResponse);
-                                }
-                                if (permataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || permataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                    VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(permataBankTransferResponse, Events.PAYMENT));
+                        if (permataBankTransferResponse != null) {
+                            if (veritransSDK.isLogEnabled()) {
+                                displayResponse(permataBankTransferResponse);
+                            }
+                            if (permataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    || permataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(permataBankTransferResponse, Events.PAYMENT));
 
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start);
-
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(permataBankTransferResponse.getStatusMessage(), permataBankTransferResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, permataBankTransferResponse.getStatusCode());
-                                }
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start);
 
                             } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
-                            }
-                            releaseResources();
-                        }
+                                VeritransBusProvider.getInstance().post(new TransactionFailedEvent(permataBankTransferResponse.getStatusMessage(), permataBankTransferResponse, Events.PAYMENT));
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            long end = System.currentTimeMillis();
-
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, permataBankTransferResponse.getStatusCode());
                             }
 
-                            // Track Mixpanel event
-                            trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, e.getMessage());
-                            releaseResources();
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                         }
-                    });
-                } else {
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    releaseResources();
-                }
+                        releaseResources();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError e) {
+                        long end = System.currentTimeMillis();
+
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
+                        }
+
+                        // Track Mixpanel event
+                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, e.getMessage());
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
@@ -526,60 +520,52 @@ class TransactionManager {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
 
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.paymentUsingBCAVA(merchantToken, bcaBankTransfer, new Callback<TransactionResponse>() {
-                        @Override
-                        public void success(TransactionResponse bcaBankTransferResponse, Response response) {
-                            long end = System.currentTimeMillis();
+                apiInterface.paymentUsingBCAVA(bcaBankTransfer, new Callback<TransactionResponse>() {
+                    @Override
+                    public void success(TransactionResponse bcaBankTransferResponse, Response response) {
+                        long end = System.currentTimeMillis();
 
-                            if (bcaBankTransferResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
-                                    displayResponse(bcaBankTransferResponse);
-                                }
-
-                                if (bcaBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || bcaBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                    VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaBankTransferResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel Event
-                                    trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start);
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(bcaBankTransferResponse.getStatusMessage(), bcaBankTransferResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel Event
-                                    trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, bcaBankTransferResponse.getStatusMessage());
-                                }
-
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
-                            }
-                            releaseResources();
-                        }
-
-                        @Override
-                        public void failure(RetrofitError e) {
-                            long end = System.currentTimeMillis();
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
+                        if (bcaBankTransferResponse != null) {
+                            if (veritransSDK.isLogEnabled()) {
+                                displayResponse(bcaBankTransferResponse);
                             }
 
-                            //Track Mixpanel event
-                            trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, e.getMessage());
-                            releaseResources();
+                            if (bcaBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    || bcaBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaBankTransferResponse, Events.PAYMENT));
+
+                                // Track Mixpanel Event
+                                trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start);
+                            } else {
+                                VeritransBusProvider.getInstance().post(new TransactionFailedEvent(bcaBankTransferResponse.getStatusMessage(), bcaBankTransferResponse, Events.PAYMENT));
+
+                                // Track Mixpanel Event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, bcaBankTransferResponse.getStatusMessage());
+                            }
+
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                         }
-                    });
-                } else {
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    releaseResources();
-                }
+                        releaseResources();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError e) {
+                        long end = System.currentTimeMillis();
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
+                        }
+
+                        //Track Mixpanel event
+                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, e.getMessage());
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
@@ -607,58 +593,49 @@ class TransactionManager {
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.paymentUsingCard(merchantToken, cardTransfer, new Callback<TransactionResponse>() {
-                        @Override
-                        public void success(TransactionResponse cardPaymentResponse, Response response) {
-                            long end = System.currentTimeMillis();
-                            if (cardPaymentResponse != null) {
+                apiInterface.paymentUsingCard(cardTransfer, new Callback<TransactionResponse>() {
+                    @Override
+                    public void success(TransactionResponse cardPaymentResponse, Response response) {
+                        long end = System.currentTimeMillis();
+                        if (cardPaymentResponse != null) {
 
-                                if (cardPaymentResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || cardPaymentResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                    VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(cardPaymentResponse, Events.PAYMENT));
+                            if (cardPaymentResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    || cardPaymentResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(cardPaymentResponse, Events.PAYMENT));
 
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(cardPaymentResponse.getStatusMessage(), cardPaymentResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, cardPaymentResponse.getStatusMessage());
-                                }
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
                             } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                            }
+                                VeritransBusProvider.getInstance().post(new TransactionFailedEvent(cardPaymentResponse.getStatusMessage(), cardPaymentResponse, Events.PAYMENT));
 
-                            releaseResources();
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, cardPaymentResponse.getStatusMessage());
+                            }
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
                         }
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            long end = System.currentTimeMillis();
+                        releaseResources();
+                    }
 
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
-                            }
+                    @Override
+                    public void failure(RetrofitError e) {
+                        long end = System.currentTimeMillis();
 
-                            // Track Mixpanel event
-                            trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, e.getMessage());
-
-                            releaseResources();
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
                         }
-                    });
 
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    releaseResources();
-                }
+                        // Track Mixpanel event
+                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, e.getMessage());
+
+                        releaseResources();
+                    }
+                });
             }
 
         } else {
@@ -682,62 +659,53 @@ class TransactionManager {
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.paymentUsingMandiriClickPay(merchantToken, mandiriClickPayRequestModel, new Callback<TransactionResponse>() {
-                        @Override
-                        public void success(TransactionResponse mandiriTransferResponse, Response response) {
-                            long end = System.currentTimeMillis();
+                apiInterface.paymentUsingMandiriClickPay(mandiriClickPayRequestModel, new Callback<TransactionResponse>() {
+                    @Override
+                    public void success(TransactionResponse mandiriTransferResponse, Response response) {
+                        long end = System.currentTimeMillis();
 
-                            if (mandiriTransferResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
-                                    displayResponse(mandiriTransferResponse);
-                                }
-                                if (mandiriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || mandiriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                    VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(mandiriTransferResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start);
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(mandiriTransferResponse.getStatusMessage(), mandiriTransferResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, mandiriTransferResponse.getStatusMessage());
-                                }
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response), null);
+                        if (mandiriTransferResponse != null) {
+                            if (veritransSDK.isLogEnabled()) {
+                                displayResponse(mandiriTransferResponse);
                             }
+                            if (mandiriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    || mandiriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(mandiriTransferResponse, Events.PAYMENT));
 
-                            releaseResources();
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start);
+                            } else {
+                                VeritransBusProvider.getInstance().post(new TransactionFailedEvent(mandiriTransferResponse.getStatusMessage(), mandiriTransferResponse, Events.PAYMENT));
+
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, mandiriTransferResponse.getStatusMessage());
+                            }
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response), null);
                         }
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            long end = System.currentTimeMillis();
+                        releaseResources();
+                    }
 
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
-                            }
+                    @Override
+                    public void failure(RetrofitError e) {
+                        long end = System.currentTimeMillis();
 
-                            // Track Mixpanel event
-                            trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, e.getMessage());
-
-                            releaseResources();
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
                         }
-                    });
 
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    releaseResources();
-                }
+                        // Track Mixpanel event
+                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, e.getMessage());
+
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
@@ -766,61 +734,53 @@ class TransactionManager {
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.paymentUsingBCAKlikPay(merchantToken, bcaKlikPayModel, new Callback<TransactionResponse>() {
-                        @Override
-                        public void success(TransactionResponse bcaKlikPayResponse, Response response) {
-                            long end = System.currentTimeMillis();
+                apiInterface.paymentUsingBCAKlikPay(bcaKlikPayModel, new Callback<TransactionResponse>() {
+                    @Override
+                    public void success(TransactionResponse bcaKlikPayResponse, Response response) {
+                        long end = System.currentTimeMillis();
 
-                            if (bcaKlikPayResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
-                                    displayResponse(bcaKlikPayResponse);
-                                }
-                                if (bcaKlikPayResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || bcaKlikPayResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                    VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaKlikPayResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BCA_KLIKPAY, end - start);
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(bcaKlikPayResponse.getStatusMessage(), bcaKlikPayResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, bcaKlikPayResponse.getStatusMessage());
-                                }
-
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response), null);
+                        if (bcaKlikPayResponse != null) {
+                            if (veritransSDK.isLogEnabled()) {
+                                displayResponse(bcaKlikPayResponse);
                             }
-                            releaseResources();
-                        }
+                            if (bcaKlikPayResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    || bcaKlikPayResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaKlikPayResponse, Events.PAYMENT));
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            long end = System.currentTimeMillis();
-
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BCA_KLIKPAY, end - start);
                             } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
+                                VeritransBusProvider.getInstance().post(new TransactionFailedEvent(bcaKlikPayResponse.getStatusMessage(), bcaKlikPayResponse, Events.PAYMENT));
+
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, bcaKlikPayResponse.getStatusMessage());
                             }
 
-                            // Track Mixpanel event
-                            trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, e.getMessage());
-
-                            releaseResources();
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response), null);
                         }
-                    });
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    releaseResources();
-                }
+                        releaseResources();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError e) {
+                        long end = System.currentTimeMillis();
+
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
+                        }
+
+                        // Track Mixpanel event
+                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, e.getMessage());
+
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
@@ -850,63 +810,54 @@ class TransactionManager {
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.paymentUsingMandiriBillPay(merchantToken, mandiriBillPayTransferModel, new Callback<TransactionResponse>() {
-                        @Override
-                        public void success(TransactionResponse transactionResponse, Response response) {
-                            long end = System.currentTimeMillis();
+                apiInterface.paymentUsingMandiriBillPay(mandiriBillPayTransferModel, new Callback<TransactionResponse>() {
+                    @Override
+                    public void success(TransactionResponse transactionResponse, Response response) {
+                        long end = System.currentTimeMillis();
 
-                            if (transactionResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
-                                    displayResponse(transactionResponse);
-                                }
-                                if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                    VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.PAYMENT));
+                        if (transactionResponse != null) {
+                            if (veritransSDK.isLogEnabled()) {
+                                displayResponse(transactionResponse);
+                            }
+                            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    || transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.PAYMENT));
 
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start);
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start, transactionResponse.getStatusMessage());
-                                }
-
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start);
                             } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                                VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.PAYMENT));
+
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start, transactionResponse.getStatusMessage());
                             }
 
-                            releaseResources();
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                         }
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            long end = System.currentTimeMillis();
+                        releaseResources();
+                    }
 
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
-                            }
+                    @Override
+                    public void failure(RetrofitError e) {
+                        long end = System.currentTimeMillis();
 
-                            // Track Mixpanel Event
-                            trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start, e.getMessage());
-
-                            releaseResources();
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
                         }
-                    });
 
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    releaseResources();
-                }
+                        // Track Mixpanel Event
+                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start, e.getMessage());
+
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
@@ -932,67 +883,59 @@ class TransactionManager {
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.paymentUsingCIMBClickPay(merchantToken, cimbClickPayModel, new Callback<TransactionResponse>() {
-                        @Override
-                        public void success(TransactionResponse cimbPayTransferResponse, Response response) {
-                            long end = System.currentTimeMillis();
+                apiInterface.paymentUsingCIMBClickPay(cimbClickPayModel, new Callback<TransactionResponse>() {
+                    @Override
+                    public void success(TransactionResponse cimbPayTransferResponse, Response response) {
+                        long end = System.currentTimeMillis();
 
-                            if (cimbPayTransferResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
-                                    displayResponse(cimbPayTransferResponse);
-                                }
-                                if (cimbPayTransferResponse.getStatusCode().trim()
-                                        .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || cimbPayTransferResponse.getStatusCode()
-                                        .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                    VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(cimbPayTransferResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CIMB_CLICK, end - start);
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(
-                                            cimbPayTransferResponse.getStatusMessage(),
-                                            cimbPayTransferResponse,
-                                            Events.PAYMENT
-                                    ));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, cimbPayTransferResponse.getStatusMessage());
-                                }
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                        if (cimbPayTransferResponse != null) {
+                            if (veritransSDK.isLogEnabled()) {
+                                displayResponse(cimbPayTransferResponse);
                             }
+                            if (cimbPayTransferResponse.getStatusCode().trim()
+                                    .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    || cimbPayTransferResponse.getStatusCode()
+                                    .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(cimbPayTransferResponse, Events.PAYMENT));
 
-                            releaseResources();
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CIMB_CLICK, end - start);
+                            } else {
+                                VeritransBusProvider.getInstance().post(new TransactionFailedEvent(
+                                        cimbPayTransferResponse.getStatusMessage(),
+                                        cimbPayTransferResponse,
+                                        Events.PAYMENT
+                                ));
+
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, cimbPayTransferResponse.getStatusMessage());
+                            }
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                         }
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            long end = System.currentTimeMillis();
+                        releaseResources();
+                    }
 
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
-                            }
+                    @Override
+                    public void failure(RetrofitError e) {
+                        long end = System.currentTimeMillis();
 
-                            // Track Mixpanel event
-                            trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, e.getMessage());
-
-                            releaseResources();
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
                         }
-                    });
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    releaseResources();
-                }
+
+                        // Track Mixpanel event
+                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, e.getMessage());
+
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
@@ -1017,66 +960,58 @@ class TransactionManager {
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.paymentUsingMandiriECash(merchantToken, mandiriECashModel, new Callback<TransactionResponse>() {
-                        @Override
-                        public void success(TransactionResponse transferResponse, Response response) {
-                            long end = System.currentTimeMillis();
+                apiInterface.paymentUsingMandiriECash(mandiriECashModel, new Callback<TransactionResponse>() {
+                    @Override
+                    public void success(TransactionResponse transferResponse, Response response) {
+                        long end = System.currentTimeMillis();
 
-                            if (transferResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
-                                    displayResponse(transferResponse);
-                                }
-                                if (transferResponse.getStatusCode().trim()
-                                        .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || transferResponse.getStatusCode()
-                                        .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                    VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transferResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_ECASH, end - start);
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(
-                                            transferResponse.getStatusMessage(),
-                                            transferResponse,
-                                            Events.PAYMENT
-                                    ));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, transferResponse.getStatusMessage());
-                                }
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                        if (transferResponse != null) {
+                            if (veritransSDK.isLogEnabled()) {
+                                displayResponse(transferResponse);
                             }
+                            if (transferResponse.getStatusCode().trim()
+                                    .equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    || transferResponse.getStatusCode()
+                                    .trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transferResponse, Events.PAYMENT));
 
-                            releaseResources();
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_ECASH, end - start);
+                            } else {
+                                VeritransBusProvider.getInstance().post(new TransactionFailedEvent(
+                                        transferResponse.getStatusMessage(),
+                                        transferResponse,
+                                        Events.PAYMENT
+                                ));
+
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, transferResponse.getStatusMessage());
+                            }
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                         }
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            long end = System.currentTimeMillis();
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
-                            }
+                        releaseResources();
+                    }
 
-                            // Track Mixpanel event
-                            trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, e.getMessage());
-
-                            releaseResources();
+                    @Override
+                    public void failure(RetrofitError e) {
+                        long end = System.currentTimeMillis();
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
                         }
-                    });
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    releaseResources();
-                }
+
+                        // Track Mixpanel event
+                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, e.getMessage());
+
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
@@ -1101,62 +1036,53 @@ class TransactionManager {
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.paymentUsingEpayBri(merchantToken, epayBriTransfer, new Callback<TransactionResponse>() {
-                        @Override
-                        public void success(TransactionResponse epayBriTransferResponse, Response response) {
-                            long end = System.currentTimeMillis();
-                            if (epayBriTransferResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
-                                    displayResponse(epayBriTransferResponse);
-                                }
-                                if (epayBriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || epayBriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                    VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(epayBriTransferResponse, Events.PAYMENT));
+                apiInterface.paymentUsingEpayBri(epayBriTransfer, new Callback<TransactionResponse>() {
+                    @Override
+                    public void success(TransactionResponse epayBriTransferResponse, Response response) {
+                        long end = System.currentTimeMillis();
+                        if (epayBriTransferResponse != null) {
+                            if (veritransSDK.isLogEnabled()) {
+                                displayResponse(epayBriTransferResponse);
+                            }
+                            if (epayBriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    || epayBriTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(epayBriTransferResponse, Events.PAYMENT));
 
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BRI_EPAY, end - start);
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(epayBriTransferResponse.getStatusMessage(), epayBriTransferResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, epayBriTransferResponse.getStatusMessage());
-                                }
-
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BRI_EPAY, end - start);
                             } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                                VeritransBusProvider.getInstance().post(new TransactionFailedEvent(epayBriTransferResponse.getStatusMessage(), epayBriTransferResponse, Events.PAYMENT));
+
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, epayBriTransferResponse.getStatusMessage());
                             }
 
-                            releaseResources();
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                         }
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            long end = System.currentTimeMillis();
+                        releaseResources();
+                    }
 
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
-                            }
+                    @Override
+                    public void failure(RetrofitError e) {
+                        long end = System.currentTimeMillis();
 
-                            // Track Mixpanel event
-                            trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, e.getMessage());
-
-                            releaseResources();
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
                         }
-                    });
 
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    releaseResources();
-                }
+                        // Track Mixpanel event
+                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, e.getMessage());
+
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
@@ -1180,45 +1106,36 @@ class TransactionManager {
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.transactionStatus(merchantToken, id, new Callback<TransactionStatusResponse>() {
-                        @Override
-                        public void success(TransactionStatusResponse transactionStatusResponse, Response response) {
-                            if (transactionStatusResponse != null) {
-                                if (TextUtils.isEmpty(transactionStatusResponse.getStatusCode())) {
-                                    if (transactionStatusResponse.getStatusCode().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                            || transactionStatusResponse.getStatusCode().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                        VeritransBusProvider.getInstance().post(new TransactionStatusSuccessEvent(transactionStatusResponse, Events.PAYMENT));
-                                    }
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                apiInterface.transactionStatus(id, new Callback<TransactionStatusResponse>() {
+                    @Override
+                    public void success(TransactionStatusResponse transactionStatusResponse, Response response) {
+                        if (transactionStatusResponse != null) {
+                            if (TextUtils.isEmpty(transactionStatusResponse.getStatusCode())) {
+                                if (transactionStatusResponse.getStatusCode().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                        || transactionStatusResponse.getStatusCode().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                    VeritransBusProvider.getInstance().post(new TransactionStatusSuccessEvent(transactionStatusResponse, Events.PAYMENT));
                                 }
                             } else {
                                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
                             }
-                            releaseResources();
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
                         }
+                        releaseResources();
+                    }
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
-                            }
-                            releaseResources();
+                    @Override
+                    public void failure(RetrofitError e) {
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
                         }
-                    });
-
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    releaseResources();
-                }
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
@@ -1244,62 +1161,53 @@ class TransactionManager {
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.paymentUsingIndosatDompetku(merchantToken, indosatDompetkuRequest, new Callback<TransactionResponse>() {
-                        @Override
-                        public void success(TransactionResponse transactionResponse, Response response) {
-                            long end = System.currentTimeMillis();
+                apiInterface.paymentUsingIndosatDompetku(indosatDompetkuRequest, new Callback<TransactionResponse>() {
+                    @Override
+                    public void success(TransactionResponse transactionResponse, Response response) {
+                        long end = System.currentTimeMillis();
 
-                            if (transactionResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
-                                    displayResponse(transactionResponse);
-                                }
-                                if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                    VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start);
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, transactionResponse.getStatusMessage());
-                                }
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                        if (transactionResponse != null) {
+                            if (veritransSDK.isLogEnabled()) {
+                                displayResponse(transactionResponse);
                             }
+                            if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    || transactionResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.PAYMENT));
 
-                            releaseResources();
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start);
+                            } else {
+                                VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.PAYMENT));
+
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, transactionResponse.getStatusMessage());
+                            }
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                         }
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            long end = System.currentTimeMillis();
+                        releaseResources();
+                    }
 
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
-                            }
+                    @Override
+                    public void failure(RetrofitError e) {
+                        long end = System.currentTimeMillis();
 
-                            // Track Mixpanel event
-                            trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, e.getMessage());
-
-                            releaseResources();
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
                         }
-                    });
 
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    releaseResources();
-                }
+                        // Track Mixpanel event
+                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, e.getMessage());
+
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
@@ -1325,62 +1233,53 @@ class TransactionManager {
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.paymentUsingIndomaret(merchantToken, indomaretRequestModel, new Callback<TransactionResponse>() {
-                        @Override
-                        public void success(TransactionResponse indomaretTransferResponse, Response response) {
-                            long end = System.currentTimeMillis();
+                apiInterface.paymentUsingIndomaret(indomaretRequestModel, new Callback<TransactionResponse>() {
+                    @Override
+                    public void success(TransactionResponse indomaretTransferResponse, Response response) {
+                        long end = System.currentTimeMillis();
 
-                            if (indomaretTransferResponse != null) {
-                                if (veritransSDK.isLogEnabled()) {
-                                    displayResponse(indomaretTransferResponse);
-                                }
-                                if (indomaretTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
-                                        || indomaretTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
-                                    VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(indomaretTransferResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOMARET, end - start);
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new TransactionFailedEvent(indomaretTransferResponse.getStatusMessage(), indomaretTransferResponse, Events.PAYMENT));
-
-                                    // Track Mixpanel event
-                                    trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, indomaretTransferResponse.getStatusMessage());
-                                }
-
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                        if (indomaretTransferResponse != null) {
+                            if (veritransSDK.isLogEnabled()) {
+                                displayResponse(indomaretTransferResponse);
                             }
-                            releaseResources();
-                        }
+                            if (indomaretTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_200))
+                                    || indomaretTransferResponse.getStatusCode().trim().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                                VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(indomaretTransferResponse, Events.PAYMENT));
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            long end = System.currentTimeMillis();
-
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOMARET, end - start);
                             } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                                Logger.i("General error occurred " + e.getMessage());
+                                VeritransBusProvider.getInstance().post(new TransactionFailedEvent(indomaretTransferResponse.getStatusMessage(), indomaretTransferResponse, Events.PAYMENT));
+
+                                // Track Mixpanel event
+                                trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, indomaretTransferResponse.getStatusMessage());
                             }
 
-                            // Track Mixpanel event
-                            trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, e.getMessage());
-
-                            releaseResources();
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.PAYMENT));
+                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                         }
-                    });
+                        releaseResources();
+                    }
 
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    releaseResources();
-                }
+                    @Override
+                    public void failure(RetrofitError e) {
+                        long end = System.currentTimeMillis();
+
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
+                            Logger.i("General error occurred " + e.getMessage());
+                        }
+
+                        // Track Mixpanel event
+                        trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, e.getMessage());
+
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
@@ -1710,44 +1609,36 @@ class TransactionManager {
         if (veritransSDK != null) {
             PaymentAPI apiInterface = VeritransRestAdapter.getMerchantApiClient();
             if (apiInterface != null) {
-                String merchantToken = veritransSDK.readAuthenticationToken();
-                Logger.i("merchantToken:" + merchantToken);
-                if (merchantToken != null) {
-                    apiInterface.getOffers(merchantToken, new Callback<GetOffersResponseModel>() {
-                        @Override
-                        public void success(GetOffersResponseModel getOffersResponseModel, Response response) {
-                            if (getOffersResponseModel != null) {
-                                if (getOffersResponseModel.getMessage().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success))) {
-                                    VeritransBusProvider.getInstance().post(new GetOfferSuccessEvent(getOffersResponseModel, Events.GET_OFFER));
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new GetOfferFailedEvent(getOffersResponseModel.getMessage(), getOffersResponseModel, Events.GET_OFFER));
-                                }
+                apiInterface.getOffers(new Callback<GetOffersResponseModel>() {
+                    @Override
+                    public void success(GetOffersResponseModel getOffersResponseModel, Response response) {
+                        if (getOffersResponseModel != null) {
+                            if (getOffersResponseModel.getMessage().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success))) {
+                                VeritransBusProvider.getInstance().post(new GetOfferSuccessEvent(getOffersResponseModel, Events.GET_OFFER));
                             } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.GET_OFFER));
-                                Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
+                                VeritransBusProvider.getInstance().post(new GetOfferFailedEvent(getOffersResponseModel.getMessage(), getOffersResponseModel, Events.GET_OFFER));
                             }
-
-                            releaseResources();
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_empty_response), Events.GET_OFFER));
+                            Logger.e(veritransSDK.getContext().getString(R.string.error_empty_response));
                         }
 
-                        @Override
-                        public void failure(RetrofitError e) {
-                            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.GET_OFFER));
-                                Logger.i("Error in SSL Certificate. " + e.getMessage());
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.GET_OFFER));
-                                Logger.i("General error occurred " + e.getMessage());
-                            }
+                        releaseResources();
+                    }
 
-                            releaseResources();
+                    @Override
+                    public void failure(RetrofitError e) {
+                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.GET_OFFER));
+                            Logger.i("Error in SSL Certificate. " + e.getMessage());
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.GET_OFFER));
+                            Logger.i("General error occurred " + e.getMessage());
                         }
-                    });
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied), Events.GET_OFFER));
-                    Logger.e(veritransSDK.getContext().getString(R.string.error_invalid_data_supplied));
-                    releaseResources();
-                }
+
+                        releaseResources();
+                    }
+                });
             } else {
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(veritransSDK.getContext().getString(R.string.error_unable_to_connect), Events.GET_OFFER));
                 Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
