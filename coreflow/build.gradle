@@ -94,6 +94,10 @@ task sourceJar(type: Jar) {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.10' //version required
 }
+
+tasks.withType(Test) {
+    jvmArgs '-Xms3g -Xmx3g -XX:MaxPermSize=3g -XX:+HeapDumpOnOutOfMemoryError'
+}
 dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
