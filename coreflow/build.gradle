@@ -96,7 +96,7 @@ task wrapper(type: Wrapper) {
 }
 
 tasks.withType(Test) {
-    jvmArgs '-Xms3g -Xmx3g -XX:MaxPermSize=3g -XX:+HeapDumpOnOutOfMemoryError'
+    jvmArgs '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
 }
 dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'

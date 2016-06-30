@@ -37,9 +37,6 @@ import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 
-//import id.co.veritrans.sdk.activities.SaveCreditCardActivity;
-//import id.co.veritrans.sdk.activities.UserDetailsActivity;
-
 /**
  * Created by shivam on 10/19/15.
  */
