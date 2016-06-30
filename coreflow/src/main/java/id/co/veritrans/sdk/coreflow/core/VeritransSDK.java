@@ -48,6 +48,7 @@ public class VeritransSDK {
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
     private  static SharedPreferences mPreferences = null;
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
+    private   MixpanelAnalyticsManager mMixpanelAnalyticsManager;
     private  Context context = null;
     private  String themeColorString = null;
     private  int themeColor;
@@ -87,8 +88,10 @@ public class VeritransSDK {
         this.externalScanner = sdkBuilder.externalScanner;
         initializeTheme();
         initializeSharedPreferences();
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager();
         this.mTransactionManager = new TransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
         this.mTransactionManager.setSDKLogEnabled(isLogEnabled);
+        this.mTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
     }
 
 

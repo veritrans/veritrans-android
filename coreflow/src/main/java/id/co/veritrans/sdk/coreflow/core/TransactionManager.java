@@ -93,6 +93,7 @@ public class TransactionManager {
     private VeritransRestAPI veritransPaymentAPI;
     private MerchantRestAPI merchantPaymentAPI;
     private boolean isSDKLogEnabled = false;
+    private MixpanelAnalyticsManager analyticsManager;
 
 
     public TransactionManager(Context context, VeritransRestAPI veritransPaymentAPI,
@@ -340,7 +341,7 @@ public class TransactionManager {
                 System.out.println("gettoken>success>equal>post");
 
                 // Track Mixpanel event
-                MixpanelAnalyticsManager.trackMixpanel(KEY_TOKENIZE_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
+                analyticsManager.trackMixpanel(KEY_TOKENIZE_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
             } else {
                 System.out.println("gettoken>success>not equal");
 
@@ -351,7 +352,7 @@ public class TransactionManager {
                             Events.TOKENIZE));
 
                     // Track Mixpanel event
-                    MixpanelAnalyticsManager.trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, tokenDetailsResponse.getStatusMessage());
+                    analyticsManager.trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, tokenDetailsResponse.getStatusMessage());
                 } else {
                     VeritransBusProvider.getInstance().post(new GetTokenFailedEvent(
                             context.getString(R.string.error_empty_response),
@@ -382,7 +383,7 @@ public class TransactionManager {
         }
 
         // Track Mixpanel event
-        MixpanelAnalyticsManager.trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, e.getMessage());
+        analyticsManager.trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, e.getMessage());
 
     }
 
@@ -413,13 +414,13 @@ public class TransactionManager {
                                     VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(permataBankTransferResponse, Events.PAYMENT));
 
                                     // Track Mixpanel event
-                                    MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start);
+                                    analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start);
 
                                 } else {
                                     VeritransBusProvider.getInstance().post(new TransactionFailedEvent(permataBankTransferResponse.getStatusMessage(), permataBankTransferResponse, Events.PAYMENT));
 
                                     // Track Mixpanel event
-                                    MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, permataBankTransferResponse.getStatusCode());
+                                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, permataBankTransferResponse.getStatusCode());
                                 }
 
                             } else {
@@ -442,7 +443,7 @@ public class TransactionManager {
                             }
 
                             // Track Mixpanel event
-                            MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, e.getMessage());
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, e.getMessage());
                             releaseResources();
                         }
                     });
@@ -482,12 +483,12 @@ public class TransactionManager {
                                     VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaBankTransferResponse, Events.PAYMENT));
 
                                     // Track Mixpanel Event
-                                    MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start);
+                                    analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start);
                                 } else {
                                     VeritransBusProvider.getInstance().post(new TransactionFailedEvent(bcaBankTransferResponse.getStatusMessage(), bcaBankTransferResponse, Events.PAYMENT));
 
                                     // Track Mixpanel Event
-                                    MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, bcaBankTransferResponse.getStatusMessage());
+                                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, bcaBankTransferResponse.getStatusMessage());
                                 }
 
                             } else {
@@ -509,7 +510,7 @@ public class TransactionManager {
                             }
 
                             //Track Mixpanel event
-                            MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, e.getMessage());
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, e.getMessage());
                             releaseResources();
                         }
                     });
@@ -544,12 +545,12 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(cardPaymentResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
                             } else {
                                 VeritransBusProvider.getInstance().post(new TransactionFailedEvent(cardPaymentResponse.getStatusMessage(), cardPaymentResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, cardPaymentResponse.getStatusMessage());
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, cardPaymentResponse.getStatusMessage());
                             }
                         } else {
                             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
@@ -570,7 +571,7 @@ public class TransactionManager {
                         }
 
                         // Track Mixpanel event
-                        MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, e.getMessage());
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, e.getMessage());
 
                         releaseResources();
                     }
@@ -609,12 +610,12 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(mandiriTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start);
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start);
                             } else {
                                 VeritransBusProvider.getInstance().post(new TransactionFailedEvent(mandiriTransferResponse.getStatusMessage(), mandiriTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, mandiriTransferResponse.getStatusMessage());
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, mandiriTransferResponse.getStatusMessage());
                             }
                         } else {
                             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
@@ -637,7 +638,7 @@ public class TransactionManager {
                         }
 
                         // Track Mixpanel event
-                        MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, e.getMessage());
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, e.getMessage());
 
                         releaseResources();
                     }
@@ -678,12 +679,12 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bcaKlikPayResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BCA_KLIKPAY, end - start);
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BCA_KLIKPAY, end - start);
                             } else {
                                 VeritransBusProvider.getInstance().post(new TransactionFailedEvent(bcaKlikPayResponse.getStatusMessage(), bcaKlikPayResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, bcaKlikPayResponse.getStatusMessage());
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, bcaKlikPayResponse.getStatusMessage());
                             }
 
                         } else {
@@ -706,7 +707,7 @@ public class TransactionManager {
                         }
 
                         // Track Mixpanel event
-                        MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, e.getMessage());
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, e.getMessage());
 
                         releaseResources();
                     }
@@ -749,12 +750,12 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start);
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start);
                             } else {
                                 VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start, transactionResponse.getStatusMessage());
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start, transactionResponse.getStatusMessage());
                             }
 
                         } else {
@@ -778,7 +779,7 @@ public class TransactionManager {
                         }
 
                         // Track Mixpanel Event
-                        MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start, e.getMessage());
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, end - start, e.getMessage());
 
                         releaseResources();
                     }
@@ -820,7 +821,7 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(cimbPayTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CIMB_CLICK, end - start);
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CIMB_CLICK, end - start);
                             } else {
                                 VeritransBusProvider.getInstance().post(new TransactionFailedEvent(
                                         cimbPayTransferResponse.getStatusMessage(),
@@ -828,7 +829,7 @@ public class TransactionManager {
                                         Events.PAYMENT
                                 ));
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, cimbPayTransferResponse.getStatusMessage());
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, cimbPayTransferResponse.getStatusMessage());
                             }
                         } else {
                             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
@@ -850,7 +851,7 @@ public class TransactionManager {
                         }
 
                         // Track Mixpanel event
-                        MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, e.getMessage());
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, e.getMessage());
 
                         releaseResources();
                     }
@@ -890,7 +891,7 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_ECASH, end - start);
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_ECASH, end - start);
                             } else {
                                 VeritransBusProvider.getInstance().post(new TransactionFailedEvent(
                                         transferResponse.getStatusMessage(),
@@ -899,7 +900,7 @@ public class TransactionManager {
                                 ));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, transferResponse.getStatusMessage());
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, transferResponse.getStatusMessage());
                             }
                         } else {
                             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
@@ -921,7 +922,7 @@ public class TransactionManager {
                         }
 
                         // Track Mixpanel event
-                        MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, e.getMessage());
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, e.getMessage());
 
                         releaseResources();
                     }
@@ -958,12 +959,12 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(epayBriTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BRI_EPAY, end - start);
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BRI_EPAY, end - start);
                             } else {
                                 VeritransBusProvider.getInstance().post(new TransactionFailedEvent(epayBriTransferResponse.getStatusMessage(), epayBriTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, epayBriTransferResponse.getStatusMessage());
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, epayBriTransferResponse.getStatusMessage());
                             }
 
                         } else {
@@ -987,7 +988,7 @@ public class TransactionManager {
                         }
 
                         // Track Mixpanel event
-                        MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, e.getMessage());
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, e.getMessage());
 
                         releaseResources();
                     }
@@ -1075,12 +1076,12 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start);
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start);
                             } else {
                                 VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, transactionResponse.getStatusMessage());
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, transactionResponse.getStatusMessage());
                             }
                         } else {
                             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
@@ -1103,7 +1104,7 @@ public class TransactionManager {
                         }
 
                         // Track Mixpanel event
-                        MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, e.getMessage());
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, e.getMessage());
                         releaseResources();
                     }
                 });
@@ -1140,12 +1141,12 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(indomaretTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOMARET, end - start);
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOMARET, end - start);
                             } else {
                                 VeritransBusProvider.getInstance().post(new TransactionFailedEvent(indomaretTransferResponse.getStatusMessage(), indomaretTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, indomaretTransferResponse.getStatusMessage());
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, indomaretTransferResponse.getStatusMessage());
                             }
 
                         } else {
@@ -1168,7 +1169,7 @@ public class TransactionManager {
                         }
 
                         // Track Mixpanel event
-                        MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, e.getMessage());
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, e.getMessage());
 
                         releaseResources();
                     }
@@ -1208,12 +1209,12 @@ public class TransactionManager {
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bbmMoneyTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BBM_MONEY, end - start);
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BBM_MONEY, end - start);
                             } else {
                                 VeritransBusProvider.getInstance().post(new TransactionFailedEvent(bbmMoneyTransferResponse.getStatusMessage(), bbmMoneyTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
-                                MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BBM_MONEY, end - start, bbmMoneyTransferResponse.getStatusMessage());
+                                analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BBM_MONEY, end - start, bbmMoneyTransferResponse.getStatusMessage());
                             }
 
                         } else {
@@ -1238,7 +1239,7 @@ public class TransactionManager {
                         }
 
                         // Track Mixpanel event
-                        MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BBM_MONEY, end - start, e.getMessage());
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BBM_MONEY, end - start, e.getMessage());
 
                         releaseResources();
                     }
@@ -1520,12 +1521,12 @@ public class TransactionManager {
                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(response, Events.PAYMENT));
 
                             // Track Mixpanel event
-                            MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_KLIK_BCA, end - start);
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_KLIK_BCA, end - start);
                         } else {
                             VeritransBusProvider.getInstance().post(new TransactionFailedEvent(response.getStatusMessage(), response, Events.PAYMENT));
 
                             // Track Mixpanel event
-                            MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, response.getStatusMessage());
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, response.getStatusMessage());
                         }
                     } else {
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
@@ -1546,7 +1547,7 @@ public class TransactionManager {
                         Logger.i("General error occurred " + e.getMessage());
                     }
                     // Track Mixpanel event
-                    MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, e.getMessage());
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, e.getMessage());
                     releaseResources();
                 }
             });
@@ -1554,4 +1555,7 @@ public class TransactionManager {
     }
 
 
+    public void setAnalyticsManager(MixpanelAnalyticsManager analyticsManager) {
+        this.analyticsManager = analyticsManager;
+    }
 }

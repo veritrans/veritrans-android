@@ -25,6 +25,7 @@ import id.co.veritrans.sdk.coreflow.APIClientMain;
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
+import id.co.veritrans.sdk.coreflow.core.MixpanelAnalyticsManager;
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import id.co.veritrans.sdk.coreflow.core.TransactionManager;
 import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
@@ -57,6 +58,8 @@ public abstract class TransactionMangerMain extends APIClientMain{
     protected MerchantRestAPI merchantRestAPIMock;
     @Mock
     protected RetrofitError retrofitErrorMock;
+    @Mock
+    protected MixpanelAnalyticsManager mixpanelAnalyticsManagerMock;
 
     @Mock
     protected BusCollaborator busCollaborator;
@@ -90,6 +93,7 @@ public abstract class TransactionMangerMain extends APIClientMain{
                 .setBoldText("open_sans_bold.ttf")
                 .setMerchantName("Veritrans Example Merchant")
                 .buildSDK();
-        transactionManager = veritransSDK.getVeritransSDK().getTransactionManager();
+        transactionManager = veritransSDK.getTransactionManager();
+        transactionManager.setAnalyticsManager(mixpanelAnalyticsManagerMock);
     }
 }

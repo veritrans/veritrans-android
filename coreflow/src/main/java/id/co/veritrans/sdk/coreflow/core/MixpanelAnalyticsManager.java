@@ -50,7 +50,7 @@ public class MixpanelAnalyticsManager {
     }
 
     // Mixpanel event tracker
-    public static void trackMixpanel(String eventName, String paymentType, String bankType, long responseTime) {
+    public void trackMixpanel(String eventName, String paymentType, String bankType, long responseTime) {
         MixpanelEvent event = new MixpanelEvent();
         event.setEvent(eventName);
 
@@ -75,7 +75,7 @@ public class MixpanelAnalyticsManager {
         MixpanelAnalyticsManager.trackEvent(event);
     }
 
-    public static void trackMixpanel(String eventName, String paymentType, long responseTime) {
+    public void trackMixpanel(String eventName, String paymentType, long responseTime) {
         MixpanelEvent event = new MixpanelEvent();
         event.setEvent(eventName);
 
@@ -97,7 +97,7 @@ public class MixpanelAnalyticsManager {
         MixpanelAnalyticsManager.trackEvent(event);
     }
 
-    public static void trackMixpanel(String eventName, String paymentType, long responseTime, String errorMessage) {
+    public void trackMixpanel(String eventName, String paymentType, long responseTime, String errorMessage) {
         MixpanelEvent event = new MixpanelEvent();
         event.setEvent(eventName);
 
@@ -120,7 +120,7 @@ public class MixpanelAnalyticsManager {
         MixpanelAnalyticsManager.trackEvent(event);
     }
 
-    public static void trackMixpanel(String eventName, String paymentType, String bank, long responseTime, String errorMessage) {
+    public void trackMixpanel(String eventName, String paymentType, String bank, long responseTime, String errorMessage) {
         MixpanelEvent event = new MixpanelEvent();
         event.setEvent(eventName);
 
