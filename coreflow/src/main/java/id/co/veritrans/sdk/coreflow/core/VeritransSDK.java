@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.coreflow.core;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -45,26 +46,25 @@ public class VeritransSDK {
     public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
             "details are necessary.";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
-
+    private  static SharedPreferences mPreferences = null;
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
-    private static Context context = null;
-    private static String themeColorString = null;
-    private static int themeColor;
+    private  Context context = null;
+    private  String themeColorString = null;
+    private  int themeColor;
 
-    private static VeritransSDK veritransSDK = new VeritransSDK();
+    private  static VeritransSDK veritransSDK ;
 
     private static boolean isLogEnabled = true;
     /*private static String serverKey = null;*/
-    private static String clientKey = null;
-    private static String merchantServerUrl = null;
-    private static SharedPreferences mPreferences = null;
-    private static String defaultText = null;
-    private static String boldText = null;
-    private static String semiBoldText = null;
-    private static String merchantName = null;
-    private static ISdkFlow uiflow;
-    private static IScanner externalScanner;
-    private static TransactionManager mTransactionManager;
+    private  String clientKey = null;
+    private  String merchantServerUrl = null;
+    private  String defaultText = null;
+    private  String boldText = null;
+    private  String semiBoldText = null;
+    private  String merchantName = null;
+    private  ISdkFlow uiflow;
+    private  IScanner externalScanner;
+    private  TransactionManager mTransactionManager;
 
 
     protected boolean isRunning = false;
@@ -73,48 +73,31 @@ public class VeritransSDK {
     private String TRANSACTION_RESPONSE_NOT_AVAILABLE = "Transaction response not available.";
     private BBMCallBackUrl mBBMCallBackUrl = null;
 
-    private VeritransSDK() {
+    private VeritransSDK(@NonNull SdkCoreFlowBuilder sdkBuilder) {
+        this.context = sdkBuilder.context;
+        this.clientKey = sdkBuilder.clientKey;
+        this.merchantServerUrl = sdkBuilder.merchantServerUrl;
+
+        this.themeColorString = sdkBuilder.colorTheme;
+        this.merchantName = sdkBuilder.merchantName;
+        this.defaultText = sdkBuilder.defaultText;
+        this.semiBoldText =sdkBuilder.semiBoldText;
+        this.boldText = sdkBuilder.boldText;
+        this.uiflow = sdkBuilder.sdkFlow;
+        this.externalScanner = sdkBuilder.externalScanner;
+        initializeTheme();
+        initializeSharedPreferences();
+        this.mTransactionManager = new TransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
+        this.mTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
 
 
 
-    protected static VeritransSDK getInstance(SdkCoreFlowBuilder sdkBuilder) {
-
-        if (sdkBuilder != null) {
-            context = sdkBuilder.context;
-            isLogEnabled = sdkBuilder.enableLog;
-            /*serverKey = sdkBuilder.serverKey;*/
-            clientKey = sdkBuilder.clientKey;
-            merchantServerUrl = sdkBuilder.merchantServerUrl;
-            if (sdkBuilder.colorTheme != null) {
-                themeColorString = sdkBuilder.colorTheme;
-            }
-            if (sdkBuilder.merchantName != null) {
-                merchantName = sdkBuilder.merchantName;
-            }
-            if(sdkBuilder.defaultText != null){
-              defaultText = sdkBuilder.defaultText;
-            }
-            if(sdkBuilder.semiBoldText != null){
-                semiBoldText = sdkBuilder.semiBoldText;
-            }
-            if(sdkBuilder.boldText != null){
-                boldText = sdkBuilder.boldText;
-            }
-            if(sdkBuilder.sdkFlow != null){
-                uiflow = sdkBuilder.sdkFlow;
-            }
-            if(sdkBuilder.externalScanner != null){
-                externalScanner = sdkBuilder.externalScanner;
-            }
-            initializeTheme();
-            initializeSharedPreferences();
-            mTransactionManager = new TransactionManager(context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
-            mTransactionManager.setSDKLogEnabled(isLogEnabled);
-            return veritransSDK;
-        } else {
-            return null;
+    protected static VeritransSDK getInstance(@NonNull SdkCoreFlowBuilder sdkBuilder) {
+        if(veritransSDK == null){
+            veritransSDK = new VeritransSDK(sdkBuilder);
         }
+        return veritransSDK;
     }
 
     boolean isAvailableForTransaction(String eventSource){
@@ -145,7 +128,7 @@ public class VeritransSDK {
     }
 
 
-    private static void initializeSharedPreferences() {
+    private  void initializeSharedPreferences() {
         mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
     }
 
@@ -155,20 +138,10 @@ public class VeritransSDK {
      * @return VeritransSDK instance
      */
     public static VeritransSDK getVeritransSDK() {
-
-        /*if (serverKey != null && context != null && clientKey != null) {
-            // created to get access of already created instance of sdk.
-            // This instance contains information about transaction.
-            return veritransSDK;
-        }*/
-        if (context != null) {
-            return veritransSDK;
-        }
-        Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-        return null;
+        return veritransSDK;
     }
 
-    private static void initializeTheme() {
+    private  void initializeTheme() {
         if (themeColorString != null) {
             themeColor = Color.parseColor(themeColorString);
         } else {
@@ -176,16 +149,16 @@ public class VeritransSDK {
         }
     }
 
-    public static SharedPreferences getmPreferences() {
+    public static   SharedPreferences getmPreferences() {
         return mPreferences;
     }
 
-    public static String getDefaultText() {
-        return VeritransSDK.defaultText;
+    public   String getDefaultText() {
+        return defaultText;
     }
 
     public void setDefaultText(String defaultText) {
-        VeritransSDK.defaultText = defaultText;
+        defaultText = defaultText;
     }
 
     public String getMerchantName() {
@@ -197,19 +170,19 @@ public class VeritransSDK {
     }
 
     public String getBoldText() {
-        return VeritransSDK.boldText;
+        return boldText;
     }
 
     public void setBoldText(String boldText) {
-        VeritransSDK.boldText = boldText;
+        boldText = boldText;
     }
 
     public String getSemiBoldText() {
-        return VeritransSDK.semiBoldText;
+        return semiBoldText;
     }
 
     public void setSemiBoldText(String semiBoldText) {
-        VeritransSDK.semiBoldText = semiBoldText;
+        semiBoldText = semiBoldText;
     }
 
     public boolean isRunning() {
@@ -236,7 +209,6 @@ public class VeritransSDK {
         String merchantToken = userDetail.getMerchantToken();
         Logger.i("merchantToken:" + merchantToken);
         return merchantToken;
-        //return serverKey;
     }
 
     public String readAuthenticationToken() {
