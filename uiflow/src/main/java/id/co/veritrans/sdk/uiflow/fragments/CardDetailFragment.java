@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
@@ -96,9 +95,9 @@ public class CardDetailFragment extends Fragment {
         cardContainerFront = (RelativeLayout) view.findViewById(R.id.card_container_front_side);
         cardContainerBack = (RelativeLayout) view.findViewById(R.id.card_container_back_side);
         rootLayout = (RelativeLayout) view.findViewById(R.id.root_layout);
-        float cardWidth = 0;
+        //float cardWidth = 0;
 
-        if (activity != null) {
+        /*if (activity != null) {
             if (activity instanceof CreditDebitCardFlowActivity) {
                 cardWidth = ((CreditDebitCardFlowActivity) getActivity()).getScreenWidth();
             } else if (activity instanceof OffersActivity) {
@@ -109,11 +108,10 @@ public class CardDetailFragment extends Fragment {
                 .getDisplayMetrics().density;
         float cardHeight = cardWidth * Constants.CARD_ASPECT_RATIO;
         Logger.i("card width:" + cardWidth + ",height:" + cardHeight);
-        RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams((int) cardWidth,
-                (int) cardHeight);
+        RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams((int) cardWidth, (int) cardHeight);
         Logger.i("card width:" + parms.width + ",height:" + parms.height);
         cardContainerFront.setLayoutParams(parms);
-        cardContainerBack.setLayoutParams(parms);
+        cardContainerBack.setLayoutParams(parms);*/
         cardContainerBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,53 +126,10 @@ public class CardDetailFragment extends Fragment {
         });
         cardNoTv = (TextView) view.findViewById(R.id.text_card_number);
         expTv = (TextView) view.findViewById(R.id.text_exp_date);
-        /*cvvCircle1 = (ImageView) view.findViewById(R.id.image_cvv1);
-        cvvCircle2 = (ImageView) view.findViewById(R.id.image_cvv2);
-        cvvCircle3 = (ImageView) view.findViewById(R.id.image_cvv3);*/
         cvvEt = (EditText) view.findViewById(R.id.et_cvv);
-        /*cvvEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                int length = cvvEt.getText().toString().trim().length();
-                switch (length) {
-                    case 0:
-                        cvvCircle1.setImageResource(R.drawable.hollow_circle);
-                        cvvCircle2.setImageResource(R.drawable.hollow_circle);
-                        cvvCircle3.setImageResource(R.drawable.hollow_circle);
-                        break;
-                    case 1:
-                        cvvCircle1.setImageResource(R.drawable.cvv_circle);
-                        cvvCircle2.setImageResource(R.drawable.hollow_circle);
-                        cvvCircle3.setImageResource(R.drawable.hollow_circle);
-                        break;
-                    case 2:
-                        cvvCircle1.setImageResource(R.drawable.cvv_circle);
-                        cvvCircle2.setImageResource(R.drawable.cvv_circle);
-                        cvvCircle3.setImageResource(R.drawable.hollow_circle);
-                        break;
-                    case 3:
-                        cvvCircle1.setImageResource(R.drawable.cvv_circle);
-                        cvvCircle2.setImageResource(R.drawable.cvv_circle);
-                        cvvCircle3.setImageResource(R.drawable.cvv_circle);
-                        break;
-                }
-
-            }
-        });*/
         cardNoTv.setText(Utils.getFormattedCreditCardNumber(cardDetail.getMaskedCard().replace("-", "XXXXXX")));
 
         payNowBt = (Button) view.findViewById(R.id.btn_pay_now);
-        payNowBt.setTextColor(veritransSDK.getThemeColor());
         payNowBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,7 +148,6 @@ public class CardDetailFragment extends Fragment {
             }
         });
         payNowFrontBt = (Button) view.findViewById(R.id.btn_pay_now_front);
-        payNowFrontBt.setTextColor(veritransSDK.getThemeColor());
         payNowFrontBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

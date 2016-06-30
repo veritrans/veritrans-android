@@ -311,5 +311,7 @@
     <string name="payment_method_indomaret">Indomaret</string>
 
     <string name="btn_close">Tutup</string>
-    <string name="payment_canceled">3D Secure authorization has been cancelled.</string>
+    <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
+    <string name="btn_pay">Bayar</string>
+    <string name="hint_input_cvv">Masukkan CVV</string>
 </resources>
