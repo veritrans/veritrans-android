@@ -12,9 +12,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.concurrent.CountDownLatch;
 
+import id.co.veritrans.sdk.coreflow.APIClientMain;
 import id.co.veritrans.sdk.coreflow.SDKConfig;
 import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
-import id.co.veritrans.sdk.coreflow.core.PaymentAPI;
 import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
 import id.co.veritrans.sdk.coreflow.models.CardTransfer;
 import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
@@ -76,7 +76,8 @@ public class CardTransactionTest extends APIClientMain {
     public void testCardPaymentSuccess() throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
         MerchantRestAPI paymentAPI = createMerchantPaymentAPIMock(MERCHANT_PAYMENT_SUCCESS, 200, "success");
-        CardTransfer cardTransfer = RestAPIMocUtilites.getStringSampleCardTransferFromFile(this.getClass().getClassLoader());
+        CardTransfer cardTransfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_permata_bank_transfer.json");
+
         Assert.assertNotNull(cardTransfer);
         paymentAPI.paymentUsingCard(X_AUTH, cardTransfer, new Callback<TransactionResponse>() {
             @Override
@@ -99,7 +100,7 @@ public class CardTransactionTest extends APIClientMain {
     public void testCardPaymentFailed_whenTokenExpired() throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
         MerchantRestAPI paymentAPI = createMerchantPaymentAPIMock(MERCHANT_PAYMENT_FAILED_EXPIRED, 401, "tokenMissingOrExpired");
-        CardTransfer cardTransfer = RestAPIMocUtilites.getStringSampleCardTransferFromFile(this.getClass().getClassLoader());
+        CardTransfer cardTransfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_permata_bank_transfer.json");
         Assert.assertNotNull(cardTransfer);
         Assert.assertNull(mTranscsationResponseErrorExpired);
         paymentAPI.paymentUsingCard(X_AUTH, cardTransfer, new Callback<TransactionResponse>() {
@@ -123,7 +124,7 @@ public class CardTransactionTest extends APIClientMain {
     public void testCardPaymentFailed_whenOrderIdAlreadyExist() throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
         MerchantRestAPI paymentAPI = createMerchantPaymentAPIMock(MERCHANT_PAYMENT_SUCCESS, 406, "OrderAlreadyExist");
-        CardTransfer cardTransfer = RestAPIMocUtilites.getStringSampleCardTransferFromFile(this.getClass().getClassLoader());
+        CardTransfer cardTransfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_permata_bank_transfer.json");
         Assert.assertNotNull(cardTransfer);
         Assert.assertNull(mTranscsationResponseErrorOrderExist);
         paymentAPI.paymentUsingCard(X_AUTH, cardTransfer, new Callback<TransactionResponse>() {

@@ -4,7 +4,6 @@ import android.util.Log;
 
 import static org.junit.Assert.*;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,12 +13,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.concurrent.CountDownLatch;
 
+import id.co.veritrans.sdk.coreflow.APIClientMain;
 import id.co.veritrans.sdk.coreflow.SDKConfig;
-import id.co.veritrans.sdk.coreflow.core.PaymentAPI;
 import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
-import id.co.veritrans.sdk.coreflow.models.AuthModel;
 import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
-import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
