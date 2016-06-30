@@ -2,7 +2,7 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -48,12 +48,11 @@ public class VeritransSDK {
 
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static Context context = null;
-    private static String themeColorString = null;
     private static int themeColor;
+    private static Drawable merchantLogoDrawable = null;
 
     private static VeritransSDK veritransSDK = new VeritransSDK();
     private static boolean isLogEnabled = true;
-    /*private static String serverKey = null;*/
     private static String clientKey = null;
     private static String merchantServerUrl = null;
     private static SharedPreferences mPreferences = null;
@@ -61,6 +60,8 @@ public class VeritransSDK {
     private static String boldText = null;
     private static String semiBoldText = null;
     private static String merchantName = null;
+    private static String merchantLogo = null;
+    private static int merchantLogoResourceId = 0;
     private static ISdkFlow uiflow;
     private static IScanner externalScanner;
     protected boolean isRunning = false;
@@ -73,7 +74,6 @@ public class VeritransSDK {
     }
 
 
-
     protected static VeritransSDK getInstance(SdkCoreFlowBuilder sdkBuilder) {
 
         if (sdkBuilder != null) {
@@ -82,28 +82,35 @@ public class VeritransSDK {
             /*serverKey = sdkBuilder.serverKey;*/
             clientKey = sdkBuilder.clientKey;
             merchantServerUrl = sdkBuilder.merchantServerUrl;
-            if (sdkBuilder.colorTheme != null) {
-                themeColorString = sdkBuilder.colorTheme;
-            }
             if (sdkBuilder.merchantName != null) {
                 merchantName = sdkBuilder.merchantName;
             }
-            if(sdkBuilder.defaultText != null){
-              defaultText = sdkBuilder.defaultText;
+            if (sdkBuilder.merchantLogo != null) {
+                merchantLogo = sdkBuilder.merchantLogo;
             }
-            if(sdkBuilder.semiBoldText != null){
+            if (sdkBuilder.defaultText != null) {
+                defaultText = sdkBuilder.defaultText;
+            }
+            if (sdkBuilder.semiBoldText != null) {
                 semiBoldText = sdkBuilder.semiBoldText;
             }
-            if(sdkBuilder.boldText != null){
+            if (sdkBuilder.boldText != null) {
                 boldText = sdkBuilder.boldText;
             }
-            if(sdkBuilder.sdkFlow != null){
+            if (sdkBuilder.sdkFlow != null) {
                 uiflow = sdkBuilder.sdkFlow;
             }
-            if(sdkBuilder.externalScanner != null){
+            if (sdkBuilder.externalScanner != null) {
                 externalScanner = sdkBuilder.externalScanner;
             }
+            if (sdkBuilder.merchantLogoResourceId != 0) {
+                merchantLogoResourceId = sdkBuilder.merchantLogoResourceId;
+            }
+            if (sdkBuilder.colorThemeResourceId != 0) {
+                themeColor = sdkBuilder.colorThemeResourceId;
+            }
             initializeTheme();
+            initializeLogo();
             initializeSharedPreferences();
             return veritransSDK;
         } else {
@@ -111,6 +118,14 @@ public class VeritransSDK {
         }
     }
 
+    private static void initializeLogo() {
+        if (merchantLogoResourceId != 0) {
+            merchantLogoDrawable = context.getResources().getDrawable(merchantLogoResourceId);
+        } else if (merchantLogo != null) {
+            int resourceImage = context.getResources().getIdentifier(veritransSDK.getMerchantLogo(), "drawable", context.getPackageName());
+            merchantLogoDrawable = context.getResources().getDrawable(resourceImage);
+        }
+    }
 
 
     private static void initializeSharedPreferences() {
@@ -124,24 +139,16 @@ public class VeritransSDK {
      */
     public static VeritransSDK getVeritransSDK() {
 
-        /*if (serverKey != null && context != null && clientKey != null) {
-            // created to get access of already created instance of sdk.
-            // This instance contains information about transaction.
-            return veritransSDK;
-        }*/
         if (context != null) {
             return veritransSDK;
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            return null;
         }
-        Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-        return null;
     }
 
     private static void initializeTheme() {
-        if (themeColorString != null) {
-            themeColor = Color.parseColor(themeColorString);
-        } else {
-            themeColor = context.getResources().getColor(R.color.colorPrimary);
-        }
+        themeColor = context.getResources().getColor(R.color.colorPrimary);
     }
 
     public static SharedPreferences getmPreferences() {
@@ -160,6 +167,17 @@ public class VeritransSDK {
         return merchantName;
     }
 
+    public String getMerchantLogo() {
+        return merchantLogo;
+    }
+
+    public int getMerchantLogoResourceId() {
+        return merchantLogoResourceId;
+    }
+
+    public Drawable getMerchantLogoDrawable() {
+        return merchantLogoDrawable;
+    }
     public int getThemeColor() {
         return themeColor;
     }
@@ -215,7 +233,7 @@ public class VeritransSDK {
         return clientKey;
     }
 
-    public String getMerchantServerUrl(){
+    public String getMerchantServerUrl() {
         return merchantServerUrl;
     }
 
@@ -230,7 +248,7 @@ public class VeritransSDK {
     /**
      * It will execute an api request to retrieve a token.
      *
-     * @param cardTokenRequest  token request object
+     * @param cardTokenRequest token request object
      */
     public void getToken(CardTokenRequest cardTokenRequest) {
 
@@ -248,7 +266,7 @@ public class VeritransSDK {
     /**
      * It will execute an api request to register credit card info.
      *
-     * @param cardTokenRequest  request token object
+     * @param cardTokenRequest request token object
      */
     public void registerCard(CardTokenRequest cardTokenRequest, String userId) {
 
@@ -265,7 +283,6 @@ public class VeritransSDK {
 
     /**
      * It will execute an transaction for permata bank .
-     *
      */
     public void paymentUsingPermataBank() {
 
@@ -286,7 +303,6 @@ public class VeritransSDK {
 
     /**
      * It will execute an transaction for bca bank .
-     *
      */
     public void paymentUsingBcaBankTransfer() {
 
@@ -326,7 +342,7 @@ public class VeritransSDK {
     /**
      * It will execute an transaction for mandiri click pay.
      *
-     * @param mandiriClickPayModel       information about mandiri clickpay
+     * @param mandiriClickPayModel information about mandiri clickpay
      */
     public void paymentUsingMandiriClickPay(MandiriClickPayModel mandiriClickPayModel) {
 
@@ -352,7 +368,7 @@ public class VeritransSDK {
     /**
      * It will execute an transaction for mandiri click pay.
      *
-     * @param descriptionModel       information about BCA Klikpay
+     * @param descriptionModel information about BCA Klikpay
      */
     public void paymentUsingBCAKlikPay(BCAKlikPayDescriptionModel descriptionModel) {
 
@@ -381,7 +397,6 @@ public class VeritransSDK {
 
     /**
      * It will execute an transaction for mandiri bill pay.
-     *
      */
     public void paymentUsingMandiriBillPay() {
         if (transactionRequest != null) {
@@ -398,7 +413,6 @@ public class VeritransSDK {
                 TransactionManager.paymentUsingMandiriBillPay(mandiriBillPayTransferModel);
 
             } else {
-
                 isRunning = false;
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY));
                 Logger.e("Error: " + BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY);
@@ -413,7 +427,7 @@ public class VeritransSDK {
     /**
      * It will execute an transaction for CIMB click pay.
      *
-     * @param descriptionModel           contains description about the cimb payment
+     * @param descriptionModel contains description about the cimb payment
      */
 
     public void paymentUsingCIMBClickPay(DescriptionModel descriptionModel) {
@@ -444,7 +458,7 @@ public class VeritransSDK {
     /**
      * It will execute an transaction for Mandiri E Cash.
      *
-     * @param descriptionModel           Description about Mandiri E cash payment.
+     * @param descriptionModel Description about Mandiri E cash payment.
      */
 
     public void paymentUsingMandiriECash(DescriptionModel descriptionModel) {
@@ -476,7 +490,7 @@ public class VeritransSDK {
     /**
      * Set transaction information that you want to execute.
      *
-     * @param transactionRequest    request token object
+     * @param transactionRequest request token object
      */
     public void setTransactionRequest(TransactionRequest transactionRequest) {
 
@@ -508,13 +522,15 @@ public class VeritransSDK {
      * @param context current activity.
      */
     public void startRegisterCardUIFlow(Context context) {
-        if(uiflow != null){
+        if (uiflow != null) {
             uiflow.runRegisterCard(context);
         }
     }
+
     /**
      * This will start actual execution of transaction. if you have enabled an ui then it will
      * start activity according to it.
+     *
      * @param context current activity.
      */
 
@@ -525,10 +541,10 @@ public class VeritransSDK {
             if (transactionRequest.getPaymentMethod() == Constants
                     .PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
-                if(uiflow != null){
+                if (uiflow != null) {
                     uiflow.runUIFlow(context);
                 }
-            } 
+            }
 
         } else {
             if (transactionRequest == null) {
@@ -542,7 +558,6 @@ public class VeritransSDK {
 
     /**
      * It will execute an transaction for epay bri .
-     *
      */
     public void paymentUsingEpayBri() {
         if (transactionRequest != null) {
@@ -564,7 +579,7 @@ public class VeritransSDK {
     /**
      * It will execute an transaction for permata bank .
      *
-     * @param msisdn                registered mobile number of user.
+     * @param msisdn registered mobile number of user.
      */
     public void paymentUsingIndosatDompetku(String msisdn) {
         if (transactionRequest != null) {
@@ -612,9 +627,7 @@ public class VeritransSDK {
     }
 
     /**
-     *
      * It will fetch saved cards from merchant server.
-     *
      */
     public void getSavedCard() {
         TransactionManager.getCards();
@@ -633,7 +646,6 @@ public class VeritransSDK {
 
     /**
      * It will execute an transaction for BBMMoney.
-     *
      */
     public void paymentUsingBBMMoney() {
 
@@ -663,6 +675,7 @@ public class VeritransSDK {
         TransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear);
         isRunning = true;
     }
+
     public BBMCallBackUrl getBBMCallBackUrl() {
         return mBBMCallBackUrl;
     }
@@ -673,7 +686,6 @@ public class VeritransSDK {
 
     /**
      * It will fetch the Offers from merchant server.
-     *
      */
     public void getOffersList() {
         TransactionManager.getOffers();

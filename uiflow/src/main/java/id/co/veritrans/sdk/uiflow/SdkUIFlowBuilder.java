@@ -2,8 +2,9 @@ package id.co.veritrans.sdk.uiflow;
 
 import android.content.Context;
 
-import id.co.veritrans.sdk.coreflow.core.*;
+import id.co.veritrans.sdk.coreflow.core.IScanner;
 import id.co.veritrans.sdk.coreflow.core.ISdkFlow;
+import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 
 /**
  * Created by ziahaqi on 15/06/2016.
@@ -35,12 +36,6 @@ public class SdkUIFlowBuilder extends SdkCoreFlowBuilder {
     @Override
     public SdkUIFlowBuilder setBoldText(String boldText) {
         this.boldText = boldText;
-        return this;
-    }
-
-    @Override
-    public SdkUIFlowBuilder setColorTheme(String colorTheme) {
-        this.colorTheme = colorTheme;
         return this;
     }
 

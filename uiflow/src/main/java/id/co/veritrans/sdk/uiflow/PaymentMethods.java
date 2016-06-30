@@ -35,10 +35,6 @@ public class PaymentMethods {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_bri_epay), R.drawable.ic_epay, Constants.PAYMENT_METHOD_NOT_SELECTED);
     }
 
-    public static PaymentMethodsModel getMethodBBMMoney(Context context) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_bbm_money), R.drawable.ic_bbm, Constants.PAYMENT_METHOD_NOT_SELECTED);
-    }
-
     public static PaymentMethodsModel getMethodIndosatDompetku(Context context) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_indosat_dompetku), R.drawable.ic_indosat, Constants.PAYMENT_METHOD_NOT_SELECTED);
     }
@@ -86,7 +82,7 @@ public class PaymentMethods {
     }
 
     private static String[] getStringList(Context context) {
-        String[] paymentNameList = new String[13];
+        String[] paymentNameList = new String[12];
         paymentNameList[0] = context.getString(R.string.payment_method_credit_card);
         paymentNameList[1] = context.getString(R.string.payment_method_bank_transfer);
         paymentNameList[2] = context.getString(R.string.payment_method_klik_bca);
@@ -99,14 +95,13 @@ public class PaymentMethods {
         paymentNameList[9] = context.getString(R.string.payment_method_offers);
         paymentNameList[10] = context.getString(R.string.payment_method_indosat_dompetku);
         paymentNameList[11] = context.getString(R.string.payment_method_indomaret);
-        paymentNameList[12] = context.getString(R.string.payment_method_bbm_money);
 
         return paymentNameList;
     }
 
     private static int[] getImageList() {
 
-        int[] paymentImageList = new int[13];
+        int[] paymentImageList = new int[12];
         paymentImageList[0] = R.drawable.ic_credit;
         paymentImageList[1] = R.drawable.ic_atm;
         paymentImageList[2] = R.drawable.ic_klikbca;
@@ -119,7 +114,6 @@ public class PaymentMethods {
         paymentImageList[9] = R.drawable.ic_offers;
         paymentImageList[10] = R.drawable.ic_indosat;
         paymentImageList[11] = R.drawable.ic_indomaret;
-        paymentImageList[12] = R.drawable.ic_bbm;
 
         return paymentImageList;
     }

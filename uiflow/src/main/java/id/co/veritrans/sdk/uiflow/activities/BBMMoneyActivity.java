@@ -12,17 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import id.co.veritrans.sdk.coreflow.BuildConfig;
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -30,12 +27,14 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
+import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.BBMMoneyPaymentFragment;
 import id.co.veritrans.sdk.uiflow.fragments.BBMMoneyPaymentStatusFragment;
 import id.co.veritrans.sdk.uiflow.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionBBMMoneyFragment;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
 
 /**
@@ -150,11 +149,6 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Set color theme for title frame layout
-        FrameLayout frameTitle = (FrameLayout) findViewById(R.id.main_framelayout_title);
-        if (frameTitle != null) {
-            frameTitle.setBackgroundColor(veritransSDK.getThemeColor());
-        }
     }
 
     private void bindDataToView() {

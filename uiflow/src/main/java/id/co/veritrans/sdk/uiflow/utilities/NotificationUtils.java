@@ -11,10 +11,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.NotificationActivity;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.NotificationActivity;
 
 /**
  * Created by chetan on 31/12/15.
@@ -58,7 +58,6 @@ public class NotificationUtils {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle(context.getString(R.string.app_name))
                 .setContentText(statusMessage)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

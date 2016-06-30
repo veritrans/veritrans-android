@@ -4,11 +4,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
 
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
+import id.co.veritrans.sdk.uiflow.R;
 
 /**
  * @author rakawm
@@ -17,17 +18,17 @@ public class BaseActivity extends AppCompatActivity {
     protected String currentFragmentName;
     protected Fragment currentFragment = null;
     protected  boolean saveCurrentFragment = false;
+
     public void initializeTheme() {
         VeritransSDK mVeritransSDK = VeritransSDK.getVeritransSDK();
         if (mVeritransSDK != null) {
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            if (toolbar != null) {
-                toolbar.setBackgroundColor(mVeritransSDK.getThemeColor());
-            }
-
-            Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-            if (mainToolbar != null) {
-                mainToolbar.setBackgroundColor(mVeritransSDK.getThemeColor());
+            ImageView logo = (ImageView) findViewById(R.id.merchant_logo);
+            if (logo != null) {
+                if (mVeritransSDK.getMerchantLogoDrawable() != null) {
+                    logo.setImageDrawable(mVeritransSDK.getMerchantLogoDrawable());
+                } else {
+                    logo.setVisibility(View.GONE);
+                }
             }
         }
     }

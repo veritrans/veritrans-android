@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -38,8 +39,7 @@ import id.co.veritrans.sdk.uiflow.widgets.HeaderView;
  * <p/>
  * Created by shivam on 10/16/15.
  */
-public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
-        .OnOffsetChangedListener {
+public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener {
 
     public static final String PAYABLE_AMOUNT = "Payable Amount";
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
@@ -61,6 +61,7 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
     private TextView headerTextView = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
     private TextView textViewMeasureHeight = null;
+    private ImageView logo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +70,6 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         setContentView(R.layout.activity_payments_method);
         veritransSDK = VeritransSDK.getVeritransSDK();
         initializeTheme();
-        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
-        if (toolbarLayout != null) {
-            toolbarLayout.setContentScrimColor(veritransSDK.getThemeColor());
-        }
 
         UserDetail userDetail = null;
         try {
@@ -179,6 +176,12 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
             floatHeaderView.getSubTitleTextView().setAlpha(PERCENTAGE_TOTAL);
             floatHeaderView.getTitleTextView().setAlpha(ALPHA);
             mAppBarLayout.addOnOffsetChangedListener(this);
+            try {
+                int resourceImage = getResources().getIdentifier(veritransSDK.getMerchantLogo(), "drawable", getPackageName());
+                logo.setImageResource(resourceImage);
+            } catch (Exception ex) {
+                logo.setVisibility(View.GONE);
+            }
         }
 
     }
@@ -195,6 +198,7 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         floatHeaderView = (HeaderView) findViewById(R.id.float_header_view);
         headerTextView = (TextView) findViewById(R.id.title_header);
         textViewMeasureHeight = (TextView) findViewById(R.id.textview_to_compare);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
     }
 
     /**
@@ -243,8 +247,10 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         }
 
         if (percentage == PERCENTAGE_TOTAL) {
+            logo.setVisibility(View.GONE);
             headerTextView.setVisibility(View.GONE);
         } else {
+            logo.setVisibility(View.VISIBLE);
             headerTextView.setVisibility(View.VISIBLE);
         }
 
@@ -255,6 +261,7 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         float constant = 0.2f;
 
         headerTextView.setAlpha(PERCENTAGE_TOTAL - (percentage + constant));
+        logo.setAlpha(PERCENTAGE_TOTAL - (percentage + constant));
 
         if (percentage > constant) {
 

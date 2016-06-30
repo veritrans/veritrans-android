@@ -1,6 +1,9 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +11,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -34,14 +38,17 @@ import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 public class EpayBriActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
     private static final int PAYMENT_WEB_INTENT = 150;
+    private static final String STATUS_FRAGMENT = "status";
+    private static final String HOME_FRAGMENT = "home";
     private static int RESULT_CODE = RESULT_CANCELED;
     private Button btConfirmPayment = null;
     private Toolbar toolbar = null;
     private VeritransSDK veritransSDK = null;
+    private ImageView logo = null;
     private InstructionEpayBriFragment instructionEpayBriFragment;
     private TransactionResponse transactionResponse;
     private FragmentManager fragmentManager;
-    private String currentFragmentName = "";
+    private String currentFragmentName = HOME_FRAGMENT;
     private String errorMessage;
     private TransactionResponse transactionResponseFromMerchant;
 
@@ -58,7 +65,6 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         }
 
         initializeViews();
-        initializeTheme();
         setUpFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
@@ -76,31 +82,37 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     private void initializeViews() {
         btConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
+        initializeTheme();
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         btConfirmPayment.setVisibility(View.VISIBLE);
         btConfirmPayment.setOnClickListener(this);
+        if (veritransSDK != null) {
+            if (veritransSDK.getSemiBoldText() != null) {
+                btConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), veritransSDK.getSemiBoldText()));
+            }
+        }
     }
 
     private void setUpFragment() {
 
         // setup  fragment
         instructionEpayBriFragment = new InstructionEpayBriFragment();
-        replaceFragment(instructionEpayBriFragment, R.id.bri_container_layout, true, false);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        replaceFragment(instructionEpayBriFragment, R.id.bri_container_layout, false, false);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            if (currentFragmentName.equals(STATUS_FRAGMENT)) {
+                setResultCode(RESULT_OK);
+                setResultAndFinish();
+            } else {
+                onBackPressed();
+            }
         }
         return false;
     }
@@ -123,16 +135,23 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
+        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
+        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         if (resultCode == RESULT_OK) {
+            currentFragmentName = STATUS_FRAGMENT;
+            toolbar.setNavigationIcon(closeIcon);
+            setSupportActionBar(toolbar);
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
                     VeritransSDK.getVeritransSDK().getTransactionRequest().getOrderId(), String.valueOf(VeritransSDK.getVeritransSDK().getTransactionRequest().getAmount()), getString(R.string.payment_epay_bri), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
             PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.bri_container_layout, true, false);
+            replaceFragment(paymentTransactionStatusFragment, R.id.bri_container_layout, false, false);
             btConfirmPayment.setVisibility(View.GONE);
         } else if (resultCode == RESULT_CANCELED) {
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.bri_container_layout, true, false);
+            currentFragmentName = STATUS_FRAGMENT;
+            toolbar.setNavigationIcon(closeIcon);
+            setSupportActionBar(toolbar);
+            PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
+            replaceFragment(paymentTransactionStatusFragment, R.id.bri_container_layout, false, false);
             btConfirmPayment.setVisibility(View.GONE);
         }
     }
