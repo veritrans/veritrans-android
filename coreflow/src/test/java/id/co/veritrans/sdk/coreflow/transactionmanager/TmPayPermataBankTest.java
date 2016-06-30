@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +31,7 @@ import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import id.co.veritrans.sdk.coreflow.core.TransactionManager;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
-import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
+import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.APIClientMain;
 import id.co.veritrans.sdk.coreflow.restapi.RestAPIMocUtilites;
@@ -43,8 +42,8 @@ import retrofit.RetrofitError;
  * Created by ziahaqi on 28/06/2016.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class})
-public class TmPayUsingMandiriClickPay extends APIClientMain {
+@PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class,})
+public class TmPayPermataBankTest extends APIClientMain {
     private TransactionManager transactionManager;
     @Mock
     Context context;
@@ -59,7 +58,7 @@ public class TmPayUsingMandiriClickPay extends APIClientMain {
     CertPathValidatorException mCertPathValidatorException;
 
     @Mock
-    MerchantRestAPI merchantRestAPIMock;
+    MerchantRestAPI veritransRestAPIMock;
     @Mock
     RetrofitError retrofitErrorMock;
 
@@ -72,13 +71,14 @@ public class TmPayUsingMandiriClickPay extends APIClientMain {
     VeritransBus veritransBus;
 
     VeritransSDK veritransSDK;
+    String sampleJsonResponse = "{\"a\":\"a\"}";
     private String mToken = "VT-423wedwe4324r34";
     @Captor
-    private ArgumentCaptor<String> xauthCaptor;
+    private ArgumentCaptor<Callback<TransactionResponse>> transferResponCaptor;
     @Captor
-    private ArgumentCaptor<Callback<TransactionResponse>> responseCallbackCaptor;
+    private  ArgumentCaptor<String> xauthCaptor;
     @Captor
-    private ArgumentCaptor<MandiriClickPayRequestModel> mandiriClickPayCaptor;
+    private ArgumentCaptor<PermataBankTransfer> permataTranferCaptor;
 
     @Before
     public void setup(){
@@ -104,64 +104,45 @@ public class TmPayUsingMandiriClickPay extends APIClientMain {
     }
 
     @Test
-    public void testPaymentUsingMandiriClickPay_whenResponseNotNull() throws Exception {
-        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay_card.json");
+    public void testPaymentUsingPermataBankSuccess_whenResponseNotNull() throws Exception {
+        PermataBankTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), PermataBankTransfer.class, "sample_permata_bank_transfer.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay_permata_bank_transfer.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
-        eventBustImplementSample.paymentUsingMandiriClickPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+        eventBustImplementSample.paymentUsingPermataBank(veritransRestAPIMock, transfer, mToken);
 
-        Mockito.verify(merchantRestAPIMock).paymentUsingMandiriClickPay(xauthCaptor.capture(), mandiriClickPayCaptor.capture(), responseCallbackCaptor.capture());
+        Mockito.verify(veritransRestAPIMock).paymentUsingPermataBank(xauthCaptor.capture(), permataTranferCaptor.capture(), transferResponCaptor.capture());
 
         //response code 200 /201
-        responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
+        transferResponCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionSuccessEvent();
 
         //response not code 200 /201
         transactionResponse.setStatusCode("300");
-        Mockito.verify(merchantRestAPIMock).paymentUsingMandiriClickPay(xauthCaptor.capture(), mandiriClickPayCaptor.capture(), responseCallbackCaptor.capture());
-        responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
+        Mockito.verify(veritransRestAPIMock).paymentUsingPermataBank(xauthCaptor.capture(), permataTranferCaptor.capture(), transferResponCaptor.capture());
+        transferResponCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionFailedEvent();
-    }
-
-    @Test
-    public void testPaymentUsingMandiriClickPay_whenResponseNull() throws Exception {
-        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay_card.json");
-
-        TransactionResponse transactionResponse = null;
-        eventBustImplementSample.setTransactionManager(transactionManager);
-        eventBustImplementSample.registerBus(veritransBus);
-        eventBustImplementSample.paymentUsingMandiriClickPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
-
-        Mockito.verify(merchantRestAPIMock).paymentUsingMandiriClickPay(xauthCaptor.capture(), mandiriClickPayCaptor.capture(), responseCallbackCaptor.capture());
-
-        responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
-        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
 
     }
 
     @Test
-    public void testPaymentUsingMandiriClickPayError() throws Exception {
-        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay_card.json");
+    public void testPaymentUsingPermataBankSuccess_whenResponseNull() throws Exception {
+        PermataBankTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), PermataBankTransfer.class, "sample_permata_bank_transfer.json");
 
-        TransactionResponse transactionResponse = null;
+        TransactionResponse transactionResponse =  null;
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
-        eventBustImplementSample.paymentUsingMandiriClickPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+        eventBustImplementSample.paymentUsingPermataBank(veritransRestAPIMock, transfer, mToken);
 
-        Mockito.verify(merchantRestAPIMock).paymentUsingMandiriClickPay(xauthCaptor.capture(), mandiriClickPayCaptor.capture(), responseCallbackCaptor.capture());
+        Mockito.verify(veritransRestAPIMock).paymentUsingPermataBank(xauthCaptor.capture(), permataTranferCaptor.capture(), transferResponCaptor.capture());
 
-
-        //when valid certification
-        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+        //response code 200 /201
+        transferResponCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
-
-        // when invalid certification
-        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
-        Assert.assertNotNull(mSslHandshakeException);
-
     }
+
+
 
 }
