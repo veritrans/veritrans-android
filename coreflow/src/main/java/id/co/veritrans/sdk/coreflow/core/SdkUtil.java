@@ -227,7 +227,6 @@ public class SdkUtil {
         model.setTransactionDetails(transactionDetails);
         model.setCstore(cstoreEntity);
 
-
         return model;
 
     }

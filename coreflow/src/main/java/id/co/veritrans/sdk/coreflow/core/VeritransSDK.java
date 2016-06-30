@@ -245,9 +245,16 @@ public class VeritransSDK {
      */
     public void getToken(CardTokenRequest cardTokenRequest) {
 
-        if (cardTokenRequest != null && isAvailableForTransaction(Events.TOKENIZE)) {
-            isRunning = true;
-            mTransactionManager.getToken(cardTokenRequest);
+        if (cardTokenRequest != null) {
+            if( Utils.isNetworkAvailable(context)){
+                isRunning = true;
+                mTransactionManager.getToken(cardTokenRequest);
+            }else{
+                isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.TOKENIZE));
+            }
+
         } else {
             Logger.e(context.getString(R.string.error_invalid_data_supplied));
             isRunning = false;
@@ -261,10 +268,15 @@ public class VeritransSDK {
      */
     public void registerCard(CardTokenRequest cardTokenRequest, String userId) {
 
-        if (cardTokenRequest != null && isAvailableForTransaction(Events.CARD_REGISTRATION)) {
-
-            isRunning = true;
-            mTransactionManager.registerCard(cardTokenRequest, userId, veritransSDK.readAuthenticationToken());
+        if (cardTokenRequest != null) {
+            if(Utils.isNetworkAvailable(context)){
+                isRunning = true;
+                mTransactionManager.registerCard(cardTokenRequest, userId, veritransSDK.readAuthenticationToken());
+            }else{
+                isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.CARD_REGISTRATION));
+            }
         } else {
             Logger.e(context.getString(R.string.error_invalid_data_supplied));
             isRunning = false;
@@ -279,7 +291,7 @@ public class VeritransSDK {
     public void paymentUsingPermataBank() {
 
         if (transactionRequest != null) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
+            if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
 
                 PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel
@@ -289,6 +301,8 @@ public class VeritransSDK {
                 mTransactionManager.paymentUsingPermataBank(permataBankTransfer, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
         } else {
             isRunning = false;
@@ -303,7 +317,7 @@ public class VeritransSDK {
     public void paymentUsingBcaBankTransfer() {
 
         if (transactionRequest != null) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
+            if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER;
 
                 BCABankTransfer bcaBankTransfer = SdkUtil.getBcaBankTransferRequest(transactionRequest);
@@ -312,6 +326,8 @@ public class VeritransSDK {
                 mTransactionManager.paymentUsingBCATransfer(bcaBankTransfer, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
         } else {
             isRunning = false;
@@ -327,13 +343,15 @@ public class VeritransSDK {
     public void paymentUsingCard(CardTransfer cardTransfer) {
         if (transactionRequest != null
                 && cardTransfer != null) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
+            if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT;
 
                 isRunning = true;
-                mTransactionManager.paymentUsingCard(cardTransfer, veritransSDK.readAuthenticationToken());
+                mTransactionManager.paymentUsingCard(cardTransfer, readAuthenticationToken());
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
         } else {
             isRunning = false;
@@ -350,7 +368,7 @@ public class VeritransSDK {
 
         if (transactionRequest != null
                 && mandiriClickPayModel != null) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
+            if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
 
                 MandiriClickPayRequestModel mandiriClickPayRequestModel =
@@ -360,9 +378,10 @@ public class VeritransSDK {
                 mTransactionManager.paymentUsingMandiriClickPay(mandiriClickPayRequestModel, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
         } else {
-
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
@@ -374,15 +393,16 @@ public class VeritransSDK {
      * @param descriptionModel       information about BCA Klikpay
      */
     public void paymentUsingBCAKlikPay(BCAKlikPayDescriptionModel descriptionModel) {
-
         if (transactionRequest != null && descriptionModel != null) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
+            if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
                 BCAKlikPayModel bcaKlikPayModel = SdkUtil.getBCAKlikPayModel(transactionRequest, descriptionModel);
                 isRunning = true;
                 mTransactionManager.paymentUsingBCAKlikPay(bcaKlikPayModel, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
         } else {
             isRunning = false;
@@ -392,13 +412,15 @@ public class VeritransSDK {
 
     public void paymentUsingKlikBCA(KlikBCADescriptionModel descriptionModel) {
         if (transactionRequest != null && descriptionModel != null) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
+            if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY;
                 KlikBCAModel klikBCAModel = SdkUtil.getKlikBCAModel(transactionRequest, descriptionModel);
                 isRunning = true;
                 mTransactionManager.paymentUsingKlikBCA(klikBCAModel);
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
         } else {
             isRunning = false;
@@ -414,7 +436,7 @@ public class VeritransSDK {
         if (transactionRequest != null) {
             if (transactionRequest.getBillInfoModel() != null
                     && transactionRequest.getItemDetails() != null) {
-                if(isAvailableForTransaction(Events.PAYMENT)){
+                if(Utils.isNetworkAvailable(context)){
                     transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
 
                     MandiriBillPayTransferModel mandiriBillPayTransferModel =
@@ -424,15 +446,17 @@ public class VeritransSDK {
                     mTransactionManager.paymentUsingMandiriBillPay(mandiriBillPayTransferModel, veritransSDK.readAuthenticationToken());
                 }else{
                     isRunning = false;
+                    Logger.e(context.getString(R.string.error_unable_to_connect));
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
                 }
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY,  Events.PAYMENT));
                 Logger.e("Error: " + BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY);
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
         }
     }
 
@@ -446,17 +470,19 @@ public class VeritransSDK {
 
         if (transactionRequest != null
                 && descriptionModel != null) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
+            if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_CIMB_CLICKS;
 
                 CIMBClickPayModel cimbClickPayModel = SdkUtil.getCIMBClickPayModel
                         (transactionRequest, descriptionModel);
                 isRunning = true;
                 mTransactionManager.paymentUsingCIMBPay(cimbClickPayModel, veritransSDK.readAuthenticationToken());
-            }
-            else{
+            }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
+
         } else {
             isRunning = false;
             if (descriptionModel == null) {
@@ -475,7 +501,7 @@ public class VeritransSDK {
 
     public void paymentUsingMandiriECash(DescriptionModel descriptionModel) {
         if (transactionRequest != null) {
-            if(isNetworkAvailable(Events.PAYMENT)){
+            if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_MANDIRI_ECASH;
 
                 MandiriECashModel mandiriECashModel = SdkUtil.getMandiriECashModel
@@ -484,6 +510,8 @@ public class VeritransSDK {
                 mTransactionManager.paymentUsingMandiriECash(mandiriECashModel, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
         } else {
             isRunning = false;
@@ -572,7 +600,7 @@ public class VeritransSDK {
      */
     public void paymentUsingEpayBri() {
         if (transactionRequest != null) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
+            if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_EPAY_BRI;
 
             /*PermataBankTransfer permataBankTransfer = SdkUtil.getPermataBankModel
@@ -583,7 +611,10 @@ public class VeritransSDK {
                 mTransactionManager.paymentUsingEpayBri(epayBriTransfer, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
+
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -597,7 +628,7 @@ public class VeritransSDK {
      */
     public void paymentUsingIndosatDompetku(String msisdn) {
         if (transactionRequest != null) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
+            if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU;
 
                 IndosatDompetkuRequest indosatDompetkuRequest =
@@ -607,7 +638,10 @@ public class VeritransSDK {
                 mTransactionManager.paymentUsingIndosatDompetku(indosatDompetkuRequest, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
+
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -616,9 +650,10 @@ public class VeritransSDK {
 
     public void getPaymentStatus(String transactionId) {
         if (TextUtils.isEmpty(transactionId)) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
-                mTransactionManager.getPaymentStatus(transactionId, veritransSDK.readAuthenticationToken());
+            if(Utils.isNetworkAvailable(context)){
+                mTransactionManager.getPaymentStatus(transactionId, readAuthenticationToken());
             }
+
         }
     }
 
@@ -628,11 +663,10 @@ public class VeritransSDK {
      * @param cstoreEntity transaction details
      */
     public void paymentUsingIndomaret(CstoreEntity cstoreEntity) {
-
         if (transactionRequest != null
                 && cstoreEntity != null) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
-                transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU;
+            if(Utils.isNetworkAvailable(context)){
+                transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_INDOMARET;
 
                 IndomaretRequestModel indomaretRequestModel =
                         SdkUtil.getIndomaretRequestModel(transactionRequest, cstoreEntity);
@@ -641,7 +675,10 @@ public class VeritransSDK {
                 mTransactionManager.paymentUsingIndomaret(indomaretRequestModel, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
+
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
@@ -654,10 +691,11 @@ public class VeritransSDK {
      *!!!
      */
     public void getSavedCard() {
-        if(isAvailableForTransaction(Events.GET_CARD)){
+        if(Utils.isNetworkAvailable(context)){
             mTransactionManager.getCards(veritransSDK.readAuthenticationToken());
         }else{
             isRunning = false;
+            Logger.e(context.getString(R.string.error_unable_to_connect));
         }
     }
 
@@ -668,9 +706,14 @@ public class VeritransSDK {
      */
     public void saveCards(SaveCardRequest cardTokenRequest) {
         if (cardTokenRequest != null) {
-            if(isAvailableForTransaction(Events.REGISTER_CARD)){
+            if(Utils.isNetworkAvailable(context)){
                 mTransactionManager.saveCards(cardTokenRequest, veritransSDK.readAuthenticationToken());
+            }else{
+                isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.REGISTER_CARD));
             }
+
         }
     }
 
@@ -679,9 +722,8 @@ public class VeritransSDK {
      *
      */
     public void paymentUsingBBMMoney() {
-
         if (transactionRequest != null) {
-            if(isAvailableForTransaction(Events.PAYMENT)){
+            if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_BBM_MONEY;
 
                 BBMMoneyRequestModel bbmMoneyRequestModel =
@@ -691,6 +733,8 @@ public class VeritransSDK {
                 mTransactionManager.paymentUsingBBMMoney(bbmMoneyRequestModel, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.PAYMENT));
             }
         } else {
             isRunning = false;
@@ -704,10 +748,12 @@ public class VeritransSDK {
      */
     public void deleteCard(SaveCardRequest creditCard) {
         if (creditCard != null) {
-            if(isAvailableForTransaction(Events.DELETE_CARD)){
+            if(Utils.isNetworkAvailable(context)){
                 mTransactionManager.deleteCard(creditCard, veritransSDK.readAuthenticationToken());
             }else{
                 isRunning = false;
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.DELETE_CARD));
             }
         }
     }
@@ -715,11 +761,13 @@ public class VeritransSDK {
     public void cardRegistration(String cardNumber,
                                  String cardCvv, String cardExpMonth,
                                  String cardExpYear) {
-        if(isAvailableForTransaction(Events.CARD_REGISTRATION)){
+        if(Utils.isNetworkAvailable(context)){
             mTransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey);
             isRunning = true;
         }else{
             isRunning = false;
+            Logger.e(context.getString(R.string.error_unable_to_connect));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.CARD_REGISTRATION));
         }
     }
     public BBMCallBackUrl getBBMCallBackUrl() {
@@ -736,8 +784,11 @@ public class VeritransSDK {
      *!!!
      */
     public void getOffersList() {
-        if(isAvailableForTransaction(Events.GET_OFFER)){
+        if(Utils.isNetworkAvailable(context)){
             mTransactionManager.getOffers(readAuthenticationToken());
+        }else{
+            isRunning = false;
+            Logger.e(context.getString(R.string.error_unable_to_connect));
         }
     }
 
