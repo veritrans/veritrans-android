@@ -105,6 +105,18 @@ public class TmPaymentUsingCardTest extends APIClientMain{
 }
 
     @Test
+    public void testPaymentUsingCardError_whenTokenNull() throws Exception {
+        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
+
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingCard(merchantRestAPIMock, null, transfer, null);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
+
+    }
+
+
+    @Test
     public void testPaymentUsingCard_whenResponseNotNull() throws Exception {
         CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
 
@@ -119,6 +131,21 @@ public class TmPaymentUsingCardTest extends APIClientMain{
         //response code 200 /201
         responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionSuccessEvent();
+
+    }
+
+    @Test
+    public void testPaymentUsingCard_whenResponseNotNull_not200() throws Exception {
+        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
+
+        TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                TransactionResponse.class, "sample_response_pay_card.json");
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingCard(merchantRestAPIMock, X_AUTH, transfer, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingCard(xauthCaptor.capture(), cardTransferCaptor.capture(), responseCallbackCaptor.capture());
+
 
         //response not code 200 /201
         transactionResponse.setStatusCode("300");
@@ -143,10 +170,9 @@ public class TmPaymentUsingCardTest extends APIClientMain{
 
     }
 
-    public void testPaymentUsingBCABankError() throws Exception {
+    public void testPaymentUsingBCABankError_whenValidSSL() throws Exception {
         CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
 
-        TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingCard(merchantRestAPIMock, X_AUTH, transfer, mToken);
@@ -157,9 +183,21 @@ public class TmPaymentUsingCardTest extends APIClientMain{
         responseCallbackCaptor.getValue().failure(retrofitErrorMock);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
 
-        // when invalid certification
-        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
-        Assert.assertNotNull(mSslHandshakeException);
     }
 
+    public void testPaymentUsingBCABankError_whenInValidSSL() throws Exception {
+        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
+
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingCard(merchantRestAPIMock, X_AUTH, transfer, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingCard(xauthCaptor.capture(), cardTransferCaptor.capture(), responseCallbackCaptor.capture());
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
+
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+
+        // when invalid certification
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+    }
 }

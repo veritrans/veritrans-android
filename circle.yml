@@ -26,7 +26,7 @@ dependencies:
 test:
     override:
         # Build
-       - (./gradlew coreflow:testDevelopmentDebugUnitTest -PdisablePreDex):
+       - (./gradlew coreflow:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
             timeout: 3600
 
 # Deployment section
