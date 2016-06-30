@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,7 @@ public class SdkCoreFlowBuilder {
      * @param context   application context
 
      */
-    public SdkCoreFlowBuilder(Context context, String clientKey, String merchantServerUrl) {
+    public SdkCoreFlowBuilder(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl) {
             this.context = context.getApplicationContext();
             this.clientKey = clientKey;
             this.merchantServerUrl = merchantServerUrl;

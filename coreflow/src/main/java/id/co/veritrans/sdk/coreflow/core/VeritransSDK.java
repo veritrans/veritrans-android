@@ -120,23 +120,25 @@ public class VeritransSDK {
         }
     }
 
-    private boolean isAvailableForTransaction(String eventSource){
-        if(isSDKAvailable(eventSource) && isNetworkAvailable(eventSource)){
+    boolean isAvailableForTransaction(String eventSource){
+        if(isSDKAvailable(eventSource)){
             return true;
         }
         return false;
     }
 
-    private boolean isNetworkAvailable(String eventSource){
+    boolean isNetworkAvailable(String eventSource){
         if(Utils.isNetworkAvailable(context)) {
             return true;
         }
-        Logger.e(veritransSDK.getContext().getString(R.string.error_unable_to_connect));
+
+        Logger.e(context.getString(R.string.error_unable_to_connect));
         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), eventSource));
+
         return false;
     }
 
-    private boolean isSDKAvailable(String eventSource){
+    boolean isSDKAvailable(String eventSource){
         if(veritransSDK != null){
             return true;
         }
@@ -766,7 +768,7 @@ public class VeritransSDK {
      */
     public void getOffersList() {
         if(isAvailableForTransaction(Events.GET_OFFER)){
-            mTransactionManager.getOffers(veritransSDK.readAuthenticationToken());
+            mTransactionManager.getOffers(readAuthenticationToken());
         }
     }
 
@@ -786,5 +788,9 @@ public class VeritransSDK {
 
     public  TransactionManager getTransactionManager() {
         return mTransactionManager;
+    }
+
+    void setTransactionManager(TransactionManager transactionManager) {
+        mTransactionManager = transactionManager;
     }
 }

@@ -40,6 +40,7 @@ public interface MerchantRestAPI {
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
     @POST("/{id}/status/")
+    @Deprecated
     void transactionStatus(
             @Header("x-auth") String auth, @Path("id") String transactionId,
             Callback<TransactionStatusResponse> callback);

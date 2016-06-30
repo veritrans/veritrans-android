@@ -332,13 +332,18 @@ public class TransactionManager {
             if (isSDKLogEnabled) {
                 displayTokenResponse(tokenDetailsResponse);
             }
-
+            System.out.println("gettoken>success");
             if (tokenDetailsResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))) {
+                System.out.println("gettoken>success>equal");
+
                 VeritransBusProvider.getInstance().post(new GetTokenSuccessEvent(tokenDetailsResponse, Events.TOKENIZE));
+                System.out.println("gettoken>success>equal>post");
 
                 // Track Mixpanel event
                 MixpanelAnalyticsManager.trackMixpanel(KEY_TOKENIZE_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
             } else {
+                System.out.println("gettoken>success>not equal");
+
                 if (!TextUtils.isEmpty(tokenDetailsResponse.getStatusMessage())) {
                     VeritransBusProvider.getInstance().post(new GetTokenFailedEvent(
                             tokenDetailsResponse.getStatusMessage(),
@@ -402,6 +407,7 @@ public class TransactionManager {
                                 if (isSDKLogEnabled) {
                                     displayResponse(permataBankTransferResponse);
                                 }
+
                                 if (permataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
                                         || permataBankTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
                                     VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(permataBankTransferResponse, Events.PAYMENT));
@@ -524,7 +530,6 @@ public class TransactionManager {
      */
     public void paymentUsingCard(CardTransfer cardTransfer, String authenticationToken) {
         final long start = System.currentTimeMillis();
-
             String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
@@ -595,7 +600,6 @@ public class TransactionManager {
                     @Override
                     public void success(TransactionResponse mandiriTransferResponse, Response response) {
                         long end = System.currentTimeMillis();
-
                         if (mandiriTransferResponse != null) {
                             if (isSDKLogEnabled) {
                                 displayResponse(mandiriTransferResponse);
@@ -657,7 +661,6 @@ public class TransactionManager {
     public void paymentUsingBCAKlikPay(final BCAKlikPayModel bcaKlikPayModel, String authenticationToken) {
 
         final long start = System.currentTimeMillis();
-
             String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
@@ -1003,6 +1006,7 @@ public class TransactionManager {
      * @param id transaction identifier
      * @param authenticationToken
      */
+    @Deprecated
     public void getPaymentStatus(String id, String authenticationToken) {
             String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
@@ -1011,9 +1015,10 @@ public class TransactionManager {
                     @Override
                     public void success(TransactionStatusResponse transactionStatusResponse, Response response) {
                         if (transactionStatusResponse != null) {
-                            if (TextUtils.isEmpty(transactionStatusResponse.getStatusCode())) {
+                            if (!TextUtils.isEmpty(transactionStatusResponse.getStatusCode())) {
                                 if (transactionStatusResponse.getStatusCode().equalsIgnoreCase(context.getString(R.string.success_code_200))
                                         || transactionStatusResponse.getStatusCode().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
+
                                     VeritransBusProvider.getInstance().post(new TransactionStatusSuccessEvent(transactionStatusResponse, Events.PAYMENT));
                                 }
                             } else {
@@ -1118,7 +1123,6 @@ public class TransactionManager {
      */
     public void paymentUsingIndomaret(final IndomaretRequestModel indomaretRequestModel, String authenticationToken) {
         final long start = System.currentTimeMillis();
-
             String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
@@ -1192,6 +1196,7 @@ public class TransactionManager {
                     @Override
                     public void success(TransactionResponse bbmMoneyTransferResponse, Response response) {
                         long end = System.currentTimeMillis();
+                        System.out.println("bbmoney>success");
 
                         if (bbmMoneyTransferResponse != null) {
                             if (isSDKLogEnabled) {
@@ -1199,6 +1204,7 @@ public class TransactionManager {
                             }
                             if (bbmMoneyTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
                                     || bbmMoneyTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
+                                System.out.println("bbmoney>post");
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bbmMoneyTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event
@@ -1251,6 +1257,7 @@ public class TransactionManager {
      * @param cardTokenRequest card token request model
      * @param authenticationToken
      */
+    //test
     public void saveCards(final SaveCardRequest cardTokenRequest, String authenticationToken) {
             String auth = authenticationToken;
             Logger.i("Authentication token:" + auth);
@@ -1429,6 +1436,7 @@ public class TransactionManager {
      * It will execute API call to get offers.
      * @param authenticationToken
      */
+
     public void getOffers(String authenticationToken) {
             String merchantToken = authenticationToken;
             Logger.i("merchantToken:" + merchantToken);
@@ -1495,7 +1503,6 @@ public class TransactionManager {
             });
     }
 
-
     public void paymentUsingKlikBCA(KlikBCAModel klikBCAModel) {
         final long start = System.currentTimeMillis();
 
@@ -1520,7 +1527,6 @@ public class TransactionManager {
                             // Track Mixpanel event
                             MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, response.getStatusMessage());
                         }
-
                     } else {
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
                         Logger.e(context.getString(R.string.error_empty_response), null);
@@ -1539,10 +1545,8 @@ public class TransactionManager {
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
                         Logger.i("General error occurred " + e.getMessage());
                     }
-
                     // Track Mixpanel event
                     MixpanelAnalyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, e.getMessage());
-
                     releaseResources();
                 }
             });

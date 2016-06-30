@@ -34,18 +34,18 @@ public class MixpanelAnalyticsManager {
             api.trackEvent(data, new Callback<Integer>() {
                 @Override
                 public void success(Integer integer, Response response) {
-                    Logger.i("Response: " + Integer.toString(integer));
+//                    Logger.i("Response: " + Integer.toString(integer));
 
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Logger.i("Response>error: " + error.getMessage());
+//                    Logger.i("Response>error: " + error.getMessage());
 
                 }
             });
         } else {
-            Logger.e("No network connection");
+//            Logger.e("No network connection");
         }
     }
 
