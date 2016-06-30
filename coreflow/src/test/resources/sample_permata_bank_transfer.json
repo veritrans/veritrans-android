@@ -1,0 +1,1 @@
+{"bank_transfer":{"bank":"permata"},"billing_address":[],"item_details":[{"id":"1","name":"shoes","price":360000.0,"quantity":1.0}],"payment_type":"bank_transfer","shipping_address":[],"transaction_details":{"gross_amount":"360000.0","order_id":"263ff3ca-d2d9-4bcf-9080-750b1ad12e90"}}
