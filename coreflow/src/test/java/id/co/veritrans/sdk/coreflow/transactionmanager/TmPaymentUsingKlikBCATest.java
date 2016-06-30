@@ -104,6 +104,7 @@ public class TmPaymentUsingKlikBCATest extends APIClientMain {
         transactionManager = veritransSDK.getVeritransSDK().getTransactionManager();
     }
 
+
     @Test
     public void testPaymentUsingKlikBCASuccess_whenResponseNotNull() throws Exception {
         KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay_card.json");
@@ -127,6 +128,24 @@ public class TmPaymentUsingKlikBCATest extends APIClientMain {
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionFailedEvent();
     }
 
+    @Test
+    public void testPaymentUsingKlikBCASuccess_whenResponseNotNull_codeNot200() throws Exception {
+        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay_card.json");
+
+        TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                TransactionResponse.class, "sample_response_pay_card.json");
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingClickBCAModel(merchantRestAPIMock, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingKlikBCA( klikBCAModelArgumentCaptor.capture(), responseCallbackCaptor.capture());
+
+
+        transactionResponse.setStatusCode("300");
+        Mockito.verify(merchantRestAPIMock).paymentUsingKlikBCA(klikBCAModelArgumentCaptor.capture(), responseCallbackCaptor.capture());
+        responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionFailedEvent();
+    }
 
 
     @Test
@@ -146,7 +165,7 @@ public class TmPaymentUsingKlikBCATest extends APIClientMain {
 
 
     @Test
-    public void testPaymentUsingKlikBCAError() throws Exception {
+    public void testPaymentUsingKlikBCAError_whenvalidSSL() throws Exception {
         KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay_card.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -159,9 +178,23 @@ public class TmPaymentUsingKlikBCATest extends APIClientMain {
         responseCallbackCaptor.getValue().failure(retrofitErrorMock);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
 
-        // when invalid certification
+    }
+
+    @Test
+    public void testPaymentUsingKlikBCAError_wheInvalidSSL() throws Exception {
+        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay_card.json");
+
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingClickBCAModel(merchantRestAPIMock, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingKlikBCA( klikBCAModelArgumentCaptor.capture(), responseCallbackCaptor.capture());
         Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
-        Assert.assertNotNull(mSslHandshakeException);
+
+        //when valid certification
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+
     }
 
 

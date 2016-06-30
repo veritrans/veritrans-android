@@ -113,9 +113,8 @@ public class TmPaymentUsingMandiriBillPayTest extends APIClientMain {
                 TransactionResponse.class, "sample_response_pay_card.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
-        eventBustImplementSample.paymentUsingMandiriBillpay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+        eventBustImplementSample.paymentUsingMandiriBillpay(merchantRestAPIMock, null, requestModel, mToken);
 
-        responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
     }
 

@@ -103,9 +103,20 @@ public class TmPaymentUsingIndosatDompetkuTest extends APIClientMain{
                 .buildSDK();
         transactionManager = veritransSDK.getVeritransSDK().getTransactionManager();
     }
+    @Test
+    public void testPaymentUsingIndosatError_tokenNull() throws Exception {
+        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay_card.json");
+
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingIndosatDompetku(merchantRestAPIMock, requestModel, null);
+
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
+    }
+
 
     @Test
-    public void testPaymentUsingIndosatDompetku_whenResponseNotNull() throws Exception {
+    public void testPaymentUsingIndosatDompetkuSuccess_whenResponseNotNull() throws Exception {
         IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay_card.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
@@ -119,6 +130,20 @@ public class TmPaymentUsingIndosatDompetkuTest extends APIClientMain{
         //response code 200 /201
         responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionSuccessEvent();
+
+    }
+
+    @Test
+    public void testPaymentUsingIndosatDompetkuError_whenResponseNotNull_codeNot200() throws Exception {
+        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay_card.json");
+
+        TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                TransactionResponse.class, "sample_response_pay_card.json");
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingIndosatDompetku(merchantRestAPIMock, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingIndosatDompetku(xauthCaptor.capture(), indosatDompetkuRequestArgumentCaptor.capture(), responseCallbackCaptor.capture());
 
         //response not code 200 /201
         transactionResponse.setStatusCode("300");
@@ -143,7 +168,7 @@ public class TmPaymentUsingIndosatDompetkuTest extends APIClientMain{
     }
 
     @Test
-    public void testPaymentUsingIndosatDompetkuError() throws Exception {
+    public void testPaymentUsingIndosatDompetkuError_whenvalidSSL() throws Exception {
         IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay_card.json");
 
         TransactionResponse transactionResponse = null;
@@ -160,6 +185,22 @@ public class TmPaymentUsingIndosatDompetkuTest extends APIClientMain{
         // when invalid certification
         Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
         Assert.assertNotNull(mSslHandshakeException);
+    }
+
+    @Test
+    public void testPaymentUsingIndosatDompetkuError_invalidSSL() throws Exception {
+        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay_card.json");
+
+        TransactionResponse transactionResponse = null;
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingIndosatDompetku(merchantRestAPIMock, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingIndosatDompetku(xauthCaptor.capture(), indosatDompetkuRequestArgumentCaptor.capture(), responseCallbackCaptor.capture());
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+
     }
 
 }

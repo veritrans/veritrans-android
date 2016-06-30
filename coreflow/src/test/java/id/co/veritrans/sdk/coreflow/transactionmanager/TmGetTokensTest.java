@@ -49,7 +49,7 @@ import retrofit.mime.TypedByteArray;
 @PrepareForTest({Log.class, TextUtils.class, Logger.class, ConnectivityManager.class, Looper.class,
         Base64.class,
         VeritransBusProvider.class})
-public class TmGetTokenTest extends APIClientMain{
+public class TmGetTokensTest extends APIClientMain{
 
     private TransactionManager transactionManager;
     @Mock
