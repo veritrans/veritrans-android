@@ -27,8 +27,10 @@
                     android:layout_height="wrap_content"
                     android:digits="0123456789 "
                     android:hint="@string/hint_card_number"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
                     android:maxLength="19"
+                    android:nextFocusDown="@+id/et_exp_date"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
@@ -55,8 +57,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:hint="@string/hint_expiry_date"
+                        android:imeOptions="actionNext"
                         android:inputType="date"
-                        android:maxLength="5" />
+                        android:maxLength="5"
+                        android:nextFocusDown="@+id/et_cvv"
+                        android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
 
                 <RelativeLayout
@@ -75,6 +80,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_cvv"
+                            android:imeOptions="actionDone"
                             android:inputType="numberPassword"
                             android:maxLength="6"
                             android:singleLine="true" />
@@ -120,12 +126,12 @@
 
             <Button
                 android:id="@+id/scan_card"
+                style="?borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_scan_card"
                 android:layout_below="@id/cb_store_card"
+                android:text="@string/btn_scan_card"
                 android:textColor="@color/colorPrimary"
-                style="?borderlessButtonStyle"
                 android:visibility="gone"/>
 
             <RelativeLayout

@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -44,6 +45,7 @@ import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
 public class RegisterCardFragment extends Fragment {
 
     private String lastExpDate = "";
+    private TextInputLayout tilCardNo;
     private EditText etCardNo;
     private EditText etCvv;
     private EditText etExpiryDate;
@@ -115,6 +117,7 @@ public class RegisterCardFragment extends Fragment {
 
     private void bindViews(View view) {
         formLayout = (RelativeLayout) view.findViewById(R.id.form_layout);
+        tilCardNo = (TextInputLayout) view.findViewById(R.id.til_card_no);
         etCardNo = (EditText) view.findViewById(R.id.et_card_no);
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
@@ -213,6 +216,11 @@ public class RegisterCardFragment extends Fragment {
                     }
                 }
                 setCardType();
+
+                // Move to next input
+                if (s.length() == 19) {
+                    etExpiryDate.requestFocus();
+                }
             }
         });
 
@@ -265,6 +273,11 @@ public class RegisterCardFragment extends Fragment {
                             }
                         }
                         lastExpDate = etExpiryDate.getText().toString();
+
+                        // Move to next input
+                        if (s.length() == 5) {
+                            etCvv.requestFocus();
+                        }
                     }
                 }
         );
@@ -285,46 +298,38 @@ public class RegisterCardFragment extends Fragment {
             Logger.i("expiry date issue");
         }
         if (TextUtils.isEmpty(cardNumber)) {
-            if (!etCardNo.hasFocus()) {
-                etCardNo.setError(getString(R.string.validation_message_card_number));
-            }
+            tilCardNo.setError(getString(R.string.validation_message_card_number));
             isValid = false;
+        } else {
+            tilCardNo.setError(null);
         }
         if (cardNumber.length() < 15 || !SdkUIFlowUtil.isValidCardNumber(cardNumber)) {
-            if (!etCardNo.hasFocus()) {
-                etCardNo.setError(getString(R.string.validation_message_invalid_card_no));
-            }
+            tilCardNo.setError(getString(R.string.validation_message_invalid_card_no));
             isValid = false;
-        } else if (TextUtils.isEmpty(expiryDate)) {
-            if (!etExpiryDate.hasFocus()) {
-                etExpiryDate.setError(getString(R.string.validation_message_empty_expiry_date));
-            }
+        } else {
+            tilCardNo.setError(null);
+        }
+
+        if (TextUtils.isEmpty(expiryDate)) {
+            etExpiryDate.setError(getString(R.string.validation_message_empty_expiry_date));
             isValid = false;
         } else if (!expiryDate.contains("/")) {
-            if (!etExpiryDate.hasFocus()) {
-                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
-            }
+            etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
             isValid = false;
         } else if (expDateArray == null || expDateArray.length != 2) {
-            if (!etExpiryDate.hasFocus()) {
-                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
-            }
+            etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
             isValid = false;
         } else if (expDateArray != null) {
             try {
                 expMonth = Integer.parseInt(expDateArray[0]);
             } catch (NumberFormatException e) {
-                if (!etExpiryDate.hasFocus()) {
-                    etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
-                }
+                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             }
             try {
                 expYear = Integer.parseInt(expDateArray[1]);
             } catch (NumberFormatException e) {
-                if (!etExpiryDate.hasFocus()) {
-                    etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
-                }
+                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             }
             Calendar calendar = Calendar.getInstance();
@@ -335,34 +340,33 @@ public class RegisterCardFragment extends Fragment {
             int currentMonth = calendar.get(Calendar.MONTH) + 1;
             int currentYear = Integer.parseInt(year);
             Logger.i("currentMonth:" + currentMonth + ",currentYear:" + currentYear);
+
             if (expYear < currentYear) {
-                if (!etExpiryDate.hasFocus()) {
-                    etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
-                }
+                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             } else if (expYear == currentYear && currentMonth > expMonth) {
-                if (!etExpiryDate.hasFocus()) {
-                    etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
-                }
-                isValid = false;
-            }
-
-            if (TextUtils.isEmpty(cvv)) {
-                if (!etCvv.hasFocus()) {
-                    etCvv.setError(getString(R.string.validation_message_cvv));
-                }
-                questionImg.setVisibility(View.GONE);
+                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             } else {
-                if (cvv.length() < 3) {
-                    if (!etCvv.hasFocus()) {
-                        etCvv.setError(getString(R.string.validation_message_invalid_cvv));
-                    }
-                    questionImg.setVisibility(View.GONE);
-                    isValid = false;
-                }
-                questionImg.setVisibility(View.VISIBLE);
+                etExpiryDate.setError(null);
             }
+        } else {
+            etExpiryDate.setError(null);
+        }
+
+        if (TextUtils.isEmpty(cvv)) {
+            questionImg.setVisibility(View.GONE);
+            etCvv.setError(getString(R.string.validation_message_cvv));
+            isValid = false;
+        } else {
+            if (cvv.length() < 3) {
+                questionImg.setVisibility(View.GONE);
+                etCvv.setError(getString(R.string.validation_message_invalid_cvv));
+                isValid = false;
+            } else {
+                etCvv.setError(null);
+            }
+            questionImg.setVisibility(View.VISIBLE);
         }
         return isValid;
     }

@@ -6,7 +6,7 @@
             android:name=".activities.UserDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activities.PaymentMethodsActivity"
             android:screenOrientation="portrait"
