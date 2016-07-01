@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -23,6 +24,7 @@ import javax.net.ssl.SSLHandshakeException;
 
 import id.co.veritrans.sdk.coreflow.APIClientMain;
 import id.co.veritrans.sdk.coreflow.R;
+import id.co.veritrans.sdk.coreflow.analytics.MixpanelApi;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
 import id.co.veritrans.sdk.coreflow.core.MixpanelAnalyticsManager;
@@ -38,6 +40,7 @@ import retrofit.RetrofitError;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class})
+@PowerMockIgnore("javax.net.ssl.*")
 public abstract class TransactionMangerMain extends APIClientMain{
     protected TransactionManager transactionManager;
     @Mock
@@ -56,10 +59,13 @@ public abstract class TransactionMangerMain extends APIClientMain{
     protected VeritransRestAPI veritransRestAPIMock;
     @Mock
     protected MerchantRestAPI merchantRestAPIMock;
+    
     @Mock
     protected RetrofitError retrofitErrorMock;
     @Mock
     protected MixpanelAnalyticsManager mixpanelAnalyticsManagerMock;
+    @Mock
+    protected MixpanelApi mixpanelApiMock;
 
     @Mock
     protected BusCollaborator busCollaborator;
@@ -93,6 +99,7 @@ public abstract class TransactionMangerMain extends APIClientMain{
                 .setBoldText("open_sans_bold.ttf")
                 .setMerchantName("Veritrans Example Merchant")
                 .buildSDK();
+        mixpanelAnalyticsManagerMock.setMixpanelApi(mixpanelApiMock);
         transactionManager = veritransSDK.getTransactionManager();
         transactionManager.setAnalyticsManager(mixpanelAnalyticsManagerMock);
     }

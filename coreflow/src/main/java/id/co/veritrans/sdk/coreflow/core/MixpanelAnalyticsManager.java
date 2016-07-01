@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.coreflow.core;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import com.google.gson.Gson;
@@ -19,19 +20,31 @@ import retrofit.client.Response;
 public class MixpanelAnalyticsManager {
     // Platform properties
     private static final String PLATFORM = "Android";
+
+    public void setMixpanelApi(MixpanelApi mixpanelApi) {
+        this.mixpanelApi = mixpanelApi;
+    }
+
     /**
      * Track event for mixpanel.
      *
      * @param event Mixpanel parameter.
      */
-    private static void trackEvent(MixpanelEvent event) {
-        MixpanelApi api = VeritransRestAdapter.getMixpanelApi();
 
-        if (api != null) {
+
+    private MixpanelApi mixpanelApi;
+
+    public MixpanelAnalyticsManager(@NonNull MixpanelApi mixpanelApi) {
+        this.mixpanelApi = mixpanelApi;
+    }
+
+    private  void trackEvent(MixpanelEvent event) {
+
+        if (mixpanelApi != null) {
             Gson gson = new Gson();
             String eventObject = gson.toJson(event);
             String data = Base64.encodeToString(eventObject.getBytes(), Base64.DEFAULT);
-            api.trackEvent(data, new Callback<Integer>() {
+            mixpanelApi.trackEvent(data, new Callback<Integer>() {
                 @Override
                 public void success(Integer integer, Response response) {
 //                    Logger.i("Response: " + Integer.toString(integer));
@@ -72,7 +85,7 @@ public class MixpanelAnalyticsManager {
 
         event.setProperties(properties);
 
-        MixpanelAnalyticsManager.trackEvent(event);
+        trackEvent(event);
     }
 
     public void trackMixpanel(String eventName, String paymentType, long responseTime) {
@@ -94,7 +107,7 @@ public class MixpanelAnalyticsManager {
 
         event.setProperties(properties);
 
-        MixpanelAnalyticsManager.trackEvent(event);
+        trackEvent(event);
     }
 
     public void trackMixpanel(String eventName, String paymentType, long responseTime, String errorMessage) {
@@ -117,7 +130,7 @@ public class MixpanelAnalyticsManager {
 
         event.setProperties(properties);
 
-        MixpanelAnalyticsManager.trackEvent(event);
+        trackEvent(event);
     }
 
     public void trackMixpanel(String eventName, String paymentType, String bank, long responseTime, String errorMessage) {
@@ -141,6 +154,6 @@ public class MixpanelAnalyticsManager {
 
         event.setProperties(properties);
 
-        MixpanelAnalyticsManager.trackEvent(event);
+        trackEvent(event);
     }
 }
