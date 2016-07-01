@@ -9,13 +9,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
 
 /**
  * Displays status information about bank transfer's api call .
@@ -33,7 +33,7 @@ public class IndomaretPaymentFragment extends Fragment {
 
     private TextView mTextViewValidity = null;
     private TextView mTextViewPaymentCode = null;
-    private TextView mTextViewCopyToClipboard = null;
+    private Button btnCopyToClipboard = null;
 
 
     public static IndomaretPaymentFragment newInstance(TransactionResponse mTransactionResponse) {
@@ -71,7 +71,7 @@ public class IndomaretPaymentFragment extends Fragment {
     private void initializeViews(View view) {
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
         mTextViewPaymentCode = (TextView) view.findViewById(R.id.text_payment_code);
-        mTextViewCopyToClipboard = (TextView) view.findViewById(R.id.text_copy_va);
+        btnCopyToClipboard = (Button) view.findViewById(R.id.btn_copy_va);
 
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
@@ -82,12 +82,7 @@ public class IndomaretPaymentFragment extends Fragment {
                 mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeIndomaret());
 
         }
-
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            mTextViewCopyToClipboard.setTextColor(veritransSDK.getThemeColor());
-        }
-        mTextViewCopyToClipboard.setOnClickListener(new View.OnClickListener() {
+        btnCopyToClipboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 copyPaymentCode();

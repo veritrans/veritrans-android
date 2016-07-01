@@ -1,9 +1,13 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
+import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.uiflow.R;
 
 /**
@@ -14,14 +18,15 @@ import id.co.veritrans.sdk.uiflow.R;
 public class MandiriClickPayInstructionActivity extends BaseActivity {
 
     private Toolbar mToolbar = null;
+    private ImageView logo = null;
+    private VeritransSDK veritransSDK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_instruction_mandiri_click_pay);
+        veritransSDK = VeritransSDK.getVeritransSDK();
         initializeViews();
-        initializeTheme();
     }
 
 
@@ -48,11 +53,14 @@ public class MandiriClickPayInstructionActivity extends BaseActivity {
     private void initializeViews() {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setNavigationIcon(R.drawable.ic_close);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
+        initializeTheme();
+        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
+        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        mToolbar.setNavigationIcon(closeIcon);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
 }

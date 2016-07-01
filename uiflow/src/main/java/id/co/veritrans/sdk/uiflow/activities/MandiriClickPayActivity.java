@@ -1,7 +1,11 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +14,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -35,7 +40,6 @@ import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
  */
 public class MandiriClickPayActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
-
     public static final String DENY = "202";
     public static final String HOME_FRAGMENT = "home";
     public static final String STATUS_FRAGMENT = "transaction_status";
@@ -48,6 +52,8 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     private TextView mTextViewInput1 = null;
     private TextView mTextViewInput2 = null;
     private TextView mTextViewInput3 = null;
+    private AppBarLayout appBar = null;
+    private ImageView logo = null;
     private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
     private VeritransSDK mVeritransSDK = null;
     // for result
@@ -72,7 +78,6 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
 
         initializeViews();
-        initializeTheme();
         bindDataToView();
         setUpHomeFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
@@ -97,6 +102,15 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         mTextViewInput1 = (TextView) findViewById(R.id.text_input_1);
         mTextViewInput2 = (TextView) findViewById(R.id.text_input_2);
         mTextViewInput3 = (TextView) findViewById(R.id.text_input_3);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
+        appBar = (AppBarLayout) findViewById(R.id.main_appbar);
+        initializeTheme();
+
+        if (mVeritransSDK != null) {
+            if (mVeritransSDK.getSemiBoldText() != null) {
+                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+            }
+        }
 
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
@@ -129,7 +143,18 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            if (currentFragment.equals(STATUS_FRAGMENT)) {
+                if (mButtonConfirmPayment.getText().toString().equalsIgnoreCase(getString(R.string.retry))) {
+                    //finish();
+                    Logger.i("on retry pressed");
+                    setResultAndFinish();
+                } else {
+                    RESULT_CODE = RESULT_OK;
+                    setResultAndFinish();
+                }
+            } else {
+                onBackPressed();
+            }
         }
         return true;
     }
@@ -252,8 +277,11 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
-        mCollapsingToolbarLayout.setVisibility(View.GONE);
-        mToolbar.setNavigationIcon(R.drawable.ic_close);
+
+        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
+        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        mToolbar.setNavigationIcon(closeIcon);
+        appBar.setExpanded(false, false);
         setSupportActionBar(mToolbar);
 
         BankTransactionStatusFragment bankTransactionStatusFragment =

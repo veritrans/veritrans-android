@@ -1,7 +1,9 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,14 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -26,13 +27,15 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
+import id.co.veritrans.sdk.coreflow.models.CstoreEntity;
+import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.uiflow.fragments.IndomaretPaymentFragment;
 import id.co.veritrans.sdk.uiflow.fragments.IndomaretPaymentStatusFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionIndomaretFragment;
-import id.co.veritrans.sdk.coreflow.models.CstoreEntity;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
  * Created by Ankit on 12/01/15.
@@ -50,6 +53,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     private Button buttonConfirmPayment = null;
     private AppBarLayout appBarLayout = null;
     private TextView textViewTitle = null;
+    private ImageView logo = null;
 
     private VeritransSDK veritransSDK = null;
     private Toolbar toolbar = null;
@@ -82,7 +86,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         }
 
         initializeView();
-        initializeTheme();
         bindDataToView();
         setUpHomeFragment();
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
@@ -92,10 +95,10 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().unregister(this);
         }
-        super.onDestroy();
     }
 
 
@@ -109,23 +112,22 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         instructionIndomaretFragment = new InstructionIndomaretFragment();
 
-        fragmentTransaction.add(R.id.indomaret_container,
-                instructionIndomaretFragment, HOME_FRAGMENT);
+        fragmentTransaction.add(R.id.indomaret_container, instructionIndomaretFragment, HOME_FRAGMENT);
         fragmentTransaction.commit();
 
         currentFragment = HOME_FRAGMENT;
     }
 
     @Override
-    public void onBackPressed() {
-        setResultAndFinish();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
+                RESULT_CODE = RESULT_OK;
+                setResultAndFinish();
+            } else {
+                onBackPressed();
+            }
         }
 
         return false;
@@ -139,7 +141,8 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
-
+        logo = (ImageView) findViewById(R.id.merchant_logo);
+        initializeTheme();
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
@@ -176,11 +179,11 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                 } else {
                     RESULT_CODE = RESULT_OK;
                     SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, SOMETHING_WENT_WRONG);
-                    onBackPressed();
+                    setResultAndFinish();
                 }
             } else {
                 RESULT_CODE = RESULT_OK;
-                onBackPressed();
+                setResultAndFinish();
             }
         }
     }
@@ -194,13 +197,15 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         currentFragment = STATUS_FRAGMENT;
         buttonConfirmPayment.setText(R.string.done);
 
-        collapsingToolbarLayout.setVisibility(View.GONE);
-        toolbar.setNavigationIcon(R.drawable.ic_close);
+        appBarLayout.setExpanded(false, false);
+
+        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
+        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        toolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(toolbar);
 
         IndomaretPaymentStatusFragment indomaretPaymentStatusFragment =
                 IndomaretPaymentStatusFragment.newInstance(transactionResponse, false);
-
 
         // setup transaction status fragment
         fragmentTransaction.replace(R.id.indomaret_container,

@@ -3,10 +3,10 @@ package id.co.veritrans.sdk.uiflow.utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
+import android.content.res.TypedArray;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -14,18 +14,17 @@ import android.widget.EditText;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import id.co.veritrans.sdk.coreflow.BuildConfig;
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.coreflow.models.BBMUrlEncodeJson;
+import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.widgets.VeritransLoadingDialog;
 
 /**
@@ -328,5 +327,38 @@ public class SdkUIFlowUtil {
         return encodedUrl;
     }
 
+
+    public static int fetchAccentColor(Context context) {
+        TypedValue typedValue = new TypedValue();
+
+        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent});
+        int color = a.getColor(0, 0);
+
+        a.recycle();
+
+        return color;
+    }
+
+    public static int fetchPrimaryColor(Context context) {
+        TypedValue typedValue = new TypedValue();
+
+        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorPrimary});
+        int color = a.getColor(0, 0);
+
+        a.recycle();
+
+        return color;
+    }
+
+    public static int fetchPrimaryDarkColor(Context context) {
+        TypedValue typedValue = new TypedValue();
+
+        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorPrimaryDark});
+        int color = a.getColor(0, 0);
+
+        a.recycle();
+
+        return color;
+    }
 
 }

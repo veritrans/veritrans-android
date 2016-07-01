@@ -11,13 +11,13 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.fragments.UserAddressFragment;
-import id.co.veritrans.sdk.uiflow.fragments.UserDetailFragment;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.fragments.UserAddressFragment;
+import id.co.veritrans.sdk.uiflow.fragments.UserDetailFragment;
 
 public class UserDetailsActivity extends BaseActivity {
     @Override
@@ -61,10 +61,10 @@ public class UserDetailsActivity extends BaseActivity {
 
     private void setView() {
         setContentView(R.layout.activity_user_details);
-        initializeTheme();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initializeTheme();
 
     }
 

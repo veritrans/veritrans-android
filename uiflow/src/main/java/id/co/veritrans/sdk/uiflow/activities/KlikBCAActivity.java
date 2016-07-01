@@ -1,7 +1,9 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -47,7 +51,9 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     private TextView mTextViewAmount;
     private Button mButtonConfirmPayment;
     private AppBarLayout mAppBarLayout;
+    private ImageView logo;
     private TextView mTextViewTitle;
+    private LinearLayout containerCollapsing;
 
     private KlikBCAFragment klikBCAFragment;
 
@@ -75,13 +81,13 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
-
+        containerCollapsing = (LinearLayout) findViewById(R.id.container_collapsing);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
+        initializeTheme();
         // Setup toolbar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        initializeTheme();
 
         bindData();
     }
@@ -92,6 +98,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
         // Set transaction details
         mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
         mTextViewOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
+
 
         // Set custom font if available
         if (mVeritransSDK.getSemiBoldText() != null) {
@@ -150,8 +157,10 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
-        mCollapsingToolbarLayout.setVisibility(View.GONE);
-        mToolbar.setNavigationIcon(R.drawable.ic_close);
+        mAppBarLayout.setExpanded(false, false);
+        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
+        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
 
         BankTransactionStatusFragment bankTransactionStatusFragment =
@@ -208,7 +217,19 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            if (currentFragment.equals(STATUS_FRAGMENT)) {
+                Intent data = new Intent();
+                if (transactionResponse != null) {
+                    data.putExtra(getString(R.string.transaction_response), transactionResponse);
+                }
+                if (errorMessage != null && !errorMessage.equals("")) {
+                    data.putExtra(getString(R.string.error_transaction), errorMessage);
+                }
+                setResult(RESULT_OK, data);
+                finish();
+            } else {
+                onBackPressed();
+            }
         }
 
         return false;

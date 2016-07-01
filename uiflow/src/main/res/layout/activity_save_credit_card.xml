@@ -6,34 +6,50 @@
     android:layout_height="match_parent"
     tools:context="id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main_appbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        app:theme="@style/ToolBarStyle">
+        android:layout_height="?actionBarSize"
+        android:fitsSystemWindows="true">
 
-        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
-            android:id="@+id/title_header"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/ThemeOverlay.AppCompat.ActionBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/tool_bar_title_size"
-            android:visibility="visible"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            app:title="">
 
-    </android.support.v7.widget.Toolbar>
+            <ImageView
+                android:id="@+id/merchant_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:src="@drawable/ic_veritrans" />
+
+            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                android:id="@+id/title_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/tool_bar_title_size"
+                tools:text="@string/mandiri_e_cash" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
         android:id="@+id/card_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/main_appbar" />
 
     <RelativeLayout
         android:id="@+id/processing_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/main_appbar"
         android:background="@android:color/white"
         android:visibility="gone" />
 

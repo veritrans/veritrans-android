@@ -177,11 +177,10 @@
 
         <Button
             android:id="@+id/btn_action"
+            style="@style/Widget.AppCompat.Button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/btn_height"
-            android:background="@drawable/blue_button_selector"
             android:text="@string/done"
-            android:textColor="@android:color/white"
-            />
+            android:textColor="@android:color/white" />
     </RelativeLayout>
 </RelativeLayout>
