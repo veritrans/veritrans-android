@@ -61,8 +61,7 @@
             android:padding="@dimen/eight_dp"
             android:text="@string/text_billpay_code_here"
             android:textColor="@color/black"
-            android:textSize="@dimen/header_text_size"
-            />
+            android:textSize="@dimen/header_text_size" />
 
 
         <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
@@ -70,52 +69,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/sixteen_dp"
             android:background="@color/faint_yellow"
             android:gravity="left"
             android:padding="@dimen/sixteen_dp"
             android:text="@string/text_sample_valid_date"
             android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-            />
+            android:textSize="@dimen/secondary_text_size" />
 
-        <id.co.veritrans.sdk.uiflow.widgets.SemiBoldTextView
-            android:id="@+id/text_copy_company_code"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_copy_company_code"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/twenty_four_dp"
-            android:clickable="true"
-            android:paddingTop="@dimen/eight_dp"
             android:text="@string/copy_company_code"
-            android:textAllCaps="true"
-            android:textSize="@dimen/secondary_text_size"
-            android:textStyle="bold" />
+            android:textColor="?colorPrimary" />
 
-        <id.co.veritrans.sdk.uiflow.widgets.SemiBoldTextView
-            android:id="@+id/text_copy_va"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_copy_va"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/twenty_four_dp"
-            android:clickable="true"
-            android:paddingTop="@dimen/eight_dp"
             android:text="@string/copy_billpay_code"
-            android:textAllCaps="true"
-            android:textSize="@dimen/secondary_text_size"
-            android:textStyle="bold" />
+            android:textColor="?colorPrimary" />
 
-        <id.co.veritrans.sdk.uiflow.widgets.SemiBoldTextView
-            android:id="@+id/text_see_instruction"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_see_instruction"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/twenty_four_dp"
-            android:clickable="true"
-            android:paddingBottom="@dimen/eight_dp"
-            android:paddingTop="@dimen/eight_dp"
             android:text="@string/see_instruction"
-            android:textAllCaps="true"
-            android:textSize="@dimen/secondary_text_size"
-            android:textStyle="bold"
-            />
+            android:textColor="?colorPrimary" />
 
 
     </LinearLayout>

@@ -75,11 +75,11 @@
 
         <Button
             android:id="@+id/btn_pay_now_front"
+            style="@style/Widget.AppCompat.Button"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/eight_dp"
-            android:background="@drawable/blue_button_selector"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             android:text="@string/pay_now"
@@ -144,10 +144,10 @@
 
             <Button
                 android:id="@+id/btn_pay_now"
+                style="@style/Widget.AppCompat.Button"
                 android:layout_width="0dp"
                 android:layout_height="32dp"
                 android:layout_weight="0.3"
-                android:background="@drawable/blue_button_selector"
                 android:text="@string/btn_pay"
                 android:textColor="@color/white" />
         </LinearLayout>

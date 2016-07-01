@@ -7,8 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
@@ -22,7 +22,7 @@ import id.co.veritrans.sdk.uiflow.activities.BankTransferInstructionActivity;
  */
 public class BankTransferFragment extends Fragment {
 
-    private TextView mTextViewSeeInstruction = null;
+    private Button btnSeeInstruction = null;
     private EditText mEditTextEmailId = null;
     private UserDetail userDetail;
 
@@ -48,8 +48,7 @@ public class BankTransferFragment extends Fragment {
      */
     private void initializeViews(View view) {
 
-        mTextViewSeeInstruction = (TextView)
-                view.findViewById(R.id.text_see_instruction);
+        btnSeeInstruction = (Button) view.findViewById(R.id.btn_see_instruction);
         try {
             userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         } catch (Exception e) {
@@ -64,9 +63,8 @@ public class BankTransferFragment extends Fragment {
         }
         if (veritransSDK != null) {
             mEditTextEmailId.setHintTextColor(veritransSDK.getThemeColor());
-            mTextViewSeeInstruction.setTextColor(veritransSDK.getThemeColor());
         }
-        mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
+        btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

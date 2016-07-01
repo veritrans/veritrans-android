@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 
 public class VeritransDialog extends android.app.Dialog {
 
@@ -79,12 +78,6 @@ public class VeritransDialog extends android.app.Dialog {
 
         this.buttonAccept = (Button) findViewById(R.id.btn_accept);
         this.buttonCancel = (Button) findViewById(R.id.btn_cancel);
-
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            buttonAccept.setTextColor(veritransSDK.getThemeColor());
-            buttonCancel.setTextColor(veritransSDK.getThemeColor());
-        }
 
         if (TextUtils.isEmpty(positiveButtonText)) {
             this.buttonAccept.setVisibility(View.GONE);

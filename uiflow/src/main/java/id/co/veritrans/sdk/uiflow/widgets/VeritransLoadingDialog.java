@@ -46,10 +46,6 @@ public class VeritransLoadingDialog extends Dialog {
         } else {
             messageTv.setVisibility(View.GONE);
         }
-        if (veritransSDK != null) {
-            progressWheel.setBarColor(getContext().getResources().getColor(R.color.colorAccent));
-            messageTv.setTextColor(getContext().getResources().getColor(R.color.colorAccent));
-        }
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
     }

@@ -4,9 +4,10 @@
     <!-- Base application theme. -->
     <style name="VeritransAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item> 
-        <item name="colorPrimaryDark">@color/colorSecondary</item> 
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item> 
         <item name="colorControlHighlight">@color/dark_gray</item> 
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
     </style>
 
     <style name="ToolBarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
