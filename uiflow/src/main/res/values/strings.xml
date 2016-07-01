@@ -464,4 +464,7 @@
     <string name="payment_canceled">3DS Authorization was cancelled.</string>
     <string name="btn_pay">Pay</string>
     <string name="hint_input_cvv">Input CVV</string>
+
+    <string name="payment_confirmation_title">Payment Confirmation</string>
+    <string name="payment_confirmation_description">Card Number:\n%1$s\n\nGross Amount: %2$s</string>
 </resources>

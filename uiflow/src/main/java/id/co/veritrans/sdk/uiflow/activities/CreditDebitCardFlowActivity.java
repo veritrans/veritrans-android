@@ -255,6 +255,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
                 cardPaymentDetails = new CardPaymentDetails("",
                         cardTokenRequest.getSavedTokenId(), true);
+                if (cardPaymentDetails.getBank().equals("")) {
+                    cardPaymentDetails.setBank(null);
+                }
                 cardPaymentDetails.setRecurring(true);
             } else if (tokenDetailsResponse != null) {
                 Logger.i("tokenDetailsResponse.getTokenId():" + tokenDetailsResponse.getTokenId());
