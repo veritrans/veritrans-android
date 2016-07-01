@@ -252,7 +252,6 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                 .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-        circlePageIndicator.setFillColor(getResources().getColor(R.color.colorPrimary));
         creditCards = ((OffersActivity) getActivity()).getCreditCardList();
 
         setViewPagerValues();

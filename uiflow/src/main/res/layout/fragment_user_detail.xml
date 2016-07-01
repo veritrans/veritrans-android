@@ -68,10 +68,10 @@
 
             <Button
                 android:id="@+id/btn_next"
+                style="@style/Widget.AppCompat.Button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_height"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/blue_button_selector"
                 android:text="@string/next"
                 android:textColor="@android:color/white" />
         </RelativeLayout>

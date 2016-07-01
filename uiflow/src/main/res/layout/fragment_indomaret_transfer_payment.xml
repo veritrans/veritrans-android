@@ -66,17 +66,13 @@
             android:textSize="@dimen/header_text_size"
             />
 
-        <id.co.veritrans.sdk.uiflow.widgets.SemiBoldTextView
-            android:id="@+id/text_copy_va"
+        <Button
+            android:id="@+id/btn_copy_va"
+            style="?borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/twenty_four_dp"
-            android:clickable="true"
-            android:paddingTop="@dimen/eight_dp"
             android:text="@string/copy_payment_code"
-            android:textAllCaps="true"
-            android:textSize="@dimen/secondary_text_size"
-            android:textStyle="bold" />
+            android:textColor="?colorPrimary" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -4,8 +4,7 @@
     <!-- Base application theme. -->
     <style name="VeritransAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item> 
-        <item name="colorPrimaryDark">@color/colorSecondary</item> 
-        <item name="colorControlHighlight">@color/colorPrimary</item> 
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item> 
         <item name="colorAccent">@color/colorAccent</item>
         
     </style>
@@ -31,6 +30,6 @@
     </style>
 
     <style name="ScrollTheme">
-        <item name="android:colorEdgeEffect">@color/colorPrimary</item>
+        <item name="android:colorEdgeEffect">?colorPrimary</item>
     </style>
 </resources>

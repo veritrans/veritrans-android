@@ -63,6 +63,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/transperent_button"
                 android:text="@string/btn_cancel"
+                android:textColor="?colorPrimary"
                 android:textSize="@dimen/secondary_text_size" />
 
             <Button
@@ -72,6 +73,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/transperent_button"
                 android:text="@string/btn_accept"
+                android:textColor="?colorPrimary"
                 android:textSize="@dimen/secondary_text_size" />
         </LinearLayout>
 
