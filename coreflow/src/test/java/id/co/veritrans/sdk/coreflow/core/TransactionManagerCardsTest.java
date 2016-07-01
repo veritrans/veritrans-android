@@ -553,7 +553,7 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
     public void testGetOffersSuccess_whenResponseNotNull_codeNot200() throws Exception {
         GetOffersResponseModel responseModel = new GetOffersResponseModel();
         responseModel.setCode(200);
-        responseModel.setMessage("success");
+        responseModel.setMessage("failed");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -561,7 +561,7 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
 
 
         //response message not success
-        responseModel.setMessage("not really");
+        responseModel.setMessage("success");
         Mockito.verify(merchantRestAPIMock).getOffers(xauthCaptor.capture(), responseOfferCallbackCaptor.capture());
         responseOfferCallbackCaptor.getValue().success(responseModel, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGetOfferFailedEvent();
