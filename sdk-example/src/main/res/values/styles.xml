@@ -51,7 +51,7 @@
         <item name="colorPrimary">@color/indigo_500</item>
         <item name="colorAccent">@color/pink_a200</item>
         <item name="colorPrimaryDark">@color/indigo_700</item>
-        <item name="colorButtonNormal">@color/indigo_700</item>
+        <item name="colorButtonNormal">@color/indigo_500</item>
     </style>
 
 </resources>
