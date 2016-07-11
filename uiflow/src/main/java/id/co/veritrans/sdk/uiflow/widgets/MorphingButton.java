@@ -16,8 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
  * Created by chetan on 24/11/15.
@@ -169,19 +170,19 @@ public class MorphingButton extends Button {
 
         Resources resources = getResources();
         int cornerRadius = (int) resources.getDimension(R.dimen.mb_corner_radius_2);
-        int blue = resources.getColor(R.color.colorPrimary);
-        int blueDark = resources.getColor(R.color.colorSecondary);
+        int primary = SdkUIFlowUtil.fetchPrimaryColor(getContext());
+        int primaryDark = SdkUIFlowUtil.fetchPrimaryDarkColor(getContext());
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null && veritransSDK.getThemeColor() != 0) {
-            blue = veritransSDK.getThemeColor();
-            blueDark = veritransSDK.getThemeColor();
+            primary = veritransSDK.getThemeColor();
+            primaryDark = veritransSDK.getThemeColor();
         }
         StateListDrawable background = new StateListDrawable();
-        mDrawableNormal = createDrawable(blue, cornerRadius, 0);
-        mDrawablePressed = createDrawable(blueDark, cornerRadius, 0);
+        mDrawableNormal = createDrawable(primary, cornerRadius, 0);
+        mDrawablePressed = createDrawable(primaryDark, cornerRadius, 0);
 
-        mColor = blue;
-        mStrokeColor = blue;
+        mColor = primary;
+        mStrokeColor = primaryDark;
         mCornerRadius = cornerRadius;
 
         background.addState(new int[]{android.R.attr.state_pressed}, mDrawablePressed.getGradientDrawable());

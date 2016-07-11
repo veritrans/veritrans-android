@@ -4,7 +4,8 @@
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="@dimen/eight_dp">
 
     <RelativeLayout
         android:id="@+id/card_container_front_side"
@@ -13,7 +14,6 @@
         android:layout_centerInParent="true"
         android:background="@drawable/credit_card_background"
         android:clickable="true"
-        android:padding="@dimen/sixteen_dp"
         android:visibility="visible"
         tools:visibility="visible">
 
@@ -23,12 +23,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/sixteen_dp"
             android:background="@android:color/transparent"
             android:clickable="true"
             android:contentDescription="@string/description_delete_card"
-            android:paddingBottom="@dimen/twenty_four_dp"
-            android:paddingLeft="@dimen/twenty_four_dp"
-            android:paddingRight="@dimen/twenty_four_dp"
             android:src="@drawable/delete"/>
 
         <LinearLayout
@@ -45,7 +43,7 @@
                 android:drawablePadding="@dimen/sixteen_dp"
                 android:text="@string/text_sample_masked_credit_card"
                 android:textColor="@android:color/white"
-                android:textSize="26sp" />
+                android:textSize="22sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -70,20 +68,22 @@
                     android:gravity="start"
                     android:text="@string/text_sample_card_expiry"
                     android:textColor="@android:color/white"
-                    android:textSize="22sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
 
 
         <Button
             android:id="@+id/btn_pay_now_front"
+            style="@style/Widget.AppCompat.Button"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/btn_height"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/eight_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             android:text="@string/pay_now"
+            android:textColor="@color/white"
             android:visibility="visible" />
 
         <ImageView
@@ -93,6 +93,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/sixteen_dp"
             tools:src="@drawable/ic_visa" />
 
         <LinearLayout
@@ -108,6 +109,7 @@
         </LinearLayout>
     </RelativeLayout>
 
+
     <RelativeLayout
         android:id="@+id/card_container_back_side"
         android:layout_width="match_parent"
@@ -119,45 +121,35 @@
         android:padding="@dimen/eight_dp"
         android:visibility="gone"
         tools:visibility="gone">
-        <RelativeLayout
-            android:id="@+id/enter_cv_layout"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <id.co.veritrans.sdk.uiflow.widgets.CreditCardTextView
-                android:id="@+id/tv_enter_cvv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/enter_cvv"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
-        </RelativeLayout>
-
-        <EditText
-            android:id="@+id/et_cvv"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/btn_pay_now"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="12dp"
-            android:layout_marginRight="5dp"
-            android:background="@android:color/transparent"
-            android:inputType="numberPassword"
-            android:maxLength="6"
-            android:textColor="@android:color/black" />
-
-        <Button
-            android:id="@+id/btn_pay_now"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/btn_height"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:paddingLeft="@dimen/thirtytwo_dp"
-            android:paddingRight="@dimen/thirtytwo_dp"
-            android:text="@string/pay_now"
-            />
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_cvv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:background="@color/white"
+                android:hint="@string/hint_input_cvv"
+                android:inputType="numberPassword"
+                android:maxLength="6"
+                android:padding="@dimen/four_dp"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/btn_pay_now"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:text="@string/btn_pay"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

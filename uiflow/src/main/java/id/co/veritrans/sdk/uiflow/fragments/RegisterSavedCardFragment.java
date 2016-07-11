@@ -114,7 +114,6 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
                 .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-        circlePageIndicator.setFillColor(veritransSDK.getThemeColor());
         creditCards = ((SaveCreditCardActivity) getActivity()).getCreditCardList();
         setViewPagerValues();
 

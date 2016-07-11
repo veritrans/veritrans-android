@@ -281,6 +281,9 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                             cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved());
                     cardPaymentDetails.setBinsArray(cardTokenRequest.getBins());
                 }
+                if (cardPaymentDetails.getBank().equals("")) {
+                    cardPaymentDetails.setBank(null);
+                }
                 cardPaymentDetails.setRecurring(true);
             } else if (tokenDetailsResponse != null) {
 

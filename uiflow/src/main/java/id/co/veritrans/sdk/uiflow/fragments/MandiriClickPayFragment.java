@@ -10,15 +10,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import id.co.veritrans.sdk.uiflow.BuildConfig;
 import id.co.veritrans.sdk.uiflow.R;
-
 import id.co.veritrans.sdk.uiflow.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.uiflow.activities.MandiriClickPayInstructionActivity;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 
 /**
  * Created by shivam on 10/28/15.
@@ -29,7 +27,7 @@ public class MandiriClickPayFragment extends Fragment {
     private static final String DUMMY_CARD_NUMBER = "4811111111111114";
     private EditText mEditTextDebitCardNumber = null;
     private EditText mEditTextChallengeToken = null;
-    private TextView mTextViewSeeInstruction = null;
+    private Button btnSeeInstruction = null;
 
     @Nullable
     @Override
@@ -44,7 +42,7 @@ public class MandiriClickPayFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mEditTextChallengeToken = (EditText) view.findViewById(R.id.et_challenge_token);
         mEditTextDebitCardNumber = (EditText) view.findViewById(R.id.et_debit_card_no);
-        mTextViewSeeInstruction = (TextView) view.findViewById(R.id.text_see_instruction);
+        btnSeeInstruction = (Button) view.findViewById(R.id.btn_see_instruction);
 
         setTextWatcher();
 
@@ -52,11 +50,7 @@ public class MandiriClickPayFragment extends Fragment {
             mEditTextDebitCardNumber.setText(DUMMY_CARD_NUMBER);
         }
 
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            mTextViewSeeInstruction.setTextColor(veritransSDK.getThemeColor());
-        }
-        mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
+        btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

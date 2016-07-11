@@ -151,10 +151,10 @@
 
         <Button
             android:id="@+id/btn_confirm_payment"
+            style="@style/Widget.AppCompat.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/sixteen_dp"
-            android:background="@drawable/blue_button_selector"
             android:text="@string/confirm_payment"
             android:textAllCaps="true"
             android:textColor="@color/white" />
@@ -167,7 +167,6 @@
             android:layout_marginLeft="@dimen/sixteen_dp"
             android:layout_marginRight="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/eight_dp"
-            android:background="@drawable/blue_button_selector"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/twelve_dp"
