@@ -94,7 +94,7 @@ public class VeritransSDK {
         this.mTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
     }
 
-    public void setmMixpanelAnalyticsManager(MixpanelAnalyticsManager mMixpanelAnalyticsManager) {
+    void setmMixpanelAnalyticsManager(@NonNull MixpanelAnalyticsManager mMixpanelAnalyticsManager) {
         this.mMixpanelAnalyticsManager = mMixpanelAnalyticsManager;
     }
 
@@ -105,25 +105,6 @@ public class VeritransSDK {
         }
         return veritransSDK;
     }
-
-    boolean isAvailableForTransaction(String eventSource){
-        if(isSDKAvailable(eventSource)){
-            return true;
-        }
-        return false;
-    }
-
-
-
-    boolean isSDKAvailable(String eventSource){
-        if(veritransSDK != null){
-            return true;
-        }
-        Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(Constants.ERROR_SDK_IS_NOT_INITIALIZED, eventSource));
-        return false;
-    }
-
 
     private  void initializeSharedPreferences() {
         mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
@@ -556,8 +537,8 @@ public class VeritransSDK {
      *
      * @param msisdn                registered mobile number of user.
      */
-    public void paymentUsingIndosatDompetku(String msisdn) {
-        if (transactionRequest != null) {
+    public void paymentUsingIndosatDompetku( String msisdn) {
+        if (transactionRequest != null && msisdn != null) {
             if(Utils.isNetworkAvailable(context)){
                 transactionRequest.paymentMethod = Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU;
 
@@ -695,7 +676,7 @@ public class VeritransSDK {
      */
     public void getSavedCard() {
         if(Utils.isNetworkAvailable(context)){
-            mTransactionManager.getCards(veritransSDK.readAuthenticationToken());
+            mTransactionManager.getCards(readAuthenticationToken());
         }else{
             isRunning = false;
             Logger.e(context.getString(R.string.error_unable_to_connect));
@@ -707,6 +688,7 @@ public class VeritransSDK {
      *!!!
      * @param cardTokenRequest card details
      */
+    //testing
     public void saveCards(SaveCardRequest cardTokenRequest) {
         if (cardTokenRequest != null) {
             if(Utils.isNetworkAvailable(context)){
@@ -716,7 +698,8 @@ public class VeritransSDK {
                 Logger.e(context.getString(R.string.error_unable_to_connect));
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.REGISTER_CARD));
             }
-
+        }else{
+            isRunning = false;
         }
     }
 
@@ -800,9 +783,13 @@ public class VeritransSDK {
      * !!!
      */
     public void getAuthenticationToken() {
-        if(isAvailableForTransaction(Events.AUTHENTICATION)){
+        if(Utils.isNetworkAvailable(context)){
+            isRunning = true;
             mTransactionManager.getAuthenticationToken();
+        }else{
+            isRunning = false;
         }
+
     }
 
     public IScanner getExternalScanner() {
