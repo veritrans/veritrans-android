@@ -87,6 +87,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity implements Toke
                             date.split("/")[0],
                             date.split("/")[1],
                             VeritransSDK.getVeritransSDK().getClientKey());
+                    cardTokenRequest.setGrossAmount(20.0);
                     VeritransSDK.getVeritransSDK().getToken(cardTokenRequest);
                 }
             }

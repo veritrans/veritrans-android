@@ -24,8 +24,9 @@ public class TokenDetailsResponse {
     @SerializedName("status_message")
     private String statusMessage;
 
+
     @SerializedName("bank")
-    private String bank;
+    private String bank = null;
 
     @SerializedName("status_code")
     private String statusCode;
@@ -45,7 +46,7 @@ public class TokenDetailsResponse {
     }
 
     public String getBank() {
-        return TextUtils.isEmpty(bank) ? "" : bank;
+        return bank;
     }
 
     public void setBank(String bank) {

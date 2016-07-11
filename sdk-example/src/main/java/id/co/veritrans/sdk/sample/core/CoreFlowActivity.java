@@ -19,7 +19,6 @@ import id.co.veritrans.sdk.sample.MandiriClickPaymentActivity;
 import id.co.veritrans.sdk.sample.PermataVAPaymentActivity;
 import id.co.veritrans.sdk.sample.R;
 import id.co.veritrans.sdk.sample.utils.RecyclerItemClickListener;
-
 /**
  * @author rakawm
  */
