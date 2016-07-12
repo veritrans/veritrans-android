@@ -159,69 +159,6 @@ public class TransactionManager {
             });
     }
 
-    /**
-     * It will execute API call to save token to merchant server that can be used
-     * to pay later.
-     *
-     * @param cardTokenRequest card token request model
-     * @param userId           user identifier
-     */
-    @Deprecated
-    public void registerCard(CardTokenRequest cardTokenRequest, final String userId, String authenticationToken) {
-            final String merchantToken = authenticationToken;
-                veritransPaymentAPI.registerCard(cardTokenRequest.getCardNumber(), cardTokenRequest.getCardExpiryMonth(),
-                        cardTokenRequest.getCardExpiryYear(), cardTokenRequest.getClientKey(), new Callback<RegisterCardResponse>() {
-                            @Override
-                            public void success(RegisterCardResponse registerCardResponse, Response response) {
-                                if (registerCardResponse != null) {
-                                    if (isSDKLogEnabled) {
-                                        displayResponse(registerCardResponse);
-                                    }
-                                    if (registerCardResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))) {
-                                        registerCardResponse.setUserId(userId);
-                                            merchantPaymentAPI.registerCard(merchantToken, registerCardResponse, new Callback<CardResponse>() {
-                                                @Override
-                                                public void success(CardResponse cardResponse, Response response) {
-
-                                                }
-
-                                                @Override
-                                                public void failure(RetrofitError e) {
-                                                    Logger.e("CardSubscriber", e.getMessage());
-
-                                                }
-                                            });
-                                        VeritransBusProvider.getInstance().post(new RegisterCardSuccessEvent(registerCardResponse, Events.REGISTER_CARD));
-                                    } else {
-                                        if (!TextUtils.isEmpty(registerCardResponse.getStatusMessage())) {
-                                            VeritransBusProvider.getInstance().post(new RegisterCardFailedEvent(registerCardResponse.getStatusMessage(), registerCardResponse, Events.REGISTER_CARD));
-                                        } else {
-                                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.REGISTER_CARD));
-                                        }
-                                    }
-
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.REGISTER_CARD));
-                                    Logger.e(context.getString(R.string.error_empty_response), Events.REGISTER_CARD);
-                                }
-                                releaseResources();
-                            }
-
-                            @Override
-                            public void failure(RetrofitError e) {
-                                Logger.e("error while getting token : ", "" + e.getMessage());
-                                if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                                    VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.REGISTER_CARD));
-                                    Logger.i("Error in SSL Certificate. " + e.getMessage());
-                                } else {
-                                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.REGISTER_CARD));
-                                    Logger.i("General error occurred " + e.getMessage());
-                                }
-                                releaseResources();
-                            }
-                        });
-    }
-
 
     /**
      * It will execute an api call to get token from server, and after completion of request it

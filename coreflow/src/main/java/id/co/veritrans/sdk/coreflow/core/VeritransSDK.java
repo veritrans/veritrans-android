@@ -258,28 +258,6 @@ public class VeritransSDK {
         }
     }
 
-    /** unused, untested
-     * It will execute an api request to register credit card info.
-     *
-     * @param cardTokenRequest request token object
-     */
-    public void registerCard(CardTokenRequest cardTokenRequest, String userId) {
-
-        if (cardTokenRequest != null) {
-            if(Utils.isNetworkAvailable(context)){
-                isRunning = true;
-                mTransactionManager.registerCard(cardTokenRequest, userId, veritransSDK.readAuthenticationToken());
-            }else{
-                isRunning = false;
-                Logger.e(context.getString(R.string.error_unable_to_connect));
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.CARD_REGISTRATION));
-            }
-        } else {
-            Logger.e(context.getString(R.string.error_invalid_data_supplied));
-            isRunning = false;
-        }
-    }
-
 
     /**
      * It will execute an transaction for permata bank .
@@ -318,7 +296,7 @@ public class VeritransSDK {
                 BCABankTransfer bcaBankTransfer = SdkUtil.getBcaBankTransferRequest(transactionRequest);
 
                 isRunning = true;
-                mTransactionManager.paymentUsingBCATransfer(bcaBankTransfer, veritransSDK.readAuthenticationToken());
+                mTransactionManager.paymentUsingBCATransfer(bcaBankTransfer, readAuthenticationToken());
             }else{
                 isRunning = false;
                 Logger.e(context.getString(R.string.error_unable_to_connect));
@@ -749,20 +727,26 @@ public class VeritransSDK {
      * !!!
      */
     public void deleteCard(SaveCardRequest creditCard) {
-        if (creditCard != null) {
-            if(Utils.isNetworkAvailable(context)){
+        if(Utils.isNetworkAvailable(context)){
+            if (creditCard != null) {
+                isRunning = true;
                 mTransactionManager.deleteCard(creditCard, veritransSDK.readAuthenticationToken());
+
             }else{
                 isRunning = false;
-                Logger.e(context.getString(R.string.error_unable_to_connect));
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.DELETE_CARD));
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_card_unavailable)));
             }
+        }else{
+            isRunning = false;
+            Logger.e(context.getString(R.string.error_unable_to_connect));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.DELETE_CARD));
         }
+
     }
 
-    public void cardRegistration(String cardNumber,
-                                 String cardCvv, String cardExpMonth,
-                                 String cardExpYear) {
+    public void cardRegistration(@NonNull String cardNumber,
+                                 @NonNull String cardCvv, @NonNull String cardExpMonth,
+                                 @NonNull String cardExpYear) {
         if(Utils.isNetworkAvailable(context)){
             mTransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey);
             isRunning = true;

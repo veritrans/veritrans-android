@@ -118,14 +118,6 @@ public interface VeritransRestAPI {
                                      Callback<TokenDetailsResponse> callback
     );
 
-    // register credit card info
-    //unused
-    @GET("/card/register")
-    void registerCard(@Query("card_number") String cardNumber,
-                      @Query("card_exp_month") String cardExpMonth,
-                      @Query("card_exp_year") String cardExpYear,
-                      @Query("client_key") String clientKey,
-                      Callback<RegisterCardResponse> callback);
 
     /**
      * Register card into Veritrans API.
