@@ -18,12 +18,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
-import id.co.veritrans.sdk.uiflow.adapters.RegisterCardPagerAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.DeleteCardBusCallback;
@@ -32,6 +28,10 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.DeleteCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
+import id.co.veritrans.sdk.uiflow.adapters.RegisterCardPagerAdapter;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
 
 /**
@@ -114,7 +114,6 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
                 .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-        circlePageIndicator.setFillColor(veritransSDK.getThemeColor());
         creditCards = ((SaveCreditCardActivity) getActivity()).getCreditCardList();
         setViewPagerValues();
 
@@ -124,13 +123,11 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     private void setViewPagerValues() {
         if (creditCards != null) {
             if (getActivity() != null) {
-                cardPagerAdapter = new RegisterCardPagerAdapter(this, getChildFragmentManager(),
-                        creditCards, getActivity());
+                cardPagerAdapter = new RegisterCardPagerAdapter(this, getChildFragmentManager(), creditCards, getActivity());
                 savedCardPager.setAdapter(cardPagerAdapter);
                 savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
-                    public void onPageScrolled(int position, float positionOffset, int
-                            positionOffsetPixels) {
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                     }
 
                     @Override

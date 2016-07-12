@@ -118,6 +118,7 @@
 -keep class id.co.veritrans.sdk.uiflow.utilities.SdkUiFlowUtil {*;}
 -keep class id.co.veritrans.sdk.uiflow.SdkUIFlowBuilder {*;}
 -keep class id.co.veritrans.sdk.uiflow.UIFlow {*;}
+-keep class id.co.veritrans.sdk.uiflow.PaymentMethods {*;}
 -keep class id.co.veritrans.sdk.uiflow.scancard.ExternalScanner{*;}
 -keep class id.co.veritrans.sdk.coreflow.core.PaymentMethods{*;}
 

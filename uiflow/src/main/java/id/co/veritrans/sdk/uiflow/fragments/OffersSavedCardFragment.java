@@ -190,7 +190,6 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
 
     private void bindViews(View view) {
         creditCardLayout = (LinearLayout)view.findViewById(R.id.credit_card_holder);
-        creditCardLayout.setBackgroundColor(veritransSDK.getThemeColor());
         newCardButtonLayout = (RelativeLayout)view.findViewById(R.id.new_card_button_layout);
         layoutPayWithInstalment = (LinearLayout) view.findViewById(R.id.layout_pay_with_instalments);
        /* ViewTreeObserver vto = creditCardLayout.getViewTreeObserver();
@@ -253,7 +252,6 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
                 .LayoutParams.MATCH_PARENT, (int) cardHeight);
         savedCardPager.setLayoutParams(parms);
         circlePageIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-        circlePageIndicator.setFillColor(getResources().getColor(R.color.white));
         creditCards = ((OffersActivity) getActivity()).getCreditCardList();
 
         setViewPagerValues();
@@ -350,10 +348,8 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
 
     public void hideLayouts() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
-                    .newInstance();
-            ((OffersActivity) getActivity()).replaceFragment
-                    (addCardDetailsFragment, R.id.offers_container, true, false);
+            OffersAddCardDetailsFragment addCardDetailsFragment = OffersAddCardDetailsFragment.newInstance(offerPosition, offerName, offerType);
+            ((OffersActivity) getActivity()).replaceFragment(addCardDetailsFragment, R.id.offers_container, true, false);
             return;
         }
         ((OffersActivity)(getActivity())).morphingAnimation();
@@ -375,12 +371,7 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                //payNowBtn.setVisibility(View.VISIBLE);
                 addCardBt.setVisibility(View.GONE);
-                /*AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment
-                        .newInstance();
-                ((CreditDebitCardFlowActivity) getActivity()).replaceFragment
-                        (addCardDetailsFragment, true, false);*/
                 OffersAddCardDetailsFragment offersAddCardDetailsFragment = OffersAddCardDetailsFragment
                         .newInstance(offerPosition, offerName, offerType);
                 ((OffersActivity) getActivity()).replaceFragment
@@ -492,14 +483,6 @@ public class OffersSavedCardFragment extends Fragment implements DeleteCardBusCa
 
             //notifydataset change not worked properly for viewpager so setting it again
             Logger.i("setting view pager value");
-            // setViewPagerValues(creditCardsNew);
-                        /*if(creditCards.size()>1) {
-                            try {
-                                savedCardPager.setCurrentItem(position);
-                            } catch (ArrayIndexOutOfBoundsException e) {
-                                savedCardPager.setCurrentItem(creditCards.size() - 1);
-                            }
-                        }*/
             if (cardPagerAdapter != null && circlePageIndicator != null) {
                 Logger.i("notifying data");
                 cardPagerAdapter.notifyChangeInPosition(1);

@@ -16,6 +16,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerVertical="true"
+            wheel:matProg_barColor="?colorAccent"
             wheel:matProg_progressIndeterminate="true" />
 
         <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
@@ -28,6 +29,7 @@
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             android:text="@string/loading"
+            android:textColor="?colorAccent"
             android:visibility="gone"/>
     </RelativeLayout>
 </RelativeLayout>

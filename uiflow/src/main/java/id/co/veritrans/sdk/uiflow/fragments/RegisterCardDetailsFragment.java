@@ -12,14 +12,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import id.co.veritrans.sdk.coreflow.core.Constants;
+import id.co.veritrans.sdk.coreflow.core.Logger;
+import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
+import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
-import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
 
 /**
@@ -35,16 +36,13 @@ public class RegisterCardDetailsFragment extends Fragment {
     private TextView bankNameTv;
     private TextView cardNoTv;
     private TextView expTv;
-    /*private ImageView cvvCircle1;
-    private ImageView cvvCircle2;
-    private ImageView cvvCircle3;*/
     private EditText cvvEt;
     private Button payNowBt;
     private ImageView deleteIv;
+    private ImageView logo;
     private Button payNowFrontBt;
     private VeritransSDK veritransSDK;
     private Fragment parentFragment;
-    private ImageView imageQuestionmark;
     private Activity activity;
 
     public static RegisterCardDetailsFragment newInstance(SaveCardRequest cardDetails, Fragment
@@ -156,7 +154,7 @@ public class RegisterCardDetailsFragment extends Fragment {
 
             }
         });*/
-        cardNoTv.setText(cardDetail.getMaskedCard().replace("-", "XXXXXX"));
+        cardNoTv.setText(Utils.getFormattedCreditCardNumber(cardDetail.getMaskedCard().replace("-", "XXXXXX")));
 
         payNowBt = (Button) view.findViewById(R.id.btn_pay_now);
         payNowBt.setVisibility(View.GONE);
@@ -183,16 +181,21 @@ public class RegisterCardDetailsFragment extends Fragment {
                 veritransDialog.show();
             }
         });
-        imageQuestionmark = (ImageView) view.findViewById(R.id.image_questionmark);
-        imageQuestionmark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
-                        getString(R.string.message_cvv), getString(R.string.got_it), "");
-                veritransDialog.show();
-                SdkUIFlowUtil.hideKeyboard(getActivity()); // hide keyboard if visible.
-            }
-        });
-
+        logo = (ImageView) view.findViewById(R.id.logo_card);
+        String type = Utils.getCardType(cardDetail.getMaskedCard().replace("-", "XXXXXX"));
+        switch (type) {
+            case Utils.CARD_TYPE_VISA:
+                logo.setImageResource(R.drawable.ic_visa);
+                break;
+            case Utils.CARD_TYPE_MASTERCARD:
+                logo.setImageResource(R.drawable.ic_mastercard);
+                break;
+            case Utils.CARD_TYPE_JCB:
+                logo.setImageResource(R.drawable.ic_jcb);
+                break;
+            case Utils.CARD_TYPE_AMEX:
+                logo.setImageResource(R.drawable.ic_amex);
+                break;
+        }
     }
 }

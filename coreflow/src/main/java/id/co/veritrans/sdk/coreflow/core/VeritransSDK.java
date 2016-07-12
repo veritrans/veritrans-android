@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.coreflow.models.BCABankTransfer;
 import id.co.veritrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.BCAKlikPayModel;
-import id.co.veritrans.sdk.coreflow.models.BankTransferModel;
 import id.co.veritrans.sdk.coreflow.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.CardTransfer;
@@ -52,6 +52,9 @@ public class VeritransSDK {
     private  Context context = null;
     private  String themeColorString = null;
     private  int themeColor;
+    private static Context context = null;
+    private static int themeColor;
+    private static Drawable merchantLogoDrawable = null;
 
     private  static VeritransSDK veritransSDK ;
 
@@ -106,7 +109,17 @@ public class VeritransSDK {
         return veritransSDK;
     }
 
-    private  void initializeSharedPreferences() {
+    private static void initializeLogo() {
+        if (merchantLogoResourceId != 0) {
+            merchantLogoDrawable = context.getResources().getDrawable(merchantLogoResourceId);
+        } else if (merchantLogo != null) {
+            int resourceImage = context.getResources().getIdentifier(veritransSDK.getMerchantLogo(), "drawable", context.getPackageName());
+            merchantLogoDrawable = context.getResources().getDrawable(resourceImage);
+        }
+    }
+
+
+    private static void initializeSharedPreferences() {
         mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
     }
 
@@ -116,15 +129,17 @@ public class VeritransSDK {
      * @return VeritransSDK instance
      */
     public static VeritransSDK getVeritransSDK() {
-        return veritransSDK;
+
+        if (context != null) {
+            return veritransSDK;
+        } else {
+            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+            return null;
+        }
     }
 
-    private  void initializeTheme() {
-        if (themeColorString != null) {
-            themeColor = Color.parseColor(themeColorString);
-        } else {
-            themeColor = context.getResources().getColor(R.color.colorPrimary);
-        }
+    private static void initializeTheme() {
+        themeColor = context.getResources().getColor(R.color.colorPrimary);
     }
 
     public static   SharedPreferences getmPreferences() {
@@ -143,6 +158,17 @@ public class VeritransSDK {
         return merchantName;
     }
 
+    public String getMerchantLogo() {
+        return merchantLogo;
+    }
+
+    public int getMerchantLogoResourceId() {
+        return merchantLogoResourceId;
+    }
+
+    public Drawable getMerchantLogoDrawable() {
+        return merchantLogoDrawable;
+    }
     public int getThemeColor() {
         return themeColor;
     }
@@ -197,15 +223,8 @@ public class VeritransSDK {
         return clientKey;
     }
 
-    public String getMerchantServerUrl(){
+    public String getMerchantServerUrl() {
         return merchantServerUrl;
-    }
-
-    public ArrayList<BankTransferModel> getBankTransferList() {
-        ArrayList<BankTransferModel> models = new ArrayList<>();
-        models.add(new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true));
-        models.add(new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true));
-        return models;
     }
 
     public ArrayList<PaymentMethodsModel> getSelectedPaymentMethods() {
@@ -219,7 +238,7 @@ public class VeritransSDK {
     /**
      * It will execute an api request to retrieve a token.
      *
-     * @param cardTokenRequest  token request object
+     * @param cardTokenRequest token request object
      */
     public void getToken(CardTokenRequest cardTokenRequest) {
 
@@ -242,7 +261,7 @@ public class VeritransSDK {
     /** unused, untested
      * It will execute an api request to register credit card info.
      *
-     * @param cardTokenRequest  request token object
+     * @param cardTokenRequest request token object
      */
     public void registerCard(CardTokenRequest cardTokenRequest, String userId) {
 
@@ -264,7 +283,6 @@ public class VeritransSDK {
 
     /**
      * It will execute an transaction for permata bank .
-     *
      */
     public void paymentUsingPermataBank() {
 
@@ -290,7 +308,6 @@ public class VeritransSDK {
 
     /**
      * It will execute an transaction for bca bank .
-     *
      */
     public void paymentUsingBcaBankTransfer() {
 
@@ -339,7 +356,7 @@ public class VeritransSDK {
     /**
      * It will execute an transaction for mandiri click pay.
      *
-     * @param mandiriClickPayModel       information about mandiri clickpay
+     * @param mandiriClickPayModel information about mandiri clickpay
      */
     public void paymentUsingMandiriClickPay(MandiriClickPayModel mandiriClickPayModel) {
 
@@ -367,7 +384,7 @@ public class VeritransSDK {
     /**
      * It will execute an transaction for mandiri click pay.
      *
-     * @param descriptionModel       information about BCA Klikpay
+     * @param descriptionModel information about BCA Klikpay
      */
     public void paymentUsingBCAKlikPay(BCAKlikPayDescriptionModel descriptionModel) {
         if (transactionRequest != null && descriptionModel != null) {
@@ -412,7 +429,6 @@ public class VeritransSDK {
 
     /**
      * It will execute an transaction for mandiri bill pay.
-     *
      */
     public void paymentUsingMandiriBillPay() {
         if (transactionRequest != null) {
@@ -445,7 +461,7 @@ public class VeritransSDK {
     /** testing
      * It will execute an transaction for CIMB click pay.
      *
-     * @param descriptionModel           contains description about the cimb payment
+     * @param descriptionModel contains description about the cimb payment
      */
 
     public void paymentUsingCIMBClickPay(DescriptionModel descriptionModel) {
@@ -478,7 +494,7 @@ public class VeritransSDK {
     /**
      * It will execute an transaction for Mandiri E Cash.
      *
-     * @param descriptionModel           Description about Mandiri E cash payment.
+     * @param descriptionModel Description about Mandiri E cash payment.
      */
 
     public void paymentUsingMandiriECash(DescriptionModel descriptionModel) {
@@ -567,7 +583,7 @@ public class VeritransSDK {
     /**
      * Set transaction information that you want to execute.
      *
-     * @param transactionRequest    request token object
+     * @param transactionRequest request token object
      */
     public void setTransactionRequest(TransactionRequest transactionRequest) {
 
@@ -599,13 +615,15 @@ public class VeritransSDK {
      * @param context current activity.
      */
     public void startRegisterCardUIFlow(Context context) {
-        if(uiflow != null){
+        if (uiflow != null) {
             uiflow.runRegisterCard(context);
         }
     }
+
     /**
      * This will start actual execution of transaction. if you have enabled an ui then it will
      * start activity according to it.
+     *
      * @param context current activity.
      */
 
@@ -616,10 +634,10 @@ public class VeritransSDK {
             if (transactionRequest.getPaymentMethod() == Constants
                     .PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
-                if(uiflow != null){
+                if (uiflow != null) {
                     uiflow.runUIFlow(context);
                 }
-            } 
+            }
 
         } else {
             if (transactionRequest == null) {
@@ -670,7 +688,6 @@ public class VeritransSDK {
     }
 
     /**
-     *
      * It will fetch saved cards from merchant server.
      *!!!
      */
@@ -705,7 +722,6 @@ public class VeritransSDK {
 
     /**
      * It will execute an transaction for BBMMoney.
-     *
      */
     public void paymentUsingBBMMoney() {
         if (transactionRequest != null) {
@@ -756,6 +772,7 @@ public class VeritransSDK {
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.CARD_REGISTRATION));
         }
     }
+
     public BBMCallBackUrl getBBMCallBackUrl() {
         return mBBMCallBackUrl;
     }
@@ -767,7 +784,6 @@ public class VeritransSDK {
 
     /**
      * It will fetch the Offers from merchant server.
-     *!!!
      */
     public void getOffersList() {
         if(isNetworkAvailable()){

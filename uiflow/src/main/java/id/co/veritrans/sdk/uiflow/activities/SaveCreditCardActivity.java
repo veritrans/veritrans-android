@@ -15,6 +15,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -59,6 +60,7 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
     public static final int SCAN_REQUEST_CODE = 101;
     private int RESULT_CODE = RESULT_CANCELED;
     private Toolbar toolbar;
+    private ImageView logo;
     private VeritransSDK veritransSDK;
     private RelativeLayout processingLayout;
     private String currentFragmentName;
@@ -89,13 +91,16 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
             VeritransBusProvider.getInstance().register(this);
         }
         setContentView(R.layout.activity_save_credit_card);
-        initializeTheme();
+
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.title_header);
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
+        initializeTheme();
+
         morphToCircle(0);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -107,10 +112,10 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().unregister(this);
         }
-        super.onDestroy();
     }
 
     public void morphToCircle(int time) {

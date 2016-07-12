@@ -1,5 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">VeritransSdk</string>
     <!--user detail-->
     <string name="hint_full_name">Full name</string>
     <string name="hint_email">Email</string>
@@ -128,9 +127,10 @@
     <string name="ok">OK</string>
 
     <string name="enter_cvv">Enter CVV</string>
-    <string name="valid_thru">Valid Thru</string>
+    <string name="valid_thru">Valid\nThru</string>
 
-    <string name="zero_month">0 Month</string>
+    <string name="zero_month">0 month</string>
+    <string name="formatted_month">%1$s months</string>
 
 
     <!-- Permata VA Bank Transfer-->
@@ -165,6 +165,7 @@
     <string name="copied_bill_code">Billpay code was copied to clipboard</string>
     <string name="copied_company_code">Company code was copied to clipboard</string>
     <string name="complete_payment_at_atm">Complete Payment At ATM</string>
+    <string name="complete_payment_at_klik_bca">Finish</string>
     <string name="done">Done</string>
     <string name="virtual_account_number">Virtual Account Number</string>
     <string name="payment_pending">Payment Pending !</string>
@@ -320,6 +321,7 @@
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="mandiri_e_cash">Mandiri e-Cash</string>
+    <string name="klik_bca">Klik BCA</string>
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Offers</string>
@@ -354,13 +356,13 @@
     <string name="indosat_instruction_step5">5.\tInput your PIN.</string>
     <string name="indosat_instruction_step6">6.\tPayment Complete.</string>
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
-    <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing.</string>
+    <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tEnter your Mandiri token password.</string>
     <string name="mandiri_click_pay_instruction_step3">3.\tPress 3 when it displays APPLI</string>
-    <string name="mandiri_click_pay_instruction_step4">4.\tEnter \'intput 1\' and press</string>
-    <string name="mandiri_click_pay_instruction_step5">5.\tEnter \'intput 2\' and press</string>
-    <string name="mandiri_click_pay_instruction_step6">6.\tEnter \'intput 3\' and press</string>
-    <string name="mandiri_click_pay_instruction_step7">7.\tPut the response code on your Mandiri token \n into the challenge token field.</string>
+    <string name="mandiri_click_pay_instruction_step4">4.\tEnter \'input 1\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
+    <string name="mandiri_click_pay_instruction_step5">5.\tEnter \'input 2\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
+    <string name="mandiri_click_pay_instruction_step6">6.\tEnter \'input 3\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
+    <string name="mandiri_click_pay_instruction_step7">7.\tPut the response code on your Mandiri token into the challenge token field.</string>
     <string name="for_three_seconds">for 3 seconds</string>
     <string name="title_payment_status">Payment Status</string>
     <string name="payment_deny">Payment deny.</string>
@@ -373,6 +375,7 @@
     <string name="no_offers">No offers found</string>
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
+    <string name="klikbca_user_id_hint">KlikBCA User ID</string>
     <!--String Constanst-->
     <string name="position">position</string>
     <string name="user_details">user_details</string>
@@ -413,7 +416,7 @@
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
     <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
-
+    <string name="payment_method_klik_bca">KlikBCA</string>
     <!--Payment List-->
     <string name="payment_epay_bri">bri_epay</string>
     <string name="payment_bank_transfer">bank_transfer</string>
@@ -428,6 +431,7 @@
     <string name="payment_credit_debit">credit_card</string>
     <string name="payment_permata">permata</string>
     <string name="payment_bca">bca</string>
+    <string name="payment_klik_bca">bca_klikbca</string>
     <!--Error Response-->
     <string name="error_empty_response">failed to retrieve response from server.</string>
     <string name="error_sdk_not_initialized">sdk is not initialized.</string>
@@ -450,4 +454,12 @@
     <string name="tab_permata_atm">ATM Permata</string>
     <string name="tab_alto">Alto</string>
     <string name="tab_mandiri_bill">Mandiri Bill</string>
+
+    <!--KlikBCA Payment Instructions-->
+    <string name="klikbca_instruction_1">1.\tPlease make sure that the UserID is active and registered at BCA.</string>
+    <string name="klikbca_instruction_2">2.\tPlease continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
+
+    <string name="error_user_id">Please fill user ID.</string>
+    <string name="btn_close">Close</string>
+    <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
 </resources>

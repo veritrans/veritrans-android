@@ -1,7 +1,9 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -12,14 +14,13 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -27,13 +28,15 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
+import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
+import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.uiflow.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.uiflow.fragments.BankTransferPaymentFragment;
 import id.co.veritrans.sdk.uiflow.fragments.MandiriBillPayFragment;
-import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
  * Created to show and handle bank transfer and mandiri bill pay details.
@@ -77,6 +80,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
     private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
+    private ImageView logo = null;
 
     private int position = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
     private int RESULT_CODE = RESULT_CANCELED;
@@ -101,11 +105,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         initializeView();
         bindDataToView();
 
-        initializeTheme();
-        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
-        if (toolbarLayout != null) {
-            toolbarLayout.setContentScrimColor(mVeritransSDK.getThemeColor());
-        }
         setUpHomeFragment();
         if(!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
@@ -150,17 +149,9 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-
-        //enable this code if wants to travers backward in fragment back stack
-
-        /*FragmentManager fragmentManager = getSupportFragmentManager();
-        int count = fragmentManager.getBackStackEntryCount();
-        if (count > 1) {
-            fragmentManager.popBackStack();
-        } else {
-            finish();
-        }*/
-
+        if (currentFragment.equalsIgnoreCase(STATUS_FRAGMENT)) {
+            RESULT_CODE = RESULT_OK;
+        }
         setResultAndFinish();
     }
 
@@ -187,8 +178,9 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
 
-
+        initializeTheme();
         //setup tool bar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
@@ -217,6 +209,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             } else if( position == Constants.BANK_TRANSFER_PERMATA) {
                 mTextViewTitle.setText(getResources().getString(R.string.activity_bank_transfer_permata));
             }
+
 
         } else {
             SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
@@ -247,9 +240,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                 performTransaction();
 
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
-
-                mAppBarLayout.setExpanded(true);
-
                 if (transactionResponse != null) {
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
@@ -279,8 +269,11 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
-        mCollapsingToolbarLayout.setVisibility(View.GONE);
-        mToolbar.setNavigationIcon(R.drawable.ic_close);
+        mAppBarLayout.setExpanded(false, false);
+
+        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
+        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
 
         BankTransactionStatusFragment bankTransactionStatusFragment =

@@ -10,15 +10,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import id.co.veritrans.sdk.uiflow.R;
 
-import id.co.veritrans.sdk.uiflow.activities.BankTransferInstructionActivity;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.BankTransferInstructionActivity;
 
 /**
  * Displays status information about mandiri bill pay's api call .
@@ -36,10 +35,10 @@ public class MandiriBillPayFragment extends Fragment {
     //views
     private TextView mTextViewCompanyCode = null;
     private TextView mTextViewBillpayCode = null;
-    private TextView mTextViewSeeInstruction = null;
+    private Button btnSeeInstruction = null;
     private TextView mTextViewValidity = null;
-    private TextView mTextCopyBillCodeToClipboard = null;
-    private TextView mTextCopyCompanyToClipboard = null;
+    private Button btnCopyBillCode = null;
+    private Button btnCopyCompany = null;
 
 
     /**
@@ -83,44 +82,37 @@ public class MandiriBillPayFragment extends Fragment {
     private void initializeViews(View view) {
         mTextViewCompanyCode = (TextView) view.findViewById(R.id.text_company_code);
         mTextViewBillpayCode = (TextView) view.findViewById(R.id.text_bill_pay_code);
-        mTextViewSeeInstruction = (TextView) view.findViewById(R.id.text_see_instruction);
+        btnSeeInstruction = (Button) view.findViewById(R.id.btn_see_instruction);
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
-        mTextCopyBillCodeToClipboard = (TextView) view.findViewById(R.id.text_copy_va);
-        mTextCopyCompanyToClipboard = (TextView) view.findViewById(R.id.text_copy_company_code);
+        btnCopyBillCode = (Button) view.findViewById(R.id.btn_copy_va);
+        btnCopyCompany = (Button) view.findViewById(R.id.btn_copy_company_code);
 
         if (mTransactionResponse != null) {
             if (mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200)) ||
                     mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
-                mTextViewCompanyCode.setText(mTransactionResponse
-                        .getCompanyCode());
+                mTextViewCompanyCode.setText(mTransactionResponse.getCompanyCode());
             } else {
                 mTextViewCompanyCode.setText(mTransactionResponse.getCompanyCode());
             }
 
-            mTextViewBillpayCode.setText(mTransactionResponse
-                    .getPaymentCode());
+            mTextViewBillpayCode.setText(mTransactionResponse.getPaymentCode());
 
             mTextViewValidity.setText(VALID_UNTIL + Utils.getValidityTime(mTransactionResponse.getTransactionTime()));
         }
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            mTextViewSeeInstruction.setTextColor(veritransSDK.getThemeColor());
-            mTextCopyBillCodeToClipboard.setTextColor(veritransSDK.getThemeColor());
-            mTextCopyCompanyToClipboard.setTextColor(veritransSDK.getThemeColor());
-        }
-        mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
+
+        btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showInstruction();
             }
         });
-        mTextCopyBillCodeToClipboard.setOnClickListener(new View.OnClickListener() {
+        btnCopyBillCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 copyBillCode();
             }
         });
-        mTextCopyCompanyToClipboard.setOnClickListener(new View.OnClickListener() {
+        btnCopyCompany.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 copyCompanyCode();

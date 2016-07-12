@@ -19,7 +19,6 @@ import java.util.UUID;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
-import id.co.veritrans.sdk.coreflow.core.PaymentMethods;
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
@@ -35,6 +34,7 @@ import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.sample.core.CoreFlowActivity;
 import id.co.veritrans.sdk.scancard.ScanCard;
+import id.co.veritrans.sdk.uiflow.PaymentMethods;
 import id.co.veritrans.sdk.uiflow.SdkUIFlowBuilder;
 import id.co.veritrans.sdk.uiflow.UIFlow;
 
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
      */
     private void initSDK() {
 
-        //sdk initiation for coreflow
+        // SDK initiation for coreflow
         if(mysdkFlow == CORE_FLOW){
             VeritransSDK veritransSDK = new SdkCoreFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
                     .enableLog(true)
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));
 
         }else{
-            //sdk initiation for UIflow
+            // SDK initiation for UIflow
             VeritransSDK veritransSDK = new SdkUIFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
                     .setUIFlow(new UIFlow())// initialization uiflow mode
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
                     .setMerchantName("Veritrans Example Merchant")
+                    .setMerchantLogoResourceId(R.drawable.ic_veritrans)
                     .buildSDK();
 
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));

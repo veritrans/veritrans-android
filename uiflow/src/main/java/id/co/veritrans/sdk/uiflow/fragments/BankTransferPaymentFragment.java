@@ -10,14 +10,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.BankTransferInstructionActivity;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.BankTransferInstructionActivity;
 
 /**
  * Displays status information about bank transfer's api call .
@@ -33,9 +33,9 @@ public class BankTransferPaymentFragment extends Fragment {
 
     //views
     private TextView mTextViewVirtualAccountNumber = null;
-    private TextView mTextViewSeeInstruction = null;
+    private Button btnSeeInstruction = null;
     private TextView mTextViewValidity = null;
-    private TextView mTextViewCopyToClipboard = null;
+    private Button btnCopyToClipboard = null;
 
 
     /**
@@ -80,9 +80,9 @@ public class BankTransferPaymentFragment extends Fragment {
     private void initializeViews(View view) {
 
         mTextViewVirtualAccountNumber = (TextView) view.findViewById(R.id.text_virtual_account_number);
-        mTextViewSeeInstruction = (TextView) view.findViewById(R.id.text_see_instruction);
+        btnSeeInstruction = (Button) view.findViewById(R.id.btn_see_instruction);
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
-        mTextViewCopyToClipboard = (TextView) view.findViewById(R.id.text_copy_va);
+        btnCopyToClipboard = (Button) view.findViewById(R.id.btn_copy_va);
 
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
@@ -100,18 +100,13 @@ public class BankTransferPaymentFragment extends Fragment {
 
             mTextViewValidity.setText(VALID_UNTIL + Utils.getValidityTime(transactionResponse.getTransactionTime()));
         }
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            mTextViewSeeInstruction.setTextColor(veritransSDK.getThemeColor());
-            mTextViewCopyToClipboard.setTextColor(veritransSDK.getThemeColor());
-        }
-        mTextViewSeeInstruction.setOnClickListener(new View.OnClickListener() {
+        btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showInstruction();
             }
         });
-        mTextViewCopyToClipboard.setOnClickListener(new View.OnClickListener() {
+        btnCopyToClipboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 copyVANumber();

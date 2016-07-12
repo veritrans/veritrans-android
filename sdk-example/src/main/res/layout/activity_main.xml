@@ -65,7 +65,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:background="@drawable/blue_button_selector"
                         android:text="@string/btn_get_token"
                         android:textColor="@color/white" />
                 </LinearLayout>
@@ -248,7 +247,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/eight_dp"
                     android:layout_weight="0.5"
-                    android:background="@drawable/blue_button_selector"
                     android:text="@string/btn_show_core"
                     android:textColor="@color/white" />
 
@@ -258,7 +256,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/eight_dp"
                     android:layout_weight="0.5"
-                    android:background="@drawable/blue_button_selector"
                     android:text="@string/btn_show_ui_flow"
                     android:textColor="@color/white" />
             </LinearLayout>
@@ -285,9 +282,8 @@
                     android:layout_gravity="bottom"
                     android:layout_marginRight="10dp"
                     android:layout_weight="0.5"
-                    android:background="@drawable/blue_button_selector"
                     android:text="@string/buy_with_core"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <Button
                     android:id="@+id/btn_card_registration_ui"
@@ -297,9 +293,8 @@
                     android:layout_gravity="bottom"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="0.5"
-                    android:background="@drawable/blue_button_selector"
                     android:text="@string/buy_with_ui"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

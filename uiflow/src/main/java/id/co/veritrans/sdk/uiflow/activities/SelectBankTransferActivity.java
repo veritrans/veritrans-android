@@ -2,29 +2,28 @@ package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.adapters.BankTransferListAdapter;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.BankTransferModel;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
-import id.co.veritrans.sdk.uiflow.widgets.HeaderView;
+import id.co.veritrans.sdk.uiflow.PaymentMethods;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.adapters.BankTransferListAdapter;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
  * @author rakawm
@@ -39,18 +38,17 @@ public class SelectBankTransferActivity extends BaseActivity {
 
     //Views
     private Toolbar toolbar = null;
-    private AppBarLayout mAppBarLayout = null;
     private RecyclerView mRecyclerView = null;
-    private HeaderView toolbarHeaderView = null;
-    private HeaderView floatHeaderView = null;
-    private TextView headerTextView = null;
+    private ImageView logo = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_bank_transfer);
+        //initialize views
         initializeTheme();
+        bindActivity();
         mVeritransSDK = VeritransSDK.getVeritransSDK();
         TransactionRequest transactionRequest = null;
         if (mVeritransSDK != null) {
@@ -67,9 +65,6 @@ public class SelectBankTransferActivity extends BaseActivity {
      * Set up bank list.
      */
     private void setUpBankList() {
-        //initialize views
-        bindActivity();
-
         //setup tool bar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -91,9 +86,7 @@ public class SelectBankTransferActivity extends BaseActivity {
     private void bindActivity() {
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_bank_list);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
-        toolbarHeaderView = (HeaderView) findViewById(R.id.toolbar_header_view);
-        headerTextView = (TextView) findViewById(R.id.title_header);
+        logo = (ImageView) findViewById(R.id.merchant_logo);
     }
 
     /**
@@ -101,7 +94,7 @@ public class SelectBankTransferActivity extends BaseActivity {
      */
     private void initialiseAdapterData() {
         data.clear();
-        for (BankTransferModel model : mVeritransSDK.getBankTransferList()) {
+        for (BankTransferModel model : PaymentMethods.getBankTransferList(this)) {
 
             if (model.isSelected()) {
                 data.add(model);

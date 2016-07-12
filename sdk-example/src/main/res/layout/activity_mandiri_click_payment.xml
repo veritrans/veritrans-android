@@ -58,7 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:background="@drawable/blue_button_selector"
             android:text="@string/pay_now"
             android:textColor="@android:color/white" />
     </LinearLayout>
