@@ -52,8 +52,6 @@ public class VeritransSDK {
     private  Context context = null;
     private  String themeColorString = null;
     private  int themeColor;
-    private static Context context = null;
-    private static int themeColor;
     private static Drawable merchantLogoDrawable = null;
 
     private  static VeritransSDK veritransSDK ;
@@ -69,7 +67,8 @@ public class VeritransSDK {
     private  ISdkFlow uiflow;
     private  IScanner externalScanner;
     private  TransactionManager mTransactionManager;
-
+    private  String merchantLogo = null;
+    private  int merchantLogoResourceId = 0;
 
     protected boolean isRunning = false;
     private TransactionRequest transactionRequest = null;
@@ -89,12 +88,19 @@ public class VeritransSDK {
         this.boldText = sdkBuilder.boldText;
         this.uiflow = sdkBuilder.sdkFlow;
         this.externalScanner = sdkBuilder.externalScanner;
-        initializeTheme();
-        initializeSharedPreferences();
+        merchantLogoResourceId = sdkBuilder.merchantLogoResourceId;
+        themeColor = sdkBuilder.colorThemeResourceId;
+        merchantLogo = sdkBuilder.merchantLogo;
+
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi());
         this.mTransactionManager = new TransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
         this.mTransactionManager.setSDKLogEnabled(isLogEnabled);
         this.mTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
+
+        initializeTheme();
+        initializeLogo();
+        initializeSharedPreferences();
+
     }
 
     void setmMixpanelAnalyticsManager(@NonNull MixpanelAnalyticsManager mMixpanelAnalyticsManager) {
@@ -103,13 +109,12 @@ public class VeritransSDK {
 
     protected static VeritransSDK getInstance(@NonNull SdkCoreFlowBuilder sdkBuilder) {
         if(veritransSDK == null){
-
             veritransSDK = new VeritransSDK(sdkBuilder);
         }
         return veritransSDK;
     }
 
-    private static void initializeLogo() {
+    private  void initializeLogo() {
         if (merchantLogoResourceId != 0) {
             merchantLogoDrawable = context.getResources().getDrawable(merchantLogoResourceId);
         } else if (merchantLogo != null) {
@@ -119,7 +124,7 @@ public class VeritransSDK {
     }
 
 
-    private static void initializeSharedPreferences() {
+    private  void initializeSharedPreferences() {
         mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
     }
 
@@ -128,17 +133,12 @@ public class VeritransSDK {
      *
      * @return VeritransSDK instance
      */
-    public static VeritransSDK getVeritransSDK() {
+    public  static VeritransSDK getVeritransSDK() {
 
-        if (context != null) {
-            return veritransSDK;
-        } else {
-            Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
-            return null;
-        }
+        return veritransSDK;
     }
 
-    private static void initializeTheme() {
+    private  void initializeTheme() {
         themeColor = context.getResources().getColor(R.color.colorPrimary);
     }
 
