@@ -52,7 +52,6 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            testCoverageEnabled = true;
 
             consumerProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -76,21 +75,6 @@ android {
         }
     }
 
-    /*
-     * test configuration
-     */
-
-    sourceSets {
-        String sharedTestJavaDir = 'src/sharedTest/java'
-
-        test {
-            java.srcDirs += [sharedTestJavaDir]
-        }
-        androidTest {
-            java.srcDirs += [sharedTestJavaDir]
-            resources.srcDirs += ['src/test/resources']
-        }
-    }
     defaultPublishConfig = DEFAULT_PUBLISH
     publishNonDefault true
 }
@@ -215,12 +199,3 @@ bintray {
 
 }
 
-afterEvaluate { project ->
-    android.libraryVariants.each { variant ->
-        println variant.name
-        println tasks
-        tasks.getByName("test${variant.name.capitalize()}UnitTest") {
-            dependsOn "assemble${variant.name.capitalize()}"
-        }
-    }
-}
