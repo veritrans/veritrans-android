@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.coreflow.core;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Looper;
@@ -20,9 +21,11 @@ import org.mockito.Mockito;
 
 import static org.powermock.api.mockito.PowerMockito.*;
 
+import org.mockito.internal.matchers.Any;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.internal.WhiteboxImpl;
 
 import java.util.ArrayList;
 
@@ -30,7 +33,7 @@ import id.co.veritrans.sdk.coreflow.APIClientMain;
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.SDKConfig;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.coreflow.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.coreflow.models.BCABankTransfer;
 import id.co.veritrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
@@ -52,6 +55,7 @@ import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriECashModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.transactionmanager.BusCollaborator;
 import id.co.veritrans.sdk.coreflow.transactionmanager.EventBustImplementSample;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
@@ -67,7 +71,7 @@ public class VeritransAndroidSDKTest {
 
 
     @Mock
-    Context context;
+    Context contextMock;
     @Mock
     TransactionManager transactionManager;
     @Mock
@@ -75,7 +79,7 @@ public class VeritransAndroidSDKTest {
     @Mock
     VeritransRestAPI veritransRestAPI;
     @Mock
-    Resources resources;
+    Resources resourceMock;
     @Mock
     ConnectivityManager connectivityManager;
     @Mock
@@ -151,26 +155,46 @@ public class VeritransAndroidSDKTest {
     @Mock
     private BBMMoneyRequestModel bbmMoneyRequestModelMock;
     private String userId ;
+    private String transactionId = "A1";
+    @Mock
+    private ISdkFlow uiflowMock;
+
+    Log fakeLog;
+    private String exceptionMock;
+    @Mock
+    private Integer drawableIntCostumMock ;
+    @Mock
+    private Drawable drawableCostumMock;
+    @Mock
+    private Integer drawableIntDefaultMock;
+    @Mock
+    private Drawable drawableDefaultMock;
+    private String merchantLogoMock = "merchantLogo";
+    @Mock
+    private BBMCallBackUrl bbmCallbackUrlMock;
 
     @Before
     public void setup(){
         PowerMockito.mockStatic(TextUtils.class);
         PowerMockito.mockStatic(Log.class);
+        PowerMockito.mockStatic(Logger.class);
         PowerMockito.mockStatic(Looper.class);
         PowerMockito.mockStatic(Utils.class);
         PowerMockito.mockStatic(SdkUtil.class);
 
         eventBustImplementSample.registerBus(busMock);
 
-        Mockito.when(context.getApplicationContext()).thenReturn(context);
-        Mockito.when(context.getString(R.string.error_unable_to_connect)).thenReturn("not connected");
-        Mockito.when(context.getResources()).thenReturn(resources);
-        Mockito.when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
+        Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
+        Mockito.when(contextMock.getString(R.string.error_unable_to_connect)).thenReturn("not connected");
+        Mockito.when(contextMock.getResources()).thenReturn(resourceMock);
+        Mockito.when(contextMock.getResources().getDrawable(drawableIntDefaultMock)).thenReturn(drawableDefaultMock);
+
+        Mockito.when(contextMock.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
         Mockito.when(connectivityManager.getActiveNetworkInfo()).thenReturn(networkInfo);
         Mockito.when(networkInfo.isConnected()).thenReturn(false);
-        Mockito.when(context.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preference);
+        Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preference);
 
-        VeritransSDK veritransSDK = (new SdkCoreFlowBuilder(context, SDKConfig.CLIENT_KEY, SDKConfig.MERCHANT_BASE_URL)
+        VeritransSDK veritransSDK = (new SdkCoreFlowBuilder(contextMock, SDKConfig.CLIENT_KEY, SDKConfig.MERCHANT_BASE_URL)
                 .enableLog(true)
                 .setDefaultText("open_sans_regular.ttf")
                 .setSemiBoldText("open_sans_semibold.ttf")
@@ -540,6 +564,8 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
+
+
     /*
      * paymentUsingEpayBri
      *
@@ -744,11 +770,13 @@ public class VeritransAndroidSDKTest {
      *
      */
 
-    @Test public void deleteCard_whenCreditCardNull(){
+    @Test public void deleteCard_whenCreditCardNullNetorkAvailable(){
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.deleteCard(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
+
 
 
     @Test public void deleteCard_whenNetworkAvailable(){
@@ -760,13 +788,144 @@ public class VeritransAndroidSDKTest {
 
     @Test public void deleteCard_whenNetworkUnAvailable(){
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        veritransSDKSSpy.deleteCard(savecardMock);
+        veritransSDKSSpy.deleteCard(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         busCollaborator.onGeneralErrorEvent();
     }
 
 
 
+
+
+
+    /*
+     * getAuthenticationToken
+     *
+     */
+
+
+    @Test public void getAuthenticationToken_whenNetworkAvailable(){
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.getAuthenticationToken();
+        Mockito.verify(transactionManager).getAuthenticationToken();
+    }
+
+
+    @Test public void getAuthenticationToken_whenNetworkUnAvailable(){
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        veritransSDKSSpy.getAuthenticationToken();
+        Assert.assertFalse(veritransSDKSSpy.isRunning);
+        busCollaborator.onGeneralErrorEvent();
+    }
+
+    /*
+     * getOffersList
+     *
+     */
+
+
+    @Test public void getOffersList_whenNetworkAvailable(){
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.getOffersList();
+        Mockito.verify(transactionManager).getOffers("");
+        Assert.assertTrue(veritransSDKSSpy.isRunning);
+    }
+
+
+    @Test public void getOffersList_whenNetworkUnAvailable(){
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        veritransSDKSSpy.getAuthenticationToken();
+        Assert.assertFalse(veritransSDKSSpy.isRunning);
+        busCollaborator.onGeneralErrorEvent();
+    }
+
+
+    //////////////////////////////////////////////////
+
+
+    /*
+     * startRegisterCardUIFlow
+     *
+     */
+
+
+    @Test public void startRegisterCardUIFlow_whenUIFlowNotNull(){
+        veritransSDKSSpy.uiflow = uiflowMock;
+        veritransSDKSSpy.startRegisterCardUIFlow(contextMock);
+        Mockito.verify(uiflowMock).runRegisterCard(contextMock);
+    }
+
+
+        /*
+     * startRegisterCardUIFlow
+     *
+     */
+
+
+    @Test public void startPaymentUiFlow_whenUIFlowNotNull(){
+        when(transactionRequestMock.getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        veritransSDKSSpy.uiflow = uiflowMock;
+        veritransSDKSSpy.isRunning = false;
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+
+        veritransSDKSSpy.startPaymentUiFlow(contextMock);
+        Mockito.verify(veritransSDKSSpy).startPaymentUiFlow(contextMock);
+    }
+
+
+    @Test public void startPaymentUiFlow_whenTransactionRequestNull(){
+        veritransSDKSSpy.uiflow = uiflowMock;
+        veritransSDKSSpy.isRunning = true;
+        veritransSDKSSpy.setTransactionRequest(null);
+
+        veritransSDKSSpy.startPaymentUiFlow(contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString());
+
+    }
+
+
+    @Test public void startPaymentUiFlow_whenSdkRunning(){
+        veritransSDKSSpy.uiflow = uiflowMock;
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        veritransSDKSSpy.isRunning = true;
+
+        veritransSDKSSpy.startPaymentUiFlow(contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString());
+
+    }
+
+
+    @Test(expected = Exception.class)
+    public void getMerhcantToken_whenReadObject(){
+        when(LocalDataHandler.readObject(contextMock.getString(R.string.user_details), UserDetail.class)).thenThrow(new Exception(exceptionMock));
+        Assert.assertEquals("sd", veritransSDKSSpy.getMerchantToken());
+
+    }
+
+    @Test public void initializeLogo_whenLogoIdNot0() throws Exception {
+        drawableIntCostumMock = 1;
+
+        veritransSDKSSpy.setMerchantLogoResourceId(drawableIntCostumMock);
+        Assert.assertEquals((Integer)1, (Integer)veritransSDKSSpy.getMerchantLogoResourceId());
+
+        WhiteboxImpl.invokeMethod(veritransSDKSSpy, "initializeLogo");
+        Mockito.verify(contextMock, Mockito.times(1)).getResources();
+
+    }
+
+    //!
+    @Test public void initializeLogo_whenLogoId0() throws Exception {
+        veritransSDKSSpy.setMerchantLogoResourceId(0);
+
+        veritransSDKSSpy.setMerchantLogo(merchantLogoMock);
+        Assert.assertEquals(merchantLogoMock, veritransSDKSSpy.getMerchantLogo());
+
+        WhiteboxImpl.invokeMethod(veritransSDKSSpy, "initializeLogo");
+        Mockito.verify(contextMock, Mockito.times(1)).getResources();
+
+    }
     //////////////////////////////////////////////////
     @Test
     public void getOverLimit_whenNoetworkAvailable() throws Exception {
@@ -774,7 +933,21 @@ public class VeritransAndroidSDKTest {
 
         veritransSDKSSpy.getOffersList();
         Mockito.verify(transactionManager,Mockito.times(1)).getOffers(sdkTokenMock);
+        Assert.assertTrue(veritransSDKSSpy.isRunning);
     }
+
+
+    /*
+     * setget
+     */
+
+    @Test
+    public void getBBMCallBackUrlTest(){
+        veritransSDKSSpy.setBBMCallBackUrl(bbmCallbackUrlMock);
+        Assert.assertEquals(bbmCallbackUrlMock, veritransSDKSSpy.getBBMCallBackUrl());
+    }
+
+
 
 //    @Test
 //    public void getOverLimit_whenNetworkUnAvailable() throws Exception {

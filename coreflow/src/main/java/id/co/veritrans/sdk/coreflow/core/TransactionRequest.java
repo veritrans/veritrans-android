@@ -1,5 +1,7 @@
 package id.co.veritrans.sdk.coreflow.core;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
@@ -109,15 +111,8 @@ public class TransactionRequest {
         return mCustomerDetails;
     }
 
-    public void setCustomerDetails(CustomerDetails customerDetails) {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            if (!veritransSDK.isRunning()) {
-                mCustomerDetails = customerDetails;
-            } else {
-                Logger.e(ERROR_MESSAGE);
-            }
-        } else Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+    public void setCustomerDetails(@NonNull CustomerDetails customerDetails) {
+        mCustomerDetails = customerDetails;
 
     }
 
@@ -125,30 +120,18 @@ public class TransactionRequest {
         return mBillingAddressArrayList;
     }
 
-    public void setBillingAddressArrayList(ArrayList<BillingAddress> billingAddressArrayList) {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            if (!veritransSDK.isRunning()) {
-                mBillingAddressArrayList = billingAddressArrayList;
-            } else {
-                Logger.e(ERROR_MESSAGE);
-            }
-        } else Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+    public void setBillingAddressArrayList(@NonNull ArrayList<BillingAddress> billingAddressArrayList) {
+        mBillingAddressArrayList = billingAddressArrayList;
+
     }
 
     public ArrayList<ShippingAddress> getShippingAddressArrayList() {
         return mShippingAddressArrayList;
     }
 
-    public void setShippingAddressArrayList(ArrayList<ShippingAddress> shippingAddressArrayList) {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            if (!veritransSDK.isRunning()) {
-                mShippingAddressArrayList = shippingAddressArrayList;
-            } else {
-                Logger.e(ERROR_MESSAGE);
-            }
-        } else Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+    public void setShippingAddressArrayList(@NonNull  ArrayList<ShippingAddress> shippingAddressArrayList) {
+        mShippingAddressArrayList = shippingAddressArrayList;
+
     }
 
     public String getOrderId() {
@@ -176,14 +159,7 @@ public class TransactionRequest {
     }
 
     public void setBillInfoModel(BillInfoModel billInfoModel) {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            if (!veritransSDK.isRunning()) {
-                this.billInfoModel = billInfoModel;
-            } else {
-                Logger.e(ERROR_MESSAGE);
-            }
-        } else Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+        this.billInfoModel = billInfoModel;
     }
 
     public ArrayList<ItemDetails> getItemDetails() {
@@ -191,14 +167,7 @@ public class TransactionRequest {
     }
 
     public void setItemDetails(ArrayList<ItemDetails> itemDetails) {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            if (!veritransSDK.isRunning()) {
-                this.itemDetails = itemDetails;
-            } else {
-                Logger.e(ERROR_MESSAGE);
-            }
-        } else Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
+        this.itemDetails = itemDetails;
     }
 
     /**

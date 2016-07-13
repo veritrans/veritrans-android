@@ -167,11 +167,6 @@ public class EventBustImplementSample implements GetAuthenticationBusCallback, D
         transactionManager.paymentUsingEpayBri(requestModel, xAuth);
     }
 
-    public void getPaymentStatus(MerchantRestAPI merchantRestAPIMock, String mTransactoinId, String token) {
-        transactionManager.setMerchantPaymentAPI(merchantRestAPIMock);
-        transactionManager.getPaymentStatus(mTransactoinId, token);
-    }
-
 
     /*
      * Card Registration Callback stuff

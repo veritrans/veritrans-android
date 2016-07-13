@@ -938,55 +938,6 @@ public class TransactionManager {
             }
     }
 
-    /**
-     * It will execute API call to get payment status based on transaction ID.
-     *
-     * @param id transaction identifier
-     * @param authenticationToken
-     */
-    @Deprecated
-    public void getPaymentStatus(String id, String authenticationToken) {
-            String merchantToken = authenticationToken;
-            Logger.i("merchantToken:" + merchantToken);
-            if (merchantToken != null) {
-                merchantPaymentAPI.transactionStatus(merchantToken, id, new Callback<TransactionStatusResponse>() {
-                    @Override
-                    public void success(TransactionStatusResponse transactionStatusResponse, Response response) {
-                        if (transactionStatusResponse != null) {
-                            if (!TextUtils.isEmpty(transactionStatusResponse.getStatusCode())) {
-                                if (transactionStatusResponse.getStatusCode().equalsIgnoreCase(context.getString(R.string.success_code_200))
-                                        || transactionStatusResponse.getStatusCode().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
-
-                                    VeritransBusProvider.getInstance().post(new TransactionStatusSuccessEvent(transactionStatusResponse, Events.PAYMENT));
-                                }
-                            } else {
-                                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
-                            }
-                        } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.PAYMENT));
-                        }
-                        releaseResources();
-                    }
-
-                    @Override
-                    public void failure(RetrofitError e) {
-                        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                            Logger.i("Error in SSL Certificate. " + e.getMessage());
-                        } else {
-                            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                            Logger.i("General error occurred " + e.getMessage());
-                        }
-                        releaseResources();
-                    }
-                });
-
-            } else {
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(context.getString(R.string.error_invalid_data_supplied));
-                releaseResources();
-            }
-    }
 
     /**
      * It will execute API call to pay using Indosat Dompetku.
@@ -1319,7 +1270,7 @@ public class TransactionManager {
     private void releaseResources() {
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         if (veritransSDK != null) {
-            veritransSDK.isRunning = false;
+            veritransSDK.releaseResource();
             Logger.i("released transaction");
         }
     }

@@ -52,7 +52,7 @@ public class VeritransSDK {
     private  Context context = null;
     private  String themeColorString = null;
     private  int themeColor;
-    private static Drawable merchantLogoDrawable = null;
+    private  Drawable merchantLogoDrawable = null;
 
     private  static VeritransSDK veritransSDK ;
 
@@ -64,7 +64,7 @@ public class VeritransSDK {
     private  String boldText = null;
     private  String semiBoldText = null;
     private  String merchantName = null;
-    private  ISdkFlow uiflow;
+    ISdkFlow uiflow;
     private  IScanner externalScanner;
     private  TransactionManager mTransactionManager;
     private  String merchantLogo = null;
@@ -118,7 +118,7 @@ public class VeritransSDK {
         if (merchantLogoResourceId != 0) {
             merchantLogoDrawable = context.getResources().getDrawable(merchantLogoResourceId);
         } else if (merchantLogo != null) {
-            int resourceImage = context.getResources().getIdentifier(veritransSDK.getMerchantLogo(), "drawable", context.getPackageName());
+            int resourceImage = context.getResources().getIdentifier(getMerchantLogo(), "drawable", context.getPackageName());
             merchantLogoDrawable = context.getResources().getDrawable(resourceImage);
         }
     }
@@ -579,20 +579,13 @@ public class VeritransSDK {
 
     }
 
-    private void showError(TransactionRequest transactionRequest) {
-        if (transactionRequest == null) {
-            Logger.e(ADD_TRANSACTION_DETAILS);
-        }
-
-        Logger.e(context.getString(R.string.error_invalid_data_supplied));
-    }
 
     /**
      * This will start actual execution of save card UI flow.
      *
      * @param context current activity.
      */
-    public void startRegisterCardUIFlow(Context context) {
+    public void startRegisterCardUIFlow(@NonNull  Context context) {
         if (uiflow != null) {
             uiflow.runRegisterCard(context);
         }
@@ -626,16 +619,6 @@ public class VeritransSDK {
         }
     }
 
-
-
-    public void getPaymentStatus(String transactionId) {
-        if (TextUtils.isEmpty(transactionId)) {
-            if(Utils.isNetworkAvailable(context)){
-                mTransactionManager.getPaymentStatus(transactionId, readAuthenticationToken());
-            }
-
-        }
-    }
 
     /**
      * It will execute an transaction for Indomaret .
@@ -771,6 +754,7 @@ public class VeritransSDK {
      */
     public void getOffersList() {
         if(isNetworkAvailable()){
+            isRunning = true;
             mTransactionManager.getOffers(readAuthenticationToken());
         }else{
             isRunning = false;
@@ -809,5 +793,17 @@ public class VeritransSDK {
             return true;
         }
         return false;
+    }
+
+    void setMerchantLogoResourceId(int merchantLogoResourceId) {
+        this.merchantLogoResourceId = merchantLogoResourceId;
+    }
+
+    void setMerchantLogo(String merchantLogo) {
+        this.merchantLogo = merchantLogo;
+    }
+
+    public void releaseResource() {
+        this.isRunning = false;
     }
 }

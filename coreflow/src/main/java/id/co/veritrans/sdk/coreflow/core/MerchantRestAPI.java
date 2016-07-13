@@ -36,15 +36,6 @@ import retrofit.http.Path;
  */
 public interface MerchantRestAPI {
 
-    //http://api.sandbox.veritrans.co.id/v2/39b690a3-d626-4577-a6ab-14e29a1c74ac/status/
-    @Headers({"Content-Type: application/json",
-            "Accept: application/json"})
-    @POST("/{id}/status/")
-    @Deprecated
-    void transactionStatus(
-            @Header("x-auth") String auth, @Path("id") String transactionId,
-            Callback<TransactionStatusResponse> callback);
-
 
     //bank transfer
     @Headers({"Content-Type: application/json", "Accept: application/json"})
