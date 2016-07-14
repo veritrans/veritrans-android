@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -47,8 +48,7 @@ public class Utils {
                 return true;
             }
         } catch (Exception ex) {
-
-            ex.printStackTrace();
+            Logger.e(ex.getMessage());
             return false;
         }
         return false;
@@ -63,7 +63,8 @@ public class Utils {
                 editText.clearFocus();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.e(e.getMessage());
+//            e.printStackTrace();
         }
     }
 
@@ -353,7 +354,7 @@ public class Utils {
      * @param cardNo card number
      * @return card type
      */
-    public static String getCardType(String cardNo) {
+    public static String getCardType(@NonNull  String cardNo) {
         if (cardNo.isEmpty() || cardNo.length() < 2) {
             return "";
         } else {
