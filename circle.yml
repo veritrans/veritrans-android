@@ -31,8 +31,8 @@ test:
 
 
     post:
-       - cp -r app/build/reports $CIRCLE_ARTIFACTS
-       - cp -r app/build/reports/jacoco/ $CIRCLE_TEST_REPORTS
+       - cp -r coreflow/build/reports $CIRCLE_ARTIFACTS
+       - cp -r coreflow/build/reports/jacoco/ $CIRCLE_TEST_REPORTS
 
 
 

@@ -1,15 +1,19 @@
 package id.co.veritrans.sdk.coreflow.models;
 
+import android.text.TextUtils;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 
 /**
  * Created by ziahaqi on 7/14/16.
  */
 @RunWith(MockitoJUnitRunner.class)
+@PrepareForTest({TextUtils.class})
 public class TransactionStatusResponseTest {
 
     private TransactionStatusResponse transactoinStatus;
