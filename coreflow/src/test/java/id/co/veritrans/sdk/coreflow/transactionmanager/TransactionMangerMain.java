@@ -91,6 +91,7 @@ public abstract class TransactionMangerMain extends APIClientMain{
         Mockito.when(context.getApplicationContext()).thenReturn(context);
         Mockito.when(context.getString(R.string.success_code_200)).thenReturn("200");
         Mockito.when(context.getString(R.string.success_code_201)).thenReturn("201");
+        Mockito.when(context.getString(R.string.success)).thenReturn("success");
 
         veritransSDK = new SdkCoreFlowBuilder(context, "SDK", "hi")
                 .enableLog(true)

@@ -53,6 +53,7 @@ import id.co.veritrans.sdk.coreflow.models.MandiriBillPayTransferModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriECashModel;
+import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
@@ -172,6 +173,8 @@ public class VeritransAndroidSDKTest {
     private String merchantLogoMock = "merchantLogo";
     @Mock
     private BBMCallBackUrl bbmCallbackUrlMock;
+    @Mock
+    private ArrayList<PaymentMethodsModel> paymentMethodMock;
 
     @Before
     public void setup(){
@@ -309,6 +312,13 @@ public class VeritransAndroidSDKTest {
 
     @Test public void paymentUsingCard_whenTransactoncardTransferNull(){
         veritransSDKSSpy.setTransactionRequest(null);
+        veritransSDKSSpy.paymentUsingCard(null);
+        Assert.assertFalse(veritransSDKSSpy.isRunning);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test public void paymentUsingCard_whencardTransferNull(){
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         veritransSDKSSpy.paymentUsingCard(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
@@ -690,6 +700,13 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
+    @Test public void paymentUsingMandiriClickPay_whenMandiriJustClickPayModelNull(){
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        veritransSDKSSpy.paymentUsingMandiriClickPay(null);
+        Assert.assertFalse(veritransSDKSSpy.isRunning);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
     @Test public void paymentUsingMandiriClickPay_whenNetworkAvailable(){
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
@@ -926,6 +943,58 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(contextMock, Mockito.times(1)).getResources();
 
     }
+
+    @Test public void getInstanceTest(){
+        VeritransSDK.getInstance(null);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString());
+    }
+
+    @Test
+    public void getDefaultText(){
+        String defaultText = "text";
+        veritransSDKSSpy.setDefaultText(defaultText);
+        Assert.assertEquals(defaultText, veritransSDKSSpy.getDefaultText());
+    }
+
+    @Test
+    public void boldtext(){
+        String boldtext = "text";
+        veritransSDKSSpy.setBoldText(boldtext);
+        Assert.assertEquals(boldtext, veritransSDKSSpy.getBoldText());
+
+    }
+     @Test
+    public void semiboldtext(){
+        String text = "text";
+        veritransSDKSSpy.setSemiBoldText(text);
+        Assert.assertEquals(text, veritransSDKSSpy.getSemiBoldText());
+
+    }
+
+    @Test
+    public void isRunningTest(){
+        veritransSDKSSpy.isRunning = true;
+        Assert.assertEquals(true, veritransSDKSSpy.isRunning());
+
+    }
+
+
+    @Test
+    public void merchantLogo(){
+        String merchantLogo = "merchantLogo";
+        veritransSDKSSpy.setMerchantLogo(merchantLogo);
+        Assert.assertEquals(merchantLogo, veritransSDKSSpy.getMerchantLogo());
+
+    }
+
+
+    @Test
+    public void paymentMethod(){
+
+        veritransSDKSSpy.setSelectedPaymentMethods(paymentMethodMock);
+        Assert.assertEquals(paymentMethodMock, veritransSDKSSpy.getSelectedPaymentMethods());
+    }
     //////////////////////////////////////////////////
     @Test
     public void getOverLimit_whenNoetworkAvailable() throws Exception {
@@ -948,6 +1017,11 @@ public class VeritransAndroidSDKTest {
     }
 
 
+    @Test
+    public void TransactionRequestTest(){
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Assert.assertEquals(transactionRequestMock, veritransSDKSSpy.getTransactionRequest());
+    }
 
 //    @Test
 //    public void getOverLimit_whenNetworkUnAvailable() throws Exception {

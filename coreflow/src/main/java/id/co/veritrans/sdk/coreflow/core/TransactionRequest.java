@@ -121,6 +121,7 @@ public class TransactionRequest {
     }
 
     public void setBillingAddressArrayList(@NonNull ArrayList<BillingAddress> billingAddressArrayList) {
+
         mBillingAddressArrayList = billingAddressArrayList;
 
     }

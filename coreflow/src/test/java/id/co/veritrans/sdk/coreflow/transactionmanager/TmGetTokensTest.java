@@ -83,7 +83,7 @@ public class TmGetTokensTest extends TransactionMangerMain{
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGetTokenFailedEvent();
 
-        tokenDetailsResponse.setStatusMessage("statusnotnull");
+        tokenDetailsResponse.setStatusMessage(null);
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(2)).onGetTokenFailedEvent();
     }
@@ -130,7 +130,13 @@ public class TmGetTokensTest extends TransactionMangerMain{
 
         // when invalid certification
         Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
-        Assert.assertNotNull(mSslHandshakeException);
+        callbackgetTokenArgumentCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+
+        // when invalid certification path
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mCertPathValidatorException);
+        callbackgetTokenArgumentCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(2)).onSSLErrorEvent();
     }
 
 
@@ -167,7 +173,7 @@ public class TmGetTokensTest extends TransactionMangerMain{
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGetTokenFailedEvent();
 
-        tokenDetailsResponse.setStatusMessage("statusnotnull");
+        tokenDetailsResponse.setStatusMessage(null);
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(2)).onGetTokenFailedEvent();
     }
@@ -225,7 +231,13 @@ public class TmGetTokensTest extends TransactionMangerMain{
 
         // when invalid certification
         Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
-        Assert.assertNotNull(mSslHandshakeException);
+        callbackgetTokenArgumentCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+
+        // when invalid certification path
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mCertPathValidatorException);
+        callbackgetTokenArgumentCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(2)).onSSLErrorEvent();
     }
 
     //getTokenTwoClick
@@ -263,7 +275,7 @@ public class TmGetTokensTest extends TransactionMangerMain{
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, response);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGetTokenFailedEvent();
 
-        tokenDetailsResponse.setStatusMessage("statusnotnull");
+        tokenDetailsResponse.setStatusMessage(null);
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, response);
         Mockito.verify(busCollaborator, Mockito.times(2)).onGetTokenFailedEvent();
     }
@@ -326,7 +338,13 @@ public class TmGetTokensTest extends TransactionMangerMain{
 
         // when invalid certification
         Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
-        Assert.assertNotNull(mSslHandshakeException);
+        callbackgetTokenArgumentCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+
+        // when invalid certification path
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mCertPathValidatorException);
+        callbackgetTokenArgumentCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(2)).onSSLErrorEvent();
     }
 
 
@@ -367,7 +385,7 @@ public class TmGetTokensTest extends TransactionMangerMain{
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, response);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGetTokenFailedEvent();
 
-        tokenDetailsResponse.setStatusMessage("statusnotnull");
+        tokenDetailsResponse.setStatusMessage(null);
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, response);
         Mockito.verify(busCollaborator, Mockito.times(2)).onGetTokenFailedEvent();
     }
@@ -435,6 +453,12 @@ public class TmGetTokensTest extends TransactionMangerMain{
 
         // when invalid certification
         Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
-        Assert.assertNotNull(mSslHandshakeException);
+        callbackgetTokenArgumentCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+
+        // when invalid certification path
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mCertPathValidatorException);
+        callbackgetTokenArgumentCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(2)).onSSLErrorEvent();
     }
 }

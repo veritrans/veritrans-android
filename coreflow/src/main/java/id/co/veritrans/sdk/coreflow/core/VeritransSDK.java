@@ -103,13 +103,12 @@ public class VeritransSDK {
 
     }
 
-    void setmMixpanelAnalyticsManager(@NonNull MixpanelAnalyticsManager mMixpanelAnalyticsManager) {
-        this.mMixpanelAnalyticsManager = mMixpanelAnalyticsManager;
-    }
 
     protected static VeritransSDK getInstance(@NonNull SdkCoreFlowBuilder sdkBuilder) {
-        if(veritransSDK == null){
+        if(sdkBuilder != null){
             veritransSDK = new VeritransSDK(sdkBuilder);
+        }else{
+            Logger.e("sdk is not initialized.");
         }
         return veritransSDK;
     }
@@ -146,12 +145,16 @@ public class VeritransSDK {
         return mPreferences;
     }
 
+    static void setmPreferences(SharedPreferences mp){
+        mPreferences = mp;
+    }
+
     public   String getDefaultText() {
         return defaultText;
     }
 
     public void setDefaultText(String defaultText) {
-        defaultText = defaultText;
+        this.defaultText = defaultText;
     }
 
     public String getMerchantName() {
@@ -178,7 +181,7 @@ public class VeritransSDK {
     }
 
     public void setBoldText(String boldText) {
-        boldText = boldText;
+        this.boldText = boldText;
     }
 
     public String getSemiBoldText() {
@@ -186,7 +189,7 @@ public class VeritransSDK {
     }
 
     public void setSemiBoldText(String semiBoldText) {
-        semiBoldText = semiBoldText;
+        this.semiBoldText = semiBoldText;
     }
 
     public boolean isRunning() {

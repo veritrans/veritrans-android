@@ -399,6 +399,17 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
         responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionSuccessEvent();
 
+
+        transactionResponse.setStatusCode("201");
+        eventBustImplementSample.paymentUsingCard(merchantRestAPIMock, X_AUTH, transfer, mToken);
+
+        Mockito.verify(merchantRestAPIMock,Mockito.times(2)).paymentUsingCard(xauthCaptor.capture(), cardTransferCaptor.capture(), responseCallbackCaptor.capture());
+
+        //response code 200 /201
+        responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
+        Mockito.verify(busCollaborator, Mockito.times(2)).onTransactionSuccessEvent();
+
+
     }
 
     @Test
@@ -437,9 +448,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     }
 
-    public void testPaymentUsingBCABankError_whenValidSSL() throws Exception {
+    @Test
+    public void testPaymentUsingCardSSL_whenValidSSL() throws Exception {
         CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
-
+        TransactionResponse response = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingCard(merchantRestAPIMock, X_AUTH, transfer, mToken);
@@ -452,7 +464,9 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     }
 
-    public void testPaymentUsingBCABankError_whenInValidSSL() throws Exception {
+
+    @Test
+    public void testPaymentUsingCard_whenInValidSSL() throws Exception {
         CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -468,7 +482,22 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
         Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
     }
 
+    @Test
+    public void testPaymentUsingCard_whenInValidSSLCertPath() throws Exception {
+        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
 
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingCard(merchantRestAPIMock, X_AUTH, transfer, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingCard(xauthCaptor.capture(), cardTransferCaptor.capture(), responseCallbackCaptor.capture());
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mCertPathValidatorException);
+
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+
+        // when invalid certification
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+    }
     /*
      * cimb pay
      */
@@ -1261,7 +1290,16 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Captor
     private ArgumentCaptor<MandiriECashModel> mandiriEcashModelCaptor;
 
+    @Test
+    public void testPaymentUsingMandiriEcashPay_whenTokenNull() throws Exception {
+        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay_card.json");
 
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingMandiriEcashPay(merchantRestAPIMock, null, requestModel, null);
+
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
+    }
 
     @Test
     public void testPaymentUsingMandiriEcashPay_whenResponseNotNull() throws Exception {
@@ -1317,9 +1355,49 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
         responseCallbackCaptor.getValue().failure(retrofitErrorMock);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
 
-        // when invalid certification
+    }
+
+
+    @Test
+    public void testPaymentUsingMandiriEcash_validSSL() throws Exception {
+        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay_card.json");
+
+        TransactionResponse transactionResponse =  null;
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingMandiriEcashPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingMandiriECash(xauthCaptor.capture(), mandiriEcashModelCaptor.capture(), responseCallbackCaptor.capture());
+
+        //when valid certification
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
+
+    }
+
+    @Test
+    public void testPaymentUsingMandiriEcash_invalidSSL() throws Exception {
+        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay_card.json");
+
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingMandiriEcashPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingMandiriECash(xauthCaptor.capture(), mandiriEcashModelCaptor.capture(), responseCallbackCaptor.capture());
         Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
-        Assert.assertNotNull(mSslHandshakeException);
+
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+
+        //certpath error
+
+        eventBustImplementSample.paymentUsingMandiriEcashPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
+
+        Mockito.verify(merchantRestAPIMock, Mockito.times(2)).paymentUsingMandiriECash(xauthCaptor.capture(), mandiriEcashModelCaptor.capture(), responseCallbackCaptor.capture());
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mCertPathValidatorException);
+
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(2)).onSSLErrorEvent();
     }
 
     /*
@@ -1331,6 +1409,19 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Captor
     private ArgumentCaptor<PermataBankTransfer> permataTranferCaptor;
+
+    @Test
+    public void testPaymentUsingPermataBankSuccess_whenTokenNull() throws Exception {
+        PermataBankTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), PermataBankTransfer.class, "sample_permata_bank_transfer.json");
+
+        TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                TransactionResponse.class, "sample_response_pay_permata_bank_transfer.json");
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingPermataBank(merchantRestAPIMock, transfer, null);
+
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
+    }
 
     @Test
     public void testPaymentUsingPermataBankSuccess_whenResponseNotNull() throws Exception {
@@ -1347,6 +1438,41 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
         //response code 200 /201
         transferResponCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionSuccessEvent();
+
+
+    }
+
+    @Test
+    public void testPaymentUsingPermataBankSuccess_whenResponseNotNull201() throws Exception {
+        PermataBankTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), PermataBankTransfer.class, "sample_permata_bank_transfer.json");
+
+        TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                TransactionResponse.class, "sample_response_pay_permata_bank_transfer.json");
+        transactionResponse.setStatusCode("200");
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingPermataBank(merchantRestAPIMock, transfer, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingPermataBank(xauthCaptor.capture(), permataTranferCaptor.capture(), transferResponCaptor.capture());
+
+        //response code 200 /201
+        transferResponCaptor.getValue().success(transactionResponse, retrofitResponse);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionSuccessEvent();
+
+
+    }
+
+    @Test
+    public void testPaymentUsingPermataBankSuccess_whenResponseNotNullNot200() throws Exception {
+        PermataBankTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), PermataBankTransfer.class, "sample_permata_bank_transfer.json");
+
+        TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
+                TransactionResponse.class, "sample_response_pay_permata_bank_transfer.json");
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingPermataBank(merchantRestAPIMock, transfer, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingPermataBank(xauthCaptor.capture(), permataTranferCaptor.capture(), transferResponCaptor.capture());
 
         //response not code 200 /201
         transactionResponse.setStatusCode("300");
@@ -1370,5 +1496,53 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
         //response code 200 /201
         transferResponCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
+    }
+
+
+    @Test
+    public void testPaymentUsingPermataBankError_validSSL() throws Exception {
+        PermataBankTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), PermataBankTransfer.class, "sample_permata_bank_transfer.json");
+
+        TransactionResponse transactionResponse =  null;
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingPermataBank(merchantRestAPIMock, transfer, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingPermataBank(xauthCaptor.capture(), permataTranferCaptor.capture(), transferResponCaptor.capture());
+
+        transferResponCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void testPaymentUsingPermataBankError_invalidSSL() throws Exception {
+        PermataBankTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), PermataBankTransfer.class, "sample_permata_bank_transfer.json");
+
+        TransactionResponse transactionResponse =  null;
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingPermataBank(merchantRestAPIMock, transfer, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingPermataBank(xauthCaptor.capture(), permataTranferCaptor.capture(), responseCallbackCaptor.capture());
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mSslHandshakeException);
+
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+    }
+
+    @Test
+    public void testPaymentUsingPermataBankError_invalidSSLCertPath() throws Exception {
+        PermataBankTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), PermataBankTransfer.class, "sample_permata_bank_transfer.json");
+
+        TransactionResponse transactionResponse =  null;
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.paymentUsingPermataBank(merchantRestAPIMock, transfer, mToken);
+
+        Mockito.verify(merchantRestAPIMock).paymentUsingPermataBank(xauthCaptor.capture(), permataTranferCaptor.capture(), responseCallbackCaptor.capture());
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mCertPathValidatorException);
+
+        responseCallbackCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
     }
 }

@@ -51,10 +51,10 @@ public class SdkUtil {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
-
         if (request.isUiEnabled()) {
             //get user details only if using default ui.
             request = initializeUserInfo(request);
+
         }
 
         MandiriBillPayTransferModel model =
@@ -148,13 +148,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            if (veritransSDK.getContext() != null)
-                bankTransfer.setBank(veritransSDK.getContext().getString(R.string.payment_permata));
-            else Logger.e("Context is not available");
-        } else Logger.e("Veritrans SDK is not started.");
-
+        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_permata));
 
         return new PermataBankTransfer(bankTransfer,
                 transactionDetails, request.getItemDetails(),
@@ -182,10 +176,8 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            bankTransfer.setBank(veritransSDK.getContext().getString(R.string.payment_bca));
-        }
+        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_bca));
+
 
         BCABankTransfer model =
                 new BCABankTransfer(bankTransfer,
@@ -218,10 +210,9 @@ public class SdkUtil {
 
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            model.setPaymentType(veritransSDK.getContext().getString(R.string.payment_indomaret));
-        }
+
+        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indomaret));
+
         model.setItem_details(request.getItemDetails());
         model.setCustomerDetails(request.getCustomerDetails());
         model.setTransactionDetails(transactionDetails);
@@ -391,10 +382,7 @@ public class SdkUtil {
 
         model.setCustomerDetails(request.getCustomerDetails(), request
                 .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            model.setPaymentType(veritransSDK.getContext().getString(R.string.payment_indosat_dompetku));
-        }
+        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indosat_dompetku));
 
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();
@@ -427,16 +415,14 @@ public class SdkUtil {
      * @param request instance of TransactionRequest
      * @return transaction request with {@link UserDetail}
      */
-    private static TransactionRequest getUserDetails(TransactionRequest request) {
+     static TransactionRequest getUserDetails(TransactionRequest request) {
 
         UserDetail userDetail = null;
         CustomerDetails mCustomerDetails = null;
 
         try {
-            VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-            if (veritransSDK != null) {
-                userDetail = LocalDataHandler.readObject(veritransSDK.getContext().getString(R.string.user_details), UserDetail.class);
-            }
+
+            userDetail = LocalDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext().getString(R.string.user_details), UserDetail.class);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
 
@@ -472,32 +458,30 @@ public class SdkUtil {
     /**
      * return user details if available else return null
      *
-     * @param context   Application context
      * @return UserDetail
      */
-    protected static UserDetail getUserDetails(Context context) {
+//    protected static UserDetail getUserDetails(Context context) {
+//
+//        StorageDataHandler storageDataHandler = new StorageDataHandler();
+//        try {
+//            VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+//            if (veritransSDK != null) {
+//                UserDetail userDetail = LocalDataHandler.readObject(veritransSDK.getContext().getString(R.string.user_details), UserDetail.class);
+//                return userDetail;
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
-        try {
-            VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-            if (veritransSDK != null) {
-                UserDetail userDetail = LocalDataHandler.readObject(veritransSDK.getContext().getString(R.string.user_details), UserDetail.class);
-                return userDetail;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private static TransactionRequest extractUserAddress(UserDetail userDetail,
+    static TransactionRequest extractUserAddress(UserDetail userDetail,
                                                          ArrayList<UserAddress> userAddresses,
                                                          TransactionRequest request) {
 
         ArrayList<BillingAddress> billingAddressArrayList = new ArrayList<>();
         ArrayList<ShippingAddress> shippingAddressArrayList = new ArrayList<>();
-
         for (int i = 0; i < userAddresses.size(); i++) {
 
             UserAddress userAddress = userAddresses.get(i);
@@ -508,7 +492,6 @@ public class SdkUtil {
                 billingAddressArrayList.add(billingAddress);
                 ShippingAddress shippingAddress = getShippingAddress(userDetail, userAddress);
                 shippingAddressArrayList.add(shippingAddress);
-
             } else if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING) {
                 ShippingAddress shippingAddress = getShippingAddress(userDetail, userAddress);
                 shippingAddressArrayList.add(shippingAddress);
@@ -521,7 +504,6 @@ public class SdkUtil {
 
         request.setBillingAddressArrayList(billingAddressArrayList);
         request.setShippingAddressArrayList(shippingAddressArrayList);
-
         return request;
     }
 

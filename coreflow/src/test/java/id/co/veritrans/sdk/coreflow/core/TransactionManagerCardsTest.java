@@ -328,29 +328,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
     @Captor
     private ArgumentCaptor<String> tokenIdCaptor;
 
-    @Before
-    public void setup(){
-        PowerMockito.mockStatic(Log.class);
-        PowerMockito.mockStatic(Looper.class);
-        PowerMockito.mockStatic(TextUtils.class);
-        PowerMockito.mockStatic(Base64.class);
-        PowerMockito.mockStatic(Logger.class);
-        PowerMockito.mock(ConnectivityManager.class);
-
-        Mockito.when(context.getResources()).thenReturn(resources);
-        Mockito.when(context.getApplicationContext()).thenReturn(context);
-        Mockito.when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
-        Mockito.when(context.getString(R.string.success_code_200)).thenReturn("200");
-
-        veritransSDK = new SdkCoreFlowBuilder(context, "SDK", "hi")
-                .enableLog(true)
-                .setDefaultText("open_sans_regular.ttf")
-                .setSemiBoldText("open_sans_semibold.ttf")
-                .setBoldText("open_sans_bold.ttf")
-                .setMerchantName("Veritrans Example Merchant")
-                .buildSDK();
-        transactionManager = veritransSDK.getVeritransSDK().getTransactionManager();
-    }
 
 
     @Test
@@ -531,26 +508,27 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
      * !!!!!!!!!!!!!!!!!!
      */
 
-//    @Test
-//    public void testGetOffersSuccess_whenResponseNotNull() throws Exception {
-//        GetOffersResponseModel responseModel = new GetOffersResponseModel();
-//        responseModel.setCode(200);
-//        responseModel.setMessage("success");
-//
-//        eventBustImplementSample.setTransactionManager(transactionManager);
-//        eventBustImplementSample.registerBus(veritransBus);
-//        eventBustImplementSample.getOffers(merchantRestAPIMock, mToken);
-//
-//        Mockito.verify(merchantRestAPIMock).getOffers(xauthCaptor.capture(), responseOfferCallbackCaptor.capture());
-//
-//        //response message success
-//        responseOfferCallbackCaptor.getValue().success(responseModel, retrofitResponse);
-//        Mockito.verify(busCollaborator, Mockito.times(1)).onGetOfferSuccesEvent();
-//
-//    }
+    @Test
+    public void testGetOffersSuccess_whenResponseNotNull() throws Exception {
+        Mockito.when(context.getString(R.string.success)).thenReturn("success");
+        GetOffersResponseModel responseModel = new GetOffersResponseModel();
+        responseModel.setCode(200);
+        responseModel.setMessage("success");
+
+        eventBustImplementSample.setTransactionManager(transactionManager);
+        eventBustImplementSample.registerBus(veritransBus);
+        eventBustImplementSample.getOffers(merchantRestAPIMock, mToken);
+
+        Mockito.verify(merchantRestAPIMock).getOffers(xauthCaptor.capture(), responseOfferCallbackCaptor.capture());
+
+        //response message success
+        responseOfferCallbackCaptor.getValue().success(responseModel, retrofitResponse);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGetOfferSuccesEvent();
+
+    }
 
     @Test
-    public void testGetOffersSuccess_whenResponseNotNull_codeNot200() throws Exception {
+    public void testGetOffersSuccess_whenResponseNotNull_codeNotSuccess() throws Exception {
         GetOffersResponseModel responseModel = new GetOffersResponseModel();
         responseModel.setCode(200);
         responseModel.setMessage("failed");
@@ -561,7 +539,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
 
 
         //response message not success
-        responseModel.setMessage("success");
         Mockito.verify(merchantRestAPIMock).getOffers(xauthCaptor.capture(), responseOfferCallbackCaptor.capture());
         responseOfferCallbackCaptor.getValue().success(responseModel, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGetOfferFailedEvent();
@@ -614,6 +591,15 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
 
         responseOfferCallbackCaptor.getValue().failure(retrofitErrorMock);
         Mockito.verify(busCollaborator, Mockito.times(1)).onSSLErrorEvent();
+
+
+        eventBustImplementSample.getOffers(merchantRestAPIMock, mToken);
+
+        Mockito.verify(merchantRestAPIMock, Mockito.times(2)).getOffers(xauthCaptor.capture(), responseOfferCallbackCaptor.capture());
+        Mockito.when(retrofitErrorMock.getCause()).thenReturn(mCertPathValidatorException);
+
+        responseOfferCallbackCaptor.getValue().failure(retrofitErrorMock);
+        Mockito.verify(busCollaborator, Mockito.times(2)).onSSLErrorEvent();
 
     }
 

@@ -1328,12 +1328,13 @@ public class TransactionManager {
 
     public void getOffers(String authenticationToken) {
             String merchantToken = authenticationToken;
-            Logger.i("merchantToken:" + merchantToken);
             if (merchantToken != null) {
                 merchantPaymentAPI.getOffers(merchantToken, new Callback<GetOffersResponseModel>() {
                     @Override
                     public void success(GetOffersResponseModel getOffersResponseModel, Response response) {
+                        System.out.println("offer>success");
                         if (getOffersResponseModel != null) {
+                            System.out.println("offer>notnull");
                             if (getOffersResponseModel.getMessage().equalsIgnoreCase(context.getString(R.string.success))) {
                                 VeritransBusProvider.getInstance().post(new GetOfferSuccessEvent(getOffersResponseModel, Events.GET_OFFER));
                             } else {
