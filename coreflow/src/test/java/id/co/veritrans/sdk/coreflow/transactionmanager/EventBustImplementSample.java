@@ -2,9 +2,7 @@ package id.co.veritrans.sdk.coreflow.transactionmanager;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import id.co.veritrans.sdk.coreflow.SDKConfig;
 import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
-import id.co.veritrans.sdk.coreflow.core.PaymentAPI;
 import id.co.veritrans.sdk.coreflow.core.TransactionManager;
 import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;

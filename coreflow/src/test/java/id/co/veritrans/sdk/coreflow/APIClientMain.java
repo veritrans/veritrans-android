@@ -12,14 +12,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collections;
 
-import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
-import id.co.veritrans.sdk.coreflow.core.PaymentAPI;
-import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
-import id.co.veritrans.sdk.coreflow.core.TransactionManager;
 import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.CardTransfer;
 import id.co.veritrans.sdk.coreflow.restapi.RestAPIMocUtilites;
 import id.co.veritrans.sdk.coreflow.restapi.RetrofitMockClient;
 import retrofit.RestAdapter;
@@ -39,7 +33,6 @@ public abstract class APIClientMain {
     public static final String CARD_CVV = "123";
     public static final String CARD_EXP_MONTH = "123";
     public static final String CARD_EXP_YEAR = "123";
-    protected PaymentAPI paymentAPI;
 
     public static final String VT_CARD_REG_RESPONSE_SUCCESS = "vt_register_card_success.json";
     public static final String VT_GET_TOKEN_SUCCESS = "vt_get_token.json";
