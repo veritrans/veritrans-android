@@ -19,7 +19,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import   org.powermock.api.support.membermodification.MemberModifier;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.SDKConfigTest;
@@ -103,7 +102,6 @@ public class SDKUtilsTest {
     @Mock
     private SharedPreferences mpreferenceMock;
     private String fullname = "fullname";
-    private Iterator<UserAddress> userAddressIterator;
     @Mock
     private UserAddress userAddressMock1;
     @Mock
@@ -114,13 +112,11 @@ public class SDKUtilsTest {
 
     @Before
     public void setup(){
-        userAddressIterator = mock(Iterator.class);
         PowerMockito.mockStatic(TextUtils.class);
         PowerMockito.mockStatic(Log.class);
         PowerMockito.mockStatic(Logger.class);
         PowerMockito.mockStatic(Utils.class);
         PowerMockito.mockStatic(LocalDataHandler.class);
-//        PowerMockito.mockStatic(SdkUtil.class);
 
 
         Mockito.when(transactionRequestMock.getBillInfoModel()).thenReturn(billingInfoModelMock);

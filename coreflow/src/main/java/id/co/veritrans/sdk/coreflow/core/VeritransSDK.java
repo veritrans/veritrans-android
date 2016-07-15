@@ -2,10 +2,8 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 
 import java.util.ArrayList;
 
@@ -46,34 +44,31 @@ public class VeritransSDK {
     public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
             "details are necessary.";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
-    private  static SharedPreferences mPreferences = null;
+    private static SharedPreferences mPreferences = null;
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
-    private   MixpanelAnalyticsManager mMixpanelAnalyticsManager;
-    private  Context context = null;
-    private  String themeColorString = null;
-    private  int themeColor;
-    private  Drawable merchantLogoDrawable = null;
+    private MixpanelAnalyticsManager mMixpanelAnalyticsManager;
+    private Context context = null;
+    private int themeColor;
+    private Drawable merchantLogoDrawable = null;
 
-    private  static VeritransSDK veritransSDK ;
+    private static VeritransSDK veritransSDK ;
 
     private static boolean isLogEnabled = true;
-    /*private static String serverKey = null;*/
-    private  String clientKey = null;
-    private  String merchantServerUrl = null;
-    private  String defaultText = null;
-    private  String boldText = null;
-    private  String semiBoldText = null;
-    private  String merchantName = null;
+    private String clientKey = null;
+    private String merchantServerUrl = null;
+    private String defaultText = null;
+    private String boldText = null;
+    private String semiBoldText = null;
+    private String merchantName = null;
     ISdkFlow uiflow;
-    private  IScanner externalScanner;
-    private  TransactionManager mTransactionManager;
-    private  String merchantLogo = null;
-    private  int merchantLogoResourceId = 0;
+    private IScanner externalScanner;
+    private TransactionManager mTransactionManager;
+    private String merchantLogo = null;
+    private int merchantLogoResourceId = 0;
 
     protected boolean isRunning = false;
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
-    private String TRANSACTION_RESPONSE_NOT_AVAILABLE = "Transaction response not available.";
     private BBMCallBackUrl mBBMCallBackUrl = null;
 
     private VeritransSDK(@NonNull SdkCoreFlowBuilder sdkBuilder) {
@@ -81,7 +76,6 @@ public class VeritransSDK {
         this.clientKey = sdkBuilder.clientKey;
         this.merchantServerUrl = sdkBuilder.merchantServerUrl;
 
-        this.themeColorString = sdkBuilder.colorTheme;
         this.merchantName = sdkBuilder.merchantName;
         this.defaultText = sdkBuilder.defaultText;
         this.semiBoldText =sdkBuilder.semiBoldText;

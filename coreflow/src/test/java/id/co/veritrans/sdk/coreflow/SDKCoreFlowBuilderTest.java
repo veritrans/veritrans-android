@@ -56,11 +56,6 @@ public class SDKCoreFlowBuilderTest {
         Assert.assertFalse(sdkCoreFlowBuilder.isValidData());
     }
 
-    @Test
-    public void buidSDKTest(){
-        Assert.assertEquals(1,1);
-    }
-
     @Test public void testSetMerchantName(){
         String sampleName = "sampleName";
         sdkCoreFlowBuilder.setMerchantName(sampleName);
