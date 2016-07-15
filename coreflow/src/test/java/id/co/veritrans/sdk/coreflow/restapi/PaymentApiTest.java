@@ -14,7 +14,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.concurrent.CountDownLatch;
 
 import id.co.veritrans.sdk.coreflow.APIClientMain;
-import id.co.veritrans.sdk.coreflow.SDKConfig;
+import id.co.veritrans.sdk.coreflow.SDKConfigTest;
 import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
 import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
 import retrofit.Callback;
@@ -44,7 +44,7 @@ public class PaymentApiTest extends APIClientMain {
                 APIClientMain.CARD_CVV,
                 APIClientMain.CARD_EXP_MONTH,
                 APIClientMain.CARD_EXP_YEAR,
-                SDKConfig.CLIENT_KEY, new Callback<CardRegistrationResponse>() {
+                SDKConfigTest.CLIENT_KEY, new Callback<CardRegistrationResponse>() {
                     @Override
                     public void success(CardRegistrationResponse cardRegistrationResponse, Response response) {
                         mRegisterCardResponse = cardRegistrationResponse;

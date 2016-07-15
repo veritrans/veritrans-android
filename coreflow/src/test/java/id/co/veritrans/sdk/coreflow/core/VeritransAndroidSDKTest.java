@@ -21,7 +21,6 @@ import org.mockito.Mockito;
 
 import static org.powermock.api.mockito.PowerMockito.*;
 
-import org.mockito.internal.matchers.Any;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -31,7 +30,7 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.APIClientMain;
 import id.co.veritrans.sdk.coreflow.R;
-import id.co.veritrans.sdk.coreflow.SDKConfig;
+import id.co.veritrans.sdk.coreflow.SDKConfigTest;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
 import id.co.veritrans.sdk.coreflow.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
@@ -199,7 +198,7 @@ public class VeritransAndroidSDKTest {
         Mockito.when(networkInfo.isConnected()).thenReturn(false);
         Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preference);
 
-        VeritransSDK veritransSDK = (new SdkCoreFlowBuilder(contextMock, SDKConfig.CLIENT_KEY, SDKConfig.MERCHANT_BASE_URL)
+        VeritransSDK veritransSDK = (new SdkCoreFlowBuilder(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .enableLog(true)
                 .setDefaultText("open_sans_regular.ttf")
                 .setSemiBoldText("open_sans_semibold.ttf")
@@ -944,7 +943,7 @@ public class VeritransAndroidSDKTest {
 
     @Test
     public void getMerchantUrl(){
-        Assert.assertEquals(SDKConfig.MERCHANT_BASE_URL, veritransSDKSSpy.getMerchantServerUrl());
+        Assert.assertEquals(SDKConfigTest.MERCHANT_BASE_URL, veritransSDKSSpy.getMerchantServerUrl());
     }
 
 

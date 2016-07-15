@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Looper;
 import android.util.Log;
 
 import org.junit.Assert;
@@ -19,8 +18,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
 
 /**
  * Created by ziahaqi on 26/06/2016.
@@ -49,20 +46,20 @@ public class SDKCoreFlowBuilderTest {
         Mockito.when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
         Mockito.when(connectivityManager.getActiveNetworkInfo()).thenReturn(networkInfo);
 
-        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, SDKConfig.CLIENT_KEY, SDKConfig.MERCHANT_BASE_URL);
+        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL);
     }
 
     @Test
     public void isValidDataFailedTest(){
         Assert.assertTrue(sdkCoreFlowBuilder.isValidData());
-        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, null, SDKConfig.MERCHANT_BASE_URL);
+        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, null, SDKConfigTest.MERCHANT_BASE_URL);
         Assert.assertFalse(sdkCoreFlowBuilder.isValidData());
     }
 
     @Test
     public void buidSDKTest_whenInvalidData(){
 
-//        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, null, SDKConfig.MERCHANT_BASE_URL);
+//        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, null, SDKConfigTest.MERCHANT_BASE_URL);
 //        Assert.assertNull(sdkCoreFlowBuilder.buildSDK());
 
     }

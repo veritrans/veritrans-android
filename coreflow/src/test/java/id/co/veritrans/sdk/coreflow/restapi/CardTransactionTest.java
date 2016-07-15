@@ -13,7 +13,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.concurrent.CountDownLatch;
 
 import id.co.veritrans.sdk.coreflow.APIClientMain;
-import id.co.veritrans.sdk.coreflow.SDKConfig;
+import id.co.veritrans.sdk.coreflow.SDKConfigTest;
 import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
 import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
 import id.co.veritrans.sdk.coreflow.models.CardTransfer;
@@ -49,7 +49,7 @@ public class CardTransactionTest extends APIClientMain {
         final CountDownLatch latch = new CountDownLatch(1);
         VeritransRestAPI paymentAPI = createVeritransPaymentAPIMock(VT_GET_TOKEN_SUCCESS, 200, "success");
         paymentAPI.get3DSToken(CARD_NUMBER, CARD_CVV, CARD_EXP_MONTH, CARD_EXP_YEAR,
-                SDKConfig.CLIENT_KEY, null, false, false, 0.0, new Callback<TokenDetailsResponse>() {
+                SDKConfigTest.CLIENT_KEY, null, false, false, 0.0, new Callback<TokenDetailsResponse>() {
                     @Override
                     public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
                         mTokenDetailResponse = tokenDetailsResponse;

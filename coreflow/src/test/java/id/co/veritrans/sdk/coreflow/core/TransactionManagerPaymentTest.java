@@ -48,10 +48,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBBMMoney_whenTOkenNull() throws Exception {
-        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay_card.json");
+        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingBBMMoney(merchantRestAPIMock, requestModel, null);
@@ -62,10 +62,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBBMMoneySuccess_whenResponseNotNull() throws Exception {
-        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay_card.json");
+        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingBBMMoney(merchantRestAPIMock, requestModel, mToken);
@@ -81,10 +81,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBBMMoneySuccess_whenResponseNotNull_codenot200() throws Exception {
-        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay_card.json");
+        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingBBMMoney(merchantRestAPIMock, requestModel, mToken);
@@ -98,7 +98,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBBMMoneySuccess_whenResponseNull() throws Exception {
-        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay_card.json");
+        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -113,7 +113,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBBMMOneyError_whenValidSSL() throws Exception {
-        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay_card.json");
+        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -129,10 +129,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBBMMOneyError_whenInValidSSL() throws Exception {
-        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay_card.json");
+        BBMMoneyRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BBMMoneyRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingBBMMoney(merchantRestAPIMock, requestModel, mToken);
@@ -155,10 +155,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBCAKlikPay_whenTokenNull() throws Exception {
-        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay_card.json");
+        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingBCAClickPay(merchantRestAPIMock, null, requestModel, null);
@@ -170,10 +170,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBCAKlikPay_whenResponseNotNull() throws Exception {
-        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay_card.json");
+        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingBCAClickPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
@@ -188,10 +188,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBCAKlikPay_whenResponseNotNull_codenot200() throws Exception {
-        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay_card.json");
+        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingBCAClickPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
@@ -207,7 +207,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBCAKlikPay_whenResponseNull() throws Exception {
-        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay_card.json");
+        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse =  null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -222,7 +222,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBCAClickPayError_whenValidSSL() throws Exception {
-        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay_card.json");
+        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse =  null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -239,7 +239,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBCAClickPayError_invalidSSL() throws Exception {
-        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay_card.json");
+        BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse =  null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -373,7 +373,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingCardError_whenTokenNull() throws Exception {
-        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
+        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -385,10 +385,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingCard_whenResponseNotNull() throws Exception {
-        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
+        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingCard(merchantRestAPIMock, X_AUTH, transfer, mToken);
@@ -414,10 +414,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingCard_whenResponseNotNull_not200() throws Exception {
-        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
+        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingCard(merchantRestAPIMock, X_AUTH, transfer, mToken);
@@ -434,7 +434,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingCard_whenResponseNull() throws Exception {
-        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
+        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -450,7 +450,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingCardSSL_whenValidSSL() throws Exception {
-        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
+        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay.json");
         TransactionResponse response = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -467,7 +467,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingCard_whenInValidSSL() throws Exception {
-        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
+        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -484,7 +484,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingCard_whenInValidSSLCertPath() throws Exception {
-        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay_card.json");
+        CardTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), CardTransfer.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -508,7 +508,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingCIMBPay_whenTokenNull() throws Exception {
         CIMBClickPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                CIMBClickPayModel.class, "sample_pay_card.json");
+                CIMBClickPayModel.class, "sample_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingCIMBPay(merchantRestAPIMock, null, requestModel, null);
@@ -519,10 +519,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingCIMBPay_whenResponseNotNull() throws Exception {
         CIMBClickPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                CIMBClickPayModel.class, "sample_pay_card.json");
+                CIMBClickPayModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingCIMBPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
@@ -538,10 +538,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingCIMBPay_whenResponseNotNull_not200() throws Exception {
         CIMBClickPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                CIMBClickPayModel.class, "sample_pay_card.json");
+                CIMBClickPayModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingCIMBPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
@@ -560,7 +560,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingCIMBPay_whenResponseNull() throws Exception {
         CIMBClickPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                CIMBClickPayModel.class, "sample_pay_card.json");
+                CIMBClickPayModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -577,7 +577,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingCIMBPayError() throws Exception {
         CIMBClickPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                CIMBClickPayModel.class, "sample_pay_card.json");
+                CIMBClickPayModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -595,7 +595,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingCIMBPayError_whenInvalidSSL() throws Exception {
         CIMBClickPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                CIMBClickPayModel.class, "sample_pay_card.json");
+                CIMBClickPayModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -620,7 +620,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBRIEpayError_whenTokenNull() throws Exception {
-        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay_card.json");
+        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -631,10 +631,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBRIEpaySuccess_whenResponseNotNull() throws Exception {
-        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay_card.json");
+        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingBriEpay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
@@ -649,10 +649,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBRIEpaySuccess_whenResponseNotNull_not200() throws Exception {
-        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay_card.json");
+        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingBriEpay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
@@ -670,7 +670,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBRIEpaySuccess_whenResponseNull() throws Exception {
-        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay_card.json");
+        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -685,7 +685,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingBRIEpayError_whenValidSSL() throws Exception {
-        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay_card.json");
+        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -701,7 +701,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     }
     @Test
     public void testPaymentUsingBRIEpayError_whenInValidSSL() throws Exception {
-        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay_card.json");
+        EpayBriTransfer requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), EpayBriTransfer.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -726,10 +726,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingIndomaretError_whenTokenNull() throws Exception {
-        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay_card.json");
+        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingIndomaret(merchantRestAPIMock, requestModel, null);
@@ -739,10 +739,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingIndomaretSuccess_whenResponseNotNull() throws Exception {
-        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay_card.json");
+        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingIndomaret(merchantRestAPIMock, requestModel, mToken);
@@ -756,10 +756,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingIndomaretSuccess_whenResponseNotNull_not200() throws Exception {
-        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay_card.json");
+        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingIndomaret(merchantRestAPIMock, requestModel, mToken);
@@ -776,7 +776,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingIndosatDompetkuSuccess_whenResponseNull() throws Exception {
-        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay_card.json");
+        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -790,7 +790,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     }
     @Test
     public void testPaymentUsingIndosatDompetkuError_whenValidSSL() throws Exception {
-        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay_card.json");
+        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -809,7 +809,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingIndosatDompetkuError_whenInValidSSL() throws Exception {
-        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay_card.json");
+        IndomaretRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndomaretRequestModel.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -854,7 +854,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     }
     @Test
     public void testPaymentUsingIndosatError_tokenNull() throws Exception {
-        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay_card.json");
+        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -866,10 +866,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingIndosatDompetkuSuccess_whenResponseNotNull() throws Exception {
-        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay_card.json");
+        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingIndosatDompetku(merchantRestAPIMock, requestModel, mToken);
@@ -884,10 +884,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingIndosatDompetkuError_whenResponseNotNull_codeNot200() throws Exception {
-        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay_card.json");
+        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingIndosatDompetku(merchantRestAPIMock, requestModel, mToken);
@@ -903,7 +903,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingIndosatDompetkusSuccess_whenResponseNull() throws Exception {
-        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay_card.json");
+        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -918,7 +918,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingIndosatDompetkuError_whenvalidSSL() throws Exception {
-        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay_card.json");
+        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -938,7 +938,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingIndosatDompetkuError_invalidSSL() throws Exception {
-        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay_card.json");
+        IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -964,10 +964,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingKlikBCASuccess_whenResponseNotNull() throws Exception {
-        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay_card.json");
+        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingClickBCAModel(merchantRestAPIMock, requestModel, mToken);
@@ -987,10 +987,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingKlikBCASuccess_whenResponseNotNull_codeNot200() throws Exception {
-        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay_card.json");
+        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingClickBCAModel(merchantRestAPIMock, requestModel, mToken);
@@ -1007,7 +1007,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingKlikBCASuccess_whenResponseNull() throws Exception {
-        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay_card.json");
+        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -1023,7 +1023,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingKlikBCAError_whenvalidSSL() throws Exception {
-        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay_card.json");
+        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -1039,7 +1039,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingKlikBCAError_wheInvalidSSL() throws Exception {
-        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay_card.json");
+        KlikBCAModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), KlikBCAModel.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -1064,10 +1064,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingMandiriBillPay_whenTokenNull() throws Exception {
         MandiriBillPayTransferModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                MandiriBillPayTransferModel.class, "sample_pay_card.json");
+                MandiriBillPayTransferModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingMandiriBillpay(merchantRestAPIMock, null, requestModel, mToken);
@@ -1078,10 +1078,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingMandiriBillPay_whenResponseNotNull() throws Exception {
         MandiriBillPayTransferModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                MandiriBillPayTransferModel.class, "sample_pay_card.json");
+                MandiriBillPayTransferModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingMandiriBillpay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
@@ -1098,10 +1098,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingMandiriBillPay_whenResponseNotNull_codeNot200() throws Exception {
         MandiriBillPayTransferModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                MandiriBillPayTransferModel.class, "sample_pay_card.json");
+                MandiriBillPayTransferModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingMandiriBillpay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
@@ -1119,7 +1119,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingMandiriBillPay_whenResponseNull() throws Exception {
         MandiriBillPayTransferModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                MandiriBillPayTransferModel.class, "sample_pay_card.json");
+                MandiriBillPayTransferModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -1135,7 +1135,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingMandiriBillPayError_invalid() throws Exception {
         MandiriBillPayTransferModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                MandiriBillPayTransferModel.class, "sample_pay_card.json");
+                MandiriBillPayTransferModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -1154,7 +1154,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Test
     public void testPaymentUsingMandiriBillPayError() throws Exception {
         MandiriBillPayTransferModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                MandiriBillPayTransferModel.class, "sample_pay_card.json");
+                MandiriBillPayTransferModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -1177,10 +1177,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriClickPayError_whenTokenNull() throws Exception {
-        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay_card.json");
+        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingMandiriClickPay(merchantRestAPIMock, null, requestModel, mToken);
@@ -1192,10 +1192,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriClickPay_whenResponseNotNull() throws Exception {
-        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay_card.json");
+        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingMandiriClickPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
@@ -1211,10 +1211,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriClickPay_whenResponseNotNull_responseNot200() throws Exception {
-        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay_card.json");
+        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingMandiriClickPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
@@ -1232,7 +1232,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriClickPay_whenResponseNull() throws Exception {
-        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay_card.json");
+        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -1248,7 +1248,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriClickPayError_validCertificate() throws Exception {
-        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay_card.json");
+        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -1267,7 +1267,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriClickPayError_whenInvalidCertificated() throws Exception {
-        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay_card.json");
+        MandiriClickPayRequestModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriClickPayRequestModel.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -1292,7 +1292,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriEcashPay_whenTokenNull() throws Exception {
-        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay_card.json");
+        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -1303,10 +1303,10 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriEcashPay_whenResponseNotNull() throws Exception {
-        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay_card.json");
+        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(),
-                TransactionResponse.class, "sample_response_pay_card.json");
+                TransactionResponse.class, "sample_response_pay.json");
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingMandiriEcashPay(merchantRestAPIMock, X_AUTH, requestModel, mToken);
@@ -1327,7 +1327,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriEcashPay_whenResponseNull() throws Exception {
-        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay_card.json");
+        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse =  null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -1342,7 +1342,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriEcashPayError() throws Exception {
-        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay_card.json");
+        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse =  null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -1360,7 +1360,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriEcash_validSSL() throws Exception {
-        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay_card.json");
+        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay.json");
 
         TransactionResponse transactionResponse =  null;
         eventBustImplementSample.setTransactionManager(transactionManager);
@@ -1377,7 +1377,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Test
     public void testPaymentUsingMandiriEcash_invalidSSL() throws Exception {
-        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay_card.json");
+        MandiriECashModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), MandiriECashModel.class, "sample_pay.json");
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);

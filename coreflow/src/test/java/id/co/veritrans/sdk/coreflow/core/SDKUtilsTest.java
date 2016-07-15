@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import id.co.veritrans.sdk.coreflow.R;
-import id.co.veritrans.sdk.coreflow.SDKConfig;
+import id.co.veritrans.sdk.coreflow.SDKConfigTest;
 import id.co.veritrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
 import id.co.veritrans.sdk.coreflow.models.BillingAddress;
@@ -138,7 +138,7 @@ public class SDKUtilsTest {
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(contextMock.getResources()).thenReturn(resourceMock);
 
-        VeritransSDK veritransSDK = (new SdkCoreFlowBuilder(contextMock, SDKConfig.CLIENT_KEY, SDKConfig.MERCHANT_BASE_URL)
+        VeritransSDK veritransSDK = (new SdkCoreFlowBuilder(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .enableLog(true)
                 .setDefaultText("open_sans_regular.ttf")
                 .setSemiBoldText("open_sans_semibold.ttf")
