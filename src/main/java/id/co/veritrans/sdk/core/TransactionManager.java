@@ -1281,6 +1281,7 @@ class TransactionManager {
      *
      * @param indosatDompetkuRequest    Indosat Dompetku request model
      */
+    //testing
     public static void paymentUsingIndosatDompetku(final IndosatDompetkuRequest indosatDompetkuRequest) {
         final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
         final long start = System.currentTimeMillis();

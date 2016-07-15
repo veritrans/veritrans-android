@@ -138,7 +138,7 @@ public class RegisterCardFragment extends Fragment {
         });
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
             saveBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
-            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), VeritransSDK.getDefaultText()));
+            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getDefaultText()));
 
             if (veritransSDK.getExternalScanner() != null) {
                 scanCardBtn.setVisibility(View.VISIBLE);

@@ -48,8 +48,6 @@ public class Constants {
      */
     public static final int ADDRESS_TYPE_BOTH = 3;
 
-
-
     /**
      *  regex for email id.
      */

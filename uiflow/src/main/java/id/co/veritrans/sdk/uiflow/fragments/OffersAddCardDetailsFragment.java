@@ -192,7 +192,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
 
             if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
                 payNowBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
-                scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), VeritransSDK.getDefaultText()));
+                scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getDefaultText()));
                 if (veritransSDK.getExternalScanner() != null) {
                     scanCardBtn.setVisibility(View.VISIBLE);
                     scanCardBtn.setOnClickListener(new View.OnClickListener() {

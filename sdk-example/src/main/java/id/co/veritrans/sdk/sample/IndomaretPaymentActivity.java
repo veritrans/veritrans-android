@@ -73,7 +73,7 @@ public class IndomaretPaymentActivity extends AppCompatActivity implements Trans
                 // Do payment
                 CstoreEntity entity = new CstoreEntity();
                 entity.setMessage("Sample message");
-                entity.setStore("Indomaret Store");
+                entity.setStore("indomaret");
                 VeritransSDK.getVeritransSDK().paymentUsingIndomaret(entity);
             }
         });

@@ -7,7 +7,13 @@ import org.greenrobot.eventbus.EventBus;
  * @author rakawm
  */
 public class VeritransBus extends EventBus {
+    private static VeritransBus bus;
+
     public VeritransBus(){
         super();
+    }
+
+    public static void setBus(VeritransBus bus) {
+        VeritransBus.bus = bus;
     }
 }
