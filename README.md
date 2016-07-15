@@ -32,4 +32,4 @@ To see the implementation guide please read [this wiki](https://github.com/verit
 
 ## Sample/ Demo App
 
-To see the sample app (contais UI flow) please refer to  [Veritrans Android Example](https://github.com/veritrans/veritrans-android-example)
+To see the sample app (contais UI flow), you can download from the `download` badge above or refer to  [Veritrans Android Example](https://github.com/veritrans/veritrans-android-example) to see the code
