@@ -208,7 +208,6 @@ public class VeritransSDK {
         UserDetail userDetail = null;
         try {
             userDetail = LocalDataHandler.readObject(context.getString(R.string.user_details), UserDetail.class);
-
         } catch (Exception e) {
             e.printStackTrace();
             return "";

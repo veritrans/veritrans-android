@@ -66,7 +66,7 @@ import id.co.veritrans.sdk.coreflow.utilities.Utils;
  */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({SdkUtil.class, Looper.class, Utils.class,Log.class, TextUtils.class, Logger.class  })
+@PrepareForTest({LocalDataHandler.class, SdkUtil.class, Looper.class, Utils.class,Log.class, TextUtils.class, Logger.class  })
 
 public class VeritransAndroidSDKTest {
 
@@ -175,6 +175,8 @@ public class VeritransAndroidSDKTest {
     private BBMCallBackUrl bbmCallbackUrlMock;
     @Mock
     private ArrayList<PaymentMethodsModel> paymentMethodMock;
+    @Mock
+    private UserDetail userDetailMock;
 
     @Before
     public void setup(){
@@ -914,10 +916,13 @@ public class VeritransAndroidSDKTest {
     }
 
 
-    @Test(expected = Exception.class)
-    public void getMerhcantToken_whenReadObject(){
-        when(LocalDataHandler.readObject(contextMock.getString(R.string.user_details), UserDetail.class)).thenThrow(new Exception(exceptionMock));
-        Assert.assertEquals("sd", veritransSDKSSpy.getMerchantToken());
+    @Test
+    public void getMerhcantToken(){
+        PowerMockito.mockStatic(LocalDataHandler.class);
+//        when(LocalDataHandler.readObject(contextMock.getString(R.string.user_details), UserDetail.class)).thenThrow(new Exception(exceptionMock));
+        when(LocalDataHandler.readObject(contextMock.getString(R.string.user_details), UserDetail.class)).thenReturn(userDetailMock);
+        when(userDetailMock.getMerchantToken()).thenReturn("token");
+        Assert.assertEquals("token", veritransSDKSSpy.getMerchantToken());
 
     }
 
@@ -931,6 +936,17 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(contextMock, Mockito.times(1)).getResources();
 
     }
+
+    @Test
+    public void isLogEnabled(){
+        Assert.assertTrue( veritransSDKSSpy.isLogEnabled());
+    }
+
+    @Test
+    public void getMerchantUrl(){
+        Assert.assertEquals(SDKConfig.MERCHANT_BASE_URL, veritransSDKSSpy.getMerchantServerUrl());
+    }
+
 
     //!
     @Test public void initializeLogo_whenLogoId0() throws Exception {
@@ -1022,6 +1038,8 @@ public class VeritransAndroidSDKTest {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         Assert.assertEquals(transactionRequestMock, veritransSDKSSpy.getTransactionRequest());
     }
+
+
 
 //    @Test
 //    public void getOverLimit_whenNetworkUnAvailable() throws Exception {
