@@ -62,8 +62,4 @@ public class PaymentApiTest extends APIClientMain {
         assertEquals("200",mRegisterCardResponse.getStatusCode());
     }
 
-
-    public void merchantApiCardRegistrationSuccess() throws Exception {
-
-    }
 }

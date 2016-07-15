@@ -28,7 +28,6 @@ public class RetrofitMockClient implements Client {
         return createDummyJsonResponse(request.getUrl(), statusCode, reason, jsonResponse);
     }
 
-
     private Response createDummyJsonResponse(String url, int responseCode, String reason, String json) {
         return new Response(url, responseCode, reason, Collections.EMPTY_LIST,
                 new TypedByteArray(MIME_TYPE, json.getBytes()));

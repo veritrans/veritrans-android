@@ -36,6 +36,8 @@ import retrofit.Callback;
  * Created by ziahaqi on 01/07/2016.
  */
 public class TransactionManagerPaymentTest extends TransactionMangerMain {
+
+
     /*
      * bbm money
      */
@@ -77,7 +79,6 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionSuccessEvent();
 
     }
-
 
     @Test
     public void testPaymentUsingBBMMoneySuccess_whenResponseNotNull_codenot200() throws Exception {
@@ -166,8 +167,6 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
     }
 
-
-
     @Test
     public void testPaymentUsingBCAKlikPay_whenResponseNotNull() throws Exception {
         BCAKlikPayModel requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), BCAKlikPayModel.class, "sample_pay.json");
@@ -203,7 +202,6 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
         responseCallbackCaptor.getValue().success(transactionResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onTransactionFailedEvent();
     }
-
 
     @Test
     public void testPaymentUsingBCAKlikPay_whenResponseNull() throws Exception {
@@ -260,7 +258,6 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
 
     @Captor
     private ArgumentCaptor<BCABankTransfer> bcaTranferCaptor;
-
 
     @Test
     public void testPaymentUsingBCABank_whenTokenNull() throws Exception {
@@ -830,28 +827,7 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     @Captor
     private ArgumentCaptor<IndosatDompetkuRequest> indosatDompetkuRequestArgumentCaptor;
 
-    @Before
-    public void setup(){
-        PowerMockito.mockStatic(TextUtils.class);
-        PowerMockito.mockStatic(Logger.class);
-        PowerMockito.mockStatic(Log.class);
-        PowerMockito.mockStatic(Looper.class);
-        PowerMockito.mockStatic(Base64.class);
 
-        Mockito.when(context.getResources()).thenReturn(resources);
-        Mockito.when(context.getApplicationContext()).thenReturn(context);
-        Mockito.when(context.getString(R.string.success_code_200)).thenReturn("200");
-        Mockito.when(context.getString(R.string.success_code_201)).thenReturn("201");
-
-        veritransSDK = new SdkCoreFlowBuilder(context, "SDK", "hi")
-                .enableLog(true)
-                .setDefaultText("open_sans_regular.ttf")
-                .setSemiBoldText("open_sans_semibold.ttf")
-                .setBoldText("open_sans_bold.ttf")
-                .setMerchantName("Veritrans Example Merchant")
-                .buildSDK();
-        transactionManager = veritransSDK.getVeritransSDK().getTransactionManager();
-    }
     @Test
     public void testPaymentUsingIndosatError_tokenNull() throws Exception {
         IndosatDompetkuRequest requestModel = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), IndosatDompetkuRequest.class, "sample_pay.json");
@@ -1518,7 +1494,6 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     public void testPaymentUsingPermataBankError_invalidSSL() throws Exception {
         PermataBankTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), PermataBankTransfer.class, "sample_permata_bank_transfer.json");
 
-        TransactionResponse transactionResponse =  null;
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingPermataBank(merchantRestAPIMock, transfer, mToken);
@@ -1534,7 +1509,6 @@ public class TransactionManagerPaymentTest extends TransactionMangerMain {
     public void testPaymentUsingPermataBankError_invalidSSLCertPath() throws Exception {
         PermataBankTransfer transfer = RestAPIMocUtilites.getSampleDataFromFile(this.getClass().getClassLoader(), PermataBankTransfer.class, "sample_permata_bank_transfer.json");
 
-        TransactionResponse transactionResponse =  null;
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.paymentUsingPermataBank(merchantRestAPIMock, transfer, mToken);

@@ -56,12 +56,10 @@ public class TransactionRequestTest {
         transactionRequest = new TransactionRequest(orderId, amount);
     }
 
-
     @Test
     public void paymentMethod(){
         Assert.assertEquals(transactionRequest.paymentMethod, Constants.PAYMENT_METHOD_NOT_SELECTED);
     }
-
 
     /*
      * constuctor

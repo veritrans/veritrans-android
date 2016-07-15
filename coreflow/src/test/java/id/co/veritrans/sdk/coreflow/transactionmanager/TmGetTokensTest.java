@@ -88,7 +88,6 @@ public class TmGetTokensTest extends TransactionMangerMain{
         Mockito.verify(busCollaborator, Mockito.times(2)).onGetTokenFailedEvent();
     }
 
-
     @Test public void testGetTokenSuccess_get3DSToken_whenresponseNull(){
         TokenDetailsResponse tokenDetailsResponse = null;
 
@@ -147,9 +146,7 @@ public class TmGetTokensTest extends TransactionMangerMain{
         TokenDetailsResponse tokenDetailsResponse = new TokenDetailsResponse();
         tokenDetailsResponse.setStatusCode("200");
 
-
         cardTokenRequest.setInstalment(true);
-
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
@@ -188,7 +185,6 @@ public class TmGetTokensTest extends TransactionMangerMain{
 
         cardTokenRequest.setInstalment(true);
 
-
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.getToken(veritransRestAPIMock,cardTokenRequest);
@@ -205,7 +201,6 @@ public class TmGetTokensTest extends TransactionMangerMain{
         // when retrofitResponse null
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, response);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
-
     }
 
 
@@ -320,7 +315,6 @@ public class TmGetTokensTest extends TransactionMangerMain{
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.getToken(veritransRestAPIMock,cardTokenRequest);
-
 
         Mockito.verify(veritransRestAPIMock, Mockito.times(1)).getTokenTwoClick(
                 cardCVVCaptor.capture(),

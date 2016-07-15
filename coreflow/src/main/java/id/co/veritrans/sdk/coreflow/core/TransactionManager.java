@@ -272,17 +272,12 @@ public class TransactionManager {
             if (isSDKLogEnabled) {
                 displayTokenResponse(tokenDetailsResponse);
             }
-            System.out.println("gettoken>success");
             if (tokenDetailsResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))) {
-                System.out.println("gettoken>success>equal");
-
                 VeritransBusProvider.getInstance().post(new GetTokenSuccessEvent(tokenDetailsResponse, Events.TOKENIZE));
-                System.out.println("gettoken>success>equal>post");
 
                 // Track Mixpanel event
                 analyticsManager.trackMixpanel(KEY_TOKENIZE_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
             } else {
-                System.out.println("gettoken>success>not equal");
 
                 if (!TextUtils.isEmpty(tokenDetailsResponse.getStatusMessage())) {
                     VeritransBusProvider.getInstance().post(new GetTokenFailedEvent(
@@ -1093,7 +1088,6 @@ public class TransactionManager {
                         releaseResources();
 
                         long end = System.currentTimeMillis();
-                        System.out.println("bbmoney>success");
 
                         if (bbmMoneyTransferResponse != null) {
                             if (isSDKLogEnabled) {
@@ -1101,7 +1095,6 @@ public class TransactionManager {
                             }
                             if (bbmMoneyTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))
                                     || bbmMoneyTransferResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_201))) {
-                                System.out.println("bbmoney>post");
                                 VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(bbmMoneyTransferResponse, Events.PAYMENT));
 
                                 // Track Mixpanel event

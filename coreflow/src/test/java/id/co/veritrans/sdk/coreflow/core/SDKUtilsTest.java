@@ -156,10 +156,6 @@ public class SDKUtilsTest {
     public void getMandiriBillPayModel() throws Exception {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
         mockStatic(SdkUtil.class);
-//        when(sdkUtil, method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).withArguments(transactionRequestMock).thenReturn(transactionRequestChangedMock);
-//        when(SdkUtil.getUserDetails(transactionRequestMock)).thenReturn(transactionRequestChangedMock);
-//        when(SdkUtil.initializeUserInfo(transactionRequestMock)).thenReturn(transactionRequestChangedMock);
-
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(null);
         Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
 
@@ -402,21 +398,6 @@ public class SDKUtilsTest {
         Assert.assertEquals(1, request.getShippingAddressArrayList().size());
 
     }
-
-
-//    @Test
-//    public void extractUserAddress_whenBoth(){
-//        when(userAddressMock1.getAddressType()).thenReturn(Constants.ADDRESS_TYPE_BOTH);
-//        when(userAddressMock1.getAddress()).thenReturn("address>address");
-//
-//        when(userAddressIterator.hasNext()).thenReturn(true).thenReturn(false);
-//        when(userAddressIterator.next()).thenReturn(userAddressMock1);
-//        when(userAddressListMock.iterator()).thenReturn(userAddressIterator);
-//        TransactionRequest request = SdkUtil.extractUserAddress(userDetailMock, userAddressListMock, transactionRequestMock);
-//        Assert.assertEquals(1, request.getBillingAddressArrayList().size());
-//        Assert.assertEquals(1, request.getShippingAddressArrayList().size());
-//
-//    }
 
     @Test
     public void extractUserAddress_whenTypeAddressShipping(){

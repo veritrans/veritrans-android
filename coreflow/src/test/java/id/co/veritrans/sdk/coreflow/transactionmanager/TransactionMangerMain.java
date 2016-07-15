@@ -37,6 +37,7 @@ import retrofit.RetrofitError;
 
 /**
  * Created by ziahaqi on 30/06/2016.
+ *
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class})
@@ -59,7 +60,7 @@ public abstract class TransactionMangerMain extends APIClientMain{
     protected VeritransRestAPI veritransRestAPIMock;
     @Mock
     protected MerchantRestAPI merchantRestAPIMock;
-    
+
     @Mock
     protected RetrofitError retrofitErrorMock;
     @Mock
@@ -103,5 +104,6 @@ public abstract class TransactionMangerMain extends APIClientMain{
         mixpanelAnalyticsManagerMock.setMixpanelApi(mixpanelApiMock);
         transactionManager = veritransSDK.getTransactionManager();
         transactionManager.setAnalyticsManager(mixpanelAnalyticsManagerMock);
+
     }
 }

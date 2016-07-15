@@ -260,7 +260,6 @@ public class SdkUtil {
             request = initializeUserInfo(request);
         }
 
-
         CIMBClickPayModel model =
                 new CIMBClickPayModel(cimbDescription, transactionDetails, request.getItemDetails(),
                         request.getBillingAddressArrayList(),
@@ -285,7 +284,6 @@ public class SdkUtil {
             //get user details only if using default ui.
             request = initializeUserInfo(request);
         }
-
 
         MandiriECashModel model =
                 new MandiriECashModel(description, transactionDetails, request.getItemDetails(),
@@ -339,7 +337,6 @@ public class SdkUtil {
             request = initializeUserInfo(request);
         }
 
-
         EpayBriTransfer model =
                 new EpayBriTransfer(transactionDetails, request.getItemDetails(),
                         request.getBillingAddressArrayList(),
@@ -348,7 +345,6 @@ public class SdkUtil {
         return model;
 
     }
-
 
     /**
      * helper method to extract {@link id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest} from
@@ -364,18 +360,8 @@ public class SdkUtil {
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
 
-        //if (request.isUiEnabled()) {
         //get user details only if using default ui.
         request = initializeUserInfo(request);
-        //}
-
-
-        IndosatDompetku indosatDompetku = null;
-
-        if (msisdn != null && !TextUtils.isEmpty(msisdn)) {
-            indosatDompetku = new IndosatDompetku(msisdn.trim());
-        }
-
 
         IndosatDompetkuRequest model =
                 new IndosatDompetkuRequest();
@@ -393,7 +379,6 @@ public class SdkUtil {
         model.setTransactionDetails(transactionDetails);
 
         return model;
-
     }
 
     /**
@@ -407,8 +392,6 @@ public class SdkUtil {
         return transactionRequest;
     }
 
-
-
     /**
      * it extracts customer information from TransactionRequest.
      *
@@ -421,7 +404,6 @@ public class SdkUtil {
         CustomerDetails mCustomerDetails = null;
 
         try {
-
             userDetail = LocalDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext().getString(R.string.user_details), UserDetail.class);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
@@ -445,8 +427,6 @@ public class SdkUtil {
 
             } else {
                 Logger.e("User details not available.");
-                //SdkUIFlowUtil.showSnackbar(VeritransSDK.getVeritransSDK().getContext(), "User details not available.");
-                //request.getActivity().finish();
             }
         } catch (Exception ex) {
             Logger.e("Error while fetching user details : " + ex.getMessage());
@@ -454,27 +434,6 @@ public class SdkUtil {
 
         return request;
     }
-
-    /**
-     * return user details if available else return null
-     *
-     * @return UserDetail
-     */
-//    protected static UserDetail getUserDetails(Context context) {
-//
-//        StorageDataHandler storageDataHandler = new StorageDataHandler();
-//        try {
-//            VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-//            if (veritransSDK != null) {
-//                UserDetail userDetail = LocalDataHandler.readObject(veritransSDK.getContext().getString(R.string.user_details), UserDetail.class);
-//                return userDetail;
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 
     static TransactionRequest extractUserAddress(UserDetail userDetail,
                                                          ArrayList<UserAddress> userAddresses,

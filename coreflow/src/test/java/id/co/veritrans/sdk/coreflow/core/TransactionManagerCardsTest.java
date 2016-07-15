@@ -54,9 +54,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
             .forClass(VeritransBus.class);
     private String mAuthToken = "VT-1dqwd34dwed23e2dw";
 
-
-
-
     @Test
     public void testCardRegistration_whenResponseSuccess() throws Exception {
         Response response = new Response("URL", 200, "success", Collections.EMPTY_LIST,
@@ -78,8 +75,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
                 callbackArgumentCaptor.capture());
         callbackArgumentCaptor.getValue().success(registrationResponse, response);
         Mockito.verify(busCollaborator, Mockito.times(1)).onCardRegistrationSuccess();
-
-
     }
 
     @Test
@@ -90,7 +85,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
 
         eventBustImplementSample.setTransactionManager(transactionManager);
         eventBustImplementSample.registerBus(veritransBus);
-
 
         //retrofitResponse success but transacation not success
         eventBustImplementSample.cardRegistration(veritransRestAPIMock, CARD_NUMBER, CARD_CVV, CARD_EXP_MONTH,
@@ -116,7 +110,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
 
         registrationResponse.setStatusCode("212");
 
-
         //retrofitResponse success but transacation not success
         eventBustImplementSample.cardRegistration(veritransRestAPIMock, CARD_NUMBER, CARD_CVV, CARD_EXP_MONTH,
                 CARD_EXP_YEAR, mAuthToken);
@@ -129,8 +122,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
         callbackArgumentCaptor.getValue().success(registrationResponse, response);
         Mockito.verify(busCollaborator, Mockito.times(1)).onCardRegistrationFailed();
     }
-
-
 
 
     @Test
@@ -203,7 +194,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
     }
 
-
     @Test
     public void testPaymentDeleteCardSuccess_whenResponseNotNull() throws Exception {
         SaveCardRequest cardRequest = new SaveCardRequest();
@@ -221,8 +211,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
         Mockito.verify(busCollaborator, Mockito.times(1)).onDeleteCardSuccessEvent();
 
     }
-
-
 
     @Test
     public void testPaymentDeleteCardSuccess_whenResponseNotNull_codenot200() throws Exception {
@@ -603,7 +591,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
 
     }
 
-
     /*
      * save card
      */
@@ -638,7 +625,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
         eventBustImplementSample.saveCard(merchantRestAPIMock, request,  mToken);
 
         Mockito.verify(merchantRestAPIMock).saveCard(xauthCaptor.capture(), requestCaptor.capture(), responseSaveCardCallbackCaptor.capture());
-
         //response code 200 /201
         responseSaveCardCallbackCaptor.getValue().success(deleteCardResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onSaveCardSuccessEvent();
@@ -660,7 +646,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
         eventBustImplementSample.registerBus(veritransBus);
         eventBustImplementSample.saveCard(merchantRestAPIMock, request,  mToken);
 
-
         //response not code 200 /201
         deleteCardResponse.setCode(300);
         Mockito.verify(merchantRestAPIMock).saveCard(xauthCaptor.capture(), requestCaptor.capture(), responseSaveCardCallbackCaptor.capture());
@@ -679,7 +664,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
         eventBustImplementSample.saveCard(merchantRestAPIMock, request,  mToken);
 
         Mockito.verify(merchantRestAPIMock).saveCard(xauthCaptor.capture(), requestCaptor.capture(), responseSaveCardCallbackCaptor.capture());
-
         responseSaveCardCallbackCaptor.getValue().success(saveCardResponse, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
     }
@@ -701,8 +685,6 @@ public class TransactionManagerCardsTest extends TransactionMangerMain {
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
 
     }
-
-
 
     @Test
     public void testPaymentSaveCardError_invalidSSL() throws Exception {

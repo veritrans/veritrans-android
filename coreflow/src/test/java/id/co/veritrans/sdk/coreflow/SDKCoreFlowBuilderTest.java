@@ -57,14 +57,6 @@ public class SDKCoreFlowBuilderTest {
     }
 
     @Test
-    public void buidSDKTest_whenInvalidData(){
-
-//        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, null, SDKConfigTest.MERCHANT_BASE_URL);
-//        Assert.assertNull(sdkCoreFlowBuilder.buildSDK());
-
-    }
-
-    @Test
     public void buidSDKTest(){
         Assert.assertEquals(1,1);
     }
@@ -74,6 +66,5 @@ public class SDKCoreFlowBuilderTest {
         sdkCoreFlowBuilder.setMerchantName(sampleName);
         Assert.assertEquals(sdkCoreFlowBuilder.setMerchantName(sampleName), sdkCoreFlowBuilder.setMerchantName(sampleName));
     }
-
 
 }

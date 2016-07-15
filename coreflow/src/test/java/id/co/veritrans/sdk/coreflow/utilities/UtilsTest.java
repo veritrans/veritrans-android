@@ -35,7 +35,6 @@ public class UtilsTest {
     private ConnectivityManager conManagerMock;
     @Mock
     private android.net.NetworkInfo networkInfoMock;
-
     @Mock
     private View viewMock;
     @Mock
@@ -50,7 +49,6 @@ public class UtilsTest {
         Mockito.when(contextMock.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(conManagerMock);
         PowerMockito.mockStatic(Log.class);
         PowerMockito.mockStatic(Logger.class);
-
     }
 
     @Test
@@ -58,7 +56,6 @@ public class UtilsTest {
         Mockito.when(conManagerMock.getActiveNetworkInfo()).thenReturn(networkInfoMock);
         Mockito.when(networkInfoMock.isAvailable()).thenReturn(true);
         Mockito.when(networkInfoMock.isConnected()).thenReturn(true);
-
         Assert.assertTrue(Utils.isNetworkAvailable(contextMock));
     }
 
