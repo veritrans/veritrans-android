@@ -374,7 +374,6 @@ public class SDKUtilsTest {
     public void getUserDetailTest(){
         initSDK();
         VeritransSDK.setmPreferences(mpreferenceMock);
-//        when(mpreferenceMock.getString(userDetail, "")).thenReturn()
         mockStatic(LocalDataHandler.class);
         when(LocalDataHandler.readObject(userDetail, UserDetail.class)).thenReturn(userDetailMock);
         when(contextMock.getString(R.string.user_details)).thenReturn(userDetail);
