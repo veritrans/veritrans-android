@@ -29,3 +29,7 @@ To see the implementation guide please read [this wiki](https://github.com/verit
 ### Core Flow
 
 To see the implementation guide please read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Core-Flow).
+
+## Sample/ Demo App
+
+To see the sample app (contais UI flow) please refer to  [Veritrans Android Example](https://github.com/veritrans/veritrans-android-example)
