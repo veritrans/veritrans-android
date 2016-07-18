@@ -63,6 +63,7 @@ public class VeritransSDK {
     ISdkFlow uiflow;
     private IScanner externalScanner;
     private TransactionManager mTransactionManager;
+    private SnapTransactionManager mSnapTransactionManager;
     private String merchantLogo = null;
     private int merchantLogoResourceId = 0;
 
@@ -88,6 +89,7 @@ public class VeritransSDK {
 
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi());
         this.mTransactionManager = new TransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
+        this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
         this.mTransactionManager.setSDKLogEnabled(isLogEnabled);
         this.mTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
 
@@ -778,6 +780,10 @@ public class VeritransSDK {
 
     public  TransactionManager getTransactionManager() {
         return mTransactionManager;
+    }
+
+    public SnapTransactionManager getmSnapTransactionManager(){
+        return this.mSnapTransactionManager;
     }
 
     void setTransactionManager(TransactionManager transactionManager) {

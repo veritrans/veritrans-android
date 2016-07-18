@@ -64,36 +64,9 @@ import retrofit.client.Response;
  * <p>
  * Created by shivam on 10/29/15.
  */
-public class TransactionManager {
-    // Event Name
-    private static final String KEY_TRANSACTION_SUCCESS = "Transaction Success";
-    private static final String KEY_TRANSACTION_FAILED = "Transaction Failed";
-    private static final String KEY_TOKENIZE_SUCCESS = "Tokenize Success";
-    private static final String KEY_TOKENIZE_FAILED = "Tokenize Failed";
+public class TransactionManager extends BaseTransactionManager{
 
-    // Payment Name
-    private static final String PAYMENT_TYPE_CIMB_CLICK = "cimb_click";
-    private static final String PAYMENT_TYPE_BCA_KLIKPAY = "bca_klikpay";
-    private static final String PAYMENT_TYPE_MANDIRI_CLICKPAY = "mandiri_clickpay";
-    private static final String PAYMENT_TYPE_MANDIRI_ECASH = "mandiri_ecash";
-    private static final String PAYMENT_TYPE_BANK_TRANSFER = "bank_transfer";
-    private static final String PAYMENT_TYPE_CREDIT_CARD = "cc";
-    private static final String PAYMENT_TYPE_BRI_EPAY = "bri_epay";
-    private static final String PAYMENT_TYPE_BBM_MONEY = "bbm_money";
-    private static final String PAYMENT_TYPE_INDOSAT_DOMPETKU = "indosat_dompetku";
-    private static final String PAYMENT_TYPE_INDOMARET = "indomaret";
-    private static final String PAYMENT_TYPE_KLIK_BCA = "bca_klikbca";
-    // Bank transfer type
-    private static final String BANK_PERMATA = "permata";
-    private static final String BANK_BCA = "bca";
-    private static final String BANK_MANDIRI = "mandiri";
 
-    private  Context context;
-
-    private VeritransRestAPI veritransPaymentAPI;
-    private MerchantRestAPI merchantPaymentAPI;
-    private boolean isSDKLogEnabled = false;
-    private MixpanelAnalyticsManager analyticsManager;
 
 
     public TransactionManager(Context context, VeritransRestAPI veritransPaymentAPI,
@@ -103,17 +76,6 @@ public class TransactionManager {
         this.merchantPaymentAPI = merchantPaymentAPI;
     }
 
-    public void setVeritransPaymentAPI(VeritransRestAPI veritransPaymentAPI) {
-        this.veritransPaymentAPI = veritransPaymentAPI;
-    }
-
-    public void setMerchantPaymentAPI(MerchantRestAPI merchantPaymentAPI) {
-        this.merchantPaymentAPI = merchantPaymentAPI;
-    }
-
-    public void setSDKLogEnabled(boolean SDKLogEnabled) {
-        isSDKLogEnabled = SDKLogEnabled;
-    }
 
     /**
      * It will execute API call to get token from Veritrans that can be used later.
@@ -1270,13 +1232,7 @@ public class TransactionManager {
                         .getTransactionStatus());
     }
 
-    private void releaseResources() {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            veritransSDK.releaseResource();
-            Logger.i("released transaction");
-        }
-    }
+
 
     /**
      * It will execute API call to delete saved card from merchant server.
@@ -1450,7 +1406,4 @@ public class TransactionManager {
     }
 
 
-    public void setAnalyticsManager(MixpanelAnalyticsManager analyticsManager) {
-        this.analyticsManager = analyticsManager;
-    }
 }

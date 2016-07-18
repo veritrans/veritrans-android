@@ -2,7 +2,9 @@ package id.co.veritrans.sdk.coreflow.transactionmanager;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import id.co.veritrans.sdk.coreflow.core.BaseTransactionManager;
 import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
+import id.co.veritrans.sdk.coreflow.core.SnapTransactionManager;
 import id.co.veritrans.sdk.coreflow.core.TransactionManager;
 import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
@@ -63,6 +65,7 @@ public class EventBustImplementSample implements GetAuthenticationBusCallback, D
     public String onsuccessStatusCode;
     private TransactionManager transactionManager;
     private VeritransBus bus;
+    private SnapTransactionManager snapTransactionManager;
 
 
     public void registerBus(VeritransBus veritransBus) {
@@ -70,10 +73,13 @@ public class EventBustImplementSample implements GetAuthenticationBusCallback, D
         VeritransBusProvider.getInstance().register(this);
     }
 
+    public void setTransactionManager(SnapTransactionManager transactionManager) {
+        this.snapTransactionManager = transactionManager;
+    }
+
     public void setTransactionManager(TransactionManager transactionManager) {
         this.transactionManager = transactionManager;
     }
-
     public void cardRegistration(VeritransRestAPI registered, String cardNumber, String cardCvv, String cardExpMonth, String cardExpYear, String authtoken) throws InterruptedException {
 
         transactionManager.setVeritransPaymentAPI(registered);
@@ -165,6 +171,18 @@ public class EventBustImplementSample implements GetAuthenticationBusCallback, D
         transactionManager.paymentUsingEpayBri(requestModel, xAuth);
     }
 
+
+    /*
+     * snap
+     */
+
+
+    public void getSnapToken(MerchantRestAPI merchantRestAPI) {
+
+        snapTransactionManager.setMerchantPaymentAPI(merchantRestAPI);
+        snapTransactionManager.getSnapToken();
+
+    }
 
     /*
      * Card Registration Callback stuff
@@ -307,4 +325,5 @@ public class EventBustImplementSample implements GetAuthenticationBusCallback, D
     public void onEvent(SSLErrorEvent errorEvent) {
         busCollaborator.onSSLErrorEvent();
     }
+
 }

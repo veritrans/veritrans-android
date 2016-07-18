@@ -214,7 +214,7 @@ public class VeritransAndroidSDKTest {
     }
 
     /*
-     * getToken cases
+     * getSnapToken cases
      */
     @Test
     public void getToken_whenCardTokenRequestNull(){

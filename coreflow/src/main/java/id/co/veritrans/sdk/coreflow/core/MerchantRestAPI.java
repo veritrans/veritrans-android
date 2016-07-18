@@ -199,4 +199,7 @@ public interface MerchantRestAPI {
     void registerCard(@Header("x-auth") String auth,
                       @Body RegisterCardResponse registerCardResponse,
                       Callback<CardResponse> callback);
+
+
+
 }

@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.coreflow.core;
 import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
 import id.co.veritrans.sdk.coreflow.models.CardResponse;
 import id.co.veritrans.sdk.coreflow.models.RegisterCardResponse;
+import id.co.veritrans.sdk.coreflow.models.SnapTokenDetailResponse;
 import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionCancelResponse;
 import retrofit.Callback;
@@ -18,6 +19,17 @@ import retrofit.http.Query;
  * Created by ziahaqi on 27/06/2016.
  */
 public interface VeritransRestAPI {
+
+    /*
+     * Snap End Point
+     */
+
+    void getSnapToken(Callback<SnapTokenDetailResponse> callback);
+
+
+    /*
+     *  PAPI end point
+     */
 
     //http://api.sandbox.veritrans.co.id/v2/10938010/cancel/
     @Headers({"Content-Type: application/json",
