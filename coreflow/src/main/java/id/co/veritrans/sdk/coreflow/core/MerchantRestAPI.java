@@ -21,7 +21,7 @@ import id.co.veritrans.sdk.coreflow.models.RegisterCardResponse;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.models.TransactionStatusResponse;
+import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
@@ -200,6 +200,6 @@ public interface MerchantRestAPI {
                       @Body RegisterCardResponse registerCardResponse,
                       Callback<CardResponse> callback);
 
-
-
+    @GET("/v1/payment_pages/{snap_token}")
+    void getSnapTransaction(@Path("snap_token") String snapToken, Callback<Transaction> transactionCallback);
 }
