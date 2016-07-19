@@ -52,10 +52,10 @@ public class SnapTransactionManager extends BaseTransactionManager{
             public void success(Token snapTokenDetailResponse, Response response) {
                 releaseResources();
                 if(snapTokenDetailResponse != null){
-                    if(TextUtils.isEmpty(snapTokenDetailResponse.getTokenId())){
-                        VeritransBusProvider.getInstance().post(new GetSnapTokenFailedEvent(context.getString(R.string.error_empty_response), snapTokenDetailResponse, Events.GET_SNAP_TOKEN));
-                    }else{
+                    if(response.getStatus() == 200){
                         VeritransBusProvider.getInstance().post(new GetSnapTokenSuccessEvent(snapTokenDetailResponse, Events.GET_SNAP_TOKEN));
+                    }else{
+                        VeritransBusProvider.getInstance().post(new GetSnapTokenFailedEvent(context.getString(R.string.error_empty_response), snapTokenDetailResponse, Events.GET_SNAP_TOKEN));
                     }
                 }else{
                     VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.empty_transaction_response), Events.GET_SNAP_TOKEN));

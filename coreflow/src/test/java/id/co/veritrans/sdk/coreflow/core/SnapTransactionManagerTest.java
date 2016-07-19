@@ -136,7 +136,7 @@ public class SnapTransactionManagerTest {
         Mockito.verify(merchantApi, Mockito.times(1)).getSnapToken(callbackSnapTokenResponseCaptor.capture());
 
         callbackSnapTokenResponseCaptor.getValue().success(snapTokenMock, retrofitResponse);
-        Mockito.verify(busCollaborator, Mockito.times(1)).onGetTokenSuccessEvent();
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGetSnapTokenSuccess();
     }
 
     @Test
@@ -150,7 +150,7 @@ public class SnapTransactionManagerTest {
         Mockito.verify(merchantApi, Mockito.times(1)).getSnapToken(callbackSnapTokenResponseCaptor.capture());
 
         callbackSnapTokenResponseCaptor.getValue().success(snapTokenMock, retrofitResponse);
-        Mockito.verify(busCollaborator, Mockito.times(1)).onGetTokenFailedEvent();
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGetSnapTokenFailed();
     }
 
 
@@ -227,15 +227,13 @@ public class SnapTransactionManagerTest {
     //!untest
     @Test
     public void getSnapTransactionSuccess_whenCode200(){
-        System.out.println("test:" +        retrofitResponse.getStatus()
-        );
         eventBusImplementSample.setTransactionManager(transactionManager);
         eventBusImplementSample.getPaymentType(snapAPI, tokenId);
 
         Mockito.verify(snapAPI).getSnapTransaction(tokenIdCaptor.capture(), transactionCaptorMock.capture());
         transactionCaptorMock.getValue().success(transactionResponseMock, retrofitResponse);
 
-        Mockito.verify(busCollaborator).onGetPaymentListSuccessEvent();
+        Mockito.verify(busCollaborator).onGetSnapTransactionSuccess();
     }
 
     @Test
@@ -250,7 +248,7 @@ public class SnapTransactionManagerTest {
         Mockito.verify(snapAPI).getSnapTransaction(tokenIdCaptor.capture(), transactionCaptorMock.capture());
         transactionCaptorMock.getValue().success(transactionResponseMock, retrofitResponse);
 
-        Mockito.verify(busCollaborator).onGetPaymentListFailedEvent();
+        Mockito.verify(busCollaborator).onGetSnapTransactionFailed();
     }
 
 

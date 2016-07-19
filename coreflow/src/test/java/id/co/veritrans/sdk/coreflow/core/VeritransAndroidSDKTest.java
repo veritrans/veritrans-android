@@ -1315,19 +1315,19 @@ public class VeritransAndroidSDKTest {
         @Subscribe
         @Override
         public void onEvent(GetSnapTokenSuccessEvent event) {
-            busCollaborator.onSnapTokenSuccess();
+            busCollaborator.onGetSnapTokenSuccess();
         }
 
         @Subscribe
         @Override
         public void onEvent(GetSnapTokenFailedEvent event) {
-            busCollaborator.onSnapTokenFailed();
+            busCollaborator.onGetSnapTokenFailed();
         }
 
         @Subscribe
         @Override
         public void onEvent(GetSnapTransactionSuccessEvent event) {
-            busCollaborator.onSnapTransactionSuccess();
+            busCollaborator.onGetSnapTransactionSuccess();
         }
 
         @Subscribe
