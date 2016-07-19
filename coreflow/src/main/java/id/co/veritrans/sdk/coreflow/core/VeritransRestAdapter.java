@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.coreflow.analytics.MixpanelApi;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
@@ -44,7 +43,12 @@ public class VeritransRestAdapter {
             return restAdapter.create(VeritransRestAPI.class);
     }
 
-    //
+    /**
+     * Return Merchant API implementation
+     *
+     * @param merchantBaseURL Merchant base URL
+     * @return Merchant API implementation
+     */
     public static MerchantRestAPI getMerchantApiClient(String merchantBaseURL) {
 
             OkHttpClient okHttpClient = new OkHttpClient();
@@ -63,6 +67,11 @@ public class VeritransRestAdapter {
 
     }
 
+
+    /**
+     * Return Mixpanel API implementation
+     * @return
+     */
     public static MixpanelApi getMixpanelApi() {
             OkHttpClient okHttpClient = new OkHttpClient();
             okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
@@ -74,4 +83,17 @@ public class VeritransRestAdapter {
             return restAdapter.create(MixpanelApi.class);
     }
 
+    /**
+     * Return Snap API implementation
+     * @return
+     */
+    public static SnapRestAPI getSnapRestAPI() {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+        RestAdapter.Builder builder = new RestAdapter.Builder()
+                .setLogLevel(LOG_LEVEL)
+                .setClient(new OkClient(okHttpClient))
+                .setEndpoint(BuildConfig.SNAP_BASE_URL);
+        return builder.build().create(SnapRestAPI.class);
+    }
 }

@@ -84,4 +84,20 @@ public class BusCollaborator {
     public void onGetPaymentListSuccessEvent() {
 
     }
+
+    public void onSnapTokenSuccess() {
+
+    }
+
+    public void onSnapTokenFailed() {
+
+    }
+
+    public void onSnapTransactionSuccess() {
+
+    }
+
+    public void onGetSnapTransactionFailed() {
+
+    }
 }

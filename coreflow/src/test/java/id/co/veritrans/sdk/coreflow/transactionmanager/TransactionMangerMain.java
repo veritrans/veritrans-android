@@ -30,6 +30,7 @@ import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
 import id.co.veritrans.sdk.coreflow.core.MixpanelAnalyticsManager;
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import id.co.veritrans.sdk.coreflow.core.TransactionManager;
+import id.co.veritrans.sdk.coreflow.core.VeritransAndroidSDKTest;
 import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
@@ -72,7 +73,7 @@ public abstract class TransactionMangerMain extends APIClientMain{
     protected BusCollaborator busCollaborator;
 
     @InjectMocks
-    protected EventBustImplementSample eventBustImplementSample;
+    protected VeritransAndroidSDKTest.EventBustImplementSample eventBustImplementSample;
     @Mock
     protected VeritransBus veritransBus;
 

@@ -13,4 +13,6 @@ public class Events {
     public static final String CARD_REGISTRATION = "Card-Registration";
     public static final String GET_OFFER = "Get-Offer";
     public static final String AUTHENTICATION = "Authentication";
+    public static final String GET_SNAP_TRANSACTION = "Snap-Transaction";
+    public static final String GET_SNAP_TOKEN = "Snap-Token";
 }
