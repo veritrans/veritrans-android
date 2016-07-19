@@ -34,9 +34,9 @@ public class SnapTransactionManager extends BaseTransactionManager{
     private static final String PAYMENT_TYPE_SNAP = "snap";
 
 
-    public SnapTransactionManager(Context context, VeritransRestAPI veritransRestAPI, MerchantRestAPI merchantApiClient) {
+    public SnapTransactionManager(Context context, SnapRestAPI snapRestAPI, MerchantRestAPI merchantApiClient) {
         this.context = context;
-        this.veritransPaymentAPI = veritransRestAPI ;
+        this.snapRestAPI = snapRestAPI;
         this.merchantPaymentAPI = merchantApiClient;
 
     }
@@ -90,7 +90,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
     public void getSnapTransaction(@NonNull  String snapToken) {
         final long start = System.currentTimeMillis();
         if(snapToken != null){
-            veritransPaymentAPI.getSnapTransaction(snapToken, new Callback<Transaction>() {
+            snapRestAPI.getSnapTransaction(snapToken, new Callback<Transaction>() {
                 @Override
                 public void success(Transaction transaction, Response response) {
                     releaseResources();

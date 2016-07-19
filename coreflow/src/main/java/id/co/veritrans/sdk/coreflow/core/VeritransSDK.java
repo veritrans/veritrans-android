@@ -86,7 +86,7 @@ public class VeritransSDK {
 
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi());
         this.mTransactionManager = new TransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
-        this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
+        this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, VeritransRestAdapter.getSnapRestAPI(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
         this.mTransactionManager.setSDKLogEnabled(isLogEnabled);
         this.mTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
 

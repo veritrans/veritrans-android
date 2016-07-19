@@ -35,6 +35,7 @@ public abstract class BaseTransactionManager {
     protected boolean isSDKLogEnabled = false;
     protected VeritransRestAPI veritransPaymentAPI;
     protected MerchantRestAPI merchantPaymentAPI;
+    protected SnapRestAPI snapRestAPI;
 
     protected void releaseResources() {
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
