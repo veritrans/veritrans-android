@@ -16,6 +16,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenFailedEvent
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionSuccessEvent;
+import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import retrofit.Callback;
@@ -43,11 +44,9 @@ public class SnapTransactionManager extends BaseTransactionManager{
     /*
      * this method will get snap token via merchant server
      */
-    public void getSnapToken() {
+    public void getSnapToken(SnapTokenRequestModel model) {
         final long start = System.currentTimeMillis();
-        TransactionRequest request = VeritransSDK.getVeritransSDK().getTransactionRequest();
-        SnapTransactionDetails details = new SnapTransactionDetails(request.getOrderId(), request.getAmount());
-        merchantPaymentAPI.getSnapToken(new SnapTransactionRequest(details), new Callback<Token>() {
+        merchantPaymentAPI.getSnapToken(model, new Callback<Token>() {
             @Override
             public void success(Token snapTokenDetailResponse, Response response) {
                 releaseResources();

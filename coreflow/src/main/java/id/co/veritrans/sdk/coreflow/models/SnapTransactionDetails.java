@@ -1,4 +1,4 @@
-package id.co.veritrans.sdk.coreflow.core;
+package id.co.veritrans.sdk.coreflow.models;
 
 import com.google.gson.annotations.SerializedName;
 

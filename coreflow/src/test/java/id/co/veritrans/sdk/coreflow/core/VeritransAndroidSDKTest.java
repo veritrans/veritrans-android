@@ -1161,7 +1161,7 @@ public class VeritransAndroidSDKTest {
         public void getSnapToken(MerchantRestAPI merchantRestAPI) {
 
             snapTransactionManager.setMerchantPaymentAPI(merchantRestAPI);
-            snapTransactionManager.getSnapToken();
+            snapTransactionManager.getSnapToken(model);
 
         }
 

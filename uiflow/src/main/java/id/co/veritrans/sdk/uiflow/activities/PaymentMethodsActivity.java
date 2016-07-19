@@ -101,9 +101,10 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
             transactionRequest = veritransSDK.getTransactionRequest();
             CustomerDetails customerDetails = null;
             if (userDetail != null) {
-                customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
+                customerDetails = new CustomerDetails(userDetail.getUserFullName(), null,
                         userDetail.getEmail(), userDetail.getPhoneNumber());
                 transactionRequest.setCustomerDetails(customerDetails);
+                Logger.d(String.format("Customer name: %s, Customer email: %s, Customer phone: %s", userDetail.getUserFullName(), userDetail.getEmail(), userDetail.getPhoneNumber() ));
             }
             setUpPaymentMethods();
         } else Logger.e("Veritrans SDK is not started.");
