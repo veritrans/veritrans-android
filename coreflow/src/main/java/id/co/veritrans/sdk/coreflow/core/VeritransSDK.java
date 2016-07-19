@@ -2,8 +2,8 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -44,30 +44,27 @@ public class VeritransSDK {
     public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
             "details are necessary.";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
-    private static SharedPreferences mPreferences = null;
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
+    private static SharedPreferences mPreferences = null;
+    private static VeritransSDK veritransSDK ;
+    private static boolean isLogEnabled = true;
+    protected boolean isRunning = false;
+    ISdkFlow uiflow;
     private MixpanelAnalyticsManager mMixpanelAnalyticsManager;
     private Context context = null;
     private int themeColor;
     private Drawable merchantLogoDrawable = null;
-
-    private static VeritransSDK veritransSDK ;
-
-    private static boolean isLogEnabled = true;
     private String clientKey = null;
     private String merchantServerUrl = null;
     private String defaultText = null;
     private String boldText = null;
     private String semiBoldText = null;
     private String merchantName = null;
-    ISdkFlow uiflow;
     private IScanner externalScanner;
     private TransactionManager mTransactionManager;
     private SnapTransactionManager mSnapTransactionManager;
     private String merchantLogo = null;
     private int merchantLogoResourceId = 0;
-
-    protected boolean isRunning = false;
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
     private BBMCallBackUrl mBBMCallBackUrl = null;
@@ -109,7 +106,25 @@ public class VeritransSDK {
         return veritransSDK;
     }
 
-    private  void initializeLogo() {
+    /**
+     * Returns instance of veritrans sdk.
+     *
+     * @return VeritransSDK instance
+     */
+    public static VeritransSDK getVeritransSDK() {
+
+        return veritransSDK;
+    }
+
+    public static SharedPreferences getmPreferences() {
+        return mPreferences;
+    }
+
+    static void setmPreferences(SharedPreferences mp) {
+        mPreferences = mp;
+    }
+
+    private void initializeLogo() {
         if (merchantLogoResourceId != 0) {
             merchantLogoDrawable = context.getResources().getDrawable(merchantLogoResourceId);
         } else if (merchantLogo != null) {
@@ -118,31 +133,12 @@ public class VeritransSDK {
         }
     }
 
-
-    private  void initializeSharedPreferences() {
+    private void initializeSharedPreferences() {
         mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
     }
 
-    /**
-     * Returns instance of veritrans sdk.
-     *
-     * @return VeritransSDK instance
-     */
-    public  static VeritransSDK getVeritransSDK() {
-
-        return veritransSDK;
-    }
-
-    private  void initializeTheme() {
+    private void initializeTheme() {
         themeColor = context.getResources().getColor(R.color.colorPrimary);
-    }
-
-    public static   SharedPreferences getmPreferences() {
-        return mPreferences;
-    }
-
-    static void setmPreferences(SharedPreferences mp){
-        mPreferences = mp;
     }
 
     public   String getDefaultText() {
@@ -161,13 +157,22 @@ public class VeritransSDK {
         return merchantLogo;
     }
 
+    void setMerchantLogo(String merchantLogo) {
+        this.merchantLogo = merchantLogo;
+    }
+
     public int getMerchantLogoResourceId() {
         return merchantLogoResourceId;
+    }
+
+    void setMerchantLogoResourceId(int merchantLogoResourceId) {
+        this.merchantLogoResourceId = merchantLogoResourceId;
     }
 
     public Drawable getMerchantLogoDrawable() {
         return merchantLogoDrawable;
     }
+
     public int getThemeColor() {
         return themeColor;
     }
@@ -255,7 +260,6 @@ public class VeritransSDK {
             isRunning = false;
         }
     }
-
 
     /**
      * It will execute an transaction for permata bank .
@@ -379,6 +383,7 @@ public class VeritransSDK {
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
+
     /**
      * It will execute an transaction for mandiri klik BCA.
      *
@@ -401,7 +406,6 @@ public class VeritransSDK {
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
-
 
     /**
      * It will execute an transaction for mandiri bill pay.
@@ -551,7 +555,6 @@ public class VeritransSDK {
         }
     }
 
-
     public TransactionRequest getTransactionRequest() {
         return transactionRequest;
     }
@@ -576,7 +579,6 @@ public class VeritransSDK {
         }
 
     }
-
 
     /**
      * This will start actual execution of save card UI flow.
@@ -616,7 +618,6 @@ public class VeritransSDK {
             }
         }
     }
-
 
     /**
      * It will execute an transaction for Indomaret .
@@ -774,6 +775,32 @@ public class VeritransSDK {
 
     }
 
+    /**
+     * It will run background task to get snap transaction details.
+     *
+     * @param snapToken Snap authentication token
+     */
+    public void getSnapTransaction(String snapToken) {
+        if (Utils.isNetworkAvailable(context)) {
+            isRunning = true;
+            mSnapTransactionManager.getSnapTransaction(snapToken);
+        } else {
+            isRunning = false;
+        }
+    }
+
+    /**
+     * It will run background task to get snap token.
+     */
+    public void getSnapToken() {
+        if (Utils.isNetworkAvailable(context)) {
+            isRunning = true;
+            mSnapTransactionManager.getSnapToken();
+        } else {
+            isRunning = false;
+        }
+    }
+
     public IScanner getExternalScanner() {
         return externalScanner;
     }
@@ -782,27 +809,16 @@ public class VeritransSDK {
         return mTransactionManager;
     }
 
-    public SnapTransactionManager getmSnapTransactionManager(){
-        return this.mSnapTransactionManager;
-    }
-
     void setTransactionManager(TransactionManager transactionManager) {
         mTransactionManager = transactionManager;
     }
 
-    boolean isNetworkAvailable(){
-        if(Utils.isNetworkAvailable(context)){
-            return true;
-        }
-        return false;
+    public SnapTransactionManager getmSnapTransactionManager() {
+        return this.mSnapTransactionManager;
     }
 
-    void setMerchantLogoResourceId(int merchantLogoResourceId) {
-        this.merchantLogoResourceId = merchantLogoResourceId;
-    }
-
-    void setMerchantLogo(String merchantLogo) {
-        this.merchantLogo = merchantLogo;
+    boolean isNetworkAvailable() {
+        return Utils.isNetworkAvailable(context);
     }
 
     public void releaseResource() {

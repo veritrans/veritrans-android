@@ -20,8 +20,8 @@ import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.RegisterCardResponse;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
-import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
@@ -207,8 +207,8 @@ public interface MerchantRestAPI {
 
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("/token/")
-    void getSnapToken(Callback<TokenDetailsResponse> callback);
+    @POST("/token")
+    void getSnapToken(Callback<Token> callback);
 
 
 }
