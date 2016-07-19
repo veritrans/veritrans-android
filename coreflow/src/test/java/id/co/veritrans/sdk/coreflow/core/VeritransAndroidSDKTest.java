@@ -1000,4 +1000,5 @@ public class VeritransAndroidSDKTest {
         Assert.assertEquals(transactionRequestMock, veritransSDKSSpy.getTransactionRequest());
     }
 
+
 }

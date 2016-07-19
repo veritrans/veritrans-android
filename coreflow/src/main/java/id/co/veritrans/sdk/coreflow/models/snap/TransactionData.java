@@ -9,11 +9,12 @@ public class TransactionData {
     private String id;
     private String transactionId;
     private String kind;
-
     private TransactionDetails transactionDetails;
     private List<String> enabledPayments;
     private BankTransfer bankTransfer;
 
     private CustomerDetails customerDetails;
     private List<ItemDetails> itemDetails;
+    private PaymentOptions paymentOptions;
+
 }

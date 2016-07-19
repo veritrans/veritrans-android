@@ -1,13 +1,10 @@
 package id.co.veritrans.sdk.coreflow.core;
 
 import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
-import id.co.veritrans.sdk.coreflow.models.CardResponse;
-import id.co.veritrans.sdk.coreflow.models.RegisterCardResponse;
-import id.co.veritrans.sdk.coreflow.models.SnapTokenDetailResponse;
 import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionCancelResponse;
+import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import retrofit.Callback;
-import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Headers;
@@ -19,12 +16,6 @@ import retrofit.http.Query;
  * Created by ziahaqi on 27/06/2016.
  */
 public interface VeritransRestAPI {
-
-    /*
-     * Snap End Point
-     */
-
-    void getSnapToken(Callback<SnapTokenDetailResponse> callback);
 
 
     /*
@@ -151,4 +142,11 @@ public interface VeritransRestAPI {
             @Query("client_key") String clientKey, Callback<CardRegistrationResponse> callback
     );
 
+
+
+    /*
+     * Snap API rest API endpoint
+     */
+    @GET("/v1/payment_pages/{snap_token}")
+    void getSnapTransaction(@Path("snap_token") String snapToken, Callback<Transaction> transactionCallback);
 }

@@ -42,7 +42,7 @@ public class MandiriBillPayFragment extends Fragment {
 
 
     /**
-     * it creates new MandiriBillPayment object and set TransactionResponse object to it, so
+     * it creates new MandiriBillPayment object and set Transaction object to it, so
      * later it can
      * be accessible using fragments getArgument().
      *

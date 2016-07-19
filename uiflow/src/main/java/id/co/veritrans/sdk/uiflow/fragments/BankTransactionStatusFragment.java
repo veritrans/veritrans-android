@@ -41,7 +41,7 @@ public class BankTransactionStatusFragment extends Fragment {
     private int mPaymentType = -1;
 
     /**
-     * It creates new BankTransactionStatusFragment object and set TransactionResponse object to it,
+     * It creates new BankTransactionStatusFragment object and set Transaction object to it,
      * so later it can be accessible using fragments getArgument().
      *
      * @param transactionResponse   response of the transaction call.

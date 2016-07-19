@@ -50,7 +50,6 @@ import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
 import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -74,11 +73,7 @@ public class TransactionManager extends BaseTransactionManager{
     private static final String PAYMENT_TYPE_INDOSAT_DOMPETKU = "indosat_dompetku";
     private static final String PAYMENT_TYPE_INDOMARET = "indomaret";
     private static final String PAYMENT_TYPE_KLIK_BCA = "bca_klikbca";
-    private static final String PAYMENT_TYPE_SNAP = "snap";
 
-    // Snap
-    private static final String GET_SNAP_TRANSACTION_FAILED = "Failed Getting Snap Transaction";
-    private static final String GET_SNAP_TRANSACTION_SUCCESS = "Success Getting Snap Transaction";
 
     // Bank transfer type
     private static final String BANK_PERMATA = "permata";
@@ -1259,13 +1254,6 @@ public class TransactionManager extends BaseTransactionManager{
         }
     }
 
-    private void releaseResources() {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            veritransSDK.releaseResource();
-            Logger.i("released transaction");
-        }
-    }
 
     /**
      * It will execute API call to delete saved card from merchant server.
@@ -1386,56 +1374,7 @@ public class TransactionManager extends BaseTransactionManager{
             });
     }
 
-    /**
-     * This will create a HTTP request to merchant server to
-     *
-     * @param snapToken
-     */
-    public void getSnapTransaction(String snapToken) {
-        final long start = System.currentTimeMillis();
-        merchantPaymentAPI.getSnapTransaction(snapToken, new Callback<Transaction>() {
-            @Override
-            public void success(Transaction transaction, Response response) {
-                releaseResources();
 
-                long end = System.currentTimeMillis();
-
-                if (transaction != null) {
-                    if (response.getStatus() == 200) {
-                        // Track Mixpanel event
-                        analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_SUCCESS, PAYMENT_TYPE_SNAP, end - start);
-                    } else {
-                        // Track Mixpanel event
-                        analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_FAILED, PAYMENT_TYPE_SNAP, end - start);
-                    }
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.GET_OFFER));
-                    Logger.e(context.getString(R.string.error_empty_response));
-
-                    // Track Mixpanel event
-                    analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_FAILED, PAYMENT_TYPE_SNAP, end - start);
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError e) {
-                releaseResources();
-
-                long end = System.currentTimeMillis();
-
-                if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                    VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                    Logger.i("Error in SSL Certificate. " + e.getMessage());
-                } else {
-                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                    Logger.i("General error occurred " + e.getMessage());
-                }
-
-                // Track Mixpanel event
-                analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_FAILED, PAYMENT_TYPE_SNAP, end - start);
-            }
-        });
-    }
 
     public void paymentUsingKlikBCA(KlikBCAModel klikBCAModel) {
         final long start = System.currentTimeMillis();

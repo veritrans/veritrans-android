@@ -326,4 +326,8 @@ public class EventBustImplementSample implements GetAuthenticationBusCallback, D
         busCollaborator.onSSLErrorEvent();
     }
 
+    public void getPaymentType(VeritransRestAPI veritransAPI, String snapToken) {
+        snapTransactionManager.setVeritransPaymentAPI(veritransAPI);
+        snapTransactionManager.getSnapTransaction(snapToken);
+    }
 }
