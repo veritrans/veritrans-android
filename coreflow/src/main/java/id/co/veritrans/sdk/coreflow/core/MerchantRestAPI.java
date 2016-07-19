@@ -21,7 +21,7 @@ import id.co.veritrans.sdk.coreflow.models.RegisterCardResponse;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.models.snap.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import retrofit.Callback;
 import retrofit.http.Body;

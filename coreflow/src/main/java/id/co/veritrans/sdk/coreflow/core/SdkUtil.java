@@ -1,11 +1,8 @@
 package id.co.veritrans.sdk.coreflow.core;
 
-import android.content.Context;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-
-import com.squareup.okhttp.internal.Util;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -25,8 +22,8 @@ import id.co.veritrans.sdk.coreflow.models.CstoreEntity;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
 import id.co.veritrans.sdk.coreflow.models.DescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.EpayBriTransfer;
+import id.co.veritrans.sdk.coreflow.models.ExpiryModel;
 import id.co.veritrans.sdk.coreflow.models.IndomaretRequestModel;
-import id.co.veritrans.sdk.coreflow.models.IndosatDompetku;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.coreflow.models.KlikBCADescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.KlikBCAModel;
@@ -39,12 +36,14 @@ import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
-import id.co.veritrans.sdk.coreflow.models.snap.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 
 /**
  * Created by ziahaqi on 18/06/2016.
  */
 public class SdkUtil {
+    private static final String UNIT_MINUTES = "minutes";
+
     /**
      * helper method to extract {@link MandiriBillPayTransferModel} from {@link TransactionRequest}.
      *
@@ -522,9 +521,23 @@ public class SdkUtil {
     }
 
     public static SnapTokenRequestModel getSnapTokenRequestModel(TransactionRequest transactionRequest) {
+
+        if (transactionRequest.isUiEnabled()) {
+            //get user details only if using default ui.
+            transactionRequest = initializeUserInfo(transactionRequest);
+        }
+
+        ExpiryModel expiryModel = new ExpiryModel();
+        expiryModel.setDuration(1);
+        expiryModel.setUnit(UNIT_MINUTES);
+        expiryModel.setStartTime(new Date().toString());
+
         TransactionDetails details = new TransactionDetails(String.valueOf(transactionRequest.getAmount()),
                 transactionRequest.getOrderId() + "-"+ createTimeStamp());
-        SnapTokenRequestModel model = new SnapTokenRequestModel(details);
+        SnapTokenRequestModel model = new SnapTokenRequestModel(details, transactionRequest.getBillingAddressArrayList(),
+                transactionRequest.getShippingAddressArrayList(), transactionRequest.getItemDetails(),
+                transactionRequest.getCustomerDetails(), expiryModel);
+
         return model;
     }
 }

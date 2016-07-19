@@ -2,7 +2,6 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import java.security.cert.CertPathValidatorException;
 
@@ -17,7 +16,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenFailedEvent
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionSuccessEvent;
-import id.co.veritrans.sdk.coreflow.models.snap.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import retrofit.Callback;
