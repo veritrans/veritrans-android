@@ -5,7 +5,11 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.squareup.okhttp.internal.Util;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
@@ -35,6 +39,7 @@ import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.coreflow.models.snap.SnapTokenRequestModel;
 
 /**
  * Created by ziahaqi on 18/06/2016.
@@ -508,4 +513,18 @@ public class SdkUtil {
         return deviceId;
     }
 
+    /*
+     * generate time stamp
+     */
+
+    public static String createTimeStamp(){
+        return new Timestamp(new Date().getTime()).toString();
+    }
+
+    public static SnapTokenRequestModel getSnapTokenRequestModel(TransactionRequest transactionRequest) {
+        TransactionDetails details = new TransactionDetails(String.valueOf(transactionRequest.getAmount()),
+                transactionRequest.getOrderId() + "-"+ createTimeStamp());
+        SnapTokenRequestModel model = new SnapTokenRequestModel(details);
+        return model;
+    }
 }

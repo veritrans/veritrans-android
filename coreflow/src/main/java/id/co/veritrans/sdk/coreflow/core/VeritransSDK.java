@@ -34,6 +34,7 @@ import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.coreflow.models.snap.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 
 /**
@@ -692,7 +693,7 @@ public class VeritransSDK {
                         SdkUtil.getBBMMoneyRequestModel(transactionRequest);
 
                 isRunning = true;
-                mTransactionManager.paymentUsingBBMMoney(bbmMoneyRequestModel, veritransSDK.readAuthenticationToken());
+                mTransactionManager.paymentUsingBBMMoney(bbmMoneyRequestModel, readAuthenticationToken());
             }else{
                 isRunning = false;
                 Logger.e(context.getString(R.string.error_unable_to_connect));
@@ -795,7 +796,8 @@ public class VeritransSDK {
     public void getSnapToken() {
         if (Utils.isNetworkAvailable(context)) {
             isRunning = true;
-            mSnapTransactionManager.getSnapToken();
+            SnapTokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
+            mSnapTransactionManager.getSnapToken(model);
         } else {
             isRunning = false;
         }
@@ -824,4 +826,6 @@ public class VeritransSDK {
     public void releaseResource() {
         this.isRunning = false;
     }
+
+
 }

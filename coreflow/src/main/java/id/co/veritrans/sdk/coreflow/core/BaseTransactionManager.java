@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 
+
 /**
  * Created by ziahaqi on 7/18/16.
  */
@@ -61,4 +62,6 @@ public abstract class BaseTransactionManager {
     public void setSDKLogEnabled(boolean SDKLogEnabled) {
         isSDKLogEnabled = SDKLogEnabled;
     }
+
+
 }
