@@ -76,4 +76,12 @@ public class BusCollaborator {
     public void onSSLErrorEvent() {
 
     }
+
+    public void onGetPaymentListFailedEvent() {
+
+    }
+
+    public void onGetPaymentListSuccessEvent() {
+
+    }
 }

@@ -15,7 +15,8 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SSLErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.snap.PaymentTypesEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetPaymentListFailedEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetPaymentListSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import retrofit.Callback;
@@ -31,6 +32,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
     private static final String GET_SNAP_TRANSACTION_FAILED = "Failed Getting Snap Transaction";
     private static final String GET_SNAP_TRANSACTION_SUCCESS = "Success Getting Snap Transaction";
     private static final String PAYMENT_TYPE_SNAP = "snap";
+    private String PAYMENT_TYPE_CREDIT_CARD_SNAP = "cc-snap";
 
 
     public SnapTransactionManager(Context context, VeritransRestAPI veritransRestAPI, MerchantRestAPI merchantApiClient) {
@@ -48,18 +50,35 @@ public class SnapTransactionManager extends BaseTransactionManager{
         merchantPaymentAPI.getSnapToken(new Callback<TokenDetailsResponse>() {
             @Override
             public void success(TokenDetailsResponse snapTokenDetailResponse, Response response) {
+                long end = System.currentTimeMillis();
                 releaseResources();
+
                 if(snapTokenDetailResponse != null){
-                    if(TextUtils.isEmpty(snapTokenDetailResponse.getTokenId())){
-                        VeritransBusProvider.getInstance().post(new GetTokenFailedEvent(context.getString(R.string.error_empty_response),
-                                snapTokenDetailResponse, Events.TOKENIZE));
-                    }else{
+                    System.out.println("gettoken:notnull");
+                    System.out.println("gettoken:notnull:" + response.getStatus());
+
+                    if(response.getStatus() == 200 ){
+                        System.out.println("gettransaction:post200");
+
                         VeritransBusProvider.getInstance().post(new GetTokenSuccessEvent(snapTokenDetailResponse, Events.TOKENIZE));
+                    }else{
+                        if (!TextUtils.isEmpty(snapTokenDetailResponse.getStatusMessage())) {
+                            VeritransBusProvider.getInstance().post(new GetTokenFailedEvent(
+                                    snapTokenDetailResponse.getStatusMessage(),
+                                    snapTokenDetailResponse,
+                                    Events.TOKENIZE));
+
+                        } else {
+                            VeritransBusProvider.getInstance().post(new GetTokenFailedEvent(
+                                    context.getString(R.string.error_empty_response),
+                                    snapTokenDetailResponse,
+                                    Events.TOKENIZE
+                            ));
+                        }
                     }
                 }else{
                     VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.empty_transaction_response), Events.TOKENIZE));
                 }
-
             }
 
             @Override
@@ -96,14 +115,15 @@ public class SnapTransactionManager extends BaseTransactionManager{
                     releaseResources();
 
                     long end = System.currentTimeMillis();
-
                     if (transaction != null) {
+
                         if (response.getStatus() == 200) {
-                            VeritransBusProvider.getInstance().post(new PaymentTypesEvent(transaction, Events.TOKENIZE));
+                            VeritransBusProvider.getInstance().post(new GetPaymentListSuccessEvent(transaction, Events.TOKENIZE));
                             // Track Mixpanel event
                             analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_SUCCESS, PAYMENT_TYPE_SNAP, end - start);
                         } else {
-                            VeritransBusProvider.getInstance().post(new PaymentTypesEvent(transaction, Events.TOKENIZE));
+
+                            VeritransBusProvider.getInstance().post(new GetPaymentListFailedEvent(GET_SNAP_TRANSACTION_FAILED, transaction, Events.TOKENIZE));
                             // Track Mixpanel event
                             analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_FAILED, PAYMENT_TYPE_SNAP, end - start);
                         }
@@ -124,10 +144,8 @@ public class SnapTransactionManager extends BaseTransactionManager{
 
                     if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
                         VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.PAYMENT));
-                        Logger.i("Error in SSL Certificate. " + e.getMessage());
                     } else {
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.PAYMENT));
-                        Logger.i("General error occurred " + e.getMessage());
                     }
 
                     // Track Mixpanel event

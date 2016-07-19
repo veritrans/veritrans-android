@@ -6,13 +6,13 @@ import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 /**
  * Created by ziahaqi on 7/18/16.
  */
-public class PaymentTypesEvent extends BaseSuccessEvent<Transaction>{
+public class GetPaymentListSuccessEvent extends BaseSuccessEvent<Transaction>{
 
-    public PaymentTypesEvent(Transaction response) {
+    public GetPaymentListSuccessEvent(Transaction response) {
         super(response);
     }
 
-    public PaymentTypesEvent(Transaction response, String source) {
+    public GetPaymentListSuccessEvent(Transaction response, String source) {
         super(response, source);
     }
 }

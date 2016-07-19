@@ -1,8 +1,8 @@
 package id.co.veritrans.sdk.coreflow.transactionmanager;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.junit.After;
 
-import id.co.veritrans.sdk.coreflow.core.BaseTransactionManager;
 import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
 import id.co.veritrans.sdk.coreflow.core.SnapTransactionManager;
 import id.co.veritrans.sdk.coreflow.core.TransactionManager;
@@ -14,6 +14,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.callback.DeleteCardBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.GetAuthenticationBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.GetCardBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.GetOfferBusCallback;
+import id.co.veritrans.sdk.coreflow.eventbus.callback.GetPaymentListCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.HttpErrorCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.SaveCardBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TokenBusCallback;
@@ -36,6 +37,8 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetPaymentListFailedEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetPaymentListSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.coreflow.models.BCABankTransfer;
 import id.co.veritrans.sdk.coreflow.models.BCAKlikPayModel;
@@ -43,9 +46,7 @@ import id.co.veritrans.sdk.coreflow.models.CIMBClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.CardTransfer;
 import id.co.veritrans.sdk.coreflow.models.EpayBriTransfer;
-import id.co.veritrans.sdk.coreflow.models.GetOffersResponseModel;
 import id.co.veritrans.sdk.coreflow.models.IndomaretRequestModel;
-import id.co.veritrans.sdk.coreflow.models.IndosatDompetku;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.coreflow.models.KlikBCAModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriBillPayTransferModel;
@@ -59,7 +60,7 @@ import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
  */
 public class EventBustImplementSample implements GetAuthenticationBusCallback, DeleteCardBusCallback,
         CardRegistrationBusCallback, SaveCardBusCallback, HttpErrorCallback,
-        TokenBusCallback, TransactionBusCallback, GetCardBusCallback,
+        TokenBusCallback, TransactionBusCallback, GetCardBusCallback,GetPaymentListCallback,
         GetOfferBusCallback {
     BusCollaborator busCollaborator;
     public String onsuccessStatusCode;
@@ -329,5 +330,17 @@ public class EventBustImplementSample implements GetAuthenticationBusCallback, D
     public void getPaymentType(VeritransRestAPI veritransAPI, String snapToken) {
         snapTransactionManager.setVeritransPaymentAPI(veritransAPI);
         snapTransactionManager.getSnapTransaction(snapToken);
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(GetPaymentListSuccessEvent event) {
+        busCollaborator.onGetPaymentListSuccessEvent();
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(GetPaymentListFailedEvent event) {
+        busCollaborator.onGetPaymentListFailedEvent();
     }
 }

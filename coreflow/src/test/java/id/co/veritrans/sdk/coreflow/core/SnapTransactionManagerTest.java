@@ -141,6 +141,21 @@ public class SnapTransactionManagerTest {
     }
 
     @Test
+    public void getTokenTestSuccess_responseCodeNon200(){
+        retrofitResponse = new Response("URL", 300, "success", Collections.EMPTY_LIST,
+                new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
+        Mockito.when(snapTokenDetailResponse.getTokenId()).thenReturn(tokenId);
+        eventBusImplementSample.setTransactionManager(transactionManager);
+        eventBusImplementSample.getSnapToken(merchantApi);
+
+        Mockito.verify(merchantApi, Mockito.times(1)).getSnapToken(callbackSnapTokenResponseCaptor.capture());
+
+        callbackSnapTokenResponseCaptor.getValue().success(snapTokenDetailResponse, retrofitResponse);
+        Mockito.verify(busCollaborator, Mockito.times(1)).onGetTokenFailedEvent();
+    }
+
+
+    @Test
     public void getTokenTestSuccess_whenResponseNull(){
         Mockito.when(snapTokenDetailResponse.getTokenId()).thenReturn(tokenId);
         eventBusImplementSample.setTransactionManager(transactionManager);
@@ -182,7 +197,6 @@ public class SnapTransactionManagerTest {
         eventBusImplementSample.getSnapToken(merchantApi);
 
         Mockito.verify(merchantApi, Mockito.times(1)).getSnapToken(callbackSnapTokenResponseCaptor.capture());
-
         callbackSnapTokenResponseCaptor.getValue().failure(retrofitError);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGeneralErrorEvent();
     }
@@ -213,25 +227,31 @@ public class SnapTransactionManagerTest {
 
     //!untest
     @Test
-    public void getSnapTokenSuccess_whenCode200(){
+    public void getSnapTransactionSuccess_whenCode200(){
+        System.out.println("test:" +        retrofitResponse.getStatus()
+        );
         eventBusImplementSample.setTransactionManager(transactionManager);
         eventBusImplementSample.getPaymentType(veritransAPI, tokenId);
 
         Mockito.verify(veritransAPI).getSnapTransaction(tokenIdCaptor.capture(), transactionCaptorMock.capture());
         transactionCaptorMock.getValue().success(transactionResponseMock, retrofitResponse);
 
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(busCollaborator).onGetPaymentListSuccessEvent();
     }
 
     @Test
-    public void getSnapTokenSuccess_whenCodeNot200(){
+    public void getSnapTransactionSuccess_whenCodeNot200(){
+
+        retrofitResponse = new Response("URL", 300, "success", Collections.EMPTY_LIST,
+                new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
+
         eventBusImplementSample.setTransactionManager(transactionManager);
         eventBusImplementSample.getPaymentType(veritransAPI, tokenId);
 
         Mockito.verify(veritransAPI).getSnapTransaction(tokenIdCaptor.capture(), transactionCaptorMock.capture());
         transactionCaptorMock.getValue().success(transactionResponseMock, retrofitResponse);
 
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(busCollaborator).onGetPaymentListFailedEvent();
     }
 
 
