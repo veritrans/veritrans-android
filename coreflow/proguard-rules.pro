@@ -113,6 +113,7 @@
 -keep class id.co.veritrans.sdk.coreflow.core.SdkUtil {*;}
 -keep class id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder {*;}
 -keep class id.co.veritrans.sdk.coreflow.core.ISdkFlow {*;}
+-keep class id.co.veritrans.sdk.coreflow.core.BaseTransactionManager{*;}
 -keep class id.co.veritrans.sdk.coreflow.core.IScanner {*;}
 -keep class id.co.veritrans.sdk.coreflow.utilities.** {*;}
 -keep class id.co.veritrans.sdk.uiflow.utilities.SdkUiFlowUtil {*;}

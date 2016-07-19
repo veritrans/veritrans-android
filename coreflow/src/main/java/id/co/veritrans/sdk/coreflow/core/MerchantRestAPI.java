@@ -207,8 +207,8 @@ public interface MerchantRestAPI {
 
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("/token")
-    void getSnapToken(Callback<Token> callback);
+    @POST("/charge")
+    void getSnapToken(@Body SnapTransactionRequest request, Callback<Token> callback);
 
 
 }

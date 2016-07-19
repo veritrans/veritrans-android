@@ -318,4 +318,8 @@
 
     <string name="payment_confirmation_title">Konfirmasi Pembayaran</string>
     <string name="payment_confirmation_description">Nomor Kartu:\n%1$s\n\nTotal Pembayaran: %2$s</string>
+    <string name="txt_loading_payment">Mengambil daftar metode pembayaran</string>
+    <string name="txt_error_snap_token">Gagal mendaftarkan transaksi.</string>
+    <string name="btn_cancel">Batal</string>
+    <string name="btn_retry">Ulangi</string>
 </resources>

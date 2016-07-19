@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.uiflow;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.models.BankTransferModel;
@@ -14,6 +15,34 @@ import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
  * @author rakawm
  */
 public class PaymentMethods {
+
+    public static PaymentMethodsModel getMethods(Context context, String name) {
+        if (name.equals(context.getString(R.string.payment_credit_debit))) {
+            return getMethodCreditCards(context);
+        } else if (name.equals(context.getString(R.string.payment_bank_transfer))) {
+            return getMethodBankTransfer(context);
+        } else if (name.equals(context.getString(R.string.payment_klik_bca))) {
+            return getMethodKlikBCA(context);
+        } else if (name.equals(context.getString(R.string.payment_mandiri_clickpay))) {
+            return getMethodMandiriClickpay(context);
+        } else if (name.equals(context.getString(R.string.payment_bca_click))) {
+            return getMethodBCAKlikpay(context);
+        } else if (name.equals(context.getString(R.string.payment_cimb_clicks))) {
+            return getMethodCIMBClicks(context);
+        } else if (name.equals(context.getString(R.string.payment_epay_bri))) {
+            return getMethodEpayBRI(context);
+        } else if (name.equals(context.getString(R.string.payment_indomaret))) {
+            return getMethodIndomaret(context);
+        } else if (name.equals(context.getString(R.string.payment_mandiri_ecash))) {
+            return getMethodMandiriECash(context);
+        } else if (name.equals(context.getString(R.string.payment_mandiri_bill_payment))) {
+            return getMethodMandiriBill(context);
+        } else if (name.equals(context.getString(R.string.payment_indosat_dompetku))) {
+            return getMethodIndosatDompetku(context);
+        } else {
+            return null;
+        }
+    }
 
     public static PaymentMethodsModel getMethodOffers(Context context) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_offers), R.drawable.ic_offers, Constants.PAYMENT_METHOD_NOT_SELECTED);
@@ -39,7 +68,7 @@ public class PaymentMethods {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_indosat_dompetku), R.drawable.ic_indosat, Constants.PAYMENT_METHOD_NOT_SELECTED);
     }
 
-    public static PaymentMethodsModel geMethodtMandiriECash(Context context) {
+    public static PaymentMethodsModel getMethodMandiriECash(Context context) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_mandiri_ecash), R.drawable.ic_mandiri_e_cash, Constants.PAYMENT_METHOD_NOT_SELECTED);
     }
 
@@ -123,5 +152,21 @@ public class PaymentMethods {
         models.add(new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true));
         models.add(new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true));
         return models;
+    }
+
+    public static List<String> getDefaultPaymentList(Context context) {
+        List<String> paymentNameList = new ArrayList<>();
+        paymentNameList.add(context.getString(R.string.payment_credit_debit));
+        paymentNameList.add(context.getString(R.string.payment_bank_transfer));
+        paymentNameList.add(context.getString(R.string.payment_klik_bca));
+        paymentNameList.add(context.getString(R.string.payment_bca_click));
+        paymentNameList.add(context.getString(R.string.payment_mandiri_clickpay));
+        paymentNameList.add(context.getString(R.string.payment_mandiri_ecash));
+        paymentNameList.add(context.getString(R.string.payment_mandiri_bill_payment));
+        paymentNameList.add(context.getString(R.string.payment_epay_bri));
+        paymentNameList.add(context.getString(R.string.payment_cimb_clicks));
+        paymentNameList.add(context.getString(R.string.payment_indosat_dompetku));
+        paymentNameList.add(context.getString(R.string.payment_method_indomaret));
+        return paymentNameList;
     }
 }
