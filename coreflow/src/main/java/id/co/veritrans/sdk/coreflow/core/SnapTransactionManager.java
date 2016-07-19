@@ -54,12 +54,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 releaseResources();
 
                 if(snapTokenDetailResponse != null){
-                    System.out.println("gettoken:notnull");
-                    System.out.println("gettoken:notnull:" + response.getStatus());
-
                     if(response.getStatus() == 200 ){
-                        System.out.println("gettransaction:post200");
-
                         VeritransBusProvider.getInstance().post(new GetTokenSuccessEvent(snapTokenDetailResponse, Events.TOKENIZE));
                     }else{
                         if (!TextUtils.isEmpty(snapTokenDetailResponse.getStatusMessage())) {
