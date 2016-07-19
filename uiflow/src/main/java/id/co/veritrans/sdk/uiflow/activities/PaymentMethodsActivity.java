@@ -1,11 +1,13 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,9 +15,13 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
@@ -23,12 +29,22 @@ import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.coreflow.eventbus.callback.GetSnapTokenCallback;
+import id.co.veritrans.sdk.coreflow.eventbus.callback.GetSnapTransactionCallback;
+import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
+import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFinishedEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenFailedEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionFailedEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
 import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import id.co.veritrans.sdk.uiflow.PaymentMethods;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
@@ -39,7 +55,7 @@ import id.co.veritrans.sdk.uiflow.widgets.HeaderView;
  * <p/>
  * Created by shivam on 10/16/15.
  */
-public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener {
+public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, GetSnapTransactionCallback, GetSnapTokenCallback {
 
     public static final String PAYABLE_AMOUNT = "Payable Amount";
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
@@ -61,12 +77,15 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
     private TextView headerTextView = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
     private TextView textViewMeasureHeight = null;
+    private LinearLayout progressContainer = null;
     private ImageView logo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().register(this);
+        }
         setContentView(R.layout.activity_payments_method);
         veritransSDK = VeritransSDK.getVeritransSDK();
         initializeTheme();
@@ -82,9 +101,10 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
             transactionRequest = veritransSDK.getTransactionRequest();
             CustomerDetails customerDetails = null;
             if (userDetail != null) {
-                customerDetails = new CustomerDetails(userDetail.getUserFullName(), "",
+                customerDetails = new CustomerDetails(userDetail.getUserFullName(), null,
                         userDetail.getEmail(), userDetail.getPhoneNumber());
                 transactionRequest.setCustomerDetails(customerDetails);
+                Logger.d(String.format("Customer name: %s, Customer email: %s, Customer phone: %s", userDetail.getUserFullName(), userDetail.getEmail(), userDetail.getPhoneNumber() ));
             }
             setUpPaymentMethods();
         } else Logger.e("Veritrans SDK is not started.");
@@ -145,11 +165,11 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bindDataToView();
+        getPaymentPages();
+    }
 
-        // setUp recyclerView
-        initialiseAdapterData();
-        PaymentMethodsAdapter paymentMethodsAdapter = new
-                PaymentMethodsAdapter(this, data);
+    private void setupRecyclerView() {
+        PaymentMethodsAdapter paymentMethodsAdapter = new PaymentMethodsAdapter(this, data);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -157,7 +177,6 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
 
         // disable scrolling of recycler view if there is no need of it.
         handleScrollingOfRecyclerView();
-
     }
 
     /**
@@ -199,17 +218,23 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         headerTextView = (TextView) findViewById(R.id.title_header);
         textViewMeasureHeight = (TextView) findViewById(R.id.textview_to_compare);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+        progressContainer = (LinearLayout) findViewById(R.id.progress_container);
+    }
+
+    private void getPaymentPages() {
+        progressContainer.setVisibility(View.VISIBLE);
+        veritransSDK.getSnapToken();
     }
 
     /**
      * initialize adapter data model by dummy values.
      */
-    private void initialiseAdapterData() {
+    private void initialiseAdapterData(List<String> enabledPayments) {
         data.clear();
-        for (PaymentMethodsModel paymentMethodsModel : veritransSDK.getSelectedPaymentMethods()) {
-
-            if (paymentMethodsModel.isSelected()) {
-                data.add(paymentMethodsModel);
+        for (String paymentType : enabledPayments) {
+            PaymentMethodsModel model = PaymentMethods.getMethods(this, paymentType);
+            if (model != null) {
+                data.add(model);
             }
         }
     }
@@ -217,6 +242,9 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
+        }
     }
 
     @Override
@@ -341,5 +369,84 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
 
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(GetSnapTransactionSuccessEvent snapTransactionSuccessEvent) {
+        progressContainer.setVisibility(View.GONE);
+        List<String> paymentMethods = snapTransactionSuccessEvent.getResponse().getTransactionData().getEnabledPayments();
+        initialiseAdapterData(paymentMethods);
+        setupRecyclerView();
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(GetSnapTransactionFailedEvent snapTransactionFailedEvent) {
+        progressContainer.setVisibility(View.GONE);
+        if (snapTransactionFailedEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
+            showDefaultPaymentMethods();
+        }
+
+    }
+
+    @Subscribe
+    public void onEvent(GeneralErrorEvent generalErrorEvent) {
+        progressContainer.setVisibility(View.GONE);
+        if (generalErrorEvent.getSource().equals(Events.GET_SNAP_TOKEN)) {
+            showErrorMessage();
+        } else if (generalErrorEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
+            showDefaultPaymentMethods();
+        }
+    }
+
+    @Subscribe
+    public void onEvent(NetworkUnavailableEvent networkUnavailableEvent) {
+        progressContainer.setVisibility(View.GONE);
+        if (networkUnavailableEvent.getSource().equals(Events.GET_SNAP_TOKEN)) {
+            showErrorMessage();
+        } else if (networkUnavailableEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
+            showDefaultPaymentMethods();
+        }
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(GetSnapTokenSuccessEvent event) {
+        veritransSDK.getSnapTransaction(event.getResponse().getTokenId());
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(GetSnapTokenFailedEvent event) {
+        showErrorMessage();
+    }
+
+    private void showDefaultPaymentMethods() {
+        progressContainer.setVisibility(View.GONE);
+        List<String> paymentMethods = PaymentMethods.getDefaultPaymentList(this);
+        initialiseAdapterData(paymentMethods);
+        setupRecyclerView();
+    }
+
+    private void showErrorMessage() {
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.txt_error_snap_token))
+                .setPositiveButton(R.string.btn_retry, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        getPaymentPages();
+                    }
+                })
+                .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .create();
+        alert.show();
     }
 }

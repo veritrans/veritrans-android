@@ -13,7 +13,6 @@ public class CustomerDetails {
     private String firstName;
 
     @SerializedName("last_name")
-
     private String lastName;
     private String email;
     private String phone;

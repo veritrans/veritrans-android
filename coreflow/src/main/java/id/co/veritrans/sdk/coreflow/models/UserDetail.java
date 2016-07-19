@@ -24,7 +24,7 @@ public class UserDetail implements Serializable {
     }
 
     public String getEmail() {
-        return TextUtils.isEmpty(email) ? "" : email;
+        return email;
     }
 
     public void setEmail(String email) {

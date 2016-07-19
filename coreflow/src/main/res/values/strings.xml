@@ -418,6 +418,7 @@
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_klik_bca">KlikBCA</string>
     <!--Payment List-->
+    <string name="payment_offers">offers</string>
     <string name="payment_epay_bri">bri_epay</string>
     <string name="payment_bank_transfer">bank_transfer</string>
     <string name="payment_mandiri_bill_payment">echannel</string>

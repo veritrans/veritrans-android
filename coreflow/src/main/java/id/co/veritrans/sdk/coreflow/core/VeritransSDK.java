@@ -91,6 +91,7 @@ public class VeritransSDK {
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, VeritransRestAdapter.getSnapRestAPI(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
         this.mTransactionManager.setSDKLogEnabled(isLogEnabled);
         this.mTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
+        this.mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
 
         initializeTheme();
         initializeLogo();

@@ -27,12 +27,11 @@ import retrofit.client.Response;
  * Created by ziahaqi on 7/18/16.
  */
 public class SnapTransactionManager extends BaseTransactionManager{
-    private SnapRestAPI snapRestAPI;
-
     // Snap
     private static final String GET_SNAP_TRANSACTION_FAILED = "Failed Getting Snap Transaction";
     private static final String GET_SNAP_TRANSACTION_SUCCESS = "Success Getting Snap Transaction";
     private static final String PAYMENT_TYPE_SNAP = "snap";
+    private SnapRestAPI snapRestAPI;
 
 
     public SnapTransactionManager(Context context, SnapRestAPI snapRestAPI, MerchantRestAPI merchantApiClient) {
@@ -52,7 +51,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
             public void success(Token snapTokenDetailResponse, Response response) {
                 releaseResources();
                 if(snapTokenDetailResponse != null){
-                    if(response.getStatus() == 200){
+                    if (snapTokenDetailResponse.getTokenId() != null && !snapTokenDetailResponse.getTokenId().equals("")) {
                         VeritransBusProvider.getInstance().post(new GetSnapTokenSuccessEvent(snapTokenDetailResponse, Events.GET_SNAP_TOKEN));
                     }else{
                         VeritransBusProvider.getInstance().post(new GetSnapTokenFailedEvent(context.getString(R.string.error_empty_response), snapTokenDetailResponse, Events.GET_SNAP_TOKEN));
@@ -88,7 +87,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
      *
      * @param snapToken
      */
-    public void getSnapTransaction(@NonNull  String snapToken) {
+    public void getSnapTransaction(@NonNull String snapToken) {
         final long start = System.currentTimeMillis();
         if(snapToken != null){
             snapRestAPI.getSnapTransaction(snapToken, new Callback<Transaction>() {
@@ -99,7 +98,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                     long end = System.currentTimeMillis();
 
                     if (transaction != null) {
-                        if (response.getStatus() == 200) {
+                        if (response.getStatus() == 200 && !transaction.getTransactionData().getTransactionId().equals("")) {
                             VeritransBusProvider.getInstance().post(new GetSnapTransactionSuccessEvent(transaction, Events.GET_SNAP_TRANSACTION));
                             // Track Mixpanel event
                             analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_SUCCESS, PAYMENT_TYPE_SNAP, end - start);
@@ -135,7 +134,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                     analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_FAILED, PAYMENT_TYPE_SNAP, end - start);
                 }
             });
-        }else{
+        } else {
             releaseResources();
             Logger.e(context.getString(R.string.error_invalid_data_supplied));
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.GET_SNAP_TRANSACTION));
