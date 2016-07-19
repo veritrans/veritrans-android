@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 
@@ -782,11 +783,17 @@ public class VeritransSDK {
      * @param snapToken Snap authentication token
      */
     public void getSnapTransaction(String snapToken) {
-        if (Utils.isNetworkAvailable(context)) {
-            isRunning = true;
-            mSnapTransactionManager.getSnapTransaction(snapToken);
-        } else {
+        if(!TextUtils.isEmpty(snapToken)){
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.getSnapTransaction(snapToken);
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.GET_SNAP_TRANSACTION));
+            }
+        }else{
             isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.GET_SNAP_TRANSACTION));
         }
     }
 
@@ -794,12 +801,18 @@ public class VeritransSDK {
      * It will run background task to get snap token.
      */
     public void getSnapToken() {
-        if (Utils.isNetworkAvailable(context)) {
-            isRunning = true;
-            SnapTokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
-            mSnapTransactionManager.getSnapToken(model);
-        } else {
+        if(transactionRequest != null){
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                SnapTokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
+                mSnapTransactionManager.getSnapToken(model);
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.GET_SNAP_TOKEN));
+            }
+        }else{
             isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.GET_SNAP_TOKEN));
         }
     }
 
@@ -813,6 +826,10 @@ public class VeritransSDK {
 
     void setTransactionManager(TransactionManager transactionManager) {
         mTransactionManager = transactionManager;
+    }
+
+    void setSnapTransactionManager(SnapTransactionManager snapTransactionManager){
+        this.mSnapTransactionManager = snapTransactionManager;
     }
 
     public SnapTransactionManager getmSnapTransactionManager() {
