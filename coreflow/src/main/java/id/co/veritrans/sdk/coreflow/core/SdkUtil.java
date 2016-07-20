@@ -4,9 +4,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
@@ -22,7 +20,6 @@ import id.co.veritrans.sdk.coreflow.models.CstoreEntity;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
 import id.co.veritrans.sdk.coreflow.models.DescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.EpayBriTransfer;
-import id.co.veritrans.sdk.coreflow.models.ExpiryModel;
 import id.co.veritrans.sdk.coreflow.models.IndomaretRequestModel;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.coreflow.models.KlikBCADescriptionModel;
@@ -33,11 +30,11 @@ import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriECashModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
+import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.SnapTransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
-import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 
 /**
  * Created by ziahaqi on 18/06/2016.
@@ -420,7 +417,6 @@ public class SdkUtil {
                     mCustomerDetails.setFirstName(userDetail.getUserFullName());
                     mCustomerDetails.setLastName(null);
                     mCustomerDetails.setEmail(userDetail.getEmail());
-
                     //added email in performTransaction()
                     request.setCustomerDetails(mCustomerDetails);
 
@@ -463,8 +459,10 @@ public class SdkUtil {
 
         }
 
-        request.setBillingAddressArrayList(billingAddressArrayList);
-        request.setShippingAddressArrayList(shippingAddressArrayList);
+        CustomerDetails customerDetails = request.getCustomerDetails();
+        customerDetails.setBillingAddress(billingAddressArrayList.get(0));
+        customerDetails.setShippingAddress(shippingAddressArrayList.get(0));
+        request.setCustomerDetails(customerDetails);
         return request;
     }
 
