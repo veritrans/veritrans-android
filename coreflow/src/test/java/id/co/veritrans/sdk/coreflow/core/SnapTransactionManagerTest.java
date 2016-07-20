@@ -32,6 +32,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
+import id.co.veritrans.sdk.coreflow.models.snap.TransactionData;
 import id.co.veritrans.sdk.coreflow.transactionmanager.BusCollaborator;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -99,6 +100,9 @@ public class SnapTransactionManagerTest {
     private ArgumentCaptor<SnapTokenRequestModel> snapTokenRequestModelCaptor;
     @Mock
     private SnapTokenRequestModel snapTokenRequestModelMock;
+    @Mock
+    private TransactionData transactionDataMock;
+    private String transactionId = "trans_id";
 
     @Before
     public void setup(){
@@ -146,10 +150,8 @@ public class SnapTransactionManagerTest {
     }
 
     @Test
-    public void getTokenTestSuccess_responseCodeNon200(){
-        retrofitResponse = new Response("URL", 300, "success", Collections.EMPTY_LIST,
-                new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
-        Mockito.when(snapTokenMock.getTokenId()).thenReturn(tokenId);
+    public void getTokenTestSuccess_whenTokenNullOrEmpty(){
+        Mockito.when(snapTokenMock.getTokenId()).thenReturn("");
         eventBusImplementSample.setTransactionManager(transactionManager);
         eventBusImplementSample.getSnapToken(merchantApi, snapTokenRequestModelMock);
 
@@ -159,6 +161,7 @@ public class SnapTransactionManagerTest {
         callbackSnapTokenResponseCaptor.getValue().success(snapTokenMock, retrofitResponse);
         Mockito.verify(busCollaborator, Mockito.times(1)).onGetSnapTokenFailed();
     }
+
 
 
     @Test
@@ -235,9 +238,11 @@ public class SnapTransactionManagerTest {
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    //!untest
     @Test
-    public void getSnapTransactionSuccess_whenCode200(){
+    public void getSnapTransactionSuccess(){
+        Mockito.when(transactionResponseMock.getTransactionData()).thenReturn(transactionDataMock);
+        Mockito.when(transactionDataMock.getTransactionId()).thenReturn(transactionId);
+
         eventBusImplementSample.setTransactionManager(transactionManager);
         eventBusImplementSample.getPaymentType(snapAPI, tokenId);
 
@@ -245,6 +250,20 @@ public class SnapTransactionManagerTest {
         transactionCaptorMock.getValue().success(transactionResponseMock, retrofitResponse);
 
         Mockito.verify(busCollaborator).onGetSnapTransactionSuccess();
+    }
+
+    @Test
+    public void getSnapTransactionSuccess_whenTransIdEmpty(){
+        Mockito.when(transactionResponseMock.getTransactionData()).thenReturn(transactionDataMock);
+        Mockito.when(transactionDataMock.getTransactionId()).thenReturn("");
+
+        eventBusImplementSample.setTransactionManager(transactionManager);
+        eventBusImplementSample.getPaymentType(snapAPI, tokenId);
+
+        Mockito.verify(snapAPI).getSnapTransaction(tokenIdCaptor.capture(), transactionCaptorMock.capture());
+        transactionCaptorMock.getValue().success(transactionResponseMock, retrofitResponse);
+
+        Mockito.verify(busCollaborator).onGetSnapTransactionFailed();
     }
 
     @Test
@@ -261,6 +280,22 @@ public class SnapTransactionManagerTest {
 
         Mockito.verify(busCollaborator).onGetSnapTransactionFailed();
     }
+
+    @Test
+    public void getSnapTransactionSuccess_whenResponseNull(){
+
+        retrofitResponse = new Response("URL", 300, "success", Collections.EMPTY_LIST,
+                new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
+
+        eventBusImplementSample.setTransactionManager(transactionManager);
+        eventBusImplementSample.getPaymentType(snapAPI, tokenId);
+
+        Mockito.verify(snapAPI).getSnapTransaction(tokenIdCaptor.capture(), transactionCaptorMock.capture());
+        transactionCaptorMock.getValue().success(null, retrofitResponse);
+
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
 
 
     @Test

@@ -203,6 +203,12 @@ public interface MerchantRestAPI {
 
 
     /*
+     * SNAP TOKEN STUFF
+     *
+     */
+
+
+    /*
      * Get snap token.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})

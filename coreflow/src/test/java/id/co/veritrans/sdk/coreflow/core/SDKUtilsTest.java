@@ -1,8 +1,10 @@
 package id.co.veritrans.sdk.coreflow.core;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -49,7 +51,7 @@ import static org.powermock.api.support.membermodification.MemberMatcher.method;
  * Created by ziahaqi on 7/13/16.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LocalDataHandler.class, Utils.class,Log.class, TextUtils.class, Logger.class  })
+@PrepareForTest({Settings.class, Settings.Secure.class, LocalDataHandler.class, Utils.class,Log.class, TextUtils.class, Logger.class  })
 
 public class SDKUtilsTest {
 
@@ -108,7 +110,10 @@ public class SDKUtilsTest {
     private UserAddress userAddressMock2;
     @Mock
     private UserAddress userAddressMock3;
+    @Mock
     private ArrayList<UserAddress> userAddressListMock;
+    @Mock
+    private ContentResolver contentResolverMock;
 
     @Before
     public void setup(){
@@ -117,6 +122,8 @@ public class SDKUtilsTest {
         PowerMockito.mockStatic(Logger.class);
         PowerMockito.mockStatic(Utils.class);
         PowerMockito.mockStatic(LocalDataHandler.class);
+        PowerMockito.mockStatic(Settings.class);
+        PowerMockito.mockStatic(Settings.Secure.class);
 
 
         Mockito.when(transactionRequestMock.getBillInfoModel()).thenReturn(billingInfoModelMock);
@@ -377,6 +384,42 @@ public class SDKUtilsTest {
 
     }
 
+
+    @Test
+    public void getUserDetailTest_whenUserDetailNotNull(){
+        initSDK();
+        VeritransSDK.setmPreferences(mpreferenceMock);
+        mockStatic(LocalDataHandler.class);
+        when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
+        when(userDetailMock.getMerchantToken()).thenReturn("token");
+        when((userDetailMock).getUserAddresses()).thenReturn(userAddressListMock);
+        when(userDetailMock.getUserFullName()).thenReturn("name");
+        when(LocalDataHandler.readObject(Matchers.anyString(), Matchers.any(Class.class))).thenReturn(userDetailMock);
+        when(userDetailMock.getUserFullName()).thenReturn(fullname);
+        SdkUtil.getUserDetails(transactionRequestMock);
+        verifyStatic(Mockito.times(1));
+        Logger.i(Matchers.anyString());
+
+    }
+
+    @Test
+    public void getUserDetailTest_whenUserUserFullNameNull(){
+        initSDK();
+        VeritransSDK.setmPreferences(mpreferenceMock);
+        mockStatic(LocalDataHandler.class);
+        when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
+        when(userDetailMock.getMerchantToken()).thenReturn("token");
+        when((userDetailMock).getUserAddresses()).thenReturn(userAddressListMock);
+        when(userDetailMock.getUserFullName()).thenReturn(null);
+        when(LocalDataHandler.readObject(Matchers.anyString(), Matchers.any(Class.class))).thenReturn(userDetailMock);
+        when(userDetailMock.getUserFullName()).thenReturn(fullname);
+        SdkUtil.getUserDetails(transactionRequestMock);
+        verifyStatic(Mockito.times(1));
+        Logger.i(Matchers.anyString());
+
+    }
+
+
     @Test
     public void extractUserAddress_whenBoth(){
         when(userAddressMock1.getAddressType()).thenReturn(Constants.ADDRESS_TYPE_BOTH);
@@ -427,5 +470,30 @@ public class SDKUtilsTest {
         TransactionRequest request = SdkUtil.extractUserAddress(userDetailMock, userAddressListMock, transactionRequest);
         Assert.assertEquals(1, request.getBillingAddressArrayList().size());
         Assert.assertEquals(0, request.getShippingAddressArrayList().size());
+    }
+
+    /*
+     *  getDeviceId
+     */
+
+    @Test
+    public void getDeviceIdTest(){
+        Assert.assertEquals(null, SdkUtil.getDeviceId());
+
+        when(contextMock.getContentResolver()).thenReturn(contentResolverMock);
+        when(Settings.Secure.getString(Matchers.any(ContentResolver.class), Matchers.anyString())).thenReturn("deviceId");
+        Assert.assertEquals("deviceId", SdkUtil.getDeviceId());
+    }
+
+    /*
+     *  getSnapTokenRequestModel
+     */
+
+    @Test
+    public void getSnapTokenRequestModelTest(){
+        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
+        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
+        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
+        Assert.assertEquals(itemDetailMock, SdkUtil.getSnapTokenRequestModel(transactionRequestMock).getItemDetails());
     }
 }

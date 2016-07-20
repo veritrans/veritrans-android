@@ -412,12 +412,9 @@ public class SdkUtil {
             userDetail = LocalDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext().getString(R.string.user_details), UserDetail.class);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
-
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
                 if (userAddresses != null && !userAddresses.isEmpty()) {
-
                     Logger.i("Found " + userAddresses.size() + " user addresses.");
-
                     mCustomerDetails = new CustomerDetails();
                     mCustomerDetails.setPhone(userDetail.getPhoneNumber());
                     mCustomerDetails.setFirstName(userDetail.getUserFullName());
