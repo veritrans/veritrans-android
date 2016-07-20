@@ -428,7 +428,7 @@
     <string name="payment_bbm_money">bbm_money</string>
     <string name="payment_indosat_dompetku">indosat_dompetku</string>
     <string name="payment_mandiri_ecash">mandiri_ecash</string>
-    <string name="payment_indomaret">cstore</string>
+    <string name="payment_indomaret">indomaret</string>
     <string name="payment_credit_debit">credit_card</string>
     <string name="payment_permata">permata</string>
     <string name="payment_bca">bca</string>
