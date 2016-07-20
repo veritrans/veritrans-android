@@ -471,4 +471,7 @@
     <string name="payment_confirmation_description">Card Number:\n%1$s\n\nGross Amount: %2$s</string>
     <string name="txt_loading_payment">Retrieving payment methods</string>
     <string name="txt_error_snap_token">Failed to registering transaction.</string>
+
+    <string name="bank_transfer_bca">bca</string>
+    <string name="bank_transfer_permata">permata</string>
 </resources>

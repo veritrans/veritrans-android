@@ -154,6 +154,16 @@ public class PaymentMethods {
         return models;
     }
 
+    public static BankTransferModel getBankTransferModel(Context context, String name) {
+        if (name.equals(context.getString(R.string.bank_transfer_bca))) {
+            return new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true);
+        } else if (name.equals(context.getString(R.string.bank_transfer_permata))) {
+            return new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true);
+        } else {
+            return null;
+        }
+    }
+
     public static List<String> getDefaultPaymentList(Context context) {
         List<String> paymentNameList = new ArrayList<>();
         paymentNameList.add(context.getString(R.string.payment_credit_debit));

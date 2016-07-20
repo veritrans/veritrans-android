@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import id.co.veritrans.sdk.coreflow.core.Constants;
+import id.co.veritrans.sdk.coreflow.core.Logger;
+import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.BBMMoneyActivity;
 import id.co.veritrans.sdk.uiflow.activities.BCAKlikPayActivity;
@@ -25,10 +28,8 @@ import id.co.veritrans.sdk.uiflow.activities.KlikBCAActivity;
 import id.co.veritrans.sdk.uiflow.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.uiflow.activities.MandiriECashActivity;
 import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
+import id.co.veritrans.sdk.uiflow.activities.PaymentMethodsActivity;
 import id.co.veritrans.sdk.uiflow.activities.SelectBankTransferActivity;
-import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 
 /**
  * adapter for payment methods recycler view.
@@ -110,6 +111,9 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                 sActivity.startActivityForResult(startMandiriBillpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_bank_transfer))) {
                 Intent startBankPayment = new Intent(sActivity, SelectBankTransferActivity.class);
+                if (sActivity instanceof PaymentMethodsActivity) {
+                    startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, ((PaymentMethodsActivity) sActivity).getBankTrasfers());
+                }
                 sActivity.startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_mandiri_clickpay))) {
                 Intent startMandiriClickpay = new Intent(sActivity, MandiriClickPayActivity.class);

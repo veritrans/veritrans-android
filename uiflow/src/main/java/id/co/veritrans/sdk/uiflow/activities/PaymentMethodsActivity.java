@@ -79,6 +79,7 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
     private TextView textViewMeasureHeight = null;
     private LinearLayout progressContainer = null;
     private ImageView logo = null;
+    private ArrayList<String> bankTrasfers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -375,6 +376,9 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
     @Override
     public void onEvent(GetSnapTransactionSuccessEvent snapTransactionSuccessEvent) {
         progressContainer.setVisibility(View.GONE);
+        for (String bank : snapTransactionSuccessEvent.getResponse().getTransactionData().getBankTransfer().getBanks()) {
+            bankTrasfers.add(bank);
+        }
         List<String> paymentMethods = snapTransactionSuccessEvent.getResponse().getTransactionData().getEnabledPayments();
         initialiseAdapterData(paymentMethods);
         setupRecyclerView();
@@ -448,5 +452,9 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
                 })
                 .create();
         alert.show();
+    }
+
+    public ArrayList<String> getBankTrasfers() {
+        return bankTrasfers;
     }
 }
