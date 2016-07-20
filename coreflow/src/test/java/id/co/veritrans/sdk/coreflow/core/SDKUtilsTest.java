@@ -17,9 +17,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.api.support.membermodification.MemberMatcher;
+import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import   org.powermock.api.support.membermodification.MemberModifier;
+
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.R;
@@ -39,12 +40,10 @@ import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 
-import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.support.membermodification.MemberMatcher.method;
 
 
 /**
@@ -428,6 +427,7 @@ public class SDKUtilsTest {
         when(userAddressMock1.getCountry()).thenReturn("indonesia1");
         when(userDetailMock.getUserFullName()).thenReturn("fullname");
         when(userDetailMock.getPhoneNumber()).thenReturn("phoneNumber");
+
         userAddressListMock =  new ArrayList<>();
         TransactionRequest transactionRequest = new TransactionRequest(orderId, amount, Constants.PAYMENT_METHOD_NOT_SELECTED);
 

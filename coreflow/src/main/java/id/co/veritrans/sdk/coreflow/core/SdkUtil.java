@@ -439,6 +439,7 @@ public class SdkUtil {
 
         ArrayList<BillingAddress> billingAddressArrayList = new ArrayList<>();
         ArrayList<ShippingAddress> shippingAddressArrayList = new ArrayList<>();
+
         for (int i = 0; i < userAddresses.size(); i++) {
 
             UserAddress userAddress = userAddresses.get(i);
@@ -459,10 +460,21 @@ public class SdkUtil {
 
         }
 
+        request.setBillingAddressArrayList(billingAddressArrayList);
+        request.setShippingAddressArrayList(shippingAddressArrayList);
+
         CustomerDetails customerDetails = request.getCustomerDetails();
-        customerDetails.setBillingAddress(billingAddressArrayList.get(0));
-        customerDetails.setShippingAddress(shippingAddressArrayList.get(0));
-        request.setCustomerDetails(customerDetails);
+
+        if (customerDetails != null) {
+            if (billingAddressArrayList.size() > 0 && billingAddressArrayList.get(0) != null) {
+                customerDetails.setBillingAddress(billingAddressArrayList.get(0));
+            }
+
+            if (shippingAddressArrayList.size() > 0 && shippingAddressArrayList.get(0) != null) {
+                customerDetails.setShippingAddress(shippingAddressArrayList.get(0));
+            }
+            request.setCustomerDetails(customerDetails);
+        }
         return request;
     }
 
