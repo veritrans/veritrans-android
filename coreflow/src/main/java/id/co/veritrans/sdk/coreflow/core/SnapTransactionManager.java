@@ -140,8 +140,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.GET_SNAP_TRANSACTION));
         }
     }
-
-
+    
     protected void setRestApi(SnapRestAPI restApi) {
         this.snapRestAPI = restApi;
     }
