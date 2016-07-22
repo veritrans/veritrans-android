@@ -4,6 +4,7 @@ import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -41,4 +42,14 @@ public interface SnapRestAPI {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_bank_transfer")
     void paymentUsingBankTransfer(@Body BankTransferPaymentRequest bankTransferPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
+
+    /**
+     * Charge payment using KlikBCA.
+     *
+     * @param klikBCAPaymentRequest       Payment Request Details.
+     * @param transactionResponseCallback Callback.
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/v1/pay_with_klikbca")
+    void paymentUsingKlikBCA(@Body KlikBCAPaymentRequest klikBCAPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 }
