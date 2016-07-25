@@ -38,6 +38,7 @@ import id.co.veritrans.sdk.coreflow.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.PaymentDetails;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -56,6 +57,9 @@ public class SDKUtilsTest {
 
     @Mock
     private TransactionRequest transactionRequestMock;
+
+    @Mock
+    private PaymentDetails paymentDetails;
 
     @Mock
     private BillInfoModel billingInfoModelMock;
@@ -103,6 +107,14 @@ public class SDKUtilsTest {
     @Mock
     private SharedPreferences mpreferenceMock;
     private String fullname = "fullname";
+    private String email = "email@domain.com";
+    private String phone = "phone";
+    private String klikBCAUserId = "klikBCA";
+
+    private String cardToken = "card_token";
+    private boolean saveCard = false;
+    private String token = "snap_token";
+
     @Mock
     private UserAddress userAddressMock1;
     @Mock
@@ -124,7 +136,6 @@ public class SDKUtilsTest {
         PowerMockito.mockStatic(Settings.class);
         PowerMockito.mockStatic(Settings.Secure.class);
 
-
         Mockito.when(transactionRequestMock.getBillInfoModel()).thenReturn(billingInfoModelMock);
         Mockito.when(transactionRequestMock.getItemDetails()).thenReturn(itemDetailMock);
         Mockito.when(transactionRequestMock.getBillingAddressArrayList()).thenReturn(billingAddressMock);
@@ -133,6 +144,9 @@ public class SDKUtilsTest {
         Mockito.when(transactionRequestMock.getOrderId()).thenReturn(orderId);
         Mockito.when(transactionRequestMock.getAmount()).thenReturn(amount);
 
+        Mockito.when(paymentDetails.getEmail()).thenReturn(email);
+        Mockito.when(paymentDetails.getFullName()).thenReturn(fullname);
+        Mockito.when(paymentDetails.getPhone()).thenReturn(phone);
     }
 
     private void initSDK(){
@@ -369,6 +383,25 @@ public class SDKUtilsTest {
     }
 
     @Test
+    public void initializePaymentDetails_whenCustomerDetailsNotNull() throws ClassNotFoundException {
+        Mockito.when(transactionRequestMock.getCustomerDetails().getFirstName()).thenReturn(fullname);
+        Mockito.when(transactionRequestMock.getCustomerDetails().getEmail()).thenReturn(email);
+        Mockito.when(transactionRequestMock.getCustomerDetails().getPhone()).thenReturn(phone);
+
+        Assert.assertEquals(paymentDetails.getEmail(), SdkUtil.initializePaymentDetails(transactionRequestMock).getEmail());
+        Assert.assertEquals(paymentDetails.getFullName(), SdkUtil.initializePaymentDetails(transactionRequestMock).getFullName());
+        Assert.assertEquals(paymentDetails.getPhone(), SdkUtil.initializePaymentDetails(transactionRequestMock).getPhone());
+    }
+
+    @Test
+    public void initializePaymentDetails_whenCustomerDetailsNull() throws ClassNotFoundException {
+        Assert.assertNotNull(SdkUtil.initializePaymentDetails(transactionRequestMock));
+        Assert.assertNull(SdkUtil.initializePaymentDetails(transactionRequestMock).getEmail());
+        Assert.assertNull(SdkUtil.initializePaymentDetails(transactionRequestMock).getPhone());
+        Assert.assertNull(SdkUtil.initializePaymentDetails(transactionRequestMock).getFullName());
+    }
+
+    @Test
     public void getUserDetailTest(){
         initSDK();
         VeritransSDK.setmPreferences(mpreferenceMock);
@@ -472,10 +505,6 @@ public class SDKUtilsTest {
         Assert.assertEquals(0, request.getShippingAddressArrayList().size());
     }
 
-    /*
-     *  getDeviceId
-     */
-
     @Test
     public void getDeviceIdTest(){
         Assert.assertEquals(null, SdkUtil.getDeviceId());
@@ -485,15 +514,39 @@ public class SDKUtilsTest {
         Assert.assertEquals("deviceId", SdkUtil.getDeviceId());
     }
 
-    /*
-     *  getSnapTokenRequestModel
-     */
-
     @Test
     public void getSnapTokenRequestModelTest(){
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
         Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
         Assert.assertEquals(itemDetailMock, SdkUtil.getSnapTokenRequestModel(transactionRequestMock).getItemDetails());
+    }
+
+    @Test
+    public void getCreditCardPaymentRequest() {
+        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
+        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
+
+        Assert.assertEquals(cardToken, SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequestMock, token).getTokenId());
+        Assert.assertEquals(token, SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequestMock, token).getTransactionId());
+        Assert.assertEquals(saveCard, SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequestMock, token).isSaveCard());
+    }
+
+    @Test
+    public void getBankTransferPaymentRequest() {
+        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
+        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionManagerMock);
+
+        Assert.assertEquals(email, SdkUtil.getBankTransferPaymentRequest(email, transactionRequestMock, token).getEmailAddress());
+        Assert.assertEquals(token, SdkUtil.getBankTransferPaymentRequest(email, transactionRequestMock, token).getTransactionId());
+    }
+
+    @Test
+    public void getKlikBCAPaymentRequest() {
+        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
+        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionManagerMock);
+
+        Assert.assertEquals(klikBCAUserId, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, transactionRequestMock, token).getUserId());
+        Assert.assertEquals(token, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, transactionRequestMock, token).getTransactionId());
     }
 }

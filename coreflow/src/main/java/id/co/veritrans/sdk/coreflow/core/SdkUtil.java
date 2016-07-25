@@ -35,6 +35,10 @@ import id.co.veritrans.sdk.coreflow.models.SnapTransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.PaymentDetails;
 
 /**
  * Created by ziahaqi on 18/06/2016.
@@ -527,12 +531,52 @@ public class SdkUtil {
             transactionRequest = initializeUserInfo(transactionRequest);
         }
 
-        SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(),
-                transactionRequest.getAmount());
+        SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), transactionRequest.getAmount());
 
         return new SnapTokenRequestModel(
                 details,
                 transactionRequest.getItemDetails(),
                 transactionRequest.getCustomerDetails());
+    }
+
+    public static PaymentDetails initializePaymentDetails(TransactionRequest transactionRequest) {
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setFullName(transactionRequest.getCustomerDetails().getFirstName());
+        paymentDetails.setPhone(transactionRequest.getCustomerDetails().getPhone());
+        paymentDetails.setEmail(transactionRequest.getCustomerDetails().getEmail());
+        return paymentDetails;
+    }
+
+    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String cardToken, boolean saveCard, TransactionRequest transactionRequest, String tokenId) {
+        if (transactionRequest.isUiEnabled()) {
+            // get user details only if using default ui
+            transactionRequest = initializeUserInfo(transactionRequest);
+        }
+
+        PaymentDetails paymentDetails = initializePaymentDetails(transactionRequest);
+
+        CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest();
+        paymentRequest.setTokenId(cardToken);
+        paymentRequest.setSaveCard(saveCard);
+        paymentRequest.setPaymentDetails(paymentDetails);
+        paymentRequest.setTransactionId(tokenId);
+
+        return paymentRequest;
+    }
+
+    public static BankTransferPaymentRequest getBankTransferPaymentRequest(String email, TransactionRequest transactionRequest, String tokenId) {
+        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest();
+        paymentRequest.setEmailAddress(email);
+        paymentRequest.setTransactionId(tokenId);
+
+        return paymentRequest;
+    }
+
+    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId, TransactionRequest transactionRequest, String tokenId) {
+        KlikBCAPaymentRequest klikBCAPaymentRequest = new KlikBCAPaymentRequest();
+        klikBCAPaymentRequest.setUserId(userId);
+        klikBCAPaymentRequest.setTransactionId(tokenId);
+
+        return klikBCAPaymentRequest;
     }
 }

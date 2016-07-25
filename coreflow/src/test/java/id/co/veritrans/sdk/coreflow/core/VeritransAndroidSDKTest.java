@@ -18,9 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import static org.powermock.api.mockito.PowerMockito.*;
-
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -59,6 +56,10 @@ import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.transactionmanager.BusCollaborator;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 
+import static org.powermock.api.mockito.PowerMockito.spy;
+import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
+
 /**
  * Created by ziahaqi on 24/06/2016.
  */
@@ -68,6 +69,10 @@ import id.co.veritrans.sdk.coreflow.utilities.Utils;
 
 public class VeritransAndroidSDKTest {
 
+    @Mock
+    protected BusCollaborator busCollaborator;
+    @InjectMocks
+    protected EventBusImplementSample eventBustImplementSample;
     @Mock
     Context contextMock;
     @Mock
@@ -86,6 +91,10 @@ public class VeritransAndroidSDKTest {
     boolean isconnected;
     @Mock
     SharedPreferences preference;
+    String msisdnMock = "msisdnmock";
+    @Mock
+    IndosatDompetkuRequest indosatDompetkuRequestMock;
+    Log fakeLog;
     @Mock
     private String sdkTokenMock;
     @Mock
@@ -96,13 +105,6 @@ public class VeritransAndroidSDKTest {
     private CardTokenRequest cardTokenRequestMock;
     @Mock
     private VeritransBus busMock;
-
-    @Mock
-    protected BusCollaborator busCollaborator;
-
-    @InjectMocks
-    protected EventBusImplementSample eventBustImplementSample;
-
     private VeritransSDK veritransSDKSSpy;
     @Mock
     private TransactionRequest transactionRequestMock;
@@ -132,10 +134,6 @@ public class VeritransAndroidSDKTest {
     private CIMBClickPayModel cimbClickPayModel;
     @Mock
     private MandiriECashModel mandiriEcashModelMock;
-
-    String msisdnMock = "msisdnmock";
-    @Mock
-    IndosatDompetkuRequest indosatDompetkuRequestMock;
     @Mock
     private EpayBriTransfer epayBriTransferMock;
     @Mock
@@ -152,12 +150,13 @@ public class VeritransAndroidSDKTest {
     private MandiriClickPayRequestModel mandiriClickPayRequestModelMock;
     @Mock
     private BBMMoneyRequestModel bbmMoneyRequestModelMock;
-    private String userId ;
+    private String userId = "klikBCA";
     private String transactionId = "A1";
+    private String cardToken = "card_token";
+    private String token = "token";
+    private String email = "email@domain.com";
     @Mock
     private ISdkFlow uiflowMock;
-
-    Log fakeLog;
     private String exceptionMock;
     @Mock
     private Integer drawableIntCostumMock ;
@@ -216,9 +215,6 @@ public class VeritransAndroidSDKTest {
 
     }
 
-    /*
-     * getSnapToken cases
-     */
     @Test
     public void getToken_whenCardTokenRequestNull(){
         veritransSDKSSpy.getToken(null);
@@ -242,13 +238,8 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-
-
-    /*
-     * paymentUsingPermataBank
-     */
-
-    @Test public void paymentUsingPermataBank_whenTransactionRequestNull(){
+    @Test
+    public void paymentUsingPermataBank_whenTransactionRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingPermataBank();
         Assert.assertFalse(veritransSDKSSpy.isRunning);
@@ -256,7 +247,8 @@ public class VeritransAndroidSDKTest {
     }
 
 
-    @Test public void paymentUsingPermataBank_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingPermataBank_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getPermataBankModel(transactionRequestMock)).thenReturn(permatabankTransferMok);
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
@@ -265,7 +257,8 @@ public class VeritransAndroidSDKTest {
     }
 
 
-    @Test public void paymentUsingPermataBank_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingPermataBank_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingPermataBank();
@@ -273,19 +266,16 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-        /*
-     *  paymentUsingBCATransfer
-     *
-     */
-
-    @Test public void paymentUsingBCATransfer_whenTransactonRequestNull(){
+    @Test
+    public void paymentUsingBCATransfer_whenTransactonRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingBcaBankTransfer();
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingBCATransfer_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingBCATransfer_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getBcaBankTransferRequest(transactionRequestMock)).thenReturn(bcaTransferMok);
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
@@ -293,7 +283,8 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(transactionManager).paymentUsingBCATransfer(bcaTransferMok, "");
     }
 
-    @Test public void paymentUsingBCATransfer_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingBCATransfer_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingBcaBankTransfer();
@@ -301,33 +292,32 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     *  paymentUsingCard
-     *
-     */
-
-    @Test public void paymentUsingCard_whenTransactonRequestNull(){
+    @Test
+    public void paymentUsingCard_whenTransactonRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingCard(cardTransferMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingCard_whenTransactoncardTransferNull(){
+    @Test
+    public void paymentUsingCard_whenTransactoncardTransferNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingCard(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingCard_whencardTransferNull(){
+    @Test
+    public void paymentUsingCard_whencardTransferNull() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         veritransSDKSSpy.paymentUsingCard(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingCard_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingCard_whenNetworkAvailable() {
 
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
@@ -335,8 +325,8 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(transactionManager).paymentUsingCard(cardTransferMock, "");
     }
 
-
-    @Test public void paymentUsingCard_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingCard_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingCard(cardTransferMock);
@@ -344,27 +334,24 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     *  paymentUsingBCAKlikPay
-     *
-     */
-
-
-    @Test public void paymentUsingBCAKlikPay_whenTransactonRequestNull(){
+    @Test
+    public void paymentUsingBCAKlikPay_whenTransactonRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingBCAKlikPay(bcaklikpayDescModelMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingBCAKlikPay_whenTransactoncardTransferNull(){
+    @Test
+    public void paymentUsingBCAKlikPay_whenTransactoncardTransferNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingBCAKlikPay(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingBCAKlikPay_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingBCAKlikPay_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getBCAKlikPayModel(transactionRequestMock, bcaklikpayDescModelMock)).thenReturn(bcaKlikPayModelMock);
 
@@ -374,7 +361,8 @@ public class VeritransAndroidSDKTest {
     }
 
 
-    @Test public void paymentUsingBCAKlikPay_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingBCAKlikPay_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingBCAKlikPay(bcaklikpayDescModelMock);
@@ -382,28 +370,24 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-
-    /*
-     *  paymentUsingKlikBCA
-     *
-     */
-
-
-    @Test public void paymentKlikBCA_whenTransactonRequestNull(){
+    @Test
+    public void paymentKlikBCA_whenTransactonRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingKlikBCA(klikbcaDescModelMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingKlikBCA_whenTransactoncardTransferNull(){
+    @Test
+    public void paymentUsingKlikBCA_whenTransactoncardTransferNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingKlikBCA(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingKlikBCA_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingKlikBCA_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getKlikBCAModel(transactionRequestMock, klikbcaDescModelMock)).thenReturn(klikBCAModelMock);
 
@@ -412,7 +396,8 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(transactionManager).paymentUsingKlikBCA(klikBCAModelMock);
     }
 
-    @Test public void paymentUsingKlikBCA_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingKlikBCA_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingKlikBCA(klikbcaDescModelMock);
@@ -420,25 +405,24 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     * paymentUsingMandiriBillPay
-     *
-     */
-
-    @Test public void paymentUsingMandiriBillPay_whenTransactonRequestNull(){
+    @Test
+    public void paymentUsingMandiriBillPay_whenTransactonRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingMandiriBillPay();
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
-    @Test public void paymentUsingMandiriBillPay_whenBillInfoModelNull(){
+
+    @Test
+    public void paymentUsingMandiriBillPay_whenBillInfoModelNull() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         veritransSDKSSpy.paymentUsingMandiriBillPay();
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingMandiriBillPay_whenItemDetailNull(){
+    @Test
+    public void paymentUsingMandiriBillPay_whenItemDetailNull() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         veritransSDKSSpy.paymentUsingMandiriBillPay();
         Assert.assertFalse(veritransSDKSSpy.isRunning);
@@ -446,7 +430,8 @@ public class VeritransAndroidSDKTest {
     }
 
 
-    @Test public void paymentUsingMandiriBillPay_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingMandiriBillPay_whenNetworkAvailable() {
 
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(transactionRequestMock.getBillInfoModel()).thenReturn(billInfoModelMock);
@@ -459,7 +444,8 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(transactionManager).paymentUsingMandiriBillPay(mandiriBillPayTransModelMock, "");
     }
 
-    @Test public void paymentUsingMandiriBillPay_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingMandiriBillPay_whenNetworkUnAvailable() {
         when(transactionRequestMock.getBillInfoModel()).thenReturn(billInfoModelMock);
         when(transactionRequestMock.getItemDetails()).thenReturn(itemDetailMock);
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
@@ -469,24 +455,23 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     * paymentUsingCIMBClickPay
-     *
-     */
-    @Test public void paymentUsingCIMBClickPay_whenTransactonRequestNull(){
+    @Test
+    public void paymentUsingCIMBClickPay_whenTransactonRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingCIMBClickPay(descriptionModelMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingCIMBClickPay_whenDescriptionModelNull(){
+    @Test
+    public void paymentUsingCIMBClickPay_whenDescriptionModelNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingCIMBClickPay(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
     }
 
-    @Test public void paymentUsingCIMBClickPay_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingCIMBClickPay_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getCIMBClickPayModel(transactionRequestMock, descriptionModelMock)).thenReturn(cimbClickPayModel);
 
@@ -495,7 +480,8 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(transactionManager).paymentUsingCIMBPay(cimbClickPayModel, "");
     }
 
-    @Test public void paymentUsingCIMBClickPay_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingCIMBClickPay_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingCIMBClickPay(descriptionModelMock);
@@ -503,25 +489,23 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     * paymentUsingMandiriECash
-     *
-     */
-
-    @Test public void paymentUsingMandiriEcash_whenTransactonRequestNull(){
+    @Test
+    public void paymentUsingMandiriEcash_whenTransactonRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingMandiriECash(descriptionModelMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingMandiriEcash_whenDescriptionModelNull(){
+    @Test
+    public void paymentUsingMandiriEcash_whenDescriptionModelNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingMandiriECash(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
     }
 
-    @Test public void paymentUsingMandiriEcash_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingMandiriEcash_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getMandiriECashModel(transactionRequestMock, descriptionModelMock)).thenReturn(mandiriEcashModelMock);
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
@@ -529,25 +513,25 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(transactionManager).paymentUsingMandiriECash(mandiriEcashModelMock, "");
     }
 
-    @Test public void paymentUsingMandiriEcash_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingMandiriEcash_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingMandiriECash(descriptionModelMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         busCollaborator.onGeneralErrorEvent();
     }
-    /*
-     * paymentUsingIndosatDompetku
-     *
-     */
-    @Test public void paymentUsingIndosatDompetku_whenTransactonRequestNull(){
+
+    @Test
+    public void paymentUsingIndosatDompetku_whenTransactonRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingIndosatDompetku(msisdnMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingIndosatDompetku_whenmsisdnNull(){
+    @Test
+    public void paymentUsingIndosatDompetku_whenmsisdnNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingIndosatDompetku(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
@@ -555,7 +539,8 @@ public class VeritransAndroidSDKTest {
 
     }
 
-    @Test public void paymentUsingIndosatDompetku_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingIndosatDompetku_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getIndosatDompetkuRequestModel(transactionRequestMock, msisdnMock)).thenReturn(indosatDompetkuRequestMock);
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
@@ -563,7 +548,8 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(transactionManager).paymentUsingIndosatDompetku(indosatDompetkuRequestMock, "");
     }
 
-    @Test public void paymentUsingIndonsatDompetku_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingIndonsatDompetku_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingIndosatDompetku(msisdnMock);
@@ -571,20 +557,16 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     * paymentUsingEpayBri
-     *
-     */
-
-    @Test public void paymentUsingEpayBri_whenTransactionRequestNull(){
+    @Test
+    public void paymentUsingEpayBri_whenTransactionRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingEpayBri();
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-
-    @Test public void paymentUsingEpayBri_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingEpayBri_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getEpayBriBankModel(transactionRequestMock)).thenReturn(epayBriTransferMock);
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
@@ -592,7 +574,8 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(transactionManager).paymentUsingEpayBri(epayBriTransferMock, "");
     }
 
-    @Test public void paymentUsingEpayBri_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingEpayBri_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingEpayBri();
@@ -600,26 +583,24 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-
-    /*
-     * paymentUsingIndomaret
-     */
-
-    @Test public void paymentUsingIndomaret_whenTransactionRequestNull(){
+    @Test
+    public void paymentUsingIndomaret_whenTransactionRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingIndomaret(cstoreEntityMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingIndomaret_whenCsStoreEntity(){
+    @Test
+    public void paymentUsingIndomaret_whenCsStoreEntity() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingIndomaret(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingIndomaret_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingIndomaret_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getIndomaretRequestModel(transactionRequestMock, cstoreEntityMock)).thenReturn(indomaretRequestModelMock);
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
@@ -627,82 +608,78 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(transactionManager).paymentUsingIndomaret(indomaretRequestModelMock, "");
     }
 
-    @Test public void paymentUsingIndomaret_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingIndomaret_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingIndomaret(cstoreEntityMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         busCollaborator.onGeneralErrorEvent();
     }
-       /*
-        * getSavedCard
-        *
-        */
 
-
-    @Test public void getSavedCard_whenNetworkAvailable(){
+    @Test
+    public void getSavedCard_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.getSavedCard();
         Mockito.verify(transactionManager).getCards("");
     }
 
-    @Test public void getSavedCard_whenNetworkUnAvailable(){
+    @Test
+    public void getSavedCard_whenNetworkUnAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.getSavedCard();
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     * savecards
-     */
-
-    @Test public void saveCards_whenSaveCardRequestNull(){
+    @Test
+    public void saveCards_whenSaveCardRequestNull() {
         veritransSDKSSpy.saveCards(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
     }
 
 
-    @Test public void saveCards_whenNetworkAvailable(){
+    @Test
+    public void saveCards_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.saveCards(saveCardRequestMock);
         Mockito.verify(transactionManager).saveCards(saveCardRequestMock, "");
     }
 
-    @Test public void saveCards_whenNetworkUnAvailable(){
+    @Test
+    public void saveCards_whenNetworkUnAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.saveCards(savecardMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         busCollaborator.onGeneralErrorEvent();
     }
 
-        /*
-     * paymentUsingMandiriClickPay
-     *
-     */
-
-    @Test public void paymentUsingMandiriClickPay_whenTransactonRequestNull(){
+    @Test
+    public void paymentUsingMandiriClickPay_whenTransactonRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingMandiriClickPay(mandiriClickPayModelMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingMandiriClickPay_whenMandiriClickPayModelNull(){
+    @Test
+    public void paymentUsingMandiriClickPay_whenMandiriClickPayModelNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingMandiriClickPay(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingMandiriClickPay_whenMandiriJustClickPayModelNull(){
+    @Test
+    public void paymentUsingMandiriClickPay_whenMandiriJustClickPayModelNull() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         veritransSDKSSpy.paymentUsingMandiriClickPay(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void paymentUsingMandiriClickPay_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingMandiriClickPay_whenNetworkAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getMandiriClickPayRequestModel(transactionRequestMock, mandiriClickPayModelMock)).thenReturn(mandiriClickPayRequestModelMock);
@@ -711,8 +688,8 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(transactionManager).paymentUsingMandiriClickPay(mandiriClickPayRequestModelMock, "");
     }
 
-
-    @Test public void paymentUsingMandiriClickPay_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingMandiriClickPay_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingMandiriClickPay(mandiriClickPayModelMock);
@@ -720,12 +697,8 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     * paymentUsingBBMMoney
-     *
-     */
-
-    @Test public void paymentUsingBBMMoney_whenTransactonRequestNull(){
+    @Test
+    public void paymentUsingBBMMoney_whenTransactonRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         veritransSDKSSpy.paymentUsingBBMMoney();
         Assert.assertFalse(veritransSDKSSpy.isRunning);
@@ -733,7 +706,8 @@ public class VeritransAndroidSDKTest {
     }
 
 
-    @Test public void paymentUsingBBMMoney_whenNetworkAvailable(){
+    @Test
+    public void paymentUsingBBMMoney_whenNetworkAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getBBMMoneyRequestModel(transactionRequestMock)).thenReturn(bbmMoneyRequestModelMock);
@@ -742,7 +716,8 @@ public class VeritransAndroidSDKTest {
     }
 
 
-    @Test public void paymentUsingBBMMoney_whenNetworkUnAvailable(){
+    @Test
+    public void paymentUsingBBMMoney_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.paymentUsingBBMMoney();
@@ -750,11 +725,8 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     * cardRegistration
-     *
-     */
-    @Test public void cardRegistration_whenNetworkAvailable(){
+    @Test
+    public void cardRegistration_whenNetworkAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.cardRegistration(APIClientMain.CARD_NUMBER, APIClientMain.CARD_CVV,
@@ -764,7 +736,8 @@ public class VeritransAndroidSDKTest {
     }
 
 
-    @Test public void cardRegistration_whenNetworkUnAvailable(){
+    @Test
+    public void cardRegistration_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.cardRegistration(APIClientMain.CARD_NUMBER, APIClientMain.CARD_CVV,
@@ -773,88 +746,69 @@ public class VeritransAndroidSDKTest {
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     * deleteCard
-     *
-     */
-
-    @Test public void deleteCard_whenCreditCardNullNetorkAvailable(){
+    @Test
+    public void deleteCard_whenCreditCardNullNetorkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.deleteCard(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    @Test public void deleteCard_whenNetworkAvailable(){
+    @Test
+    public void deleteCard_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.deleteCard(savecardMock);
         Mockito.verify(transactionManager).deleteCard(savecardMock, "");
     }
 
-
-    @Test public void deleteCard_whenNetworkUnAvailable(){
+    @Test
+    public void deleteCard_whenNetworkUnAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.deleteCard(null);
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     * getAuthenticationToken
-     *
-     */
-
-
-    @Test public void getAuthenticationToken_whenNetworkAvailable(){
+    @Test
+    public void getAuthenticationToken_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.getAuthenticationToken();
         Mockito.verify(transactionManager).getAuthenticationToken();
     }
 
-    @Test public void getAuthenticationToken_whenNetworkUnAvailable(){
+    @Test
+    public void getAuthenticationToken_whenNetworkUnAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.getAuthenticationToken();
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     * getOffersList
-     *
-     */
-
-    @Test public void getOffersList_whenNetworkAvailable(){
+    @Test
+    public void getOffersList_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.getOffersList();
         Mockito.verify(transactionManager).getOffers("");
         Assert.assertTrue(veritransSDKSSpy.isRunning);
     }
 
-    @Test public void getOffersList_whenNetworkUnAvailable(){
+    @Test
+    public void getOffersList_whenNetworkUnAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.getAuthenticationToken();
         Assert.assertFalse(veritransSDKSSpy.isRunning);
         busCollaborator.onGeneralErrorEvent();
     }
 
-    /*
-     * startRegisterCardUIFlow
-     *
-     */
-
-    @Test public void startRegisterCardUIFlow_whenUIFlowNotNull(){
+    @Test
+    public void startRegisterCardUIFlow_whenUIFlowNotNull() {
         veritransSDKSSpy.uiflow = uiflowMock;
         veritransSDKSSpy.startRegisterCardUIFlow(contextMock);
         Mockito.verify(uiflowMock).runRegisterCard(contextMock);
     }
 
-    /*
-     * startRegisterCardUIFlow
-     *
-     */
-
-
-    @Test public void startPaymentUiFlow_whenUIFlowNotNull(){
+    @Test
+    public void startPaymentUiFlow_whenUIFlowNotNull() {
         when(transactionRequestMock.getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         veritransSDKSSpy.uiflow = uiflowMock;
         veritransSDKSSpy.isRunning = false;
@@ -865,7 +819,8 @@ public class VeritransAndroidSDKTest {
     }
 
 
-    @Test public void startPaymentUiFlow_whenTransactionRequestNull(){
+    @Test
+    public void startPaymentUiFlow_whenTransactionRequestNull() {
         veritransSDKSSpy.uiflow = uiflowMock;
         veritransSDKSSpy.isRunning = true;
         veritransSDKSSpy.setTransactionRequest(null);
@@ -876,7 +831,8 @@ public class VeritransAndroidSDKTest {
 
     }
 
-    @Test public void startPaymentUiFlow_whenSdkRunning(){
+    @Test
+    public void startPaymentUiFlow_whenSdkRunning() {
         veritransSDKSSpy.uiflow = uiflowMock;
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         veritransSDKSSpy.isRunning = true;
@@ -977,7 +933,7 @@ public class VeritransAndroidSDKTest {
         veritransSDKSSpy.setSelectedPaymentMethods(paymentMethodMock);
         Assert.assertEquals(paymentMethodMock, veritransSDKSSpy.getSelectedPaymentMethods());
     }
-    //////////////////////////////////////////////////
+
     @Test
     public void getOverLimit_whenNoetworkAvailable() throws Exception {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
@@ -986,10 +942,6 @@ public class VeritransAndroidSDKTest {
         Mockito.verify(transactionManager,Mockito.times(1)).getOffers(sdkTokenMock);
         Assert.assertTrue(veritransSDKSSpy.isRunning);
     }
-
-    /*
-     * setget
-     */
 
     @Test
     public void getBBMCallBackUrlTest(){
@@ -1002,14 +954,6 @@ public class VeritransAndroidSDKTest {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         Assert.assertEquals(transactionRequestMock, veritransSDKSSpy.getTransactionRequest());
     }
-
-
-    /*
-     * Snap Stuff
-     *
-     * testing for snap backend
-     */
-
 
     @Test
     public void getTokenTest(){
@@ -1063,28 +1007,79 @@ public class VeritransAndroidSDKTest {
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
-//
-//    @Test
-//    public void getToken_whenCardTokenRequestNull(){
-//        veritransSDKSSpy.getToken(null);
-//        Assert.assertEquals(false, veritransSDKSSpy.isRunning);
-//    }
-//
-//    @Test
-//    public void getToken_whenCardTokenRequestNotNull_networkAvailable(){
-//        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-//
-//        veritransSDKSSpy.getToken(cardTokenRequestMock);
-//        Assert.assertEquals(true, veritransSDKSSpy.isRunning);
-//    }
-//
-//    @Test
-//    public void getToken_whenCardTokenRequestNotNull_networkUnavailable(){
-//        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-//
-//        veritransSDKSSpy.getToken(cardTokenRequestMock);
-//        Assert.assertEquals(false, veritransSDKSSpy.isRunning);
-//        busCollaborator.onGeneralErrorEvent();
-//    }
 
+    @Test
+    public void snapPaymentUsingCard() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingCard(cardToken, token, false);
+        Assert.assertEquals(true, veritransSDKSSpy.isRunning);
+    }
+
+    @Test
+    public void snapPaymentUsingCard_whenTransactionRequestNull() {
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingCard(cardToken, token, false);
+        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void snapPaymentUsingCard_whenNetworkUnavailable() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        veritransSDKSSpy.snapPaymentUsingCard(cardToken, token, false);
+        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+    }
+
+    @Test
+    public void snapPaymentUsingBankTransfer() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingBankTransfer(email, token);
+        Assert.assertEquals(true, veritransSDKSSpy.isRunning());
+    }
+
+    @Test
+    public void snapPaymentUsingBankTransfer_whenNetworkUnavailable() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        veritransSDKSSpy.snapPaymentUsingBankTransfer(email, token);
+        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+    }
+
+    @Test
+    public void snapPaymentUsingBankTransfer_whenTransactionRequestNull() {
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingBankTransfer(email, token);
+        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void snapPaymentUsingKlikBCA() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token);
+        Assert.assertEquals(true, veritransSDKSSpy.isRunning());
+    }
+
+    @Test
+    public void snapPaymentUsingKlikBCA_whenTransactionRequestNull() {
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token);
+        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void snapPaymentUsingKlikBCA_whenNetworkUnavailable() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token);
+        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+    }
 }

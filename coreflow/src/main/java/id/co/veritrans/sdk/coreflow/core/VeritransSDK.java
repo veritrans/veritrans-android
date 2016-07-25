@@ -12,6 +12,7 @@ import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.coreflow.models.BCABankTransfer;
@@ -34,8 +35,8 @@ import id.co.veritrans.sdk.coreflow.models.MandiriECashModel;
 import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
-import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 
 /**
@@ -814,6 +815,51 @@ public class VeritransSDK {
         }else{
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.GET_SNAP_TOKEN));
+        }
+    }
+
+    public void snapPaymentUsingCard(String cardToken, String tokenId, boolean saveCard) {
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingCreditCard(SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequest, tokenId));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
+        }
+    }
+
+    public void snapPaymentUsingBankTransfer(String email, String tokenId) {
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingBankTransfer(SdkUtil.getBankTransferPaymentRequest(email, transactionRequest, tokenId));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
+        }
+    }
+
+    public void snapPaymentUsingKlikBCA(String userId, String tokenId) {
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingKlikBCA(SdkUtil.getKlikBCAPaymentRequest(userId, transactionRequest, tokenId));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
         }
     }
 
