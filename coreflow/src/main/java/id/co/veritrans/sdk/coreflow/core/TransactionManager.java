@@ -102,28 +102,6 @@ public class TransactionManager extends BaseTransactionManager{
                 .getBank());
     }
 
-    private static void displayResponse(TransactionResponse
-                                                transferResponse) {
-        Logger.d("transfer response: virtual account" +
-                " number ", "" +
-                transferResponse.getPermataVANumber());
-
-        Logger.d(" transfer response: status message " +
-                "", "" +
-                transferResponse.getStatusMessage());
-
-        Logger.d(" transfer response: status code ",
-                "" + transferResponse.getStatusCode());
-
-        Logger.d(" transfer response: transaction Id ",
-                "" + transferResponse
-                        .getTransactionId());
-
-        Logger.d(" transfer response: transaction " +
-                        "status ",
-                "" + transferResponse
-                        .getTransactionStatus());
-    }
 
     public void setVeritransPaymentAPI(VeritransRestAPI veritransPaymentAPI) {
         this.veritransPaymentAPI = veritransPaymentAPI;

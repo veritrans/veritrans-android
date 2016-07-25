@@ -2,6 +2,8 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 
+import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+
 
 /**
  * Created by ziahaqi on 7/18/16.
@@ -62,6 +64,31 @@ public abstract class BaseTransactionManager {
     public void setSDKLogEnabled(boolean SDKLogEnabled) {
         isSDKLogEnabled = SDKLogEnabled;
     }
+
+
+    protected static void displayResponse(TransactionResponse
+                                                transferResponse) {
+        Logger.d("transfer response: virtual account" +
+                " number ", "" +
+                transferResponse.getPermataVANumber());
+
+        Logger.d(" transfer response: status message " +
+                "", "" +
+                transferResponse.getStatusMessage());
+
+        Logger.d(" transfer response: status code ",
+                "" + transferResponse.getStatusCode());
+
+        Logger.d(" transfer response: transaction Id ",
+                "" + transferResponse
+                        .getTransactionId());
+
+        Logger.d(" transfer response: transaction " +
+                        "status ",
+                "" + transferResponse
+                        .getTransactionStatus());
+    }
+
 
 
 }

@@ -53,6 +53,9 @@ import id.co.veritrans.sdk.coreflow.models.MandiriECashModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
 import id.co.veritrans.sdk.coreflow.transactionmanager.BusCollaborator;
 
 /**
@@ -113,7 +116,7 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
             transactionManager.paymentUsingBCATransfer(transfer, mToken);
         }
 
-        public void paymentUsingCard(MerchantRestAPI merchantRestAPIMock, String xAuth, CardTransfer transfer, String mToken) {
+        public void     paymentUsingCard(MerchantRestAPI merchantRestAPIMock, String xAuth, CardTransfer transfer, String mToken) {
             transactionManager.setMerchantPaymentAPI(merchantRestAPIMock);
             transactionManager.paymentUsingCard(transfer, mToken);
         }
@@ -359,4 +362,18 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
             busCollaborator.onGetSnapTransactionFailed();
         }
 
+    public void paymentUsingSnapCreditCard(SnapRestAPI snapAPI, CreditCardPaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingCreditCard(request);
+    }
+
+    public void paymentUsingSnapBankTransfer(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingBankTransfer(request);
+    }
+
+    public void paymentUsingSnapKlikBCA(SnapRestAPI snapAPI, KlikBCAPaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingKlikBCA(request);
+    }
 }

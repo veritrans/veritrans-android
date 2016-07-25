@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.style.TtsSpan;
 
 import java.security.cert.CertPathValidatorException;
 
@@ -12,13 +13,20 @@ import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SSLErrorEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionStatusSuccessEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -31,6 +39,12 @@ public class SnapTransactionManager extends BaseTransactionManager{
     private static final String GET_SNAP_TRANSACTION_FAILED = "Failed Getting Snap Transaction";
     private static final String GET_SNAP_TRANSACTION_SUCCESS = "Success Getting Snap Transaction";
     private static final String PAYMENT_TYPE_SNAP = "snap";
+    private static final String SNAP_PAYMENT_CARD_SUCCESS = "Payment Using Credit Card Success";
+    private static final String SNAP_PAYMENT_CARD_FAILED = "Payment Using Credit Card Failed";
+    private static final String SNAP_PAYMENT_BANK_TRANSFER_SUCCESS = "Payment Using Bank Transfer Success";
+    private static final String SNAP_PAYMENT_BANK_TRANSFER_FAILED = "Payment Using Bank Transfer Success";
+    private static final String SNAP_PAYMENT_KLIK_BCA_SUCCESS = "Payment Using KLIK BCA Success";
+    private static final String SNAP_PAYMENT_KLIK_BCA_FAILED= "Payment Using KLIK BCA Failed";
     private SnapRestAPI snapRestAPI;
 
 
@@ -41,8 +55,14 @@ public class SnapTransactionManager extends BaseTransactionManager{
 
     }
 
-    /*
+    protected void setRestApi(SnapRestAPI restApi) {
+        this.snapRestAPI = restApi;
+    }
+
+
+    /**
      * this method will get snap token via merchant server
+     * @param model
      */
     public void getSnapToken(SnapTokenRequestModel model) {
         final long start = System.currentTimeMillis();
@@ -140,8 +160,150 @@ public class SnapTransactionManager extends BaseTransactionManager{
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.GET_SNAP_TRANSACTION));
         }
     }
-    
-    protected void setRestApi(SnapRestAPI restApi) {
-        this.snapRestAPI = restApi;
+
+    /**
+     * this method is used for card payment using snap backend
+     * @param requestModel
+     */
+
+    public void paymentUsingCreditCard(CreditCardPaymentRequest requestModel){
+        final long start = System.currentTimeMillis();
+        if(requestModel != null){
+            snapRestAPI.paymentUsingCreditCard(requestModel, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if(isSDKLogEnabled){
+                        displayResponse(transactionResponse);
+                    }
+                    if(transactionResponse != null){
+                        if(transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))){
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(SNAP_PAYMENT_CARD_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
+                        }else{
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(SNAP_PAYMENT_CARD_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, transactionResponse.getStatusMessage());
+                        }
+                    }else{
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.empty_transaction_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(SNAP_PAYMENT_CARD_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if(error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException){
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    }else{
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(SNAP_PAYMENT_CARD_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, error.getMessage());
+
+                }
+            });
+        }else{
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
+        }
     }
+
+    /**
+     * this method is used for Payment Using Bank Transfer
+     *
+     */
+    public void paymentUsingBankTransfer(BankTransferPaymentRequest request){
+        final long start = System.currentTimeMillis();
+        if(request != null){
+            snapRestAPI.paymentUsingBankTransfer(request, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if(isSDKLogEnabled){
+                        displayResponse(transactionResponse);
+                    }
+                    if(transactionResponse != null){
+                        if(transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))){
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, end - start, Events.SNAP_PAYMENT);
+                        }else{
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, transactionResponse.getStatusMessage());
+                        }
+                    }else{
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if(error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof  CertPathValidatorException){
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    }else{
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, error.getMessage());
+                }
+            });
+        }else{
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
+        }
+
+    }
+
+    /**
+     * this method is used for payment using Klik BCA
+     * @param
+     */
+    public void paymentUsingKlikBCA(KlikBCAPaymentRequest request){
+        final long start = System.currentTimeMillis();
+        if(request != null){
+            snapRestAPI.paymentUsingKlikBCA(request, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if(isSDKLogEnabled){
+                        displayResponse(transactionResponse);
+                    }
+                    if(transactionResponse != null){
+                        if(transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))){
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(SNAP_PAYMENT_KLIK_BCA_SUCCESS, PAYMENT_TYPE_KLIK_BCA, end - start, Events.SNAP_PAYMENT);
+                        }else{
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(SNAP_PAYMENT_KLIK_BCA_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, Events.SNAP_PAYMENT);
+                        }
+                    }else{
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(SNAP_PAYMENT_KLIK_BCA_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if(error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException){
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    }else{
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(SNAP_PAYMENT_KLIK_BCA_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, error.getMessage());
+                }
+            });
+
+        }else{
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+
+
+
 }

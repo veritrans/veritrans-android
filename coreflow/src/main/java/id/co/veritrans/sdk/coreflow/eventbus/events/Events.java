@@ -15,4 +15,5 @@ public class Events {
     public static final String AUTHENTICATION = "Authentication";
     public static final String GET_SNAP_TRANSACTION = "Snap-Transaction";
     public static final String GET_SNAP_TOKEN = "Snap-Token";
+    public static final String SNAP_PAYMENT = "Snap-Payment";
 }
