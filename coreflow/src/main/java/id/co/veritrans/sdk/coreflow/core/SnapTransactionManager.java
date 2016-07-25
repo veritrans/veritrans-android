@@ -2,7 +2,6 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.style.TtsSpan;
 
 import java.security.cert.CertPathValidatorException;
 
@@ -14,7 +13,6 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SSLErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionStatusSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEvent;
@@ -61,8 +59,9 @@ public class SnapTransactionManager extends BaseTransactionManager{
 
 
     /**
-     * this method will get snap token via merchant server
-     * @param model
+     * This method will get snap token via merchant server.
+     *
+     * @param model Transaction details.
      */
     public void getSnapToken(SnapTokenRequestModel model) {
         final long start = System.currentTimeMillis();
@@ -103,9 +102,9 @@ public class SnapTransactionManager extends BaseTransactionManager{
 
 
     /**
-     * This will create a HTTP request to merchant server to
+     * This will create a HTTP request to Snap to get transaction details.
      *
-     * @param snapToken
+     * @param snapToken Snap Token.
      */
     public void getSnapTransaction(@NonNull String snapToken) {
         final long start = System.currentTimeMillis();
@@ -162,8 +161,9 @@ public class SnapTransactionManager extends BaseTransactionManager{
     }
 
     /**
-     * this method is used for card payment using snap backend
-     * @param requestModel
+     * This method is used for card payment using snap backend.
+     *
+     * @param requestModel  Payment details.
      */
 
     public void paymentUsingCreditCard(CreditCardPaymentRequest requestModel){
@@ -178,7 +178,8 @@ public class SnapTransactionManager extends BaseTransactionManager{
                         displayResponse(transactionResponse);
                     }
                     if(transactionResponse != null){
-                        if(transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))){
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
                             analyticsManager.trackMixpanel(SNAP_PAYMENT_CARD_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
                         }else{
@@ -210,8 +211,9 @@ public class SnapTransactionManager extends BaseTransactionManager{
     }
 
     /**
-     * this method is used for Payment Using Bank Transfer
+     * This method is used for Payment Using Bank Transfer.
      *
+     * @param request   Payment Details.
      */
     public void paymentUsingBankTransfer(BankTransferPaymentRequest request){
         final long start = System.currentTimeMillis();
@@ -225,7 +227,8 @@ public class SnapTransactionManager extends BaseTransactionManager{
                         displayResponse(transactionResponse);
                     }
                     if(transactionResponse != null){
-                        if(transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))){
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
                             analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, end - start, Events.SNAP_PAYMENT);
                         }else{
@@ -257,8 +260,9 @@ public class SnapTransactionManager extends BaseTransactionManager{
     }
 
     /**
-     * this method is used for payment using Klik BCA
-     * @param
+     * This method is used for payment using Klik BCA.
+     *
+     * @param request   Payment details
      */
     public void paymentUsingKlikBCA(KlikBCAPaymentRequest request){
         final long start = System.currentTimeMillis();
@@ -272,7 +276,8 @@ public class SnapTransactionManager extends BaseTransactionManager{
                         displayResponse(transactionResponse);
                     }
                     if(transactionResponse != null){
-                        if(transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))){
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
                             analyticsManager.trackMixpanel(SNAP_PAYMENT_KLIK_BCA_SUCCESS, PAYMENT_TYPE_KLIK_BCA, end - start, Events.SNAP_PAYMENT);
                         }else{
