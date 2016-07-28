@@ -1,9 +1,12 @@
 package id.co.veritrans.sdk.coreflow.models.snap.payment;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * @author rakawm
  */
 public abstract class BasePaymentRequest {
+    @SerializedName("transaction_id")
     private String transactionId;
     private String authenticityToken;
 

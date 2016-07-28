@@ -474,4 +474,5 @@
 
     <string name="bank_transfer_bca">bca</string>
     <string name="bank_transfer_permata">permata</string>
+    <string name="error_transaction_empty">Transaction Data is Empty</string>
 </resources>

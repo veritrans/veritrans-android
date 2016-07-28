@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         VeritransBusProvider.getInstance().register(this);
         setContentView(R.layout.activity_main);
         initSDK();
+
         initView();
     }
 

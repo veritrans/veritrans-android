@@ -100,14 +100,18 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         TransactionRequest transactionRequest = null;
         if (veritransSDK != null) {
             transactionRequest = veritransSDK.getTransactionRequest();
-            CustomerDetails customerDetails = null;
-            if (userDetail != null) {
-                customerDetails = new CustomerDetails(userDetail.getUserFullName(), null,
-                        userDetail.getEmail(), userDetail.getPhoneNumber());
-                transactionRequest.setCustomerDetails(customerDetails);
-                Logger.d(String.format("Customer name: %s, Customer email: %s, Customer phone: %s", userDetail.getUserFullName(), userDetail.getEmail(), userDetail.getPhoneNumber() ));
+            if(transactionRequest != null){
+                CustomerDetails customerDetails = null;
+                if (userDetail != null) {
+                    customerDetails = new CustomerDetails(userDetail.getUserFullName(), null,
+                            userDetail.getEmail(), userDetail.getPhoneNumber());
+                    transactionRequest.setCustomerDetails(customerDetails);
+                    Logger.d(String.format("Customer name: %s, Customer email: %s, Customer phone: %s", userDetail.getUserFullName(), userDetail.getEmail(), userDetail.getPhoneNumber() ));
+                }
+                setUpPaymentMethods();
+            }else{
+                showErrorAlertDialog(getString(R.string.error_transaction_empty));
             }
-            setUpPaymentMethods();
         } else Logger.e("Veritrans SDK is not started.");
     }
 
@@ -189,7 +193,6 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
 
         if (veritransSDK != null) {
             String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount()));
-
             collapsingToolbarLayout.setTitle(" ");
             toolbarHeaderView.bindTo(getString(R.string.payable_amount), "" + amount);
             floatHeaderView.bindTo(getString(R.string.payable_amount), "" + amount);
@@ -417,6 +420,7 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
     @Subscribe
     @Override
     public void onEvent(GetSnapTokenSuccessEvent event) {
+        LocalDataHandler.saveString(Constants.AUTH_TOKEN, event.getResponse().getTokenId());
         veritransSDK.getSnapTransaction(event.getResponse().getTokenId());
     }
 
@@ -443,6 +447,20 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
                         getPaymentPages();
                     }
                 })
+                .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .create();
+        alert.show();
+    }
+
+    private void showErrorAlertDialog(String message){
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setMessage(message)
                 .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

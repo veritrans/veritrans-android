@@ -54,7 +54,6 @@ public class SnapTransactionManagerTest {
 
     protected String sampleJsonResponse = "{\"response\":\"response\"}";
 
-
     protected Response retrofitResponse = new Response("URL", 200, "success", Collections.EMPTY_LIST,
             new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
 

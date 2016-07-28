@@ -1,5 +1,7 @@
 package id.co.veritrans.sdk.sample.core;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +11,12 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
+import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
+import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
+import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 import id.co.veritrans.sdk.sample.BCAPaymentActivity;
 import id.co.veritrans.sdk.sample.CIMCBClickPaymentActivity;
 import id.co.veritrans.sdk.sample.CreditCardPaymentActivity;
@@ -25,12 +32,33 @@ import id.co.veritrans.sdk.sample.utils.RecyclerItemClickListener;
 public class CoreFlowActivity extends AppCompatActivity {
     private RecyclerView coreMethods;
     private CoreFlowListAdapter adapter;
+    private ProgressDialog dialog = new ProgressDialog(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core_flow);
-        init();
+        dialog.setIndeterminate(true);
+        dialog.setMessage("get payment methods");
+        dialog.show();
+        requestPaymentToken();
+//        init();
+    }
+
+    private void requestPaymentToken() {
+        String orderId = UUID.randomUUID().toString();
+        TransactionRequest request = new TransactionRequest(orderId, 360000);
+        // Set item details
+        ItemDetails itemDetails = new ItemDetails("1", 360000, 1, "shoes");
+        ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
+        itemDetailsArrayList.add(itemDetails);
+        request.setItemDetails(itemDetailsArrayList);
+        // Set Bill Info
+        request.setBillInfoModel(new BillInfoModel("Bill Info Sample", "Bill Info Sample 2"));
+        // Set transaction request
+        VeritransSDK.getVeritransSDK().setTransactionRequest(request);
+
+        VeritransSDK.getVeritransSDK().getSnapToken();
     }
 
     private void init() {

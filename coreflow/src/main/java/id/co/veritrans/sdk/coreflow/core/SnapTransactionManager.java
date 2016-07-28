@@ -40,13 +40,13 @@ public class SnapTransactionManager extends BaseTransactionManager{
     private static final String SNAP_PAYMENT_CARD_SUCCESS = "Payment Using Credit Card Success";
     private static final String SNAP_PAYMENT_CARD_FAILED = "Payment Using Credit Card Failed";
     private static final String SNAP_PAYMENT_BANK_TRANSFER_SUCCESS = "Payment Using Bank Transfer Success";
-    private static final String SNAP_PAYMENT_BANK_TRANSFER_FAILED = "Payment Using Bank Transfer Success";
+    private static final String SNAP_PAYMENT_BANK_TRANSFER_FAILED = "Payment Using Bank Transfer Failed";
     private static final String SNAP_PAYMENT_KLIK_BCA_SUCCESS = "Payment Using KLIK BCA Success";
     private static final String SNAP_PAYMENT_KLIK_BCA_FAILED= "Payment Using KLIK BCA Failed";
+
     private SnapRestAPI snapRestAPI;
 
-
-    public SnapTransactionManager(Context context, SnapRestAPI snapRestAPI, MerchantRestAPI merchantApiClient) {
+    SnapTransactionManager(Context context, SnapRestAPI snapRestAPI, MerchantRestAPI merchantApiClient) {
         this.context = context;
         this.snapRestAPI = snapRestAPI;
         this.merchantPaymentAPI = merchantApiClient;
@@ -78,7 +78,6 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }else{
                     VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.empty_transaction_response), Events.GET_SNAP_TOKEN));
                 }
-
             }
 
             @Override
@@ -307,8 +306,6 @@ public class SnapTransactionManager extends BaseTransactionManager{
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
-
-
 
 
 }

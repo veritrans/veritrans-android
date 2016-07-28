@@ -515,7 +515,7 @@ public class TransactionManager extends BaseTransactionManager{
             } else {
                 releaseResources();
                 VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.PAYMENT));
-                Logger.e(context.getString(R.string.error_invalid_data_supplied));
+                Logger.e(   context.getString(R.string.error_invalid_data_supplied));
             }
     }
 

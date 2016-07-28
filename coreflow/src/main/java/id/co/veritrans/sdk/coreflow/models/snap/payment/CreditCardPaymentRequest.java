@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class CreditCardPaymentRequest extends BasePaymentRequest {
     @SerializedName("token_id")
     private String tokenId;
-    @SerializedName("payment_details")
+    @SerializedName("payment_detail")
     private PaymentDetails paymentDetails;
     @SerializedName("save_card")
     private boolean saveCard;

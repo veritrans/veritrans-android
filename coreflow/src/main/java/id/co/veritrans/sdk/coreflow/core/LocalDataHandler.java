@@ -62,4 +62,5 @@ public class LocalDataHandler {
         SharedPreferences preferences = VeritransSDK.getmPreferences();
         return convertBackToObject(preferences.getString(key, ""), classType);
     }
+
 }
