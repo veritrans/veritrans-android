@@ -5,16 +5,25 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
@@ -25,6 +34,8 @@ import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.PaymentMethodsActivity;
 import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
+import id.co.veritrans.sdk.uiflow.adapters.ListCountryAdapter;
+import id.co.veritrans.sdk.uiflow.models.CountryCodeModel;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 public class UserAddressFragment extends Fragment {
@@ -33,7 +44,7 @@ public class UserAddressFragment extends Fragment {
     private EditText etAddress;
     private EditText etCity;
     private EditText etZipcode;
-    private EditText etCountry;
+    private AutoCompleteTextView etCountry;
     private CheckBox cbShippingAddress;
     private RelativeLayout shippingAddressContainer;
     private EditText etShippingAddress;
@@ -41,6 +52,8 @@ public class UserAddressFragment extends Fragment {
     private EditText etShippingZipcode;
     private EditText etShippingCountry;
     private Button btnNext;
+    private ListCountryAdapter countryAdapter;
+    private ArrayList<CountryCodeModel> countryCodeList = new ArrayList<>();
 
 
     public UserAddressFragment() {
@@ -68,10 +81,51 @@ public class UserAddressFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_user_address, container, false);
     }
 
+    private void retrieveCountryCode() {
+        ArrayList<CountryCodeModel> list;
+        String data;
+        try {
+            InputStream is = getContext().getAssets().open("country_code.json");
+            byte [] buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+            data = new String(buffer, "UTF-8");
+            Logger.i("readContry:" + data);
+
+
+            Gson gson = new Gson();
+            list = gson.fromJson(data, new TypeToken<ArrayList<CountryCodeModel>>(){}.getType());
+            if(list != null){
+                this.countryCodeList = list;
+                for(CountryCodeModel model : list){
+                    Logger.i("readcountry:name:" + model.getName());
+                    Logger.i("readcountry:getCode:" + model.getCountryCode());
+                    Logger.i("readcountry:getCodealpha:" + model.getCountryCodeAlpha());
+                }
+            }
+
+        } catch (Exception e) {
+            Logger.i("readContry>error:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         veritransSDK = VeritransSDK.getVeritransSDK();
         findViews(view);
+
+        retrieveCountryCode();
+        countryAdapter = new ListCountryAdapter(getContext(), R.layout.layout_row_contry_code, countryCodeList);
+        etCountry.setAdapter(countryAdapter);
+        etCountry.setThreshold(1);
+        etCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                CountryCodeModel model =  countryAdapter.getItem(i);
+                Logger.i("selectedCountry:" + model.getCountryCodeAlpha());
+            }
+        });
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -79,7 +133,7 @@ public class UserAddressFragment extends Fragment {
         etAddress = (EditText) view.findViewById(R.id.et_address);
         etCity = (EditText) view.findViewById(R.id.et_city);
         etZipcode = (EditText) view.findViewById(R.id.et_zipcode);
-        etCountry = (EditText) view.findViewById(R.id.et_country);
+        etCountry = (AutoCompleteTextView) view.findViewById(R.id.et_country);
         cbShippingAddress = (CheckBox) view.findViewById(R.id.cb_shipping_address);
         shippingAddressContainer = (RelativeLayout) view.findViewById(R.id
                 .shipping_address_container);
@@ -88,6 +142,8 @@ public class UserAddressFragment extends Fragment {
         etShippingZipcode = (EditText) view.findViewById(R.id.et_shipping_zipcode);
         etShippingCountry = (EditText) view.findViewById(R.id.et_shipping_country);
         btnNext = (Button) view.findViewById(R.id.btn_next);
+
+
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
             btnNext.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
         }
