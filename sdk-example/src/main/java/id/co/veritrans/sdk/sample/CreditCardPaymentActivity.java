@@ -192,25 +192,17 @@ public class CreditCardPaymentActivity extends AppCompatActivity implements Toke
         // Handle get token success
         // Do the charge/payment
         String orderId = UUID.randomUUID().toString();
-        TransactionRequest request = new TransactionRequest(orderId.toString(), 360000);
+        TransactionRequest request = new TransactionRequest(orderId, 360000);
         request.setCardPaymentInfo(getString(R.string.card_click_type_none), false);
+
         Logger.e("rls", "run>post>another");
         VeritransSDK.getVeritransSDK().setTransactionRequest(request);
         ItemDetails itemDetails = new ItemDetails("1", 360000, 1, "shoes");
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
         itemDetailsArrayList.add(itemDetails);
-        CardTransfer transfer = new CardTransfer(
-                new CardPaymentDetails(
-                        getTokenSuccessEvent.getResponse().getBank(),
-                        getTokenSuccessEvent.getResponse().getTokenId(),
-                        false),
-                new TransactionDetails("360000", orderId),
-                itemDetailsArrayList,
-                new ArrayList<BillingAddress>(),
-                new ArrayList<ShippingAddress>(),
-                new CustomerDetails("Raka", "Mogandhi", "westumogandhi@gmail.com", "6285653956354")
-        );
-        VeritransSDK.getVeritransSDK().paymentUsingCard(transfer);
+
+        VeritransSDK.getVeritransSDK().snapPaymentUsingCard(getTokenSuccessEvent.getResponse().getTokenId(),
+                VeritransSDK.getVeritransSDK().readAuthenticationToken(), false);
     }
 
     @Subscribe

@@ -53,6 +53,10 @@ public class CoreFlowListAdapter extends RecyclerView.Adapter<CoreFlowListAdapte
         return data.size();
     }
 
+    public void clear() {
+        this.data.clear();
+    }
+
     class CoreFlowViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         ImageView logo;

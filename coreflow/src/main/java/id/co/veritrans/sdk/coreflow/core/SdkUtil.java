@@ -60,7 +60,6 @@ public class SdkUtil {
         if (request.isUiEnabled()) {
             //get user details only if using default ui.
             request = initializeUserInfo(request);
-
         }
 
         MandiriBillPayTransferModel model =

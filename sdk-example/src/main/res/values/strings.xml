@@ -34,4 +34,16 @@
     <string name="card_click_normal">Normal</string>
     <string name="card_click_two_click">Two Click</string>
     <string name="card_click_one_click">One Click</string>
+    <string name="label_credit_card">credit_card</string>
+    <string name="label_bank_transfer">bank_transfer</string>
+    <string name="label_bca_klik_bca">bca_klikbca</string>
+    <string name="label_mandiri_clickpay">mandiri_clickpay</string>
+    <string name="label_bca_klikpay">bca_klikpay</string>
+    <string name="label_cimbclick">cimb_clicks</string>
+    <string name="bca_klikpay">BCA Klik Pay</string>
+    <string name="label_bri_epay">bri_epay</string>
+    <string name="label_payment_mandiri_ecash">mandiri_ecash</string>
+    <string name="label_payment_indomaret">indomaret</string>
+    <string name="label_mandiri_bill">echannel</string>
+    <string name="label_indosat_dompetku">indosat_dompetku</string>
 </resources>
