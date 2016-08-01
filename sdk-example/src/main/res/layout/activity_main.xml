@@ -34,6 +34,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/eight_dp"
@@ -61,6 +62,7 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:visibility="gone"
                         android:id="@+id/btn_get_token"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -71,6 +73,7 @@
             </LinearLayout>
 
             <TextView
+                android:visibility="gone"
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,6 +81,7 @@
                 android:text="@string/title_credit_card_options" />
 
             <RadioGroup
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -105,6 +109,12 @@
                     android:text="@string/card_click_one_click" />
             </RadioGroup>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:text="Order Items"
+                android:layout_height="wrap_content" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -174,7 +184,6 @@
                         android:text="Rp.100.000"
                         android:textSize="20sp"
                         android:textStyle="bold"/>
-
 
                     <TextView android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -261,6 +270,7 @@
             </LinearLayout>
 
             <TextView
+                android:visibility="gone"
                 style="@style/TextAppearance.AppCompat.Body2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -269,6 +279,7 @@
                 android:textSize="@dimen/header_text_size" />
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"

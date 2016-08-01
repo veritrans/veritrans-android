@@ -4,7 +4,7 @@
     <string name="header_token">Token : </string>
     <string name="btn_get_token">Get Token</string>
     <string name="btn_refresh_token">Refresh Token</string>
-    <string name="title_show_example">Show Examples</string>
+    <string name="title_show_example">Payment Flow</string>
     <string name="title_credit_card_options">Credit Card Options</string>
     <string name="btn_show_core">Core Flow</string>
     <string name="btn_show_ui_flow">UI Flow</string>
