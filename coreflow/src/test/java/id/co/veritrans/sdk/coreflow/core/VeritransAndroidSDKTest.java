@@ -1012,7 +1012,7 @@ public class VeritransAndroidSDKTest {
     }
 
     @Test
-    public void snapPaymentUsingBankTransfer() {
+    public void snapPaymentUsingBankTransferBCA() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.snapPaymentUsingBankTransferBCA(email, token);
@@ -1020,7 +1020,7 @@ public class VeritransAndroidSDKTest {
     }
 
     @Test
-    public void snapPaymentUsingBankTransfer_whenNetworkUnavailable() {
+    public void snapPaymentUsingBankTransferBCA_whenNetworkUnavailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.snapPaymentUsingBankTransferBCA(email, token);
@@ -1029,9 +1029,34 @@ public class VeritransAndroidSDKTest {
     }
 
     @Test
-    public void snapPaymentUsingBankTransfer_whenTransactionRequestNull() {
+    public void snapPaymentUsingBankTransferBCA_whenTransactionRequestNull() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.snapPaymentUsingBankTransferBCA(email, token);
+        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void snapPaymentUsingBankTransferPermata() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingBankTransferPermata(email, token);
+        Assert.assertEquals(true, veritransSDKSSpy.isRunning());
+    }
+
+    @Test
+    public void snapPaymentUsingBankTransferPermata_whenNetworkUnavailable() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        veritransSDKSSpy.snapPaymentUsingBankTransferPermata(email, token);
+        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+    }
+
+    @Test
+    public void snapPaymentUsingBankTransferPermata_whenTransactionRequestNull() {
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingBankTransferPermata(email, token);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
@@ -1057,6 +1082,31 @@ public class VeritransAndroidSDKTest {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token);
+        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+    }
+
+    @Test
+    public void snapPaymentUsingBCAKlikpay() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingBCAKlikpay(token);
+        Assert.assertEquals(true, veritransSDKSSpy.isRunning());
+    }
+
+    @Test
+    public void snapPaymentUsingBCAKlikpay_whenTransactionRequestNull() {
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingBCAKlikpay(token);
+        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void snapPaymentUsingBCAKlikpay_whenNetworkUnavailable() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        veritransSDKSSpy.snapPaymentUsingBCAKlikpay(token);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
         Mockito.verify(busCollaborator).onNetworkUnAvailable();
     }

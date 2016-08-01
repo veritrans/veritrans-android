@@ -549,4 +549,10 @@ public class SDKUtilsTest {
         Assert.assertEquals(klikBCAUserId, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, transactionRequestMock, token).getUserId());
         Assert.assertEquals(token, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, transactionRequestMock, token).getTransactionId());
     }
+
+    @Test
+    public void getEmailAddress() {
+        Mockito.when(transactionRequestMock.getCustomerDetails().getEmail()).thenReturn(email);
+        Assert.assertEquals(email, SdkUtil.getEmailAddress(transactionRequestMock));
+    }
 }
