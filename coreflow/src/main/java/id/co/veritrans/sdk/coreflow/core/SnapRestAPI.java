@@ -40,8 +40,8 @@ public interface SnapRestAPI {
      * @param transactionResponseCallback Callback
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_bank_transfer")
-    void paymentUsingBankTransfer(@Body BankTransferPaymentRequest bankTransferPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/pay_with_bank_transfer_bca")
+    void paymentUsingBankTransferBCA(@Body BankTransferPaymentRequest bankTransferPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using KlikBCA.

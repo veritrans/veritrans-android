@@ -806,11 +806,11 @@ public class VeritransSDK {
         }
     }
 
-    public void snapPaymentUsingBankTransfer(String email, String tokenId) {
+    public void snapPaymentUsingBankTransferBCA(String email, String tokenId) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingBankTransfer(SdkUtil.getBankTransferPaymentRequest(email, transactionRequest, tokenId));
+                mSnapTransactionManager.paymentUsingBankTransferBCA(SdkUtil.getBankTransferPaymentRequest(email, transactionRequest, tokenId));
             } else {
                 isRunning = false;
                 VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());

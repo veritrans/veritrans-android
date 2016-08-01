@@ -65,11 +65,11 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
         CardRegistrationBusCallback, SaveCardBusCallback, HttpErrorCallback,
         TokenBusCallback, TransactionBusCallback, GetCardBusCallback,
         GetOfferBusCallback, GetSnapTokenCallback, GetSnapTransactionCallback {
+    public String onsuccessStatusCode;
     /**
      * Created by ziahaqi on 25/06/2016.
      */
         BusCollaborator busCollaborator;
-        public String onsuccessStatusCode;
         private TransactionManager transactionManager;
         private VeritransBus bus;
         private SnapTransactionManager snapTransactionManager;
@@ -369,7 +369,7 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
 
     public void paymentUsingSnapBankTransfer(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
         snapTransactionManager.setRestApi(snapAPI);
-        snapTransactionManager.paymentUsingBankTransfer(request);
+        snapTransactionManager.paymentUsingBankTransferBCA(request);
     }
 
     public void paymentUsingSnapKlikBCA(SnapRestAPI snapAPI, KlikBCAPaymentRequest request) {

@@ -381,7 +381,8 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void bcaBankTransferTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.paymentUsingBcaBankTransfer();
+        //veritransSDK.paymentUsingBcaBankTransfer();
+        veritransSDK.snapPaymentUsingBankTransferBCA(veritransSDK.getTransactionRequest().getCustomerDetails().getEmail(), veritransSDK.readAuthenticationToken());
     }
 
 

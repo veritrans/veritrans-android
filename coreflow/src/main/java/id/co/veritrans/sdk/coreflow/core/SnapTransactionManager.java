@@ -214,10 +214,10 @@ public class SnapTransactionManager extends BaseTransactionManager{
      *
      * @param request   Payment Details.
      */
-    public void paymentUsingBankTransfer(BankTransferPaymentRequest request){
+    public void paymentUsingBankTransferBCA(BankTransferPaymentRequest request) {
         final long start = System.currentTimeMillis();
         if(request != null){
-            snapRestAPI.paymentUsingBankTransfer(request, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingBankTransferBCA(request, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();

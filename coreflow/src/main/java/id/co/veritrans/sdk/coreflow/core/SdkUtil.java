@@ -578,4 +578,8 @@ public class SdkUtil {
 
         return klikBCAPaymentRequest;
     }
+
+    public static String getEmailAddress(TransactionRequest transactionRequest) {
+        return transactionRequest.getCustomerDetails().getEmail();
+    }
 }
