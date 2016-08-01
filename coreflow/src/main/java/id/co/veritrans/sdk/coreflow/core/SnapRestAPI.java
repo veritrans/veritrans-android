@@ -50,6 +50,6 @@ public interface SnapRestAPI {
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_klikbca")
+    @POST("/v1/pay_with_bca_klikbca")
     void paymentUsingKlikBCA(@Body KlikBCAPaymentRequest klikBCAPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 }
