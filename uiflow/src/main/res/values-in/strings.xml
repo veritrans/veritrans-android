@@ -34,7 +34,8 @@
     <string name="validation_shippingzipcode_empty">Masukkan kode pos pengiriman</string>
     <string name="validation_shippingcountry_empty">Masukkan negara pengiriman</string>
     <string name="validation_shippingzipcode_invalid">Masukkan kode pos pengiriman yang valid</string>
-    
+    <string name="validation_billingcountry_notexist">Masukkan nama negara yang valid</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="pay_with">Bayar Dengan</string>
     <string name="payable_amount">Jumlah Pembayaran</string>

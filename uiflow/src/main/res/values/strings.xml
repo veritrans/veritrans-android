@@ -74,7 +74,7 @@
     <string name="validation_shippingzipcode_empty">Please enter valid shipping zipcode</string>
     <string name="validation_shippingcountry_empty">Please enter shipping country</string>
     <string name="validation_shippingzipcode_invalid">Please enter valid shipping zipcode</string>
-
+    <string name="validation_billingcountry_notexist">Please enter valid country</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="pay_with">Pay With</string>
     <string name="payable_amount">Payable Amount</string>
