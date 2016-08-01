@@ -140,8 +140,9 @@
 
                             <ImageView
                                 android:id="@+id/merchant_logo"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="@dimen/logo_width"
+                                android:layout_height="@dimen/logo_height"
+                                android:scaleType="centerInside"
                                 tools:src="@drawable/ic_launcher" />
 
                             <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
