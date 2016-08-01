@@ -821,6 +821,21 @@ public class VeritransSDK {
         }
     }
 
+    public void snapPaymentUsingBankTransferPermata(String email, String tokenId) {
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingBankTransferPermata(SdkUtil.getBankTransferPaymentRequest(email, transactionRequest, tokenId));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
     public void snapPaymentUsingKlikBCA(String userId, String tokenId) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {

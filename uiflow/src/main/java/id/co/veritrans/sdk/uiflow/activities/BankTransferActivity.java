@@ -381,7 +381,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void bcaBankTransferTransaction(VeritransSDK veritransSDK) {
-        //veritransSDK.paymentUsingBcaBankTransfer();
         veritransSDK.snapPaymentUsingBankTransferBCA(veritransSDK.getTransactionRequest().getCustomerDetails().getEmail(), veritransSDK.readAuthenticationToken());
     }
 
@@ -393,7 +392,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void bankTransferTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.paymentUsingPermataBank();
+        veritransSDK.snapPaymentUsingBankTransferPermata(veritransSDK.getTransactionRequest().getCustomerDetails().getEmail(), veritransSDK.readAuthenticationToken());
     }
 
 

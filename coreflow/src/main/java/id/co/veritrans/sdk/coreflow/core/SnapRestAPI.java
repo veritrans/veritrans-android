@@ -34,7 +34,7 @@ public interface SnapRestAPI {
     void paymentUsingCreditCard(@Body CreditCardPaymentRequest creditCardPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
-     * Charge payment using bank transfer.
+     * Charge payment using bank transfer BCA.
      *
      * @param bankTransferPaymentRequest  Payment Request Details.
      * @param transactionResponseCallback Callback
@@ -42,6 +42,16 @@ public interface SnapRestAPI {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_bank_transfer_bca")
     void paymentUsingBankTransferBCA(@Body BankTransferPaymentRequest bankTransferPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
+
+    /**
+     * Charge payment using bank transfer Permata.
+     *
+     * @param bankTransferPaymentRequest  Payment Request Details.
+     * @param transactionResponseCallback Callback.
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/v1/pay_with_permata")
+    void paymentUsingBankTransferPermata(@Body BankTransferPaymentRequest bankTransferPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using KlikBCA.
