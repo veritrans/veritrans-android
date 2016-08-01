@@ -11,12 +11,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -199,12 +202,6 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
             floatHeaderView.getSubTitleTextView().setAlpha(PERCENTAGE_TOTAL);
             floatHeaderView.getTitleTextView().setAlpha(ALPHA);
             mAppBarLayout.addOnOffsetChangedListener(this);
-            try {
-                int resourceImage = getResources().getIdentifier(veritransSDK.getMerchantLogo(), "drawable", getPackageName());
-                logo.setImageResource(resourceImage);
-            } catch (Exception ex) {
-                logo.setVisibility(View.GONE);
-            }
         }
 
     }
@@ -379,6 +376,9 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
     @Override
     public void onEvent(GetSnapTransactionSuccessEvent snapTransactionSuccessEvent) {
         progressContainer.setVisibility(View.GONE);
+        String logoUrl = snapTransactionSuccessEvent.getResponse().getMerchantData().getLogoUrl();
+        veritransSDK.setMerchantLogo(logoUrl);
+        showLogo(logoUrl);
         for (String bank : snapTransactionSuccessEvent.getResponse().getTransactionData().getBankTransfer().getBanks()) {
             bankTrasfers.add(bank);
         }
@@ -399,20 +399,20 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
 
     @Subscribe
     public void onEvent(GeneralErrorEvent generalErrorEvent) {
-        progressContainer.setVisibility(View.GONE);
         if (generalErrorEvent.getSource().equals(Events.GET_SNAP_TOKEN)) {
             showErrorMessage();
         } else if (generalErrorEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
+            progressContainer.setVisibility(View.GONE);
             showDefaultPaymentMethods();
         }
     }
 
     @Subscribe
     public void onEvent(NetworkUnavailableEvent networkUnavailableEvent) {
-        progressContainer.setVisibility(View.GONE);
         if (networkUnavailableEvent.getSource().equals(Events.GET_SNAP_TOKEN)) {
             showErrorMessage();
         } else if (networkUnavailableEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
+            progressContainer.setVisibility(View.GONE);
             showDefaultPaymentMethods();
         }
     }
@@ -428,6 +428,16 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
     @Override
     public void onEvent(GetSnapTokenFailedEvent event) {
         showErrorMessage();
+    }
+
+    private void showLogo(String url) {
+        if (!TextUtils.isEmpty(url)) {
+            Picasso.with(this)
+                    .load(url)
+                    .into(logo);
+        } else {
+            logo.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void showDefaultPaymentMethods() {

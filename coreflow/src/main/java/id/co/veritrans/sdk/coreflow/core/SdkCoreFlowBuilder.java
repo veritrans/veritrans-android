@@ -25,8 +25,6 @@ public class SdkCoreFlowBuilder {
     protected String colorTheme = null;
     protected int colorThemeResourceId = 0;
     protected String merchantName = null;
-    protected String merchantLogo = null;
-    protected int merchantLogoResourceId = 0;
     protected ISdkFlow sdkFlow;
     protected String defaultText;
     protected String boldText;
@@ -115,16 +113,6 @@ public class SdkCoreFlowBuilder {
 
     public SdkCoreFlowBuilder setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
         this.selectedPaymentMethods = selectedPaymentMethods;
-        return this;
-    }
-
-    public SdkCoreFlowBuilder setMerchantLogo(String merchantLogo) {
-        this.merchantLogo = merchantLogo;
-        return this;
-    }
-
-    public SdkCoreFlowBuilder setMerchantLogoResourceId(int resourceId) {
-        this.merchantLogoResourceId = resourceId;
         return this;
     }
 }

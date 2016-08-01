@@ -2,7 +2,6 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -56,7 +55,6 @@ public class VeritransSDK {
     private MixpanelAnalyticsManager mMixpanelAnalyticsManager;
     private Context context = null;
     private int themeColor;
-    private Drawable merchantLogoDrawable = null;
     private String clientKey = null;
     private String merchantServerUrl = null;
     private String defaultText = null;
@@ -67,7 +65,6 @@ public class VeritransSDK {
     private TransactionManager mTransactionManager;
     private SnapTransactionManager mSnapTransactionManager;
     private String merchantLogo = null;
-    private int merchantLogoResourceId = 0;
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
     private BBMCallBackUrl mBBMCallBackUrl = null;
@@ -83,9 +80,7 @@ public class VeritransSDK {
         this.boldText = sdkBuilder.boldText;
         this.uiflow = sdkBuilder.sdkFlow;
         this.externalScanner = sdkBuilder.externalScanner;
-        merchantLogoResourceId = sdkBuilder.merchantLogoResourceId;
         themeColor = sdkBuilder.colorThemeResourceId;
-        merchantLogo = sdkBuilder.merchantLogo;
 
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi());
         this.mTransactionManager = new TransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
@@ -95,7 +90,6 @@ public class VeritransSDK {
         this.mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
 
         initializeTheme();
-        initializeLogo();
         initializeSharedPreferences();
 
     }
@@ -128,15 +122,6 @@ public class VeritransSDK {
         mPreferences = mp;
     }
 
-    private void initializeLogo() {
-        if (merchantLogoResourceId != 0) {
-            merchantLogoDrawable = context.getResources().getDrawable(merchantLogoResourceId);
-        } else if (merchantLogo != null) {
-            int resourceImage = context.getResources().getIdentifier(getMerchantLogo(), "drawable", context.getPackageName());
-            merchantLogoDrawable = context.getResources().getDrawable(resourceImage);
-        }
-    }
-
     private void initializeSharedPreferences() {
         mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
     }
@@ -145,7 +130,7 @@ public class VeritransSDK {
         themeColor = context.getResources().getColor(R.color.colorPrimary);
     }
 
-    public   String getDefaultText() {
+    public String getDefaultText() {
         return defaultText;
     }
 
@@ -161,20 +146,8 @@ public class VeritransSDK {
         return merchantLogo;
     }
 
-    void setMerchantLogo(String merchantLogo) {
+    public void setMerchantLogo(String merchantLogo) {
         this.merchantLogo = merchantLogo;
-    }
-
-    public int getMerchantLogoResourceId() {
-        return merchantLogoResourceId;
-    }
-
-    void setMerchantLogoResourceId(int merchantLogoResourceId) {
-        this.merchantLogoResourceId = merchantLogoResourceId;
-    }
-
-    public Drawable getMerchantLogoDrawable() {
-        return merchantLogoDrawable;
     }
 
     public int getThemeColor() {

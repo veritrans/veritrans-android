@@ -21,7 +21,6 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.internal.WhiteboxImpl;
 
 import java.util.ArrayList;
 
@@ -852,16 +851,6 @@ public class VeritransAndroidSDKTest {
 
     }
 
-    @Test public void initializeLogo_whenLogoIdNot0() throws Exception {
-        drawableIntCostumMock = 1;
-
-        veritransSDKSSpy.setMerchantLogoResourceId(drawableIntCostumMock);
-        Assert.assertEquals((Integer)1, (Integer)veritransSDKSSpy.getMerchantLogoResourceId());
-
-        WhiteboxImpl.invokeMethod(veritransSDKSSpy, "initializeLogo");
-        Mockito.verify(contextMock, Mockito.times(1)).getResources();
-    }
-
     @Test
     public void isLogEnabled(){
         Assert.assertTrue( veritransSDKSSpy.isLogEnabled());
@@ -870,17 +859,6 @@ public class VeritransAndroidSDKTest {
     @Test
     public void getMerchantUrl(){
         Assert.assertEquals(SDKConfigTest.MERCHANT_BASE_URL, veritransSDKSSpy.getMerchantServerUrl());
-    }
-
-    @Test public void initializeLogo_whenLogoId0() throws Exception {
-        veritransSDKSSpy.setMerchantLogoResourceId(0);
-
-        veritransSDKSSpy.setMerchantLogo(merchantLogoMock);
-        Assert.assertEquals(merchantLogoMock, veritransSDKSSpy.getMerchantLogo());
-
-        WhiteboxImpl.invokeMethod(veritransSDKSSpy, "initializeLogo");
-        Mockito.verify(contextMock, Mockito.times(1)).getResources();
-
     }
 
     @Test public void getInstanceTest(){
