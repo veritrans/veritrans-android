@@ -36,6 +36,7 @@ import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 
 /**
@@ -848,6 +849,21 @@ public class VeritransSDK {
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
+        }
+    }
+
+    public void snapPaymentUsingBCAKlikpay(String tokenId) {
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingBCAKlikpay(new BasePaymentRequest(tokenId));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 

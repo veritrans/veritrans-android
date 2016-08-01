@@ -5,10 +5,18 @@ import com.google.gson.annotations.SerializedName;
 /**
  * @author rakawm
  */
-public abstract class BasePaymentRequest {
+public class BasePaymentRequest {
     @SerializedName("transaction_id")
     private String transactionId;
     private String authenticityToken;
+
+    public BasePaymentRequest() {
+
+    }
+
+    public BasePaymentRequest(String transactionId) {
+        setTransactionId(transactionId);
+    }
 
     public String getTransactionId() {
         return transactionId;

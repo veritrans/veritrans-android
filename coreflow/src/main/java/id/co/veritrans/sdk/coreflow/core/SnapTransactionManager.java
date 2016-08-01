@@ -23,6 +23,7 @@ import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
 import retrofit.Callback;
@@ -37,12 +38,6 @@ public class SnapTransactionManager extends BaseTransactionManager{
     private static final String GET_SNAP_TRANSACTION_FAILED = "Failed Getting Snap Transaction";
     private static final String GET_SNAP_TRANSACTION_SUCCESS = "Success Getting Snap Transaction";
     private static final String PAYMENT_TYPE_SNAP = "snap";
-    private static final String SNAP_PAYMENT_CARD_SUCCESS = "Payment Using Credit Card Success";
-    private static final String SNAP_PAYMENT_CARD_FAILED = "Payment Using Credit Card Failed";
-    private static final String SNAP_PAYMENT_BANK_TRANSFER_SUCCESS = "Payment Using Bank Transfer Success";
-    private static final String SNAP_PAYMENT_BANK_TRANSFER_FAILED = "Payment Using Bank Transfer Failed";
-    private static final String SNAP_PAYMENT_KLIK_BCA_SUCCESS = "Payment Using KLIK BCA Success";
-    private static final String SNAP_PAYMENT_KLIK_BCA_FAILED= "Payment Using KLIK BCA Failed";
 
     private SnapRestAPI snapRestAPI;
 
@@ -180,14 +175,14 @@ public class SnapTransactionManager extends BaseTransactionManager{
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
-                            analyticsManager.trackMixpanel(SNAP_PAYMENT_CARD_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
                         }else{
                             VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
-                            analyticsManager.trackMixpanel(SNAP_PAYMENT_CARD_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, transactionResponse.getStatusMessage());
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, transactionResponse.getStatusMessage());
                         }
                     }else{
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.empty_transaction_response), Events.SNAP_PAYMENT));
-                        analyticsManager.trackMixpanel(SNAP_PAYMENT_CARD_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -200,7 +195,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                     }else{
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
                     }
-                    analyticsManager.trackMixpanel(SNAP_PAYMENT_CARD_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, error.getMessage());
 
                 }
             });
@@ -229,14 +224,14 @@ public class SnapTransactionManager extends BaseTransactionManager{
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
-                            analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, end - start, Events.SNAP_PAYMENT);
                         }else{
                             VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
-                            analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, transactionResponse.getStatusMessage());
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, transactionResponse.getStatusMessage());
                         }
                     }else{
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
-                        analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -249,7 +244,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                     }else{
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
                     }
-                    analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, error.getMessage());
                 }
             });
         } else {
@@ -273,14 +268,14 @@ public class SnapTransactionManager extends BaseTransactionManager{
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
-                            analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, end - start, Events.SNAP_PAYMENT);
                         } else {
                             VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
-                            analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, transactionResponse.getStatusMessage());
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, transactionResponse.getStatusMessage());
                         }
                     } else {
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
-                        analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -293,7 +288,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                     } else {
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
                     }
-                    analyticsManager.trackMixpanel(SNAP_PAYMENT_BANK_TRANSFER_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, error.getMessage());
                 }
             });
         } else {
@@ -321,14 +316,14 @@ public class SnapTransactionManager extends BaseTransactionManager{
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
-                            analyticsManager.trackMixpanel(SNAP_PAYMENT_KLIK_BCA_SUCCESS, PAYMENT_TYPE_KLIK_BCA, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_KLIK_BCA, end - start, Events.SNAP_PAYMENT);
                         }else{
                             VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
-                            analyticsManager.trackMixpanel(SNAP_PAYMENT_KLIK_BCA_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, Events.SNAP_PAYMENT);
                         }
                     }else{
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
-                        analyticsManager.trackMixpanel(SNAP_PAYMENT_KLIK_BCA_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -341,7 +336,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                     }else{
                         VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
                     }
-                    analyticsManager.trackMixpanel(SNAP_PAYMENT_KLIK_BCA_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, error.getMessage());
                 }
             });
 
@@ -350,5 +345,47 @@ public class SnapTransactionManager extends BaseTransactionManager{
         }
     }
 
+    public void paymentUsingBCAKlikpay(BasePaymentRequest paymentRequest) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingBCAKlikPay(paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BCA_KLIKPAY, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, error.getMessage());
+                }
+            });
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
 
 }
