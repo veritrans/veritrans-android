@@ -36,7 +36,6 @@ import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
-import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.IndosatDompetkuPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
@@ -844,7 +843,7 @@ public class VeritransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingKlikBCA(SdkUtil.getKlikBCAPaymentRequest(userId, transactionRequest, tokenId));
+                mSnapTransactionManager.paymentUsingKlikBCA(SdkUtil.getKlikBCAPaymentRequest(userId, tokenId));
             } else {
                 isRunning = false;
                 VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
@@ -881,10 +880,10 @@ public class VeritransSDK {
     }
 
 
-    public void snapPaymentUsingMandiriClickPay(@NonNull String token, @NonNull String mandiriCardNumber, @NonNull String tokenResponse){
+    public void snapPaymentUsingMandiriClickPay(@NonNull String token, @NonNull String mandiriCardNumber, @NonNull String tokenResponse, @NonNull String input3) {
         if(Utils.isNetworkAvailable(context)){
             isRunning = true;
-            mSnapTransactionManager.paymentUsingMandiriClickPay(SdkUtil.getMandiriClickPaymentRequest(token, mandiriCardNumber, tokenResponse));
+            mSnapTransactionManager.paymentUsingMandiriClickPay(SdkUtil.getMandiriClickPaymentRequest(token, mandiriCardNumber, tokenResponse, input3));
         }else{
             isRunning = false;
             VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());

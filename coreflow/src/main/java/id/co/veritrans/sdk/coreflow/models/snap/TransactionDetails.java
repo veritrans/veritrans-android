@@ -5,12 +5,12 @@ package id.co.veritrans.sdk.coreflow.models.snap;
  */
 public class TransactionDetails {
     private String orderId;
-    private String amount;
+    private int amount;
 
     public TransactionDetails() {
     }
 
-    public TransactionDetails(String orderId, String amount) {
+    public TransactionDetails(String orderId, int amount) {
         setOrderId(orderId);
         setAmount(amount);
     }
@@ -23,11 +23,11 @@ public class TransactionDetails {
         this.orderId = orderId;
     }
 
-    public String getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 }

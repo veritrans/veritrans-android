@@ -10,7 +10,7 @@ public class MandiriClickPayPaymentRequest extends BasePaymentRequest {
     @SerializedName("mandiri_card_no")
     private String mandiriCardNumber;
 
-    private long input3;
+    private String input3;
 
     @SerializedName("token_response")
     private String tokenResponse;
@@ -23,11 +23,11 @@ public class MandiriClickPayPaymentRequest extends BasePaymentRequest {
         this.mandiriCardNumber = mandiriCardNumber;
     }
 
-    public long getInput3() {
+    public String getInput3() {
         return input3;
     }
 
-    public void setInput3(long input3) {
+    public void setInput3(String input3) {
         this.input3 = input3;
     }
 

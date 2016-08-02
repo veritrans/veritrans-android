@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
@@ -41,7 +40,6 @@ import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest
 import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.MandiriClickPayPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.PaymentDetails;
-import id.co.veritrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
 
 /**
  * Created by ziahaqi on 18/06/2016.
@@ -533,7 +531,7 @@ public class SdkUtil {
             transactionRequest = initializeUserInfo(transactionRequest);
         }
 
-        SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), transactionRequest.getAmount());
+        SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), (int) transactionRequest.getAmount());
 
         return new SnapTokenRequestModel(
                 details,
@@ -574,7 +572,7 @@ public class SdkUtil {
         return paymentRequest;
     }
 
-    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId, TransactionRequest transactionRequest, String tokenId) {
+    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId, String tokenId) {
         KlikBCAPaymentRequest klikBCAPaymentRequest = new KlikBCAPaymentRequest();
         klikBCAPaymentRequest.setUserId(userId);
         klikBCAPaymentRequest.setTransactionId(tokenId);
@@ -586,11 +584,12 @@ public class SdkUtil {
         return transactionRequest.getCustomerDetails().getEmail();
     }
 
-    public static MandiriClickPayPaymentRequest getMandiriClickPaymentRequest(String token, String mandiriCardNumber, String tokenResponse) {
+    public static MandiriClickPayPaymentRequest getMandiriClickPaymentRequest(String token, String mandiriCardNumber, String tokenResponse, String input3) {
         MandiriClickPayPaymentRequest request = new MandiriClickPayPaymentRequest();
         request.setTransactionId(token);
         request.setMandiriCardNumber(mandiriCardNumber);
         request.setTokenResponse(tokenResponse);
+        request.setInput3(input3);
         return request;
     }
 

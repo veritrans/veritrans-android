@@ -9,9 +9,9 @@ public class SnapTransactionDetails {
     @SerializedName("order_id")
     private String orderId;
     @SerializedName("gross_amount")
-    private double grossAmount;
+    private int grossAmount;
 
-    public SnapTransactionDetails(String orderId, double grossAmount) {
+    public SnapTransactionDetails(String orderId, int grossAmount) {
         setOrderId(orderId);
         setGrossAmount(grossAmount);
     }
@@ -20,7 +20,7 @@ public class SnapTransactionDetails {
         return grossAmount;
     }
 
-    public void setGrossAmount(double grossAmount) {
+    public void setGrossAmount(int grossAmount) {
         this.grossAmount = grossAmount;
     }
 
