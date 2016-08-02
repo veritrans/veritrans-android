@@ -54,6 +54,7 @@ import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
 import id.co.veritrans.sdk.coreflow.transactionmanager.BusCollaborator;
@@ -367,13 +368,23 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
         snapTransactionManager.paymentUsingCreditCard(request);
     }
 
-    public void paymentUsingSnapBankTransfer(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
+    public void paymentUsingSnapBankTransferBCA(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
         snapTransactionManager.setRestApi(snapAPI);
         snapTransactionManager.paymentUsingBankTransferBCA(request);
+    }
+
+    public void paymentUsingSnapBankTransferPermata(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingBankTransferPermata(request);
     }
 
     public void paymentUsingSnapKlikBCA(SnapRestAPI snapAPI, KlikBCAPaymentRequest request) {
         snapTransactionManager.setRestApi(snapAPI);
         snapTransactionManager.paymentUsingKlikBCA(request);
+    }
+
+    public void paymentUsingSnapBCAKlikpay(SnapRestAPI snapAPI, BasePaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingBCAKlikpay(request);
     }
 }

@@ -35,6 +35,7 @@ import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import id.co.veritrans.sdk.coreflow.models.snap.TransactionData;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
 import id.co.veritrans.sdk.coreflow.transactionmanager.BusCollaborator;
@@ -119,8 +120,13 @@ public class SnapTransactionManagerTest {
     private ArgumentCaptor<BankTransferPaymentRequest> bankTransferRequestCaptor;
     @Mock
     private KlikBCAPaymentRequest klikBCARequestMock;
+    @Mock
+    private BasePaymentRequest basePaymentRequestMock;
     @Captor
     private ArgumentCaptor<KlikBCAPaymentRequest> klikBCARequestCaptor;
+
+    @Captor
+    private ArgumentCaptor<BasePaymentRequest> BCAKlikpayRequestCaptor;
 
     @Before
     public void setup(){
@@ -152,8 +158,8 @@ public class SnapTransactionManagerTest {
 
     }
 
-    /*
-     * get snaptoken test
+    /**
+     * Get Snap token test
      */
     @Test
     public void getTokenTestSuccess(){
@@ -228,8 +234,8 @@ public class SnapTransactionManagerTest {
     }
 
 
-    /*
-     * get paymentType
+    /**
+     * Get Payment Type
      */
 
     @Test
@@ -334,8 +340,8 @@ public class SnapTransactionManagerTest {
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
-    /*
-     * paymentUsingCreditCard
+    /**
+     * Payment using Credit Card.
      */
 
     @Test
@@ -343,7 +349,6 @@ public class SnapTransactionManagerTest {
         eventBusImplementSample.paymentUsingSnapCreditCard(snapAPI, null);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
-
 
     @Test
     public void paymentUsingCreditCardSuccess_whenResponseNull(){
@@ -403,20 +408,19 @@ public class SnapTransactionManagerTest {
         Mockito.verify(busCollaborator).onSSLErrorEvent();
     }
 
-
-    /*
-     * paymentUsingBankTransferBCA
+    /**
+     * Payment Using Bank Transfer BCA
      */
     @Test
     public void paymentUsingBankTransfer_whenRequestNull(){
-        eventBusImplementSample.paymentUsingSnapBankTransfer(snapAPI, null);
+        eventBusImplementSample.paymentUsingSnapBankTransferBCA(snapAPI, null);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
 
     @Test
     public void paymentUsingBankTransferSuccess_whenResponseNull(){
-        eventBusImplementSample.paymentUsingSnapBankTransfer(snapAPI, bankTransferRequestMock);
+        eventBusImplementSample.paymentUsingSnapBankTransferBCA(snapAPI, bankTransferRequestMock);
         Mockito.verify(snapAPI).paymentUsingBankTransferBCA(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
         transactionResponseCallbackCaptor.getValue().success(null, retrofitResponse);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
@@ -425,7 +429,7 @@ public class SnapTransactionManagerTest {
     @Test
     public void paymentUsingBankTransferSuccess_whenCode200(){
         Mockito.when(transactionResponseMock.getStatusCode()).thenReturn("200");
-        eventBusImplementSample.paymentUsingSnapBankTransfer(snapAPI, bankTransferRequestMock);
+        eventBusImplementSample.paymentUsingSnapBankTransferBCA(snapAPI, bankTransferRequestMock);
         Mockito.verify(snapAPI).paymentUsingBankTransferBCA(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
         transactionResponseCallbackCaptor.getValue().success(transactionResponseMock, retrofitResponse);
         Mockito.verify(busCollaborator).onTransactionSuccessEvent();
@@ -435,7 +439,7 @@ public class SnapTransactionManagerTest {
     public void paymentUsingBankTransferSuccess_whenCodeNot200(){
         Mockito.when(transactionResponseMock.getStatusCode()).thenReturn("300");
         eventBusImplementSample.setTransactionManager(transactionManager);
-        eventBusImplementSample.paymentUsingSnapBankTransfer(snapAPI, bankTransferRequestMock);
+        eventBusImplementSample.paymentUsingSnapBankTransferBCA(snapAPI, bankTransferRequestMock);
         Mockito.verify(snapAPI).paymentUsingBankTransferBCA(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
         transactionResponseCallbackCaptor.getValue().success(transactionResponseMock, retrofitResponse);
         Mockito.verify(busCollaborator).onTransactionFailedEvent();
@@ -445,7 +449,7 @@ public class SnapTransactionManagerTest {
     public void paymentUsingBankTransferError_whenGeneralError(){
         Mockito.when(retrofitError.getCause()).thenReturn(errorGeneralMock);
         eventBusImplementSample.setTransactionManager(transactionManager);
-        eventBusImplementSample.paymentUsingSnapBankTransfer(snapAPI, bankTransferRequestMock);
+        eventBusImplementSample.paymentUsingSnapBankTransferBCA(snapAPI, bankTransferRequestMock);
         Mockito.verify(snapAPI).paymentUsingBankTransferBCA(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
         transactionResponseCallbackCaptor.getValue().failure(retrofitError);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
@@ -454,7 +458,7 @@ public class SnapTransactionManagerTest {
     @Test
     public void paymentUsingBankTransferError_whenInvalidSSL(){
         Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidSSLException);
-        eventBusImplementSample.paymentUsingSnapBankTransfer(snapAPI, bankTransferRequestMock);
+        eventBusImplementSample.paymentUsingSnapBankTransferBCA(snapAPI, bankTransferRequestMock);
         Mockito.verify(snapAPI).paymentUsingBankTransferBCA(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
         transactionResponseCallbackCaptor.getValue().failure(retrofitError);
         Mockito.verify(busCollaborator).onSSLErrorEvent();
@@ -463,16 +467,79 @@ public class SnapTransactionManagerTest {
     @Test
     public void paymentUsingBankTransferError_whenInvalidCertPath(){
         Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidCertPatMock);
-        eventBusImplementSample.paymentUsingSnapBankTransfer(snapAPI, bankTransferRequestMock);
+        eventBusImplementSample.paymentUsingSnapBankTransferBCA(snapAPI, bankTransferRequestMock);
         Mockito.verify(snapAPI).paymentUsingBankTransferBCA(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
         transactionResponseCallbackCaptor.getValue().failure(retrofitError);
         Mockito.verify(busCollaborator).onSSLErrorEvent();
     }
 
+    /**
+     * Payment Using Bank Transfer Permata.
+     */
+    @Test
+    public void paymentUsingBankTransferPermata_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapBankTransferPermata(snapAPI, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
 
 
-    /*
-     * paymentUsingKlikBCA
+    @Test
+    public void paymentUsingBankTransferPermataSuccess_whenResponseNull() {
+        eventBusImplementSample.paymentUsingSnapBankTransferPermata(snapAPI, bankTransferRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBankTransferPermata(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().success(null, retrofitResponse);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void paymentUsingBankTransferPermataSuccess_whenCode200() {
+        Mockito.when(transactionResponseMock.getStatusCode()).thenReturn("200");
+        eventBusImplementSample.paymentUsingSnapBankTransferPermata(snapAPI, bankTransferRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBankTransferPermata(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().success(transactionResponseMock, retrofitResponse);
+        Mockito.verify(busCollaborator).onTransactionSuccessEvent();
+    }
+
+    @Test
+    public void paymentUsingBankTransferPermataSuccess_whenCodeNot200() {
+        Mockito.when(transactionResponseMock.getStatusCode()).thenReturn("300");
+        eventBusImplementSample.setTransactionManager(transactionManager);
+        eventBusImplementSample.paymentUsingSnapBankTransferPermata(snapAPI, bankTransferRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBankTransferPermata(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().success(transactionResponseMock, retrofitResponse);
+        Mockito.verify(busCollaborator).onTransactionFailedEvent();
+    }
+
+    @Test
+    public void paymentUsingBankTransferPermataError_whenGeneralError() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorGeneralMock);
+        eventBusImplementSample.setTransactionManager(transactionManager);
+        eventBusImplementSample.paymentUsingSnapBankTransferPermata(snapAPI, bankTransferRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBankTransferPermata(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void paymentUsingBankTransferPermataError_whenInvalidSSL() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidSSLException);
+        eventBusImplementSample.paymentUsingSnapBankTransferBCA(snapAPI, bankTransferRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBankTransferBCA(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(busCollaborator).onSSLErrorEvent();
+    }
+
+    @Test
+    public void paymentUsingBankTransferPermataError_whenInvalidCertPath() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidCertPatMock);
+        eventBusImplementSample.paymentUsingSnapBankTransferPermata(snapAPI, bankTransferRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBankTransferPermata(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(busCollaborator).onSSLErrorEvent();
+    }
+
+    /**
+     * Payment using KlikBCA
      */
     @Test
     public void paymentUsingKlikBCA_whenRequestNull(){
@@ -530,6 +597,68 @@ public class SnapTransactionManagerTest {
         Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidCertPatMock);
         eventBusImplementSample.paymentUsingSnapKlikBCA(snapAPI, klikBCARequestMock);
         Mockito.verify(snapAPI).paymentUsingKlikBCA(klikBCARequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(busCollaborator).onSSLErrorEvent();
+    }
+
+    /**
+     * Payment using BCA Klikpay
+     */
+    @Test
+    public void paymentUsingBCAKlikpay_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapBCAKlikpay(snapAPI, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void paymentUsingBCAKlikpaySuccess_whenResponseNull() {
+        eventBusImplementSample.paymentUsingSnapBCAKlikpay(snapAPI, bankTransferRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBCAKlikPay(BCAKlikpayRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().success(null, retrofitResponse);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void paymentUsingBCAKlikpaySuccess_whenCode200() {
+        Mockito.when(transactionResponseMock.getStatusCode()).thenReturn("200");
+        eventBusImplementSample.paymentUsingSnapBCAKlikpay(snapAPI, basePaymentRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBCAKlikPay(BCAKlikpayRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().success(transactionResponseMock, retrofitResponse);
+        Mockito.verify(busCollaborator).onTransactionSuccessEvent();
+    }
+
+    @Test
+    public void paymentUsingBCAKlikpaySuccess_whenCodeNot200() {
+        Mockito.when(transactionResponseMock.getStatusCode()).thenReturn("300");
+        eventBusImplementSample.paymentUsingSnapBCAKlikpay(snapAPI, basePaymentRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBCAKlikPay(BCAKlikpayRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().success(transactionResponseMock, retrofitResponse);
+        Mockito.verify(busCollaborator).onTransactionFailedEvent();
+    }
+
+    @Test
+    public void paymentUsingBCAKlikpayError_whenGeneralError() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorGeneralMock);
+        eventBusImplementSample.paymentUsingSnapBCAKlikpay(snapAPI, basePaymentRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBCAKlikPay(BCAKlikpayRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void paymentUsingBCAKlikpayError_whenInvalidSSL() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidSSLException);
+        eventBusImplementSample.paymentUsingSnapBCAKlikpay(snapAPI, basePaymentRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBCAKlikPay(BCAKlikpayRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(busCollaborator).onSSLErrorEvent();
+    }
+
+    @Test
+    public void paymentUsingBCAKlikpayError_whenInvalidCertPath() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidCertPatMock);
+        eventBusImplementSample.paymentUsingSnapBCAKlikpay(snapAPI, basePaymentRequestMock);
+        Mockito.verify(snapAPI).paymentUsingBCAKlikPay(BCAKlikpayRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
         transactionResponseCallbackCaptor.getValue().failure(retrofitError);
         Mockito.verify(busCollaborator).onSSLErrorEvent();
     }
