@@ -126,7 +126,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
                     if (klikBCAFragment.checkUserId()) {
                         // Do the payment
                         SdkUIFlowUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
-                        mVeritransSDK.snapPaymentUsingKlikBCA(klikBCAFragment.getUserId(), mVeritransSDK.readAuthenticationToken());
+                        mVeritransSDK.snapPaymentUsingKlikBCA(mVeritransSDK.readAuthenticationToken(), klikBCAFragment.getUserId());
                     }
                 }
             }

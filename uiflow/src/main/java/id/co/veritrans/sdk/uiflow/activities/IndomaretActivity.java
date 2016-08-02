@@ -243,7 +243,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         cstoreEntity.setStore("indomaret");
 
         //Execute transaction
-        veritransSDK.paymentUsingIndomaret(cstoreEntity);
+        veritransSDK.snapPaymentUsingIndomaret(veritransSDK.readAuthenticationToken());
     }
 
 

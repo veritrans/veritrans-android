@@ -132,7 +132,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         DescriptionModel cimbDescription = new DescriptionModel("Any Description");
 
-        mVeritransSDK.paymentUsingCIMBClickPay(cimbDescription);
+        mVeritransSDK.snapPaymentUsingCIMBClick(mVeritransSDK.readAuthenticationToken());
     }
 
     @Override

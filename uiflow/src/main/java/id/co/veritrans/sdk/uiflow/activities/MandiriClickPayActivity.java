@@ -259,8 +259,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
      * @param mandiriClickPayModel  Mandiri click pay request object
      */
     private void makeTransaction(MandiriClickPayModel mandiriClickPayModel) {
-
-        mVeritransSDK.paymentUsingMandiriClickPay(mandiriClickPayModel);
+        mVeritransSDK.snapPaymentUsingMandiriClickPay(mVeritransSDK.readAuthenticationToken(), mandiriClickPayModel.getCardNumber(), mandiriClickPayModel.getToken(), mandiriClickPayModel.getInput3());
     }
 
 

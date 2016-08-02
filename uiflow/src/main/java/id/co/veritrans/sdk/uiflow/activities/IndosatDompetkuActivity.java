@@ -183,8 +183,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         if (view.getId() == R.id.btn_confirm_payment) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
-
-                performTrsansaction();
+                performTransaction();
 
             } else {
                 RESULT_CODE = RESULT_OK;
@@ -199,7 +198,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * Performs the validation and if satisfies the required condition then it will either start
      * indosat dompetku payment procedure.
      */
-    private void performTrsansaction() {
+    private void performTransaction() {
 
         if (mIndosatFragment != null && !mIndosatFragment.isDetached()) {
 
@@ -207,8 +206,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
             if (!TextUtils.isEmpty(phoneNumber) && SdkUIFlowUtil.isPhoneNumberValid(phoneNumber)) {
                 Logger.i("setting phone number " + phoneNumber);
-                mVeritransSDK.getTransactionRequest().getCustomerDetails().setPhone(phoneNumber
-                        .trim());
+                mVeritransSDK.getTransactionRequest().getCustomerDetails().setPhone(phoneNumber.trim());
             } else {
                 SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_invalid_phone_number));
                 return;
@@ -220,8 +218,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
         if (veritransSDK != null) {
 
-            SdkUIFlowUtil.showProgressDialog(IndosatDompetkuActivity.this, getString(R.string
-                    .processing_payment), false);
+            SdkUIFlowUtil.showProgressDialog(IndosatDompetkuActivity.this, getString(R.string.processing_payment), false);
             transactionUsingIndosat(veritransSDK);
 
         } else {
@@ -239,7 +236,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * @param veritransSDK  Veritrans SDK instance
      */
     private void transactionUsingIndosat(final VeritransSDK veritransSDK) {
-        veritransSDK.paymentUsingIndosatDompetku(phoneNumber);
+        veritransSDK.snapPaymentUsingIndosatDompetku(veritransSDK.readAuthenticationToken(), phoneNumber);
     }
 
 

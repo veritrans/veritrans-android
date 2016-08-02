@@ -272,8 +272,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
         }
 
-//        veritransSDK.paymentUsingCard(cardTransfer);
-        veritransSDK.snapPaymentUsingCard(tokenDetailsResponse.getTokenId(), veritransSDK.readAuthenticationToken(), false);
+        veritransSDK.snapPaymentUsingCard(veritransSDK.readAuthenticationToken(), tokenDetailsResponse.getTokenId(), false);
     }
 
     public VeritransSDK getVeritransSDK() {

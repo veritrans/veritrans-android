@@ -132,7 +132,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
 
         DescriptionModel description = new DescriptionModel("Any Description");
 
-        mVeritransSDK.paymentUsingMandiriECash(description);
+        mVeritransSDK.snapPaymentUsingMandiriEcash(mVeritransSDK.readAuthenticationToken());
     }
 
 

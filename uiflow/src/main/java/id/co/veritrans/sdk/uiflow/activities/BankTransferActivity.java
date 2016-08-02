@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
+import id.co.veritrans.sdk.coreflow.core.SdkUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -381,7 +382,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void bcaBankTransferTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingBankTransferBCA(veritransSDK.getTransactionRequest().getCustomerDetails().getEmail(), veritransSDK.readAuthenticationToken());
+        veritransSDK.snapPaymentUsingBankTransferBCA(veritransSDK.readAuthenticationToken(), veritransSDK.getTransactionRequest().getCustomerDetails().getEmail());
     }
 
 
@@ -392,7 +393,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void bankTransferTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingBankTransferPermata(veritransSDK.getTransactionRequest().getCustomerDetails().getEmail(), veritransSDK.readAuthenticationToken());
+        veritransSDK.snapPaymentUsingBankTransferPermata(veritransSDK.readAuthenticationToken(), veritransSDK.getTransactionRequest().getCustomerDetails().getEmail());
     }
 
 
@@ -403,7 +404,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void mandiriBillPayTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.paymentUsingMandiriBillPay();
+        veritransSDK.snapPaymentUsingMandiriBillPay(veritransSDK.readAuthenticationToken(), SdkUtil.getEmailAddress(veritransSDK.getTransactionRequest()));
     }
 
     /**
