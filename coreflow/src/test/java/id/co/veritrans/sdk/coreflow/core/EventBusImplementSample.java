@@ -56,7 +56,10 @@ import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.IndosatDompetkuPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.MandiriClickPayPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
 import id.co.veritrans.sdk.coreflow.transactionmanager.BusCollaborator;
 
 /**
@@ -386,5 +389,55 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
     public void paymentUsingSnapBCAKlikpay(SnapRestAPI snapAPI, BasePaymentRequest request) {
         snapTransactionManager.setRestApi(snapAPI);
         snapTransactionManager.paymentUsingBCAKlikpay(request);
+    }
+
+    public void paymentUsingSnapMandiriBillpay(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingMandiriBillPay(request);
+    }
+
+    public void paymentUsingSnapMandiriClickPay(SnapRestAPI snapAPI, MandiriClickPayPaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingMandiriClickPay(request);
+    }
+
+    public void paymentUsingSnapCIMBClick(SnapRestAPI snapAPI, BasePaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingCIMBClick(request);
+    }
+
+    public void paymentUsingSnapBRIEpay(SnapRestAPI snapAPI, BasePaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingBRIEpay(request);
+    }
+
+    public void paymentUsingSnapMandirEcash(SnapRestAPI snapAPI, BasePaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingMandiriEcash(request);
+    }
+
+    public void paymentUsingSnapTelkomselEcash(SnapRestAPI snapAPI, TelkomselEcashPaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingTelkomselCash(request);
+    }
+
+    public void paymentUsingSnapXLTunai(SnapRestAPI snapAPI, BasePaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingXLTunai(request);
+    }
+
+    public void paymentUsingSnapIndomaret(SnapRestAPI snapAPI, BasePaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingIndomaret(request);
+    }
+
+    public void paymentUsingSnapIndosatDompetku(SnapRestAPI snapAPI, IndosatDompetkuPaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingIndosatDompetku(request);
+    }
+
+    public void paymentUsingSnapKiosan(SnapRestAPI snapAPI, BasePaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingKiosan(request);
     }
 }

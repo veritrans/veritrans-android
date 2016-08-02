@@ -967,6 +967,16 @@ public class VeritransSDK {
         }
     }
 
+    public void snapPaymentUsingEpayBRI(@NonNull String token){
+        if(Utils.isNetworkAvailable(context)){
+            isRunning = true;
+            mSnapTransactionManager.paymentUsingBRIEpay(new BasePaymentRequest(token));
+        }else{
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+        }
+    }
+
     public IScanner getExternalScanner() {
         return externalScanner;
     }
