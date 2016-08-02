@@ -686,6 +686,12 @@ public class SnapTransactionManagerTest {
      */
 
     @Test
+    public void paymentUsingMandiriBillpay_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapMandiriBillpay(snapAPI, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
     public void paymentUsingMandiriBillpaySuccess_whenResponseNull() {
         eventBusImplementSample.paymentUsingSnapMandiriBillpay(snapAPI, bankTransferRequestMock);
         Mockito.verify(snapAPI).paymentUsingMandiriBillPay(bankTransferRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
@@ -800,6 +806,12 @@ public class SnapTransactionManagerTest {
      */
 
     @Test
+    public void paymentCIMBClick_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapCIMBClick(snapAPI, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
     public void paymentUsingCIMBClickpaySuccess_whenResponseNull() {
         eventBusImplementSample.paymentUsingSnapCIMBClick(snapAPI, basePaymentRequestMock);
         Mockito.verify(snapAPI).paymentUsingCIMBClick(basePaymentRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
@@ -855,6 +867,11 @@ public class SnapTransactionManagerTest {
     /**
      * Payment using bri epay
      */
+    @Test
+    public void paymentEpayBRI_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapBRIEpay(snapAPI, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
 
     @Test
     public void paymentUsingBRIEpaySuccess_whenResponseNull() {
@@ -914,6 +931,12 @@ public class SnapTransactionManagerTest {
      */
 
     @Test
+    public void paymentTelkomselEcash_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapTelkomselEcash(snapAPI, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
     public void paymentUsingMandiriEcashSuccess_whenResponseNull() {
         eventBusImplementSample.paymentUsingSnapMandirEcash(snapAPI, basePaymentRequestMock);
         Mockito.verify(snapAPI).paymentUsingMandiriEcash(basePaymentRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
@@ -971,6 +994,12 @@ public class SnapTransactionManagerTest {
      */
 
     @Test
+    public void paymentUsingtelkomselEcash_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapTelkomselEcash(snapAPI, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
     public void paymentUsingTelkomselEcashSuccess_whenResponseNull() {
         eventBusImplementSample.paymentUsingSnapTelkomselEcash(snapAPI, telkomselEcashPaymentRequestMock);
         Mockito.verify(snapAPI).paymentUsingTelkomselEcash(telkomselEcashPaymentRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
@@ -1026,6 +1055,12 @@ public class SnapTransactionManagerTest {
     /**
      * Payment using xl tunai
      */
+
+    @Test
+    public void paymentUsingXLTunai_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapXLTunai(snapAPI, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
 
     @Test
     public void paymentUsingXLTunaiSuccess_whenResponseNull() {
@@ -1086,6 +1121,12 @@ public class SnapTransactionManagerTest {
      */
 
     @Test
+    public void paymentUsingIndomaret_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapIndomaret(snapAPI, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
     public void paymentUsingIndomaretuccess_whenResponseNull() {
         eventBusImplementSample.paymentUsingSnapIndomaret(snapAPI, basePaymentRequestMock);
         Mockito.verify(snapAPI).paymentUsingIndomaret(basePaymentRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
@@ -1141,7 +1182,11 @@ public class SnapTransactionManagerTest {
     /**
      * Payment using indosat dompetku
      */
-
+    @Test
+    public void paymentUsingIndosatDompetku_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapIndosatDompetku(snapAPI, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
     @Test
     public void paymentUsingIndosatDompetkuSuccess_whenResponseNull() {
         eventBusImplementSample.paymentUsingSnapIndosatDompetku(snapAPI, indosatDompetkuPaymentRequestMock);
@@ -1198,6 +1243,12 @@ public class SnapTransactionManagerTest {
     /**
      * Payment using kiosan
      */
+
+    @Test
+    public void paymentUsingKiosan_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapKiosan(snapAPI, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
 
     @Test
     public void paymentUsingKiosanSuccess_whenResponseNull() {
