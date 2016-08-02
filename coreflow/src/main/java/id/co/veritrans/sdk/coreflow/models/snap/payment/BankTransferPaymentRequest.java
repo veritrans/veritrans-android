@@ -9,6 +9,7 @@ public class BankTransferPaymentRequest extends BasePaymentRequest {
     @SerializedName("email_address")
     private String emailAddress;
 
+
     public String getEmailAddress() {
         return emailAddress;
     }

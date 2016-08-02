@@ -25,7 +25,10 @@ import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.IndosatDompetkuPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.MandiriClickPayPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -388,4 +391,438 @@ public class SnapTransactionManager extends BaseTransactionManager{
         }
     }
 
+    public void paymentUsingMandiriBillPay(BankTransferPaymentRequest paymentRequest) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingMandiriBillPay(paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, error.getMessage());
+                }
+            });
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    public void paymentUsingMandiriClickPay(MandiriClickPayPaymentRequest paymentRequest) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingMandiriClickPay(paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, error.getMessage());
+                }
+            });
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+
+    public void paymentUsingCIMBClick(BasePaymentRequest paymentRequest) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingCIMBClick(paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CIMB_CLICK, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, error.getMessage());
+                }
+            });
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+
+    public void paymentUsingBRIEpay(BasePaymentRequest paymentRequest) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingBRIEpay(paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BRI_EPAY, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, error.getMessage());
+                }
+            });
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+
+    public void paymentUsingMandiriEcash(BasePaymentRequest paymentRequest) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingMandiriEcash(paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_ECASH, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, error.getMessage());
+                }
+            });
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+
+    public void paymentUsingTelkomselCash(TelkomselEcashPaymentRequest paymentRequest) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingTelkomselEcash(paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, error.getMessage());
+                }
+            });
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    public void paymentUsingXLTunai(BasePaymentRequest paymentRequest) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingXlTunai(paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_XL_TUNAI, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_XL_TUNAI, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_XL_TUNAI, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_XL_TUNAI, end - start, error.getMessage());
+                }
+            });
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    public void paymentUsingIndomaret(BasePaymentRequest paymentRequest) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingIndomaret(paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOMARET, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, error.getMessage());
+                }
+            });
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    public void paymentUsingIndosatDompetku(IndosatDompetkuPaymentRequest paymentRequest) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingIndosatDompetku(paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, error.getMessage());
+                }
+            });
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+
+    public void paymentUsingKiosan(BasePaymentRequest paymentRequest) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingKiosan(paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            VeritransBusProvider.getInstance().post(new TransactionSuccessEvent(transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_KIOSAN, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            VeritransBusProvider.getInstance().post(new TransactionFailedEvent(transactionResponse.getStatusMessage(), transactionResponse, Events.SNAP_PAYMENT));
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KIOSAN, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.SNAP_PAYMENT));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KIOSAN, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_PAYMENT));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_PAYMENT));
+                    }
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KIOSAN, end - start, error.getMessage());
+                }
+            });
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
 }

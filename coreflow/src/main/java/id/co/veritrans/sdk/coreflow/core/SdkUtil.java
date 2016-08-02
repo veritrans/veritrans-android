@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
@@ -38,7 +39,9 @@ import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.MandiriClickPayPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.PaymentDetails;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
 
 /**
  * Created by ziahaqi on 18/06/2016.
@@ -563,7 +566,7 @@ public class SdkUtil {
         return paymentRequest;
     }
 
-    public static BankTransferPaymentRequest getBankTransferPaymentRequest(String email, TransactionRequest transactionRequest, String tokenId) {
+    public static BankTransferPaymentRequest getBankTransferPaymentRequest(String email, String tokenId) {
         BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest();
         paymentRequest.setEmailAddress(email);
         paymentRequest.setTransactionId(tokenId);
@@ -582,4 +585,13 @@ public class SdkUtil {
     public static String getEmailAddress(TransactionRequest transactionRequest) {
         return transactionRequest.getCustomerDetails().getEmail();
     }
+
+    public static MandiriClickPayPaymentRequest getMandiriClickPaymentRequest(String token, String mandiriCardNumber, String tokenResponse) {
+        MandiriClickPayPaymentRequest request = new MandiriClickPayPaymentRequest();
+        request.setTransactionId(token);
+        request.setMandiriCardNumber(mandiriCardNumber);
+        request.setTokenResponse(tokenResponse);
+        return request;
+    }
+
 }

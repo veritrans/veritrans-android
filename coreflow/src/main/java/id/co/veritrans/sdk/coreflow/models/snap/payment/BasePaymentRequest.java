@@ -7,8 +7,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class BasePaymentRequest {
     @SerializedName("transaction_id")
-    private String transactionId;
-    private String authenticityToken;
+    protected String transactionId;
+    protected String authenticityToken;
 
     public BasePaymentRequest() {
 

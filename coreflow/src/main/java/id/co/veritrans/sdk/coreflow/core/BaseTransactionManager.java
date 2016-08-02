@@ -28,6 +28,12 @@ public abstract class BaseTransactionManager {
     protected static final String PAYMENT_TYPE_INDOSAT_DOMPETKU = "indosat_dompetku";
     protected static final String PAYMENT_TYPE_INDOMARET = "indomaret";
     protected static final String PAYMENT_TYPE_KLIK_BCA = "bca_klikbca";
+    protected static final String PAYMENT_TYPE_MANDIRI_BILL_PAY = "mandiri_bill_pay";
+    protected static final String PAYMENT_TYPE_TELKOMSEL_ECASH = "telkomsel_ecash";
+    protected static final String PAYMENT_TYPE_XL_TUNAI = "xl_tunai";
+    protected static final String PAYMENT_TYPE_KIOSAN = "xl_tunai";
+
+
     // Bank transfer type
     protected static final String BANK_PERMATA = "permata";
     protected static final String BANK_BCA = "bca";
