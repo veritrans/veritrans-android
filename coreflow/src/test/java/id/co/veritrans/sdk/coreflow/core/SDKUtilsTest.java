@@ -546,8 +546,8 @@ public class SDKUtilsTest {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionManagerMock);
 
-        Assert.assertEquals(klikBCAUserId, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, transactionRequestMock, token).getUserId());
-        Assert.assertEquals(token, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, transactionRequestMock, token).getTransactionId());
+        Assert.assertEquals(klikBCAUserId, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, token).getUserId());
+        Assert.assertEquals(token, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, token).getTransactionId());
     }
 
     @Test
