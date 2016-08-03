@@ -41,6 +41,8 @@ public class PaymentMethods {
             return getMethodIndosatDompetku(context);
         } else if (name.equals(context.getString(R.string.payment_telkomsel_cash))) {
             return getMethodTelkomselCash(context);
+        } else if (name.equals(context.getString(R.string.payment_xl_tunai))) {
+            return getMethodXLTunai(context);
         } else {
             return null;
         }
@@ -98,6 +100,10 @@ public class PaymentMethods {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_telkomsel_cash), R.drawable.ic_indosat, Constants.PAYMENT_METHOD_NOT_SELECTED);
     }
 
+    public static PaymentMethodsModel getMethodXLTunai(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_xl_tunai), R.drawable.ic_indosat, Constants.PAYMENT_METHOD_NOT_SELECTED);
+    }
+
     /**
      * Get all supported payment methods by default.
      */
@@ -118,7 +124,7 @@ public class PaymentMethods {
     }
 
     private static String[] getStringList(Context context) {
-        String[] paymentNameList = new String[13];
+        String[] paymentNameList = new String[14];
         paymentNameList[0] = context.getString(R.string.payment_method_credit_card);
         paymentNameList[1] = context.getString(R.string.payment_method_bank_transfer);
         paymentNameList[2] = context.getString(R.string.payment_method_klik_bca);
@@ -132,13 +138,13 @@ public class PaymentMethods {
         paymentNameList[10] = context.getString(R.string.payment_method_indosat_dompetku);
         paymentNameList[11] = context.getString(R.string.payment_method_indomaret);
         paymentNameList[12] = context.getString(R.string.payment_method_telkomsel_cash);
-
+        paymentNameList[13] = context.getString(R.string.payment_method_xl_tunai);
         return paymentNameList;
     }
 
     private static int[] getImageList() {
 
-        int[] paymentImageList = new int[13];
+        int[] paymentImageList = new int[14];
         paymentImageList[0] = R.drawable.ic_credit;
         paymentImageList[1] = R.drawable.ic_atm;
         paymentImageList[2] = R.drawable.ic_klikbca;
@@ -152,6 +158,7 @@ public class PaymentMethods {
         paymentImageList[10] = R.drawable.ic_indosat;
         paymentImageList[11] = R.drawable.ic_indomaret;
         paymentImageList[12] = R.drawable.ic_indosat;
+        paymentImageList[13] = R.drawable.ic_indosat;
 
         return paymentImageList;
     }
@@ -187,6 +194,7 @@ public class PaymentMethods {
         paymentNameList.add(context.getString(R.string.payment_indosat_dompetku));
         paymentNameList.add(context.getString(R.string.payment_indomaret));
         paymentNameList.add(context.getString(R.string.payment_telkomsel_cash));
+        paymentNameList.add(context.getString(R.string.payment_xl_tunai));
         return paymentNameList;
     }
 }

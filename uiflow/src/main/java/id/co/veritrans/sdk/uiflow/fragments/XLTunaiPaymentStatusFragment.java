@@ -14,16 +14,15 @@ import java.util.regex.Pattern;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.IndomaretActivity;
+import id.co.veritrans.sdk.uiflow.activities.XLTunaiActivity;
 
 /**
- * Created by shivam on 10/27/15.
+ * Created by rakawm on 8/4/16.
  */
-public class IndomaretPaymentStatusFragment extends Fragment {
-
-    private static final String INDOMARET = "Indomaret";
+public class XLTunaiPaymentStatusFragment extends Fragment {
+    private static final String XL_TUNAI = "XL Tunai";
     private static final String DATA = "data";
-    private static final String IS_FROM_INDOMARET = "indomaret";
+    private static final String IS_FROM_XL_TUNAI = "xl_tunai";
     private TransactionResponse transactionResponse = null;
     // Views
     private TextView mTextViewAmount = null;
@@ -33,17 +32,16 @@ public class IndomaretPaymentStatusFragment extends Fragment {
     private TextView mTextViewTransactionStatus = null;
     private TextView mTextViewPaymentErrorMessage = null;
     private ImageView mImageViewTransactionStatus = null;
-    private boolean isFromIndomaret = false;
+    private boolean isFromXLTunai = false;
 
-    public static IndomaretPaymentStatusFragment newInstance(TransactionResponse transactionResponse, boolean isFromIndomaret) {
-        IndomaretPaymentStatusFragment fragment = new IndomaretPaymentStatusFragment();
+    public static XLTunaiPaymentStatusFragment newInstance(TransactionResponse transactionResponse, boolean isFromXLTunai) {
+        XLTunaiPaymentStatusFragment fragment = new XLTunaiPaymentStatusFragment();
         Bundle data = new Bundle();
         data.putSerializable(DATA, transactionResponse);
-        data.putBoolean(IS_FROM_INDOMARET, isFromIndomaret);
+        data.putBoolean(IS_FROM_XL_TUNAI, isFromXLTunai);
         fragment.setArguments(data);
         return fragment;
     }
-
 
     @Nullable
     @Override
@@ -62,14 +60,14 @@ public class IndomaretPaymentStatusFragment extends Fragment {
         //retrieve data from bundle.
         Bundle data = getArguments();
         transactionResponse = (TransactionResponse) data.getSerializable(DATA);
-        isFromIndomaret = data.getBoolean(IS_FROM_INDOMARET);
+        isFromXLTunai = data.getBoolean(IS_FROM_XL_TUNAI);
         initializeDataToView();
     }
 
     /**
      * initializes view and adds click listener for it.
      *
-     * @param view  view that needed to be initialized
+     * @param view view that needed to be initialized
      */
     private void initializeViews(View view) {
 
@@ -94,15 +92,15 @@ public class IndomaretPaymentStatusFragment extends Fragment {
 
         if (transactionResponse != null) {
 
-            if ( getActivity() != null ) {
+            if (getActivity() != null) {
 
-                if( !isFromIndomaret ) {
-                    if (((IndomaretActivity) getActivity()).getPosition()
-                            == Constants.PAYMENT_METHOD_INDOMARET) {
-                        mTextViewBankName.setText(INDOMARET);
+                if (!isFromXLTunai) {
+                    if (((XLTunaiActivity) getActivity()).getPosition()
+                            == Constants.PAYMENT_METHOD_XL_TUNAI) {
+                        mTextViewBankName.setText(getString(R.string.xl_tunai));
                     }
-                }else {
-                    mTextViewBankName.setText(getActivity().getResources().getString(R.string.indomaret));
+                } else {
+                    mTextViewBankName.setText(getActivity().getResources().getString(R.string.xl_tunai));
                 }
             }
 
@@ -123,11 +121,11 @@ public class IndomaretPaymentStatusFragment extends Fragment {
 
                 setUiForFailure();
 
-                if (getActivity() != null ) {
+                if (getActivity() != null) {
 
-                    if (isFromIndomaret) {
+                    if (isFromXLTunai) {
                         // change name of button to 'RETRY'
-                        ((IndomaretActivity) getActivity()).activateRetry();
+                        ((XLTunaiActivity) getActivity()).activateRetry();
                     }
                 }
             }

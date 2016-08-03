@@ -322,6 +322,7 @@
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="telkomsel_cash">Telkomsel Cash</string>
+    <string name="xl_tunai">XL Tunai</string>
     <string name="mandiri_e_cash">Mandiri e-Cash</string>
     <string name="klik_bca">Klik BCA</string>
     <string name="bca_klik">BCA KlikPay</string>
@@ -361,6 +362,13 @@
     <string name="telkomsel_instruction_step1">1.\tSend a text message to Telkomsel, type TOKEN _PIN_, send to 2828.</string>
     <string name="telkomsel_instruction_step2">2.\tInput the token sent from Telkomsel\'s reply into T-CASH TOKEN field.</string>
     <string name="telkomsel_instruction_step3">3.\tYour transaction will expire unless you complete your payment in 30 minutes.</string>
+
+    <string name="xl_instruction_step1">1.\tDial *123*120#.</string>
+    <string name="xl_instruction_step2">2.\tReply \'4\' for \'Belanja Online\'.</string>
+    <string name="xl_instruction_step3">3.\tInput XL Tunai Merchant Code.</string>
+    <string name="xl_instruction_step4">4.\tInput XL Tunai Order ID.</string>
+    <string name="xl_instruction_step5">5.\tInput your XL Tunai PIN.</string>
+    <string name="xl_instruction_step6">6.\tYou will receive an SMS confirmation from XL.</string>
 
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
     <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing [img src=ic_mandiri_instrcn/].</string>
@@ -422,6 +430,7 @@
     <string name="payment_method_bbm_money">BBM Money</string>
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
     <string name="payment_method_telkomsel_cash">Telkomsel Cash</string>
+    <string name="payment_method_xl_tunai">XL Tunai</string>
     <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_klik_bca">KlikBCA</string>
@@ -435,6 +444,7 @@
     <string name="payment_bbm_money">bbm_money</string>
     <string name="payment_indosat_dompetku">indosat_dompetku</string>
     <string name="payment_telkomsel_cash">telkomsel_cash</string>
+    <string name="payment_xl_tunai">xl_tunai</string>
     <string name="payment_mandiri_ecash">mandiri_ecash</string>
     <string name="payment_indomaret">indomaret</string>
     <string name="payment_credit_debit">credit_card</string>
@@ -484,4 +494,14 @@
     <string name="bank_transfer_permata">permata</string>
     <string name="error_transaction_empty">Transaction Data is Empty</string>
     <string name="text_hint_telkomsel_token">T-Cash Token</string>
+    <string name="text_hint_xl_order_id">Order ID</string>
+    <string name="text_hint_xl_merchant_code">Merchant Code</string>
+
+    <string name="text_copy_order_id">Copy Order ID</string>
+    <string name="text_copy_merchant_code">Copy Merchant Code</string>
+
+    <string name="copied_order_id">Order ID was copied to clipboard</string>
+    <string name="copied_merchant_code">Merchant code was copied to clipboard</string>
+
+    <string name="text_format_valid_until">Valid Until : %1$s</string>
 </resources>

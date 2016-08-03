@@ -334,4 +334,22 @@
     <string name="error_empty_tcash_token_field">Token T-Cash tidak boleh kosong.</string>
     <string name="error_invalid_phone_number">Nomor telepon tidak benar.</string>
     <string name="error_something_wrong">Sedang terjadi kesalahan, silakan ulangi lagi!</string>
+
+    <string name="xl_instruction_step1">1.\tHubungi *123*120#.</string>
+    <string name="xl_instruction_step2">2.\tBalas \'4\' untuk \'Belanja Online\'.</string>
+    <string name="xl_instruction_step3">3.\tMasukkan Kode Penjual XL Tunai.</string>
+    <string name="xl_instruction_step4">4.\tMasukkan Kode pemesanan XL Tunai.</string>
+    <string name="xl_instruction_step5">5.\tMasukkan PIN XL Tunai anda.</string>
+    <string name="xl_instruction_step6">6.\tAnda akan menerima SMS konfirmasi dari XL.</string>
+
+    <string name="text_hint_xl_order_id">Kode Pemesanan</string>
+    <string name="text_hint_xl_merchant_code">Kode Penjual</string>
+
+    <string name="text_copy_order_id">Salin Kode Pemesanan</string>
+    <string name="text_copy_merchant_code">Salin Kode Penjual</string>
+
+    <string name="copied_order_id">Kode pemesanan telah disalin ke clipboard</string>
+    <string name="copied_merchant_code">Kode penjual telah disalin ke clipboard</string>
+
+    <string name="text_format_valid_until">Valid Sampai : %1$s</string>
 </resources>
