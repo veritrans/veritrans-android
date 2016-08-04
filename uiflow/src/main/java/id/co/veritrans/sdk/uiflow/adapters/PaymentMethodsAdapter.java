@@ -30,6 +30,8 @@ import id.co.veritrans.sdk.uiflow.activities.MandiriECashActivity;
 import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.uiflow.activities.PaymentMethodsActivity;
 import id.co.veritrans.sdk.uiflow.activities.SelectBankTransferActivity;
+import id.co.veritrans.sdk.uiflow.activities.TelkomselCashActivity;
+import id.co.veritrans.sdk.uiflow.activities.XLTunaiActivity;
 
 /**
  * adapter for payment methods recycler view.
@@ -146,6 +148,12 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                 Intent startKlikBcaActivity = new Intent(sActivity, KlikBCAActivity.class);
                 startKlikBcaActivity.putExtra(sActivity.getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
                 sActivity.startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_telkomsel_cash))) {
+                Intent telkomselCashActivity = new Intent(sActivity, TelkomselCashActivity.class);
+                sActivity.startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_xl_tunai))) {
+                Intent xlTunaiActivity = new Intent(sActivity, XLTunaiActivity.class);
+                sActivity.startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else {
                 showMessage();
             }

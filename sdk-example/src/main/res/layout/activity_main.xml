@@ -258,7 +258,8 @@
                     android:layout_marginRight="@dimen/eight_dp"
                     android:layout_weight="0.5"
                     android:text="@string/btn_show_core"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/show_ui_flow"
