@@ -56,17 +56,6 @@ public class PermataVAPaymentActivity extends AppCompatActivity implements Trans
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                // Create transaction request
-                String orderId = UUID.randomUUID().toString();
-                TransactionRequest request = new TransactionRequest(orderId, 360000);
-                // Set item details
-                ItemDetails itemDetails = new ItemDetails("1", 360000, 1, "shoes");
-                ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-                itemDetailsArrayList.add(itemDetails);
-                request.setItemDetails(itemDetailsArrayList);
-                // Set transaction request
-                VeritransSDK.getVeritransSDK().setTransactionRequest(request);
-                // Do payment
                 VeritransSDK.getVeritransSDK().paymentUsingPermataBank();
             }
         });
