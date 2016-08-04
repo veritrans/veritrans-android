@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -55,17 +56,6 @@ public class PermataVAPaymentActivity extends AppCompatActivity implements Trans
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                // Create transaction request
-                String orderId = UUID.randomUUID().toString();
-                TransactionRequest request = new TransactionRequest(orderId, 360000);
-                // Set item details
-                ItemDetails itemDetails = new ItemDetails("1", 360000, 1, "shoes");
-                ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-                itemDetailsArrayList.add(itemDetails);
-                request.setItemDetails(itemDetailsArrayList);
-                // Set transaction request
-                VeritransSDK.getVeritransSDK().setTransactionRequest(request);
-                // Do payment
                 VeritransSDK.getVeritransSDK().paymentUsingPermataBank();
             }
         });
@@ -74,12 +64,10 @@ public class PermataVAPaymentActivity extends AppCompatActivity implements Trans
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent transactionSuccessEvent) {
-        // Handle success transaction
         dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Payment is Successful")
-                .create();
-        dialog.show();
+        Toast.makeText(this, "transaction successfull (" + transactionSuccessEvent.getResponse().getStatusMessage() + ")", Toast.LENGTH_LONG).show();
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Subscribe
@@ -99,7 +87,7 @@ public class PermataVAPaymentActivity extends AppCompatActivity implements Trans
         // Handle network not available condition
         dialog.dismiss();
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Network is unavailable")
+                .setMessage(getString(R.string.no_network))
                 .create();
         dialog.show();
     }

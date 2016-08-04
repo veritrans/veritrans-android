@@ -29,7 +29,8 @@ public class CoreFlowListAdapter extends RecyclerView.Adapter<CoreFlowListAdapte
     }
 
     public void setData(List<CoreViewModel> data) {
-        this.data = data;
+        this.data.clear();
+        this.data.addAll(data);
     }
 
     public CoreViewModel getItem(int position) {

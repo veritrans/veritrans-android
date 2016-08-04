@@ -104,6 +104,7 @@ public class WebviewFragment extends Fragment {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Logger.i("Url:finished:" + url);
             view.loadUrl(url);
             return true;
         }
@@ -111,6 +112,7 @@ public class WebviewFragment extends Fragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            Logger.i("Url:finished:" + url);
             SdkUIFlowUtil.hideProgressDialog();
             if (url.contains(BuildConfig.CALLBACK_STRING)) {
                 Intent returnIntent = new Intent();
@@ -159,8 +161,6 @@ public class WebviewFragment extends Fragment {
 
 
     public class JsInterface {
-
-
         /**
          * code is written on merchant server (redirect url)
          * doctype html
@@ -186,20 +186,4 @@ public class WebviewFragment extends Fragment {
         }
 
     }
-
-    /*public class WebAppInterface {
-        Context mContext;
-
-        *//** Instantiate the interface and set the context *//*
-        WebAppInterface(Context c) {
-            mContext = c;
-        }
-
-        *//** Show a toast from the web page *//*
-        @JavascriptInterface
-        public void showToast(String toast) {
-            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
 }
