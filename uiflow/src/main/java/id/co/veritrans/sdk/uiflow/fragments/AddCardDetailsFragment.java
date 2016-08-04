@@ -145,6 +145,31 @@ public class AddCardDetailsFragment extends Fragment {
                 checkCardValidity();
             }
         });
+        etCardNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasfocus) {
+                if(!hasfocus){
+                    isCardNumberValid();
+                }
+            }
+        });
+        etExpiryDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasfocus) {
+                if(!hasfocus){
+                    isExpireyDateValid();
+                }
+            }
+        });
+        etCvv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasfocus) {
+                if(!hasfocus){
+                    isCvvValid();
+                }
+            }
+        });
+
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
             payNowBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
             scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getDefaultText()));
@@ -315,12 +340,29 @@ public class AddCardDetailsFragment extends Fragment {
         );
     }
 
-    private boolean checkCardValidity() {
-        cardNumber = etCardNo.getText().toString().trim().replace(" ", "");
-        expiryDate = etExpiryDate.getText().toString().trim();
-        cvv = etCvv.getText().toString().trim();
-        questionImg.setVisibility(View.VISIBLE);
+    private boolean isCardNumberValid(){
         boolean isValid = true;
+
+        cardNumber = etCardNo.getText().toString().trim().replace(" ", "");
+        if (TextUtils.isEmpty(cardNumber)) {
+            tilCardNo.setError(getString(R.string.validation_message_card_number));
+            isValid = false;
+        } else {
+            tilCardNo.setError(null);
+        }
+
+        if (cardNumber.length() < 15 || !SdkUIFlowUtil.isValidCardNumber(cardNumber)) {
+            tilCardNo.setError(getString(R.string.validation_message_invalid_card_no));
+            isValid = false;
+        } else {
+            tilCardNo.setError(null);
+        }
+        return isValid;
+    }
+
+    private boolean isExpireyDateValid(){
+        boolean isValid = true;
+        expiryDate = etExpiryDate.getText().toString().trim();
         try {
             expDateArray = expiryDate.split("/");
             Logger.i("expDate:" + expDateArray[0], "" + expDateArray[1]);
@@ -328,18 +370,6 @@ public class AddCardDetailsFragment extends Fragment {
             Logger.i("expiry date empty");
         } catch (IndexOutOfBoundsException e) {
             Logger.i("expiry date issue");
-        }
-        if (TextUtils.isEmpty(cardNumber)) {
-            tilCardNo.setError(getString(R.string.validation_message_card_number));
-            isValid = false;
-        } else {
-            tilCardNo.setError(null);
-        }
-        if (cardNumber.length() < 15 || !SdkUIFlowUtil.isValidCardNumber(cardNumber)) {
-            tilCardNo.setError(getString(R.string.validation_message_invalid_card_no));
-            isValid = false;
-        } else {
-            tilCardNo.setError(null);
         }
 
         if (TextUtils.isEmpty(expiryDate)) {
@@ -385,7 +415,13 @@ public class AddCardDetailsFragment extends Fragment {
         } else {
             etExpiryDate.setError(null);
         }
+        return isValid;
+    }
 
+    private boolean isCvvValid(){
+        boolean isValid = true;
+        cvv = etCvv.getText().toString().trim();
+        questionImg.setVisibility(View.VISIBLE);
         if (TextUtils.isEmpty(cvv)) {
             questionImg.setVisibility(View.GONE);
             etCvv.setError(getString(R.string.validation_message_cvv));
@@ -401,6 +437,9 @@ public class AddCardDetailsFragment extends Fragment {
             questionImg.setVisibility(View.VISIBLE);
         }
         return isValid;
+    }
+    private boolean checkCardValidity() {
+        return (isExpireyDateValid() && isCardNumberValid() && isCvvValid());
     }
 
     private void setCardType() {
