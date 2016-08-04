@@ -94,6 +94,9 @@ public class TransactionResponse implements Serializable {
     @SerializedName("payment_code")
     private String paymentCodeIndomaret;
 
+    @SerializedName("finish_redirect_url")
+    private String finishRedirectUrl;
+
     public TransactionResponse(String statusCode, String statusMessage, String transactionId,
                                String orderId, String grossAmount, String paymentType,
                                String transactionTime, String transactionStatus) {
@@ -290,5 +293,13 @@ public class TransactionResponse implements Serializable {
 
     public void setAccountNumbers(List<BCAVANumber> accountNumbers) {
         this.accountNumbers = accountNumbers;
+    }
+
+    public String getFinishRedirectUrl() {
+        return finishRedirectUrl;
+    }
+
+    public void setFinishRedirectUrl(String finishRedirectUrl) {
+        this.finishRedirectUrl = finishRedirectUrl;
     }
 }

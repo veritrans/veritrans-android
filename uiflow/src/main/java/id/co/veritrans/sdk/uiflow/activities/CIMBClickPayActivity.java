@@ -187,6 +187,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
             Intent intentPaymentWeb = new Intent(CIMBClickPayActivity.this, PaymentWebActivity.class);
             intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
             intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_CIMB_CLICK);
+            intentPaymentWeb.putExtra(Constants.WEBVIEW_REDIRECT_URL, event.getResponse().getFinishRedirectUrl());
             startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
         } else {
             SdkUIFlowUtil.showApiFailedMessage(CIMBClickPayActivity.this, getString(R.string

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -31,6 +32,9 @@ public class MandiriClickPaymentActivity extends AppCompatActivity implements Tr
     EditText cardNumber, challengeToken;
     Button payBtn;
     ProgressDialog dialog;
+    private String sampleMandiriCardNumber = "4111111111111111";
+    private String sampleTokenResponse = "000000";
+    private String input3 = "59478";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,25 +72,13 @@ public class MandiriClickPaymentActivity extends AppCompatActivity implements Tr
                 refreshView();
                 if (inputValidator()) {
                     dialog.show();
-                    // Create transaction request
-                    String orderId = UUID.randomUUID().toString();
-                    TransactionRequest request = new TransactionRequest(orderId, 360000);
-                    // Set item details
-                    ItemDetails itemDetails = new ItemDetails("1", 360000, 1, "shoes");
-                    ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-                    itemDetailsArrayList.add(itemDetails);
-                    request.setItemDetails(itemDetailsArrayList);
-                    // Set Bill Info
-                    request.setBillInfoModel(new BillInfoModel("Bill Info Sample", "Bill Info Sample 2"));
-                    // Set transaction request
-                    VeritransSDK.getVeritransSDK().setTransactionRequest(request);
-                    // Do payment
-                    MandiriClickPayModel mandiriClickPayModel = new MandiriClickPayModel();
-                    mandiriClickPayModel.setCardNumber(cardNumber.getText().toString());
-                    mandiriClickPayModel.setInput1(cardNumber.getText().toString().substring(6, 15));
-                    mandiriClickPayModel.setInput2("360000");
-                    mandiriClickPayModel.setInput3("12345");
-                    VeritransSDK.getVeritransSDK().paymentUsingMandiriClickPay(mandiriClickPayModel);
+                    VeritransSDK.getVeritransSDK().snapPaymentUsingMandiriClickPay(
+                            VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                            sampleMandiriCardNumber,
+                            sampleTokenResponse,
+                            input3
+
+                    );
                 }
             }
         });
@@ -131,10 +123,9 @@ public class MandiriClickPaymentActivity extends AppCompatActivity implements Tr
     public void onEvent(TransactionSuccessEvent transactionSuccessEvent) {
         // Handle success transaction
         dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Payment is Successful")
-                .create();
-        dialog.show();
+        Toast.makeText(this, "transaction successfull (" + transactionSuccessEvent.getResponse().getStatusMessage() + ")", Toast.LENGTH_LONG).show();
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Subscribe
@@ -154,7 +145,7 @@ public class MandiriClickPaymentActivity extends AppCompatActivity implements Tr
         // Handle network not available condition
         dialog.dismiss();
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Network is unavailable")
+                .setMessage(R.string.no_network)
                 .create();
         dialog.show();
     }

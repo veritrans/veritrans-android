@@ -28,25 +28,23 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEven
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
-import id.co.veritrans.sdk.coreflow.models.BillingAddress;
-import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
 import id.co.veritrans.sdk.coreflow.models.ItemDetails;
-import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
-import id.co.veritrans.sdk.coreflow.models.UserAddress;
-import id.co.veritrans.sdk.coreflow.models.UserDetail;
-import id.co.veritrans.sdk.sample.BCAPaymentActivity;
-import id.co.veritrans.sdk.sample.CIMCBClickPaymentActivity;
+import id.co.veritrans.sdk.sample.BCAKlikPayActivity;
+import id.co.veritrans.sdk.sample.BankTransferPaymentActivity;
+import id.co.veritrans.sdk.sample.CIMBClickPayPaymentActivity;
 import id.co.veritrans.sdk.sample.CreditCardPaymentActivity;
+import id.co.veritrans.sdk.sample.EpayBRIPaymentActivity;
 import id.co.veritrans.sdk.sample.IndomaretPaymentActivity;
+import id.co.veritrans.sdk.sample.KlikBcaPaymentActivity;
 import id.co.veritrans.sdk.sample.MandiriBillPaymentActivity;
 import id.co.veritrans.sdk.sample.MandiriClickPaymentActivity;
-import id.co.veritrans.sdk.sample.PermataVAPaymentActivity;
 import id.co.veritrans.sdk.sample.R;
 import id.co.veritrans.sdk.sample.utils.RecyclerItemClickListener;
 /**
  * @author rakawm
  */
 public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenCallback, GetSnapTransactionCallback {
+    private static final int REQ_PAYMENT = 12;
     private RecyclerView coreMethods;
     private CoreFlowListAdapter adapter;
     private ProgressDialog dialog;
@@ -80,41 +78,7 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
         // Set Bill Info
         request.setBillInfoModel(new BillInfoModel("Bill Info Sample", "Bill Info Sample 2"));
 
-//        //set user detail (optional)
-//        UserDetail userDetail = new UserDetail();
-//        userDetail.setUserFullName("Costumer Name");
-//        userDetail.setEmail("sample@email.com");
-//        userDetail.setPhoneNumber("085310102020");
-//
-//        ArrayList<UserAddress> addressList = new ArrayList<>();
-//        UserAddress address = new UserAddress();
-//        address.setCountry("IDN");
-//        address.setAddress("Sample Alamat");
-//        address.setZipcode("12312");
-//        address.setCity("Yogyakarta");
-//        addressList.add(address);
-//        userDetail.setUserAddresses(addressList);
-//
-//        CustomerDetails details = new CustomerDetails(userDetail.getUserFullName(), null,
-//                userDetail.getEmail(), userDetail.getPhoneNumber());
-//
-//        BillingAddress billingAddress = new BillingAddress(userDetail.getUserFullName(), null,
-//                address.getAddress(), address.getCity(), address.getZipcode(), userDetail.getPhoneNumber(),
-//                address.getCountry());
-//        details.setBillingAddress(billingAddress);
-//
-//        ShippingAddress shippingAddress = new ShippingAddress();
-//        shippingAddress.setAddress(address.getAddress());
-//        shippingAddress.setCity(address.getCity());
-//        shippingAddress.setCountryCode(address.getCountry());
-//        shippingAddress.setFirstName(userDetail.getUserFullName());
-//        shippingAddress.setPhone(userDetail.getPhoneNumber());
-//        shippingAddress.setPostalCode(address.getZipcode());
-//        details.setBillingAddress(billingAddress);
-//        request.setCustomerDetails(details);
-        // Set transaction request
         VeritransSDK.getVeritransSDK().setTransactionRequest(request);
-
         VeritransSDK.getVeritransSDK().getSnapToken();
     }
 
@@ -129,53 +93,43 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
             @Override
             public void onItemClick(View view, int position) {
                 CoreViewModel coreViewModel = adapter.getItem(position);
-                if(coreViewModel.getTitle().equalsIgnoreCase(getString(R.string.credit_card))){
+                if(coreViewModel.getTitle().equalsIgnoreCase(getString(R.string.name_credit_card))){
                     goToActivity(new Intent(getApplicationContext(), CreditCardPaymentActivity.class));
-                }else if(coreViewModel.getTitle().equalsIgnoreCase(getString(R.string.klik_bca))){
+                }else if(coreViewModel.getTitle().equalsIgnoreCase(getString(R.string.name_bca_klikpay))){
+                    goToActivity(new Intent(getApplicationContext(), BCAKlikPayActivity.class));
+                }else if(coreViewModel.getTitle().equalsIgnoreCase(getString(R.string.name_klik_bca))){
+                    goToActivity(new Intent(getApplicationContext(), KlikBcaPaymentActivity.class));
+                }else if(coreViewModel.getTitle().equals(getString(R.string.name_epay_bri))){
+                    goToActivity(new Intent(getApplicationContext(), EpayBRIPaymentActivity.class));
 
-                }else if(coreViewModel.getTitle().equals(getString(R.string.mandiri_click_pay))){
+                }else if(coreViewModel.getTitle().equals(getString(R.string.name_cimb_clicks))){
+                    goToActivity(new Intent(getApplicationContext(), CIMBClickPayPaymentActivity.class));
 
-                }else if(coreViewModel.getTitle().equals(getString(R.string.payment_bca_click))){
+                }else if(coreViewModel.getTitle().equals(getString(R.string.name_mandiri_click_pay))){
+                    goToActivity(new Intent(getApplicationContext(), MandiriClickPaymentActivity.class));
 
-                }else if(coreViewModel.getTitle().equals(getString(R.string.cimb_clicks))){
+                }else if(coreViewModel.getTitle().equals(getString(R.string.name_mandiri_bill_payment))){
+                    goToActivity(new Intent(getApplicationContext(), MandiriBillPaymentActivity.class));
 
-                }else if(coreViewModel.getTitle().equals(getString(R.string.epay_bri))){
+                }else if(coreViewModel.getTitle().equals(getString(R.string.name_indomaret))){
+                    goToActivity(new Intent(getApplicationContext(), IndomaretPaymentActivity.class));
+                }else if(coreViewModel.getTitle().equals(getString(R.string.name_bank_transfer_bca))){
+                    Intent intent = new Intent(getApplicationContext(), BankTransferPaymentActivity.class);
+                    intent.putExtra(BankTransferPaymentActivity.TRANSFER_TYPE, getString(R.string.label_bank_transfer_bca));
+                    goToActivity(intent);
 
-                }else if(coreViewModel.getTitle().equals(getString(R.string.epay_bri))){
-
-                }else if(coreViewModel.getTitle().equals(getString(R.string.indomaret))){
-
-                }else if(coreViewModel.getTitle().equals(getString(R.string.payment_method_mandiri_ecash))){
-
-                }else if(coreViewModel.getTitle().equals(getString(R.string.mandiri_bill_payment))){
-
-                }else if(coreViewModel.getTitle().equals(getString(R.string.indosat_dompetku))){
-
-                }
-                switch (coreViewModel.getImage()) {
-                    case R.drawable.ic_credit:
-                        goToActivity(new Intent(getApplicationContext(), CreditCardPaymentActivity.class));
-                        break;
-                    case R.drawable.ic_bca:
-                        goToActivity(new Intent(getApplicationContext(), BCAPaymentActivity.class));
-                        break;
-                    case R.drawable.ic_permata:
-                        goToActivity(new Intent(getApplicationContext(), PermataVAPaymentActivity.class));
-                        break;
-                    case R.drawable.ic_mandiri_bill_payment2:
-                        goToActivity(new Intent(getApplicationContext(), MandiriBillPaymentActivity.class));
-                        break;
-                    case R.drawable.ic_mandiri2:
-                        goToActivity(new Intent(getApplicationContext(), MandiriClickPaymentActivity.class));
-                        break;
-                    case R.drawable.ic_cimb:
-                        goToActivity(new Intent(getApplicationContext(), CIMCBClickPaymentActivity.class));
-                        break;
-                    case R.drawable.ic_indomaret:
-                        goToActivity(new Intent(getApplicationContext(), IndomaretPaymentActivity.class));
-                        break;
-                    default:
-                        break;
+                }else if(coreViewModel.getTitle().equals(getString(R.string.name_bank_transfer_permata))){
+                    Intent intent = new Intent(getApplicationContext(), BankTransferPaymentActivity.class);
+                    intent.putExtra(BankTransferPaymentActivity.TRANSFER_TYPE, getString(R.string.label_bank_transfer_permata));
+                    goToActivity(intent);
+                }else if(coreViewModel.getTitle().equals(getString(R.string.name_bank_transfer_mandiri))){
+                    Intent intent = new Intent(getApplicationContext(), BankTransferPaymentActivity.class);
+                    intent.putExtra(BankTransferPaymentActivity.TRANSFER_TYPE, getString(R.string.label_bank_transfer_mandiri));
+                    goToActivity(intent);
+                }else if(coreViewModel.getTitle().equals(getString(R.string.name_bank_transfer_others))){
+                    Intent intent = new Intent(getApplicationContext(), BankTransferPaymentActivity.class);
+                    intent.putExtra(BankTransferPaymentActivity.TRANSFER_TYPE, getString(R.string.label_bank_transfer_other));
+                    goToActivity(intent);
                 }
             }
         }));
@@ -183,27 +137,25 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
 
     private CoreViewModel generateCoreViewModels(String name) {
         if (name.equals(getString(R.string.label_credit_card))) {
-           return (new CoreViewModel(getString(R.string.credit_card), R.mipmap.ic_credit_sample));
-        } else if (name.equals(getString(R.string.label_bank_transfer))) {
-           return (new CoreViewModel(getString(R.string.payment_bank_transfer), R.mipmap.ic_atm_sample));
-        } else if (name.equals(getString(R.string.label_bca_klik_bca))) {
-           return (new CoreViewModel(getString(R.string.klik_bca),R.mipmap.ic_klikbca_sample));
-        } else if (name.equals(getString(R.string.label_mandiri_clickpay))) {
-           return (new CoreViewModel(getString(R.string.mandiri_click_pay),R.mipmap.ic_mandiri_clickpay_sample));
+           return (new CoreViewModel(getString(R.string.name_credit_card), R.mipmap.ic_credit_sample));
         } else if (name.equals(getString(R.string.label_bca_klikpay))) {
-           return (new CoreViewModel(getString(R.string.bca_klikpay),R.mipmap.ic_klikbca_sample));
-        } else if (name.equals(getString(R.string.label_cimbclick))) {
-           return (new CoreViewModel(getString(R.string.cimb_clicks),R.mipmap.ic_cimb_sample));
+            return (new CoreViewModel(getString(R.string.name_bca_klikpay),R.mipmap.ic_klikbca_sample));
+        }  else if (name.equals(getString(R.string.label_bca_klik_bca))) {
+           return (new CoreViewModel(getString(R.string.name_klik_bca),R.mipmap.ic_klikbca_sample));
         } else if (name.equals(getString(R.string.label_bri_epay))) {
-           return (new CoreViewModel(getString(R.string.epay_bri),R.mipmap.bri_epay_sample));
-        } else if (name.equals(getString(R.string.label_payment_indomaret))) {
-           return (new CoreViewModel(getString(R.string.indomaret),R.mipmap.ic_indomaret_sample));
-        } else if (name.equals(getString(R.string.label_payment_mandiri_ecash))) {
-           return (new CoreViewModel(getString(R.string.payment_method_mandiri_ecash),R.mipmap.ic_mandiri_e_cash_sample));
+            return (new CoreViewModel(getString(R.string.name_epay_bri),R.mipmap.bri_epay_sample));
+        }else if (name.equals(getString(R.string.label_cimbclick))) {
+            return (new CoreViewModel(getString(R.string.name_cimb_clicks),R.mipmap.ic_cimb_sample));
+        } else if (name.equals(getString(R.string.label_mandiri_clickpay))) {
+           return (new CoreViewModel(getString(R.string.name_mandiri_click_pay),R.mipmap.ic_mandiri_clickpay_sample));
         } else if (name.equals(getString(R.string.label_mandiri_bill))) {
-           return (new CoreViewModel(getString(R.string.mandiri_bill_payment),R.mipmap.ic_mandiri_bill_payment2_sample));
+            return (new CoreViewModel(getString(R.string.name_mandiri_bill_payment),R.mipmap.ic_mandiri_bill_payment2_sample));
+        } else if (name.equals(getString(R.string.label_payment_indomaret))) {
+           return (new CoreViewModel(getString(R.string.name_indomaret),R.mipmap.ic_indomaret_sample));
+        } else if (name.equals(getString(R.string.label_payment_mandiri_ecash))) {
+           return (new CoreViewModel(getString(R.string.name_payment_method_mandiri_ecash),R.mipmap.ic_mandiri_e_cash_sample));
         } else if (name.equals(getString(R.string.label_indosat_dompetku))) {
-           return (new CoreViewModel(getString(R.string.indosat_dompetku),R.mipmap.ic_indosat_sample));
+           return (new CoreViewModel(getString(R.string.name_indosat_dompetku),R.mipmap.ic_indosat_sample));
         }
         else{
             return null;
@@ -212,7 +164,7 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
     }
 
     private void goToActivity(Intent intent) {
-        startActivity(intent);
+        startActivityForResult(intent, REQ_PAYMENT);
     }
 
     @Subscribe
@@ -239,7 +191,6 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
     @Subscribe
     @Override
     public void onEvent(GetSnapTransactionSuccessEvent event) {
-        Logger.i("snaptransaction>success");
         if(dialog.isShowing()){
             dialog.dismiss();
         }
@@ -247,7 +198,8 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
         for(String method : event.getResponse().getTransactionData().getEnabledPayments()){
             if(method.equalsIgnoreCase(getString(R.string.label_bank_transfer))){
                 for(String bank : event.getResponse().getTransactionData().getBankTransfer().getBanks()){
-                    paymentMethodList.add(new CoreViewModel(bank, (R.mipmap.ic_atm_sample)));
+                    //mandiri bank tranfer & other bank transfer unsupported yet
+                    paymentMethodList.add(generateBankViewModels(bank));
                 }
             }else{
                 paymentMethodList.add(generateCoreViewModels(method));
@@ -256,6 +208,18 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
 
         adapter.setData(paymentMethodList);
         adapter.notifyDataSetChanged();
+    }
+
+    private CoreViewModel generateBankViewModels(String bank) {
+        if(bank.equals(getString(R.string.label_bank_transfer_bca))){
+            return new CoreViewModel(getString(R.string.name_bank_transfer_bca), R.drawable.ic_atm);
+        }else if(bank.equals(getString(R.string.label_bank_transfer_permata))){
+            return new CoreViewModel(getString(R.string.name_bank_transfer_permata), R.drawable.ic_atm);
+        }else if(bank.equals(getString(R.string.label_bank_transfer_mandiri))){
+            return new CoreViewModel(getString(R.string.name_bank_transfer_mandiri), R.drawable.ic_atm);
+        }else{
+            return new CoreViewModel(getString(R.string.name_bank_transfer_others), R.drawable.ic_atm);
+        }
     }
 
     @Subscribe
@@ -294,6 +258,14 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
         super.onDestroy();
         if (VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().unregister(this);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQ_PAYMENT && resultCode == RESULT_OK){
+            finish();
         }
     }
 }
