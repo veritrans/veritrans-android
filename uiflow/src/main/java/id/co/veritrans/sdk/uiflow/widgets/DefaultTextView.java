@@ -37,8 +37,8 @@ public class DefaultTextView extends TextViewWithImages {
     private void init() {
         VeritransSDK paymentSdk = VeritransSDK.getVeritransSDK();
         if (paymentSdk != null) {
-            if (VeritransSDK.getDefaultText() != null) {
-                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), VeritransSDK.getDefaultText());
+            if (paymentSdk.getDefaultText() != null) {
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getDefaultText());
                 if (typeface != null) {
                     setTypeface(typeface);
                 }

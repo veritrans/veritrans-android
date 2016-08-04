@@ -11,7 +11,8 @@ machine:
         version: 2.0.0-p648
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
-
+        GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
+        _JAVA_OPTIONS: "-Xms512m -Xmx2048m"
 dependencies:
     pre:
         # Installing auto bumping version tools
@@ -25,8 +26,15 @@ dependencies:
 test:
     override:
         # Build
-       - (./gradlew :scancard:assembleRelease -PdisablePreDex):
+       - (./gradlew coreflow:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
             timeout: 3600
+
+
+    post:
+       - cp -r coreflow/build/reports $CIRCLE_ARTIFACTS
+       - cp -r coreflow/build/reports/ $CIRCLE_TEST_REPORTS
+
+
 
 # Deployment section
 deployment:

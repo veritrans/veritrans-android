@@ -40,7 +40,7 @@ public class BankTransferPaymentFragment extends Fragment {
 
     /**
      *
-     * it creates new BankTransferPaymentFragment object and set TransactionResponse object to it,
+     * it creates new BankTransferPaymentFragment object and set Transaction object to it,
      * so later it can be accessible using fragments getArgument().
      *
      *  @param transactionResponse  response of transaction call

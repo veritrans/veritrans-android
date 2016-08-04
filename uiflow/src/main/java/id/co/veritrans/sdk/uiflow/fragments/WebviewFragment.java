@@ -104,6 +104,7 @@ public class WebviewFragment extends Fragment {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Logger.i("Url:finished:" + url);
             view.loadUrl(url);
             return true;
         }
@@ -111,6 +112,8 @@ public class WebviewFragment extends Fragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            Logger.i("Url:finished:" + url);
+
             SdkUIFlowUtil.hideProgressDialog();
             if (url.contains(BuildConfig.CALLBACK_STRING)) {
                 Intent returnIntent = new Intent();

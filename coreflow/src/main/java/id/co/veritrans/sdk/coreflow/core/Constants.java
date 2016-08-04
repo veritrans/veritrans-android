@@ -23,6 +23,8 @@ public class Constants {
     public static final int PAYMENT_METHOD_MANDIRI_BILL_PAYMENT = 9;
     public static final int PAYMENT_METHOD_INDOMARET = 10;
     public static final int PAYMENT_METHOD_KLIKBCA = 11;
+    public static final int PAYMENT_METHOD_TELKOMSEL_CASH = 12;
+    public static final int PAYMENT_METHOD_XL_TUNAI = 13;
 
     public static final int BANK_TRANSFER_BCA = 1001;
     public static final int BANK_TRANSFER_PERMATA = 1003;
@@ -47,8 +49,6 @@ public class Constants {
      * constant to indicate that this address will be used for both billing and shipping purpose.
      */
     public static final int ADDRESS_TYPE_BOTH = 3;
-
-
 
     /**
      *  regex for email id.
@@ -83,4 +83,5 @@ public class Constants {
     public static final long FADE_IN_FORM_TIME = 300;
 
     public static final String AUTH_TOKEN = "authentication.token";
+    public static final String WEBVIEW_REDIRECT_URL = "redirect_url";
 }

@@ -26,7 +26,6 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
-import id.co.veritrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.BCAKlikPayInstructionFragment;
@@ -129,9 +128,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
     private void makeTransaction(){
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-
-        BCAKlikPayDescriptionModel descriptionModel = new BCAKlikPayDescriptionModel("Any description");
-        mVeritransSDK.paymentUsingBCAKlikPay(descriptionModel);
+        mVeritransSDK.snapPaymentUsingBCAKlikpay(mVeritransSDK.readAuthenticationToken());
     }
 
 

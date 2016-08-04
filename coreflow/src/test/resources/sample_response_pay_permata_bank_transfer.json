@@ -1,0 +1,6 @@
+{
+  "status_code":"201",
+  "status_message":"Success, PERMATA VA transaction is successful",
+  "transaction_id":"3de8db5c-4b50-4411-a24e-a2575ba4ded6",
+  "order_id":"b67c8e04-7343-4bfe-8bf1-14776f36423e","gross_amount":"360000.00","payment_type":"bank_transfer","transaction_time":"2016-06-28 13:14:38","transaction_status":"pending","fraud_status":"accept","permata_va_number":"8778006865882921"
+}

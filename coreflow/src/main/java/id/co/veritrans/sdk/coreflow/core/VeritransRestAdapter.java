@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.coreflow.analytics.MixpanelApi;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
@@ -19,7 +18,7 @@ import retrofit.converter.GsonConverter;
 /**
  * Created by chetan on 16/10/15.
  */
-class VeritransRestAdapter {
+public class VeritransRestAdapter {
     private static final RestAdapter.LogLevel LOG_LEVEL = BuildConfig.FLAVOR.equalsIgnoreCase("development") ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
     private static final String TAG = VeritransRestAdapter.class.getName();
 
@@ -28,11 +27,7 @@ class VeritransRestAdapter {
      *
      * @return Payment API implementation
      */
-    public static PaymentAPI getApiClient() {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null
-                && veritransSDK.getContext() != null
-                && Utils.isNetworkAvailable(veritransSDK.getContext())) {
+    public static VeritransRestAPI getVeritransApiClient() {
             OkHttpClient okHttpClient = new OkHttpClient();
             okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
             Gson gson = new GsonBuilder()
@@ -45,18 +40,16 @@ class VeritransRestAdapter {
                     .setLogLevel(LOG_LEVEL)
                     .setClient(new OkClient(okHttpClient));
             RestAdapter restAdapter = builder.build();
-            return restAdapter.create(PaymentAPI.class);
-        } else {
-            return null;
-        }
+            return restAdapter.create(VeritransRestAPI.class);
     }
 
-    //
-    public static PaymentAPI getMerchantApiClient() {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null
-                && veritransSDK.getContext() != null
-                && Utils.isNetworkAvailable(veritransSDK.getContext())) {
+    /**
+     * Return Merchant API implementation
+     *
+     * @param merchantBaseURL Merchant base URL
+     * @return Merchant API implementation
+     */
+    public static MerchantRestAPI getMerchantApiClient(String merchantBaseURL) {
 
             OkHttpClient okHttpClient = new OkHttpClient();
             okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
@@ -68,19 +61,18 @@ class VeritransRestAdapter {
                     .setConverter(new GsonConverter(gson))
                     .setLogLevel(LOG_LEVEL)
                     .setClient(new OkClient(okHttpClient))
-                    .setEndpoint(veritransSDK.getMerchantServerUrl());
+                    .setEndpoint(merchantBaseURL);
             RestAdapter restAdapter = builder.build();
-            return restAdapter.create(PaymentAPI.class);
-        } else {
-            return null;
-        }
+            return restAdapter.create(MerchantRestAPI.class);
+
     }
 
+
+    /**
+     * Return Mixpanel API implementation
+     * @return
+     */
     public static MixpanelApi getMixpanelApi() {
-        VeritransSDK paymentSdk = VeritransSDK.getVeritransSDK();
-        if (paymentSdk != null
-                && paymentSdk.getContext() != null
-                && Utils.isNetworkAvailable(paymentSdk.getContext())) {
             OkHttpClient okHttpClient = new OkHttpClient();
             okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
             RestAdapter.Builder builder = new RestAdapter.Builder()
@@ -89,9 +81,19 @@ class VeritransRestAdapter {
                     .setEndpoint(BuildConfig.MIXPANEL_URL);
             RestAdapter restAdapter = builder.build();
             return restAdapter.create(MixpanelApi.class);
-        } else {
-            return null;
-        }
     }
 
+    /**
+     * Return Snap API implementation
+     * @return
+     */
+    public static SnapRestAPI getSnapRestAPI() {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+        RestAdapter.Builder builder = new RestAdapter.Builder()
+                .setLogLevel(LOG_LEVEL)
+                .setClient(new OkClient(okHttpClient))
+                .setEndpoint(BuildConfig.SNAP_BASE_URL);
+        return builder.build().create(SnapRestAPI.class);
+    }
 }

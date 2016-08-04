@@ -8,12 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
+import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
@@ -90,7 +92,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity implements Toke
                     cardTokenRequest.setGrossAmount(20.0);
                     VeritransSDK.getVeritransSDK().getToken(cardTokenRequest);
                 }
-            }
+                }
         });
     }
 
@@ -168,10 +170,9 @@ public class CreditCardPaymentActivity extends AppCompatActivity implements Toke
     public void onEvent(TransactionSuccessEvent transactionSuccessEvent) {
         // Handle success transaction
         dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Payment is Successful")
-                .create();
-        dialog.show();
+        Toast.makeText(this, "transaction successfull (" + transactionSuccessEvent.getResponse().getStatusMessage() + ")", Toast.LENGTH_LONG).show();
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Subscribe
@@ -190,31 +191,14 @@ public class CreditCardPaymentActivity extends AppCompatActivity implements Toke
     public void onEvent(GetTokenSuccessEvent getTokenSuccessEvent) {
         // Handle get token success
         // Do the charge/payment
-        String orderId = UUID.randomUUID().toString();
-        TransactionRequest request = new TransactionRequest(orderId.toString(), 360000);
-        request.setCardPaymentInfo(getString(R.string.card_click_type_none), false);
-        VeritransSDK.getVeritransSDK().setTransactionRequest(request);
-        ItemDetails itemDetails = new ItemDetails("1", 360000, 1, "shoes");
-        ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-        itemDetailsArrayList.add(itemDetails);
-        CardTransfer transfer = new CardTransfer(
-                new CardPaymentDetails(
-                        getTokenSuccessEvent.getResponse().getBank(),
-                        getTokenSuccessEvent.getResponse().getTokenId(),
-                        false),
-                new TransactionDetails("360000", orderId),
-                itemDetailsArrayList,
-                new ArrayList<BillingAddress>(),
-                new ArrayList<ShippingAddress>(),
-                new CustomerDetails("Raka", "Mogandhi", "westumogandhi@gmail.com", "6285653956354")
-        );
-        VeritransSDK.getVeritransSDK().paymentUsingCard(transfer);
+        VeritransSDK.getVeritransSDK().snapPaymentUsingCard(VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                getTokenSuccessEvent.getResponse().getTokenId(), false);
     }
 
     @Subscribe
     @Override
     public void onEvent(GetTokenFailedEvent getTokenFailedEvent) {
-        // Handle error when get token 
+        // Handle error when get token
         dialog.dismiss();
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setMessage(getTokenFailedEvent.getMessage())

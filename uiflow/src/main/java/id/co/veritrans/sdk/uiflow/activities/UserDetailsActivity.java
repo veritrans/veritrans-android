@@ -29,13 +29,14 @@ public class UserDetailsActivity extends BaseActivity {
     public void checkUserDetails() {
         try {
             UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
                 //TODO check user have address filled
                 //if no take user to select address
 
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
                 if (userAddresses != null && !userAddresses.isEmpty()) {
-                    Logger.i("UserDetailActivity", "userAddresses:" + userAddresses.size());
+
                     Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
                     startActivity(paymentOptionIntent);
                     finish();
@@ -54,6 +55,7 @@ public class UserDetailsActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         setView();
         UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
         replaceFragment(userDetailFragment);

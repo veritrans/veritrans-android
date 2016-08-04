@@ -56,19 +56,6 @@ public class BCAPaymentActivity extends AppCompatActivity implements Transaction
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                // Create transaction request
-                String orderId = UUID.randomUUID().toString();
-                TransactionRequest request = new TransactionRequest(orderId, 360000);
-                // Set item details
-                ItemDetails itemDetails = new ItemDetails("1", 360000, 1, "shoes");
-                ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-                itemDetailsArrayList.add(itemDetails);
-                request.setItemDetails(itemDetailsArrayList);
-                // Set Bill Info
-                request.setBillInfoModel(new BillInfoModel("Bill Info Sample", "Bill Info Sample 2"));
-                // Set transaction request
-                VeritransSDK.getVeritransSDK().setTransactionRequest(request);
-                // Do payment
                 VeritransSDK.getVeritransSDK().paymentUsingBcaBankTransfer();
             }
         });
@@ -102,7 +89,7 @@ public class BCAPaymentActivity extends AppCompatActivity implements Transaction
         // Handle network not available condition
         dialog.dismiss();
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Network is unavailable")
+                .setMessage(getString(R.string.no_network))
                 .create();
         dialog.show();
     }

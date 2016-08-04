@@ -13,10 +13,14 @@ public class CustomerDetails {
     private String firstName;
 
     @SerializedName("last_name")
-
     private String lastName;
     private String email;
     private String phone;
+
+    @SerializedName("shipping_address")
+    private ShippingAddress shippingAddress;
+    @SerializedName("billing_address")
+    private BillingAddress billingAddress;
 
 
     public CustomerDetails() {
@@ -62,5 +66,21 @@ public class CustomerDetails {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public BillingAddress getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(BillingAddress billingAddress) {
+        this.billingAddress = billingAddress;
     }
 }

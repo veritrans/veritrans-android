@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -57,22 +58,8 @@ public class MandiriECashActivity extends AppCompatActivity implements Transacti
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                // Create transaction request
-                String orderId = UUID.randomUUID().toString();
-                TransactionRequest request = new TransactionRequest(orderId, 360000);
-                // Set item details
-                ItemDetails itemDetails = new ItemDetails("1", 360000, 1, "shoes");
-                ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-                itemDetailsArrayList.add(itemDetails);
-                request.setItemDetails(itemDetailsArrayList);
-                // Set Bill Info
-                request.setBillInfoModel(new BillInfoModel("Bill Info Sample", "Bill Info Sample 2"));
-                // Set transaction request
-                VeritransSDK.getVeritransSDK().setTransactionRequest(request);
                 // Do payment
-                VeritransSDK.getVeritransSDK().paymentUsingMandiriECash(new DescriptionModel(
-                        "Sample description"
-                ));
+                VeritransSDK.getVeritransSDK().snapPaymentUsingMandiriEcash(VeritransSDK.getVeritransSDK().readAuthenticationToken());
             }
         });
     }
@@ -82,10 +69,9 @@ public class MandiriECashActivity extends AppCompatActivity implements Transacti
     public void onEvent(TransactionSuccessEvent transactionSuccessEvent) {
         // Handle success transaction
         dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Payment is Successful")
-                .create();
-        dialog.show();
+        Toast.makeText(this, "transaction successfull (" + transactionSuccessEvent.getResponse().getStatusMessage() + ")", Toast.LENGTH_LONG).show();
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Subscribe

@@ -37,7 +37,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/eight_dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         style="@style/Base.TextAppearance.AppCompat.Title"
@@ -58,7 +59,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <Button
                         android:id="@+id/btn_get_token"
@@ -66,7 +68,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:text="@string/btn_get_token"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -75,12 +78,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/eight_dp"
-                android:text="@string/title_credit_card_options" />
+                android:text="@string/title_credit_card_options"
+                android:visibility="gone" />
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RadioButton
                     android:id="@+id/radio_card_normal"
@@ -105,6 +110,12 @@
                     android:text="@string/card_click_one_click" />
             </RadioGroup>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Order Items"
+                android:textSize="25sp" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -174,7 +185,6 @@
                         android:text="Rp.100.000"
                         android:textSize="20sp"
                         android:textStyle="bold"/>
-
 
                     <TextView android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -248,7 +258,8 @@
                     android:layout_marginRight="@dimen/eight_dp"
                     android:layout_weight="0.5"
                     android:text="@string/btn_show_core"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/show_ui_flow"
@@ -266,13 +277,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/activity_title_card_registration"
-                android:textSize="@dimen/header_text_size" />
+                android:textSize="@dimen/header_text_size"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/btn_card_registration_core"

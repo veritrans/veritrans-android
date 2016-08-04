@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         VeritransBusProvider.getInstance().register(this);
         setContentView(R.layout.activity_main);
         initSDK();
+
         initView();
     }
 
@@ -90,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
                     .setMerchantName("Veritrans Example Merchant")
-                    .setMerchantLogoResourceId(R.drawable.ic_veritrans)
                     .buildSDK();
 
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));

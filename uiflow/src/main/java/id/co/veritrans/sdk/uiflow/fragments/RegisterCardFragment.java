@@ -138,7 +138,7 @@ public class RegisterCardFragment extends Fragment {
         });
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
             saveBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
-            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), VeritransSDK.getDefaultText()));
+            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getDefaultText()));
 
             if (veritransSDK.getExternalScanner() != null) {
                 scanCardBtn.setVisibility(View.VISIBLE);
@@ -383,7 +383,7 @@ public class RegisterCardFragment extends Fragment {
             cardType = getString(R.string.visa);
         } else if ((cardNo.charAt(0) == '5') && ((cardNo.charAt(1) == '1') || (cardNo.charAt(1) == '2')
                 || (cardNo.charAt(1) == '3') || (cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '5'))) {
-            Drawable masterCard = getResources().getDrawable(R.drawable.ic_mastercard_dark);
+            Drawable masterCard = getResources().getDrawable(R.drawable.ic_mastercard);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, masterCard, null);
             cardType = getString(R.string.mastercard);
 

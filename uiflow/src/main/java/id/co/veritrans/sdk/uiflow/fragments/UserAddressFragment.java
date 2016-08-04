@@ -8,12 +8,17 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
@@ -25,6 +30,8 @@ import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.PaymentMethodsActivity;
 import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
+import id.co.veritrans.sdk.uiflow.adapters.ListCountryAdapter;
+import id.co.veritrans.sdk.uiflow.models.CountryCodeModel;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 public class UserAddressFragment extends Fragment {
@@ -33,14 +40,19 @@ public class UserAddressFragment extends Fragment {
     private EditText etAddress;
     private EditText etCity;
     private EditText etZipcode;
-    private EditText etCountry;
+    private AutoCompleteTextView etCountry;
     private CheckBox cbShippingAddress;
     private RelativeLayout shippingAddressContainer;
     private EditText etShippingAddress;
     private EditText etShippingCity;
     private EditText etShippingZipcode;
-    private EditText etShippingCountry;
+    private AutoCompleteTextView etShippingCountry;
     private Button btnNext;
+    private ListCountryAdapter billingCountryAdapter;
+    private ListCountryAdapter shippingCountryAdapter;
+    private ArrayList<CountryCodeModel> countryCodeList = new ArrayList<>();
+    private String billingCountryCodeSelected;
+    private String shippingCountryCodeSelected;
 
 
     public UserAddressFragment() {
@@ -68,10 +80,42 @@ public class UserAddressFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_user_address, container, false);
     }
 
+    private void retrieveCountryCode() {
+        ArrayList<CountryCodeModel> list;
+        String data;
+        try {
+            InputStream is = getContext().getAssets().open("country_code.json");
+            byte [] buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+            data = new String(buffer, "UTF-8");
+
+            Gson gson = new Gson();
+            list = gson.fromJson(data, new TypeToken<ArrayList<CountryCodeModel>>(){}.getType());
+            if(list != null){
+                this.countryCodeList = list;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         veritransSDK = VeritransSDK.getVeritransSDK();
         findViews(view);
+        retrieveCountryCode();
+
+        billingCountryAdapter = new ListCountryAdapter(getContext(), R.layout.layout_row_contry_code, countryCodeList);
+        shippingCountryAdapter =new ListCountryAdapter(getContext(), R.layout.layout_row_contry_code, countryCodeList);
+
+        etCountry.setAdapter(billingCountryAdapter);
+        etCountry.setThreshold(1);
+
+        etShippingCountry.setAdapter(shippingCountryAdapter);
+        etShippingCountry.setThreshold(1);
+
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -79,15 +123,17 @@ public class UserAddressFragment extends Fragment {
         etAddress = (EditText) view.findViewById(R.id.et_address);
         etCity = (EditText) view.findViewById(R.id.et_city);
         etZipcode = (EditText) view.findViewById(R.id.et_zipcode);
-        etCountry = (EditText) view.findViewById(R.id.et_country);
+        etCountry = (AutoCompleteTextView) view.findViewById(R.id.et_country);
         cbShippingAddress = (CheckBox) view.findViewById(R.id.cb_shipping_address);
         shippingAddressContainer = (RelativeLayout) view.findViewById(R.id
                 .shipping_address_container);
         etShippingAddress = (EditText) view.findViewById(R.id.et_shipping_address);
         etShippingCity = (EditText) view.findViewById(R.id.et_shipping_city);
         etShippingZipcode = (EditText) view.findViewById(R.id.et_shipping_zipcode);
-        etShippingCountry = (EditText) view.findViewById(R.id.et_shipping_country);
+        etShippingCountry = (AutoCompleteTextView) view.findViewById(R.id.et_shipping_country);
         btnNext = (Button) view.findViewById(R.id.btn_next);
+
+
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
             btnNext.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
         }
@@ -149,7 +195,14 @@ public class UserAddressFragment extends Fragment {
                     .validation_billingcountry_empty));
             etCountry.requestFocus();
             return;
-        } else if (!cbShippingAddress.isChecked()) {
+        }
+        else if(!isCountryCodeExist(country, true)){
+            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+                    .validation_billingcountry_notexist));
+            etCountry.requestFocus();
+            return;
+        }
+        else if (!cbShippingAddress.isChecked()) {
             if (TextUtils.isEmpty(shippingAddress)) {
                 SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
                         .validation_shippingaddress_empty));
@@ -176,24 +229,24 @@ public class UserAddressFragment extends Fragment {
                 etShippingCountry.requestFocus();
                 return;
             }
+            else if(!isCountryCodeExist(shippingCountry, false)){
+                SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+                        .validation_billingcountry_notexist));
+                etCountry.requestFocus();
+                return;
+            }
             UserAddress shippingUserAddress = new UserAddress();
             shippingUserAddress.setAddress(shippingAddress);
             shippingUserAddress.setCity(shippingCity);
-            shippingUserAddress.setCountry(shippingCountry);
+            shippingUserAddress.setCountry(shippingCountryCodeSelected);
             shippingUserAddress.setZipcode(shippingZipcode);
             shippingUserAddress.setAddressType(Constants.ADDRESS_TYPE_SHIPPING);
             userAddresses.add(shippingUserAddress);
-           /* try {
-                storageDataHandler.writeObject(getActivity(), Constants.USER_ADDRESS_DETAILS,
-                shippingUserAddress);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
         }
         UserAddress billingUserAddress = new UserAddress();
         billingUserAddress.setAddress(billingAddress);
         billingUserAddress.setCity(billingCity);
-        billingUserAddress.setCountry(country);
+        billingUserAddress.setCountry(billingCountryCodeSelected);
         billingUserAddress.setZipcode(zipcode);
         if (cbShippingAddress.isChecked()) {
             billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BOTH);
@@ -217,4 +270,17 @@ public class UserAddressFragment extends Fragment {
 
     }
 
+    public boolean isCountryCodeExist(String countryName, boolean isBillingAddress) {
+        for(CountryCodeModel country : countryCodeList){
+            if(country.getName().equalsIgnoreCase(countryName)){
+                if(isBillingAddress){
+                    billingCountryCodeSelected = country.getCountryCodeAlpha();
+                }else{
+                    shippingCountryCodeSelected = country.getCountryCodeAlpha();
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -46,6 +46,7 @@
     <string name="text_order_id_here">Order Id here</string>
     <string name="text_colon">:</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="btn_retry">Retry</string>
     <string name="btn_accept">Accept</string>
     <!--Activities-->
     <string name="activity_select_bank">Select Bank</string>
@@ -73,7 +74,7 @@
     <string name="validation_shippingzipcode_empty">Please enter valid shipping zipcode</string>
     <string name="validation_shippingcountry_empty">Please enter shipping country</string>
     <string name="validation_shippingzipcode_invalid">Please enter valid shipping zipcode</string>
-
+    <string name="validation_billingcountry_notexist">Please enter valid country</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="pay_with">Pay With</string>
     <string name="payable_amount">Payable Amount</string>
@@ -320,6 +321,8 @@
     <string name="epay_bri">ePay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
+    <string name="telkomsel_cash">Telkomsel Cash</string>
+    <string name="xl_tunai">XL Tunai</string>
     <string name="mandiri_e_cash">Mandiri e-Cash</string>
     <string name="klik_bca">Klik BCA</string>
     <string name="bca_klik">BCA KlikPay</string>
@@ -355,6 +358,18 @@
     <string name="indosat_instruction_step4">4.\tYou will receive an USSD maessage from \nIndosat to complete transaction via Dompetku app.</string>
     <string name="indosat_instruction_step5">5.\tInput your PIN.</string>
     <string name="indosat_instruction_step6">6.\tPayment Complete.</string>
+
+    <string name="telkomsel_instruction_step1">1.\tSend a text message to Telkomsel, type TOKEN _PIN_, send to 2828.</string>
+    <string name="telkomsel_instruction_step2">2.\tInput the token sent from Telkomsel\'s reply into T-CASH TOKEN field.</string>
+    <string name="telkomsel_instruction_step3">3.\tYour transaction will expire unless you complete your payment in 30 minutes.</string>
+
+    <string name="xl_instruction_step1">1.\tDial *123*120#.</string>
+    <string name="xl_instruction_step2">2.\tReply \'4\' for \'Belanja Online\'.</string>
+    <string name="xl_instruction_step3">3.\tInput XL Tunai Merchant Code.</string>
+    <string name="xl_instruction_step4">4.\tInput XL Tunai Order ID.</string>
+    <string name="xl_instruction_step5">5.\tInput your XL Tunai PIN.</string>
+    <string name="xl_instruction_step6">6.\tYou will receive an SMS confirmation from XL.</string>
+
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
     <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tEnter your Mandiri token password.</string>
@@ -414,6 +429,8 @@
     <string name="payment_method_bca_klikpay">BCA Klikpay</string>
     <string name="payment_method_bbm_money">BBM Money</string>
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
+    <string name="payment_method_telkomsel_cash">Telkomsel Cash</string>
+    <string name="payment_method_xl_tunai">XL Tunai</string>
     <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_klik_bca">KlikBCA</string>
@@ -426,8 +443,10 @@
     <string name="payment_bca_click">bca_klikpay</string>
     <string name="payment_bbm_money">bbm_money</string>
     <string name="payment_indosat_dompetku">indosat_dompetku</string>
+    <string name="payment_telkomsel_cash">telkomsel_cash</string>
+    <string name="payment_xl_tunai">xl_tunai</string>
     <string name="payment_mandiri_ecash">mandiri_ecash</string>
-    <string name="payment_indomaret">cstore</string>
+    <string name="payment_indomaret">indomaret</string>
     <string name="payment_credit_debit">credit_card</string>
     <string name="payment_permata">permata</string>
     <string name="payment_bca">bca</string>
@@ -458,6 +477,7 @@
     <!--KlikBCA Payment Instructions-->
     <string name="klikbca_instruction_1">1.\tPlease make sure that the UserID is active and registered at BCA.</string>
     <string name="klikbca_instruction_2">2.\tPlease continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
+    <string name="klikbca_instruction_3">3.\tTransaction will be cancelled if payment is not completed within 2 hours.</string>
 
     <string name="error_user_id">Please fill user ID.</string>
     <string name="btn_close">Close</string>
@@ -467,4 +487,21 @@
 
     <string name="payment_confirmation_title">Payment Confirmation</string>
     <string name="payment_confirmation_description">Card Number:\n%1$s\n\nGross Amount: %2$s</string>
+    <string name="txt_loading_payment">Retrieving payment methods</string>
+    <string name="txt_error_snap_token">Failed to registering transaction.</string>
+
+    <string name="bank_transfer_bca">bca</string>
+    <string name="bank_transfer_permata">permata</string>
+    <string name="error_transaction_empty">Transaction Data is Empty</string>
+    <string name="text_hint_telkomsel_token">T-Cash Token</string>
+    <string name="text_hint_xl_order_id">Order ID</string>
+    <string name="text_hint_xl_merchant_code">Merchant Code</string>
+
+    <string name="text_copy_order_id">Copy Order ID</string>
+    <string name="text_copy_merchant_code">Copy Merchant Code</string>
+
+    <string name="copied_order_id">Order ID was copied to clipboard</string>
+    <string name="copied_merchant_code">Merchant code was copied to clipboard</string>
+
+    <string name="text_format_valid_until">Valid Until : %1$s</string>
 </resources>

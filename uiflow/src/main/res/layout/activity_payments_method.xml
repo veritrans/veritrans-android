@@ -40,8 +40,9 @@
 
                         <ImageView
                             android:id="@+id/merchant_logo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/logo_width"
+                            android:layout_height="@dimen/logo_height"
+                            android:scaleType="centerInside"
                             tools:src="@drawable/ic_veritrans" />
 
                         <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
@@ -94,4 +95,26 @@
         android:layout_height="wrap_content"
         app:layout_behavior="id.co.veritrans.sdk.uiflow.widgets.ViewBehavior" />
 
+    <LinearLayout
+        android:id="@+id/progress_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            android:id="@+id/loading_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/txt_loading_payment" />
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

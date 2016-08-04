@@ -1,6 +1,5 @@
 package id.co.veritrans.sdk.coreflow.core;
 
-import android.content.Context;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -22,7 +21,6 @@ import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
 import id.co.veritrans.sdk.coreflow.models.DescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.EpayBriTransfer;
 import id.co.veritrans.sdk.coreflow.models.IndomaretRequestModel;
-import id.co.veritrans.sdk.coreflow.models.IndosatDompetku;
 import id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest;
 import id.co.veritrans.sdk.coreflow.models.KlikBCADescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.KlikBCAModel;
@@ -32,14 +30,23 @@ import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriECashModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
+import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.SnapTransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.MandiriClickPayPaymentRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.payment.PaymentDetails;
 
 /**
  * Created by ziahaqi on 18/06/2016.
  */
 public class SdkUtil {
+    private static final String UNIT_MINUTES = "minutes";
+
     /**
      * helper method to extract {@link MandiriBillPayTransferModel} from {@link TransactionRequest}.
      *
@@ -51,7 +58,6 @@ public class SdkUtil {
 
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
-
         if (request.isUiEnabled()) {
             //get user details only if using default ui.
             request = initializeUserInfo(request);
@@ -148,13 +154,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            if (veritransSDK.getContext() != null)
-                bankTransfer.setBank(veritransSDK.getContext().getString(R.string.payment_permata));
-            else Logger.e("Context is not available");
-        } else Logger.e("Veritrans SDK is not started.");
-
+        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_permata));
 
         return new PermataBankTransfer(bankTransfer,
                 transactionDetails, request.getItemDetails(),
@@ -182,10 +182,8 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            bankTransfer.setBank(veritransSDK.getContext().getString(R.string.payment_bca));
-        }
+        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_bca));
+
 
         BCABankTransfer model =
                 new BCABankTransfer(bankTransfer,
@@ -218,15 +216,13 @@ public class SdkUtil {
 
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            model.setPaymentType(veritransSDK.getContext().getString(R.string.payment_indomaret));
-        }
+
+        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indomaret));
+
         model.setItem_details(request.getItemDetails());
         model.setCustomerDetails(request.getCustomerDetails());
         model.setTransactionDetails(transactionDetails);
         model.setCstore(cstoreEntity);
-
 
         return model;
 
@@ -270,7 +266,6 @@ public class SdkUtil {
             request = initializeUserInfo(request);
         }
 
-
         CIMBClickPayModel model =
                 new CIMBClickPayModel(cimbDescription, transactionDetails, request.getItemDetails(),
                         request.getBillingAddressArrayList(),
@@ -295,7 +290,6 @@ public class SdkUtil {
             //get user details only if using default ui.
             request = initializeUserInfo(request);
         }
-
 
         MandiriECashModel model =
                 new MandiriECashModel(description, transactionDetails, request.getItemDetails(),
@@ -349,7 +343,6 @@ public class SdkUtil {
             request = initializeUserInfo(request);
         }
 
-
         EpayBriTransfer model =
                 new EpayBriTransfer(transactionDetails, request.getItemDetails(),
                         request.getBillingAddressArrayList(),
@@ -358,7 +351,6 @@ public class SdkUtil {
         return model;
 
     }
-
 
     /**
      * helper method to extract {@link id.co.veritrans.sdk.coreflow.models.IndosatDompetkuRequest} from
@@ -374,28 +366,15 @@ public class SdkUtil {
         TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
                 request.getOrderId());
 
-        //if (request.isUiEnabled()) {
         //get user details only if using default ui.
         request = initializeUserInfo(request);
-        //}
-
-
-        IndosatDompetku indosatDompetku = null;
-
-        if (msisdn != null && !TextUtils.isEmpty(msisdn)) {
-            indosatDompetku = new IndosatDompetku(msisdn.trim());
-        }
-
 
         IndosatDompetkuRequest model =
                 new IndosatDompetkuRequest();
 
         model.setCustomerDetails(request.getCustomerDetails(), request
                 .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            model.setPaymentType(veritransSDK.getContext().getString(R.string.payment_indosat_dompetku));
-        }
+        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indosat_dompetku));
 
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();
@@ -406,7 +385,6 @@ public class SdkUtil {
         model.setTransactionDetails(transactionDetails);
 
         return model;
-
     }
 
     /**
@@ -420,38 +398,29 @@ public class SdkUtil {
         return transactionRequest;
     }
 
-
-
     /**
      * it extracts customer information from TransactionRequest.
      *
      * @param request instance of TransactionRequest
      * @return transaction request with {@link UserDetail}
      */
-    private static TransactionRequest getUserDetails(TransactionRequest request) {
+     static TransactionRequest getUserDetails(TransactionRequest request) {
 
         UserDetail userDetail = null;
         CustomerDetails mCustomerDetails = null;
 
         try {
-            VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-            if (veritransSDK != null) {
-                userDetail = LocalDataHandler.readObject(veritransSDK.getContext().getString(R.string.user_details), UserDetail.class);
-            }
+            userDetail = LocalDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext().getString(R.string.user_details), UserDetail.class);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
-
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
                 if (userAddresses != null && !userAddresses.isEmpty()) {
-
                     Logger.i("Found " + userAddresses.size() + " user addresses.");
-
                     mCustomerDetails = new CustomerDetails();
                     mCustomerDetails.setPhone(userDetail.getPhoneNumber());
                     mCustomerDetails.setFirstName(userDetail.getUserFullName());
-                    mCustomerDetails.setLastName(" ");
-                    mCustomerDetails.setEmail("");
-
+                    mCustomerDetails.setLastName(null);
+                    mCustomerDetails.setEmail(userDetail.getEmail());
                     //added email in performTransaction()
                     request.setCustomerDetails(mCustomerDetails);
 
@@ -460,8 +429,6 @@ public class SdkUtil {
 
             } else {
                 Logger.e("User details not available.");
-                //SdkUIFlowUtil.showSnackbar(VeritransSDK.getVeritransSDK().getContext(), "User details not available.");
-                //request.getActivity().finish();
             }
         } catch (Exception ex) {
             Logger.e("Error while fetching user details : " + ex.getMessage());
@@ -470,29 +437,7 @@ public class SdkUtil {
         return request;
     }
 
-    /**
-     * return user details if available else return null
-     *
-     * @param context   Application context
-     * @return UserDetail
-     */
-    protected static UserDetail getUserDetails(Context context) {
-
-        StorageDataHandler storageDataHandler = new StorageDataHandler();
-        try {
-            VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-            if (veritransSDK != null) {
-                UserDetail userDetail = LocalDataHandler.readObject(veritransSDK.getContext().getString(R.string.user_details), UserDetail.class);
-                return userDetail;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private static TransactionRequest extractUserAddress(UserDetail userDetail,
+    static TransactionRequest extractUserAddress(UserDetail userDetail,
                                                          ArrayList<UserAddress> userAddresses,
                                                          TransactionRequest request) {
 
@@ -509,7 +454,6 @@ public class SdkUtil {
                 billingAddressArrayList.add(billingAddress);
                 ShippingAddress shippingAddress = getShippingAddress(userDetail, userAddress);
                 shippingAddressArrayList.add(shippingAddress);
-
             } else if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING) {
                 ShippingAddress shippingAddress = getShippingAddress(userDetail, userAddress);
                 shippingAddressArrayList.add(shippingAddress);
@@ -523,6 +467,18 @@ public class SdkUtil {
         request.setBillingAddressArrayList(billingAddressArrayList);
         request.setShippingAddressArrayList(shippingAddressArrayList);
 
+        CustomerDetails customerDetails = request.getCustomerDetails();
+
+        if (customerDetails != null) {
+            if (billingAddressArrayList.size() > 0 && billingAddressArrayList.get(0) != null) {
+                customerDetails.setBillingAddress(billingAddressArrayList.get(0));
+            }
+
+            if (shippingAddressArrayList.size() > 0 && shippingAddressArrayList.get(0) != null) {
+                customerDetails.setShippingAddress(shippingAddressArrayList.get(0));
+            }
+            request.setCustomerDetails(customerDetails);
+        }
         return request;
     }
 
@@ -566,6 +522,75 @@ public class SdkUtil {
             Logger.e(ex.toString());
         }
         return deviceId;
+    }
+
+    public static SnapTokenRequestModel getSnapTokenRequestModel(TransactionRequest transactionRequest) {
+
+        if (transactionRequest.isUiEnabled()) {
+            //get user details only if using default ui.
+            transactionRequest = initializeUserInfo(transactionRequest);
+        }
+
+        SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), (int) transactionRequest.getAmount());
+
+        return new SnapTokenRequestModel(
+                details,
+                transactionRequest.getItemDetails(),
+                transactionRequest.getCustomerDetails());
+    }
+
+    public static PaymentDetails initializePaymentDetails(TransactionRequest transactionRequest) {
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setFullName(transactionRequest.getCustomerDetails().getFirstName());
+        paymentDetails.setPhone(transactionRequest.getCustomerDetails().getPhone());
+        paymentDetails.setEmail(transactionRequest.getCustomerDetails().getEmail());
+        return paymentDetails;
+    }
+
+    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String cardToken, boolean saveCard, TransactionRequest transactionRequest, String tokenId) {
+        if (transactionRequest.isUiEnabled()) {
+            // get user details only if using default ui
+            transactionRequest = initializeUserInfo(transactionRequest);
+        }
+
+        PaymentDetails paymentDetails = initializePaymentDetails(transactionRequest);
+
+        CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest();
+        paymentRequest.setTokenId(cardToken);
+        paymentRequest.setSaveCard(saveCard);
+        paymentRequest.setPaymentDetails(paymentDetails);
+        paymentRequest.setTransactionId(tokenId);
+
+        return paymentRequest;
+    }
+
+    public static BankTransferPaymentRequest getBankTransferPaymentRequest(String email, String tokenId) {
+        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest();
+        paymentRequest.setEmailAddress(email);
+        paymentRequest.setTransactionId(tokenId);
+
+        return paymentRequest;
+    }
+
+    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId, String tokenId) {
+        KlikBCAPaymentRequest klikBCAPaymentRequest = new KlikBCAPaymentRequest();
+        klikBCAPaymentRequest.setUserId(userId);
+        klikBCAPaymentRequest.setTransactionId(tokenId);
+
+        return klikBCAPaymentRequest;
+    }
+
+    public static String getEmailAddress(TransactionRequest transactionRequest) {
+        return transactionRequest.getCustomerDetails().getEmail();
+    }
+
+    public static MandiriClickPayPaymentRequest getMandiriClickPaymentRequest(String token, String mandiriCardNumber, String tokenResponse, String input3) {
+        MandiriClickPayPaymentRequest request = new MandiriClickPayPaymentRequest();
+        request.setTransactionId(token);
+        request.setMandiriCardNumber(mandiriCardNumber);
+        request.setTokenResponse(tokenResponse);
+        request.setInput3(input3);
+        return request;
     }
 
 }

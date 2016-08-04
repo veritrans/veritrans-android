@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -24,8 +25,6 @@ public class SdkCoreFlowBuilder {
     protected String colorTheme = null;
     protected int colorThemeResourceId = 0;
     protected String merchantName = null;
-    protected String merchantLogo = null;
-    protected int merchantLogoResourceId = 0;
     protected ISdkFlow sdkFlow;
     protected String defaultText;
     protected String boldText;
@@ -39,7 +38,7 @@ public class SdkCoreFlowBuilder {
      * @param context   application context
 
      */
-    public SdkCoreFlowBuilder(Context context, String clientKey, String merchantServerUrl) {
+    public SdkCoreFlowBuilder(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl) {
             this.context = context.getApplicationContext();
             this.clientKey = clientKey;
             this.merchantServerUrl = merchantServerUrl;
@@ -78,6 +77,7 @@ public class SdkCoreFlowBuilder {
         if(VeritransSDK.getVeritransSDK() != null){
             return VeritransSDK.getVeritransSDK();
         }
+
         if (VeritransSDK.getVeritransSDK() == null && isValidData()) {
             VeritransSDK veritransSDK = VeritransSDK.getInstance(this);
             return veritransSDK;
@@ -113,16 +113,6 @@ public class SdkCoreFlowBuilder {
 
     public SdkCoreFlowBuilder setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
         this.selectedPaymentMethods = selectedPaymentMethods;
-        return this;
-    }
-
-    public SdkCoreFlowBuilder setMerchantLogo(String merchantLogo) {
-        this.merchantLogo = merchantLogo;
-        return this;
-    }
-
-    public SdkCoreFlowBuilder setMerchantLogoResourceId(int resourceId) {
-        this.merchantLogoResourceId = resourceId;
         return this;
     }
 }

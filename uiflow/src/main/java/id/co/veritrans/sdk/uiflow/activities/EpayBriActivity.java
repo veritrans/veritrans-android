@@ -128,7 +128,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     private void makeTransaction() {
 
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        veritransSDK.paymentUsingEpayBri();
+        veritransSDK.snapPaymentUsingEpayBRI(veritransSDK.readAuthenticationToken());
     }
 
     @Override

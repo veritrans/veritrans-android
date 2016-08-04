@@ -196,7 +196,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void payUsingCard() {
-
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
         //getSupportActionBar().setTitle(getString(R.string.processing_payment));
@@ -273,8 +272,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
         }
 
-        veritransSDK.paymentUsingCard(cardTransfer);
-
+        veritransSDK.snapPaymentUsingCard(veritransSDK.readAuthenticationToken(), tokenDetailsResponse.getTokenId(), false);
     }
 
     public VeritransSDK getVeritransSDK() {
