@@ -46,7 +46,6 @@ public class EpayBRIPaymentActivity extends AppCompatActivity implements Transac
                 );
             }
         });
-
     }
 
     @Override

@@ -464,5 +464,4 @@ public class AddCardDetailsFragment extends Fragment {
         etCvv.setText(event.getCvv());
         etExpiryDate.setText(event.getExpired());
     }
-
 }

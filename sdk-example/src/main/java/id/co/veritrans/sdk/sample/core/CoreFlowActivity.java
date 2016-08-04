@@ -1,5 +1,4 @@
 package id.co.veritrans.sdk.sample.core;
-
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,9 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -48,7 +45,6 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
     private RecyclerView coreMethods;
     private CoreFlowListAdapter adapter;
     private ProgressDialog dialog;
-    private ArrayList<String> bankList = new ArrayList<>();
     private ArrayList<CoreViewModel> paymentMethodList = new ArrayList<>();
 
     @Override
@@ -57,17 +53,14 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
         setContentView(R.layout.activity_core_flow);
         VeritransBusProvider.getInstance().register(this);
         dialog = new ProgressDialog(this);
-
         init();
         getpaymentPages();
-
     }
 
     private void getpaymentPages() {
         dialog.setIndeterminate(true);
         dialog.setMessage("get payment methods");
         dialog.show();
-
         String orderId = UUID.randomUUID().toString();
         TransactionRequest request = new TransactionRequest(orderId, 360000);
         // Set item details
@@ -77,7 +70,7 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
         request.setItemDetails(itemDetailsArrayList);
         // Set Bill Info
         request.setBillInfoModel(new BillInfoModel("Bill Info Sample", "Bill Info Sample 2"));
-
+        //checkout to merchant server
         VeritransSDK.getVeritransSDK().setTransactionRequest(request);
         VeritransSDK.getVeritransSDK().getSnapToken();
     }
@@ -101,23 +94,18 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
                     goToActivity(new Intent(getApplicationContext(), KlikBcaPaymentActivity.class));
                 }else if(coreViewModel.getTitle().equals(getString(R.string.name_epay_bri))){
                     goToActivity(new Intent(getApplicationContext(), EpayBRIPaymentActivity.class));
-
                 }else if(coreViewModel.getTitle().equals(getString(R.string.name_cimb_clicks))){
                     goToActivity(new Intent(getApplicationContext(), CIMBClickPayPaymentActivity.class));
-
                 }else if(coreViewModel.getTitle().equals(getString(R.string.name_mandiri_click_pay))){
                     goToActivity(new Intent(getApplicationContext(), MandiriClickPaymentActivity.class));
-
                 }else if(coreViewModel.getTitle().equals(getString(R.string.name_mandiri_bill_payment))){
                     goToActivity(new Intent(getApplicationContext(), MandiriBillPaymentActivity.class));
-
                 }else if(coreViewModel.getTitle().equals(getString(R.string.name_indomaret))){
                     goToActivity(new Intent(getApplicationContext(), IndomaretPaymentActivity.class));
                 }else if(coreViewModel.getTitle().equals(getString(R.string.name_bank_transfer_bca))){
                     Intent intent = new Intent(getApplicationContext(), BankTransferPaymentActivity.class);
                     intent.putExtra(BankTransferPaymentActivity.TRANSFER_TYPE, getString(R.string.label_bank_transfer_bca));
                     goToActivity(intent);
-
                 }else if(coreViewModel.getTitle().equals(getString(R.string.name_bank_transfer_permata))){
                     Intent intent = new Intent(getApplicationContext(), BankTransferPaymentActivity.class);
                     intent.putExtra(BankTransferPaymentActivity.TRANSFER_TYPE, getString(R.string.label_bank_transfer_permata));
@@ -160,7 +148,6 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
         else{
             return null;
         }
-
     }
 
     private void goToActivity(Intent intent) {
@@ -180,7 +167,6 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
     @Override
     public void onEvent(GetSnapTokenFailedEvent event) {
         Logger.i("snaptoken>error");
-
         if(dialog.isShowing()){
             dialog.dismiss();
         }
@@ -229,7 +215,6 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
         if(dialog.isShowing()){
             dialog.dismiss();
         }
-
     }
 
     private void showAlertDialog(String message){

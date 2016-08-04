@@ -46,7 +46,6 @@ public class CIMBClickPayPaymentActivity extends AppCompatActivity implements Tr
                 );
             }
         });
-
     }
 
     @Override

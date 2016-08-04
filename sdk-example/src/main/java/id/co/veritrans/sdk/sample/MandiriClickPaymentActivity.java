@@ -77,7 +77,6 @@ public class MandiriClickPaymentActivity extends AppCompatActivity implements Tr
                             sampleMandiriCardNumber,
                             sampleTokenResponse,
                             input3
-
                     );
                 }
             }
