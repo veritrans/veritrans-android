@@ -68,6 +68,12 @@ public class TransactionResponse implements Serializable {
     private String permataVANumber;
     @SerializedName("va_numbers")
     private List<BCAVANumber> accountNumbers;
+    @SerializedName("xl_tunai_order_id")
+    private String xlTunaiOrderId;
+    @SerializedName("xl_tunai_merchant_id")
+    private String xlTunaiMerchantId;
+    @SerializedName("xl_expiration")
+    private String xlTunaiExpiration;
 
     @SerializedName("redirect_url")
     private String redirectUrl;
@@ -301,5 +307,29 @@ public class TransactionResponse implements Serializable {
 
     public void setFinishRedirectUrl(String finishRedirectUrl) {
         this.finishRedirectUrl = finishRedirectUrl;
+    }
+
+    public String getXlTunaiOrderId() {
+        return xlTunaiOrderId;
+    }
+
+    public void setXlTunaiOrderId(String xlTunaiOrderId) {
+        this.xlTunaiOrderId = xlTunaiOrderId;
+    }
+
+    public String getXlTunaiMerchantId() {
+        return xlTunaiMerchantId;
+    }
+
+    public void setXlTunaiMerchantId(String xlTunaiMerchantId) {
+        this.xlTunaiMerchantId = xlTunaiMerchantId;
+    }
+
+    public String getXlTunaiExpiration() {
+        return xlTunaiExpiration;
+    }
+
+    public void setXlTunaiExpiration(String xlTunaiExpiration) {
+        this.xlTunaiExpiration = xlTunaiExpiration;
     }
 }

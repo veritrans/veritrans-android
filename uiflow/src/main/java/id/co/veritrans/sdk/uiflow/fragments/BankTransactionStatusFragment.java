@@ -11,12 +11,12 @@ import android.widget.TextView;
 
 import java.util.regex.Pattern;
 
+import id.co.veritrans.sdk.coreflow.core.Constants;
+import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.BankTransferActivity;
 import id.co.veritrans.sdk.uiflow.activities.IndosatDompetkuActivity;
 import id.co.veritrans.sdk.uiflow.activities.MandiriClickPayActivity;
-import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 
 /**
  * Created by shivam on 10/27/15.
@@ -118,6 +118,8 @@ public class BankTransactionStatusFragment extends Fragment {
                 } else if (mPaymentType == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
                     mTextViewBankName.setText(getActivity().getResources().getString(R.string
                             .indosat_dompetku));
+                } else if (mPaymentType == Constants.PAYMENT_METHOD_TELKOMSEL_CASH) {
+                    mTextViewBankName.setText(getString(R.string.payment_method_telkomsel_cash));
                 } else if (mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY) {
                     mTextViewBankName.setText(getActivity().getResources().getString(R.string
                             .mandiri_click_pay));

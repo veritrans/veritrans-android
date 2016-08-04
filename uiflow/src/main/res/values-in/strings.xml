@@ -273,6 +273,11 @@
     <string name="indosat_instruction_step4">4.\tAnda akan menerima pesan USSD dari \nIndosat untuk menyelesaikan transaksi melalui Dompetku app.</string>
     <string name="indosat_instruction_step5">5.\tMasukkan PIN Anda.</string>
     <string name="indosat_instruction_step6">6.\tPembayaran Selesai.</string>
+
+    <string name="telkomsel_instruction_step1">1.\tKirim pesan singkat (SMS) ke Telkomsel, ketik TOKEN _PIN_, kirim ke 2828.</string>
+    <string name="telkomsel_instruction_step2">2.\tMasukkan token yang berasal dari balasan SMS oleh Telkomsel kolom Token T-Cash.</string>
+    <string name="telkomsel_instruction_step3">3.\tTransaksi anda akan kadaluarsa dalam 30 menit.</string>
+
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
     <string name="mandiri_click_pay_instruction_step1">1.\tAktifkan token Mandiri Anda dengan menekan [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tMasukkan password token Mandiri Anda.</string>
@@ -324,4 +329,27 @@
     <string name="btn_cancel">Batal</string>
     <string name="btn_retry">Ulangi</string>
     <string name="error_transaction_empty">Tidak Ada Data Transaksi</string>
+    <string name="text_hint_telkomsel_token">Token T-Cash</string>
+
+    <string name="error_empty_tcash_token_field">Token T-Cash tidak boleh kosong.</string>
+    <string name="error_invalid_phone_number">Nomor telepon tidak benar.</string>
+    <string name="error_something_wrong">Sedang terjadi kesalahan, silakan ulangi lagi!</string>
+
+    <string name="xl_instruction_step1">1.\tHubungi *123*120#.</string>
+    <string name="xl_instruction_step2">2.\tBalas \'4\' untuk \'Belanja Online\'.</string>
+    <string name="xl_instruction_step3">3.\tMasukkan Kode Penjual XL Tunai.</string>
+    <string name="xl_instruction_step4">4.\tMasukkan Kode pemesanan XL Tunai.</string>
+    <string name="xl_instruction_step5">5.\tMasukkan PIN XL Tunai anda.</string>
+    <string name="xl_instruction_step6">6.\tAnda akan menerima SMS konfirmasi dari XL.</string>
+
+    <string name="text_hint_xl_order_id">Kode Pemesanan</string>
+    <string name="text_hint_xl_merchant_code">Kode Penjual</string>
+
+    <string name="text_copy_order_id">Salin Kode Pemesanan</string>
+    <string name="text_copy_merchant_code">Salin Kode Penjual</string>
+
+    <string name="copied_order_id">Kode pemesanan telah disalin ke clipboard</string>
+    <string name="copied_merchant_code">Kode penjual telah disalin ke clipboard</string>
+
+    <string name="text_format_valid_until">Valid Sampai : %1$s</string>
 </resources>
