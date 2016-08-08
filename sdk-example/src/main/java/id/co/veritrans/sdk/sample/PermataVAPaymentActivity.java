@@ -26,6 +26,7 @@ import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 public class PermataVAPaymentActivity extends AppCompatActivity implements TransactionBusCallback {
     Button payBtn;
     ProgressDialog dialog;
+    private String sampleEmail = "sample@email.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,8 @@ public class PermataVAPaymentActivity extends AppCompatActivity implements Trans
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                VeritransSDK.getVeritransSDK().paymentUsingPermataBank();
+                VeritransSDK.getVeritransSDK().snapPaymentUsingBankTransferPermata(VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                        sampleEmail);
             }
         });
     }

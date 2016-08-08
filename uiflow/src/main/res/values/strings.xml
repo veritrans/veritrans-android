@@ -504,4 +504,5 @@
     <string name="copied_merchant_code">Merchant code was copied to clipboard</string>
 
     <string name="text_format_valid_until">Valid Until : %1$s</string>
+    <string name="amex">AMEX</string>
 </resources>

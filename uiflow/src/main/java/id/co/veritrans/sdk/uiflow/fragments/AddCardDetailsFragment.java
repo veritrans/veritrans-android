@@ -254,6 +254,7 @@ public class AddCardDetailsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                Logger.i("textchanged:" + s.length());
                 tilCardNo.setError(null);
                 if (s.length() > 0 && (s.length() % 5) == 0) {
                     final char c = s.charAt(s.length() - 1);
@@ -270,11 +271,15 @@ public class AddCardDetailsFragment extends Fragment {
                         s.insert(s.length() - 1, String.valueOf(space));
                     }
                 }
-
                 setCardType();
 
                 // Move to next input
-                if (s.length() == 19) {
+                if(s.length() >= 18 && cardType.equals(getString(R.string.amex))){
+                    if(s.length() == 19){
+                        s.delete(s.length() -1, s.length());
+                    }
+                    etExpiryDate.requestFocus();
+                }else if (s.length() == 19) {
                     etExpiryDate.requestFocus();
                 }
             }
@@ -461,11 +466,9 @@ public class AddCardDetailsFragment extends Fragment {
         } else if ((cardNo.charAt(0) == '3') && ((cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '7'))) {
             Drawable amex = getResources().getDrawable(R.drawable.ic_amex_dark);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, amex, null);
-            cardType = "AMEX";
-
+            cardType = getString(R.string.amex);
         } else {
             cardType = "";
-
         }
     }
 

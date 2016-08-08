@@ -392,6 +392,7 @@
     <string name="bank_details">bank_details</string>
     <string name="visa">VISA</string>
     <string name="mastercard">MASTERCARD</string>
+    <string name="amex">AMEX</string>
     <string name="capital_success">SUCCESS</string>
     <string name="transaction_response">transaction_response</string>
     <string name="event_transaction_complete">veritrans_transaction_complete</string>
