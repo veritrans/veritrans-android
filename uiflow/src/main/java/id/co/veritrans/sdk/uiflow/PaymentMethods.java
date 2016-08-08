@@ -167,6 +167,7 @@ public class PaymentMethods {
         ArrayList<BankTransferModel> models = new ArrayList<>();
         models.add(new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true));
         models.add(new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true));
+        models.add(new BankTransferModel(context.getString(R.string.all_bank_transfer), R.drawable.ic_pending, true));
         return models;
     }
 
@@ -175,6 +176,8 @@ public class PaymentMethods {
             return new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true);
         } else if (name.equals(context.getString(R.string.bank_transfer_permata))) {
             return new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true);
+        } else if (name.equals(context.getString(R.string.bank_transfer_all_bank))) {
+            return new BankTransferModel(context.getString(R.string.all_bank_transfer), R.drawable.ic_permata, true);
         } else {
             return null;
         }
