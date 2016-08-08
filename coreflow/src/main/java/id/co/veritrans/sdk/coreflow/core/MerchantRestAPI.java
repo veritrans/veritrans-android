@@ -1,5 +1,7 @@
 package id.co.veritrans.sdk.coreflow.core;
 
+import java.util.ArrayList;
+
 import id.co.veritrans.sdk.coreflow.models.AuthModel;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.coreflow.models.BCABankTransfer;
@@ -215,5 +217,16 @@ public interface MerchantRestAPI {
     @POST("/charge")
     void getSnapToken(@Body SnapTokenRequestModel requestModel, Callback<Token> callback);
 
+    /*
+     * save card
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/users/{user_id}/tokens")
+    void saveCards(@Path("user_id") String userId, @Body ArrayList<SaveCardRequest> saveCardsRequests,
+                       Callback<String> callback);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("/users/{user_id}/tokens")
+    void getCards(@Path("user_id") String userId, Callback<ArrayList<SaveCardRequest>> callback);
 
 }

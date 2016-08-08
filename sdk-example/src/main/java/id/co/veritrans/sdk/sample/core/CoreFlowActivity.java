@@ -61,17 +61,17 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
         dialog.setIndeterminate(true);
         dialog.setMessage("get payment methods");
         dialog.show();
-        String orderId = UUID.randomUUID().toString();
-        TransactionRequest request = new TransactionRequest(orderId, 360000);
-        // Set item details
-        ItemDetails itemDetails = new ItemDetails("1", 360000, 1, "shoes");
-        ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-        itemDetailsArrayList.add(itemDetails);
-        request.setItemDetails(itemDetailsArrayList);
-        // Set Bill Info
-        request.setBillInfoModel(new BillInfoModel("Bill Info Sample", "Bill Info Sample 2"));
-        //checkout to merchant server
-        VeritransSDK.getVeritransSDK().setTransactionRequest(request);
+//        String orderId = UUID.randomUUID().toString();
+//        TransactionRequest request = new TransactionRequest(orderId, 360000);
+//        // Set item details
+//        ItemDetails itemDetails = new ItemDetails("1", 360000, 1, "shoes");
+//        ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
+//        itemDetailsArrayList.add(itemDetails);
+//        request.setItemDetails(itemDetailsArrayList);
+//        // Set Bill Info
+//        request.setBillInfoModel(new BillInfoModel("Bill Info Sample", "Bill Info Sample 2"));
+//        //checkout to merchant server
+//        VeritransSDK.getVeritransSDK().setTransactionRequest(request);
         VeritransSDK.getVeritransSDK().getSnapToken();
     }
 

@@ -16,6 +16,7 @@ public abstract class BaseTransactionManager {
     protected static final String KEY_TOKENIZE_SUCCESS = "Tokenize Success";
     protected static final String KEY_TOKENIZE_FAILED = "Tokenize Failed";
 
+
     // Payment Name
     protected static final String PAYMENT_TYPE_CIMB_CLICK = "cimb_click";
     protected static final String PAYMENT_TYPE_BCA_KLIKPAY = "bca_klikpay";

@@ -93,4 +93,12 @@ public class BusCollaborator {
     public void onGetSnapTransactionFailed() {
 
     }
+
+    public void onGetCardsSnapFailed() {
+
+    }
+
+    public void onGetCardsSnapSuccess() {
+
+    }
 }

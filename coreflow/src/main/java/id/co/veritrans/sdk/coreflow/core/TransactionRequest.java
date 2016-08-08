@@ -9,6 +9,7 @@ import id.co.veritrans.sdk.coreflow.models.BillingAddress;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
 import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
+import id.co.veritrans.sdk.coreflow.models.snap.CreditCard;
 
 /**
  * It contains information about transaction like {@literal orderId}, {@literal amount}, itemDetails
@@ -73,6 +74,7 @@ public class TransactionRequest {
      * helps to identify whether to use ui or not.
      */
     private boolean useUi = true;
+    private CreditCard creditCard;
 
 
     /**
@@ -197,4 +199,11 @@ public class TransactionRequest {
         this.isSecureCard = isSecureCard;
     }
 
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
 }

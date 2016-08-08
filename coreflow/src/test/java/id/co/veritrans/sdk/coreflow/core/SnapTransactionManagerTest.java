@@ -22,6 +22,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.security.cert.CertPathValidatorException;
+import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.net.ssl.SSLHandshakeException;
@@ -30,8 +31,10 @@ import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.SDKConfigTest;
 import id.co.veritrans.sdk.coreflow.analytics.MixpanelApi;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
+import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.models.snap.CardsResponse;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import id.co.veritrans.sdk.coreflow.models.snap.TransactionData;
@@ -145,6 +148,20 @@ public class SnapTransactionManagerTest {
     private IndosatDompetkuPaymentRequest indosatDompetkuPaymentRequestMock;
     @Captor
     private ArgumentCaptor<IndosatDompetkuPaymentRequest> indosatDompetKuPaymentRequestCaptor;
+    private String sampleUserId = "user_id214";
+    @Mock
+    private ArrayList<SaveCardRequest> cardRequestListMock;
+    @Captor
+    private ArgumentCaptor<ArrayList<SaveCardRequest>> cardRequestListCaptor;
+    @Captor
+    private ArgumentCaptor<Callback<String>> saveCardCallbackCaptor;
+    private String saveCardResponse = "Created";
+    @Captor
+    private ArgumentCaptor<String> sampleUserIdCaptor;
+    @Captor
+    private ArgumentCaptor<Callback<ArrayList<SaveCardRequest>>> getCardCallbackCaptor;
+    @Mock
+    private ArrayList<SaveCardRequest> getCardResponseMock;
 
     @Before
     public void setup(){
@@ -931,8 +948,8 @@ public class SnapTransactionManagerTest {
      */
 
     @Test
-    public void paymentTelkomselEcash_whenRequestNull() {
-        eventBusImplementSample.paymentUsingSnapTelkomselEcash(snapAPI, null);
+    public void paymentUsingMandiriEcash_whenRequestNull() {
+        eventBusImplementSample.paymentUsingSnapMandirEcash(snapAPI, null);
         Mockito.verify(busCollaborator).onGeneralErrorEvent();
     }
 
@@ -1300,6 +1317,115 @@ public class SnapTransactionManagerTest {
         eventBusImplementSample.paymentUsingSnapKiosan(snapAPI, basePaymentRequestMock);
         Mockito.verify(snapAPI).paymentUsingKiosan(basePaymentRequestCaptor.capture(), transactionResponseCallbackCaptor.capture());
         transactionResponseCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(busCollaborator).onSSLErrorEvent();
+    }
+
+
+    /*
+     * save card to merchant server
+     */
+
+    @Test
+    public void savecard_whenRequestNull() {
+        eventBusImplementSample.snapSaveCard(merchantApi, sampleUserId, null);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void savecardSuccess_whenCode200or201(){
+        eventBusImplementSample.snapSaveCard(merchantApi, sampleUserId, cardRequestListMock);
+        Mockito.verify(merchantApi).saveCards(sampleUserIdCaptor.capture(), cardRequestListCaptor.capture(), saveCardCallbackCaptor.capture());
+        saveCardCallbackCaptor.getValue().success(saveCardResponse, retrofitResponse);
+        Mockito.verify(busCollaborator).onSaveCardSuccessEvent();
+    }
+
+    @Test
+    public void savecardSuccess_whenCodeNot200orNot201(){
+        retrofitResponse = new Response("URL", 210, "success", Collections.EMPTY_LIST,
+                new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
+
+        eventBusImplementSample.snapSaveCard(merchantApi, sampleUserId, cardRequestListMock);
+        Mockito.verify(merchantApi).saveCards(sampleUserIdCaptor.capture(), cardRequestListCaptor.capture(), saveCardCallbackCaptor.capture());
+        saveCardCallbackCaptor.getValue().success(saveCardResponse, retrofitResponse);
+        Mockito.verify(busCollaborator).onsaveCardFailedEvent();
+    }
+
+    @Test
+    public void saveCardError_whenGeneralError() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorGeneralMock);
+        eventBusImplementSample.snapSaveCard(merchantApi, sampleUserId, cardRequestListMock);
+        Mockito.verify(merchantApi).saveCards(sampleUserIdCaptor.capture(), cardRequestListCaptor.capture(), saveCardCallbackCaptor.capture());
+        saveCardCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void saveCardError_whenInvalidSSL() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidSSLException);
+        eventBusImplementSample.snapSaveCard(merchantApi, sampleUserId, cardRequestListMock);
+        Mockito.verify(merchantApi).saveCards(sampleUserIdCaptor.capture(), cardRequestListCaptor.capture(), saveCardCallbackCaptor.capture());
+        saveCardCallbackCaptor.getValue().failure(retrofitError);Mockito.verify(busCollaborator).onSSLErrorEvent();
+        Mockito.verify(busCollaborator).onSSLErrorEvent();
+    }
+
+    @Test
+    public void saveCardError_whenInvalidCertPath() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidCertPatMock);
+        eventBusImplementSample.snapSaveCard(merchantApi, sampleUserId, cardRequestListMock);
+        Mockito.verify(merchantApi).saveCards(sampleUserIdCaptor.capture(), cardRequestListCaptor.capture(), saveCardCallbackCaptor.capture());
+        saveCardCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(busCollaborator).onSSLErrorEvent();
+    }
+
+    /*
+     * get cards merchant server
+     */
+
+
+    @Test
+    public void getCardsSuccess_whenCode200or201(){
+        Mockito.when(getCardResponseMock.size()).thenReturn(1);
+        eventBusImplementSample.snapGetCards(merchantApi, sampleUserId);
+        Mockito.verify(merchantApi).getCards(sampleUserIdCaptor.capture(), getCardCallbackCaptor.capture());
+        getCardCallbackCaptor.getValue().success(getCardResponseMock, retrofitResponse);
+        Mockito.verify(busCollaborator).onGetCardsSnapSuccess();
+    }
+
+    @Test
+    public void getCardSuccess_whenCodeNot200orNot201(){
+        retrofitResponse = new Response("URL", 210, "success", Collections.EMPTY_LIST,
+                new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
+        Mockito.when(getCardResponseMock.size()).thenReturn(1);
+        eventBusImplementSample.snapGetCards(merchantApi, sampleUserId);
+        Mockito.verify(merchantApi).getCards(sampleUserIdCaptor.capture(),  getCardCallbackCaptor.capture());
+        getCardCallbackCaptor.getValue().success(getCardResponseMock, retrofitResponse);
+        Mockito.verify(busCollaborator).onGetCardsSnapFailed();
+    }
+
+    @Test
+    public void getCardCardError_whenGeneralError() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorGeneralMock);
+        eventBusImplementSample.snapGetCards(merchantApi, sampleUserId);
+        Mockito.verify(merchantApi).getCards(sampleUserIdCaptor.capture(), getCardCallbackCaptor.capture());
+        getCardCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
+
+    @Test
+    public void getCardError_whenInvalidSSL() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidSSLException);
+        eventBusImplementSample.snapGetCards(merchantApi, sampleUserId);
+        Mockito.verify(merchantApi).getCards(sampleUserIdCaptor.capture(), getCardCallbackCaptor.capture());
+        getCardCallbackCaptor.getValue().failure(retrofitError);Mockito.verify(busCollaborator).onSSLErrorEvent();
+        Mockito.verify(busCollaborator).onSSLErrorEvent();
+    }
+
+    @Test
+    public void getCardError_whenInvalidCertPath() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidCertPatMock);
+        eventBusImplementSample.snapGetCards(merchantApi, sampleUserId);
+        Mockito.verify(merchantApi).getCards(sampleUserIdCaptor.capture(), getCardCallbackCaptor.capture());
+        getCardCallbackCaptor.getValue().failure(retrofitError);
         Mockito.verify(busCollaborator).onSSLErrorEvent();
     }
 

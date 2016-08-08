@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+import id.co.veritrans.sdk.coreflow.models.snap.CreditCard;
+
 /**
  * Created by ziahaqi on 7/19/16.
  */
@@ -16,16 +18,32 @@ public class SnapTokenRequestModel {
     @SerializedName("item_details")
     private  ArrayList<ItemDetails> itemDetails;
 
-
     @SerializedName("transaction_details")
     private SnapTransactionDetails transactionDetails;
+
+    @SerializedName("credit_card")
+    private CreditCard creditCard;
 
     public SnapTokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails,
                                  CustomerDetails customerDetails) {
         this.transactionDetails = transactionDetails;
         this.itemDetails = itemDetails;
         this.costumerDetails = customerDetails;
+    }
 
+    public SnapTokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails, CustomerDetails customerDetails, CreditCard creditCard) {
+        this.transactionDetails = transactionDetails;
+        this.itemDetails = itemDetails;
+        this.costumerDetails = customerDetails;
+        this.creditCard = creditCard;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
     }
 
     public CustomerDetails getCostumerDetails() {

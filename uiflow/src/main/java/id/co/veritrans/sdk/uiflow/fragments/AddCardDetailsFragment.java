@@ -74,7 +74,6 @@ public class AddCardDetailsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -218,6 +217,7 @@ public class AddCardDetailsFragment extends Fragment {
                     }
                     //make payment
                     SdkUIFlowUtil.showProgressDialog(getActivity(), false);
+                    ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(cbStoreCard.isChecked(), cardType);
                     ((CreditDebitCardFlowActivity) getActivity()).getToken(cardTokenRequest);
                 }
             }
@@ -503,4 +503,5 @@ public class AddCardDetailsFragment extends Fragment {
         etCvv.setText(event.getCvv());
         etExpiryDate.setText(event.getExpired());
     }
+
 }

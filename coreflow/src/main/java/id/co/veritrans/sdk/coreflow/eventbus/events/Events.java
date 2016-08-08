@@ -5,6 +5,7 @@ package id.co.veritrans.sdk.coreflow.eventbus.events;
  */
 public class Events {
     public static final String GET_CARD = "Get-Card";
+    public static final String SNAP_GET_CARD = "Snap-Get-Card";
     public static final String PAYMENT = "Payment";
     public static final String TOKENIZE = "Tokenize";
     public static final String UI_FLOW = "UI";
@@ -16,4 +17,6 @@ public class Events {
     public static final String GET_SNAP_TRANSACTION = "Snap-Transaction";
     public static final String GET_SNAP_TOKEN = "Snap-Token";
     public static final String SNAP_PAYMENT = "Snap-Payment";
+    public static final String SNAP_CARD_REGISTRATION = "Snap-Card-Registration";
+
 }

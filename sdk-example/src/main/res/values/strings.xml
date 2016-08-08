@@ -69,4 +69,5 @@
     <string name="label_bank_transfer_other">other_bank</string>
     <string name="title_activity_bank_transfer">Pay with Bank Transfer</string>
     <string name="payment_type_unsupported">Payment type unsupported</string>
+    <string name="label_ok">Ok</string>
 </resources>

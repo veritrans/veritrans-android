@@ -4,20 +4,30 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import java.security.cert.CertPathValidatorException;
+import java.util.ArrayList;
 
 import javax.net.ssl.SSLHandshakeException;
 
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
+import id.co.veritrans.sdk.coreflow.eventbus.events.CardRegistrationFailedEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.CardRegistrationSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SSLErrorEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardFailedEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetCardsFailedEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetCardsSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionSuccessEvent;
+import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
+import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
@@ -44,17 +54,16 @@ public class SnapTransactionManager extends BaseTransactionManager{
 
     private SnapRestAPI snapRestAPI;
 
-    SnapTransactionManager(Context context, SnapRestAPI snapRestAPI, MerchantRestAPI merchantApiClient) {
+    SnapTransactionManager(Context context, SnapRestAPI snapRestAPI, MerchantRestAPI merchantApiClient, VeritransRestAPI veritransRestAPI) {
         this.context = context;
         this.snapRestAPI = snapRestAPI;
         this.merchantPaymentAPI = merchantApiClient;
-
+        this.veritransPaymentAPI = veritransRestAPI;
     }
 
     protected void setRestApi(SnapRestAPI restApi) {
         this.snapRestAPI = restApi;
     }
-
 
     /**
      * This method will get snap token via merchant server.
@@ -203,6 +212,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         }else{
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
         }
     }
@@ -251,6 +261,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
         }
     }
@@ -295,6 +306,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
         }
     }
@@ -344,6 +356,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
             });
 
         }else{
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
@@ -387,6 +400,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
@@ -430,6 +444,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
@@ -473,6 +488,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
@@ -517,6 +533,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
@@ -561,6 +578,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
@@ -605,6 +623,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
@@ -649,6 +668,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
@@ -692,6 +712,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
@@ -735,6 +756,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
@@ -778,6 +800,7 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
@@ -822,7 +845,125 @@ public class SnapTransactionManager extends BaseTransactionManager{
                 }
             });
         } else {
+            releaseResources();
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
+
+    /*
+     * save cards  to merchant server
+     */
+
+    public void saveCards(String userId, ArrayList<SaveCardRequest> cardRequests){
+        if(cardRequests != null){
+            merchantPaymentAPI.saveCards(userId, cardRequests, new Callback<String>() {
+                @Override
+                public void success(String s, Response response) {
+                    releaseResources();
+                    SaveCardResponse saveCardResponse = new SaveCardResponse();
+                    saveCardResponse.setCode(response.getStatus());
+                    saveCardResponse.setMessage(response.getReason());
+                    if(response.getStatus() == 200 || response.getStatus() == 201){
+                        VeritransBusProvider.getInstance().post(new SaveCardSuccessEvent(saveCardResponse, Events.REGISTER_CARD));
+                    }else{
+                        VeritransBusProvider.getInstance().post(new SaveCardFailedEvent(response.getReason(), saveCardResponse, Events.REGISTER_CARD));
+                    }
+                }
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    if(error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException){
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_CARD_REGISTRATION));
+                    }else{
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_CARD_REGISTRATION));
+                    }
+                }
+            });
+        }else{
+            releaseResources();
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    /**
+     * get saved card list on merchant server
+     * @param userId unique id to each user
+     */
+
+    public void getCards(String userId){
+            merchantPaymentAPI.getCards(userId, new Callback<ArrayList<SaveCardRequest>>() {
+                @Override
+                public void success(ArrayList<SaveCardRequest> cardsResponses, Response response) {
+                    releaseResources();
+                    if(cardsResponses != null && cardsResponses.size() > 0){
+                        if(response.getStatus() == 200 || response.getStatus() == 201){
+                            VeritransBusProvider.getInstance().post(new GetCardsSuccessEvent(cardsResponses, Events.SNAP_GET_CARD));
+                        }else{
+                            VeritransBusProvider.getInstance().post(new GetCardsFailedEvent(response.getReason(), cardsResponses, Events.SNAP_GET_CARD));
+                        }
+                    }else{
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.empty_transaction_response), Events.SNAP_GET_CARD));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    if(error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException){
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_CARD_REGISTRATION));
+                    }else{
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_CARD_REGISTRATION));
+                    }
+                }
+            });
+    }
+
+
+    /*
+     * PAPI STUFF
+     */
+
+    /**
+     * It will execute API call to get token from Veritrans that can be used later.
+     *
+     * @param cardNumber   credit card number
+     * @param cardCvv      credit card CVV number
+     * @param cardExpMonth credit card expired month
+     * @param cardExpYear  credit card expired year
+     */
+    public void cardRegistration(String cardNumber,
+                                 String cardCvv,
+                                 String cardExpMonth,
+                                 String cardExpYear, String clientKey) {
+        veritransPaymentAPI.registerCard(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey, new Callback<CardRegistrationResponse>() {
+            @Override
+            public void success(CardRegistrationResponse cardRegistrationResponse, Response response) {
+                releaseResources();
+
+                if (cardRegistrationResponse != null) {
+                    if (cardRegistrationResponse.getStatusCode().equals(context.getString(R.string.success_code_200))) {
+                        VeritransBusProvider.getInstance().post(new CardRegistrationSuccessEvent(cardRegistrationResponse, Events.CARD_REGISTRATION));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new CardRegistrationFailedEvent(cardRegistrationResponse.getStatusMessage(), cardRegistrationResponse, Events.CARD_REGISTRATION));
+                    }
+                } else {
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.CARD_REGISTRATION));
+                    Logger.e(context.getString(R.string.error_empty_response));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError e) {
+                releaseResources();
+                if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                    VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.CARD_REGISTRATION));
+                    Logger.i("Error in SSL Certificate. " + e.getMessage());
+                } else {
+                    VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.CARD_REGISTRATION));
+                    Logger.i("General error occurred " + e.getMessage());
+                }
+            }
+        });
+    }
+
 }
