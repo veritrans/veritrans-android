@@ -31,13 +31,14 @@ public abstract class BaseTransactionManager {
     protected static final String PAYMENT_TYPE_MANDIRI_BILL_PAY = "mandiri_bill_pay";
     protected static final String PAYMENT_TYPE_TELKOMSEL_ECASH = "telkomsel_ecash";
     protected static final String PAYMENT_TYPE_XL_TUNAI = "xl_tunai";
-    protected static final String PAYMENT_TYPE_KIOSAN = "xl_tunai";
+    protected static final String PAYMENT_TYPE_KIOSAN = "kiosan";
 
 
     // Bank transfer type
     protected static final String BANK_PERMATA = "permata";
     protected static final String BANK_BCA = "bca";
     protected static final String BANK_MANDIRI = "mandiri";
+    protected static final String ALL_BANK = "other";
 
     protected Context context;
     protected MixpanelAnalyticsManager analyticsManager;
@@ -45,35 +46,8 @@ public abstract class BaseTransactionManager {
     protected VeritransRestAPI veritransPaymentAPI;
     protected MerchantRestAPI merchantPaymentAPI;
 
-    protected void releaseResources() {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-        if (veritransSDK != null) {
-            veritransSDK.releaseResource();
-            Logger.i("released transaction");
-        }
-    }
-
-    public void setAnalyticsManager(MixpanelAnalyticsManager analyticsManager) {
-        this.analyticsManager = analyticsManager;
-    }
-
-
-
-    public void setVeritransPaymentAPI(VeritransRestAPI veritransPaymentAPI) {
-        this.veritransPaymentAPI = veritransPaymentAPI;
-    }
-
-    public void setMerchantPaymentAPI(MerchantRestAPI merchantPaymentAPI) {
-        this.merchantPaymentAPI = merchantPaymentAPI;
-    }
-
-    public void setSDKLogEnabled(boolean SDKLogEnabled) {
-        isSDKLogEnabled = SDKLogEnabled;
-    }
-
-
     protected static void displayResponse(TransactionResponse
-                                                transferResponse) {
+                                                  transferResponse) {
         Logger.d("transfer response: virtual account" +
                 " number ", "" +
                 transferResponse.getPermataVANumber());
@@ -93,6 +67,30 @@ public abstract class BaseTransactionManager {
                         "status ",
                 "" + transferResponse
                         .getTransactionStatus());
+    }
+
+    protected void releaseResources() {
+        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        if (veritransSDK != null) {
+            veritransSDK.releaseResource();
+            Logger.i("released transaction");
+        }
+    }
+
+    public void setAnalyticsManager(MixpanelAnalyticsManager analyticsManager) {
+        this.analyticsManager = analyticsManager;
+    }
+
+    public void setVeritransPaymentAPI(VeritransRestAPI veritransPaymentAPI) {
+        this.veritransPaymentAPI = veritransPaymentAPI;
+    }
+
+    public void setMerchantPaymentAPI(MerchantRestAPI merchantPaymentAPI) {
+        this.merchantPaymentAPI = merchantPaymentAPI;
+    }
+
+    public void setSDKLogEnabled(boolean SDKLogEnabled) {
+        isSDKLogEnabled = SDKLogEnabled;
     }
 
 

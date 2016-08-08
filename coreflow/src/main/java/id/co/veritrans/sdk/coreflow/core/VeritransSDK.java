@@ -870,109 +870,173 @@ public class VeritransSDK {
     }
 
     public void snapPaymentUsingMandiriBillPay(@NonNull String token, @NonNull String email){
-        if(Utils.isNetworkAvailable(context)){
-            isRunning = true;
-            mSnapTransactionManager.paymentUsingMandiriBillPay(SdkUtil.getBankTransferPaymentRequest(email, token));
-        }else{
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingMandiriBillPay(SdkUtil.getBankTransferPaymentRequest(email, token));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
 
     public void snapPaymentUsingMandiriClickPay(@NonNull String token, @NonNull String mandiriCardNumber, @NonNull String tokenResponse, @NonNull String input3) {
-        if(Utils.isNetworkAvailable(context)){
-            isRunning = true;
-            mSnapTransactionManager.paymentUsingMandiriClickPay(SdkUtil.getMandiriClickPaymentRequest(token, mandiriCardNumber, tokenResponse, input3));
-        }else{
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingMandiriClickPay(SdkUtil.getMandiriClickPaymentRequest(token, mandiriCardNumber, tokenResponse, input3));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
 
     public void snapPaymentUsingCIMBClick(@NonNull String token){
-        if(Utils.isNetworkAvailable(context)){
-            isRunning = true;
-            mSnapTransactionManager.paymentUsingCIMBClick(new BasePaymentRequest(token));
-        }else{
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingCIMBClick(new BasePaymentRequest(token));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
 
 
     public void snapPaymentUsingMandiriEcash(@NonNull String token){
-        if(Utils.isNetworkAvailable(context)){
-            isRunning = true;
-            mSnapTransactionManager.paymentUsingMandiriEcash(new BasePaymentRequest(token));
-        }else{
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingMandiriEcash(new BasePaymentRequest(token));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
-
     public void snapPaymentUsingTelkomselEcash(@NonNull String token, String customerPhoneNumber){
-        if(Utils.isNetworkAvailable(context)){
-            isRunning = true;
-            mSnapTransactionManager.paymentUsingTelkomselCash(new TelkomselEcashPaymentRequest(token, customerPhoneNumber));
-        }else{
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingTelkomselCash(new TelkomselEcashPaymentRequest(token, customerPhoneNumber));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
 
     public void snapPaymentUsingXLTunai(@NonNull String token){
-        if(Utils.isNetworkAvailable(context)){
-            isRunning = true;
-            mSnapTransactionManager.paymentUsingXLTunai(new BasePaymentRequest(token));
-        }else{
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingXLTunai(new BasePaymentRequest(token));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
     public void snapPaymentUsingIndomaret(@NonNull String token){
-        if(Utils.isNetworkAvailable(context)){
-            isRunning = true;
-            mSnapTransactionManager.paymentUsingIndomaret(new BasePaymentRequest(token));
-        }else{
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingIndomaret(new BasePaymentRequest(token));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
     public void snapPaymentUsingIndosatDompetku(@NonNull  String token, @NonNull String msisdn){
-        if(Utils.isNetworkAvailable(context)){
-            isRunning = true;
-            mSnapTransactionManager.paymentUsingIndosatDompetku(new IndosatDompetkuPaymentRequest(token, msisdn));
-        }else{
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingIndosatDompetku(new IndosatDompetkuPaymentRequest(token, msisdn));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
 
     public void snapPaymentUsingKiosan(@NonNull String token){
-        if(Utils.isNetworkAvailable(context)){
-            isRunning = true;
-            mSnapTransactionManager.paymentUsingKiosan(new BasePaymentRequest(token));
-        }else{
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingKiosan(new BasePaymentRequest(token));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
     public void snapPaymentUsingEpayBRI(@NonNull String token){
-        if(Utils.isNetworkAvailable(context)){
-            isRunning = true;
-            mSnapTransactionManager.paymentUsingBRIEpay(new BasePaymentRequest(token));
-        }else{
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingBRIEpay(new BasePaymentRequest(token));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    public void snapPaymentUsingBankTransferAllBank(@NonNull String tokenId, @NonNull String email) {
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingBankTransferAllBank(SdkUtil.getBankTransferPaymentRequest(email, tokenId));
+            } else {
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+            }
+        } else {
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 

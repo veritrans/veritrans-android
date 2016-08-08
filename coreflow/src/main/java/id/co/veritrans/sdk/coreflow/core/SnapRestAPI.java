@@ -192,4 +192,13 @@ public interface SnapRestAPI {
     @POST("/v1/pay_with_indosat_dompetku")
     void paymentUsingKiosan(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
+    /**
+     * Charge payment using Bank Transfer All Bank.
+     *
+     * @param request                     BasePaymentRequest model.
+     * @param transactionResponseCallback Callback.
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/v1/va_all_bank")
+    void paymentUsingBankTransferAllBank(@Body BankTransferPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 }

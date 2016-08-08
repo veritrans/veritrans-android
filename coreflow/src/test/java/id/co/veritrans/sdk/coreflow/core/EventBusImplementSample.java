@@ -440,4 +440,9 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
         snapTransactionManager.setRestApi(snapAPI);
         snapTransactionManager.paymentUsingKiosan(request);
     }
+
+    public void paymentUsingSnapBankTransferAllBank(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingBankTransferAllBank(request);
+    }
 }

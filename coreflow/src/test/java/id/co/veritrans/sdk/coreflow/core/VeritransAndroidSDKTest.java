@@ -1110,4 +1110,28 @@ public class VeritransAndroidSDKTest {
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
         Mockito.verify(busCollaborator).onNetworkUnAvailable();
     }
+
+    public void snapPaymentUsingBankTransferAllBank() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingBankTransferAllBank(email, token);
+        Assert.assertEquals(true, veritransSDKSSpy.isRunning());
+    }
+
+    @Test
+    public void snapPaymentUsingBankTransferAllBank_whenNetworkUnavailable() {
+        veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        veritransSDKSSpy.snapPaymentUsingBankTransferAllBank(email, token);
+        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+    }
+
+    @Test
+    public void snapPaymentUsingBankTransferAllBank_whenTransactionRequestNull() {
+        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        veritransSDKSSpy.snapPaymentUsingBankTransferAllBank(email, token);
+        Assert.assertFalse(veritransSDKSSpy.isRunning());
+        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+    }
 }
