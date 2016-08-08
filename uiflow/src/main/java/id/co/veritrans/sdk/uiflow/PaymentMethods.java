@@ -97,11 +97,11 @@ public class PaymentMethods {
     }
 
     public static PaymentMethodsModel getMethodTelkomselCash(Context context) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_telkomsel_cash), R.drawable.ic_indosat, Constants.PAYMENT_METHOD_NOT_SELECTED);
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_telkomsel_cash), R.drawable.ic_telkomsel, Constants.PAYMENT_METHOD_NOT_SELECTED);
     }
 
     public static PaymentMethodsModel getMethodXLTunai(Context context) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_xl_tunai), R.drawable.ic_indosat, Constants.PAYMENT_METHOD_NOT_SELECTED);
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_xl_tunai), R.drawable.ic_xl, Constants.PAYMENT_METHOD_NOT_SELECTED);
     }
 
     /**
@@ -157,8 +157,8 @@ public class PaymentMethods {
         paymentImageList[9] = R.drawable.ic_offers;
         paymentImageList[10] = R.drawable.ic_indosat;
         paymentImageList[11] = R.drawable.ic_indomaret;
-        paymentImageList[12] = R.drawable.ic_indosat;
-        paymentImageList[13] = R.drawable.ic_indosat;
+        paymentImageList[12] = R.drawable.ic_telkomsel;
+        paymentImageList[13] = R.drawable.ic_xl;
 
         return paymentImageList;
     }
