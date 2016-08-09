@@ -67,11 +67,10 @@ public interface SnapRestAPI {
     void paymentUsingBCAKlikPay(@Body BasePaymentRequest basePaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
 
-
     /**
      * Charge payment using permata bank.
      *
-     * @param request bankTransferPaymentrqeust
+     * @param request                     bankTransferPaymentrqeust
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -82,7 +81,7 @@ public interface SnapRestAPI {
     /**
      * Charge payment using bank tranfer bca.
      *
-     * @param request BankTransferPaymentRequest model
+     * @param request                     BankTransferPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -93,7 +92,7 @@ public interface SnapRestAPI {
     /**
      * Charge payment using mandiri bill pay.
      *
-     * @param request BankTransferPaymentRequest model
+     * @param request                     BankTransferPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -104,7 +103,7 @@ public interface SnapRestAPI {
     /**
      * Charge payment using mandiri click pay.
      *
-     * @param request MandiriClickPayPaymentRequest model
+     * @param request                     MandiriClickPayPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -114,7 +113,7 @@ public interface SnapRestAPI {
     /**
      * Charge payment using cimb clicks.
      *
-     * @param request BasePaymentRequest model
+     * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -124,7 +123,7 @@ public interface SnapRestAPI {
     /**
      * Charge payment using bri epay.
      *
-     * @param request BasePaymentRequest model
+     * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -134,7 +133,7 @@ public interface SnapRestAPI {
     /**
      * Charge payment using mandiri ecash.
      *
-     * @param request BasePaymentRequest model
+     * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -144,7 +143,7 @@ public interface SnapRestAPI {
     /**
      * Charge payment using telkomsel cash.
      *
-     * @param request TelkomselEcashPaymentRequest model
+     * @param request                     TelkomselEcashPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -154,7 +153,7 @@ public interface SnapRestAPI {
     /**
      * Charge payment using telkomsel cash.
      *
-     * @param request BasePaymentRequest model
+     * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -164,7 +163,7 @@ public interface SnapRestAPI {
     /**
      * Charge payment using indosat dompetku.
      *
-     * @param request IndosatDompetkuPaymentRequest model
+     * @param request                     IndosatDompetkuPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -175,7 +174,7 @@ public interface SnapRestAPI {
     /**
      * Charge payment using indosat dompetku.
      *
-     * @param request IndosatDompetkuPaymentRequest model
+     * @param request                     IndosatDompetkuPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -185,11 +184,20 @@ public interface SnapRestAPI {
     /**
      * Charge payment using kiosan.
      *
-     * @param request BasePaymentRequest model
+     * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_indosat_dompetku")
     void paymentUsingKiosan(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
+    /**
+     * Charge payment using Bank Transfer All Bank.
+     *
+     * @param request                     BasePaymentRequest model.
+     * @param transactionResponseCallback Callback.
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/v1/va_all_bank")
+    void paymentUsingBankTransferAllBank(@Body BankTransferPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 }

@@ -52,6 +52,7 @@
     <string name="activity_bank_transfer_bca">BCA Bank Transfer</string>
     <string name="activity_bank_transfer_mandiri">Mandiri Bank Transfer</string>
     <string name="activity_bank_transfer_permata">Permata Bank Transfer</string>
+    <string name="activity_bank_transfer_all_bank">Other Bank Transfer</string>
     <string name="activity_save_credit_card">Registered Credit Card</string>
     <!-- User Address -->
     <string name="title_user_details">User Details</string>
@@ -141,6 +142,7 @@
     <!--Bank Transfer-->
     <string name="bca_bank_transfer">BCA</string>
     <string name="permata_bank_transfer">Permata</string>
+    <string name="all_bank_transfer">Other Banks</string>
 
 
     <string name="orderId">Order ID</string>
@@ -456,6 +458,8 @@
     <string name="tab_permata_atm">ATM Permata</string>
     <string name="tab_alto">Alto</string>
     <string name="tab_mandiri_bill">Mandiri Bill</string>
+    <string name="tab_atm_bersama">ATM Bersama</string>
+    <string name="tab_prima">Prima</string>
 
     <!--KlikBCA Payment Instructions-->
     <string name="klikbca_instruction_1">1.\tPlease make sure that the UserID is active and registered at BCA.</string>

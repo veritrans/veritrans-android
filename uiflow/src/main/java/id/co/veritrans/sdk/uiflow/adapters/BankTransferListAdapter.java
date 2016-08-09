@@ -13,11 +13,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.BankTransferActivity;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.models.BankTransferModel;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.BankTransferActivity;
 
 /**
  * @author rakawm
@@ -84,6 +84,10 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
 
                 activity.startActivityForResult(startBankPayment,
                         Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else if (name.equals(sContext.getString(R.string.all_bank_transfer))) {
+                Intent startOtherBankPayment = new Intent(activity, BankTransferActivity.class);
+                startOtherBankPayment.putExtra(sContext.getString(R.string.position), Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK);
+                activity.startActivityForResult(startOtherBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else {
                 showMessage();
             }

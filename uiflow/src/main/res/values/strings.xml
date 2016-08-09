@@ -142,7 +142,7 @@
     <!--Bank Transfer-->
     <string name="bca_bank_transfer">BCA</string>
     <string name="permata_bank_transfer">Permata</string>
-
+    <string name="all_bank_transfer">Other Banks</string>
 
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
@@ -492,6 +492,7 @@
 
     <string name="bank_transfer_bca">bca</string>
     <string name="bank_transfer_permata">permata</string>
+    <string name="bank_transfer_all_bank">other_bank</string>
     <string name="error_transaction_empty">Transaction Data is Empty</string>
     <string name="text_hint_telkomsel_token">T-Cash Token</string>
     <string name="text_hint_xl_order_id">Order ID</string>
@@ -504,4 +505,21 @@
     <string name="copied_merchant_code">Merchant code was copied to clipboard</string>
 
     <string name="text_format_valid_until">Valid Until : %1$s</string>
+    <string name="instruction_atm_bersama1">1.\tOn the main menu, choose Others.</string>
+    <string name="instruction_atm_bersama2">2.\tChoose Transfer.</string>
+    <string name="instruction_atm_bersama3">3.\tChoose Online Transfer.</string>
+    <string name="instruction_atm_bersama4">4.\tEnter 013 and 16 digit Account No.</string>
+    <string name="instruction_atm_bersama5">5.\tEnter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+
+    <string name="instruction_prima1">1.\tOn the main menu, choose Other Transaction.</string>
+    <string name="instruction_prima2">2.\tChoose Transfer.</string>
+    <string name="instruction_prima3">3.\tChoose Other Bank Account.</string>
+    <string name="instruction_prima4">4.\tEnter 013 and 16 digit Account no. and choose Correct.</string>
+    <string name="instruction_prima5">5.\tEnter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+
+    <string name="instruction_alto1">1.\tOn the main menu, choose Other Transaction.</string>
+    <string name="instruction_alto2">2.\tChoose Payment.</string>
+    <string name="instruction_alto3">3.\tChoose Other Payment.</string>
+    <string name="instruction_alto4">4.\tChoose Virtual Account.</string>
+    <string name="instrcution_alto5">5.\tEnter 16 digits payment Account No. and press Correct.</string>
 </resources>

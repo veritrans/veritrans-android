@@ -139,7 +139,9 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         } else if(position == Constants.BANK_TRANSFER_BCA) {
             bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
             bankTransferFragment.setArguments(bundle);
-
+        } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
+            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
+            bankTransferFragment.setArguments(bundle);
         }
         fragmentTransaction.add(R.id.bank_transfer_container,
                 bankTransferFragment, HOME_FRAGMENT);
@@ -204,11 +206,13 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             mButtonConfirmPayment.setOnClickListener(this);
 
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
-                mTextViewTitle.setText(getResources().getString(R.string.mandiri_bill_payment));
+                mTextViewTitle.setText(getString(R.string.mandiri_bill_payment));
             } else if(position == Constants.BANK_TRANSFER_BCA){
-                mTextViewTitle.setText(getResources().getString(R.string.activity_bank_transfer_bca));
+                mTextViewTitle.setText(getString(R.string.activity_bank_transfer_bca));
             } else if( position == Constants.BANK_TRANSFER_PERMATA) {
-                mTextViewTitle.setText(getResources().getString(R.string.activity_bank_transfer_permata));
+                mTextViewTitle.setText(getString(R.string.activity_bank_transfer_permata));
+            } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
+                mTextViewTitle.setText(getString(R.string.activity_bank_transfer_all_bank));
             }
 
 
@@ -312,7 +316,9 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             } else if(position == Constants.BANK_TRANSFER_BCA) {
                 BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_BCA);
                 fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
-
+            } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
+                BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_ALL_BANK);
+                fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             }
 
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
@@ -364,8 +370,10 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                 bankTransferTransaction(veritransSDK);
             } else if(position == Constants.BANK_TRANSFER_BCA) {
                 bcaBankTransferTransaction(veritransSDK);
-            } else {
+            } else if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
                 mandiriBillPayTransaction(veritransSDK);
+            } else {
+                otherBankTransaction(veritransSDK);
             }
 
 
@@ -405,6 +413,10 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      */
     private void mandiriBillPayTransaction(VeritransSDK veritransSDK) {
         veritransSDK.snapPaymentUsingMandiriBillPay(veritransSDK.readAuthenticationToken(), SdkUtil.getEmailAddress(veritransSDK.getTransactionRequest()));
+    }
+
+    private void otherBankTransaction(VeritransSDK veritransSDK) {
+        veritransSDK.snapPaymentUsingBankTransferAllBank(veritransSDK.readAuthenticationToken(), SdkUtil.getEmailAddress(veritransSDK.getTransactionRequest()));
     }
 
     /**
