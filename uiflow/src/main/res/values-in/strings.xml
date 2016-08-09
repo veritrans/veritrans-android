@@ -352,4 +352,24 @@
     <string name="copied_merchant_code">Kode penjual telah disalin ke clipboard</string>
 
     <string name="text_format_valid_until">Valid Sampai : %1$s</string>
+
+    <string name="instruction_atm_bersama1">1.\tDi menu utama, pilih Others.</string>
+    <string name="instruction_atm_bersama2">2.\tPilih Transfer.</string>
+    <string name="instruction_atm_bersama3">3.\tPilih Online Transfer.</string>
+    <string name="instruction_atm_bersama4">4.\tMasukkan 013 dan 16 digit Nomor Akun Virtual.</string>
+    <string name="instruction_atm_bersama5">5.\tMasukkan jumlah pembayaran total. Jika jumlah yang dimasukkan tidak sesuai tagihan, transaksi akan ditolak.</string>
+
+    <string name="instruction_prima1">1.\tDi menu utama, pilih Other Transaction.</string>
+    <string name="instruction_prima2">2.\tPilih Transfer.</string>
+    <string name="instruction_prima3">3.\tPilih Other Bank Account.</string>
+    <string name="instruction_prima4">4.\tMasukkan 013 dan 16 digit Nomor Akun Virtual dan tekan Correct.</string>
+    <string name="instruction_prima5">5.\tMasukkan jumlah pembayaran total. Jika jumlah yang dimasukkan tidak sesuai tagihan, transaksi akan ditolak.</string>
+
+    <string name="instruction_alto1">1.\tDi menu utama, pilih Other Transaction.</string>
+    <string name="instruction_alto2">2.\tPilih Payment.</string>
+    <string name="instruction_alto3">3.\tPilih Other Payment.</string>
+    <string name="instruction_alto4">4.\tPilih Virtual Account.</string>
+    <string name="instruction_alto5">5.\tMasukkan 16 digit Nomor Akun Virtual dan tekan Correct.</string>
+
+    <string name="all_bank_transfer">Bank Lainnya</string>
 </resources>

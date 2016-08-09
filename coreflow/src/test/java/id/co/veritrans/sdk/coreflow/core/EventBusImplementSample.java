@@ -312,6 +312,11 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
         busCollaborator.onGetCardSuccess();
     }
 
+    @Subscribe
+    @Override
+    public void onEvent(GetCardFailedEvent event) {
+        busCollaborator.onGetCardFailed();
+    }
 
     @Subscribe
     @Override
@@ -458,6 +463,11 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
     public void paymentUsingSnapKiosan(SnapRestAPI snapAPI, BasePaymentRequest request) {
         snapTransactionManager.setRestApi(snapAPI);
         snapTransactionManager.paymentUsingKiosan(request);
+    }
+
+    public void paymentUsingSnapBankTransferAllBank(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
+        snapTransactionManager.setRestApi(snapAPI);
+        snapTransactionManager.paymentUsingBankTransferAllBank(request);
     }
 
     public void snapSaveCard(MerchantRestAPI restAPI, String userId, ArrayList<SaveCardRequest> requests) {
