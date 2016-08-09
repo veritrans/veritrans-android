@@ -318,12 +318,6 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
         busCollaborator.onGetCardFailed();
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(GetCardFailedEvent event) {
-        busCollaborator.onGetCardFailed();
-    }
-
     public void saveCard(MerchantRestAPI merchantRestAPIMock, SaveCardRequest request, String mToken) {
         transactionManager.setMerchantPaymentAPI(merchantRestAPIMock);
         transactionManager.saveCards(request, mToken);
