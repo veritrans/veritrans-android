@@ -30,10 +30,14 @@
         <activity android:name=".IndomaretPaymentActivity" />
         <activity android:name=".BankTransferPaymentActivity" />
 
+        <activity android:name=".TelkomselEcashPaymentActivity" />
+        <activity android:name=".MandiriECashActivity" />
+        <activity android:name=".IndosatDompetkuPaymentActivity" />
+        <activity android:name=".XlTunaiPaymentActivity" />
+
         <activity android:name=".PermataVAPaymentActivity" />
         <activity android:name=".BCAPaymentActivity" />
         <activity android:name=".MandiriClickPaymentActivity" />
-        <activity android:name=".MandiriECashActivity" />
         <activity android:name=".CardRegistrationActivity" />
     </application>
 

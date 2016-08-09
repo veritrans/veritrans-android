@@ -916,9 +916,9 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 public void failure(RetrofitError error) {
                     releaseResources();
                     if(error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException){
-                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_CARD_REGISTRATION));
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.REGISTER_CARD));
                     }else{
-                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_CARD_REGISTRATION));
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.REGISTER_CARD));
                     }
                 }
             });
@@ -953,9 +953,9 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 public void failure(RetrofitError error) {
                     releaseResources();
                     if(error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException){
-                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_CARD_REGISTRATION));
+                        VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.SNAP_GET_CARD));
                     }else{
-                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_CARD_REGISTRATION));
+                        VeritransBusProvider.getInstance().post(new GeneralErrorEvent(error.getMessage(), Events.SNAP_GET_CARD));
                     }
                 }
             });

@@ -70,4 +70,11 @@
     <string name="title_activity_bank_transfer">Pay with Bank Transfer</string>
     <string name="payment_type_unsupported">Payment type unsupported</string>
     <string name="label_ok">Ok</string>
+    <string name="label_telkomsel_ecash">telkomsel_cash</string>
+    <string name="name_telkomsel_ecash">Telkomsel Ecash</string>
+    <string name="label_xl_tunai">xl_tunai</string>
+    <string name="name_xl_tunai">XL Tunai</string>
+    <string name="title_activity_xl_tunai">XL- Tunai</string>
+    <string name="title_activity_indosat_dompetku">Indosat Dompetku</string>
+    <string name="title_activity_tsel_ecash">Telkomsel E-Cash</string>
 </resources>

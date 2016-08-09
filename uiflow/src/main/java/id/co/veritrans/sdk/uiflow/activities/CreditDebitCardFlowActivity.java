@@ -19,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
@@ -639,13 +638,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
+        Logger.d("eventcard:generalerror:" + event.getSource());
         SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
-
-        if (event.getSource().equals(Events.GET_CARD)) {
+        if (event.getSource().equals(Events.SNAP_GET_CARD)) {
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
             replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
             titleHeaderTextView.setText(getString(R.string.card_details));
+        }else{
+            SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
         }
     }
 
@@ -692,7 +692,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
             replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
             titleHeaderTextView.setText(getString(R.string.card_details));
-
         }
     }
 
