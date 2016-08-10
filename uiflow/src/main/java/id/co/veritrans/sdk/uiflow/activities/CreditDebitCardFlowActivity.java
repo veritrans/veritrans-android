@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.SaveCardBusCallback;
@@ -58,7 +57,6 @@ import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
 import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.models.TransactionStatusResponse;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
@@ -516,7 +514,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         if(removeExistCard){
             SdkUIFlowUtil.hideProgressDialog();
             removeExistCard = false;
-            Fragment currentFragment = getSavedCardFragment();
+            Fragment currentFragment = getCurrentFagment(SavedCardFragment.class);
             if(currentFragment != null){
                 ((SavedCardFragment)currentFragment).onDeleteCardSuccess();
             }
@@ -528,16 +526,13 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     public void onEvent(SaveCardFailedEvent event) {
         if(removeExistCard){
             SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(this, event.getMessage());
             removeExistCard = false;
-            Fragment currentFragment = getSavedCardFragment();
-            if(currentFragment != null){
-                SdkUIFlowUtil.showSnackbar(this, event.getMessage());
-            }
         }
     }
 
-    private Fragment getSavedCardFragment(){
-        if(!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equals(SavedCardFragment.class.getName())){
+    private Fragment getCurrentFagment(Class fragmentClass){
+        if(!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equals(fragmentClass.getName())){
             Fragment currentFragment = fragmentManager.findFragmentByTag(currentFragmentName);
             return currentFragment;
         }
@@ -681,11 +676,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             showErrorMessage(event.getMessage());
         }
         else if(removeExistCard){
-                removeExistCard = false;
-                Fragment currentFragment = getSavedCardFragment();
-                if(currentFragment != null){
-                    SdkUIFlowUtil.showSnackbar(this, event.getMessage());
-                }
+            SdkUIFlowUtil.showSnackbar(this, event.getMessage());
+            removeExistCard = false;
         }
         else{
             SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
