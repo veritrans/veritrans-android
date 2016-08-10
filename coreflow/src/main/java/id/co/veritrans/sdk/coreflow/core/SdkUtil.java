@@ -536,7 +536,7 @@ public class SdkUtil {
         return new SnapTokenRequestModel(
                 details,
                 transactionRequest.getItemDetails(),
-                transactionRequest.getCustomerDetails());
+                transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());
     }
 
     public static PaymentDetails initializePaymentDetails(TransactionRequest transactionRequest) {
@@ -560,7 +560,6 @@ public class SdkUtil {
         paymentRequest.setSaveCard(saveCard);
         paymentRequest.setPaymentDetails(paymentDetails);
         paymentRequest.setTransactionId(tokenId);
-
         return paymentRequest;
     }
 

@@ -11,6 +11,8 @@ import android.widget.EditText;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.CardRegistrationBusCallback;
@@ -22,6 +24,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import id.co.veritrans.sdk.coreflow.models.snap.SaveCardsRequest;
 
 public class CardRegistrationActivity extends AppCompatActivity implements CardRegistrationBusCallback, SaveCardBusCallback {
     TextInputLayout cardNumberContainer, cvvContainer, expiredDateContainer;
@@ -68,7 +71,7 @@ public class CardRegistrationActivity extends AppCompatActivity implements CardR
                     dialog.show();
                     // Create token request before payment
                     String date = expiredDate.getText().toString();
-                    VeritransSDK.getVeritransSDK().cardRegistration(cardNumber.getText().toString(),
+                    VeritransSDK.getVeritransSDK().snapCardRegistration(cardNumber.getText().toString(),
                             cvv.getText().toString(),
                             date.split("/")[0],
                             "20" + date.split("/")[1]);
@@ -133,8 +136,11 @@ public class CardRegistrationActivity extends AppCompatActivity implements CardR
         request.setSavedTokenId(cardRegistrationSuccessEvent.getResponse().getSavedTokenId());
         request.setMaskedCard(cardRegistrationSuccessEvent.getResponse().getMaskedCard());
         request.setTransactionId(cardRegistrationSuccessEvent.getResponse().getTransactionId());
-
-        VeritransSDK.getVeritransSDK().saveCards(request);
+        ArrayList<SaveCardRequest> saveCardsRequests = new ArrayList<>();
+        SaveCardRequest req = new SaveCardRequest(cardRegistrationSuccessEvent.getResponse().getSavedTokenId(),
+                cardRegistrationSuccessEvent.getResponse().getMaskedCard(), "visa");
+        saveCardsRequests.add(req);
+        VeritransSDK.getVeritransSDK().snapSaveCard("user01",saveCardsRequests);
     }
 
     @Subscribe

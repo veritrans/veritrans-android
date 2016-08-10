@@ -522,4 +522,5 @@
     <string name="instruction_alto3">3.\tChoose Other Payment.</string>
     <string name="instruction_alto4">4.\tChoose Virtual Account.</string>
     <string name="instrcution_alto5">5.\tEnter 16 digits payment Account No. and press Correct.</string>
+    <string name="amex">AMEX</string>
 </resources>

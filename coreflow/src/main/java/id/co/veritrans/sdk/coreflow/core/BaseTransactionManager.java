@@ -33,7 +33,6 @@ public abstract class BaseTransactionManager {
     protected static final String PAYMENT_TYPE_XL_TUNAI = "xl_tunai";
     protected static final String PAYMENT_TYPE_KIOSAN = "kiosan";
 
-
     // Bank transfer type
     protected static final String BANK_PERMATA = "permata";
     protected static final String BANK_BCA = "bca";

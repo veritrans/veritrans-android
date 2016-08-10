@@ -32,6 +32,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFinishedEvent;
 import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
 import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
+import id.co.veritrans.sdk.coreflow.models.snap.CreditCard;
 import id.co.veritrans.sdk.sample.core.CoreFlowActivity;
 import id.co.veritrans.sdk.scancard.ScanCard;
 import id.co.veritrans.sdk.uiflow.PaymentMethods;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
             getAuthenticationToken, refresh_token;
     private RadioButton normal, twoClick, oneClick;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods;
+    public static String userId = "user214";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,10 +129,14 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
 
         // Create transaction request
         String cardClickType = "";
+
         if (normal.isChecked()) {
             cardClickType = getString(R.string.card_click_type_none);
         } else if (twoClick.isChecked()) {
             cardClickType = getString(R.string.card_click_type_two_click);
+            CreditCard creditCard = new CreditCard();
+            creditCard.setSaveCard(true);
+            transactionRequestNew.setCreditCard(creditCard);
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
         }
@@ -159,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         coreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                VeritransSDK.getVeritransSDK().setTransactionRequest(initializePurchaseRequest());
                 Intent intent = new Intent(MainActivity.this, CoreFlowActivity.class);
                 startActivity(intent);
             }

@@ -36,6 +36,7 @@ import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.coreflow.models.snap.SaveCardsRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.IndosatDompetkuPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
@@ -87,7 +88,8 @@ public class VeritransSDK {
 
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi());
         this.mTransactionManager = new TransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
-        this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, VeritransRestAdapter.getSnapRestAPI(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
+        this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, VeritransRestAdapter.getSnapRestAPI(),
+                VeritransRestAdapter.getMerchantApiClient(merchantServerUrl), VeritransRestAdapter.getVeritransApiClient());
         this.mTransactionManager.setSDKLogEnabled(isLogEnabled);
         this.mTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
         this.mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
@@ -1033,6 +1035,43 @@ public class VeritransSDK {
         } else {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    public void snapCardRegistration(@NonNull String cardNumber,
+                                 @NonNull String cardCvv, @NonNull String cardExpMonth,
+                                 @NonNull String cardExpYear) {
+        if(Utils.isNetworkAvailable(context)){
+            isRunning = true;
+            mSnapTransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey);
+        }else{
+            isRunning = false;
+            Logger.e(context.getString(R.string.error_unable_to_connect));
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.CARD_REGISTRATION));
+        }
+    }
+
+    public void snapSaveCard(@NonNull String userId, @NonNull ArrayList<SaveCardRequest> requests){
+        if(requests != null){
+            if(Utils.isNetworkAvailable(context)){
+                isRunning = true;
+                mSnapTransactionManager.saveCards(userId, requests);
+            }else{
+                isRunning = false;
+                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.SNAP_CARD_REGISTRATION));
+            }
+        }else{
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_CARD_REGISTRATION));
+        }
+    }
+
+    public void snapGetCards(@NonNull String userId){
+        if(Utils.isNetworkAvailable(context)){
+            isRunning = true;
+            mSnapTransactionManager.getCards(userId);
+        }else{
+            isRunning = false;
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.SNAP_GET_CARD));
         }
     }
 

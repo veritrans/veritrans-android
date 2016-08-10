@@ -1,5 +1,7 @@
 package id.co.veritrans.sdk.coreflow.core;
 
+import java.util.ArrayList;
+
 import id.co.veritrans.sdk.coreflow.models.AuthModel;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.coreflow.models.BCABankTransfer;
@@ -201,19 +203,38 @@ public interface MerchantRestAPI {
                       @Body RegisterCardResponse registerCardResponse,
                       Callback<CardResponse> callback);
 
-
     /*
      * SNAP TOKEN STUFF
      *
      */
 
-
-    /*
+    /**
      * Get snap token.
+     * @param requestModel SnapToken RequestModel
+     * @param callback
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge")
     void getSnapToken(@Body SnapTokenRequestModel requestModel, Callback<Token> callback);
 
+    /**
+     * save cards to merchant server
+     *
+     * @param  userId unique id for every user
+     * @param saveCardsRequests list of saved credit cards
+     * @param callback
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/users/{user_id}/tokens")
+    void saveCards(@Path("user_id") String userId, @Body ArrayList<SaveCardRequest> saveCardsRequests,
+                   Callback<String> callback);
 
+    /**
+     * get cards from merchant server
+     * @param userId unique id for every user
+     * @param callback
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("/users/{user_id}/tokens")
+    void getCards(@Path("user_id") String userId, Callback<ArrayList<SaveCardRequest>> callback);
 }

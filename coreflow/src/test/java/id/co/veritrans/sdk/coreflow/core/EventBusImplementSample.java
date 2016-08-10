@@ -2,6 +2,8 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.CardRegistrationBusCallback;
@@ -15,6 +17,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.callback.HttpErrorCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.SaveCardBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TokenBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
+import id.co.veritrans.sdk.coreflow.eventbus.callback.snap.GetCardsBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.events.AuthenticationEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.CardRegistrationFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.CardRegistrationSuccessEvent;
@@ -33,6 +36,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetCardsFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionFailedEvent;
@@ -67,7 +71,7 @@ import id.co.veritrans.sdk.coreflow.transactionmanager.BusCollaborator;
  */
 public class EventBusImplementSample implements GetAuthenticationBusCallback, DeleteCardBusCallback,
         CardRegistrationBusCallback, SaveCardBusCallback, HttpErrorCallback,
-        TokenBusCallback, TransactionBusCallback, GetCardBusCallback,
+        TokenBusCallback, TransactionBusCallback, GetCardBusCallback, GetCardsBusCallback,
         GetOfferBusCallback, GetSnapTokenCallback, GetSnapTransactionCallback {
     public String onsuccessStatusCode;
     /**
@@ -366,6 +370,20 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
         busCollaborator.onGetSnapTransactionFailed();
     }
 
+    // snap
+
+    @Subscribe
+    @Override
+    public void onEvent(id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetCardsSuccessEvent event) {
+        busCollaborator.onGetCardsSnapSuccess();
+
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(GetCardsFailedEvent event) {
+        busCollaborator.onGetCardsSnapFailed();
+    }
     public void paymentUsingSnapCreditCard(SnapRestAPI snapAPI, CreditCardPaymentRequest request) {
         snapTransactionManager.setRestApi(snapAPI);
         snapTransactionManager.paymentUsingCreditCard(request);
@@ -444,5 +462,15 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
     public void paymentUsingSnapBankTransferAllBank(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
         snapTransactionManager.setRestApi(snapAPI);
         snapTransactionManager.paymentUsingBankTransferAllBank(request);
+    }
+
+    public void snapSaveCard(MerchantRestAPI restAPI, String userId, ArrayList<SaveCardRequest> requests) {
+        snapTransactionManager.setMerchantPaymentAPI(restAPI);
+        snapTransactionManager.saveCards(userId, requests);
+    }
+
+    public void snapGetCards(MerchantRestAPI merchantApi, String sampleUserId) {
+        snapTransactionManager.setMerchantPaymentAPI(merchantApi);
+        snapTransactionManager.getCards(sampleUserId);
     }
 }
