@@ -391,7 +391,6 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         textViewTitleOffers.setText(getString(R.string.fetching_cards));
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         veritransSDK.snapGetCards(userDetail.getUserId());
-
     }
 
     public void oneClickPayment(CardTokenRequest cardDetail) {

@@ -671,15 +671,12 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
             replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
             titleHeaderTextView.setText(getString(R.string.card_details));
-        }
-        else if(event.getSource().equals(Events.SNAP_PAYMENT)){
+        } else if(event.getSource().equals(Events.SNAP_PAYMENT)){
             showErrorMessage(event.getMessage());
-        }
-        else if(removeExistCard){
+        } else if(removeExistCard){
             SdkUIFlowUtil.showSnackbar(this, event.getMessage());
             removeExistCard = false;
-        }
-        else{
+        } else{
             SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
         }
     }

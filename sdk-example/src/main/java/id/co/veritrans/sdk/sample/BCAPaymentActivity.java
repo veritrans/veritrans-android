@@ -57,8 +57,7 @@ public class BCAPaymentActivity extends AppCompatActivity implements Transaction
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                VeritransSDK.getVeritransSDK().snapPaymentUsingBankTransferBCA(VeritransSDK.getVeritransSDK().readAuthenticationToken(),
-                        sampleEmail);
+                VeritransSDK.getVeritransSDK().snapPaymentUsingBankTransferBCA(VeritransSDK.getVeritransSDK().readAuthenticationToken(), sampleEmail);
             }
         });
     }
