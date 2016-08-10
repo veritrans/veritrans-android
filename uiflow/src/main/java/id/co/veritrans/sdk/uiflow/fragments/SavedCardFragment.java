@@ -187,31 +187,25 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
         }
     }
 
-    public void deleteCreditCard(String cardNumber) {
+    public void deleteCreditCard(String saveTokenId) {
         SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
         showHideNoCardMessage();
-        deleteCards(cardNumber);
+        deleteCards(saveTokenId);
 
     }
 
     public void deleteCards(final String tokenId) {
-        SaveCardRequest creditCard = null;
+        ArrayList<SaveCardRequest> cardList = new ArrayList<>();
         this.cardNumber = tokenId;
-        Logger.i("cardNumber:" + cardNumber);
         if (creditCards != null && !creditCards.isEmpty()) {
-
-            for (int i = 0; i < creditCards.size(); i++) {
-                if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(tokenId)) {
-                    creditCard = creditCards.get(i);
+            cardList.addAll(creditCards);
+            for (int i = 0; i < cardList.size(); i++) {
+                if (cardList.get(i).getSavedTokenId().equalsIgnoreCase(tokenId)) {
+                    cardList.remove(cardList.get(i));
                 }
             }
         }
-        if (creditCard != null) {
-            Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
-            SaveCardRequest saveCardRequest = new SaveCardRequest();
-            saveCardRequest.setSavedTokenId(creditCard.getSavedTokenId());
-//            veritransSDK.deleteCard(saveCardRequest);
-        }
+        ((CreditDebitCardFlowActivity)getActivity()).saveCreditCards(cardList, true);
     }
 
     public void hideLayouts() {
@@ -383,5 +377,54 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
     public void onEvent(GeneralErrorEvent event) {
         SdkUIFlowUtil.hideProgressDialog();
         SdkUIFlowUtil.showSnackbar(getActivity(), event.getMessage());
+    }
+
+    public void onDeleteCardSuccess() {
+        SdkUIFlowUtil.hideProgressDialog();
+        int position = -1;
+        for (int i = 0; i < creditCards.size(); i++) {
+            if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
+                position = i;
+            }
+        }
+        if (creditCards != null && !creditCards.isEmpty()) {
+            Logger.i("position to delete:" + position + "," + creditCards.size());
+            if (!creditCards.isEmpty()) {
+                for (int i = 0; i < creditCards.size(); i++) {
+                    Logger.i("cards before:" + creditCards.get(i).getSavedTokenId());
+                }
+            }
+
+            creditCards.remove(position);
+
+            if (!creditCards.isEmpty()) {
+                for (int i = 0; i < creditCards.size(); i++) {
+
+                    Logger.i("cards after:" + creditCards.get(i).getSavedTokenId());
+                }
+            }
+
+            //notifydataset change not worked properly for viewpager so setting it again
+            Logger.i("setting view pager value");
+            // setViewPagerValues(creditCardsNew);
+                        /*if(creditCards.size()>1) {
+                            try {
+                                savedCardPager.setCurrentItem(position);
+                            } catch (ArrayIndexOutOfBoundsException e) {
+                                savedCardPager.setCurrentItem(creditCards.size() - 1);
+                            }
+                        }*/
+            if (cardPagerAdapter != null && circlePageIndicator != null) {
+                Logger.i("notifying data");
+                cardPagerAdapter.notifyChangeInPosition(1);
+                cardPagerAdapter.notifyDataSetChanged();
+                circlePageIndicator.notifyDataSetChanged();
+                if (creditCards.isEmpty()) {
+                    emptyCardsTextView.setVisibility(View.VISIBLE);
+                } else {
+                    emptyCardsTextView.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 }
