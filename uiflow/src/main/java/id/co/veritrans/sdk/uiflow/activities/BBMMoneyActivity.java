@@ -221,7 +221,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         SdkUIFlowUtil.showProgressDialog(BBMMoneyActivity.this, false);
 
         //Execute transaction
-        veritransSDK.paymentUsingBBMMoney();
+//        veritransSDK.paymentUsingBBMMoney();
     }
 
     private void setUpTransactionStatusFragment(final TransactionResponse transactionResponse) {

@@ -26,6 +26,7 @@ import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 public class BCAPaymentActivity extends AppCompatActivity implements TransactionBusCallback {
     Button payBtn;
     ProgressDialog dialog;
+    private String sampleEmail = "test@veritrans.co.id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,8 @@ public class BCAPaymentActivity extends AppCompatActivity implements Transaction
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                VeritransSDK.getVeritransSDK().paymentUsingBcaBankTransfer();
+                VeritransSDK.getVeritransSDK().snapPaymentUsingBankTransferBCA(VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                        sampleEmail);
             }
         });
     }

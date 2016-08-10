@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -301,6 +303,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     public void saveCreditCards(SaveCardRequest creditCard) {
         ArrayList<SaveCardRequest> requests = new ArrayList<>();
+        requests.addAll(getCreditCardList());
         requests.add(new SaveCardRequest(creditCard.getSavedTokenId(), creditCard.getMaskedCard(), cardType));
         veritransSDK.snapSaveCard(userDetail.getUserId(), requests);
     }
@@ -638,17 +641,42 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
-        Logger.d("eventcard:generalerror:" + event.getSource());
         SdkUIFlowUtil.hideProgressDialog();
         if (event.getSource().equals(Events.SNAP_GET_CARD)) {
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
             replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
             titleHeaderTextView.setText(getString(R.string.card_details));
-        }else{
+        }
+        if(event.getSource().equals(Events.SNAP_PAYMENT)){
+            showErrorMessage(event.getMessage());
+        }
+        else{
             SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
         }
     }
 
+    private void showErrorMessage(String errorMessage) {
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setMessage(errorMessage)
+                .setPositiveButton(R.string.btn_retry, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
+                        replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
+                        titleHeaderTextView.setText(getString(R.string.card_details));
+                    }
+                })
+                .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .create();
+        alert.show();
+    }
     public void setSavedCardInfo(boolean saveCard, String cardType) {
         this.saveCard = saveCard;
         this.cardType = cardType;

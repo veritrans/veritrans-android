@@ -210,7 +210,7 @@ public class SavedCardFragment extends Fragment implements DeleteCardBusCallback
             Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
             SaveCardRequest saveCardRequest = new SaveCardRequest();
             saveCardRequest.setSavedTokenId(creditCard.getSavedTokenId());
-            veritransSDK.deleteCard(saveCardRequest);
+//            veritransSDK.deleteCard(saveCardRequest);
         }
     }
 
