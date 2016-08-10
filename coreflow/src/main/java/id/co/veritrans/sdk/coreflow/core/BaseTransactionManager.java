@@ -16,7 +16,6 @@ public abstract class BaseTransactionManager {
     protected static final String KEY_TOKENIZE_SUCCESS = "Tokenize Success";
     protected static final String KEY_TOKENIZE_FAILED = "Tokenize Failed";
 
-
     // Payment Name
     protected static final String PAYMENT_TYPE_CIMB_CLICK = "cimb_click";
     protected static final String PAYMENT_TYPE_BCA_KLIKPAY = "bca_klikpay";
@@ -33,7 +32,6 @@ public abstract class BaseTransactionManager {
     protected static final String PAYMENT_TYPE_TELKOMSEL_ECASH = "telkomsel_ecash";
     protected static final String PAYMENT_TYPE_XL_TUNAI = "xl_tunai";
     protected static final String PAYMENT_TYPE_KIOSAN = "kiosan";
-
 
     // Bank transfer type
     protected static final String BANK_PERMATA = "permata";
