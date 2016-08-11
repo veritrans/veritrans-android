@@ -35,8 +35,6 @@ public class PaymentMethods {
             return getMethodIndomaret(context);
         } else if (name.equals(context.getString(R.string.payment_mandiri_ecash))) {
             return getMethodMandiriECash(context);
-        } else if (name.equals(context.getString(R.string.payment_mandiri_bill_payment))) {
-            return getMethodMandiriBill(context);
         } else if (name.equals(context.getString(R.string.payment_indosat_dompetku))) {
             return getMethodIndosatDompetku(context);
         } else if (name.equals(context.getString(R.string.payment_telkomsel_cash))) {
@@ -131,7 +129,6 @@ public class PaymentMethods {
         paymentNameList[3] = context.getString(R.string.payment_method_bca_klikpay);
         paymentNameList[4] = context.getString(R.string.payment_method_mandiri_clickpay);
         paymentNameList[5] = context.getString(R.string.payment_method_mandiri_ecash);
-        paymentNameList[6] = context.getString(R.string.payment_method_mandiri_bill);
         paymentNameList[7] = context.getString(R.string.payment_method_bri_epay);
         paymentNameList[8] = context.getString(R.string.payment_method_cimb_clicks);
         paymentNameList[9] = context.getString(R.string.payment_method_offers);
@@ -150,8 +147,7 @@ public class PaymentMethods {
         paymentImageList[2] = R.drawable.ic_klikbca;
         paymentImageList[3] = R.drawable.ic_bca;
         paymentImageList[4] = R.drawable.ic_mandiri2;
-        paymentImageList[5] = R.drawable.ic_mandiri_e_cash; // mandiri e-Cash
-        paymentImageList[6] = R.drawable.ic_mandiri_bill_payment2;
+        paymentImageList[5] = R.drawable.ic_mandiri_e_cash;
         paymentImageList[7] = R.drawable.ic_epay;
         paymentImageList[8] = R.drawable.ic_cimb;
         paymentImageList[9] = R.drawable.ic_offers;
@@ -168,6 +164,7 @@ public class PaymentMethods {
         models.add(new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true));
         models.add(new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true));
         models.add(new BankTransferModel(context.getString(R.string.all_bank_transfer), R.drawable.ic_pending, true));
+        models.add(new BankTransferModel(context.getString(R.string.mandiri_bank_transfer), R.drawable.ic_mandiri_bill_payment2, true));
         return models;
     }
 
@@ -178,6 +175,8 @@ public class PaymentMethods {
             return new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true);
         } else if (name.equals(context.getString(R.string.bank_transfer_all_bank))) {
             return new BankTransferModel(context.getString(R.string.all_bank_transfer), R.drawable.ic_permata, true);
+        } else if (name.equals(context.getString(R.string.bank_transfer_mandiri))) {
+            return new BankTransferModel(context.getString(R.string.mandiri_bank_transfer), R.drawable.ic_mandiri_bill_payment2, true);
         } else {
             return null;
         }
@@ -191,7 +190,6 @@ public class PaymentMethods {
         paymentNameList.add(context.getString(R.string.payment_bca_click));
         paymentNameList.add(context.getString(R.string.payment_mandiri_clickpay));
         paymentNameList.add(context.getString(R.string.payment_mandiri_ecash));
-        paymentNameList.add(context.getString(R.string.payment_mandiri_bill_payment));
         paymentNameList.add(context.getString(R.string.payment_epay_bri));
         paymentNameList.add(context.getString(R.string.payment_cimb_clicks));
         paymentNameList.add(context.getString(R.string.payment_indosat_dompetku));

@@ -109,11 +109,9 @@ public class BankTransactionStatusFragment extends Fragment {
 
             if (getActivity() != null) {
 
-                if (mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
-                    mTextViewBankName.setText(MANDIRI_BILL);
-
-                } else if (mPaymentType == Constants.BANK_TRANSFER_PERMATA
+                if (mPaymentType == Constants.BANK_TRANSFER_PERMATA
                         || mPaymentType == Constants.BANK_TRANSFER_BCA
+                        || mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT
                         || mPaymentType == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
                     mTextViewBankName.setText(getString(R.string.payment_method_bank_transfer));
                 } else if (mPaymentType == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
