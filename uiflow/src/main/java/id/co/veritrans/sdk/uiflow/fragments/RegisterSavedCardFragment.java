@@ -152,7 +152,6 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
             //savedCardPager.setVisibility(View.GONE);
         } else {
             emptyContainer.setVisibility(View.GONE);
-            //savedCardPager.setVisibility(View.VISIBLE);
         }
     }
 
@@ -183,7 +182,6 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
             Logger.i("position to delete:" + creditCard.getSavedTokenId() + ",creditCard size:" + creditCards.size());
             SaveCardRequest saveCardRequest = new SaveCardRequest();
             saveCardRequest.setSavedTokenId(creditCard.getSavedTokenId());
-            veritransSDK.deleteCard(saveCardRequest);
         }
     }
 

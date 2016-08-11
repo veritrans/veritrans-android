@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,7 +8,9 @@ import android.os.Handler;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IntegerRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -45,7 +48,6 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetCardsSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.BillingAddress;
 import id.co.veritrans.sdk.coreflow.models.CardPaymentDetails;
-import id.co.veritrans.sdk.coreflow.models.CardResponse;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.CardTransfer;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
@@ -104,6 +106,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private MorphingButton btnMorph;
     private boolean saveCard = false;
     private String cardType;
+    private boolean removeExistCard = false;
 
     public MorphingButton getBtnMorph() {
         return btnMorph;
@@ -299,9 +302,15 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
 
-    public void saveCreditCards(SaveCardRequest creditCard) {
+    public void prepareSaveCard(SaveCardRequest creditCard) {
         ArrayList<SaveCardRequest> requests = new ArrayList<>();
+        requests.addAll(getCreditCardList());
         requests.add(new SaveCardRequest(creditCard.getSavedTokenId(), creditCard.getMaskedCard(), cardType));
+        saveCreditCards(requests, false);
+    }
+
+    public void saveCreditCards(ArrayList<SaveCardRequest> requests, boolean isRemoveCard){
+        this.removeExistCard = isRemoveCard;
         veritransSDK.snapSaveCard(userDetail.getUserId(), requests);
     }
 
@@ -502,14 +511,32 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Subscribe
     @Override
     public void onEvent(SaveCardSuccessEvent event) {
-        Logger.i("card saved");
-
+        if(removeExistCard){
+            SdkUIFlowUtil.hideProgressDialog();
+            removeExistCard = false;
+            Fragment currentFragment = getCurrentFagment(SavedCardFragment.class);
+            if(currentFragment != null){
+                ((SavedCardFragment)currentFragment).onDeleteCardSuccess();
+            }
+        }
     }
 
     @Subscribe
     @Override
     public void onEvent(SaveCardFailedEvent event) {
+        if(removeExistCard){
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(this, event.getMessage());
+            removeExistCard = false;
+        }
+    }
 
+    private Fragment getCurrentFagment(Class fragmentClass){
+        if(!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equals(fragmentClass.getName())){
+            Fragment currentFragment = fragmentManager.findFragmentByTag(currentFragmentName);
+            return currentFragment;
+        }
+        return null;
     }
 
     @Subscribe
@@ -601,7 +628,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 String firstPart = cardTokenRequest.getCardNumber().substring(0, 6);
                 String secondPart = cardTokenRequest.getCardNumber().substring(12);
                 saveCardRequest.setMaskedCard(firstPart + "-" + secondPart);
-                saveCreditCards(saveCardRequest);
+                prepareSaveCard(saveCardRequest);
                 creditCards.add(saveCardRequest);
             }
         }
@@ -638,17 +665,35 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
-        Logger.d("eventcard:generalerror:" + event.getSource());
+        Logger.i("generalError");
         SdkUIFlowUtil.hideProgressDialog();
         if (event.getSource().equals(Events.SNAP_GET_CARD)) {
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
             replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
             titleHeaderTextView.setText(getString(R.string.card_details));
-        }else{
+        } else if(event.getSource().equals(Events.SNAP_PAYMENT)){
+            showErrorMessage(event.getMessage());
+        } else if(removeExistCard){
+            SdkUIFlowUtil.showSnackbar(this, event.getMessage());
+            removeExistCard = false;
+        } else{
             SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
         }
     }
 
+    private void showErrorMessage(String errorMessage) {
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setMessage(errorMessage)
+                .setNegativeButton(R.string.btn_close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        setResultAndFinish();
+                    }
+                })
+                .create();
+        alert.show();
+    }
     public void setSavedCardInfo(boolean saveCard, String cardType) {
         this.saveCard = saveCard;
         this.cardType = cardType;

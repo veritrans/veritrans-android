@@ -892,7 +892,6 @@ public class SnapTransactionManager extends BaseTransactionManager {
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
         }
     }
-
     /*
      * save cards  to merchant server
      */

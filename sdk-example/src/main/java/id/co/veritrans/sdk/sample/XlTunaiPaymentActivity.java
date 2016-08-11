@@ -73,7 +73,6 @@ public class XlTunaiPaymentActivity extends AppCompatActivity implements Transac
                 .setMessage(transactionFailedEvent.getMessage())
                 .create();
         dialog.show();
-
     }
 
     @Subscribe

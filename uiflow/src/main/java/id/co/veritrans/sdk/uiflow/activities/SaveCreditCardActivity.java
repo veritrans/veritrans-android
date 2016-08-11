@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
+import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
@@ -42,6 +43,7 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
 import id.co.veritrans.sdk.coreflow.models.CardResponse;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.adapters.RegisterCardPagerAdapter;
@@ -219,11 +221,15 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
     }
 
     public void registerCard(String cardNumber, String cvv, String expMonth, String expYear) {
-        veritransSDK.cardRegistration(cardNumber, cvv, expMonth, expYear);
     }
 
     public void saveCreditCards(SaveCardRequest creditCard) {
-        veritransSDK.saveCards(creditCard);
+        ArrayList<SaveCardRequest> cardRequests = new ArrayList<>(getCreditCardList());
+        cardRequests.add(creditCard);
+        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        if(userDetail != null){
+            veritransSDK.snapSaveCard(userDetail.getUserId(), cardRequests);
+        }
     }
 
     public ArrayList<SaveCardRequest> getCreditCards() {
@@ -240,7 +246,10 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
     public void fetchCreditCards() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
         //  processingLayout.setVisibility(View.VISIBLE);
-        veritransSDK.getSavedCard();
+        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        if(userDetail != null){
+            veritransSDK.snapGetCards(userDetail.getUserId());
+        }
     }
 
     public int getFabHeight() {
@@ -318,7 +327,12 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
         cardRequest.setMaskedCard(event.getResponse().getMaskedCard());
         cardRequest.setSavedTokenId(event.getResponse().getSavedTokenId());
         cardRequest.setTransactionId(event.getResponse().getTransactionId());
-        veritransSDK.saveCards(cardRequest);
+        ArrayList<SaveCardRequest> requests = new ArrayList<>();
+        requests.add(cardRequest);
+        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        if(userDetail != null){
+            veritransSDK.snapSaveCard(userDetail.getUserId(), requests);
+        }
     }
 
     @Subscribe

@@ -204,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         getAuthenticationToken.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransSDK.getVeritransSDK().getAuthenticationToken();
             }
         });
         refreshAuthenticationContainer();

@@ -115,4 +115,8 @@ public class SdkCoreFlowBuilder {
         this.selectedPaymentMethods = selectedPaymentMethods;
         return this;
     }
+
+    public static SdkCoreFlowBuilder init(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl){
+        return new SdkCoreFlowBuilder(context, clientKey, merchantServerUrl);
+    }
 }
