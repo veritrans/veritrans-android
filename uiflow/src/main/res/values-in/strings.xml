@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="activity_select_bank">Pilih Bank</string>
+    <string name="activity_bank_transfer_bca">Transfer Bank BCA</string>
+    <string name="activity_bank_transfer_mandiri">Transfer Bank Mandiri</string>
+    <string name="activity_bank_transfer_permata">Transfer Bank Permata</string>
+    <string name="activity_bank_transfer_all_bank">Transfer ke Bank Lain</string>
+    <string name="activity_save_credit_card">Kartu Kredit Terdaftar</string>
 
     <!--user detail-->
     <string name="hint_full_name">Nama Lengkap</string>
@@ -76,9 +81,9 @@
     <string name="message_cvv">CVV adalah 3 or 4 digit angka yang tertera pada bagian belakang kartu.</string>
     
     <!-- Permata VA Bank Transfer-->
-    <string name="virtual_account">Virtual Account</string>
+    <string name="virtual_account">Akun Virtual</string>
     <string name="bank_transfer">Bank Transfer</string>
-    <string name="mandiri_bill_payment">Mandiri Bill Payment</string>
+    <string name="mandiri_bill_payment">Bank Transfer Mandiri</string>
 
     <!--Bank Transfer-->
     <string name="bca_bank_transfer">BCA</string>

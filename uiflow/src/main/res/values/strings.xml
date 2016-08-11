@@ -137,11 +137,12 @@
     <!-- Permata VA Bank Transfer-->
     <string name="virtual_account">Virtual Account</string>
     <string name="bank_transfer">Bank Transfer</string>
-    <string name="mandiri_bill_payment">Mandiri Bill Payment</string>
+    <string name="mandiri_bill_payment">Mandiri Bank Transfer</string>
 
     <!--Bank Transfer-->
     <string name="bca_bank_transfer">BCA</string>
     <string name="permata_bank_transfer">Permata</string>
+    <string name="mandiri_bank_transfer">Mandiri</string>
     <string name="all_bank_transfer">Other Banks</string>
 
     <string name="orderId">Order ID</string>
@@ -493,6 +494,7 @@
     <string name="bank_transfer_bca">bca</string>
     <string name="bank_transfer_permata">permata</string>
     <string name="bank_transfer_all_bank">other_bank</string>
+    <string name="bank_transfer_mandiri">mandiri</string>
     <string name="error_transaction_empty">Transaction Data is Empty</string>
     <string name="text_hint_telkomsel_token">T-Cash Token</string>
     <string name="text_hint_xl_order_id">Order ID</string>

@@ -18,7 +18,6 @@ import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.BBMMoneyActivity;
 import id.co.veritrans.sdk.uiflow.activities.BCAKlikPayActivity;
-import id.co.veritrans.sdk.uiflow.activities.BankTransferActivity;
 import id.co.veritrans.sdk.uiflow.activities.CIMBClickPayActivity;
 import id.co.veritrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.uiflow.activities.EpayBriActivity;
@@ -107,10 +106,6 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
             if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_credit_card))) {
                 Intent intent = new Intent(sActivity, CreditDebitCardFlowActivity.class);
                 sActivity.startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_mandiri_bill))) {
-                Intent startMandiriBillpay = new Intent(sActivity, BankTransferActivity.class);
-                startMandiriBillpay.putExtra(sActivity.getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
-                sActivity.startActivityForResult(startMandiriBillpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_bank_transfer))) {
                 Intent startBankPayment = new Intent(sActivity, SelectBankTransferActivity.class);
                 if (sActivity instanceof PaymentMethodsActivity) {
