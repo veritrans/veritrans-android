@@ -60,7 +60,6 @@ public class PaymentWebActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-
     }
 
     @Override
