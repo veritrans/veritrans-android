@@ -147,24 +147,24 @@ public class AddCardDetailsFragment extends Fragment {
         etCardNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasfocus) {
-                if(!hasfocus){
-                    isCardNumberValid();
+                if (!hasfocus) {
+                    checkCardNumberValidity();
                 }
             }
         });
         etExpiryDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasfocus) {
-                if(!hasfocus){
-                    isExpireyDateValid();
+                if (!hasfocus) {
+                    checkCardExpiryValidity();
                 }
             }
         });
         etCvv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasfocus) {
-                if(!hasfocus){
-                    isCvvValid();
+                if (!hasfocus) {
+                    checkCardCVVValidity();
                 }
             }
         });
@@ -274,12 +274,12 @@ public class AddCardDetailsFragment extends Fragment {
                 setCardType();
 
                 // Move to next input
-                if(s.length() >= 18 && cardType.equals(getString(R.string.amex))){
-                    if(s.length() == 19){
-                        s.delete(s.length() -1, s.length());
+                if (s.length() >= 18 && cardType.equals(getString(R.string.amex))) {
+                    if (s.length() == 19) {
+                        s.delete(s.length() - 1, s.length());
                     }
                     etExpiryDate.requestFocus();
-                }else if (s.length() == 19) {
+                } else if (s.length() == 19) {
                     etExpiryDate.requestFocus();
                 }
             }
@@ -300,34 +300,39 @@ public class AddCardDetailsFragment extends Fragment {
                     @Override
                     public void afterTextChanged(Editable s) {
                         String input = s.toString();
-                        if (s.length() == 2 && !lastExpDate.endsWith("/")) {
-                            int month = Integer.parseInt(input);
-                            if (month <= 12) {
-                                etExpiryDate.setText(etExpiryDate.getText().toString() + "/");
-                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                            } else {
-                                etExpiryDate.setText(Constants.MONTH_COUNT + "/");
-                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                            }
-                        } else if (s.length() == 2 && lastExpDate.endsWith("/")) {
-                            try {
-                                int month = Integer.parseInt(input);
-                                if (month <= 12) {
-                                    etExpiryDate.setText(etExpiryDate.getText().toString().substring(0, 1));
-                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                } else {
-                                    etExpiryDate.setText("");
-                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                        if (s.length() == 2) {
+                            if (!lastExpDate.endsWith("/")) {
+                                try {
+                                    int month = Integer.parseInt(input);
+                                    if (month <= 12) {
+                                        etExpiryDate.setText(getString(R.string.expiry_month_format, etExpiryDate.getText().toString()));
+                                        etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                    } else {
+                                        etExpiryDate.setText(getString(R.string.expiry_month_int_format, Constants.MONTH_COUNT));
+                                        etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                    }
+                                } catch (Exception exception) {
+                                    Logger.e(exception.toString());
                                 }
-                            } catch (Exception exception) {
-                                Logger.e(exception.toString());
+                            } else {
+                                try {
+                                    int month = Integer.parseInt(input);
+                                    if (month <= 12) {
+                                        etExpiryDate.setText(etExpiryDate.getText().toString().substring(0, 1));
+                                        etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                    } else {
+                                        etExpiryDate.setText("");
+                                        etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                    }
+                                } catch (Exception exception) {
+                                    Logger.e(exception.toString());
+                                }
                             }
-
                         } else if (s.length() == 1) {
                             try {
                                 int month = Integer.parseInt(input);
                                 if (month > 1) {
-                                    etExpiryDate.setText("0" + etExpiryDate.getText().toString() + "/");
+                                    etExpiryDate.setText(getString(R.string.expiry_month_single_digit_format, etExpiryDate.getText().toString()));
                                     etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                                 }
                             } catch (Exception exception) {
@@ -345,7 +350,7 @@ public class AddCardDetailsFragment extends Fragment {
         );
     }
 
-    private boolean isCardNumberValid(){
+    private boolean checkCardNumberValidity() {
         boolean isValid = true;
 
         cardNumber = etCardNo.getText().toString().trim().replace(" ", "");
@@ -365,7 +370,7 @@ public class AddCardDetailsFragment extends Fragment {
         return isValid;
     }
 
-    private boolean isExpireyDateValid(){
+    private boolean checkCardExpiryValidity() {
         boolean isValid = true;
         expiryDate = etExpiryDate.getText().toString().trim();
         try {
@@ -378,25 +383,25 @@ public class AddCardDetailsFragment extends Fragment {
         }
 
         if (TextUtils.isEmpty(expiryDate)) {
-            etExpiryDate.setError(getString(R.string.validation_message_empty_expiry_date));
+            tilExpiry.setError(getString(R.string.validation_message_empty_expiry_date));
             isValid = false;
         } else if (!expiryDate.contains("/")) {
-            etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+            tilExpiry.setError(getString(R.string.validation_message_invalid_expiry_date));
             isValid = false;
         } else if (expDateArray == null || expDateArray.length != 2) {
-            etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+            tilExpiry.setError(getString(R.string.validation_message_invalid_expiry_date));
             isValid = false;
         } else if (expDateArray != null) {
             try {
                 expMonth = Integer.parseInt(expDateArray[0]);
             } catch (NumberFormatException e) {
-                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                tilExpiry.setError(getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             }
             try {
                 expYear = Integer.parseInt(expDateArray[1]);
             } catch (NumberFormatException e) {
-                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                tilExpiry.setError(getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             }
             Calendar calendar = Calendar.getInstance();
@@ -409,42 +414,42 @@ public class AddCardDetailsFragment extends Fragment {
             Logger.i("currentMonth:" + currentMonth + ",currentYear:" + currentYear);
 
             if (expYear < currentYear) {
-                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                tilExpiry.setError(getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             } else if (expYear == currentYear && currentMonth > expMonth) {
-                etExpiryDate.setError(getString(R.string.validation_message_invalid_expiry_date));
+                tilExpiry.setError(getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             } else {
-                etExpiryDate.setError(null);
+                tilExpiry.setError(null);
             }
         } else {
-            etExpiryDate.setError(null);
+            tilExpiry.setError(null);
         }
         return isValid;
     }
 
-    private boolean isCvvValid(){
+    private boolean checkCardCVVValidity() {
         boolean isValid = true;
         cvv = etCvv.getText().toString().trim();
-        questionImg.setVisibility(View.VISIBLE);
         if (TextUtils.isEmpty(cvv)) {
-            questionImg.setVisibility(View.GONE);
-            etCvv.setError(getString(R.string.validation_message_cvv));
+            tilCvv.setError(getString(R.string.validation_message_cvv));
             isValid = false;
         } else {
             if (cvv.length() < 3) {
-                questionImg.setVisibility(View.GONE);
-                etCvv.setError(getString(R.string.validation_message_invalid_cvv));
+                tilCvv.setError(getString(R.string.validation_message_invalid_cvv));
                 isValid = false;
             } else {
-                etCvv.setError(null);
+                tilCvv.setError(null);
             }
-            questionImg.setVisibility(View.VISIBLE);
         }
         return isValid;
     }
+
     private boolean checkCardValidity() {
-        return (isExpireyDateValid() && isCardNumberValid() && isCvvValid());
+        boolean cardNumberValidity = checkCardNumberValidity();
+        boolean cardExpiryValidity = checkCardExpiryValidity();
+        boolean cardCVVValidity = checkCardCVVValidity();
+        return cardNumberValidity && cardExpiryValidity && cardCVVValidity;
     }
 
     private void setCardType() {
