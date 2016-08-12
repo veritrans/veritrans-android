@@ -300,6 +300,9 @@
     <string name="title_payment_successful">Payment Successful</string>
     <string name="card_details_error_message">Card details not found.</string>
     <string name="no_saved_cards">No saved cards found.</string>
+    <string name="expiry_month_format">%1$s/</string>
+    <string name="expiry_month_int_format">%1$d/</string>
+    <string name="expiry_month_single_digit_format">0%1$s/</string>
 
     <string name="appli">APPLI</string>
     <string name="input_1">Input 1</string>
