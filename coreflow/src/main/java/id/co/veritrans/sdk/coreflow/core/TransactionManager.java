@@ -89,20 +89,6 @@ public class TransactionManager extends BaseTransactionManager{
         this.merchantPaymentAPI = merchantPaymentAPI;
     }
 
-    private static void displayTokenResponse(TokenDetailsResponse tokenDetailsResponse) {
-        Logger.d("token response: status code ", "" +
-                tokenDetailsResponse.getStatusCode());
-        Logger.d("token response: status message ", "" +
-                tokenDetailsResponse.getStatusMessage());
-        Logger.d("token response: token Id ", "" + tokenDetailsResponse
-                .getTokenId());
-        Logger.d("token response: redirect url ", "" +
-                tokenDetailsResponse.getRedirectUrl());
-        Logger.d("token response: bank ", "" + tokenDetailsResponse
-                .getBank());
-    }
-
-
     public void setVeritransPaymentAPI(VeritransRestAPI veritransPaymentAPI) {
         this.veritransPaymentAPI = veritransPaymentAPI;
     }
