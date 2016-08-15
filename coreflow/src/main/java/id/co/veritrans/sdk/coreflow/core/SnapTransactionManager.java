@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import java.security.cert.CertPathValidatorException;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.CardRegistrationFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.CardRegistrationSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenFailedEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SSLErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
@@ -26,9 +29,11 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEven
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
+import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
@@ -361,6 +366,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
+    /**
+     *This method is used for payment using BCA Klik Pay.
+     *
+     * @param paymentRequest payment request for BCA Klik pay
+     */
     public void paymentUsingBCAKlikpay(BasePaymentRequest paymentRequest) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
@@ -405,6 +415,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
+    /**
+     *This method is used for payment using Mandiri Bill Pay.
+     *
+     * @param paymentRequest payment request for Mandiri Bill pay
+     */
     public void paymentUsingMandiriBillPay(BankTransferPaymentRequest paymentRequest) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
@@ -449,6 +464,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
+    /**
+     *This method is used for payment using Mandiri Click Pay.
+     *
+     * @param paymentRequest payment request for Mandiri Click Pay
+     */
     public void paymentUsingMandiriClickPay(MandiriClickPayPaymentRequest paymentRequest) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
@@ -493,7 +513,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
-
+    /**
+     *This method is used for payment using CIMB Click.
+     *
+     * @param paymentRequest payment request for CIMB Click
+     */
     public void paymentUsingCIMBClick(BasePaymentRequest paymentRequest) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
@@ -538,7 +562,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
-
+    /**
+     *This method is used for payment using BRI Epay.
+     *
+     * @param paymentRequest payment request for BRI Epay.
+     */
     public void paymentUsingBRIEpay(BasePaymentRequest paymentRequest) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
@@ -583,7 +611,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
-
+    /**
+     *This method is used for payment using Mandiri E-Cash
+     *
+     * @param paymentRequest payment request for Mandiri E-Cash
+     */
     public void paymentUsingMandiriEcash(BasePaymentRequest paymentRequest) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
@@ -628,7 +660,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
-
+    /**
+     *This method is used for payment using Telkomsel E-Cash
+     *
+     * @param paymentRequest payment request for Telkomsel E-Cash
+     */
     public void paymentUsingTelkomselCash(TelkomselEcashPaymentRequest paymentRequest) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
@@ -673,6 +709,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
+    /**
+     *This method is used for payment using XL Tunai
+     *
+     * @param paymentRequest payment request for BCA Klik pay
+     */
     public void paymentUsingXLTunai(BasePaymentRequest paymentRequest) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
@@ -717,6 +758,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
+    /**
+     *This method is used for payment using Indomaret
+     *
+     * @param paymentRequest payment request for Indomaret
+     */
     public void paymentUsingIndomaret(BasePaymentRequest paymentRequest) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
@@ -761,6 +807,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
+    /**
+     *This method is used for payment using Indosat Dompetku
+     *
+     * @param paymentRequest payment request for Indosat Dompetku
+     */
     public void paymentUsingIndosatDompetku(IndosatDompetkuPaymentRequest paymentRequest) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
@@ -805,7 +856,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
-
+    /**
+     *This method is used for payment using Kiosan
+     *
+     * @param paymentRequest payment request for Kiosan
+     */
     public void paymentUsingKiosan(BasePaymentRequest paymentRequest) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
@@ -850,6 +905,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
+    /**
+     *This method is used for payment using Bank Transfer
+     *
+     * @param bankTransferPaymentRequest payment request for Bank Transfer
+     */
     public void paymentUsingBankTransferAllBank(BankTransferPaymentRequest bankTransferPaymentRequest) {
         final long start = System.currentTimeMillis();
         if (bankTransferPaymentRequest != null) {
@@ -892,10 +952,13 @@ public class SnapTransactionManager extends BaseTransactionManager {
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
         }
     }
-    /*
-     * save cards  to merchant server
-     */
 
+    /**
+     *This method is used to save credit cards to merchant server
+     *
+     * @param cardRequests credit card Request model
+     * @param userId unique id for every user
+     */
     public void saveCards(String userId, ArrayList<SaveCardRequest> cardRequests){
         if(cardRequests != null){
             merchantPaymentAPI.saveCards(userId, cardRequests, new Callback<String>() {
@@ -928,10 +991,10 @@ public class SnapTransactionManager extends BaseTransactionManager {
     }
 
     /**
-     * get saved card list on merchant server
+     * this method is used to get saved card list on merchant server
+     *
      * @param userId unique id to each user
      */
-
     public void getCards(String userId){
             merchantPaymentAPI.getCards(userId, new Callback<ArrayList<SaveCardRequest>>() {
                 @Override
@@ -1008,4 +1071,158 @@ public class SnapTransactionManager extends BaseTransactionManager {
         });
     }
 
+    /**
+     * It will execute an api call to get token from server, and after completion of request it
+     * will </p> call appropriate method using registered {@link GetTokenSuccessEvent}.
+     *
+     * @param cardTokenRequest information about credit card.
+     */
+    public void getToken(CardTokenRequest cardTokenRequest) {
+        final long start = System.currentTimeMillis();
+        if (cardTokenRequest.isTwoClick()) {
+            if (cardTokenRequest.isInstalment()) {
+                veritransPaymentAPI.getTokenInstalmentOfferTwoClick(
+                        cardTokenRequest.getCardCVV(),
+                        cardTokenRequest.getSavedTokenId(),
+                        cardTokenRequest.isTwoClick(),
+                        cardTokenRequest.isSecure(),
+                        cardTokenRequest.getGrossAmount(),
+                        cardTokenRequest.getBank(),
+                        cardTokenRequest.getClientKey(),
+                        cardTokenRequest.isInstalment(),
+                        cardTokenRequest.getFormattedInstalmentTerm(), new Callback<TokenDetailsResponse>() {
+                            @Override
+                            public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
+                                consumeTokenSuccesResponse( start, tokenDetailsResponse);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                consumeTokenErrorResponse(start, error);
+                            }
+                        });
+            } else {
+                veritransPaymentAPI.getTokenTwoClick(
+                        cardTokenRequest.getCardCVV(),
+                        cardTokenRequest.getSavedTokenId(),
+                        cardTokenRequest.isTwoClick(),
+                        cardTokenRequest.isSecure(),
+                        cardTokenRequest.getGrossAmount(),
+                        cardTokenRequest.getBank(),
+                        cardTokenRequest.getClientKey(), new Callback<TokenDetailsResponse>() {
+                            @Override
+                            public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
+                                consumeTokenSuccesResponse(start, tokenDetailsResponse);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                consumeTokenErrorResponse(start, error);
+                            }
+                        });
+            }
+
+        } else {
+            if (cardTokenRequest.isInstalment()) {
+                veritransPaymentAPI.get3DSTokenInstalmentOffers(cardTokenRequest.getCardNumber(),
+                        cardTokenRequest.getCardCVV(),
+                        cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
+                                .getCardExpiryYear(),
+                        cardTokenRequest.getClientKey(),
+                        cardTokenRequest.getBank(),
+                        cardTokenRequest.isSecure(),
+                        cardTokenRequest.isTwoClick(),
+                        cardTokenRequest.getGrossAmount(),
+                        cardTokenRequest.isInstalment(),
+                        cardTokenRequest.getFormattedInstalmentTerm(), new Callback<TokenDetailsResponse>() {
+                            @Override
+                            public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
+                                consumeTokenSuccesResponse(start, tokenDetailsResponse);
+
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                consumeTokenErrorResponse(start, error);
+                            }
+                        });
+            } else {
+                //normal request
+                veritransPaymentAPI.get3DSToken(cardTokenRequest.getCardNumber(),
+                        cardTokenRequest.getCardCVV(),
+                        cardTokenRequest.getCardExpiryMonth(),
+                        cardTokenRequest.getCardExpiryYear(),
+                        cardTokenRequest.getClientKey(),
+                        cardTokenRequest.getBank(),
+                        cardTokenRequest.isSecure(),
+                        cardTokenRequest.isTwoClick(),
+                        cardTokenRequest.getGrossAmount(), new Callback<TokenDetailsResponse>() {
+                            @Override
+                            public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
+                                consumeTokenSuccesResponse(start, tokenDetailsResponse);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                consumeTokenErrorResponse(start, error);
+                            }
+                        });
+            }
+
+        }
+    }
+
+    private  void consumeTokenSuccesResponse(long start, TokenDetailsResponse tokenDetailsResponse) {
+        releaseResources();
+
+        long end = System.currentTimeMillis();
+
+        if (tokenDetailsResponse != null) {
+            if (isSDKLogEnabled) {
+                displayTokenResponse(tokenDetailsResponse);
+            }
+            if (tokenDetailsResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))) {
+                VeritransBusProvider.getInstance().post(new GetTokenSuccessEvent(tokenDetailsResponse, Events.TOKENIZE));
+
+                // Track Mixpanel event
+                analyticsManager.trackMixpanel(KEY_TOKENIZE_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
+            } else {
+                if (!TextUtils.isEmpty(tokenDetailsResponse.getStatusMessage())) {
+                    VeritransBusProvider.getInstance().post(new GetTokenFailedEvent(
+                            tokenDetailsResponse.getStatusMessage(),
+                            tokenDetailsResponse,
+                            Events.TOKENIZE));
+
+                    // Track Mixpanel event
+                    analyticsManager.trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, tokenDetailsResponse.getStatusMessage());
+                } else {
+                    VeritransBusProvider.getInstance().post(new GetTokenFailedEvent(
+                            context.getString(R.string.error_empty_response),
+                            tokenDetailsResponse,
+                            Events.TOKENIZE
+                    ));
+                }
+            }
+
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_empty_response), Events.TOKENIZE));
+            Logger.e(context.getString(R.string.error_empty_response));
+        }
+    }
+
+    private void consumeTokenErrorResponse(long start, RetrofitError e) {
+        releaseResources();
+        long end = System.currentTimeMillis();
+
+        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+            VeritransBusProvider.getInstance().post(new SSLErrorEvent(Events.TOKENIZE));
+            Logger.i("Error in SSL Certificate. " + e.getMessage());
+        } else {
+            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(e.getMessage(), Events.TOKENIZE));
+            Logger.i("General error occurred " + e.getMessage());
+        }
+
+        // Track Mixpanel event
+        analyticsManager.trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, e.getMessage());
+    }
 }

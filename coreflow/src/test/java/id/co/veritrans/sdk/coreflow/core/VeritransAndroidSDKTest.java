@@ -236,34 +236,11 @@ public class VeritransAndroidSDKTest {
     }
 
     @Test
-    public void getAuthenticationToken_whenNetworkAvailable() {
-        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.getAuthenticationToken();
-        Mockito.verify(transactionManager).getAuthenticationToken();
-    }
-
-    @Test
-    public void getAuthenticationToken_whenNetworkUnAvailable() {
-        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        veritransSDKSSpy.getAuthenticationToken();
-        Assert.assertFalse(veritransSDKSSpy.isRunning);
-        busCollaborator.onGeneralErrorEvent();
-    }
-
-    @Test
     public void getOffersList_whenNetworkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         veritransSDKSSpy.getOffersList();
         Mockito.verify(transactionManager).getOffers("");
         Assert.assertTrue(veritransSDKSSpy.isRunning);
-    }
-
-    @Test
-    public void getOffersList_whenNetworkUnAvailable() {
-        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        veritransSDKSSpy.getAuthenticationToken();
-        Assert.assertFalse(veritransSDKSSpy.isRunning);
-        busCollaborator.onGeneralErrorEvent();
     }
 
     @Test

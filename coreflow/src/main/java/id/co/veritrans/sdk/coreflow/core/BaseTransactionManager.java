@@ -2,6 +2,7 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 
+import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 
 
@@ -66,6 +67,19 @@ public abstract class BaseTransactionManager {
                         "status ",
                 "" + transferResponse
                         .getTransactionStatus());
+    }
+
+    protected void displayTokenResponse(TokenDetailsResponse tokenDetailsResponse) {
+        Logger.d("token response: status code ", "" +
+                tokenDetailsResponse.getStatusCode());
+        Logger.d("token response: status message ", "" +
+                tokenDetailsResponse.getStatusMessage());
+        Logger.d("token response: token Id ", "" + tokenDetailsResponse
+                .getTokenId());
+        Logger.d("token response: redirect url ", "" +
+                tokenDetailsResponse.getRedirectUrl());
+        Logger.d("token response: bank ", "" + tokenDetailsResponse
+                .getBank());
     }
 
     protected void releaseResources() {

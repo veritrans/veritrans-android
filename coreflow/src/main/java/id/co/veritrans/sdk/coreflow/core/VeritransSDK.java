@@ -80,7 +80,11 @@ public class VeritransSDK {
 
     }
 
-
+    /**
+     * get Veritrans SDK instance
+     *
+     * @param sdkBuilder SDK Coreflow Builder
+     */
     protected static VeritransSDK getInstance(@NonNull SdkCoreFlowBuilder sdkBuilder) {
         if (sdkBuilder != null) {
             veritransSDK = new VeritransSDK(sdkBuilder);
@@ -100,12 +104,21 @@ public class VeritransSDK {
         return veritransSDK;
     }
 
+    /**
+     * Get Veritrans SDK share preferences instance
+     *
+     * @return share preferences instance
+     */
     public static SharedPreferences getmPreferences() {
         return mPreferences;
     }
 
-    static void setmPreferences(SharedPreferences mp) {
-        mPreferences = mp;
+    /**
+     * set share preference instance to SDK
+     * @param preferences
+     */
+    static void setmPreferences(SharedPreferences preferences) {
+        mPreferences = preferences;
     }
 
     private void initializeSharedPreferences() {
@@ -116,10 +129,20 @@ public class VeritransSDK {
         themeColor = context.getResources().getColor(R.color.colorPrimary);
     }
 
+    /**
+     * get Default text font for SDK
+     *
+     * @return default text
+     */
     public String getDefaultText() {
         return defaultText;
     }
 
+    /**
+     * set default text to SDK
+     *
+     * @param defaultText
+     */
     public void setDefaultText(String defaultText) {
         this.defaultText = defaultText;
     }
@@ -211,7 +234,7 @@ public class VeritransSDK {
         if (cardTokenRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mTransactionManager.getToken(cardTokenRequest);
+                mSnapTransactionManager.getToken(cardTokenRequest);
             } else {
                 isRunning = false;
                 Logger.e(context.getString(R.string.error_unable_to_connect));
@@ -264,7 +287,6 @@ public class VeritransSDK {
      *
      * @param context current activity.
      */
-
     public void startPaymentUiFlow(Context context) {
 
         if (transactionRequest != null && !isRunning) {
@@ -302,19 +324,6 @@ public class VeritransSDK {
             isRunning = false;
             Logger.e(context.getString(R.string.error_unable_to_connect));
         }
-    }
-
-    /**
-     * It will run background task to get authentication token. !!!
-     */
-     void getAuthenticationToken() {
-        if (Utils.isNetworkAvailable(context)) {
-            isRunning = true;
-            mTransactionManager.getAuthenticationToken();
-        } else {
-            isRunning = false;
-        }
-
     }
 
     /**
@@ -356,6 +365,12 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backgrond task to charge payment using Credit Card
+     * @param tokenId authentication token
+     * @param cardToken card token form PAPI backend
+     * @param saveCard is saving credit card
+     */
     public void snapPaymentUsingCard(@NonNull String tokenId, @NonNull String cardToken, boolean saveCard) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -371,6 +386,12 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to charge payment using Bank Transfer BCA
+     *
+     * @param tokenId authentication token
+     * @param email user email
+     */
     public void snapPaymentUsingBankTransferBCA(@NonNull String tokenId, @NonNull String email) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -386,6 +407,12 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to charge payment using Bank Transfer Permata
+     *
+     * @param tokenId authentication token
+     * @param email user email
+     */
     public void snapPaymentUsingBankTransferPermata(@NonNull String tokenId, @NonNull String email) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -401,6 +428,12 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to charge payment using Bank Transfer BCA
+     *
+     * @param tokenId authentication token
+     * @param userId user id
+     */
     public void snapPaymentUsingKlikBCA(@NonNull String tokenId, @NonNull String userId) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -416,6 +449,11 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to charge payment using BCA Klik Pay
+     *
+     * @param tokenId authentication token
+     */
     public void snapPaymentUsingBCAKlikpay(@NonNull String tokenId) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -431,6 +469,12 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to charge payment using Mandiri Bill Pay
+     *
+     * @param token authentication token
+     * @param email user email
+     */
     public void snapPaymentUsingMandiriBillPay(@NonNull String token, @NonNull String email) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -446,7 +490,14 @@ public class VeritransSDK {
         }
     }
 
-
+    /**
+     * It will run backround task to charge payment Mandiri Click Pay
+     *
+     * @param token authentication token
+     * @param mandiriCardNumber  number of mandiri card
+     * @param input3 5 digit generated number
+     * @param tokenResponse token
+     */
     public void snapPaymentUsingMandiriClickPay(@NonNull String token, @NonNull String mandiriCardNumber, @NonNull String tokenResponse, @NonNull String input3) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -462,7 +513,11 @@ public class VeritransSDK {
         }
     }
 
-
+    /**
+     * It will run backround task to charge payment using CIMB Click
+     *
+     * @param token authentication token
+     */
     public void snapPaymentUsingCIMBClick(@NonNull String token) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -478,7 +533,11 @@ public class VeritransSDK {
         }
     }
 
-
+    /**
+     * It will run backround task to charge payment using mandiri E-Cash
+     *
+     * @param token authentication token
+     */
     public void snapPaymentUsingMandiriEcash(@NonNull String token) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -494,6 +553,12 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to charge payment using telkkomsel E-Cash
+     *
+     * @param token authentication token
+     * @param customerPhoneNumber user phone number
+     */
     public void snapPaymentUsingTelkomselEcash(@NonNull String token, String customerPhoneNumber) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -509,7 +574,11 @@ public class VeritransSDK {
         }
     }
 
-
+    /**
+     * It will run backround task to charge payment using XL Tunai
+     *
+     * @param token authentication token
+     */
     public void snapPaymentUsingXLTunai(@NonNull String token) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -525,6 +594,11 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to charge payment using Indomaret
+     *
+     * @param token authentication token
+     */
     public void snapPaymentUsingIndomaret(@NonNull String token) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -540,6 +614,12 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to charge payment using indosat dompetku
+     *
+     * @param token authentication token
+     * @param msisdn msisdn number
+     */
     public void snapPaymentUsingIndosatDompetku(@NonNull String token, @NonNull String msisdn) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -555,7 +635,11 @@ public class VeritransSDK {
         }
     }
 
-
+    /**
+     * It will run backround task to charge payment using Kiosan
+     *
+     * @param token authentication token
+     */
     public void snapPaymentUsingKiosan(@NonNull String token) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -571,6 +655,11 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to charge payment using Epay BRI
+     *
+     * @param token authentication token
+     */
     public void snapPaymentUsingEpayBRI(@NonNull String token) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -586,6 +675,12 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to charge payment using Bank Transfer All Bank
+     *
+     * @param tokenId authentication token
+     * @param email user email
+     */
     public void snapPaymentUsingBankTransferAllBank(@NonNull String tokenId, @NonNull String email) {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
@@ -601,6 +696,14 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to register card PAPI(Payment API) Backend
+     *
+     * @param cardNumber credit card number
+     * @param cardCvv credit card cvv
+     * @param cardExpMonth credit card expired month
+     * @param cardExpYear credit card expired year
+     */
     public void snapCardRegistration(@NonNull String cardNumber,
                                  @NonNull String cardCvv, @NonNull String cardExpMonth,
                                  @NonNull String cardExpYear) {
@@ -614,6 +717,12 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to save card to merchant server
+     *
+     * @param userId id user
+     * @param requests  save card request model
+     */
     public void snapSaveCard(@NonNull String userId, @NonNull ArrayList<SaveCardRequest> requests){
         if(requests != null){
             if(Utils.isNetworkAvailable(context)){
@@ -628,6 +737,11 @@ public class VeritransSDK {
         }
     }
 
+    /**
+     * It will run backround task to get card from merchant srever
+     *
+     * @param userId id user
+     */
     public void snapGetCards(@NonNull String userId){
         if(Utils.isNetworkAvailable(context)){
             isRunning = true;

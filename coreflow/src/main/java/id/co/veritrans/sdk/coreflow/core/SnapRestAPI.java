@@ -21,8 +21,11 @@ import retrofit.http.Path;
  */
 public interface SnapRestAPI {
 
-    /*
+    /**
      * Get snap transaction details using Snap Endpoint.
+     *
+     * @param snapToken snap token
+     * @param transactionCallback response get transaction request
      */
     @GET("/v1/payment_pages/{snap_token}")
     void getSnapTransaction(@Path("snap_token") String snapToken, Callback<Transaction> transactionCallback);
