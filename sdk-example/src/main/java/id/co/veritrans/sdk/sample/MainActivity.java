@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +43,7 @@ import id.co.veritrans.sdk.uiflow.UIFlow;
 public class MainActivity extends AppCompatActivity implements GetAuthenticationBusCallback, TransactionFinishedCallback {
     private static final int CORE_FLOW = 1;
     private static final int UI_FLOW = 2;
+    public static String userId = "user214";
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
     private TextView authToken;
@@ -50,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
             getAuthenticationToken, refresh_token;
     private RadioButton normal, twoClick, oneClick;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods;
-    public static String userId = "user214";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,23 +232,27 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
     @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent networkUnavailableEvent) {
-        // Handle network not available condition
-        dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Network is unavailable")
-                .create();
-        dialog.show();
+        if (TextUtils.isEmpty(networkUnavailableEvent.getSource())) {
+            // Handle network not available condition
+            dialog.dismiss();
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setMessage("Network is unavailable")
+                    .create();
+            dialog.show();
+        }
     }
 
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent generalErrorEvent) {
-        // Handle generic error condition
-        dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Unknown error: " + generalErrorEvent.getMessage() )
-                .create();
-        dialog.show();
+        if (TextUtils.isEmpty(generalErrorEvent.getSource())) {
+            // Handle generic error condition
+            dialog.dismiss();
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setMessage("Unknown error: " + generalErrorEvent.getMessage())
+                    .create();
+            dialog.show();
+        }
     }
 
     @Subscribe

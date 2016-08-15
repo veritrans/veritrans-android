@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
@@ -111,10 +112,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     public MorphingButton getBtnMorph() {
         return btnMorph;
     }
-
-    /*public void setBtnMorph(MorphingButton btnMorph) {
-        this.btnMorph = btnMorph;
-    }*/
 
     public TextView getTitleHeaderTextView() {
         return titleHeaderTextView;

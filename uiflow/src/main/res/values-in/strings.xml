@@ -275,11 +275,11 @@
     <string name="indosat_instruction_step1">1.\tMasukkan No. Indosat yang terdaftar.</string>
     <string name="indosat_instruction_step2">2.\tPastikan terdapat dana yang mencukupi pada rekening Anda.</string>
     <string name="indosat_instruction_step3">3.\tKlik \'Confirm Payment\'.</string>
-    <string name="indosat_instruction_step4">4.\tAnda akan menerima pesan USSD dari \nIndosat untuk menyelesaikan transaksi melalui Dompetku app.</string>
+    <string name="indosat_instruction_step4">4.\tAnda akan menerima pesan USSD dari Indosat untuk menyelesaikan transaksi melalui Dompetku app.</string>
     <string name="indosat_instruction_step5">5.\tMasukkan PIN Anda.</string>
     <string name="indosat_instruction_step6">6.\tPembayaran Selesai.</string>
 
-    <string name="telkomsel_instruction_step1">1.\tKirim pesan singkat (SMS) ke Telkomsel, ketik TOKEN _PIN_, kirim ke 2828.</string>
+    <string name="telkomsel_instruction_step1">1.\tKirim pesan singkat (SMS) ke Telkomsel, ketik TOKEN &#60;PIN&#62;, kirim ke 2828.</string>
     <string name="telkomsel_instruction_step2">2.\tMasukkan token yang berasal dari balasan SMS oleh Telkomsel kolom Token T-Cash.</string>
     <string name="telkomsel_instruction_step3">3.\tTransaksi anda akan kadaluarsa dalam 30 menit.</string>
 
@@ -340,7 +340,7 @@
     <string name="error_invalid_phone_number">Nomor telepon tidak benar.</string>
     <string name="error_something_wrong">Sedang terjadi kesalahan, silakan ulangi lagi!</string>
 
-    <string name="xl_instruction_step1">1.\tHubungi *123*120#.</string>
+    <string name="xl_instruction_step1">1.\tHubungi *123*120# dengan nomor XL yang sudah terdaftar.</string>
     <string name="xl_instruction_step2">2.\tBalas \'4\' untuk \'Belanja Online\'.</string>
     <string name="xl_instruction_step3">3.\tMasukkan Kode Penjual XL Tunai.</string>
     <string name="xl_instruction_step4">4.\tMasukkan Kode pemesanan XL Tunai.</string>
