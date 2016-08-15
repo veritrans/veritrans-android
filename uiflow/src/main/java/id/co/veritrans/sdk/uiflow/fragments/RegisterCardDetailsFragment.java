@@ -1,8 +1,10 @@
 package id.co.veritrans.sdk.uiflow.fragments;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,6 @@ import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
-import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
 
 /**
  * @author rakawm
@@ -166,19 +167,26 @@ public class RegisterCardDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Logger.i("Card to delete:" + cardDetail.getMaskedCard());
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getString(R.string.delete)
-                        , getString(R.string.card_delete_message), getString(android.R.string.yes),
-                        getString(android.R.string.no));
-                View.OnClickListener positiveClickListner = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (parentFragment != null && parentFragment instanceof RegisterSavedCardFragment) {
-                            ((RegisterSavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getSavedTokenId());
-                        }
-                    }
-                };
-                veritransDialog.setOnAcceptButtonClickListener(positiveClickListner);
-                veritransDialog.show();
+                AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom)
+                        .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                if (parentFragment != null && parentFragment instanceof RegisterSavedCardFragment) {
+                                    ((RegisterSavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getSavedTokenId());
+                                }
+                            }
+                        })
+                        .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setTitle(R.string.delete)
+                        .setMessage(R.string.card_delete_message)
+                        .create();
+                dialog.show();
             }
         });
         logo = (ImageView) view.findViewById(R.id.logo_card);

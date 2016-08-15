@@ -28,7 +28,7 @@
     <string name="description_payment_method_icon">Payment method icon</string>
     <string name="text_payment_type_here">Payment Type here</string>
     <string name="text_transaction_time_here">Transaction Time Here</string>
-    <string name="text_sample_card_expiry">XX/12</string>
+    <string name="text_sample_card_expiry">XX/XX</string>
     <string name="text_billpay_code_here">billpay code here</string>
     <string name="text_sample_masked_credit_card" tools:ignore="Typos">XXXX XXXX XXXX 1234</string>
     <string name="text_company_code_here">company code here</string>
@@ -353,7 +353,7 @@
         completed within 2 hours.
     </string>
     <string name="empty_transaction_response">Payment failed! Please try again.</string>
-    <string name="cancel_transaction">Cancel Transaction?</string>
+    <string name="cancel_transaction">Cancel Transaction</string>
     <string name="cancel_transaction_message">Are you sure you want to cancel this transaction?
     </string>
     <string name="indosat_instruction_step1">1.\tInput your registered indosat phone number.</string>
