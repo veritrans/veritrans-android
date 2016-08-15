@@ -115,7 +115,10 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
             }else{
                 showErrorAlertDialog(getString(R.string.error_transaction_empty));
             }
-        } else Logger.e("Veritrans SDK is not started.");
+        } else {
+            Logger.e("Veritrans SDK is not started.");
+            finish();
+        }
     }
 
     /**
