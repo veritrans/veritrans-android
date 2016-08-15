@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,7 +104,11 @@ public class MandiriBillPayFragment extends Fragment {
         btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInstruction();
+                if (!TextUtils.isEmpty(mTransactionResponse.getPdfUrl())) {
+                    showInstruction(mTransactionResponse.getPdfUrl());
+                } else {
+                    showInstruction();
+                }
             }
         });
         btnCopyBillCode.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +132,17 @@ public class MandiriBillPayFragment extends Fragment {
         Intent intent = new Intent(getActivity(),
                 BankTransferInstructionActivity.class);
         intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
+        getActivity().startActivity(intent);
+    }
+
+    /**
+     * starts {@link BankTransferInstructionActivity} to show payment instruction.
+     */
+    private void showInstruction(String downloadUrl) {
+        Intent intent = new Intent(getActivity(),
+                BankTransferInstructionActivity.class);
+        intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
+        intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, downloadUrl);
         getActivity().startActivity(intent);
     }
 

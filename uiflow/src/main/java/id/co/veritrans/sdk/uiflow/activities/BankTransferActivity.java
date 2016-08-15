@@ -281,7 +281,8 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
 
-        BankTransactionStatusFragment bankTransactionStatusFragment =
+        BankTransactionStatusFragment bankTransactionStatusFragment = !TextUtils.isEmpty(transactionResponse.getPdfUrl()) ?
+                BankTransactionStatusFragment.newInstance(transactionResponse, position, transactionResponse.getPdfUrl()) :
                 BankTransactionStatusFragment.newInstance(transactionResponse, position);
 
         // setup transaction status fragment
