@@ -14,6 +14,8 @@ import android.widget.EditText;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -241,17 +243,22 @@ public class SdkUIFlowUtil {
      * @return random number
      */
     public static int generateRandomNumber() {
-        int number = 0;
+        int number;
         int high = 99999;
         int low = 10000;
+        byte[] randomBytes = new byte[128];
 
-        Random random = new Random();
-        number = random.nextInt(high - low) + low;
+        try {
+            SecureRandom secureRandomGenerator = SecureRandom.getInstance("SHA1PRNG");
+            secureRandomGenerator.nextBytes(randomBytes);
+            number = secureRandomGenerator.nextInt(high - low) + low;
+        } catch (NoSuchAlgorithmException e) {
+            Logger.e("random number : " + e.getMessage());
+            Random random = new Random();
+            number = random.nextInt(high - low) + low;
+        }
         return number;
     }
-
-
-
 
     /**
      * shows keyboard on screen forcefully.
