@@ -340,7 +340,7 @@
     <string name="error_invalid_phone_number">Nomor telepon tidak benar.</string>
     <string name="error_something_wrong">Sedang terjadi kesalahan, silakan ulangi lagi!</string>
 
-    <string name="xl_instruction_step1">1.\tHubungi *123*120#.</string>
+    <string name="xl_instruction_step1">1.\tHubungi *123*120# dengan nomor XL yang sudah terdaftar.</string>
     <string name="xl_instruction_step2">2.\tBalas \'4\' untuk \'Belanja Online\'.</string>
     <string name="xl_instruction_step3">3.\tMasukkan Kode Penjual XL Tunai.</string>
     <string name="xl_instruction_step4">4.\tMasukkan Kode pemesanan XL Tunai.</string>
