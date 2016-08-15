@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,7 +104,11 @@ public class BankTransferPaymentFragment extends Fragment {
         btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInstruction();
+                if (!TextUtils.isEmpty(transactionResponse.getPdfUrl())) {
+                    showInstruction(transactionResponse.getPdfUrl());
+                } else {
+                    showInstruction();
+                }
             }
         });
         btnCopyToClipboard.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +125,13 @@ public class BankTransferPaymentFragment extends Fragment {
     private void showInstruction() {
         Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
         intent.putExtra(BankTransferInstructionActivity.BANK, getArguments().getString(BankTransferInstructionActivity.BANK));
+        getActivity().startActivity(intent);
+    }
+
+    private void showInstruction(String downloadUrl) {
+        Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
+        intent.putExtra(BankTransferInstructionActivity.BANK, getArguments().getString(BankTransferInstructionActivity.BANK));
+        intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, downloadUrl);
         getActivity().startActivity(intent);
     }
 

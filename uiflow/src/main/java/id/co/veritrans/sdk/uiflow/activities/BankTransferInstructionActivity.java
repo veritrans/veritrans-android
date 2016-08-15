@@ -1,7 +1,9 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,8 +11,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.Button;
 
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.uiflow.R;
@@ -31,6 +35,7 @@ import id.co.veritrans.sdk.uiflow.fragments.InstructionPrimaFragment;
  */
 public class BankTransferInstructionActivity extends BaseActivity {
 
+    public static final String DOWNLOAD_URL = "url";
     public static final String BANK = "bank";
     public static final String TYPE_BCA = "bank.bca";
     public static final String TYPE_PERMATA = "bank.permata";
@@ -42,7 +47,7 @@ public class BankTransferInstructionActivity extends BaseActivity {
     private Toolbar mToolbar = null;
     private ViewPager mViewPager = null;
     private TabLayout mTabLayout = null;
-    private ImageView logo = null;
+    private Button downloadInstruction = null;
     private VeritransSDK veritransSDK;
 
     @Override
@@ -87,7 +92,20 @@ public class BankTransferInstructionActivity extends BaseActivity {
 
         mTabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager_bank_instruction);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
+        downloadInstruction = (Button) findViewById(R.id.btn_download_instruction);
+        if (!TextUtils.isEmpty(getIntent().getStringExtra(DOWNLOAD_URL))) {
+            downloadInstruction.setVisibility(View.VISIBLE);
+            downloadInstruction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW);
+                    webIntent.setData(Uri.parse(getIntent().getStringExtra(DOWNLOAD_URL)));
+                    startActivity(webIntent);
+                }
+            });
+        } else {
+            downloadInstruction.setVisibility(View.GONE);
+        }
         initializeTheme();
 
         mToolbar.setTitle(getResources().getString(R.string.payment_instrution));

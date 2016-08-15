@@ -1,11 +1,14 @@
 package id.co.veritrans.sdk.uiflow.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +18,7 @@ import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.BankTransferActivity;
+import id.co.veritrans.sdk.uiflow.activities.BankTransferInstructionActivity;
 import id.co.veritrans.sdk.uiflow.activities.IndosatDompetkuActivity;
 import id.co.veritrans.sdk.uiflow.activities.MandiriClickPayActivity;
 
@@ -25,8 +29,7 @@ public class BankTransactionStatusFragment extends Fragment {
 
 
     public static final String PENDING = "Pending";
-    private static final String VIRTUAL_ACCOUNT = "Virtual Account";
-    private static final String MANDIRI_BILL = "Mandiri Bill Payment";
+    public static final String EXTRA_INSTRUCTION_URL = "url";
     private static final String DATA = "data";
     private static final String PAYMENT_TYPE = "payment_type";
     private TransactionResponse mTransactionResponse = null;
@@ -38,6 +41,7 @@ public class BankTransactionStatusFragment extends Fragment {
     private TextView mTextViewTransactionStatus = null;
     private TextView mTextViewPaymentErrorMessage = null;
     private ImageView mImageViewTransactionStatus = null;
+    private Button mSeeInstructions = null;
     private int mPaymentType = -1;
 
     /**
@@ -47,12 +51,23 @@ public class BankTransactionStatusFragment extends Fragment {
      * @param transactionResponse   response of the transaction call.
      * @return instance of BankTransactionStatusFragment.
      */
-    public static BankTransactionStatusFragment newInstance(TransactionResponse
-                                                                    transactionResponse,
+    public static BankTransactionStatusFragment newInstance(TransactionResponse transactionResponse,
                                                             int paymentType) {
         BankTransactionStatusFragment fragment = new BankTransactionStatusFragment();
         Bundle data = new Bundle();
         data.putSerializable(DATA, transactionResponse);
+        data.putInt(PAYMENT_TYPE, paymentType);
+        fragment.setArguments(data);
+        return fragment;
+    }
+
+    public static BankTransactionStatusFragment newInstance(TransactionResponse transactionResponse,
+                                                            int paymentType,
+                                                            String url) {
+        BankTransactionStatusFragment fragment = new BankTransactionStatusFragment();
+        Bundle data = new Bundle();
+        data.putSerializable(DATA, transactionResponse);
+        data.putString(EXTRA_INSTRUCTION_URL, url);
         data.putInt(PAYMENT_TYPE, paymentType);
         fragment.setArguments(data);
         return fragment;
@@ -90,6 +105,7 @@ public class BankTransactionStatusFragment extends Fragment {
         mTextViewOrderId = (TextView) view.findViewById(R.id.text_order_id);
         mTextViewBankName = (TextView) view.findViewById(R.id.text_payment_type);
         mTextViewTransactionTime = (TextView) view.findViewById(R.id.text_transaction_time);
+        mSeeInstructions = (Button) view.findViewById(R.id.btn_see_instruction);
 
         mImageViewTransactionStatus = (ImageView) view.findViewById(R.id.img_transaction_status);
         mTextViewTransactionStatus = (TextView) view.findViewById(R.id
@@ -134,15 +150,31 @@ public class BankTransactionStatusFragment extends Fragment {
             mTextViewAmount.setText(formattedAmount);
 
             //noinspection StatementWithEmptyBody
-            if (mTransactionResponse.getTransactionStatus().contains(PENDING) ||
-                    mTransactionResponse.getTransactionStatus().contains("pending")) {
-
+            if (mTransactionResponse.getTransactionStatus().contains(PENDING)
+                    || mTransactionResponse.getTransactionStatus().contains("pending")) {
+                mSeeInstructions.setVisibility(View.VISIBLE);
+                // Show instruction
+                if (!TextUtils.isEmpty(getArguments().getString(BankTransferInstructionActivity.DOWNLOAD_URL))) {
+                    mSeeInstructions.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showInstruction(getArguments().getString(BankTransferInstructionActivity.DOWNLOAD_URL));
+                        }
+                    });
+                } else {
+                    mSeeInstructions.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showInstruction();
+                        }
+                    });
+                }
             } else if (mTransactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200))
                     || mTransactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_201))) {
-
+                mSeeInstructions.setVisibility(View.GONE);
                 setUiForSuccess();
             } else {
-
+                mSeeInstructions.setVisibility(View.GONE);
                 setUiForFailure();
 
                 if (getActivity() != null) {
@@ -184,5 +216,44 @@ public class BankTransactionStatusFragment extends Fragment {
         mImageViewTransactionStatus.setImageResource(R.drawable.ic_successful);
         mTextViewTransactionStatus.setText(getString(R.string.payment_successful));
         mTextViewPaymentErrorMessage.setVisibility(View.GONE);
+    }
+
+    private void showInstruction() {
+        Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
+        switch (mPaymentType) {
+            case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
+                break;
+            case Constants.BANK_TRANSFER_PERMATA:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
+                break;
+            case Constants.BANK_TRANSFER_BCA:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+                break;
+            case Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
+                break;
+        }
+        getActivity().startActivity(intent);
+    }
+
+    private void showInstruction(String downloadUrl) {
+        Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
+        switch (mPaymentType) {
+            case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
+                break;
+            case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
+                break;
+            case Constants.BANK_TRANSFER_BCA:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+                break;
+            case Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
+                break;
+        }
+        intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, downloadUrl);
+        getActivity().startActivity(intent);
     }
 }

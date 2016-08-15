@@ -102,6 +102,7 @@
     <string name="bank_atm_transfer_step3">3.\t Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
     <string name="bank_atm_transfer_step4">4.\t Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
     <string name="see_instruction">Lihat instruksi</string>
+    <string name="download_instruction">Unduh instruksi</string>
     <string name="confirm_payment">Konfirmasi Pembayaran</string>
     <string name="copy_payment_code">Salin Kode Pembayaran</string>
     <string name="copy_va_number">Salin Nomor Akun Virtual</string>

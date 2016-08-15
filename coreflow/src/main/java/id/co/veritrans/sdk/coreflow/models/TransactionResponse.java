@@ -1,9 +1,9 @@
 package id.co.veritrans.sdk.coreflow.models;
 
-import android.text.TextUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+
+import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -77,6 +77,9 @@ public class TransactionResponse implements Serializable {
 
     @SerializedName("redirect_url")
     private String redirectUrl;
+
+    @SerializedName("pdf_url")
+    private String pdfUrl;
 
     private String bank;
     private String eci;
@@ -331,5 +334,13 @@ public class TransactionResponse implements Serializable {
 
     public void setXlTunaiExpiration(String xlTunaiExpiration) {
         this.xlTunaiExpiration = xlTunaiExpiration;
+    }
+
+    public String getPdfUrl() {
+        return pdfUrl;
+    }
+
+    public void setPdfUrl(String pdfUrl) {
+        this.pdfUrl = pdfUrl;
     }
 }
