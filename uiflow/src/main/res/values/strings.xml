@@ -28,7 +28,7 @@
     <string name="description_payment_method_icon">Payment method icon</string>
     <string name="text_payment_type_here">Payment Type here</string>
     <string name="text_transaction_time_here">Transaction Time Here</string>
-    <string name="text_sample_card_expiry">XX/12</string>
+    <string name="text_sample_card_expiry">XX/XX</string>
     <string name="text_billpay_code_here">billpay code here</string>
     <string name="text_sample_masked_credit_card" tools:ignore="Typos">XXXX XXXX XXXX 1234</string>
     <string name="text_company_code_here">company code here</string>
@@ -353,21 +353,21 @@
         completed within 2 hours.
     </string>
     <string name="empty_transaction_response">Payment failed! Please try again.</string>
-    <string name="cancel_transaction">Cancel Transaction?</string>
+    <string name="cancel_transaction">Cancel Transaction</string>
     <string name="cancel_transaction_message">Are you sure you want to cancel this transaction?
     </string>
     <string name="indosat_instruction_step1">1.\tInput your registered indosat phone number.</string>
     <string name="indosat_instruction_step2">2.\tMake sure you have sufficient funds in your account.</string>
     <string name="indosat_instruction_step3">3.\tClick \'Confirm Payment\'.</string>
-    <string name="indosat_instruction_step4">4.\tYou will receive an USSD maessage from \nIndosat to complete transaction via Dompetku app.</string>
+    <string name="indosat_instruction_step4">4.\tYou will receive an USSD message from Indosat to complete transaction via Dompetku app.</string>
     <string name="indosat_instruction_step5">5.\tInput your PIN.</string>
     <string name="indosat_instruction_step6">6.\tPayment Complete.</string>
 
-    <string name="telkomsel_instruction_step1">1.\tSend a text message to Telkomsel, type TOKEN _PIN_, send to 2828.</string>
+    <string name="telkomsel_instruction_step1">1.\tSend a text message to Telkomsel, type TOKEN &#60;PIN&#62;, send to 2828.</string>
     <string name="telkomsel_instruction_step2">2.\tInput the token sent from Telkomsel\'s reply into T-CASH TOKEN field.</string>
     <string name="telkomsel_instruction_step3">3.\tYour transaction will expire unless you complete your payment in 30 minutes.</string>
 
-    <string name="xl_instruction_step1">1.\tDial *123*120#.</string>
+    <string name="xl_instruction_step1">1.\tDial *123*120# with a registered XL phone number.</string>
     <string name="xl_instruction_step2">2.\tReply \'4\' for \'Belanja Online\'.</string>
     <string name="xl_instruction_step3">3.\tInput XL Tunai Merchant Code.</string>
     <string name="xl_instruction_step4">4.\tInput XL Tunai Order ID.</string>
