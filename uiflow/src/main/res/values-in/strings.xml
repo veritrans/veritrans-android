@@ -275,7 +275,7 @@
     <string name="indosat_instruction_step1">1.\tMasukkan No. Indosat yang terdaftar.</string>
     <string name="indosat_instruction_step2">2.\tPastikan terdapat dana yang mencukupi pada rekening Anda.</string>
     <string name="indosat_instruction_step3">3.\tKlik \'Confirm Payment\'.</string>
-    <string name="indosat_instruction_step4">4.\tAnda akan menerima pesan USSD dari \nIndosat untuk menyelesaikan transaksi melalui Dompetku app.</string>
+    <string name="indosat_instruction_step4">4.\tAnda akan menerima pesan USSD dari Indosat untuk menyelesaikan transaksi melalui Dompetku app.</string>
     <string name="indosat_instruction_step5">5.\tMasukkan PIN Anda.</string>
     <string name="indosat_instruction_step6">6.\tPembayaran Selesai.</string>
 
