@@ -279,7 +279,7 @@
     <string name="indosat_instruction_step5">5.\tMasukkan PIN Anda.</string>
     <string name="indosat_instruction_step6">6.\tPembayaran Selesai.</string>
 
-    <string name="telkomsel_instruction_step1">1.\tKirim pesan singkat (SMS) ke Telkomsel, ketik TOKEN _PIN_, kirim ke 2828.</string>
+    <string name="telkomsel_instruction_step1">1.\tKirim pesan singkat (SMS) ke Telkomsel, ketik TOKEN &#60;PIN&#62;, kirim ke 2828.</string>
     <string name="telkomsel_instruction_step2">2.\tMasukkan token yang berasal dari balasan SMS oleh Telkomsel kolom Token T-Cash.</string>
     <string name="telkomsel_instruction_step3">3.\tTransaksi anda akan kadaluarsa dalam 30 menit.</string>
 
