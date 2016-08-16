@@ -183,12 +183,12 @@
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
 
-    <string name="mandiri_instruction_step1">1.\tOn the main menu, Choose \'Pay/Buy\'.</string>
-    <string name="mandiri_instruction_step2">2.\tChoose \'Others\'.</string>
-    <string name="mandiri_instruction_step3">3.\tChoose \'Multi Payment\'.</string>
-    <string name="mandiri_instruction_step4">4.\tEnter 70012 (Veritrans company code) and press \'Correct\'.</string>
-    <string name="mandiri_instruction_step5">5.\tEnter your Payment code and press \'Correct\'.</string>
-    <string name="mandiri_instruction_step6">6.\tYour payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
+    <string name="mandiri_instruction_step1">On the main menu, Choose \'Pay/Buy\'.</string>
+    <string name="mandiri_instruction_step2">Choose \'Others\'.</string>
+    <string name="mandiri_instruction_step3">Choose \'Multi Payment\'.</string>
+    <string name="mandiri_instruction_step4">Enter 70012 (Veritrans company code) and press \'Correct\'.</string>
+    <string name="mandiri_instruction_step5">Enter your Payment code and press \'Correct\'.</string>
+    <string name="mandiri_instruction_step6">Your payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
 
     <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (ib.bankmandiri.co.id).</string>
     <string name="mandiri_internet_instruction_step2">2.\tFrom the main menu choose \'Payment\', then choose \'Multi Payment\'.</string>
@@ -199,12 +199,12 @@
 
     <!-- bca/ prima bank transfer Instruction-->
     <!--BCA Transfer-->
-    <string name="bca_instruction_step1">1.\tOn the main menu, Choose \'Other Transaction\'.</string>
-    <string name="bca_instruction_step2">2.\tChoose \'Transfer\'.</string>
-    <string name="bca_instruction_step3">3.\tChoose \'To BCA Virtual Account\'.</string>
-    <string name="bca_instruction_step4">4.\tEnter your payment code (11 digit code) and press \'Correct\'.</string>
-    <string name="bca_instruction_step5">5.\tEnter full amount to be paid and press \'Correct\'.</string>
-    <string name="bca_instruction_step6">6.\tYour payment details will appear on the confirmation page. If information is correct press \'Yes\'.</string>
+    <string name="bca_instruction_step1">On the main menu, Choose \'Other Transaction\'.</string>
+    <string name="bca_instruction_step2">Choose \'Transfer\'.</string>
+    <string name="bca_instruction_step3">Choose \'To BCA Virtual Account\'.</string>
+    <string name="bca_instruction_step4">Enter your payment code (11 digit code) and press \'Correct\'.</string>
+    <string name="bca_instruction_step5">Enter full amount to be paid and press \'Correct\'.</string>
+    <string name="bca_instruction_step6">Your payment details will appear on the confirmation page. If information is correct press \'Yes\'.</string>
     <!--Klik BCA-->
     <string name="bca_klik_instruction_step1">1.\tChoose menu \'Fund Transfer\'.</string>
     <string name="bca_klik_instruction_step2">2.\tChoose \'Transfer to BCA Virtual Account\'.</string>
@@ -274,13 +274,13 @@
 
 
     <!-- Permata/Alto bank transfer Instruction-->
-    <string name="permata_instruction_step1">1.\tOn the main menu, Choose \'Other Transaction\'.</string>
-    <string name="permata_instruction_step2">2.\tChoose \'Payment\'.</string>
-    <string name="permata_instruction_step3">3.\tChoose \'Other Payment\'.</string>
-    <string name="permata_instruction_step4">4.\tChoose \'Virtual Account\'.</string>
-    <string name="permata_instruction_step5">5.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
-    <string name="permata_instruction_step6">6.\tAmount to be paid, account number, and merchant name will appear on confirmation page. If the confirmation page is right, press \'Correct\'.</string>
-    <string name="permata_instruction_step7">7.\tChoose your payment account and press \'Correct\'.</string>
+    <string name="permata_instruction_step1">On the main menu, Choose \'Other Transaction\'.</string>
+    <string name="permata_instruction_step2">Choose \'Payment\'.</string>
+    <string name="permata_instruction_step3">Choose \'Other Payment\'.</string>
+    <string name="permata_instruction_step4">Choose \'Virtual Account\'.</string>
+    <string name="permata_instruction_step5">Enter 16 digits payment Account No. and press \'Correct\'.</string>
+    <string name="permata_instruction_step6">Amount to be paid, account number, and merchant name will appear on confirmation page. If the confirmation page is right, press \'Correct\'.</string>
+    <string name="permata_instruction_step7">Choose your payment account and press \'Correct\'.</string>
     <string name="bank_transfer_dummy_text">* Subject to preferred bank\'s transfer fee and a minimum transaction of Rp50,000, - for bank mandiri</string>
 
 
@@ -511,22 +511,37 @@
     <string name="copied_merchant_code">Merchant code was copied to clipboard</string>
 
     <string name="text_format_valid_until">Valid Until : %1$s</string>
-    <string name="instruction_atm_bersama1">1.\tOn the main menu, choose Others.</string>
-    <string name="instruction_atm_bersama2">2.\tChoose Transfer.</string>
-    <string name="instruction_atm_bersama3">3.\tChoose Online Transfer.</string>
-    <string name="instruction_atm_bersama4">4.\tEnter 013 and 16 digit Account No.</string>
-    <string name="instruction_atm_bersama5">5.\tEnter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+    <string name="instruction_atm_bersama1">On the main menu, choose Others.</string>
+    <string name="instruction_atm_bersama2">Choose Transfer.</string>
+    <string name="instruction_atm_bersama3">Choose Online Transfer.</string>
+    <string name="instruction_atm_bersama4">Enter 013 and 16 digit Account No.</string>
+    <string name="instruction_atm_bersama5">Enter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+    <string name="instruction_atm_bersama6">Empty the transfer reference number and press Correct.</string>
+    <string name="instruction_atm_bersama7">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
 
-    <string name="instruction_prima1">1.\tOn the main menu, choose Other Transaction.</string>
-    <string name="instruction_prima2">2.\tChoose Transfer.</string>
-    <string name="instruction_prima3">3.\tChoose Other Bank Account.</string>
-    <string name="instruction_prima4">4.\tEnter 013 and 16 digit Account no. and choose Correct.</string>
-    <string name="instruction_prima5">5.\tEnter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+    <string name="instruction_prima1">On the main menu, choose Other Transaction.</string>
+    <string name="instruction_prima2">Choose Transfer.</string>
+    <string name="instruction_prima3">Choose Other Bank Account.</string>
+    <string name="instruction_prima4">Enter 013 and 16 digit Account no. and choose Correct.</string>
+    <string name="instruction_prima5">Enter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+    <string name="instruction_prima6">Enter 16 digits payment Account No. and press Correct.</string>
+    <string name="instruction_prima7">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
 
-    <string name="instruction_alto1">1.\tOn the main menu, choose Other Transaction.</string>
-    <string name="instruction_alto2">2.\tChoose Payment.</string>
-    <string name="instruction_alto3">3.\tChoose Other Payment.</string>
-    <string name="instruction_alto4">4.\tChoose Virtual Account.</string>
-    <string name="instruction_alto5">5.\tEnter 16 digits payment Account No. and press Correct.</string>
+    <string name="instruction_alto1">On the main menu, choose Other Transaction.</string>
+    <string name="instruction_alto2">Choose Payment.</string>
+    <string name="instruction_alto3">Choose Other Payment.</string>
+    <string name="instruction_alto4">Choose Virtual Account.</string>
+    <string name="instruction_alto5">Enter 16 digits payment Account No. and press Correct.</string>
+    <string name="instruction_alto6">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
+    <string name="instruction_alto7">Choose your payment account.</string>
     <string name="amex">AMEX</string>
+
+    <string name="instruction_1">1.</string>
+    <string name="instruction_2">2.</string>
+    <string name="instruction_3">3.</string>
+    <string name="instruction_4">4.</string>
+    <string name="instruction_5">5.</string>
+    <string name="instruction_6">6.</string>
+    <string name="instruction_7">7.</string>
+
 </resources>
