@@ -15,10 +15,6 @@ import android.widget.ImageView;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
-
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
@@ -106,14 +102,15 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            if (currentFragmentName.equals(STATUS_FRAGMENT)) {
+            if (currentFragmentName.equals(
+                    STATUS_FRAGMENT)) {
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
             } else {
                 onBackPressed();
             }
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -138,13 +135,13 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         if (resultCode == RESULT_OK) {
             currentFragmentName = STATUS_FRAGMENT;
-            transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
-                    VeritransSDK.getVeritransSDK().getTransactionRequest().getOrderId(), String.valueOf(VeritransSDK.getVeritransSDK().getTransactionRequest().getAmount()), getString(R.string.payment_epay_bri), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
+            transactionResponseFromMerchant = transactionResponse;
             RESULT_CODE = RESULT_OK;
             setResultAndFinish();
         } else if (resultCode == RESULT_CANCELED) {
             currentFragmentName = STATUS_FRAGMENT;
             RESULT_CODE = RESULT_OK;
+            transactionResponseFromMerchant = transactionResponse;
             setResultAndFinish();
         }
     }
@@ -170,7 +167,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         SdkUIFlowUtil.hideProgressDialog();
         if (event.getResponse() != null &&
                 !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
-            EpayBriActivity.this.transactionResponse = event.getResponse();
+            transactionResponse = event.getResponse();
             Intent intentPaymentWeb = new Intent(EpayBriActivity.this, PaymentWebActivity.class);
             intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
             intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_EPAY_BRI);

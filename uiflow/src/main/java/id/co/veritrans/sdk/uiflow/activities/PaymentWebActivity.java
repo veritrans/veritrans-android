@@ -43,6 +43,7 @@ public class PaymentWebActivity extends BaseActivity {
         toolbar.setTitle(R.string.processing_payment);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         WebviewFragment webviewFragment;
         if (!type.equals("")) {
             webviewFragment = WebviewFragment.newInstance(webUrl, type);
@@ -55,7 +56,10 @@ public class PaymentWebActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        if (item.getItemId() == R.id.action_close) {
+        if (item.getItemId() == android.R.id.home) {
+            showCancelConfirmationDialog();
+            return true;
+        } else if (item.getItemId() == R.id.action_close) {
             showCancelConfirmationDialog();
             return true;
         }

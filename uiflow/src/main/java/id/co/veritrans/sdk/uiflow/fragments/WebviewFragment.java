@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.uiflow.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -128,28 +129,28 @@ public class WebviewFragment extends Fragment {
             if (type != null && type.equals(TYPE_BCA_KLIKPAY)) {
                 if (url.contains("?id=")) {
                     Intent returnIntent = new Intent();
-                    getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
                     return;
                 }
             } else if (type != null && type.equals(TYPE_MANDIRI_ECASH)) {
                 if (url.contains("notify?id=")) {
                     Intent returnIntent = new Intent();
-                    getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
                     return;
                 }
             } else if (type != null && type.equals(TYPE_EPAY_BRI)) {
                 if (url.contains("briPayment?tid=")) {
                     Intent returnIntent = new Intent();
-                    getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
                     return;
                 }
             } else if (type != null && type.equals(TYPE_CIMB_CLICK)) {
                 if (url.contains("cimb-clicks/response")) {
                     Intent returnIntent = new Intent();
-                    getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
                     return;
                 }
