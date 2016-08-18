@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -259,8 +258,17 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
     @Override
     public void onEvent(TransactionFinishedEvent transactionFinishedEvent) {
         if (transactionFinishedEvent.getResponse() != null) {
-            Toast.makeText(this, "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
-            Log.i(MainActivity.class.getSimpleName(), "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId());
+            switch (transactionFinishedEvent.getStatus()) {
+                case TransactionFinishedEvent.STATUS_SUCCESS:
+                    Toast.makeText(this, "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
+                    break;
+                case TransactionFinishedEvent.STATUS_PENDING:
+                    Toast.makeText(this, "Transaction Pending. ID: " + transactionFinishedEvent.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
+                    break;
+                case TransactionFinishedEvent.STATUS_FAILED:
+                    Toast.makeText(this, "Transaction Failed. ID: " + transactionFinishedEvent.getResponse().getTransactionId() + ". Message: " + transactionFinishedEvent.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
+                    break;
+            }
         } else {
             Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
         }

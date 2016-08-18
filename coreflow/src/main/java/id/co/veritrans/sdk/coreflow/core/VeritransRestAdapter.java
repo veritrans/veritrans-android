@@ -4,6 +4,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
+
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
@@ -52,7 +53,7 @@ public class VeritransRestAdapter {
     public static MerchantRestAPI getMerchantApiClient(String merchantBaseURL) {
 
             OkHttpClient okHttpClient = new OkHttpClient();
-            okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
             Gson gson = new GsonBuilder()
                     .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                     .registerTypeAdapter(Date.class, new DateTypeAdapter())
@@ -74,7 +75,7 @@ public class VeritransRestAdapter {
      */
     public static MixpanelApi getMixpanelApi() {
             OkHttpClient okHttpClient = new OkHttpClient();
-            okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
             RestAdapter.Builder builder = new RestAdapter.Builder()
                     .setLogLevel(LOG_LEVEL)
                     .setClient(new OkClient(okHttpClient))
@@ -89,7 +90,7 @@ public class VeritransRestAdapter {
      */
     public static SnapRestAPI getSnapRestAPI() {
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient))

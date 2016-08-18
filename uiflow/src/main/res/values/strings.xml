@@ -354,9 +354,8 @@
         completed within 2 hours.
     </string>
     <string name="empty_transaction_response">Payment failed! Please try again.</string>
-    <string name="cancel_transaction">Cancel Transaction</string>
-    <string name="cancel_transaction_message">Are you sure you want to cancel this transaction?
-    </string>
+    <string name="cancel_transaction">Confirm Navigation</string>
+    <string name="cancel_transaction_message">Are you sure want to leave this page?</string>
     <string name="indosat_instruction_step1">1.\tInput your registered indosat phone number.</string>
     <string name="indosat_instruction_step2">2.\tMake sure you have sufficient funds in your account.</string>
     <string name="indosat_instruction_step3">3.\tClick \'Confirm Payment\'.</string>

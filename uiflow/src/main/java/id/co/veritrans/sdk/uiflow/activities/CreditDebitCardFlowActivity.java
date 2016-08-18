@@ -181,7 +181,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     .getName())) {
                 setResultAndFinish();
             } else {
-
                 super.onBackPressed();
             }
         }
@@ -642,8 +641,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 processingLayout.setVisibility(View.GONE);
             }
         }, 200);
-        CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
-        CreditDebitCardFlowActivity.this.errorMessage = event.getMessage();
+        this.transactionResponse = transactionResponse;
+        this.errorMessage = event.getMessage();
         SdkUIFlowUtil.hideProgressDialog();
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);

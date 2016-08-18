@@ -359,7 +359,13 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
             if (resultCode == RESULT_OK) {
                 TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
                 if (response != null) {
-                    VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(response));
+                    if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
+                        VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(response, null, TransactionFinishedEvent.STATUS_SUCCESS));
+                    } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
+                        VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(response, null, TransactionFinishedEvent.STATUS_PENDING));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(response, null, TransactionFinishedEvent.STATUS_FAILED));
+                    }
                 } else {
                     VeritransBusProvider.getInstance().post(new TransactionFinishedEvent());
                 }

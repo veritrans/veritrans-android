@@ -144,10 +144,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
             replaceFragment(paymentTransactionStatusFragment, R.id.bca_klik_pay_container, true, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         } else if (resultCode == RESULT_CANCELED) {
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.bca_klik_pay_container, true, false);
-            buttonConfirmPayment.setVisibility(View.GONE);
+            RESULT_CODE = RESULT_OK;
+            transactionResponseFromMerchant = transactionResponse;
+            setResultAndFinish();
         }
     }
 
