@@ -29,19 +29,19 @@ public class VeritransRestAdapter {
      * @return Payment API implementation
      */
     public static VeritransRestAPI getVeritransApiClient() {
-            OkHttpClient okHttpClient = new OkHttpClient();
-            okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
-            Gson gson = new GsonBuilder()
-                    .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-                    .registerTypeAdapter(Date.class, new DateTypeAdapter())
-                    .create();
-            RestAdapter.Builder builder = new RestAdapter.Builder()
-                    .setEndpoint(BuildConfig.BASE_URL)
-                    .setConverter(new GsonConverter(gson))
-                    .setLogLevel(LOG_LEVEL)
-                    .setClient(new OkClient(okHttpClient));
-            RestAdapter restAdapter = builder.build();
-            return restAdapter.create(VeritransRestAPI.class);
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                .create();
+        RestAdapter.Builder builder = new RestAdapter.Builder()
+                .setEndpoint(BuildConfig.BASE_URL)
+                .setConverter(new GsonConverter(gson))
+                .setLogLevel(LOG_LEVEL)
+                .setClient(new OkClient(okHttpClient));
+        RestAdapter restAdapter = builder.build();
+        return restAdapter.create(VeritransRestAPI.class);
     }
 
     /**
@@ -52,45 +52,49 @@ public class VeritransRestAdapter {
      */
     public static MerchantRestAPI getMerchantApiClient(String merchantBaseURL) {
 
-            OkHttpClient okHttpClient = new OkHttpClient();
+        OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
-            Gson gson = new GsonBuilder()
-                    .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-                    .registerTypeAdapter(Date.class, new DateTypeAdapter())
-                    .create();
-            RestAdapter.Builder builder = new RestAdapter.Builder()
-                    .setConverter(new GsonConverter(gson))
-                    .setLogLevel(LOG_LEVEL)
-                    .setClient(new OkClient(okHttpClient))
-                    .setEndpoint(merchantBaseURL);
-            RestAdapter restAdapter = builder.build();
-            return restAdapter.create(MerchantRestAPI.class);
+        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                .create();
+        RestAdapter.Builder builder = new RestAdapter.Builder()
+                .setConverter(new GsonConverter(gson))
+                .setLogLevel(LOG_LEVEL)
+                .setClient(new OkClient(okHttpClient))
+                .setEndpoint(merchantBaseURL);
+        RestAdapter restAdapter = builder.build();
+        return restAdapter.create(MerchantRestAPI.class);
 
     }
 
 
     /**
      * Return Mixpanel API implementation
-     * @return
      */
     public static MixpanelApi getMixpanelApi() {
-            OkHttpClient okHttpClient = new OkHttpClient();
+        OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
-            RestAdapter.Builder builder = new RestAdapter.Builder()
-                    .setLogLevel(LOG_LEVEL)
-                    .setClient(new OkClient(okHttpClient))
-                    .setEndpoint(BuildConfig.MIXPANEL_URL);
-            RestAdapter restAdapter = builder.build();
-            return restAdapter.create(MixpanelApi.class);
+        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
+        RestAdapter.Builder builder = new RestAdapter.Builder()
+                .setLogLevel(LOG_LEVEL)
+                .setClient(new OkClient(okHttpClient))
+                .setEndpoint(BuildConfig.MIXPANEL_URL);
+        RestAdapter restAdapter = builder.build();
+        return restAdapter.create(MixpanelApi.class);
     }
 
     /**
      * Return Snap API implementation
-     * @return
      */
     public static SnapRestAPI getSnapRestAPI() {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient))
