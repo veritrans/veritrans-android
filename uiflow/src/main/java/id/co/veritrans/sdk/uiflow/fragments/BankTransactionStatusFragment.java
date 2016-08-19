@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.regex.Pattern;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
+import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.BankTransferActivity;
@@ -232,6 +233,10 @@ public class BankTransactionStatusFragment extends Fragment {
                 break;
             case Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK:
                 intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
+                break;
+            case Constants.PAYMENT_METHOD_KLIKBCA:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+                intent.putExtra(BankTransferInstructionActivity.PAGE, BankTransferInstructionActivity.KLIKBCA_PAGE);
                 break;
         }
         getActivity().startActivity(intent);
