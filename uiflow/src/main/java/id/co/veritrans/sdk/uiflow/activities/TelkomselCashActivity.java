@@ -264,10 +264,10 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onEvent(TransactionFailedEvent event) {
         mTransactionResponse = event.getResponse();
-        errorMessage = event.getMessage();
+        errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
         try {
             SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, "" + errorMessage);
+            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_message_invalid_input_telkomsel));
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);
         }
@@ -279,7 +279,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         errorMessage = getString(R.string.no_network_msg);
         try {
             SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, "" + errorMessage);
+            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, errorMessage);
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);
         }
@@ -288,10 +288,10 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
-        errorMessage = event.getMessage();
+        errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
         try {
             SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, "" + errorMessage);
+            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, errorMessage);
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);
         }
