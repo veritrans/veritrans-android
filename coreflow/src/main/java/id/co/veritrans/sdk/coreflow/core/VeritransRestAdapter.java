@@ -25,9 +25,10 @@ public class VeritransRestAdapter {
     /**
      * It will return instance of PaymentAPI using that we can execute api calls.
      *
+     * @param baseUrl base URL of PAPI
      * @return Payment API implementation
      */
-    public static VeritransRestAPI getVeritransApiClient() {
+    public static VeritransRestAPI getVeritransApiClient(String baseUrl) {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
@@ -37,30 +38,16 @@ public class VeritransRestAdapter {
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
                 .create();
         RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setEndpoint(BuildConfig.BASE_URL)
+                .setEndpoint(baseUrl)
                 .setConverter(new GsonConverter(gson))
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient));
         RestAdapter restAdapter = builder.build();
         return restAdapter.create(VeritransRestAPI.class);
-    public static VeritransRestAPI getVeritransApiClient(String baseUrl) {
-            OkHttpClient okHttpClient = new OkHttpClient();
-            okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
-            Gson gson = new GsonBuilder()
-                    .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-                    .registerTypeAdapter(Date.class, new DateTypeAdapter())
-                    .create();
-            RestAdapter.Builder builder = new RestAdapter.Builder()
-                    .setEndpoint(baseUrl)
-                    .setConverter(new GsonConverter(gson))
-                    .setLogLevel(LOG_LEVEL)
-                    .setClient(new OkClient(okHttpClient));
-            RestAdapter restAdapter = builder.build();
-            return restAdapter.create(VeritransRestAPI.class);
     }
 
     /**
-     * Return Merchant API implementation
+     * Create Merchant API implementation
      *
      * @param merchantBaseURL Merchant base URL
      * @return Merchant API implementation
@@ -87,8 +74,9 @@ public class VeritransRestAdapter {
 
 
     /**
-     * Return Mixpanel API implementation
-     * @return
+     * Create Mixpanel API
+     *
+     * @return mixpanel Api implementation
      */
     public static MixpanelApi getMixpanelApi() {
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -104,8 +92,10 @@ public class VeritransRestAdapter {
     }
 
     /**
-     * Return Snap API implementation
-     * @return
+     * Crate Snap API
+     *
+     * @param snapBaseURL base URL of snap API
+     * @return snap API implementation
      */
     public static SnapRestAPI getSnapRestAPI(String snapBaseURL) {
         OkHttpClient okHttpClient = new OkHttpClient();
