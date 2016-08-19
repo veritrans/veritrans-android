@@ -543,4 +543,6 @@
     <string name="instruction_6">6.</string>
     <string name="instruction_7">7.</string>
 
+    <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
+
 </resources>

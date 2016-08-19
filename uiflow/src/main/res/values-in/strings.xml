@@ -99,7 +99,7 @@
     <string name="bank_atm_transfer_step2">2.\t Anda akan menerima nomor rekening yang unik instruksi pembayaran
         (Anda dapat menerima instruksi via email jika memasukkan alamat email anda pada kolom di atas).</string>
 
-    <string name="bank_atm_transfer_step3">3.\t Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
+    <string name="bank_atm_transfer_step3">3.\t Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata).</string>
     <string name="bank_atm_transfer_step4">4.\t Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
     <string name="see_instruction">Lihat instruksi</string>
     <string name="download_instruction">Unduh instruksi</string>
@@ -383,4 +383,6 @@
     <string name="instruction_alto7">Pilih akun pembayaran anda.</string>
 
     <string name="all_bank_transfer">Bank Lainnya</string>
+    <string name="error_message_invalid_input_telkomsel">Transaksi Anda tidak dapat diproses. Pastikan informasi pembayaran Anda benar.</string>
+    <string name="no_network_msg">Koneksi tidak tersedia! Coba lagi lain waktu.</string>
 </resources>
