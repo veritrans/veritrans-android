@@ -21,10 +21,10 @@
 
         <View
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="15dp"
             android:background="?colorPrimary"
             android:layout_width="match_parent"
-            android:layout_height="2dp"/>
+            android:layout_height="3dp"/>
 
     </LinearLayout>
     <android.support.design.widget.TextInputLayout
@@ -62,6 +62,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:layout_marginBottom="10dp"
         android:layout_below="@id/til_sdkconfig_merchant_url"
         android:id="@+id/til_sdkconfig_clientkey"
         android:layout_width="match_parent"
