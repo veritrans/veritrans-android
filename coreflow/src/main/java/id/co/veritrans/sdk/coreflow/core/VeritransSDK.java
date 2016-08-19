@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 
+import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
@@ -53,12 +54,12 @@ public class VeritransSDK {
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
     private BBMCallBackUrl mBBMCallBackUrl = null;
-
+    private String sdkBaseUrl = "";
     private VeritransSDK(@NonNull SdkCoreFlowBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
         this.clientKey = sdkBuilder.clientKey;
         this.merchantServerUrl = sdkBuilder.merchantServerUrl;
-
+        this.sdkBaseUrl = BuildConfig.SNAP_BASE_URL;
         this.merchantName = sdkBuilder.merchantName;
         this.defaultText = sdkBuilder.defaultText;
         this.semiBoldText = sdkBuilder.semiBoldText;
@@ -68,9 +69,10 @@ public class VeritransSDK {
         themeColor = sdkBuilder.colorThemeResourceId;
 
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi());
-        this.mTransactionManager = new TransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(), VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
-        this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, VeritransRestAdapter.getSnapRestAPI(),
-                VeritransRestAdapter.getMerchantApiClient(merchantServerUrl), VeritransRestAdapter.getVeritransApiClient());
+        this.mTransactionManager = new TransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL),
+                VeritransRestAdapter.getMerchantApiClient(merchantServerUrl));
+        this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, VeritransRestAdapter.getSnapRestAPI(sdkBaseUrl),
+                VeritransRestAdapter.getMerchantApiClient(merchantServerUrl), VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL));
         this.mTransactionManager.setSDKLogEnabled(isLogEnabled);
         this.mTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
         this.mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
@@ -780,4 +782,16 @@ public class VeritransSDK {
         this.isRunning = false;
     }
 
+    public String getSdkBaseUrl() {
+        return sdkBaseUrl;
+    }
+
+    public void changeEndpoint(String baseUrl, String merchantUrl, String merchantClientKey) {
+        this.sdkBaseUrl = baseUrl;
+        this.merchantServerUrl = merchantUrl;
+        this.clientKey = merchantClientKey;
+        mSnapTransactionManager = new SnapTransactionManager(context, VeritransRestAdapter.getSnapRestAPI(sdkBaseUrl),
+                VeritransRestAdapter.getMerchantApiClient(merchantServerUrl),
+                VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL));
+    }
 }

@@ -4,7 +4,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
-
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
@@ -26,9 +25,10 @@ public class VeritransRestAdapter {
     /**
      * It will return instance of PaymentAPI using that we can execute api calls.
      *
+     * @param baseUrl base URL of PAPI
      * @return Payment API implementation
      */
-    public static VeritransRestAPI getVeritransApiClient() {
+    public static VeritransRestAPI getVeritransApiClient(String baseUrl) {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
@@ -38,7 +38,7 @@ public class VeritransRestAdapter {
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
                 .create();
         RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setEndpoint(BuildConfig.BASE_URL)
+                .setEndpoint(baseUrl)
                 .setConverter(new GsonConverter(gson))
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient));
@@ -47,7 +47,7 @@ public class VeritransRestAdapter {
     }
 
     /**
-     * Return Merchant API implementation
+     * Create Merchant API implementation
      *
      * @param merchantBaseURL Merchant base URL
      * @return Merchant API implementation
@@ -74,7 +74,9 @@ public class VeritransRestAdapter {
 
 
     /**
-     * Return Mixpanel API implementation
+     * Create Mixpanel API
+     *
+     * @return mixpanel Api implementation
      */
     public static MixpanelApi getMixpanelApi() {
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -90,9 +92,12 @@ public class VeritransRestAdapter {
     }
 
     /**
-     * Return Snap API implementation
+     * Crate Snap API
+     *
+     * @param snapBaseURL base URL of snap API
+     * @return snap API implementation
      */
-    public static SnapRestAPI getSnapRestAPI() {
+    public static SnapRestAPI getSnapRestAPI(String snapBaseURL) {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
@@ -100,7 +105,7 @@ public class VeritransRestAdapter {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient))
-                .setEndpoint(BuildConfig.SNAP_BASE_URL);
+                .setEndpoint(snapBaseURL);
         return builder.build().create(SnapRestAPI.class);
     }
 }

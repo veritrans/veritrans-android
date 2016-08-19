@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -19,6 +23,7 @@ import java.util.UUID;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
+import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
             getAuthenticationToken, refresh_token;
     private RadioButton normal, twoClick, oneClick;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods;
-
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,7 +154,8 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
      * Initialize the view.
      */
     private void initView() {
-
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         //Initialize progress dialog
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
@@ -175,6 +181,9 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         uiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Logger.i("config>clientkey:" + VeritransSDK.getVeritransSDK().getClientKey());
+                Logger.i("config>merchantUrl:" + VeritransSDK.getVeritransSDK().getMerchantServerUrl());
+                Logger.i("config>sdkurl:" + VeritransSDK.getVeritransSDK().getSdkBaseUrl());
                 VeritransSDK.getVeritransSDK().setTransactionRequest(initializePurchaseRequest());
                 VeritransSDK.getVeritransSDK().startPaymentUiFlow(MainActivity.this);
             }
@@ -271,6 +280,24 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
             }
         } else {
             Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_app, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_sdk_config:
+                SdkConfigDialogFragment fragment = SdkConfigDialogFragment.createInstance();
+                fragment.show(getSupportFragmentManager(), SdkConfigDialogFragment.TAG);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
