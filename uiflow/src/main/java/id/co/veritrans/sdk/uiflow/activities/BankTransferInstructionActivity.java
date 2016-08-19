@@ -44,6 +44,10 @@ public class BankTransferInstructionActivity extends BaseActivity {
     public static final String TYPE_ALL_BANK = "bank.others";
 
     private static final int PAGE_MARGIN = 20;
+    public static final String PAGE = "page";
+    public static final int KLIKBCA_PAGE = 1;
+    private  int POSITION = -1;
+
     private Toolbar mToolbar = null;
     private ViewPager mViewPager = null;
     private TabLayout mTabLayout = null;
@@ -153,6 +157,7 @@ public class BankTransferInstructionActivity extends BaseActivity {
         switch (getIntent().getStringExtra(BANK)) {
             case TYPE_BCA:
                 pageNumber = 3;
+                POSITION = getIntent().getIntExtra(PAGE, -1);
                 break;
             case TYPE_PERMATA:
                 pageNumber = 2;
@@ -173,6 +178,9 @@ public class BankTransferInstructionActivity extends BaseActivity {
         InstructionFragmentPagerAdapter adapter = new InstructionFragmentPagerAdapter(
                 getSupportFragmentManager(), pageNumber);
         mViewPager.setAdapter(adapter);
+        if(POSITION > -1){
+            mViewPager.setCurrentItem(POSITION);
+        }
     }
 
 
