@@ -77,4 +77,11 @@
     <string name="title_activity_xl_tunai">XL- Tunai</string>
     <string name="title_activity_indosat_dompetku">Indosat Dompetku</string>
     <string name="title_activity_tsel_ecash">Telkomsel E-Cash</string>
+    <string name="hint_sdkconfig_snapurl">Snap URL</string>
+    <string name="hint_sdkconfig_merchant_url">Merchant Base URL</string>
+    <string name="hint_sdkconfig_merchant_clientkey">Merchant Client Key</string>
+    <string name="btn_sdkconfig_save">Save</string>
+    <string name="btn_sdkconfig_cancel">Cancel</string>
+    <string name="error_sdkconfig_empty">Field Cannot Empty</string>
+    <string name="activity_sdk_config_title">SETTING SDK ENDPOINT</string>
 </resources>

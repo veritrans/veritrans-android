@@ -4,7 +4,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
-
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
@@ -44,6 +43,20 @@ public class VeritransRestAdapter {
                 .setClient(new OkClient(okHttpClient));
         RestAdapter restAdapter = builder.build();
         return restAdapter.create(VeritransRestAPI.class);
+    public static VeritransRestAPI getVeritransApiClient(String baseUrl) {
+            OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                    .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                    .create();
+            RestAdapter.Builder builder = new RestAdapter.Builder()
+                    .setEndpoint(baseUrl)
+                    .setConverter(new GsonConverter(gson))
+                    .setLogLevel(LOG_LEVEL)
+                    .setClient(new OkClient(okHttpClient));
+            RestAdapter restAdapter = builder.build();
+            return restAdapter.create(VeritransRestAPI.class);
     }
 
     /**
@@ -75,6 +88,7 @@ public class VeritransRestAdapter {
 
     /**
      * Return Mixpanel API implementation
+     * @return
      */
     public static MixpanelApi getMixpanelApi() {
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -91,8 +105,9 @@ public class VeritransRestAdapter {
 
     /**
      * Return Snap API implementation
+     * @return
      */
-    public static SnapRestAPI getSnapRestAPI() {
+    public static SnapRestAPI getSnapRestAPI(String snapBaseURL) {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
@@ -100,7 +115,7 @@ public class VeritransRestAdapter {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient))
-                .setEndpoint(BuildConfig.SNAP_BASE_URL);
+                .setEndpoint(snapBaseURL);
         return builder.build().create(SnapRestAPI.class);
     }
 }
