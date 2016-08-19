@@ -30,7 +30,9 @@ public class VeritransRestAdapter {
      */
     public static VeritransRestAPI getVeritransApiClient() {
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
