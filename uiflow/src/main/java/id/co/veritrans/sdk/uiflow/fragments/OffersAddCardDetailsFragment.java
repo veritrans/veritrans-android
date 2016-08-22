@@ -584,6 +584,10 @@ public class OffersAddCardDetailsFragment extends Fragment {
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, amex, null);
             cardType = "AMEX";
 
+        } else if (cardNo.startsWith("35") || cardNo.startsWith("2131") || cardNo.startsWith("1800")) {
+            Drawable jcb = getResources().getDrawable(R.drawable.ic_jcb);
+            etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, jcb, null);
+            cardType = getString(R.string.jcb);
         } else {
             cardType = "";
 
