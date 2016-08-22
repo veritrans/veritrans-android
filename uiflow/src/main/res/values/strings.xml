@@ -534,6 +534,7 @@
     <string name="instruction_alto6">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
     <string name="instruction_alto7">Choose your payment account.</string>
     <string name="amex">AMEX</string>
+    <string name="jcb">JCB</string>
 
     <string name="instruction_1">1.</string>
     <string name="instruction_2">2.</string>

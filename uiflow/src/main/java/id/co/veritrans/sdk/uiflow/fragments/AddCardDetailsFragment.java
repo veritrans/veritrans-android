@@ -467,11 +467,14 @@ public class AddCardDetailsFragment extends Fragment {
             Drawable masterCard = getResources().getDrawable(R.drawable.ic_mastercard);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, masterCard, null);
             cardType = getString(R.string.mastercard);
-
         } else if ((cardNo.charAt(0) == '3') && ((cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '7'))) {
             Drawable amex = getResources().getDrawable(R.drawable.ic_amex_dark);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, amex, null);
             cardType = getString(R.string.amex);
+        } else if (cardNo.startsWith("35") || cardNo.startsWith("2131") || cardNo.startsWith("1800")) {
+            Drawable jcb = getResources().getDrawable(R.drawable.ic_jcb);
+            etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, jcb, null);
+            cardType = getString(R.string.jcb);
         } else {
             cardType = "";
         }
