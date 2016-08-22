@@ -361,7 +361,7 @@ public class AddCardDetailsFragment extends Fragment {
             tilCardNo.setError(null);
         }
 
-        if (cardNumber.length() < 15 || !SdkUIFlowUtil.isValidCardNumber(cardNumber)) {
+        if (cardNumber.length() < 13 || !SdkUIFlowUtil.isValidCardNumber(cardNumber)) {
             tilCardNo.setError(getString(R.string.validation_message_invalid_card_no));
             isValid = false;
         } else {
