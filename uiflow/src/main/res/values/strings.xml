@@ -77,7 +77,7 @@
     <string name="validation_billingcountry_notexist">Please enter valid country</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="pay_with">Pay With</string>
-    <string name="payable_amount">Payable Amount</string>
+    <string name="payable_amount">Total Amount</string>
     <string name="select_payment_method">Select Payment Method</string>
 
 
