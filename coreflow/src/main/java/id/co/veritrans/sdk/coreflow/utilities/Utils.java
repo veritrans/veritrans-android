@@ -5,28 +5,18 @@ package id.co.veritrans.sdk.coreflow.utilities;
  */
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 
 /**
@@ -208,7 +198,8 @@ public class Utils {
 
             } else if ((cardNo.charAt(0) == '3') && ((cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '7'))) {
                 return CARD_TYPE_AMEX;
-
+            } else if (cardNo.startsWith("35") || cardNo.startsWith("2131") || cardNo.startsWith("1800")) {
+                return CARD_TYPE_JCB;
             } else {
                 return "";
 

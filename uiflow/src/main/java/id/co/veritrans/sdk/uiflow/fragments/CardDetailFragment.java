@@ -255,8 +255,6 @@ public class CardDetailFragment extends Fragment {
                 }
             }
         }
-
-        // ((SavedCardFragment)getParentFragment()).paymentUsingCard(cardDetail);
     }
 
     private void flipCard() {
@@ -313,8 +311,5 @@ public class CardDetailFragment extends Fragment {
         animationSet.addAnimation(flipAnimation);
         animationSet.addAnimation(scaleUp);
         rootLayout.startAnimation(animationSet);
-        // rootLayout.startAnimation(scaleDown);
-
-        //rootLayout.startAnimation(flipAnimation);
     }
 }
