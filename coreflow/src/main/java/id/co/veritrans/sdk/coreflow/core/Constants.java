@@ -58,7 +58,7 @@ public class Constants {
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 
-    public static final float CARD_ASPECT_RATIO = 0.555f;
+    public static final float CARD_ASPECT_RATIO = 0.62222f;
 
     /**
      * If trying to create api request before initializing sdk.
