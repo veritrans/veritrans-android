@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,14 +50,13 @@ import id.co.veritrans.sdk.uiflow.PaymentMethods;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.adapters.PaymentMethodsAdapter;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
-import id.co.veritrans.sdk.uiflow.widgets.HeaderView;
 
 /**
  * Displays list of available payment methods.
  * <p/>
  * Created by shivam on 10/16/15.
  */
-public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, GetSnapTransactionCallback, GetSnapTokenCallback {
+public class PaymentMethodsActivity extends BaseActivity implements GetSnapTransactionCallback, GetSnapTokenCallback {
 
     public static final String PAYABLE_AMOUNT = "Payable Amount";
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
@@ -75,11 +73,9 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
     private Toolbar toolbar = null;
     private AppBarLayout mAppBarLayout = null;
     private RecyclerView mRecyclerView = null;
-    private HeaderView toolbarHeaderView = null;
-    private HeaderView floatHeaderView = null;
     private TextView headerTextView = null;
-    private CollapsingToolbarLayout collapsingToolbarLayout = null;
     private TextView textViewMeasureHeight = null;
+    private TextView amountText = null;
     private LinearLayout progressContainer = null;
     private ImageView logo = null;
     private ArrayList<String> bankTrasfers = new ArrayList<>();
@@ -169,8 +165,6 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         //initialize views
         bindActivity();
 
-        //setup tool bar
-        mAppBarLayout.addOnOffsetChangedListener(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -199,12 +193,8 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
 
         if (veritransSDK != null) {
             String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount()));
-            collapsingToolbarLayout.setTitle(" ");
-            toolbarHeaderView.bindTo(getString(R.string.payable_amount), "" + amount);
-            floatHeaderView.bindTo(getString(R.string.payable_amount), "" + amount);
-            floatHeaderView.getSubTitleTextView().setAlpha(PERCENTAGE_TOTAL);
-            floatHeaderView.getTitleTextView().setAlpha(ALPHA);
-            mAppBarLayout.addOnOffsetChangedListener(this);
+
+            amountText.setText(amount);
         }
 
     }
@@ -216,10 +206,8 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_payment_methods);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
-        toolbarHeaderView = (HeaderView) findViewById(R.id.toolbar_header_view);
-        floatHeaderView = (HeaderView) findViewById(R.id.float_header_view);
         headerTextView = (TextView) findViewById(R.id.title_header);
+        amountText = (TextView) findViewById(R.id.header_view_sub_title);
         textViewMeasureHeight = (TextView) findViewById(R.id.textview_to_compare);
         logo = (ImageView) findViewById(R.id.merchant_logo);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
@@ -261,90 +249,6 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-
-        int maxScroll = appBarLayout.getTotalScrollRange();
-        float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
-
-        applyAlpha(percentage);
-
-        if (percentage == PERCENTAGE_TOTAL && isHideToolbarView) {
-            toolbarHeaderView.setVisibility(View.VISIBLE);
-            isHideToolbarView = !isHideToolbarView;
-        } else if (percentage < PERCENTAGE_TOTAL && !isHideToolbarView) {
-            toolbarHeaderView.setVisibility(View.GONE);
-            isHideToolbarView = !isHideToolbarView;
-        }
-
-        if (percentage == PERCENTAGE_TOTAL) {
-            logo.setVisibility(View.GONE);
-            headerTextView.setVisibility(View.GONE);
-        } else {
-            logo.setVisibility(View.VISIBLE);
-            headerTextView.setVisibility(View.VISIBLE);
-        }
-
-    }
-
-    private void applyAlpha(float percentage) {
-
-        float constant = 0.2f;
-
-        headerTextView.setAlpha(PERCENTAGE_TOTAL - (percentage + constant));
-        logo.setAlpha(PERCENTAGE_TOTAL - (percentage + constant));
-
-        if (percentage > constant) {
-
-            float alpha = (percentage * ALPHA) / 0.5f;
-
-            if (percentage >= 0.95) {
-
-                floatHeaderView.getTitleTextView().setAlpha(1);
-                floatHeaderView.getTitleTextView().setPivotX(1);
-
-                floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 2.95f);
-                floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.1f);
-                floatHeaderView.invalidate();
-
-            } else {
-
-                if (alpha > ALPHA) {
-                    floatHeaderView.getTitleTextView().setAlpha(alpha);
-                }
-
-                floatHeaderView.getTitleTextView().setPivotX(1);
-                floatHeaderView.getTitleTextView().setScaleX(1 + alpha / 2.95f);
-                floatHeaderView.getTitleTextView().setScaleY(1 + alpha / 3.05f);
-
-                floatHeaderView.getSubTitleTextView().setPivotX(1);
-                floatHeaderView.getSubTitleTextView().setScaleX(1 - alpha / 4f);
-                floatHeaderView.getSubTitleTextView().setScaleY(1 - alpha / 4f);
-
-                floatHeaderView.invalidate();
-            }
-
-            alpha = ALPHA / percentage;
-
-            if (alpha > PERCENTAGE_TOTAL) {
-                floatHeaderView.getSubTitleTextView().setAlpha(PERCENTAGE_TOTAL);
-            } else if (alpha < ALPHA) {
-                floatHeaderView.getSubTitleTextView().setAlpha(ALPHA);
-            } else {
-                floatHeaderView.getSubTitleTextView().setAlpha(alpha);
-            }
-
-        } else {
-
-            floatHeaderView.getTitleTextView().setAlpha(ALPHA);
-            floatHeaderView.getSubTitleTextView().setAlpha(PERCENTAGE_TOTAL);
-            floatHeaderView.getTitleTextView().setScaleX(1);
-            floatHeaderView.getTitleTextView().setScaleY(1);
-            floatHeaderView.invalidate();
-        }
-    }
-
     /**
      * sends broadcast for transaction details.
      */
