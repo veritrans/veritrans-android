@@ -27,11 +27,13 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.uiflow.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionIndosatFragment;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
+import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 
 /**
  * Created to show and handle bank transfer and mandiri bill pay details.
@@ -60,12 +62,12 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     public String currentFragment = "home";
 
     private Button mButtonConfirmPayment = null;
-    private TextView mTextViewTitle = null;
+    private DefaultTextView textTitle, textOrderId, textTotalAmount;
+
 
     private VeritransSDK mVeritransSDK = null;
     private Toolbar mToolbar = null;
     private ImageView logo = null;
-
     private InstructionIndosatFragment mIndosatFragment = null;
     private TransactionResponse mTransactionResponse = null;
     private String errorMessage = null;
@@ -108,7 +110,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         mIndosatFragment = new InstructionIndosatFragment();
 
-        fragmentTransaction.add(R.id.indosat_container, mIndosatFragment, HOME_FRAGMENT);
+        fragmentTransaction.add(R.id.instruction_container, mIndosatFragment, HOME_FRAGMENT);
         fragmentTransaction.commit();
 
         currentFragment = HOME_FRAGMENT;
@@ -137,9 +139,12 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     private void initializeView() {
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mTextViewTitle = (TextView) findViewById(R.id.text_title);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+        textTitle = (DefaultTextView) findViewById(R.id.text_title);
+        textOrderId = (DefaultTextView)findViewById(R.id.text_order_id);
+        textTotalAmount = (DefaultTextView)findViewById(R.id.text_amount);
+
         initializeTheme();
         //setup tool bar
         mToolbar.setTitle(""); // disable default Text
@@ -151,14 +156,15 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * set data to views.
      */
     private void bindDataToView() {
-
+        textTitle.setText(getString(R.string.indosat_dompetku));
         if (mVeritransSDK != null) {
             if (mVeritransSDK.getSemiBoldText() != null) {
                 mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
             }
             mButtonConfirmPayment.setOnClickListener(this);
-            mTextViewTitle.setText(getResources().getString(R.string.indosat_dompetku));
-
+            textOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
+            textTotalAmount.setText(getString(R.string.prefix_money,
+                    Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
         } else {
             SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_something_wrong));
             Logger.e(IndosatDompetkuActivity.class.getSimpleName(), Constants
@@ -264,7 +270,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                         Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.indosat_container,
+        fragmentTransaction.replace(R.id.instruction_container,
                 bankTransactionStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();

@@ -39,145 +39,212 @@
                         android:paddingBottom="@dimen/eight_dp"
                         android:paddingLeft="@dimen/sixteen_dp"
                         android:paddingRight="@dimen/sixteen_dp">
-
-                        <TableLayout
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:weightSum="1">
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                            <TableRow>
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:text="@string/orderId"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
 
-                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
-                                    android:layout_weight="0.3"
-                                    android:text="@string/appli"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/secondary_text_size" />
+                            <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.1"
+                                android:text="@string/text_colon"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size"
+                                android:textStyle="bold" />
 
-                                <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
-                                    android:layout_width="@dimen/forty_dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="0.3"
-                                    android:gravity="center"
-                                    android:text="@string/text_colon"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/primary_text_size"
-                                    android:textStyle="bold" />
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:id="@+id/text_order_id"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.7"
+                                android:text="@string/text_order_id_here"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
+                        </LinearLayout>
 
-                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
-                                    android:layout_width="120dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:layout_marginTop="4dp"
-                                    android:layout_weight="1"
-                                    android:text="@string/text_three"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/secondary_text_size" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                            </TableRow>
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:text="@string/transfer_amount"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
 
+                            <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.1"
+                                android:text="@string/text_colon"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size"
+                                android:textStyle="bold" />
 
-                            <TableRow android:layout_marginTop="@dimen/eight_dp">
-
-                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
-                                    android:layout_weight="0.3"
-                                    android:text="@string/input_1"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/secondary_text_size" />
-
-                                <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
-                                    android:layout_width="@dimen/forty_dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="0.3"
-                                    android:gravity="center"
-                                    android:text="@string/text_colon"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/primary_text_size"
-                                    android:textStyle="bold" />
-
-                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
-                                    android:id="@+id/text_input_1"
-                                    android:layout_width="120dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="right"
-                                    android:text="@string/text_input_one_here"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/secondary_text_size" />
-                            </TableRow>
-
-
-                            <TableRow android:layout_marginTop="@dimen/eight_dp">
-
-                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
-                                    android:layout_weight="0.3"
-                                    android:text="@string/input_2"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/secondary_text_size" />
-
-                                <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
-                                    android:layout_width="@dimen/forty_dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="0.3"
-                                    android:gravity="center"
-                                    android:text="@string/text_colon"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/primary_text_size"
-                                    android:textStyle="bold" />
-
-                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
-                                    android:id="@+id/text_input_2"
-                                    android:layout_width="120dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="right"
-                                    android:text="@string/text_input_two_here"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/secondary_text_size" />
-                            </TableRow>
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:id="@+id/text_amount"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.7"
+                                android:text="@string/text_amount_here"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
 
-                            <TableRow android:layout_marginTop="@dimen/eight_dp">
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_weight="0.25"
+                                android:text="@string/appli"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
 
-                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
-                                    android:layout_weight="0.3"
-                                    android:text="@string/input_3"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/secondary_text_size" />
+                            <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.1"
+                                android:text="@string/text_colon"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/primary_text_size"
+                                android:textStyle="bold" />
 
-                                <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
-                                    android:layout_width="@dimen/forty_dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_weight="0.3"
-                                    android:gravity="center"
-                                    android:text="@string/text_colon"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/primary_text_size"
-                                    android:textStyle="bold" />
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:layout_width="0dp"
 
-                                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
-                                    android:id="@+id/text_input_3"
-                                    android:layout_width="120dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="end"
-                                    android:text="@string/text_input_three_here"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="@dimen/secondary_text_size" />
-                            </TableRow>
-                        </TableLayout>
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="4dp"
+                                android:layout_weight="0.7"
+                                android:text="@string/text_three"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_weight="0.25"
+                                android:text="@string/input_1"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
+
+                            <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.1"
+                                android:text="@string/text_colon"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/primary_text_size"
+                                android:textStyle="bold" />
+
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:id="@+id/text_input_1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.7"
+                                android:text="@string/text_input_one_here"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_weight="0.25"
+                                android:text="@string/input_2"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
+
+                            <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.1"
+                                android:text="@string/text_colon"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/primary_text_size"
+                                android:textStyle="bold" />
+
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:id="@+id/text_input_2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.7"
+                                android:text="@string/text_input_two_here"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_weight="0.25"
+                                android:text="@string/input_3"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
+
+                            <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="0.1"
+                                android:text="@string/text_colon"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/primary_text_size"
+                                android:textStyle="bold" />
+
+                            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                                android:id="@+id/text_input_3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.7"
+                                android:text="@string/text_input_three_here"
+                                android:textColor="@color/dark_gray"
+                                android:textSize="@dimen/secondary_text_size" />
+                        </LinearLayout>
 
                         <RelativeLayout
                             android:layout_width="match_parent"

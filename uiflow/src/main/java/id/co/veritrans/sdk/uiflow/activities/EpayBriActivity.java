@@ -25,10 +25,12 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionEpayBriFragment;
 import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
+import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 
 public class EpayBriActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
 
@@ -46,6 +48,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     private String currentFragmentName = HOME_FRAGMENT;
     private String errorMessage;
     private TransactionResponse transactionResponseFromMerchant;
+    private DefaultTextView textTitle, textOrderId, textTotalAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,16 +81,28 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         btConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+        textTitle = (DefaultTextView)findViewById(R.id.text_title);
+        textOrderId = (DefaultTextView)findViewById(R.id.text_order_id);
+        textTotalAmount = (DefaultTextView)findViewById(R.id.text_amount);
+
         initializeTheme();
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         btConfirmPayment.setVisibility(View.VISIBLE);
         btConfirmPayment.setOnClickListener(this);
+        bindData();
+    }
+
+    private void bindData() {
+        textTitle.setText(getString(R.string.epay_bri));
         if (veritransSDK != null) {
             if (veritransSDK.getSemiBoldText() != null) {
                 btConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), veritransSDK.getSemiBoldText()));
             }
+            textOrderId.setText(veritransSDK.getTransactionRequest().getOrderId());
+            textTotalAmount.setText(getString(R.string.prefix_money,
+                    Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
         }
     }
 
@@ -95,7 +110,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
         // setup  fragment
         instructionEpayBriFragment = new InstructionEpayBriFragment();
-        replaceFragment(instructionEpayBriFragment, R.id.bri_container_layout, false, false);
+        replaceFragment(instructionEpayBriFragment, R.id.instruction_container, false, false);
     }
 
     @Override
