@@ -20,7 +20,7 @@
                 android:id="@+id/main_collapsing"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:background="@color/white"
+                android:background="?colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <LinearLayout
@@ -42,9 +42,9 @@
                         <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.25"
+                            android:layout_weight="0.35"
                             android:text="@string/orderId"
-                            android:textColor="@color/dark_gray"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/secondary_text_size" />
 
                         <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
@@ -52,7 +52,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.1"
                             android:text="@string/text_colon"
-                            android:textColor="@color/dark_gray"
+                            android:gravity="center"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/secondary_text_size"
                             android:textStyle="bold" />
 
@@ -61,12 +62,14 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"
+                            android:gravity="right"
                             android:text="@string/text_order_id_here"
-                            android:textColor="@color/dark_gray"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/secondary_text_size" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -75,9 +78,9 @@
                         <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.25"
-                            android:text="@string/transfer_amount"
-                            android:textColor="@color/dark_gray"
+                            android:layout_weight="0.35"
+                            android:text="@string/payable_amount"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/secondary_text_size" />
 
                         <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
@@ -85,7 +88,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.1"
                             android:text="@string/text_colon"
-                            android:textColor="@color/dark_gray"
+                            android:gravity="center"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/secondary_text_size"
                             android:textStyle="bold" />
 
@@ -94,8 +98,9 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"
+                            android:gravity="right"
                             android:text="@string/text_amount_here"
-                            android:textColor="@color/dark_gray"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/secondary_text_size" />
                     </LinearLayout>
 

@@ -112,7 +112,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         instructionIndomaretFragment = new InstructionIndomaretFragment();
 
-        fragmentTransaction.add(R.id.indomaret_container, instructionIndomaretFragment, HOME_FRAGMENT);
+        fragmentTransaction.add(R.id.instruction_container, instructionIndomaretFragment, HOME_FRAGMENT);
         fragmentTransaction.commit();
 
         currentFragment = HOME_FRAGMENT;
@@ -150,6 +150,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void bindDataToView() {
+        textViewTitle.setText(getString(R.string.indomaret));
         if (veritransSDK != null) {
             textViewAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
@@ -208,7 +209,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                 IndomaretPaymentStatusFragment.newInstance(transactionResponse, false);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.indomaret_container,
+        fragmentTransaction.replace(R.id.instruction_container,
                 indomaretPaymentStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();
@@ -222,7 +223,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             IndomaretPaymentFragment indomaretPaymentFragment =
                     IndomaretPaymentFragment.newInstance(transactionResponse);
-            fragmentTransaction.replace(R.id.indomaret_container,
+            fragmentTransaction.replace(R.id.instruction_container,
                     indomaretPaymentFragment, PAYMENT_FRAGMENT);
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();

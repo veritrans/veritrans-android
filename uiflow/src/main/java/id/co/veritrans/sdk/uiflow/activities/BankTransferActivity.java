@@ -143,7 +143,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
             bankTransferFragment.setArguments(bundle);
         }
-        fragmentTransaction.add(R.id.bank_transfer_container,
+        fragmentTransaction.add(R.id.instruction_container,
                 bankTransferFragment, HOME_FRAGMENT);
         fragmentTransaction.commit();
 
@@ -286,7 +286,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                 BankTransactionStatusFragment.newInstance(transactionResponse, position);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.bank_transfer_container,
+        fragmentTransaction.replace(R.id.instruction_container,
                 bankTransactionStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();
@@ -310,16 +310,16 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
                 MandiriBillPayFragment bankTransferPaymentFragment = MandiriBillPayFragment.newInstance(transactionResponse);
-                fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+                fragmentTransaction.replace(R.id.instruction_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             } else if (position == Constants.BANK_TRANSFER_PERMATA){
                 BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_PERMATA);
-                fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+                fragmentTransaction.replace(R.id.instruction_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             } else if(position == Constants.BANK_TRANSFER_BCA) {
                 BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_BCA);
-                fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+                fragmentTransaction.replace(R.id.instruction_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
                 BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_ALL_BANK);
-                fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+                fragmentTransaction.replace(R.id.instruction_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             }
 
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);

@@ -143,7 +143,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                 mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
             }
             mButtonConfirmPayment.setOnClickListener(this);
-            textOrderId.setText(getString(R.string.telkomsel_cash));
+            textOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
         } else {

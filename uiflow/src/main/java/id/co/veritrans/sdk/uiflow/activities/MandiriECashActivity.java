@@ -30,11 +30,13 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.DescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionMandiriECashFragment;
 import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
+import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 
 /**
  * Created by Ankit on 11/30/15.
@@ -48,6 +50,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private Button buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
     private ImageView logo = null;
+    private DefaultTextView textTitle, textOrderId, textTotalAmount;
     private VeritransSDK mVeritransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
@@ -88,12 +91,20 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+        textTitle = (DefaultTextView) findViewById(R.id.text_title);
+        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
+        textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+
         initializeTheme();
         if (mVeritransSDK != null) {
             if (mVeritransSDK.getSemiBoldText() != null) {
                 buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
             }
+            textOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
+            textTotalAmount.setText(getString(R.string.prefix_money,
+                    Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
         }
+        textTitle.setText(getString(R.string.mandiri_e_cash));
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,7 +114,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private void setUpFragment() {
         // setup  fragment
         mandiriECashFragment = new InstructionMandiriECashFragment();
-        replaceFragment(mandiriECashFragment, R.id.mandiri_e_cash_container, false, false);
+        replaceFragment(mandiriECashFragment, R.id.instruction_container, false, false);
     }
 
     @Override
@@ -149,7 +160,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
                     mVeritransSDK.getTransactionRequest().getOrderId(), String.valueOf(mVeritransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_mandiri_ecash), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
             PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.mandiri_e_cash_container, false, false);
+            replaceFragment(paymentTransactionStatusFragment, R.id.instruction_container, false, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         } else if (resultCode == RESULT_CANCELED) {
             currentFragmentName = STATUS_FRAGMENT;
@@ -157,7 +168,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             setSupportActionBar(mToolbar);
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.mandiri_e_cash_container, false, false);
+            replaceFragment(paymentTransactionStatusFragment, R.id.instruction_container, false, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         }
     }
