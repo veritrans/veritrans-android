@@ -105,7 +105,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         instructionXLTunaiFragment = new InstructionXLTunaiFragment();
 
-        fragmentTransaction.add(R.id.xl_tunai_container, instructionXLTunaiFragment, HOME_FRAGMENT);
+        fragmentTransaction.add(R.id.instruction_container, instructionXLTunaiFragment, HOME_FRAGMENT);
         fragmentTransaction.commit();
 
         currentFragment = HOME_FRAGMENT;
@@ -143,6 +143,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void bindDataToView() {
+        textViewTitle.setText(getString(R.string.xl_tunai));
         if (veritransSDK != null) {
             textViewAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
@@ -200,7 +201,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
                 XLTunaiPaymentStatusFragment.newInstance(transactionResponse, false);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.xl_tunai_container,
+        fragmentTransaction.replace(R.id.instruction_container,
                 indomaretPaymentStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();
@@ -214,7 +215,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             XLTunaiPaymentFragment xlTunaiPaymentFragment =
                     XLTunaiPaymentFragment.newInstance(transactionResponse);
-            fragmentTransaction.replace(R.id.xl_tunai_container,
+            fragmentTransaction.replace(R.id.instruction_container,
                     xlTunaiPaymentFragment, PAYMENT_FRAGMENT);
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();

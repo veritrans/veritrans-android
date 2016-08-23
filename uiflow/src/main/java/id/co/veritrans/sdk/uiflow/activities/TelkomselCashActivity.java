@@ -27,11 +27,13 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.BankTransactionStatusFragment;
 import id.co.veritrans.sdk.uiflow.fragments.BankTransferFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionTelkomselCashFragment;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
+import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 
 /**
  * @author rakawm
@@ -44,11 +46,11 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
     public String currentFragment = "home";
 
     private Button mButtonConfirmPayment = null;
-    private TextView mTextViewTitle = null;
 
     private VeritransSDK mVeritransSDK = null;
     private Toolbar mToolbar = null;
     private ImageView logo = null;
+    private DefaultTextView textTitle, textOrderId, textTotalAmount;
 
     private InstructionTelkomselCashFragment telkomselCashFragment = null;
     private TransactionResponse mTransactionResponse = null;
@@ -90,7 +92,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         telkomselCashFragment = new InstructionTelkomselCashFragment();
 
-        fragmentTransaction.add(R.id.telkomsel_container, telkomselCashFragment, HOME_FRAGMENT);
+        fragmentTransaction.add(R.id.instruction_container, telkomselCashFragment, HOME_FRAGMENT);
         fragmentTransaction.commit();
 
         currentFragment = HOME_FRAGMENT;
@@ -118,9 +120,12 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
     private void initializeView() {
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mTextViewTitle = (TextView) findViewById(R.id.text_title);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+        textTitle = (DefaultTextView) findViewById(R.id.text_title);
+        textOrderId = (DefaultTextView)findViewById(R.id.text_order_id);
+        textTotalAmount = (DefaultTextView)findViewById(R.id.text_amount);
+
         initializeTheme();
         //setup tool bar
         mToolbar.setTitle(""); // disable default Text
@@ -132,14 +137,15 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
      * set data to views.
      */
     private void bindDataToView() {
-
+        textTitle.setText(R.string.telkomsel_cash);
         if (mVeritransSDK != null) {
             if (mVeritransSDK.getSemiBoldText() != null) {
                 mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
             }
             mButtonConfirmPayment.setOnClickListener(this);
-            mTextViewTitle.setText(getResources().getString(R.string.telkomsel_cash));
-
+            textOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
+            textTotalAmount.setText(getString(R.string.prefix_money,
+                    Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
         } else {
             SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_something_wrong));
             finish();
@@ -219,7 +225,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                         Constants.PAYMENT_METHOD_TELKOMSEL_CASH);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.telkomsel_container,
+        fragmentTransaction.replace(R.id.instruction_container,
                 bankTransactionStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();

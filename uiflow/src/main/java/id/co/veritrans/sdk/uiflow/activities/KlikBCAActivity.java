@@ -106,7 +106,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
 
         // Initialize fragment
         klikBCAFragment = new KlikBCAFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.bank_transfer_container, klikBCAFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.instruction_container, klikBCAFragment).commit();
 
         mButtonConfirmPayment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +165,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
                 BankTransactionStatusFragment.newInstance(transactionResponse, Constants.PAYMENT_METHOD_KLIKBCA);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.bank_transfer_container,
+        fragmentTransaction.replace(R.id.instruction_container,
                 bankTransactionStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();

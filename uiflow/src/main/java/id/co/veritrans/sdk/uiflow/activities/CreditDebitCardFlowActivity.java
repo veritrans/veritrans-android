@@ -72,6 +72,7 @@ import id.co.veritrans.sdk.uiflow.scancard.ScannerModel;
 import id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
+import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
 
 import static id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask.ReadBankDetailCallback;
@@ -102,6 +103,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private CirclePageIndicator circlePageIndicator;
     private TextView emptyCardsTextView;
     private TextView titleHeaderTextView;
+    private DefaultTextView textOrderId, textTotalAmount;
     private ImageView logo;
     private int fabHeight;
     private MorphingButton btnMorph;
@@ -127,10 +129,13 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        titleHeaderTextView = (TextView) findViewById(R.id.title_header);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        titleHeaderTextView = (TextView) findViewById(R.id.text_title);
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
+        textTotalAmount = (DefaultTextView)findViewById(R.id.text_amount);
+
         initializeTheme();
         morphToCircle(0);
         setSupportActionBar(toolbar);
@@ -144,6 +149,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
                 titleHeaderTextView.setText(getString(R.string.card_details));
             }
+            textOrderId.setText(veritransSDK.getTransactionRequest().getOrderId());
+            textTotalAmount.setText(getString(R.string.prefix_money,
+                    Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
         }
         readBankDetails();
     }
