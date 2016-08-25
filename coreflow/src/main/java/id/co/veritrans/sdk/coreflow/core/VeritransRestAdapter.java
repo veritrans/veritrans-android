@@ -28,11 +28,11 @@ public class VeritransRestAdapter {
      * @param baseUrl base URL of PAPI
      * @return Payment API implementation
      */
-    public static VeritransRestAPI getVeritransApiClient(String baseUrl) {
+    public static VeritransRestAPI getVeritransApiClient(String baseUrl, int timeout) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(timeout, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(timeout, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(timeout, TimeUnit.SECONDS);
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
@@ -52,12 +52,12 @@ public class VeritransRestAdapter {
      * @param merchantBaseURL Merchant base URL
      * @return Merchant API implementation
      */
-    public static MerchantRestAPI getMerchantApiClient(String merchantBaseURL) {
+    public static MerchantRestAPI getMerchantApiClient(String merchantBaseURL, int timeout) {
 
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(timeout, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(timeout, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(timeout, TimeUnit.SECONDS);
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
@@ -78,11 +78,11 @@ public class VeritransRestAdapter {
      *
      * @return mixpanel Api implementation
      */
-    public static MixpanelApi getMixpanelApi() {
+    public static MixpanelApi getMixpanelApi(int timeout) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(timeout, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(timeout, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(timeout, TimeUnit.SECONDS);
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient))
@@ -97,11 +97,11 @@ public class VeritransRestAdapter {
      * @param snapBaseURL base URL of snap API
      * @return snap API implementation
      */
-    public static SnapRestAPI getSnapRestAPI(String snapBaseURL) {
+    public static SnapRestAPI getSnapRestAPI(String snapBaseURL, int timeOut) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(timeOut, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(timeOut, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(timeOut, TimeUnit.SECONDS);
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient))

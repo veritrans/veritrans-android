@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
                 Logger.i("config>clientkey:" + VeritransSDK.getVeritransSDK().getClientKey());
                 Logger.i("config>merchantUrl:" + VeritransSDK.getVeritransSDK().getMerchantServerUrl());
                 Logger.i("config>sdkurl:" + VeritransSDK.getVeritransSDK().getSdkBaseUrl());
+                Logger.i("config>timeout:" + VeritransSDK.getVeritransSDK().getRequestTimeOut());
                 VeritransSDK.getVeritransSDK().setTransactionRequest(initializePurchaseRequest());
                 VeritransSDK.getVeritransSDK().startPaymentUiFlow(MainActivity.this);
             }

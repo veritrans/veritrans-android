@@ -84,4 +84,6 @@
     <string name="btn_sdkconfig_cancel">Cancel</string>
     <string name="error_sdkconfig_empty">Field Cannot Empty</string>
     <string name="activity_sdk_config_title">SETTING SDK ENDPOINT</string>
+    <string name="hint_sdkconfig_timeout">Request Time Out in Second</string>
+    <string name="error_sdkconfig_digitonly">Digit Only</string>
 </resources>
