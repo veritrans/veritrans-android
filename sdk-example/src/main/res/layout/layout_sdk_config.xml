@@ -62,7 +62,6 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:layout_marginBottom="10dp"
         android:layout_below="@id/til_sdkconfig_merchant_url"
         android:id="@+id/til_sdkconfig_clientkey"
         android:layout_width="match_parent"
@@ -78,10 +77,27 @@
             android:textColorHint="@color/colorAccent" />
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/til_sdkconfig_clientkey"
+        android:id="@+id/til_sdkconfig_timeout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/et_sdkconfig_timeout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_sdkconfig_timeout"
+            android:maxLength="100"
+            android:singleLine="true"
+            android:textColorHint="@color/colorAccent" />
+    </android.support.design.widget.TextInputLayout>
     <Button
         style="?borderlessButtonStyle"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/til_sdkconfig_clientkey"
+        android:layout_below="@id/til_sdkconfig_timeout"
         android:id="@+id/btn_sdkconfig_save"
         android:text="@string/btn_sdkconfig_save"
         android:layout_width="100dp"
@@ -89,7 +105,7 @@
     <Button
         style="?borderlessButtonStyle"
         android:layout_toLeftOf="@+id/btn_sdkconfig_save"
-        android:layout_below="@id/til_sdkconfig_clientkey"
+        android:layout_below="@id/til_sdkconfig_timeout"
         android:text="@string/btn_sdkconfig_cancel"
         android:id="@+id/btn_sdkconfig_cancel"
         android:layout_width="wrap_content"

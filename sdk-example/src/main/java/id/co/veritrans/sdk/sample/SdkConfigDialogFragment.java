@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 
 
@@ -25,11 +26,12 @@ import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 public class SdkConfigDialogFragment extends DialogFragment {
     public static final java.lang.String TAG = "SdkConfigDialogFragment";
     private Button btnSave, btnCancel;
-    private EditText editSnapUrl, editMerchantUrl, editClientKey;
-    private TextInputLayout tilSnapUrl, tilMerchantUrl, tilClientKey;
+    private EditText editSnapUrl, editMerchantUrl, editClientKey, editTimeout;
+    private TextInputLayout tilSnapUrl, tilMerchantUrl, tilClientKey, tilTimeout;
     private String merchantUrl;
     private String merchantClientKey;
     private String snapUrl;
+    private String requestTimeout;
 
 
     public static SdkConfigDialogFragment createInstance(){
@@ -69,11 +71,13 @@ public class SdkConfigDialogFragment extends DialogFragment {
         editSnapUrl = (EditText)view.findViewById(R.id.et_sdkconfig_snap_url);
         editMerchantUrl = (EditText)view.findViewById(R.id.et_sdkconfig_merchant_url);
         editClientKey = (EditText)view.findViewById(R.id.et_sdkconfig_clientkey);
+        editTimeout = (EditText)view.findViewById(R.id.et_sdkconfig_timeout);
 
         tilClientKey = (TextInputLayout)view.findViewById(R.id.til_sdkconfig_clientkey);
         tilMerchantUrl = (TextInputLayout)view.findViewById(R.id.til_sdkconfig_merchant_url);
         tilSnapUrl = (TextInputLayout)view.findViewById(R.id.til_sdkconfig_snap_url);
-
+        tilTimeout = (TextInputLayout)view.findViewById(R.id.til_sdkconfig_timeout);
+        Logger.d("edittimeout:first");
         initForm();
 
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +86,7 @@ public class SdkConfigDialogFragment extends DialogFragment {
                 if(!checkFormValidity()){
                     return;
                 }
-                VeritransSDK.getVeritransSDK().changeEndpoint(snapUrl, merchantUrl,merchantClientKey);
+                VeritransSDK.getVeritransSDK().changeSdkConfig(snapUrl, merchantUrl,merchantClientKey, Integer.valueOf(requestTimeout));
                 dismiss();
             }
         });
@@ -98,9 +102,14 @@ public class SdkConfigDialogFragment extends DialogFragment {
 
     private void initForm() {
         VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        Logger.d("edittimeout:" + veritransSDK.getRequestTimeOut());
+        Logger.d("edittimeout>view:" + editTimeout);
+
         editSnapUrl.setText(veritransSDK.getSdkBaseUrl());
         editMerchantUrl.setText(veritransSDK.getMerchantServerUrl());
         editClientKey.setText(veritransSDK.getClientKey());
+
+        editTimeout.setText(String.valueOf(veritransSDK.getRequestTimeOut()));
     }
 
     private boolean checkFormValidity(){
@@ -108,6 +117,7 @@ public class SdkConfigDialogFragment extends DialogFragment {
         snapUrl = editSnapUrl.getText().toString().trim();
         merchantUrl = editMerchantUrl.getText().toString().trim();
         merchantClientKey = editClientKey.getText().toString().trim();
+        requestTimeout = editTimeout.getText().toString().trim();
 
         if(TextUtils.isEmpty(snapUrl)){
             tilSnapUrl.setError(getString(R.string.error_sdkconfig_empty));
@@ -119,6 +129,14 @@ public class SdkConfigDialogFragment extends DialogFragment {
         }
         if(TextUtils.isEmpty(merchantClientKey)){
             tilClientKey.setError(getString(R.string.error_sdkconfig_empty));
+            isvalid = false;
+        }
+        if(TextUtils.isEmpty(requestTimeout)){
+            tilTimeout.setError(getString(R.string.error_sdkconfig_empty));
+            isvalid = false;
+        }
+        if(!TextUtils.isDigitsOnly(requestTimeout)){
+            tilTimeout.setError(getString(R.string.error_sdkconfig_digitonly));
             isvalid = false;
         }
 
