@@ -438,6 +438,8 @@
     <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_klik_bca">KlikBCA</string>
+    <string name="payment_method_kioson">Kioson</string>
+
     <!--Payment List-->
     <string name="payment_epay_bri">bri_epay</string>
     <string name="payment_bank_transfer">bank_transfer</string>
@@ -455,6 +457,7 @@
     <string name="payment_permata">permata</string>
     <string name="payment_bca">bca</string>
     <string name="payment_klik_bca">bca_klikbca</string>
+    <string name="payment_kioson">kioson</string>
     <!--Error Response-->
     <string name="error_empty_response">failed to retrieve response from server.</string>
     <string name="error_sdk_not_initialized">sdk is not initialized.</string>
@@ -544,6 +547,21 @@
     <string name="instruction_6">6.</string>
     <string name="instruction_7">7.</string>
 
+    <!-- Kioson Instruction-->
+    <string name="kioson_instruction_step1">1.\tAfter confirming your payment, we will issue you a unique Payment Code number.</string>
+    <string name="kioson_instruction_step2">2.\tNote down your Payment Code and total amount.
+        Don\'t worry, we will also mail you a copy of the payment instructions to your email.</string>
+    <string name="kioson_instruction_step3">3.\tGo to a Kioson outlet near you and provide the cashier with the Payment Code.</string>
+    <string name="kioson_instruction_step4">4.\tThe cashier will open kioson Cash Point, on the menu chasier will select "Keagenan".</string>
+    <string name="kioson_instruction_step5">5.\tChoose merchant name.</string>
+    <string name="kioson_instruction_step6">6.\tChoose sub menu "Pembayaran".</string>
+    <string name="kioson_instruction_step7">7.\tEnter your Payment Code and get the payment details.</string>
+    <string name="kioson_instruction_step8">8.\tSubmit payment and print the receipt.</string>
+    <string name="kioson_instruction_step9">9.\tYour transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
+
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
+    <string name="kioson">Kioson</string>
+    <string name="kioson_valid">Please complete your payment at Kioson Outlet Before : </string>
+    <string name="kioson_payment_instrution">Kioson Payment Instruction</string>
 
 </resources>

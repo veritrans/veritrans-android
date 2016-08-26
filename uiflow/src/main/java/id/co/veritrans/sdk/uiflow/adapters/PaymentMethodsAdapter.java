@@ -23,6 +23,7 @@ import id.co.veritrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.uiflow.activities.EpayBriActivity;
 import id.co.veritrans.sdk.uiflow.activities.IndomaretActivity;
 import id.co.veritrans.sdk.uiflow.activities.IndosatDompetkuActivity;
+import id.co.veritrans.sdk.uiflow.activities.KiosonActivity;
 import id.co.veritrans.sdk.uiflow.activities.KlikBCAActivity;
 import id.co.veritrans.sdk.uiflow.activities.MandiriClickPayActivity;
 import id.co.veritrans.sdk.uiflow.activities.MandiriECashActivity;
@@ -149,7 +150,11 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
             } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_xl_tunai))) {
                 Intent xlTunaiActivity = new Intent(sActivity, XLTunaiActivity.class);
                 sActivity.startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else {
+            }else if(name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_kioson))){
+                Intent kiosanActvity = new Intent(sActivity, KiosonActivity.class);
+                sActivity.startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            }
+            else {
                 showMessage();
             }
         }

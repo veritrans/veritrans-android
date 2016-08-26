@@ -6,19 +6,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
-import java.util.zip.ZipInputStream;
 
 /**
  * Created by ziahaqi on 7/14/16.
@@ -93,8 +89,8 @@ public class TransactionResponseTest {
 
     @Test
     public void paymentCodeIndomaretTest(){
-        transactionResponse.setPaymentCodeIndomaret(paymentCodeIndomaretMock);
-        Assert.assertEquals(paymentCodeIndomaretMock, transactionResponse.getPaymentCodeIndomaret());
+        transactionResponse.setPaymentCodeResponse(paymentCodeIndomaretMock);
+        Assert.assertEquals(paymentCodeIndomaretMock, transactionResponse.getPaymentCodeResponse());
     }
 
     @Test

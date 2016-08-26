@@ -101,10 +101,13 @@ public class TransactionResponse implements Serializable {
      * payment code for Indomaret
      */
     @SerializedName("payment_code")
-    private String paymentCodeIndomaret;
+    private String paymentCodeResponse;
 
     @SerializedName("finish_redirect_url")
     private String finishRedirectUrl;
+
+    @SerializedName("kioson_expire_time")
+    private String kiosonExpireTime;
 
     public TransactionResponse(String statusCode, String statusMessage, String transactionId,
                                String orderId, String grossAmount, String paymentType,
@@ -288,12 +291,12 @@ public class TransactionResponse implements Serializable {
         this.redirectUrl = redirectUrl;
     }
 
-    public String getPaymentCodeIndomaret() {
-        return paymentCodeIndomaret;
+    public String getPaymentCodeResponse() {
+        return paymentCodeResponse;
     }
 
-    public void setPaymentCodeIndomaret(String paymentCodeIndomaret) {
-        this.paymentCodeIndomaret = paymentCodeIndomaret;
+    public void setPaymentCodeResponse(String paymentCodeResponse) {
+        this.paymentCodeResponse = paymentCodeResponse;
     }
 
     public List<BCAVANumber> getAccountNumbers() {
@@ -342,5 +345,13 @@ public class TransactionResponse implements Serializable {
 
     public void setPdfUrl(String pdfUrl) {
         this.pdfUrl = pdfUrl;
+    }
+
+    public String getKiosonExpireTime() {
+        return kiosonExpireTime;
+    }
+
+    public void setKiosonExpireTime(String kiosonExpireTime) {
+        this.kiosonExpireTime = kiosonExpireTime;
     }
 }
