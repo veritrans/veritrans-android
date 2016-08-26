@@ -150,11 +150,10 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
             } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_xl_tunai))) {
                 Intent xlTunaiActivity = new Intent(sActivity, XLTunaiActivity.class);
                 sActivity.startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            }else if(name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_kioson))){
+            }else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_kioson))){
                 Intent kiosanActvity = new Intent(sActivity, KiosonActivity.class);
                 sActivity.startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            }
-            else {
+            }else {
                 showMessage();
             }
         }

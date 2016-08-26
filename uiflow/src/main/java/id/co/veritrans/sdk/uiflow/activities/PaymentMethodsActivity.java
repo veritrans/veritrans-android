@@ -224,7 +224,6 @@ public class PaymentMethodsActivity extends BaseActivity implements GetSnapTrans
     private void initialiseAdapterData(List<String> enabledPayments) {
         data.clear();
         for (String paymentType : enabledPayments) {
-            Logger.i("paymenttype:" + paymentType);
             PaymentMethodsModel model = PaymentMethods.getMethods(this, paymentType);
             if (model != null) {
                 data.add(model);
@@ -296,7 +295,6 @@ public class PaymentMethodsActivity extends BaseActivity implements GetSnapTrans
         for (String bank : snapTransactionSuccessEvent.getResponse().getTransactionData().getBankTransfer().getBanks()) {
             bankTrasfers.add(bank);
         }
-        Logger.d("paymenttype>list:" + snapTransactionSuccessEvent.getResponse().getTransactionData().getEnabledPayments());
         List<String> paymentMethods = snapTransactionSuccessEvent.getResponse().getTransactionData().getEnabledPayments();
         initialiseAdapterData(paymentMethods);
         setupRecyclerView();
@@ -309,7 +307,6 @@ public class PaymentMethodsActivity extends BaseActivity implements GetSnapTrans
         if (snapTransactionFailedEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
             showDefaultPaymentMethods();
         }
-
     }
 
     @Subscribe

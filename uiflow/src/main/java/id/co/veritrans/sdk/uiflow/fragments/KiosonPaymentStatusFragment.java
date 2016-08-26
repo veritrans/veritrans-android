@@ -133,7 +133,6 @@ public class KiosonPaymentStatusFragment extends Fragment {
         }
     }
 
-
     /**
      * enables ui related to failure of payment transaction.
      */
@@ -142,7 +141,6 @@ public class KiosonPaymentStatusFragment extends Fragment {
         mTextViewTransactionStatus.setText(getString(R.string.payment_unsuccessful));
         mTextViewPaymentErrorMessage.setVisibility(View.VISIBLE);
     }
-
 
     /**
      * enables ui related to success of payment transaction.
