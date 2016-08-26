@@ -470,4 +470,17 @@
     <string name="btn_close">Close</string>
     <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
     <string name="error_card_unavailable">Card is not available</string>
+
+    <!-- Kioson Instruction-->
+    <string name="kioson_instruction_step1">1.\tAfter confirming your payment, we will issue you a unique Payment Code number.</string>
+    <string name="kioson_instruction_step2">2.\tNote down your Payment Code and total amount.
+        Don\'t worry, we will also mail you a copy of the payment instructions to your email.</string>
+    <string name="kioson_instruction_step3">3.\tGo to a Kioson outlet near you and provide the cashier with the Payment Code.</string>
+    <string name="kioson_instruction_step4">4.\tThe cashier will open kioson Cash Point, on the menu chasier will select "Keagenan".</string>
+    <string name="kioson_instruction_step5">5.\tChoose merchant name.</string>
+    <string name="kioson_instruction_step6">6.\tChoose sub menu "Pembayaran".</string>
+    <string name="kioson_instruction_step7">7.\tEnter your Payment Code and get the payment details.</string>
+    <string name="kioson_instruction_step8">8.\tSubmit payment and print the receipt.</string>
+    <string name="kioson_instruction_step9">9.\tYour transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
+
 </resources>

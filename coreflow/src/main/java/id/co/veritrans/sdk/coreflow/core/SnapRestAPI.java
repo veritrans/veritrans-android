@@ -191,7 +191,7 @@ public interface SnapRestAPI {
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_indosat_dompetku")
+    @POST("/v1/pay_with_kioson")
     void paymentUsingKiosan(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
     /**

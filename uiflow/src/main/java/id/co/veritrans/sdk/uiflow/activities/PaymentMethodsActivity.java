@@ -307,7 +307,6 @@ public class PaymentMethodsActivity extends BaseActivity implements GetSnapTrans
         if (snapTransactionFailedEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
             showDefaultPaymentMethods();
         }
-
     }
 
     @Subscribe

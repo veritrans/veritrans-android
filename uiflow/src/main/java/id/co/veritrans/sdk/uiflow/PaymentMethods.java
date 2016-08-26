@@ -41,9 +41,15 @@ public class PaymentMethods {
             return getMethodTelkomselCash(context);
         } else if (name.equals(context.getString(R.string.payment_xl_tunai))) {
             return getMethodXLTunai(context);
-        } else {
+        } else if (name.equals(context.getString(R.string.payment_kioson))){
+            return getMethodKiosan(context);
+        } else{
             return null;
         }
+    }
+
+    private static PaymentMethodsModel getMethodKiosan(Context context) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_kioson), R.drawable.ic_kioson, Constants.PAYMENT_METHOD_NOT_SELECTED);
     }
 
     public static PaymentMethodsModel getMethodOffers(Context context) {

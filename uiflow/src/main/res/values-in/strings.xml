@@ -216,7 +216,20 @@
     <string name="bri_instruction_step5">5.Transaksi akan dibatalkan apabila pembayaran tidak dilakukan dalam 2 jam.
     </string>
 
- <!--credit card -->
+    <!-- Kioson Instruction-->
+    <string name="kioson_instruction_step1">1.\tSetelah pembayaran dikonfirmasi, kami akan mengirimkan nomor Payment Code yang unik.</string>
+    <string name="kioson_instruction_step2">2.\tCatat Payment Code and jumlah total.
+       Jangan khawatir, kami juga akan mengirimkan instruksi pembayaran melalui email.</string>
+    <string name="kioson_instruction_step3">3.\tKunjungi outlet kioson terdekat dan berikan nomor Payment Code kepada kasir.</string>
+    <string name="kioson_instruction_step4">4.\tKasir akan membuka menu kioson Cash Point, kemudian kasir akan memilih "Keagenan".</string>
+    <string name="kioson_instruction_step5">5.\tPilih nama merchant.</string>
+    <string name="kioson_instruction_step6">6.\tPilih sub menu "Pembayaran".</string>
+    <string name="kioson_instruction_step7">7.\tMasukkan kode pembayaran anda dan dan detail pembayaran anda akan ditampilkan.</string>
+    <string name="kioson_instruction_step8">8.\tKonfirmasi pembayaran dan cetak bukti pembayarannya.</string>
+    <string name="kioson_instruction_step9">9.\tTransaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Anda apabila anda memerlukan bantuan via support.</string>
+
+
+    <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
     <string name="saved_card">Kartu yang Tersimpan</string>
     <string name="card_details">Detil Kartu</string>
@@ -321,6 +334,7 @@
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
     <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
+    <string name="payment_method_kioson">Kioson</string>
 
     <string name="btn_close">Tutup</string>
     <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
@@ -385,4 +399,7 @@
     <string name="all_bank_transfer">Bank Lainnya</string>
     <string name="error_message_invalid_input_telkomsel">Transaksi Anda tidak dapat diproses. Pastikan informasi pembayaran Anda benar.</string>
     <string name="no_network_msg">Koneksi tidak tersedia! Coba lagi lain waktu.</string>
+    <string name="kioson">Kioson</string>
+    <string name="kioson_valid">Konfirmasi pembayaran anda di outlet Kioson Sebelum : </string>
+    <string name="kioson_payment_instrution">Instruksi Pembayaran Kioson</string>
 </resources>

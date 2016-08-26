@@ -3,6 +3,7 @@ package id.co.veritrans.sdk.uiflow.fragments;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,16 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.KiosonInstructionActivity;
 
 /**
- * Displays status information about bank transfer's api call .
- *
- * Created by shivam on 10/27/15.
+ * Created by ziahaqi on 8/26/16.
  */
-public class IndomaretPaymentFragment extends Fragment {
-
+public class KiosonPaymentFragment extends Fragment {
     public static final String KEY_ARG = "arg";
     public static final String VALID_UNTIL = "Valid Until : ";
     private static final String LABEL_PAYMENT_CODE = "Payment Code";
@@ -34,10 +32,11 @@ public class IndomaretPaymentFragment extends Fragment {
     private TextView mTextViewValidity = null;
     private TextView mTextViewPaymentCode = null;
     private Button btnCopyToClipboard = null;
+    private Button btnSeeInstruction;
 
 
-    public static IndomaretPaymentFragment newInstance(TransactionResponse mTransactionResponse) {
-        IndomaretPaymentFragment fragment = new IndomaretPaymentFragment();
+    public static KiosonPaymentFragment newInstance(TransactionResponse mTransactionResponse) {
+        KiosonPaymentFragment fragment = new KiosonPaymentFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_ARG, mTransactionResponse);
         fragment.setArguments(bundle);
@@ -48,7 +47,7 @@ public class IndomaretPaymentFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_indomaret_transfer_payment, container, false);
+        return inflater.inflate(R.layout.fragment_kioson_payment, container, false);
     }
 
 
@@ -72,20 +71,26 @@ public class IndomaretPaymentFragment extends Fragment {
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
         mTextViewPaymentCode = (TextView) view.findViewById(R.id.text_payment_code);
         btnCopyToClipboard = (Button) view.findViewById(R.id.btn_copy_va);
+        btnSeeInstruction = (Button) view.findViewById(R.id.btn_see_instruction);
 
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
                     || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
-                mTextViewValidity.setText(VALID_UNTIL + Utils.getValidityTime(transactionResponse.getTransactionTime()));
+                mTextViewValidity.setText(getString(R.string.kioson_valid) + transactionResponse.getKiosonExpireTime());
             }
             if (transactionResponse.getPaymentCodeResponse() != null)
                 mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeResponse());
-
         }
         btnCopyToClipboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 copyPaymentCode();
+            }
+        });
+        btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), KiosonInstructionActivity.class));
             }
         });
     }
