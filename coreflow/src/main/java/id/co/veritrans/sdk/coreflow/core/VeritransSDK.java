@@ -743,7 +743,7 @@ public class VeritransSDK {
     }
 
     /**
-     * It will run backround task to get card from merchant srever
+     * It will run backround task to get card from merchant server
      *
      * @param userId id user
      */
@@ -755,6 +755,26 @@ public class VeritransSDK {
             isRunning = false;
             VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.SNAP_GET_CARD));
         }
+    }
+
+    /**
+     * it will change configuration
+     * @param baseUrl  SDK api base url
+     * @param merchantUrl merchant base url
+     * @param merchantClientKey merchant client key
+     * @param requestTimeout is maximum time used to make http request
+     */
+    public void changeSdkConfig(String baseUrl, String merchantUrl, String merchantClientKey, int requestTimeout) {
+        this.sdkBaseUrl = baseUrl;
+        this.merchantServerUrl = merchantUrl;
+        this.clientKey = merchantClientKey;
+        this.requestTimeOut = requestTimeout;
+        mSnapTransactionManager = new SnapTransactionManager(context, VeritransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeout),
+                VeritransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeout),
+                VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeout));
+        mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi(requestTimeout));
+        mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
+        mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
 
     public IScanner getExternalScanner() {
@@ -787,19 +807,6 @@ public class VeritransSDK {
 
     public String getSdkBaseUrl() {
         return sdkBaseUrl;
-    }
-
-    public void changeSdkConfig(String baseUrl, String merchantUrl, String merchantClientKey, int requestTimeout) {
-        this.sdkBaseUrl = baseUrl;
-        this.merchantServerUrl = merchantUrl;
-        this.clientKey = merchantClientKey;
-        this.requestTimeOut = requestTimeout;
-        mSnapTransactionManager = new SnapTransactionManager(context, VeritransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeout),
-                VeritransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeout),
-                VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeout));
-        mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi(requestTimeout));
-        mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
-        mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
 
     public int getRequestTimeOut() {
