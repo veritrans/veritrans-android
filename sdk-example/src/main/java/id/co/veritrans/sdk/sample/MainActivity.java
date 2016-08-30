@@ -18,7 +18,9 @@ import android.widget.Toast;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
@@ -63,8 +65,9 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         VeritransBusProvider.getInstance().register(this);
         setContentView(R.layout.activity_main);
         initSDK();
-
         initView();
+        Logger.i("timestamp:" + new Timestamp(new Date().getTime()));
+        Logger.i("timestamp2:" + new Date().getTime());
     }
 
     @Override
