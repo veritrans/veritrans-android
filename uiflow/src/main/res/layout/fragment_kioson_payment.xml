@@ -65,7 +65,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/instruction"
             android:textColor="?colorPrimary"
-            android:background="@drawable/style_button_instruction"
+            style="?borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

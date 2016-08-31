@@ -12,6 +12,4 @@ public interface CardRegistrationBusCallback extends BaseBusCallback {
     void onEvent(CardRegistrationSuccessEvent event);
 
     void onEvent(CardRegistrationFailedEvent event);
-
-
 }

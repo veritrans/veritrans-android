@@ -20,7 +20,7 @@ import id.co.veritrans.sdk.uiflow.activities.KiosonActivity;
  * Created by ziahaqi on 8/26/16.
  */
 public class KiosonPaymentStatusFragment extends Fragment {
-    private static final String INDOMARET = "Kioson";
+    private static final String KIOSON = "Kioson";
     private static final String DATA = "data";
     private static final String IS_FROM_KIOSON = "kioson";
     private TransactionResponse transactionResponse = null;
@@ -98,10 +98,10 @@ public class KiosonPaymentStatusFragment extends Fragment {
                 if( !isFromKioson) {
                     if (((KiosonActivity) getActivity()).getPosition()
                             == Constants.PAYMENT_METHOD_KIOSON) {
-                        mTextViewBankName.setText(INDOMARET);
+                        mTextViewBankName.setText(KIOSON);
                     }
                 }else {
-                    mTextViewBankName.setText(getActivity().getResources().getString(R.string.indomaret));
+                    mTextViewBankName.setText(getActivity().getResources().getString(R.string.kioson));
                 }
             }
 
