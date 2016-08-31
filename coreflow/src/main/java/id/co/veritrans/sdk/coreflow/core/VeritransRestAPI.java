@@ -59,6 +59,15 @@ public interface VeritransRestAPI {
                      Callback<TokenDetailsResponse> callback
     );
 
+    @GET("/token/")
+    void getToken(
+            @Query("card_number") String cardNumber,
+            @Query("card_cvv") String cardCVV,
+            @Query("card_exp_month") String cardExpiryMonth,
+            @Query("card_exp_year") String cardExpiryYear,
+            @Query("client_key") String clientKey,
+            Callback<TokenDetailsResponse> callback
+    );
 
     /**
      * For instalment offers get token

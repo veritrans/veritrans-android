@@ -1148,25 +1148,46 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         });
             } else {
                 //normal request
-                veritransPaymentAPI.get3DSToken(cardTokenRequest.getCardNumber(),
-                        cardTokenRequest.getCardCVV(),
-                        cardTokenRequest.getCardExpiryMonth(),
-                        cardTokenRequest.getCardExpiryYear(),
-                        cardTokenRequest.getClientKey(),
-                        cardTokenRequest.getBank(),
-                        cardTokenRequest.isSecure(),
-                        cardTokenRequest.isTwoClick(),
-                        cardTokenRequest.getGrossAmount(), new Callback<TokenDetailsResponse>() {
-                            @Override
-                            public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                consumeTokenSuccesResponse(start, tokenDetailsResponse);
-                            }
+                if (!cardTokenRequest.isSecure()) {
+                    veritransPaymentAPI.getToken(
+                            cardTokenRequest.getCardNumber(),
+                            cardTokenRequest.getCardCVV(),
+                            cardTokenRequest.getCardExpiryMonth(),
+                            cardTokenRequest.getCardExpiryYear(),
+                            cardTokenRequest.getClientKey(),
+                            new Callback<TokenDetailsResponse>() {
+                                @Override
+                                public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
+                                    consumeTokenSuccesResponse(start, tokenDetailsResponse);
+                                }
 
-                            @Override
-                            public void failure(RetrofitError error) {
-                                consumeTokenErrorResponse(start, error);
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    consumeTokenErrorResponse(start, error);
+                                }
                             }
-                        });
+                    );
+                } else {
+                    veritransPaymentAPI.get3DSToken(cardTokenRequest.getCardNumber(),
+                            cardTokenRequest.getCardCVV(),
+                            cardTokenRequest.getCardExpiryMonth(),
+                            cardTokenRequest.getCardExpiryYear(),
+                            cardTokenRequest.getClientKey(),
+                            cardTokenRequest.getBank(),
+                            cardTokenRequest.isSecure(),
+                            cardTokenRequest.isTwoClick(),
+                            cardTokenRequest.getGrossAmount(), new Callback<TokenDetailsResponse>() {
+                                @Override
+                                public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
+                                    consumeTokenSuccesResponse(start, tokenDetailsResponse);
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    consumeTokenErrorResponse(start, error);
+                                }
+                            });
+                }
             }
 
         }
