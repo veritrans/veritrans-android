@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,11 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,6 +65,7 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
     private EditText cardNumber, cardCvvNumber, cardExpiry;
     private TextInputLayout cardNumberContainer, cardCvvNumberContainer, cardExpiryContainer;
 
+    private AlertDialog webViewDialog;
     private TokenCallback tokenCallback;
     private TransactionCallback transactionCallback;
     private String veritransClientKey;
@@ -79,6 +86,14 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
     private void initEventBus() {
         if (!VeritransBusProvider.getInstance().isRegistered(this)) {
             VeritransBusProvider.getInstance().register(this);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (VeritransBusProvider.getInstance().isRegistered(this)) {
+            VeritransBusProvider.getInstance().unregister(this);
         }
     }
 
@@ -445,13 +460,16 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
         if (checkCardValidity()) {
             setTransactionRequest(transactionRequest);
             setTransactionCallback(transactionCallback);
-            getVeritransSDK().getToken(new CardTokenRequest(
+            CardTokenRequest cardTokenRequest = new CardTokenRequest(
                     cardNumber.getText().toString().replace(" ", ""),
                     cardCvvNumber.getText().toString(),
                     cardExpiry.getText().toString().split("/")[0],
                     cardExpiry.getText().toString().split("/")[1],
                     veritransClientKey
-            ));
+            );
+            cardTokenRequest.setGrossAmount(transactionRequest.getAmount());
+            cardTokenRequest.setSecure(transactionRequest.isSecureCard());
+            getVeritransSDK().getToken(cardTokenRequest);
         }
     }
 
@@ -469,7 +487,11 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
             tokenCallback.onSucceed(event.getResponse());
         }
 
-        charge(event.getResponse().getTokenId(), transactionRequest);
+        if (!TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
+            start3DS(event.getResponse().getTokenId(), event.getResponse().getRedirectUrl());
+        } else {
+            charge(event.getResponse().getTokenId(), transactionRequest);
+        }
     }
 
     @Subscribe
@@ -477,6 +499,10 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
     public void onEvent(GetTokenFailedEvent event) {
         if (tokenCallback != null) {
             tokenCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
+        }
+
+        if (transactionCallback != null) {
+            transactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
         }
     }
 
@@ -565,6 +591,63 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
         if (transactionCallback != null) {
             transactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_charge)));
         }
+    }
+
+    private void start3DS(final String tokenId, String redirectUrl) {
+        WebView webView = new WebView(getContext());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if (url.contains("/token/callback/")) {
+                    webViewDialog.dismiss();
+                    charge(tokenId, transactionRequest);
+                }
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode,
+                                        String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                webViewDialog.dismiss();
+            }
+        });
+
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setInitialScale(1);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setSupportZoom(false);
+        webView.getSettings().setBuiltInZoomControls(false);
+        webView.getSettings().setUseWideViewPort(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.loadUrl(redirectUrl);
+        webViewDialog = new AlertDialog.Builder(getContext())
+                .setCancelable(false)
+                .setNegativeButton(R.string.btn_close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setView(webView)
+                .create();
+
+        webViewDialog.setCanceledOnTouchOutside(false);
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.copyFrom(webViewDialog.getWindow().getAttributes());
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+        webViewDialog.show();
+        webViewDialog.getWindow().setAttributes(layoutParams);
     }
 
     /**

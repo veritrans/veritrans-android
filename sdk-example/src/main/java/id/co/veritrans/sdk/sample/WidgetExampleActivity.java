@@ -15,6 +15,7 @@ import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
 import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.models.snap.CreditCard;
 import id.co.veritrans.sdk.widgets.CreditCardForm;
 
 /**
@@ -87,9 +88,9 @@ public class WidgetExampleActivity extends AppCompatActivity {
         BillInfoModel billInfoModel = new BillInfoModel("demo_label", "demo_value");
         transactionRequestNew.setBillInfoModel(billInfoModel);
 
-        // Create transaction request
-        String cardClickType = "";
-        transactionRequestNew.setCardPaymentInfo(cardClickType, true);
+        CreditCard creditCard = new CreditCard();
+        creditCard.setSecure(true);
+        transactionRequestNew.setCreditCard(creditCard);
 
         return transactionRequestNew;
     }
