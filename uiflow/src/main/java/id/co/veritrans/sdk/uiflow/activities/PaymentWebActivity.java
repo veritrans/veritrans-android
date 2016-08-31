@@ -1,11 +1,12 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -13,7 +14,6 @@ import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
-import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
 
 public class PaymentWebActivity extends BaseActivity {
     private Toolbar toolbar;
@@ -43,6 +43,7 @@ public class PaymentWebActivity extends BaseActivity {
         toolbar.setTitle(R.string.processing_payment);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         WebviewFragment webviewFragment;
         if (!type.equals("")) {
             webviewFragment = WebviewFragment.newInstance(webUrl, type);
@@ -55,38 +56,42 @@ public class PaymentWebActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        if (item.getItemId() == R.id.action_close) {
-            VeritransDialog veritransDialog = new VeritransDialog(this, getString(R.string.cancel_transaction),
-                    getString(R.string.cancel_transaction_message), getString(android.R.string.yes), getString(android.R.string.no));
-            veritransDialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent returnIntent = new Intent();
-                    setResult(RESULT_CANCELED, returnIntent);
-                    finish();
-                }
-            });
-            veritransDialog.show();
+        if (item.getItemId() == android.R.id.home) {
+            showCancelConfirmationDialog();
+            return true;
+        } else if (item.getItemId() == R.id.action_close) {
+            showCancelConfirmationDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
-
     }
 
     @Override
     public void onBackPressed() {
-        VeritransDialog veritransDialog = new VeritransDialog(this,getString(R.string.cancel_transaction),
-                getString(R.string.cancel_transaction_message),getString(android.R.string.yes),getString(android.R.string.no));
-        veritransDialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                setResult(RESULT_CANCELED, returnIntent);
-                finish();
-            }
-        });
-        veritransDialog.show();
+        showCancelConfirmationDialog();
+    }
 
+    private void showCancelConfirmationDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+                .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_CANCELED, returnIntent);
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setTitle(R.string.cancel_transaction)
+                .setMessage(R.string.cancel_transaction_message)
+                .create();
+        dialog.show();
     }
 
 }

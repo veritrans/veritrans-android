@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
+import id.co.veritrans.sdk.coreflow.core.SdkUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
@@ -138,9 +139,11 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         } else if(position == Constants.BANK_TRANSFER_BCA) {
             bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
             bankTransferFragment.setArguments(bundle);
-
+        } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
+            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
+            bankTransferFragment.setArguments(bundle);
         }
-        fragmentTransaction.add(R.id.bank_transfer_container,
+        fragmentTransaction.add(R.id.instruction_container,
                 bankTransferFragment, HOME_FRAGMENT);
         fragmentTransaction.commit();
 
@@ -203,11 +206,13 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             mButtonConfirmPayment.setOnClickListener(this);
 
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
-                mTextViewTitle.setText(getResources().getString(R.string.mandiri_bill_payment));
+                mTextViewTitle.setText(getString(R.string.mandiri_bill_payment));
             } else if(position == Constants.BANK_TRANSFER_BCA){
-                mTextViewTitle.setText(getResources().getString(R.string.activity_bank_transfer_bca));
+                mTextViewTitle.setText(getString(R.string.activity_bank_transfer_bca));
             } else if( position == Constants.BANK_TRANSFER_PERMATA) {
-                mTextViewTitle.setText(getResources().getString(R.string.activity_bank_transfer_permata));
+                mTextViewTitle.setText(getString(R.string.activity_bank_transfer_permata));
+            } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
+                mTextViewTitle.setText(getString(R.string.activity_bank_transfer_all_bank));
             }
 
 
@@ -276,11 +281,12 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
 
-        BankTransactionStatusFragment bankTransactionStatusFragment =
+        BankTransactionStatusFragment bankTransactionStatusFragment = !TextUtils.isEmpty(transactionResponse.getPdfUrl()) ?
+                BankTransactionStatusFragment.newInstance(transactionResponse, position, transactionResponse.getPdfUrl()) :
                 BankTransactionStatusFragment.newInstance(transactionResponse, position);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.bank_transfer_container,
+        fragmentTransaction.replace(R.id.instruction_container,
                 bankTransactionStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();
@@ -304,14 +310,16 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
                 MandiriBillPayFragment bankTransferPaymentFragment = MandiriBillPayFragment.newInstance(transactionResponse);
-                fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+                fragmentTransaction.replace(R.id.instruction_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             } else if (position == Constants.BANK_TRANSFER_PERMATA){
                 BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_PERMATA);
-                fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+                fragmentTransaction.replace(R.id.instruction_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             } else if(position == Constants.BANK_TRANSFER_BCA) {
                 BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_BCA);
-                fragmentTransaction.replace(R.id.bank_transfer_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
-
+                fragmentTransaction.replace(R.id.instruction_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+            } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
+                BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_ALL_BANK);
+                fragmentTransaction.replace(R.id.instruction_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             }
 
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
@@ -363,8 +371,10 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                 bankTransferTransaction(veritransSDK);
             } else if(position == Constants.BANK_TRANSFER_BCA) {
                 bcaBankTransferTransaction(veritransSDK);
-            } else {
+            } else if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
                 mandiriBillPayTransaction(veritransSDK);
+            } else {
+                otherBankTransaction(veritransSDK);
             }
 
 
@@ -381,7 +391,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void bcaBankTransferTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.paymentUsingBcaBankTransfer();
+        veritransSDK.snapPaymentUsingBankTransferBCA(veritransSDK.readAuthenticationToken(), veritransSDK.getTransactionRequest().getCustomerDetails().getEmail());
     }
 
 
@@ -392,7 +402,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void bankTransferTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.paymentUsingPermataBank();
+        veritransSDK.snapPaymentUsingBankTransferPermata(veritransSDK.readAuthenticationToken(), veritransSDK.getTransactionRequest().getCustomerDetails().getEmail());
     }
 
 
@@ -403,7 +413,11 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void mandiriBillPayTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.paymentUsingMandiriBillPay();
+        veritransSDK.snapPaymentUsingMandiriBillPay(veritransSDK.readAuthenticationToken(), SdkUtil.getEmailAddress(veritransSDK.getTransactionRequest()));
+    }
+
+    private void otherBankTransaction(VeritransSDK veritransSDK) {
+        veritransSDK.snapPaymentUsingBankTransferAllBank(veritransSDK.readAuthenticationToken(), SdkUtil.getEmailAddress(veritransSDK.getTransactionRequest()));
     }
 
     /**

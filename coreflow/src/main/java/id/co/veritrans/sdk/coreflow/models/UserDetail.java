@@ -14,6 +14,7 @@ public class UserDetail implements Serializable {
     private String phoneNumber;
     private ArrayList<UserAddress> userAddresses;
     private String merchantToken;//stored after merchant register api call
+    private String userId;
 
     public String getUserFullName() {
         return TextUtils.isEmpty(userFullName) ? "" : userFullName;
@@ -24,7 +25,7 @@ public class UserDetail implements Serializable {
     }
 
     public String getEmail() {
-        return TextUtils.isEmpty(email) ? "" : email;
+        return email;
     }
 
     public void setEmail(String email) {
@@ -53,5 +54,13 @@ public class UserDetail implements Serializable {
 
     public void setMerchantToken(String merchantToken) {
         this.merchantToken = merchantToken;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

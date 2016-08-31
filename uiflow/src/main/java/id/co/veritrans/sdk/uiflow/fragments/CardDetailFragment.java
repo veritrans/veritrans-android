@@ -1,9 +1,11 @@
 package id.co.veritrans.sdk.uiflow.fragments;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -163,20 +165,28 @@ public class CardDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Logger.i("Card to delete:" + cardDetail.getMaskedCard());
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getString(R.string.delete), getString(R.string.card_delete_message), getString(R.string.text_yes), getString(R.string.text_no));
-                View.OnClickListener positiveClickListner = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (parentFragment != null && parentFragment instanceof SavedCardFragment) {
-
-                            ((SavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getSavedTokenId());
-                        } else if (parentFragment != null && parentFragment instanceof OffersSavedCardFragment) {
-                            ((OffersSavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getSavedTokenId());
-                        }
-                    }
-                };
-                veritransDialog.setOnAcceptButtonClickListener(positiveClickListner);
-                veritransDialog.show();
+                AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom)
+                        .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                if (parentFragment != null && parentFragment instanceof SavedCardFragment) {
+                                    ((SavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getSavedTokenId());
+                                } else if (parentFragment != null && parentFragment instanceof OffersSavedCardFragment) {
+                                    ((OffersSavedCardFragment) parentFragment).deleteCreditCard(cardDetail.getSavedTokenId());
+                                }
+                            }
+                        })
+                        .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setTitle(R.string.delete)
+                        .setMessage(R.string.card_delete_message)
+                        .create();
+                dialog.show();
             }
         });
         logo = (ImageView) view.findViewById(R.id.logo_card);
@@ -245,8 +255,6 @@ public class CardDetailFragment extends Fragment {
                 }
             }
         }
-
-        // ((SavedCardFragment)getParentFragment()).paymentUsingCard(cardDetail);
     }
 
     private void flipCard() {
@@ -303,8 +311,5 @@ public class CardDetailFragment extends Fragment {
         animationSet.addAnimation(flipAnimation);
         animationSet.addAnimation(scaleUp);
         rootLayout.startAnimation(animationSet);
-        // rootLayout.startAnimation(scaleDown);
-
-        //rootLayout.startAnimation(flipAnimation);
     }
 }

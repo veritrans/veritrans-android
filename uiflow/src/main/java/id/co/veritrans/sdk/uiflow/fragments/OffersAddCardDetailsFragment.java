@@ -575,7 +575,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
             cardType = getString(R.string.visa);
         } else if ((cardNo.charAt(0) == '5') && ((cardNo.charAt(1) == '1') || (cardNo.charAt(1) == '2')
                 || (cardNo.charAt(1) == '3') || (cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '5'))) {
-            Drawable masterCard = getResources().getDrawable(R.drawable.ic_mastercard_dark);
+            Drawable masterCard = getResources().getDrawable(R.drawable.ic_mastercard);
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, masterCard, null);
             cardType = getString(R.string.mastercard);
 
@@ -584,6 +584,10 @@ public class OffersAddCardDetailsFragment extends Fragment {
             etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, amex, null);
             cardType = "AMEX";
 
+        } else if (cardNo.startsWith("35") || cardNo.startsWith("2131") || cardNo.startsWith("1800")) {
+            Drawable jcb = getResources().getDrawable(R.drawable.ic_jcb);
+            etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, jcb, null);
+            cardType = getString(R.string.jcb);
         } else {
             cardType = "";
 

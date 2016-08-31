@@ -1,6 +1,7 @@
 package id.co.veritrans.sdk.uiflow.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -104,6 +105,7 @@ public class WebviewFragment extends Fragment {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Logger.i("Url:finished:" + url);
             view.loadUrl(url);
             return true;
         }
@@ -111,6 +113,7 @@ public class WebviewFragment extends Fragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            Logger.i("Url:finished:" + url);
             SdkUIFlowUtil.hideProgressDialog();
             if (url.contains(BuildConfig.CALLBACK_STRING)) {
                 Intent returnIntent = new Intent();
@@ -126,28 +129,28 @@ public class WebviewFragment extends Fragment {
             if (type != null && type.equals(TYPE_BCA_KLIKPAY)) {
                 if (url.contains("?id=")) {
                     Intent returnIntent = new Intent();
-                    getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
                     return;
                 }
             } else if (type != null && type.equals(TYPE_MANDIRI_ECASH)) {
                 if (url.contains("notify?id=")) {
                     Intent returnIntent = new Intent();
-                    getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
                     return;
                 }
             } else if (type != null && type.equals(TYPE_EPAY_BRI)) {
                 if (url.contains("briPayment?tid=")) {
                     Intent returnIntent = new Intent();
-                    getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
                     return;
                 }
             } else if (type != null && type.equals(TYPE_CIMB_CLICK)) {
                 if (url.contains("cimb-clicks/response")) {
                     Intent returnIntent = new Intent();
-                    getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
                     return;
                 }
@@ -159,8 +162,6 @@ public class WebviewFragment extends Fragment {
 
 
     public class JsInterface {
-
-
         /**
          * code is written on merchant server (redirect url)
          * doctype html
@@ -186,20 +187,4 @@ public class WebviewFragment extends Fragment {
         }
 
     }
-
-    /*public class WebAppInterface {
-        Context mContext;
-
-        *//** Instantiate the interface and set the context *//*
-        WebAppInterface(Context c) {
-            mContext = c;
-        }
-
-        *//** Show a toast from the web page *//*
-        @JavascriptInterface
-        public void showToast(String toast) {
-            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
 }

@@ -10,14 +10,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager_bank_instruction"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:descendantFocusability="beforeDescendants"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager_bank_instruction"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/btn_download_instruction"
+                android:descendantFocusability="beforeDescendants"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+
+            <Button
+                android:id="@+id/btn_download_instruction"
+                style="?borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/twenty_four_dp"
+                android:clickable="true"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/eight_dp"
+                android:text="@string/download_instruction"
+                android:textColor="?colorPrimary"
+                android:visibility="visible" />
+        </RelativeLayout>
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
@@ -34,8 +58,9 @@
 
                 <ImageView
                     android:id="@+id/merchant_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/logo_width"
+                    android:layout_height="@dimen/logo_height"
+                    android:scaleType="centerInside"
                     tools:src="@drawable/ic_launcher" />
 
                 <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView

@@ -23,7 +23,7 @@ public class TransactionDetails {
 
     }
 
-    public TransactionDetails(String grossAmount, String orderId) {
+    public  TransactionDetails(String grossAmount, String orderId) {
         this.grossAmount = grossAmount;
         this.orderId = orderId;
     }

@@ -23,6 +23,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
+import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
@@ -309,8 +310,8 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                     itemDetailsArrayList, billingAddresses, shippingAddresses, customerDetails);
 
         }
-
-        veritransSDK.paymentUsingCard(cardTransfer);
+        veritransSDK.snapPaymentUsingCard(cardTokenRequest.getSavedTokenId(),
+                veritransSDK.readAuthenticationToken(), false);
 
     }
 
@@ -346,7 +347,9 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        veritransSDK.saveCards(creditCard);
+        ArrayList<SaveCardRequest> cardRequests = new ArrayList<>(getCreditCardList());
+        cardRequests.add(creditCard);
+        veritransSDK.snapSaveCard(userDetail.getUserId(), cardRequests);
     }
 
     @Override
@@ -386,7 +389,8 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
 
     public void fetchCreditCards() {
         textViewTitleOffers.setText(getString(R.string.fetching_cards));
-        veritransSDK.getSavedCard();
+        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        veritransSDK.snapGetCards(userDetail.getUserId());
     }
 
     public void oneClickPayment(CardTokenRequest cardDetail) {

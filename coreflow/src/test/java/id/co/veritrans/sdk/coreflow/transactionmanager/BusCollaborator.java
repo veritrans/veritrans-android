@@ -76,4 +76,29 @@ public class BusCollaborator {
     public void onSSLErrorEvent() {
 
     }
+
+
+    public void onGetSnapTokenSuccess() {
+
+    }
+
+    public void onGetSnapTokenFailed() {
+
+    }
+
+    public void onGetSnapTransactionSuccess() {
+
+    }
+
+    public void onGetSnapTransactionFailed() {
+
+    }
+
+    public void onGetCardsSnapFailed() {
+
+    }
+
+    public void onGetCardsSnapSuccess() {
+
+    }
 }

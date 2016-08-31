@@ -9,8 +9,8 @@ package id.co.veritrans.sdk.coreflow.models;
 public class ItemDetails {
 
     private String id;
-    private double price;
-    private double quantity;
+    private int price;
+    private int quantity;
     private String name;
 
     public ItemDetails() {
@@ -23,7 +23,7 @@ public class ItemDetails {
      * @param quantity number of items that is purchased.
      * @param name name of the item.
      */
-    public ItemDetails(String id, double price, double quantity, String name) {
+    public ItemDetails(String id, int price, int quantity, String name) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
@@ -42,15 +42,15 @@ public class ItemDetails {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public double getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

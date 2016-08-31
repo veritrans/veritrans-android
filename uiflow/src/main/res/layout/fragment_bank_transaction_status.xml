@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/sixtyfour_dp"
     android:background="@android:color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -158,5 +157,20 @@
             </LinearLayout>
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btn_see_instruction"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:clickable="true"
+            android:paddingBottom="@dimen/eight_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/eight_dp"
+            android:text="@string/see_instruction"
+            android:textColor="?colorPrimary"
+            android:visibility="visible" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

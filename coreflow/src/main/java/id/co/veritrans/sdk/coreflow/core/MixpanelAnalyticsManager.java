@@ -38,7 +38,7 @@ public class MixpanelAnalyticsManager {
         this.mixpanelApi = mixpanelApi;
     }
 
-    private  void trackEvent(MixpanelEvent event) {
+    void trackEvent(MixpanelEvent event) {
 
         if (mixpanelApi != null) {
             Gson gson = new Gson();
@@ -53,7 +53,7 @@ public class MixpanelAnalyticsManager {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Logger.i("Response>error: " + error.getMessage());
+                    Logger.e("Response>error: " + error.getMessage());
 
                 }
             });

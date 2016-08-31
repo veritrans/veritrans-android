@@ -25,11 +25,13 @@ import javax.net.ssl.SSLHandshakeException;
 import id.co.veritrans.sdk.coreflow.APIClientMain;
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.analytics.MixpanelApi;
+import id.co.veritrans.sdk.coreflow.core.EventBusImplementSample;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
 import id.co.veritrans.sdk.coreflow.core.MixpanelAnalyticsManager;
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import id.co.veritrans.sdk.coreflow.core.TransactionManager;
+import id.co.veritrans.sdk.coreflow.core.VeritransAndroidSDKTest;
 import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
@@ -72,7 +74,7 @@ public abstract class TransactionMangerMain extends APIClientMain{
     protected BusCollaborator busCollaborator;
 
     @InjectMocks
-    protected EventBustImplementSample eventBustImplementSample;
+    protected EventBusImplementSample eventBustImplementSample;
     @Mock
     protected VeritransBus veritransBus;
 

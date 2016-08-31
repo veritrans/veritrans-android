@@ -53,7 +53,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:orientation="horizontal">
 
             <Button
@@ -61,9 +61,8 @@
                 style="?borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:background="@drawable/transperent_button"
                 android:text="@string/btn_cancel"
-                android:textColor="?colorPrimary"
+                android:textColor="?colorAccent"
                 android:textSize="@dimen/secondary_text_size" />
 
             <Button
@@ -71,9 +70,8 @@
                 style="?borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:background="@drawable/transperent_button"
                 android:text="@string/btn_accept"
-                android:textColor="?colorPrimary"
+                android:textColor="?colorAccent"
                 android:textSize="@dimen/secondary_text_size" />
         </LinearLayout>
 

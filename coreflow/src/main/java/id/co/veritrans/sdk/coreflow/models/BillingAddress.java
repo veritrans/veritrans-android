@@ -30,7 +30,6 @@ public class BillingAddress {
 
     }
 
-
     public BillingAddress(String firstName, String lastName, String address, String city, String
             postalCode, String phone, String countryCode) {
         this.firstName = firstName;

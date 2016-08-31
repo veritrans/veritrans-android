@@ -28,11 +28,8 @@ public class BankTransferFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
-            savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_bank_transfer, container, false);
-        return view;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_bank_transfer, container, false);
     }
 
 

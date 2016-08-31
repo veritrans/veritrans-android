@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
@@ -114,6 +115,7 @@ public class UserDetailFragment extends Fragment {
         userDetail.setUserFullName(fullName);
         userDetail.setEmail(email);
         userDetail.setPhoneNumber(phoneNo);
+        userDetail.setUserId(UUID.randomUUID().toString());
         Logger.i("writting in file");
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();

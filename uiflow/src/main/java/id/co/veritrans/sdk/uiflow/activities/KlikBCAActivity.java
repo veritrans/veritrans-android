@@ -28,7 +28,6 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
-import id.co.veritrans.sdk.coreflow.models.KlikBCADescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -107,7 +106,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
 
         // Initialize fragment
         klikBCAFragment = new KlikBCAFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.bank_transfer_container, klikBCAFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.instruction_container, klikBCAFragment).commit();
 
         mButtonConfirmPayment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,8 +126,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
                     if (klikBCAFragment.checkUserId()) {
                         // Do the payment
                         SdkUIFlowUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
-                        KlikBCADescriptionModel model = new KlikBCADescriptionModel("Any description", klikBCAFragment.getUserId());
-                        mVeritransSDK.paymentUsingKlikBCA(model);
+                        mVeritransSDK.snapPaymentUsingKlikBCA(mVeritransSDK.readAuthenticationToken(), klikBCAFragment.getUserId());
                     }
                 }
             }
@@ -167,7 +165,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
                 BankTransactionStatusFragment.newInstance(transactionResponse, Constants.PAYMENT_METHOD_KLIKBCA);
 
         // setup transaction status fragment
-        fragmentTransaction.replace(R.id.bank_transfer_container,
+        fragmentTransaction.replace(R.id.instruction_container,
                 bankTransactionStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();
@@ -178,7 +176,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     @Subscribe
     @Override
     public void onEvent(TransactionSuccessEvent event) {
-        if (event.getSource().equals(Events.PAYMENT)) {
+        if (event.getSource().equals(Events.SNAP_PAYMENT)) {
             SdkUIFlowUtil.hideProgressDialog();
             this.transactionResponse = event.getResponse();
             this.errorMessage = event.getResponse().getStatusMessage();
@@ -189,7 +187,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     @Subscribe
     @Override
     public void onEvent(TransactionFailedEvent event) {
-        if (event.getSource().equals(Events.PAYMENT)) {
+        if (event.getSource().equals(Events.SNAP_PAYMENT)) {
             SdkUIFlowUtil.hideProgressDialog();
             SdkUIFlowUtil.showSnackbar(this, event.getMessage());
         }
@@ -198,7 +196,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     @Subscribe
     @Override
     public void onEvent(NetworkUnavailableEvent event) {
-        if (event.getSource().equals(Events.PAYMENT)) {
+        if (event.getSource().equals(Events.SNAP_PAYMENT)) {
             SdkUIFlowUtil.hideProgressDialog();
             SdkUIFlowUtil.showSnackbar(this, getString(R.string.error_unable_to_connect));
         }
@@ -207,7 +205,7 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
-        if (event.getSource().equals(Events.PAYMENT)) {
+        if (event.getSource().equals(Events.SNAP_PAYMENT)) {
             SdkUIFlowUtil.hideProgressDialog();
             SdkUIFlowUtil.showSnackbar(this, event.getMessage());
         }

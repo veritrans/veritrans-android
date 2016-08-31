@@ -1,5 +1,6 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,7 +8,9 @@ import android.os.Handler;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IntegerRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -21,20 +24,18 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
+import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.GetCardBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.SaveCardBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TokenBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
+import id.co.veritrans.sdk.coreflow.eventbus.callback.snap.GetCardsBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GetCardFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GetCardsSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
@@ -43,10 +44,11 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetCardsFailedEvent;
+import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetCardsSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.BillingAddress;
 import id.co.veritrans.sdk.coreflow.models.CardPaymentDetails;
-import id.co.veritrans.sdk.coreflow.models.CardResponse;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.CardTransfer;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
@@ -70,13 +72,13 @@ import id.co.veritrans.sdk.uiflow.scancard.ScannerModel;
 import id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
+import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
 
 import static id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask.ReadBankDetailCallback;
 
 
-public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBankDetailCallback,TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
-
+public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBankDetailCallback,TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardsBusCallback {
     public static final int SCAN_REQUEST_CODE = 101;
     private static final int PAYMENT_WEB_INTENT = 100;
     private static final int PAY_USING_CARD = 51;
@@ -101,17 +103,17 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private CirclePageIndicator circlePageIndicator;
     private TextView emptyCardsTextView;
     private TextView titleHeaderTextView;
+    private DefaultTextView textOrderId, textTotalAmount;
     private ImageView logo;
     private int fabHeight;
     private MorphingButton btnMorph;
+    private boolean saveCard = false;
+    private String cardType;
+    private boolean removeExistCard = false;
 
     public MorphingButton getBtnMorph() {
         return btnMorph;
     }
-
-    /*public void setBtnMorph(MorphingButton btnMorph) {
-        this.btnMorph = btnMorph;
-    }*/
 
     public TextView getTitleHeaderTextView() {
         return titleHeaderTextView;
@@ -127,17 +129,19 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
         veritransSDK = VeritransSDK.getVeritransSDK();
         fragmentManager = getSupportFragmentManager();
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        titleHeaderTextView = (TextView) findViewById(R.id.title_header);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        titleHeaderTextView = (TextView) findViewById(R.id.text_title);
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
+        textTotalAmount = (DefaultTextView)findViewById(R.id.text_amount);
+
         initializeTheme();
         morphToCircle(0);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
         if (veritransSDK != null) {
-
             if (!veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
                 getCreditCards();
             } else {
@@ -145,6 +149,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
                 titleHeaderTextView.setText(getString(R.string.card_details));
             }
+            textOrderId.setText(veritransSDK.getTransactionRequest().getOrderId());
+            textTotalAmount.setText(getString(R.string.prefix_money,
+                    Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
         }
         readBankDetails();
     }
@@ -182,7 +189,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     .getName())) {
                 setResultAndFinish();
             } else {
-
                 super.onBackPressed();
             }
         }
@@ -196,7 +202,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void payUsingCard() {
-
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
         //getSupportActionBar().setTitle(getString(R.string.processing_payment));
@@ -270,11 +275,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             }
             cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails,
                     itemDetailsArrayList, billingAddresses, shippingAddresses, customerDetails);
-
         }
 
-        veritransSDK.paymentUsingCard(cardTransfer);
-
+        veritransSDK.snapPaymentUsingCard(veritransSDK.readAuthenticationToken(), tokenDetailsResponse.getTokenId(), saveCard);
     }
 
     public VeritransSDK getVeritransSDK() {
@@ -303,13 +306,16 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
 
-    public void saveCreditCards(SaveCardRequest creditCard) {
-        /*try {
-            storageDataHandler.writeObject(this, Constants.USERS_SAVED_CARD, creditCards);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        veritransSDK.saveCards(creditCard);
+    public void prepareSaveCard(SaveCardRequest creditCard) {
+        ArrayList<SaveCardRequest> requests = new ArrayList<>();
+        requests.addAll(getCreditCardList());
+        requests.add(new SaveCardRequest(creditCard.getSavedTokenId(), creditCard.getMaskedCard(), cardType));
+        saveCreditCards(requests, false);
+    }
+
+    public void saveCreditCards(ArrayList<SaveCardRequest> requests, boolean isRemoveCard){
+        this.removeExistCard = isRemoveCard;
+        veritransSDK.snapSaveCard(userDetail.getUserId(), requests);
     }
 
     @Override
@@ -370,7 +376,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     public void fetchCreditCards() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
         //  processingLayout.setVisibility(View.VISIBLE);
-        veritransSDK.getSavedCard();
+        try {
+            UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+            if(userDetail != null){
+                veritransSDK.snapGetCards(userDetail.getUserId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void oneClickPayment(CardTokenRequest cardDetail) {
@@ -502,14 +515,32 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Subscribe
     @Override
     public void onEvent(SaveCardSuccessEvent event) {
-        Logger.i("card saved");
-
+        if(removeExistCard){
+            SdkUIFlowUtil.hideProgressDialog();
+            removeExistCard = false;
+            Fragment currentFragment = getCurrentFagment(SavedCardFragment.class);
+            if(currentFragment != null){
+                ((SavedCardFragment)currentFragment).onDeleteCardSuccess();
+            }
+        }
     }
 
     @Subscribe
     @Override
     public void onEvent(SaveCardFailedEvent event) {
+        if(removeExistCard){
+            SdkUIFlowUtil.hideProgressDialog();
+            SdkUIFlowUtil.showSnackbar(this, event.getMessage());
+            removeExistCard = false;
+        }
+    }
 
+    private Fragment getCurrentFagment(Class fragmentClass){
+        if(!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equals(fragmentClass.getName())){
+            Fragment currentFragment = fragmentManager.findFragmentByTag(currentFragmentName);
+            return currentFragment;
+        }
+        return null;
     }
 
     @Subscribe
@@ -569,7 +600,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
             titleHeaderTextView.setText(getString(R.string.title_payment_status));
 
             if (cardTokenRequest.isSaved()) {
@@ -602,9 +632,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 String firstPart = cardTokenRequest.getCardNumber().substring(0, 6);
                 String secondPart = cardTokenRequest.getCardNumber().substring(12);
                 saveCardRequest.setMaskedCard(firstPart + "-" + secondPart);
-                saveCardRequest.setCode("200");
-                saveCardRequest.setTransactionId(UUID.randomUUID().toString());
-                saveCreditCards(saveCardRequest);
+                prepareSaveCard(saveCardRequest);
                 creditCards.add(saveCardRequest);
             }
         }
@@ -621,14 +649,13 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 processingLayout.setVisibility(View.GONE);
             }
         }, 200);
-        CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
-        CreditDebitCardFlowActivity.this.errorMessage = event.getMessage();
+        this.transactionResponse = transactionResponse;
+        this.errorMessage = event.getMessage();
         SdkUIFlowUtil.hideProgressDialog();
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
         replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
         titleHeaderTextView.setText(getString(R.string.title_payment_status));
     }
 
@@ -642,20 +669,44 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Subscribe
     @Override
     public void onEvent(GeneralErrorEvent event) {
+        Logger.i("generalError");
         SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
-
-        if (event.getSource().equals(Events.GET_CARD)) {
+        if (event.getSource().equals(Events.SNAP_GET_CARD)) {
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
             replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
             titleHeaderTextView.setText(getString(R.string.card_details));
+        } else if(event.getSource().equals(Events.SNAP_PAYMENT)){
+            showErrorMessage(event.getMessage());
+        } else if(removeExistCard){
+            SdkUIFlowUtil.showSnackbar(this, event.getMessage());
+            removeExistCard = false;
+        } else{
+            SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
         }
+    }
+
+    private void showErrorMessage(String errorMessage) {
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setMessage(errorMessage)
+                .setNegativeButton(R.string.btn_close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        setResultAndFinish();
+                    }
+                })
+                .create();
+        alert.show();
+    }
+    public void setSavedCardInfo(boolean saveCard, String cardType) {
+        this.saveCard = saveCard;
+        this.cardType = cardType;
     }
 
     @Subscribe
     @Override
     public void onEvent(GetCardsSuccessEvent event) {
-        CardResponse cardResponse = event.getResponse();
+        ArrayList<SaveCardRequest> cardResponse = event.getResponse();
         SdkUIFlowUtil.hideProgressDialog();
         //
         Handler handler = new Handler();
@@ -666,10 +717,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             }
         }, 200);
         Logger.i("cards api successful" + cardResponse);
-        if (cardResponse != null && !cardResponse.getData().isEmpty()) {
-
+        if (cardResponse != null && !cardResponse.isEmpty()) {
             creditCards.clear();
-            creditCards.addAll(cardResponse.getData());
+            creditCards.addAll(cardResponse);
             if (cardPagerAdapter != null && circlePageIndicator != null) {
                 cardPagerAdapter.notifyDataSetChanged();
                 circlePageIndicator.notifyDataSetChanged();
@@ -681,7 +731,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 } else {
                     emptyCardsTextView.setVisibility(View.VISIBLE);
                 }
-
             }
             SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
             //getSupportActionBar().setTitle(getString(R.string.saved_card));
@@ -692,17 +741,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
             replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
             titleHeaderTextView.setText(getString(R.string.card_details));
-
         }
     }
 
     @Subscribe
     @Override
-    public void onEvent(GetCardFailedEvent event) {
+    public void onEvent(GetCardsFailedEvent event) {
         SdkUIFlowUtil.hideProgressDialog();
         Logger.i("card fetching failed :" + event.getMessage());
         processingLayout.setVisibility(View.GONE);
     }
-
-
 }

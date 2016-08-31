@@ -23,6 +23,10 @@ public class Constants {
     public static final int PAYMENT_METHOD_MANDIRI_BILL_PAYMENT = 9;
     public static final int PAYMENT_METHOD_INDOMARET = 10;
     public static final int PAYMENT_METHOD_KLIKBCA = 11;
+    public static final int PAYMENT_METHOD_TELKOMSEL_CASH = 12;
+    public static final int PAYMENT_METHOD_XL_TUNAI = 13;
+    public static final int PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK = 14;
+    public static final int PAYMENT_METHOD_KIOSON = 15;
 
     public static final int BANK_TRANSFER_BCA = 1001;
     public static final int BANK_TRANSFER_PERMATA = 1003;
@@ -55,7 +59,7 @@ public class Constants {
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 
-    public static final float CARD_ASPECT_RATIO = 0.555f;
+    public static final float CARD_ASPECT_RATIO = 0.62222f;
 
     /**
      * If trying to create api request before initializing sdk.
@@ -81,4 +85,5 @@ public class Constants {
     public static final long FADE_IN_FORM_TIME = 300;
 
     public static final String AUTH_TOKEN = "authentication.token";
+    public static final String WEBVIEW_REDIRECT_URL = "redirect_url";
 }

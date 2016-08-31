@@ -1,0 +1,326 @@
+# Overview
+
+This flow assumes that the App Developer implements the User interface necessary for receiving user inputs to and library only provides the payments infrastructure.
+
+
+To perform transaction using core, follow the steps given below:
+
+1. Set transaction request information to SDK.
+2. Setup event bus handler to catch the transaction results.
+3. Call the implemented method of the desired payment mode.
+
+## Differences between core flow and the UI flow.
+
+The main difference between the core and UI flow is that
+
+* Get payment response -
+  * In Core Flow - Use TransactionBusCallback(EventBus).
+  * In UI Flow - Use TransactionFinishedCallback (EventBus)
+
+* Payment Selection Method -
+  * In Core Flow - Call paymentUsingXXX().
+  * In UI Flow - Call startPaymentUiFlow() to see all specified payment methods.
+
+# Usage 
+
+## Setup Event Bus
+
+### Using Event Bus
+
+This SDK using Event Bus implementation which don't require activity as a parameter. Instead, you need to register your subscribed class using `Event Bus`.
+
+For default implementation of the `core flow` please add this code blocks into `onCreate` and `onDestroy` method on your Activity/Fragment that needs to implement this SDK. This to ensure only one event bus registered for each shown activity.
+
+```Java
+@Override
+public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if(!VeritransBusProvider.getInstance().isRegistered(this)) {
+        VeritransBusProvider.getInstance().register(this);
+    }
+}
+
+@Override
+public void onDestroy() {
+    super.onDestroy();
+    if(VeritransBusProvider.getInstance().isRegistered(this)) {
+        VeritransBusProvider.getInstance().unregister(this);
+    }
+}
+```
+
+Each API usage has its own `onEvent` interface to capture finished API access. Please implement one of this Event interface on Activity or Fragment that accessing the SDK.
+
+* `TokenBusCallback`
+* `GetCardBusCallback`
+* `SaveCardBusCallback`
+* `DeleteCardBusCallback`
+* `GetOfferBusCallback`
+* `TransactionBusCallback`
+* `CardRegistrationBusCallback`
+* `GetAuthenticationBusCallback`
+
+This interface will implement 2 general error handler, success event and failed event.
+
+For example, `TransactionBusCallback` will have to implement these methods.
+
+```Java
+// Need to attach @Subscribe annotation to enable Event Bus registration
+@Subscribe
+@Override
+public void onEvent(NetworkUnavailableEvent event) {
+    //Network unavailable event implementation
+}
+
+@Subscribe
+@Override
+public void onEvent(GeneralErrorEvent event) {
+    //Generic error event implementation
+}
+
+@Subscribe
+@Override
+public void onEvent(TransactionSuccessEvent event) {
+   //Success event implementation
+}
+
+@Subscribe
+@Override
+public void onEvent(TransactionFailedEvent event) {
+    //Failed event implementation
+}
+```
+
+**Note**: Need to add `@Subscribe` annotation on implemented methods above.
+
+## Common request information
+
+These are common parameters which are required in all types of transaction.
+
+### Set customer details 
+
+**CustomerDetails** class holds information about customer. To set information about customer in TransactionRequest use following code -
+
+```Java
+CustomerDetails customer = new CustomerDetails(String firstName, String lastName, String email, String phone);
+// Set customer details on 
+transactionRequest.setCustomerDetails(customer);
+```
+
+### Set Item details
+
+**ItemDetails** class holds information about item purchased by user. TransactionRequest takes an array list of item details. To set this in TransactionRequest use following code -
+
+```Java
+ItemDetails itemDetails1 = new CustomerDetailsItemDetails(String id, double price, double quantity, String name);
+ItemDetails itemDetails2 = new CustomerDetailsItemDetails(String id, double price, double quantity, String name);
+
+// Create array list and add above item details in it and then set it to transaction request.
+ArrayList<ItemDetails> itemDetailsList = new ArrayList<>();
+itemDetailsList.add(itemDetails1);
+itemDetailsList.add(itemdetails2);
+
+// Set item details into the transaction request.
+transactionRequest.setItemDetails(itemDetailsList);
+```
+
+### Set Billing Address
+
+**BillingAddress** class holds information about billing. TransactionRequest takes an array list of billing details. To set this in TransactionRequest use following code -
+
+```Java
+BillingAddress billingAddress1 = new BillingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
+
+BillingAddress billingAddress2 =new BillingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
+
+// Create array list and add above billing details in it and then set it to transaction request.
+ArrayList<BillingAddress> billingAddressList = new ArrayList<>();
+billingAddressList.add(billingAddress1);
+billingAddressList.add(billingAddress2);
+
+// Set billing address list into transaction request
+transactionRequest.setBillingAddressArrayList(billingAddressList);
+```
+
+### Set Shipping Address
+
+**ShippingAddress** class holds information about shipping address. TransactionRequest takes an array list of shipping details. To set this in TransactionRequest use following code -
+
+```Java
+ShippingAddress shippingAddress1 = new ShippingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
+
+ShippingAddress shippingAddress2 =new ShippingAddress(String firstName, String lastName, String address, String city, String postalCode, String phone, String countryCode);
+
+// Create array list and add above shipping details in it and then set it to transaction request.
+ArrayList<BillingAddress> shippingAddressList = new ArrayList<>();
+shippingAddressList.add(shippingAddress1);
+shippingAddressList.add(shippingAddress1);
+
+// Set shipping address list into transaction request.
+transactionRequest.setShippingAddressArrayList(shippingAddressList);
+```
+
+### Set Bill Info 
+
+**BillInfoModel** class holds information about billing information that will be shown at billing details.
+
+To set this in TransactionRequest use following code -
+
+```Java
+BillInfoModel billInfoModel = new BillInfoModel(BILL_INFO_KEY, BILL_INFO_VALUE);
+// Set the bill info on transaction details
+transactionRequest.setBillInfoModel(billInfoModel);
+```
+
+##  Setting Transaction Details
+
+Set required transaction information to sdk instance.
+
+TransactionRequest contains following information
+
+- Order Id - _unique order id to identify this transaction_.
+- Amount - _amount to charge_.
+- Customer details - _holds an information about customer like name , email and phone_.
+- Item details - _ holds an information about purchased item, like item id, price etc_.
+- Billing Address - _holds an address information like city , country, zip code etc_.
+- Shipping Address - _holds an address information like city , country, zip code etc_.
+- Bill information - _contains custom details in key-value that you want to display on bill print.
+
+All of the above parameters are not nesseccessary to set, It depends on which type of payment method you want to execute. To get more information about required paramter see http://docs.veritrans.co.id/en/api/methods.html#Charge .
+Sdk will throw error message in case you missed some information right before starting an payment flow.
+
+Create instance of **TransactionRequest** class.
+
+```Java
+TransactionRequest transactionRequest = new TransactionRequest(TRANSACTION_ID, TOTAL_AMOUNT);
+// Optional Parameters
+transactionRequest.setCustomerDetails(CUSTOMER_DETAILS);
+transactionRequest.setItemDetails(ITEM_DETAIL_LIST);
+transactionRequest.setBillInfoModel(BILL_INFO);
+transactionRequest.setBillingAddressArrayList(BILLING_ADDRESS_LIST);
+transactionRequest.setShippingAddressArrayList(SHIPPING_ADDRESS_LIST);
+```
+
+Then set the `transactionRequest` into `VeritransSDK` instance.
+
+```Java
+VeritransSDK.getVeritransSDK().setTransactionRequest(transactionRequest);
+```
+
+## Get Checkout Token
+
+After set the transaction details, you must checkout your transaction and get a `checkout_token` by using this function to be able to proceed the payment.
+
+**Note : This is must do process before do the payment charging because the charging needs the checkout token.**
+
+### Setup Event Bus handler for Checkout Token
+
+Setup your event bus on your class. Read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Core-Flow#using-event-bus).
+
+Implement `GetSnapTokenCallback` in your class. There will be 2 implemented methods. 
+
+```Java
+@Subscribe
+@Override
+public void onEvent(GetSnapTokenSuccessEvent event){
+	// Get the checkout token
+	String checkoutToken = event.getResponse().getTokenId();
+}
+
+@Subscribe
+@Override
+public void onEvent(GetSnapTokenFailedEvent event) {
+	// Get error message
+	String errorMessage = event.getMessage();
+}
+```
+
+### Proceed to Checkout a Transaction
+
+Do the checkout using this code.
+
+```Java
+VeritransSDK.getVeritransSDK().getSnapToken();
+```
+
+## Payment Methods
+
+There are several payment methods supported by this SDK.
+
+### Get Enabled Payment Methods
+
+To get all enabled payment methods (also full transaction details) you can use `getSnapTransaction` function from `VeritransSDK` instance with a `checkout_token`.
+
+```Java
+VeritransSDK.getVeritransSDK().getSnapTransaction();
+```
+
+**Warning** : You must set up event bus in your calling class.
+
+Implement `GetSnapTransactionCallback`.
+
+```Java
+@Subscribe
+@Override
+public void onEvent(GetSnapTransactionSuccessEvent event) {
+	// Read the response 
+	Transaction transaction = event.getResponse();
+}
+
+@Subscribe
+@Override
+public void onEvent(GetSnapTransactionFailedEvent event) {
+	// Get the error message
+	String errorMessage = event.getErrorMessage();
+}
+```
+
+
+### Credit Card
+
+To implement credit card payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Credit-Card-Payment-Usage).
+
+There are some optional features for Credit Card Payment.
+
+- [Offers or Promotion](https://github.com/veritrans/veritrans-android/wiki/Offers-for-credit-cards)
+- [Register Card](https://github.com/veritrans/veritrans-android/wiki/Register-Credit-Card-Usage)
+
+### Bank Transfer 
+
+To implement bank transfer payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Bank-Transfer-Payment-Usage).
+
+### KlikBCA
+
+To implement KlikBCA payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/KlikBCA-Payment-Usage).
+
+### BCA Klikpay
+
+To implement BCA Klikpay payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/BCA-Klikpay-Payment-Usage).
+
+### Mandiri Clickpay
+
+To implement Mandiri Click payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Mandiri-Clickpay-Payment-Usage).
+
+### Mandiri E-Cash
+
+To implement Mandiri E-Cash payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Mandiri-E-Cash-Payment-Usage).
+
+### Mandiri Bill
+
+To implement Mandiri Bill payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Mandiri-Bill-Payment-Usage).
+
+### Epay BRI
+
+To implement Epay BRI payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Epay-BRI-Payment-Usage).
+
+### CIMB Clicks
+
+To implement CIMB Clicks payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/CIMB-Clicks-Payment-Usage).
+
+### Indosat Dompetku
+
+To implement Indosat Dompetku payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Indosat-Dompetku-Payment-Usage).
+
+### Indomaret
+
+To implement Indomaret payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Indomaret-Payment-Usage).

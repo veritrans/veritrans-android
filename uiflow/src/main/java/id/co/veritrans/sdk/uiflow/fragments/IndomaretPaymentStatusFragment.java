@@ -11,10 +11,10 @@ import android.widget.TextView;
 
 import java.util.regex.Pattern;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.IndomaretActivity;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.IndomaretActivity;
 
 /**
  * Created by shivam on 10/27/15.
@@ -35,9 +35,7 @@ public class IndomaretPaymentStatusFragment extends Fragment {
     private ImageView mImageViewTransactionStatus = null;
     private boolean isFromIndomaret = false;
 
-    public static IndomaretPaymentStatusFragment newInstance(TransactionResponse
-                                                                    transactionResponse, boolean
-            isFromIndomaret) {
+    public static IndomaretPaymentStatusFragment newInstance(TransactionResponse transactionResponse, boolean isFromIndomaret) {
         IndomaretPaymentStatusFragment fragment = new IndomaretPaymentStatusFragment();
         Bundle data = new Bundle();
         data.putSerializable(DATA, transactionResponse);

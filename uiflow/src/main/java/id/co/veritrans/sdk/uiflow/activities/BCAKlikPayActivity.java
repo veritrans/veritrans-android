@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.squareup.okhttp.internal.Util;
+
 import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
@@ -26,13 +28,14 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
-import id.co.veritrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.BCAKlikPayInstructionFragment;
 import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
+import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 
 /**
  * @author rakawm
@@ -52,6 +55,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     private FragmentManager fragmentManager;
     private String currentFragmentName = "";
     private TransactionResponse transactionResponseFromMerchant;
+    private DefaultTextView textTitle, textOrderId, textTotalAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +88,27 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+        textTitle = (DefaultTextView)findViewById(R.id.text_title);
+        textOrderId = (DefaultTextView)findViewById(R.id.text_order_id);
+        textTotalAmount = (DefaultTextView)findViewById(R.id.text_amount);
+
         initializeTheme();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
+        bindData();
+    }
+
+    private void bindData() {
+        textTitle.setText(getString(R.string.bca_klik));
         if (mVeritransSDK != null) {
             if (mVeritransSDK.getSemiBoldText() != null) {
                 buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
             }
+            textOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
+            textTotalAmount.setText(getString(R.string.prefix_money,
+                    Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
         }
     }
 
@@ -100,7 +116,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
         // setup  fragment
         bcaKlikPayInstructionFragment = new BCAKlikPayInstructionFragment();
-        replaceFragment(bcaKlikPayInstructionFragment, R.id.bca_klik_pay_container, true, false);
+        replaceFragment(bcaKlikPayInstructionFragment, R.id.instruction_container, true, false);
     }
 
 
@@ -129,9 +145,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
     private void makeTransaction(){
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-
-        BCAKlikPayDescriptionModel descriptionModel = new BCAKlikPayDescriptionModel("Any description");
-        mVeritransSDK.paymentUsingBCAKlikPay(descriptionModel);
+        mVeritransSDK.snapPaymentUsingBCAKlikpay(mVeritransSDK.readAuthenticationToken());
     }
 
 
@@ -144,13 +158,12 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                     mVeritransSDK.getTransactionRequest().getOrderId(), String.valueOf(mVeritransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_bca_click), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.bca_klik_pay_container, true, false);
+            replaceFragment(paymentTransactionStatusFragment, R.id.instruction_container, true, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         } else if (resultCode == RESULT_CANCELED) {
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.bca_klik_pay_container, true, false);
-            buttonConfirmPayment.setVisibility(View.GONE);
+            RESULT_CODE = RESULT_OK;
+            transactionResponseFromMerchant = transactionResponse;
+            setResultAndFinish();
         }
     }
 

@@ -28,7 +28,7 @@
     <string name="description_payment_method_icon">Payment method icon</string>
     <string name="text_payment_type_here">Payment Type here</string>
     <string name="text_transaction_time_here">Transaction Time Here</string>
-    <string name="text_sample_card_expiry">XX/12</string>
+    <string name="text_sample_card_expiry">XX/XX</string>
     <string name="text_billpay_code_here">billpay code here</string>
     <string name="text_sample_masked_credit_card" tools:ignore="Typos">XXXX XXXX XXXX 1234</string>
     <string name="text_company_code_here">company code here</string>
@@ -46,6 +46,7 @@
     <string name="text_order_id_here">Order Id here</string>
     <string name="text_colon">:</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="btn_retry">Retry</string>
     <string name="btn_accept">Accept</string>
     <!--Activities-->
     <string name="activity_select_bank">Select Bank</string>
@@ -73,10 +74,10 @@
     <string name="validation_shippingzipcode_empty">Please enter valid shipping zipcode</string>
     <string name="validation_shippingcountry_empty">Please enter shipping country</string>
     <string name="validation_shippingzipcode_invalid">Please enter valid shipping zipcode</string>
-
+    <string name="validation_billingcountry_notexist">Please enter valid country</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="pay_with">Pay With</string>
-    <string name="payable_amount">Payable Amount</string>
+    <string name="payable_amount">Total Amount</string>
     <string name="select_payment_method">Select Payment Method</string>
 
 
@@ -136,12 +137,13 @@
     <!-- Permata VA Bank Transfer-->
     <string name="virtual_account">Virtual Account</string>
     <string name="bank_transfer">Bank Transfer</string>
-    <string name="mandiri_bill_payment">Mandiri Bill Payment</string>
+    <string name="mandiri_bill_payment">Mandiri Bank Transfer</string>
 
     <!--Bank Transfer-->
     <string name="bca_bank_transfer">BCA</string>
     <string name="permata_bank_transfer">Permata</string>
-
+    <string name="mandiri_bank_transfer">Mandiri</string>
+    <string name="all_bank_transfer">Other Banks</string>
 
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
@@ -156,6 +158,7 @@
     <string name="bank_atm_transfer_step3">3.\t Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
     <string name="bank_atm_transfer_step4">4.\t Once payment is complete, you will receive a confirmation email.</string>
     <string name="see_instruction">see instructions</string>
+    <string name="download_instruction">Download Instructions</string>
     <string name="confirm_payment">Confirm Payment</string>
     <string name="copy_payment_code">Copy Payment Code</string>
     <string name="copy_va_number">Copy Virtual Account Number</string>
@@ -180,12 +183,12 @@
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
 
-    <string name="mandiri_instruction_step1">1.\tOn the main menu, Choose \'Pay/Buy\'.</string>
-    <string name="mandiri_instruction_step2">2.\tChoose \'Others\'.</string>
-    <string name="mandiri_instruction_step3">3.\tChoose \'Multi Payment\'.</string>
-    <string name="mandiri_instruction_step4">4.\tEnter 70012 (Veritrans company code) and press \'Correct\'.</string>
-    <string name="mandiri_instruction_step5">5.\tEnter your Payment code and press \'Correct\'.</string>
-    <string name="mandiri_instruction_step6">6.\tYour payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
+    <string name="mandiri_instruction_step1">On the main menu, Choose \'Pay/Buy\'.</string>
+    <string name="mandiri_instruction_step2">Choose \'Others\'.</string>
+    <string name="mandiri_instruction_step3">Choose \'Multi Payment\'.</string>
+    <string name="mandiri_instruction_step4">Enter 70012 (Veritrans company code) and press \'Correct\'.</string>
+    <string name="mandiri_instruction_step5">Enter your Payment code and press \'Correct\'.</string>
+    <string name="mandiri_instruction_step6">Your payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
 
     <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (ib.bankmandiri.co.id).</string>
     <string name="mandiri_internet_instruction_step2">2.\tFrom the main menu choose \'Payment\', then choose \'Multi Payment\'.</string>
@@ -196,12 +199,12 @@
 
     <!-- bca/ prima bank transfer Instruction-->
     <!--BCA Transfer-->
-    <string name="bca_instruction_step1">1.\tOn the main menu, Choose \'Other Transaction\'.</string>
-    <string name="bca_instruction_step2">2.\tChoose \'Transfer\'.</string>
-    <string name="bca_instruction_step3">3.\tChoose \'To BCA Virtual Account\'.</string>
-    <string name="bca_instruction_step4">4.\tEnter your payment code (11 digit code) and press \'Correct\'.</string>
-    <string name="bca_instruction_step5">5.\tEnter full amount to be paid and press \'Correct\'.</string>
-    <string name="bca_instruction_step6">6.\tYour payment details will appear on the confirmation page. If information is correct press \'Yes\'.</string>
+    <string name="bca_instruction_step1">On the main menu, Choose \'Other Transaction\'.</string>
+    <string name="bca_instruction_step2">Choose \'Transfer\'.</string>
+    <string name="bca_instruction_step3">Choose \'To BCA Virtual Account\'.</string>
+    <string name="bca_instruction_step4">Enter your payment code (11 digit code) and press \'Correct\'.</string>
+    <string name="bca_instruction_step5">Enter full amount to be paid and press \'Correct\'.</string>
+    <string name="bca_instruction_step6">Your payment details will appear on the confirmation page. If information is correct press \'Yes\'.</string>
     <!--Klik BCA-->
     <string name="bca_klik_instruction_step1">1.\tChoose menu \'Fund Transfer\'.</string>
     <string name="bca_klik_instruction_step2">2.\tChoose \'Transfer to BCA Virtual Account\'.</string>
@@ -271,13 +274,13 @@
 
 
     <!-- Permata/Alto bank transfer Instruction-->
-    <string name="permata_instruction_step1">1.\tOn the main menu, Choose \'Other Transaction\'.</string>
-    <string name="permata_instruction_step2">2.\tChoose \'Payment\'.</string>
-    <string name="permata_instruction_step3">3.\tChoose \'Other Payment\'.</string>
-    <string name="permata_instruction_step4">4.\tChoose \'Virtual Account\'.</string>
-    <string name="permata_instruction_step5">5.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
-    <string name="permata_instruction_step6">6.\tAmount to be paid, account number, and merchant name will appear on confirmation page. If the confirmation page is right, press \'Correct\'.</string>
-    <string name="permata_instruction_step7">7.\tChoose your payment account and press \'Correct\'.</string>
+    <string name="permata_instruction_step1">On the main menu, Choose \'Other Transaction\'.</string>
+    <string name="permata_instruction_step2">Choose \'Payment\'.</string>
+    <string name="permata_instruction_step3">Choose \'Other Payment\'.</string>
+    <string name="permata_instruction_step4">Choose \'Virtual Account\'.</string>
+    <string name="permata_instruction_step5">Enter 16 digits payment Account No. and press \'Correct\'.</string>
+    <string name="permata_instruction_step6">Amount to be paid, account number, and merchant name will appear on confirmation page. If the confirmation page is right, press \'Correct\'.</string>
+    <string name="permata_instruction_step7">Choose your payment account and press \'Correct\'.</string>
     <string name="bank_transfer_dummy_text">* Subject to preferred bank\'s transfer fee and a minimum transaction of Rp50,000, - for bank mandiri</string>
 
 
@@ -298,6 +301,9 @@
     <string name="title_payment_successful">Payment Successful</string>
     <string name="card_details_error_message">Card details not found.</string>
     <string name="no_saved_cards">No saved cards found.</string>
+    <string name="expiry_month_format">%1$s/</string>
+    <string name="expiry_month_int_format">%1$d/</string>
+    <string name="expiry_month_single_digit_format">0%1$s/</string>
 
     <string name="appli">APPLI</string>
     <string name="input_1">Input 1</string>
@@ -320,6 +326,8 @@
     <string name="epay_bri">ePay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
+    <string name="telkomsel_cash">Telkomsel Cash</string>
+    <string name="xl_tunai">XL Tunai</string>
     <string name="mandiri_e_cash">Mandiri e-Cash</string>
     <string name="klik_bca">Klik BCA</string>
     <string name="bca_klik">BCA KlikPay</string>
@@ -346,15 +354,26 @@
         completed within 2 hours.
     </string>
     <string name="empty_transaction_response">Payment failed! Please try again.</string>
-    <string name="cancel_transaction">Cancel Transaction?</string>
-    <string name="cancel_transaction_message">Are you sure you want to cancel this transaction?
-    </string>
+    <string name="cancel_transaction">Confirm Navigation</string>
+    <string name="cancel_transaction_message">Are you sure want to leave this page?</string>
     <string name="indosat_instruction_step1">1.\tInput your registered indosat phone number.</string>
     <string name="indosat_instruction_step2">2.\tMake sure you have sufficient funds in your account.</string>
     <string name="indosat_instruction_step3">3.\tClick \'Confirm Payment\'.</string>
-    <string name="indosat_instruction_step4">4.\tYou will receive an USSD maessage from \nIndosat to complete transaction via Dompetku app.</string>
+    <string name="indosat_instruction_step4">4.\tYou will receive an USSD message from Indosat to complete transaction via Dompetku app.</string>
     <string name="indosat_instruction_step5">5.\tInput your PIN.</string>
     <string name="indosat_instruction_step6">6.\tPayment Complete.</string>
+
+    <string name="telkomsel_instruction_step1">1.\tSend a text message to Telkomsel, type TOKEN &#60;PIN&#62;, send to 2828.</string>
+    <string name="telkomsel_instruction_step2">2.\tInput the token sent from Telkomsel\'s reply into T-CASH TOKEN field.</string>
+    <string name="telkomsel_instruction_step3">3.\tYour transaction will expire unless you complete your payment in 30 minutes.</string>
+
+    <string name="xl_instruction_step1">1.\tDial *123*120# with a registered XL phone number.</string>
+    <string name="xl_instruction_step2">2.\tReply \'4\' for \'Belanja Online\'.</string>
+    <string name="xl_instruction_step3">3.\tInput XL Tunai Merchant Code.</string>
+    <string name="xl_instruction_step4">4.\tInput XL Tunai Order ID.</string>
+    <string name="xl_instruction_step5">5.\tInput your XL Tunai PIN.</string>
+    <string name="xl_instruction_step6">6.\tYou will receive an SMS confirmation from XL.</string>
+
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
     <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tEnter your Mandiri token password.</string>
@@ -414,9 +433,13 @@
     <string name="payment_method_bca_klikpay">BCA Klikpay</string>
     <string name="payment_method_bbm_money">BBM Money</string>
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
+    <string name="payment_method_telkomsel_cash">Telkomsel Cash</string>
+    <string name="payment_method_xl_tunai">XL Tunai</string>
     <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_klik_bca">KlikBCA</string>
+    <string name="payment_method_kioson">Kioson</string>
+
     <!--Payment List-->
     <string name="payment_epay_bri">bri_epay</string>
     <string name="payment_bank_transfer">bank_transfer</string>
@@ -426,12 +449,15 @@
     <string name="payment_bca_click">bca_klikpay</string>
     <string name="payment_bbm_money">bbm_money</string>
     <string name="payment_indosat_dompetku">indosat_dompetku</string>
+    <string name="payment_telkomsel_cash">telkomsel_cash</string>
+    <string name="payment_xl_tunai">xl_tunai</string>
     <string name="payment_mandiri_ecash">mandiri_ecash</string>
-    <string name="payment_indomaret">cstore</string>
+    <string name="payment_indomaret">indomaret</string>
     <string name="payment_credit_debit">credit_card</string>
     <string name="payment_permata">permata</string>
     <string name="payment_bca">bca</string>
     <string name="payment_klik_bca">bca_klikbca</string>
+    <string name="payment_kioson">kioson</string>
     <!--Error Response-->
     <string name="error_empty_response">failed to retrieve response from server.</string>
     <string name="error_sdk_not_initialized">sdk is not initialized.</string>
@@ -468,4 +494,74 @@
 
     <string name="payment_confirmation_title">Payment Confirmation</string>
     <string name="payment_confirmation_description">Card Number:\n%1$s\n\nGross Amount: %2$s</string>
+    <string name="txt_loading_payment">Retrieving payment methods</string>
+    <string name="txt_error_snap_token">Failed to registering transaction.</string>
+
+    <string name="bank_transfer_bca">bca</string>
+    <string name="bank_transfer_permata">permata</string>
+    <string name="bank_transfer_all_bank">other_bank</string>
+    <string name="bank_transfer_mandiri">mandiri</string>
+    <string name="error_transaction_empty">Transaction Data is Empty</string>
+    <string name="text_hint_telkomsel_token">T-Cash Token</string>
+    <string name="text_hint_xl_order_id">Order ID</string>
+    <string name="text_hint_xl_merchant_code">Merchant Code</string>
+
+    <string name="text_copy_order_id">Copy Order ID</string>
+    <string name="text_copy_merchant_code">Copy Merchant Code</string>
+
+    <string name="copied_order_id">Order ID was copied to clipboard</string>
+    <string name="copied_merchant_code">Merchant code was copied to clipboard</string>
+
+    <string name="text_format_valid_until">Valid Until : %1$s</string>
+    <string name="instruction_atm_bersama1">On the main menu, choose Others.</string>
+    <string name="instruction_atm_bersama2">Choose Transfer.</string>
+    <string name="instruction_atm_bersama3">Choose Online Transfer.</string>
+    <string name="instruction_atm_bersama4">Enter 013 and 16 digit Account No.</string>
+    <string name="instruction_atm_bersama5">Enter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+    <string name="instruction_atm_bersama6">Empty the transfer reference number and press Correct.</string>
+    <string name="instruction_atm_bersama7">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
+
+    <string name="instruction_prima1">On the main menu, choose Other Transaction.</string>
+    <string name="instruction_prima2">Choose Transfer.</string>
+    <string name="instruction_prima3">Choose Other Bank Account.</string>
+    <string name="instruction_prima4">Enter 013 and 16 digit Account no. and choose Correct.</string>
+    <string name="instruction_prima5">Enter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+    <string name="instruction_prima6">Enter 16 digits payment Account No. and press Correct.</string>
+    <string name="instruction_prima7">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
+
+    <string name="instruction_alto1">On the main menu, choose Other Transaction.</string>
+    <string name="instruction_alto2">Choose Payment.</string>
+    <string name="instruction_alto3">Choose Other Payment.</string>
+    <string name="instruction_alto4">Choose Virtual Account.</string>
+    <string name="instruction_alto5">Enter 16 digits payment Account No. and press Correct.</string>
+    <string name="instruction_alto6">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
+    <string name="instruction_alto7">Choose your payment account.</string>
+    <string name="amex">AMEX</string>
+    <string name="jcb">JCB</string>
+
+    <string name="instruction_1">1.</string>
+    <string name="instruction_2">2.</string>
+    <string name="instruction_3">3.</string>
+    <string name="instruction_4">4.</string>
+    <string name="instruction_5">5.</string>
+    <string name="instruction_6">6.</string>
+    <string name="instruction_7">7.</string>
+
+    <!-- Kioson Instruction-->
+    <string name="kioson_instruction_step1">1.\tAfter confirming your payment, we will issue you a unique Payment Code number.</string>
+    <string name="kioson_instruction_step2">2.\tNote down your Payment Code and total amount.
+        Don\'t worry, we will also mail you a copy of the payment instructions to your email.</string>
+    <string name="kioson_instruction_step3">3.\tGo to a Kioson outlet near you and provide the cashier with the Payment Code.</string>
+    <string name="kioson_instruction_step4">4.\tThe cashier will open kioson Cash Point, on the menu chasier will select "Keagenan".</string>
+    <string name="kioson_instruction_step5">5.\tChoose merchant name.</string>
+    <string name="kioson_instruction_step6">6.\tChoose sub menu "Pembayaran".</string>
+    <string name="kioson_instruction_step7">7.\tEnter your Payment Code and get the payment details.</string>
+    <string name="kioson_instruction_step8">8.\tSubmit payment and print the receipt.</string>
+    <string name="kioson_instruction_step9">9.\tYour transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
+
+    <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
+    <string name="kioson">Kioson</string>
+    <string name="kioson_valid">Please complete your payment at Kioson Outlet Before : </string>
+    <string name="kioson_payment_instrution">Kioson Payment Instruction</string>
+
 </resources>

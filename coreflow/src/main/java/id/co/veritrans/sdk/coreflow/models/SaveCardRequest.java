@@ -9,16 +9,24 @@ import java.io.Serializable;
  */
 public class SaveCardRequest implements Serializable {
 
-    @SerializedName("token_id")
-    private int tokenId;
+    private String type;
     @SerializedName("status_code")
     private String code;
-    @SerializedName("saved_token_id")
+    @SerializedName("token_id")
     private String savedTokenId;
     @SerializedName("transaction_id")
     private String transactionId;
-    @SerializedName("masked_card")
+    @SerializedName("cardhash")
     private String maskedCard;
+
+    public SaveCardRequest() {
+    }
+
+    public SaveCardRequest(String savedTokenId, String maskedCard, String type) {
+        this.type = type;
+        this.savedTokenId = savedTokenId;
+        this.maskedCard = maskedCard;
+    }
 
     public String getSavedTokenId() {
         return savedTokenId;
@@ -28,13 +36,6 @@ public class SaveCardRequest implements Serializable {
         this.savedTokenId = savedTokenId;
     }
 
-    public int getTokenId() {
-        return tokenId;
-    }
-
-    public void setTokenId(int tokenId) {
-        this.tokenId = tokenId;
-    }
 
     public String getTransactionId() {
         return transactionId;

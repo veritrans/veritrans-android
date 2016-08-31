@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
@@ -30,8 +31,8 @@ import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
  */
 public class SelectBankTransferActivity extends BaseActivity {
 
+    public static final String EXTRA_BANK = "extra.bank";
     private static final String TAG = SelectBankTransferActivity.class.getSimpleName();
-
     VeritransSDK mVeritransSDK;
 
     private ArrayList<BankTransferModel> data = new ArrayList<>();
@@ -71,7 +72,12 @@ public class SelectBankTransferActivity extends BaseActivity {
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // setUp recyclerView
-        initialiseAdapterData();
+        ArrayList<String> banks = getIntent().getStringArrayListExtra(EXTRA_BANK);
+        if (banks != null && banks.size() > 0) {
+            initialiseAdapterData(banks);
+        } else {
+            initialiseAdapterData();
+        }
         BankTransferListAdapter adapter = new
                 BankTransferListAdapter(this, data);
         mRecyclerView.setHasFixedSize(true);
@@ -92,11 +98,27 @@ public class SelectBankTransferActivity extends BaseActivity {
     /**
      * initialize adapter data model by dummy values.
      */
+    private void initialiseAdapterData(List<String> banks) {
+        data.clear();
+        if (banks.size() > 0) {
+
+            for (String bank : banks) {
+
+                BankTransferModel model = PaymentMethods.getBankTransferModel(this, bank);
+                if (model != null) {
+                    data.add(model);
+                }
+            }
+        }
+    }
+
+    /**
+     * initialize adapter data model by dummy values.
+     */
     private void initialiseAdapterData() {
         data.clear();
         for (BankTransferModel model : PaymentMethods.getBankTransferList(this)) {
-
-            if (model.isSelected()) {
+            if (model != null) {
                 data.add(model);
             }
         }

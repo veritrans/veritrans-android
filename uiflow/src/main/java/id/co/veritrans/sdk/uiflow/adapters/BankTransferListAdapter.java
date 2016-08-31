@@ -13,11 +13,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.BankTransferActivity;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.models.BankTransferModel;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.BankTransferActivity;
 
 /**
  * @author rakawm
@@ -72,18 +72,42 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
             Activity activity = (Activity)sContext;
             if(name.equals(sContext.getString(R.string.bca_bank_transfer))) {
                 Intent startBankPayment = new Intent(activity, BankTransferActivity.class);
-                startBankPayment.putExtra(activity.getString(R.string.position),
-                        Constants.BANK_TRANSFER_BCA);
+                startBankPayment.putExtra(
+                        activity.getString(R.string.position),
+                        Constants.BANK_TRANSFER_BCA
+                );
 
-                activity.startActivityForResult(startBankPayment,
-                        Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                activity.startActivityForResult(
+                        startBankPayment,
+                        Constants.RESULT_CODE_PAYMENT_TRANSFER
+                );
             } else if(name.equals(sContext.getString(R.string.permata_bank_transfer))){
                 Intent startBankPayment = new Intent(activity, BankTransferActivity.class);
-                startBankPayment.putExtra(activity.getString(R.string.position),
+                startBankPayment.putExtra(
+                        activity.getString(R.string.position),
                         Constants.BANK_TRANSFER_PERMATA);
 
-                activity.startActivityForResult(startBankPayment,
-                        Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                activity.startActivityForResult(
+                        startBankPayment,
+                        Constants.RESULT_CODE_PAYMENT_TRANSFER
+                );
+            } else if (name.equals(sContext.getString(R.string.mandiri_bank_transfer))) {
+                Intent startMandiriBankPayment = new Intent(activity, BankTransferActivity.class);
+                startMandiriBankPayment.putExtra(activity.getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
+                activity.startActivityForResult(
+                        startMandiriBankPayment,
+                        Constants.RESULT_CODE_PAYMENT_TRANSFER
+                );
+            } else if (name.equals(sContext.getString(R.string.all_bank_transfer))) {
+                Intent startOtherBankPayment = new Intent(activity, BankTransferActivity.class);
+                startOtherBankPayment.putExtra(
+                        sContext.getString(R.string.position),
+                        Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK
+                );
+                activity.startActivityForResult(
+                        startOtherBankPayment,
+                        Constants.RESULT_CODE_PAYMENT_TRANSFER
+                );
             } else {
                 showMessage();
             }

@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_indosat_phone_number"
                 android:inputType="phone"
-                android:maxLength="12"
+                android:maxLength="15"
                 android:singleLine="true"
                 android:textColorHint="@color/colorAccent"/>
         </android.support.design.widget.TextInputLayout>

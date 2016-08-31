@@ -1,15 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccentLight"
     android:fillViewport="true"
+    android:orientation="vertical"
     tools:context="id.co.veritrans.sdk.uiflow.fragments.UserAddressFragment">
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/addressScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@color/colorAccentLight"
         android:fillViewport="true"
         tools:context="id.co.veritrans.sdk.uiflow.fragments.UserAddressFragment">
@@ -100,13 +102,14 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/zip_til">
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/et_country"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_country"
                             android:maxLength="100"
                             android:singleLine="true"
+                            android:imeOptions="actionDone"
                             android:textColorHint="@color/colorAccent" />
                     </android.support.design.widget.TextInputLayout>
                 </RelativeLayout>
@@ -158,7 +161,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-
                             <EditText
                                 android:id="@+id/et_shipping_address"
                                 android:layout_width="match_parent"
@@ -174,7 +176,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/shipping_address_til">
-
 
                             <EditText
                                 android:id="@+id/et_shipping_city"
@@ -209,13 +210,14 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/shipping_zip_til">
 
-                            <EditText
+                            <AutoCompleteTextView
                                 android:id="@+id/et_shipping_country"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_country"
                                 android:maxLength="100"
                                 android:singleLine="true"
+                                android:imeOptions="actionDone"
                                 android:textColorHint="@color/colorAccent" />
                         </android.support.design.widget.TextInputLayout>
                     </RelativeLayout>
@@ -223,10 +225,11 @@
             </android.support.v7.widget.CardView>
         </RelativeLayout>
 
-
     </android.support.v4.widget.NestedScrollView>
 
     <RelativeLayout
+        android:id="@+id/layout_next"
+        android:layout_below="@+id/addressScrollView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sixtyfour_dp"
         android:layout_alignParentBottom="true"
@@ -244,4 +247,4 @@
             android:textColor="@android:color/white" />
 
     </RelativeLayout>
-</RelativeLayout>
+</LinearLayout>

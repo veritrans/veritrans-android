@@ -1,7 +1,9 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,17 +11,22 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.Button;
 
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.fragments.InstructionATMBersamaFragment;
+import id.co.veritrans.sdk.uiflow.fragments.InstructionAltoFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionBCAFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionBCAKlikFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionBCAMobileFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionMandiriFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionMandiriInternetFragment;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionPermataFragment;
+import id.co.veritrans.sdk.uiflow.fragments.InstructionPrimaFragment;
 
 /**
  * It display information related to mandiri bill pay , bank transfer and BCA/Prima transaction.
@@ -28,16 +35,23 @@ import id.co.veritrans.sdk.uiflow.fragments.InstructionPermataFragment;
  */
 public class BankTransferInstructionActivity extends BaseActivity {
 
+    public static final String DOWNLOAD_URL = "url";
     public static final String BANK = "bank";
     public static final String TYPE_BCA = "bank.bca";
     public static final String TYPE_PERMATA = "bank.permata";
     public static final String TYPE_MANDIRI = "bank.mandiri";
     public static final String TYPE_MANDIRI_BILL = "bank.mandiri.bill";
+    public static final String TYPE_ALL_BANK = "bank.others";
+
     private static final int PAGE_MARGIN = 20;
+    public static final String PAGE = "page";
+    public static final int KLIKBCA_PAGE = 1;
+    private  int POSITION = -1;
+
     private Toolbar mToolbar = null;
     private ViewPager mViewPager = null;
     private TabLayout mTabLayout = null;
-    private ImageView logo = null;
+    private Button downloadInstruction = null;
     private VeritransSDK veritransSDK;
 
     @Override
@@ -82,7 +96,20 @@ public class BankTransferInstructionActivity extends BaseActivity {
 
         mTabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager_bank_instruction);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
+        downloadInstruction = (Button) findViewById(R.id.btn_download_instruction);
+        if (!TextUtils.isEmpty(getIntent().getStringExtra(DOWNLOAD_URL))) {
+            downloadInstruction.setVisibility(View.VISIBLE);
+            downloadInstruction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW);
+                    webIntent.setData(Uri.parse(getIntent().getStringExtra(DOWNLOAD_URL)));
+                    startActivity(webIntent);
+                }
+            });
+        } else {
+            downloadInstruction.setVisibility(View.GONE);
+        }
         initializeTheme();
 
         mToolbar.setTitle(getResources().getString(R.string.payment_instrution));
@@ -130,6 +157,7 @@ public class BankTransferInstructionActivity extends BaseActivity {
         switch (getIntent().getStringExtra(BANK)) {
             case TYPE_BCA:
                 pageNumber = 3;
+                POSITION = getIntent().getIntExtra(PAGE, -1);
                 break;
             case TYPE_PERMATA:
                 pageNumber = 2;
@@ -140,6 +168,9 @@ public class BankTransferInstructionActivity extends BaseActivity {
             case TYPE_MANDIRI_BILL:
                 pageNumber = 2;
                 break;
+            case TYPE_ALL_BANK:
+                pageNumber = 3;
+                break;
             default:
                 pageNumber = 0;
                 break;
@@ -147,6 +178,9 @@ public class BankTransferInstructionActivity extends BaseActivity {
         InstructionFragmentPagerAdapter adapter = new InstructionFragmentPagerAdapter(
                 getSupportFragmentManager(), pageNumber);
         mViewPager.setAdapter(adapter);
+        if(POSITION > -1){
+            mViewPager.setCurrentItem(POSITION);
+        }
     }
 
 
@@ -179,11 +213,20 @@ public class BankTransferInstructionActivity extends BaseActivity {
                 } else fragment = new InstructionBCAMobileFragment();
             } else if(getIntent().getStringExtra(BANK).equals(TYPE_PERMATA)){
                 fragment = new InstructionPermataFragment();
-            } else {
+            } else if (getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI) ||
+                    getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI_BILL)) {
                 if(position == 0) {
                     fragment = new InstructionMandiriFragment();
                 } else {
                     fragment = new InstructionMandiriInternetFragment();
+                }
+            } else {
+                if (position == 0) {
+                    fragment = new InstructionATMBersamaFragment();
+                } else if (position == 1) {
+                    fragment = new InstructionPrimaFragment();
+                } else {
+                    fragment = new InstructionAltoFragment();
                 }
             }
 
@@ -214,11 +257,20 @@ public class BankTransferInstructionActivity extends BaseActivity {
             } else if(getIntent().getStringExtra(BANK).equals(TYPE_PERMATA)){
                 if(position==0) return getString(R.string.tab_permata_atm);
                 else return getString(R.string.tab_alto);
-            } else {
+            } else if (getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI_BILL) ||
+                    getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI)) {
                 if(position == 0) {
                     return getString(R.string.tab_mandiri_atm);
                 } else {
                     return getString(R.string.tab_mandiri_internet);
+                }
+            } else {
+                if (position == 0) {
+                    return getString(R.string.tab_atm_bersama);
+                } else if (position == 1) {
+                    return getString(R.string.tab_prima);
+                } else {
+                    return getString(R.string.tab_alto);
                 }
             }
         }

@@ -78,8 +78,8 @@ public class IndomaretPaymentFragment extends Fragment {
                     || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
                 mTextViewValidity.setText(VALID_UNTIL + Utils.getValidityTime(transactionResponse.getTransactionTime()));
             }
-            if (transactionResponse.getPaymentCodeIndomaret() != null)
-                mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeIndomaret());
+            if (transactionResponse.getPaymentCodeResponse() != null)
+                mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeResponse());
 
         }
         btnCopyToClipboard.setOnClickListener(new View.OnClickListener() {
