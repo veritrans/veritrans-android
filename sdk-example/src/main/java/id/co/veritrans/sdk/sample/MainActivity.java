@@ -7,7 +7,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
     private TextView authToken;
-    private Button coreBtn, uiBtn;
+    private Button coreBtn, uiBtn, widgetBtn;
     private Button coreCardRegistration, uiCardRegistration,
             getAuthenticationToken, refresh_token;
     private RadioButton normal, twoClick, oneClick;
@@ -163,6 +162,14 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
         dialog.setMessage("Loading");
+
+        widgetBtn = (Button) findViewById(R.id.show_card_widget);
+        widgetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, WidgetExampleActivity.class));
+            }
+        });
 
         // Initialize radio button
         normal = (RadioButton) findViewById(R.id.radio_card_normal);
