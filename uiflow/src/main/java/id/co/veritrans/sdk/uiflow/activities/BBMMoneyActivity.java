@@ -15,14 +15,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
 import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
@@ -40,7 +37,7 @@ import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
 /**
  * Created by Ankit on 12/3/15.
  */
-public class BBMMoneyActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
+public class BBMMoneyActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -282,8 +279,6 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         finish();
     }
 
-    @Subscribe
-    @Override
     public void onEvent(TransactionSuccessEvent event) {
         SdkUIFlowUtil.hideProgressDialog();
 
@@ -296,8 +291,6 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    @Subscribe
-    @Override
     public void onEvent(TransactionFailedEvent event) {
         try {
             BBMMoneyActivity.this.errorMessage = event.getMessage();
@@ -310,8 +303,6 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    @Subscribe
-    @Override
     public void onEvent(NetworkUnavailableEvent event) {
         BBMMoneyActivity.this.errorMessage = getString(R.string.no_network_msg);
 
@@ -319,8 +310,6 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
     }
 
-    @Subscribe
-    @Override
     public void onEvent(GeneralErrorEvent event) {
         BBMMoneyActivity.this.errorMessage = event.getMessage();
 

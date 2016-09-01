@@ -17,18 +17,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
-
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.SdkUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
@@ -60,7 +54,7 @@ import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
  * <p/>
  * Created by shivam on 10/26/15.
  */
-public class BankTransferActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
+public class BankTransferActivity extends BaseActivity implements View.OnClickListener{
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -73,7 +67,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     private Button mButtonConfirmPayment = null;
     private AppBarLayout mAppBarLayout = null;
     private TextView mTextViewTitle = null;
-
     private VeritransSDK mVeritransSDK = null;
     private Toolbar mToolbar = null;
 
@@ -119,7 +112,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         }
         super.onDestroy();
     }
-
 
     /**
      * set up {@link BankTransferFragment} to display payment instructions.
@@ -167,7 +159,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
         return false;
     }
-
 
     /**
      * initialize all views
@@ -224,7 +215,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-
     /**
      * Handles the click of confirm payment button based on following 3 conditions.
      * <p/>
@@ -259,7 +249,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
         }
     }
-
 
     /**
      * Displays status of transaction from {@link TransactionResponse} object.
@@ -368,7 +357,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             SdkUIFlowUtil.showProgressDialog(BankTransferActivity.this, getString(R.string.processing_payment), false);
 
             if (position == Constants.BANK_TRANSFER_PERMATA) {
-                bankTransferTransaction(veritransSDK);
+                permataBankPayTransaction(veritransSDK);
             } else if(position == Constants.BANK_TRANSFER_BCA) {
                 bcaBankTransferTransaction(veritransSDK);
             } else if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
@@ -391,9 +380,24 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void bcaBankTransferTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingBankTransferBCA(veritransSDK.readAuthenticationToken(), veritransSDK.getTransactionRequest().getCustomerDetails().getEmail());
-    }
+        veritransSDK.snapPaymentUsingBankTransferBCA(veritransSDK.readAuthenticationToken(),
+                veritransSDK.getTransactionRequest().getCustomerDetails().getEmail(), new TransactionCallback() {
+                    @Override
+                    public void onSuccess(TransactionResponse response) {
+                        actionPaymentSuccess(response);
+                    }
 
+                    @Override
+                    public void onFailure(TransactionResponse response, String reason) {
+                        actionPaymentFailure(response, reason);
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        actionPaymentError(error);
+                    }
+                });
+    }
 
     /**
      * it performs bank transfer and in onSuccess() of callback method it will call {@link
@@ -401,10 +405,25 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      *
      * @param veritransSDK  Veritrans SDK instance
      */
-    private void bankTransferTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingBankTransferPermata(veritransSDK.readAuthenticationToken(), veritransSDK.getTransactionRequest().getCustomerDetails().getEmail());
-    }
+    private void permataBankPayTransaction(VeritransSDK veritransSDK) {
+        veritransSDK.snapPaymentUsingBankTransferPermata(veritransSDK.readAuthenticationToken(),
+                veritransSDK.getTransactionRequest().getCustomerDetails().getEmail(), new TransactionCallback() {
+                    @Override
+                    public void onSuccess(TransactionResponse response) {
+                        actionPaymentSuccess(response);
+                    }
 
+                    @Override
+                    public void onFailure(TransactionResponse response, String reason) {
+                        actionPaymentFailure(response, reason);
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        actionPaymentError(error);
+                    }
+                });
+    }
 
     /**
      * It execute mandiri bill payment transaction and in onSuccess() of callback method it will
@@ -413,11 +432,43 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param veritransSDK  Veritrans SDK instance
      */
     private void mandiriBillPayTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingMandiriBillPay(veritransSDK.readAuthenticationToken(), SdkUtil.getEmailAddress(veritransSDK.getTransactionRequest()));
+        veritransSDK.snapPaymentUsingMandiriBillPay(veritransSDK.readAuthenticationToken(),
+                SdkUtil.getEmailAddress(veritransSDK.getTransactionRequest()), new TransactionCallback() {
+                    @Override
+                    public void onSuccess(TransactionResponse response) {
+                        actionPaymentSuccess(response);
+                    }
+
+                    @Override
+                    public void onFailure(TransactionResponse response, String reason) {
+                        actionPaymentFailure(response, reason);
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        actionPaymentError(error);
+                    }
+                });
     }
 
     private void otherBankTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingBankTransferAllBank(veritransSDK.readAuthenticationToken(), SdkUtil.getEmailAddress(veritransSDK.getTransactionRequest()));
+        veritransSDK.snapPaymentUsingBankTransferAllBank(veritransSDK.readAuthenticationToken(),
+                SdkUtil.getEmailAddress(veritransSDK.getTransactionRequest()), new TransactionCallback() {
+                    @Override
+                    public void onSuccess(TransactionResponse response) {
+                        actionPaymentSuccess(response);
+                    }
+
+                    @Override
+                    public void onFailure(TransactionResponse response, String reason) {
+                        actionPaymentFailure(response, reason);
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        actionPaymentError(error);
+                    }
+                });
     }
 
     /**
@@ -432,7 +483,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * in case of transaction failure it will change the text of confirm payment button to 'RETRY'
      */
     public void activateRetry() {
-
         if (mButtonConfirmPayment != null) {
             mButtonConfirmPayment.setText(getResources().getString(R.string.retry));
         }
@@ -453,46 +503,32 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         finish();
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
+    private void actionPaymentError(Throwable error){
         SdkUIFlowUtil.hideProgressDialog();
-        if (event.getResponse() != null) {
-            transactionResponse = event.getResponse();
+        BankTransferActivity.this.errorMessage = error.getMessage();
+        SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+    }
+
+    private void actionPaymentSuccess(TransactionResponse response){
+        SdkUIFlowUtil.hideProgressDialog();
+        if (response != null) {
+            transactionResponse = response;
             mAppBarLayout.setExpanded(true);
-            setUpTransactionFragment(event.getResponse());
+            setUpTransactionFragment(response);
         } else {
             onBackPressed();
         }
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        BankTransferActivity.this.errorMessage = event.getMessage();
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
+    private void actionPaymentFailure(TransactionResponse response, String reason) {
         try {
-            BankTransferActivity.this.errorMessage = event.getMessage();
-            BankTransferActivity.this.transactionResponse = event.getResponse();
+            BankTransferActivity.this.errorMessage = reason;
+            BankTransferActivity.this.transactionResponse = response;
 
             SdkUIFlowUtil.hideProgressDialog();
             SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);
         }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        BankTransferActivity.this.errorMessage = getString(R.string.no_network_msg);
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
     }
 }
