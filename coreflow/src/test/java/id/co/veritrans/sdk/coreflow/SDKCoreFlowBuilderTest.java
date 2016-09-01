@@ -33,10 +33,10 @@ public class SDKCoreFlowBuilderTest {
     ConnectivityManager connectivityManager;
     @Mock
     NetworkInfo networkInfo;
-    @InjectMocks
-    private SdkCoreFlowBuilder sdkCoreFlowBuilder;
     @Mock
     SdkCoreFlowBuilder sdkCoreFlowBuilderMock;
+    @InjectMocks
+    private SdkCoreFlowBuilder sdkCoreFlowBuilder;
 
     @Before
     public void setup(){
@@ -54,12 +54,6 @@ public class SDKCoreFlowBuilderTest {
         Assert.assertTrue(sdkCoreFlowBuilder.isValidData());
         sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, null, SDKConfigTest.MERCHANT_BASE_URL);
         Assert.assertFalse(sdkCoreFlowBuilder.isValidData());
-    }
-
-    @Test public void testSetMerchantName(){
-        String sampleName = "sampleName";
-        sdkCoreFlowBuilder.setMerchantName(sampleName);
-        Assert.assertEquals(sdkCoreFlowBuilder.setMerchantName(sampleName), sdkCoreFlowBuilder.setMerchantName(sampleName));
     }
 
 }

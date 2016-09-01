@@ -33,7 +33,6 @@ import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.models.snap.CardsResponse;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import id.co.veritrans.sdk.coreflow.models.snap.TransactionData;
@@ -181,7 +180,6 @@ public class SnapTransactionManagerTest {
                 .setDefaultText("open_sans_regular.ttf")
                 .setSemiBoldText("open_sans_semibold.ttf")
                 .setBoldText("open_sans_bold.ttf")
-                .setMerchantName("Veritrans Example Merchant")
                 .buildSDK();
 
         mixpanelAnalyticsManagerMock.setMixpanelApi(mixpanelApiMock);

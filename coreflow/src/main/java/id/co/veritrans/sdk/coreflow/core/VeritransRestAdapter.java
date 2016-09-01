@@ -4,6 +4,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
+
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.coreflow.analytics.MixpanelApi;
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
@@ -66,6 +68,7 @@ public class VeritransRestAdapter {
                 .setConverter(new GsonConverter(gson))
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient))
+                .setRequestInterceptor(buildSnapRequestInterceptor())
                 .setEndpoint(merchantBaseURL);
         RestAdapter restAdapter = builder.build();
         return restAdapter.create(MerchantRestAPI.class);
@@ -105,7 +108,17 @@ public class VeritransRestAdapter {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient))
+                .setRequestInterceptor(buildSnapRequestInterceptor())
                 .setEndpoint(snapBaseURL);
         return builder.build().create(SnapRestAPI.class);
+    }
+
+    private static RequestInterceptor buildSnapRequestInterceptor() {
+        return new RequestInterceptor() {
+            @Override
+            public void intercept(RequestFacade request) {
+                request.addHeader("X-Source", "mobile");
+            }
+        };
     }
 }
