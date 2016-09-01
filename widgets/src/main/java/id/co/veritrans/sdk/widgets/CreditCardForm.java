@@ -128,10 +128,12 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
             }
         });
 
+        // Get values from XML
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CreditCardFormStyle);
-
         veritransClientKey = typedArray.getString(R.styleable.CreditCardFormStyle_vtcc_client_key);
+        merchantUrl = typedArray.getString(R.styleable.CreditCardFormStyle_vtcc_merchant_url);
         boolean isPayBtnShown = typedArray.getBoolean(R.styleable.CreditCardFormStyle_vtcc_show_pay, false);
+
         // Update charge button visibility
         if (isPayBtnShown) {
             showPayButton();
