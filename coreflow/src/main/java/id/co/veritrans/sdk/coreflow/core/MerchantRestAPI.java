@@ -23,7 +23,7 @@ import id.co.veritrans.sdk.coreflow.models.RegisterCardResponse;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.TokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import retrofit.Callback;
 import retrofit.http.Body;
@@ -288,7 +288,7 @@ public interface MerchantRestAPI {
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/charge")
-    void getSnapToken(@Body SnapTokenRequestModel requestModel, Callback<Token> callback);
+    void checkout(@Body TokenRequestModel requestModel, Callback<Token> callback);
 
     /**
      * save cards to merchant server

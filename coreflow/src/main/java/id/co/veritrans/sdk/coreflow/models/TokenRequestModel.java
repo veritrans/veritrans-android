@@ -10,7 +10,7 @@ import id.co.veritrans.sdk.coreflow.models.snap.CreditCard;
 /**
  * Created by ziahaqi on 7/19/16.
  */
-public class SnapTokenRequestModel {
+public class TokenRequestModel {
 
     @SerializedName("customer_details")
     private final CustomerDetails costumerDetails;
@@ -24,14 +24,14 @@ public class SnapTokenRequestModel {
     @SerializedName("credit_card")
     private CreditCard creditCard;
 
-    public SnapTokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails,
-                                 CustomerDetails customerDetails) {
+    public TokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails,
+                             CustomerDetails customerDetails) {
         this.transactionDetails = transactionDetails;
         this.itemDetails = itemDetails;
         this.costumerDetails = customerDetails;
     }
 
-    public SnapTokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails, CustomerDetails customerDetails, CreditCard creditCard) {
+    public TokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails, CustomerDetails customerDetails, CreditCard creditCard) {
         this.transactionDetails = transactionDetails;
         this.itemDetails = itemDetails;
         this.costumerDetails = customerDetails;

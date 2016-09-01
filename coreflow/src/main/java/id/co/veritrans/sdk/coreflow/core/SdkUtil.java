@@ -30,7 +30,7 @@ import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriECashModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
-import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.TokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.SnapTransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
@@ -524,7 +524,7 @@ public class SdkUtil {
         return deviceId;
     }
 
-    public static SnapTokenRequestModel getSnapTokenRequestModel(TransactionRequest transactionRequest) {
+    public static TokenRequestModel getSnapTokenRequestModel(TransactionRequest transactionRequest) {
 
         if (transactionRequest.isUiEnabled()) {
             //get user details only if using default ui.
@@ -533,7 +533,7 @@ public class SdkUtil {
 
         SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), (int) transactionRequest.getAmount());
 
-        return new SnapTokenRequestModel(
+        return new TokenRequestModel(
                 details,
                 transactionRequest.getItemDetails(),
                 transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());
