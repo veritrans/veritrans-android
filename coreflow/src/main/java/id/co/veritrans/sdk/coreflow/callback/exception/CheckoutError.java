@@ -17,8 +17,6 @@ public class CheckoutError extends BaseError {
         super(detailMessage, errorType);
     }
 
-
-
     public Token getToken() {
         return token;
     }
