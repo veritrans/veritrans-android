@@ -159,7 +159,6 @@ public class SDKUtilsTest {
                 .setDefaultText("open_sans_regular.ttf")
                 .setSemiBoldText("open_sans_semibold.ttf")
                 .setBoldText("open_sans_bold.ttf")
-                .setMerchantName("Veritrans Example Merchant")
                 .buildSDK());
         veritransSDK.setTransactionManager(transactionManagerMock);
         veritransSDK = spy(veritransSDK);
