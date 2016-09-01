@@ -290,7 +290,9 @@ public class PaymentMethodsActivity extends BaseActivity implements GetSnapTrans
     public void onEvent(GetSnapTransactionSuccessEvent snapTransactionSuccessEvent) {
         progressContainer.setVisibility(View.GONE);
         String logoUrl = snapTransactionSuccessEvent.getResponse().getMerchantData().getLogoUrl();
+        String merchantName = snapTransactionSuccessEvent.getResponse().getMerchantData().getDisplayName();
         veritransSDK.setMerchantLogo(logoUrl);
+        veritransSDK.setMerchantName(merchantName);
         showLogo(logoUrl);
         for (String bank : snapTransactionSuccessEvent.getResponse().getTransactionData().getBankTransfer().getBanks()) {
             bankTrasfers.add(bank);
