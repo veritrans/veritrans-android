@@ -16,17 +16,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
-
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -38,7 +31,7 @@ import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 /**
  * @author rakawm
  */
-public class XLTunaiActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
+public class XLTunaiActivity extends BaseActivity implements View.OnClickListener{
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
     public static final String STATUS_FRAGMENT = "transaction_status";
@@ -229,7 +222,35 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     private void performTransaction() {
         SdkUIFlowUtil.showProgressDialog(XLTunaiActivity.this, getString(R.string.processing_payment), false);
         //Execute transaction
-        veritransSDK.snapPaymentUsingXLTunai(veritransSDK.readAuthenticationToken());
+        veritransSDK.snapPaymentUsingXLTunai(veritransSDK.readAuthenticationToken(), new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                SdkUIFlowUtil.hideProgressDialog();
+
+                if (response != null) {
+                    transactionResponse = response;
+                    appBarLayout.setExpanded(true);
+                    setUpTransactionFragment(response);
+                } else {
+                    onBackPressed();
+                }
+            }
+
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                SdkUIFlowUtil.hideProgressDialog();
+                errorMessage = reason;
+                transactionResponse = response;
+                SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + reason);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                SdkUIFlowUtil.hideProgressDialog();
+                errorMessage = error.getMessage();
+                SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + error.getMessage());
+            }
+        });
     }
 
     public int getPosition() {
@@ -249,59 +270,5 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
         data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-
-        if (event.getResponse() != null) {
-            transactionResponse = event.getResponse();
-            appBarLayout.setExpanded(true);
-            setUpTransactionFragment(event.getResponse());
-        } else {
-            onBackPressed();
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        try {
-            errorMessage = event.getMessage();
-            transactionResponse = event.getResponse();
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + event.getMessage());
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + event.getMessage());
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        try {
-            errorMessage = getString(R.string.no_network_msg);
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + getString(R.string.no_network_msg));
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + getString(R.string.no_network_msg));
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        try {
-            errorMessage = event.getMessage();
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + event.getMessage());
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + event.getMessage());
-        }
     }
 }

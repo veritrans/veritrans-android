@@ -17,17 +17,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
-
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
@@ -40,12 +34,13 @@ import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 /**
  * Created by shivam on 11/3/15.
  */
-public class MandiriClickPayActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
+public class MandiriClickPayActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String DENY = "202";
     public static final String HOME_FRAGMENT = "home";
     public static final String STATUS_FRAGMENT = "transaction_status";
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
+    private static final String TAG = "MandiriClickPayActivity";
     public String currentFragment = "home";
     private MandiriClickPayFragment mMandiriClickPayFragment = null;
     private Button mButtonConfirmPayment = null;
@@ -269,7 +264,40 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
      * @param mandiriClickPayModel  Mandiri click pay request object
      */
     private void makeTransaction(MandiriClickPayModel mandiriClickPayModel) {
-        mVeritransSDK.snapPaymentUsingMandiriClickPay(mVeritransSDK.readAuthenticationToken(), mandiriClickPayModel.getCardNumber(), mandiriClickPayModel.getToken(), mandiriClickPayModel.getInput3());
+        mVeritransSDK.snapPaymentUsingMandiriClickPay(mVeritransSDK.readAuthenticationToken(),
+                mandiriClickPayModel.getCardNumber(), mandiriClickPayModel.getToken(),
+                mandiriClickPayModel.getInput3(), new TransactionCallback() {
+                    @Override
+                    public void onSuccess(TransactionResponse response) {
+                        SdkUIFlowUtil.hideProgressDialog();
+
+                        MandiriClickPayActivity.this.transactionResponse = response;
+                        if (transactionResponse != null) {
+                            setUpTransactionStatusFragment(transactionResponse);
+                        } else {
+                            SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this,
+                                    SOMETHING_WENT_WRONG);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(TransactionResponse response, String reason) {
+                        MandiriClickPayActivity.this.transactionResponse = response;
+                        MandiriClickPayActivity.this.errorMessage = reason;
+
+                        if (transactionResponse != null
+                                && transactionResponse.getStatusCode().contains(DENY)) {
+                            setUpTransactionStatusFragment(transactionResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        SdkUIFlowUtil.hideProgressDialog();
+                        MandiriClickPayActivity.this.errorMessage = error.getMessage();
+                        Logger.e(TAG, "Error is" + errorMessage);
+                    }
+                });
     }
 
 
@@ -325,58 +353,5 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         if (mButtonConfirmPayment != null) {
             mButtonConfirmPayment.setText(getResources().getString(R.string.retry));
         }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-
-        MandiriClickPayActivity.this.transactionResponse = event.getResponse();
-
-        if (transactionResponse != null) {
-            setUpTransactionStatusFragment(transactionResponse);
-        } else {
-            SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this,
-                    SOMETHING_WENT_WRONG);
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        MandiriClickPayActivity.this.transactionResponse = event.getResponse();
-        MandiriClickPayActivity.this.errorMessage = event.getMessage();
-
-
-        Logger.e("Error is ", "" + errorMessage);
-
-        if (transactionResponse != null
-                && transactionResponse.getStatusCode().contains(DENY)) {
-            setUpTransactionStatusFragment(transactionResponse);
-        }
-
-
-        SdkUIFlowUtil.hideProgressDialog();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        MandiriClickPayActivity.this.errorMessage = getString(R.string.no_network_msg);
-
-
-        Logger.e("Error is ", "" + errorMessage);
-        SdkUIFlowUtil.hideProgressDialog();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        MandiriClickPayActivity.this.errorMessage = event.getMessage();
-
-
-        Logger.e("Error is ", "" + errorMessage);
-        SdkUIFlowUtil.hideProgressDialog();
     }
 }

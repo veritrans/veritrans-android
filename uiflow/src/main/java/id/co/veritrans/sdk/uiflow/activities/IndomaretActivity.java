@@ -16,17 +16,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
-
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.CstoreEntity;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
@@ -38,9 +31,9 @@ import id.co.veritrans.sdk.uiflow.fragments.InstructionIndomaretFragment;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 /**
- * Created by Ankit on 12/01/15.
+ * Created by ziahaqi on 01/08/16.
  */
-public class IndomaretActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
+public class IndomaretActivity extends BaseActivity implements View.OnClickListener{
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -65,7 +58,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
 
     private int position = Constants.PAYMENT_METHOD_INDOMARET;
     private int RESULT_CODE = RESULT_CANCELED;
-    private FragmentManager fragmentManager;
 
 
     @Override
@@ -100,7 +92,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             VeritransBusProvider.getInstance().unregister(this);
         }
     }
-
 
     /**
      * set up {@link BankTransferFragment} to display payment instructions.
@@ -244,14 +235,39 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         cstoreEntity.setStore("indomaret");
 
         //Execute transaction
-        veritransSDK.snapPaymentUsingIndomaret(veritransSDK.readAuthenticationToken());
-    }
+        veritransSDK.snapPaymentUsingIndomaret(veritransSDK.readAuthenticationToken(), new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                SdkUIFlowUtil.hideProgressDialog();
+                if (response != null) {
+                    IndomaretActivity.this.transactionResponse = response;
+                    appBarLayout.setExpanded(true);
+                    setUpTransactionFragment(response);
+                } else {
+                    onBackPressed();
+                }
+            }
 
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                IndomaretActivity.this.errorMessage = reason;
+                IndomaretActivity.this.transactionResponse = response;
+                SdkUIFlowUtil.hideProgressDialog();
+                SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + reason);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                SdkUIFlowUtil.hideProgressDialog();
+                IndomaretActivity.this.errorMessage = error.getMessage();
+                SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + error.getMessage());
+            }
+        });
+    }
 
     public int getPosition() {
         return position;
     }
-
 
     /**
      * in case of transaction failure it will change the text of confirm payment button to 'RETRY'
@@ -272,59 +288,5 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-
-        if (event.getResponse() != null) {
-            IndomaretActivity.this.transactionResponse = event.getResponse();
-            appBarLayout.setExpanded(true);
-            setUpTransactionFragment(event.getResponse());
-        } else {
-            onBackPressed();
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        try {
-            IndomaretActivity.this.errorMessage = event.getMessage();
-            IndomaretActivity.this.transactionResponse = event.getResponse();
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + event.getMessage());
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + event.getMessage());
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        try {
-            IndomaretActivity.this.errorMessage = getString(R.string.no_network_msg);
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + getString(R.string.no_network_msg));
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + getString(R.string.no_network_msg));
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        try {
-            IndomaretActivity.this.errorMessage = event.getMessage();
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + event.getMessage());
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + event.getMessage());
-        }
     }
 }

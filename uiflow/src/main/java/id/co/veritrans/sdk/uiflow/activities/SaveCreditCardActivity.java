@@ -19,30 +19,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 
+import id.co.veritrans.sdk.coreflow.callback.GetCardCallback;
+import id.co.veritrans.sdk.coreflow.callback.SaveCardCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.CardRegistrationBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.GetCardBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.SaveCardBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.CardRegistrationFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.CardRegistrationSuccessEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GetCardFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GetCardsSuccessEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
 import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
-import id.co.veritrans.sdk.coreflow.models.CardResponse;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -58,7 +46,7 @@ import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
 /**
  * @author rakawm
  */
-public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusCallback, CardRegistrationBusCallback, GetCardBusCallback {
+public class SaveCreditCardActivity extends BaseActivity{
     public static final int SCAN_REQUEST_CODE = 101;
     private int RESULT_CODE = RESULT_CANCELED;
     private Toolbar toolbar;
@@ -228,7 +216,21 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
         cardRequests.add(creditCard);
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         if(userDetail != null){
-            veritransSDK.snapSaveCard(userDetail.getUserId(), cardRequests);
+            veritransSDK.snapSaveCard(userDetail.getUserId(), cardRequests, new SaveCardCallback() {
+                @Override
+                public void onSuccess(SaveCardResponse response) {
+                    SdkUIFlowUtil.hideProgressDialog();
+                    SdkUIFlowUtil.showSnackbar(SaveCreditCardActivity.this, "Your card has been successfully saved");
+                    savedCardFragment.addCreditCard(cardRequest);
+                    replaceFragment(savedCardFragment, true, false);
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    SdkUIFlowUtil.hideProgressDialog();
+                    SdkUIFlowUtil.showApiFailedMessage(SaveCreditCardActivity.this, error.getMessage());
+                }
+            });
         }
     }
 
@@ -245,10 +247,21 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
 
     public void fetchCreditCards() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
-        //  processingLayout.setVisibility(View.VISIBLE);
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         if(userDetail != null){
-            veritransSDK.snapGetCards(userDetail.getUserId());
+            veritransSDK.snapGetCards(userDetail.getUserId(), new GetCardCallback() {
+                @Override
+                public void onSuccess(ArrayList<SaveCardRequest> response) {
+
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    SdkUIFlowUtil.hideProgressDialog();
+                    SdkUIFlowUtil.showApiFailedMessage(SaveCreditCardActivity.this, error.getMessage());
+                    processingLayout.setVisibility(View.GONE);
+                }
+            });
         }
     }
 
@@ -297,8 +310,6 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
                 .duration(time)
                 .colorPressed(color(R.color.colorAccent))
                 .color(color(R.color.colorAccent));
-
-
     }
 
     public void setAdapterViews(RegisterCardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, LinearLayout emptyContainer) {
@@ -317,101 +328,6 @@ public class SaveCreditCardActivity extends BaseActivity implements SaveCardBusC
 
     public int integer(@IntegerRes int resId) {
         return getResources().getInteger(resId);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(CardRegistrationSuccessEvent event) {
-        cardRequest = new SaveCardRequest();
-        cardRequest.setCode(event.getResponse().getStatusCode());
-        cardRequest.setMaskedCard(event.getResponse().getMaskedCard());
-        cardRequest.setSavedTokenId(event.getResponse().getSavedTokenId());
-        cardRequest.setTransactionId(event.getResponse().getTransactionId());
-        ArrayList<SaveCardRequest> requests = new ArrayList<>();
-        requests.add(cardRequest);
-        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        if(userDetail != null){
-            veritransSDK.snapSaveCard(userDetail.getUserId(), requests);
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(CardRegistrationFailedEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetCardsSuccessEvent event) {
-        CardResponse cardResponse = event.getResponse();
-        SdkUIFlowUtil.hideProgressDialog();
-        //
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                processingLayout.setVisibility(View.GONE);
-            }
-        }, 200);
-        Logger.i("cards api successful" + cardResponse);
-        if (cardResponse != null) {
-            creditCards.clear();
-            creditCards.addAll(cardResponse.getData());
-            if (pagerAdapter != null && circlePageIndicator != null) {
-                circlePageIndicator.notifyDataSetChanged();
-            }
-            if (emptyContainer != null) {
-                if (!creditCards.isEmpty()) {
-                    emptyContainer.setVisibility(View.GONE);
-                } else {
-                    emptyContainer.setVisibility(View.VISIBLE);
-                }
-
-            }
-            titleHeaderTextView.setText(getString(R.string.saved_card));
-            replaceFragment(savedCardFragment, true, false);
-
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetCardFailedEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        Logger.i("card fetching failed :" + event.getMessage());
-        processingLayout.setVisibility(View.GONE);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.no_network_msg));
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(SaveCardSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(this, "Your card has been successfully saved");
-        savedCardFragment.addCreditCard(cardRequest);
-        replaceFragment(savedCardFragment, true, false);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(SaveCardFailedEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showApiFailedMessage(this, event.getMessage());
     }
 
 }

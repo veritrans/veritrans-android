@@ -3,24 +3,16 @@ package id.co.veritrans.sdk.uiflow.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
 
 public class PaymentWebActivity extends BaseActivity {
     private Toolbar toolbar;
-    private FragmentManager fragmentManager;
-    private VeritransSDK veritransSDK;
-    private RelativeLayout webviewContainer;
-    private ImageView logo;
     private String webUrl;
     private String type = "";
 
@@ -28,7 +20,6 @@ public class PaymentWebActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_web);
-        veritransSDK = VeritransSDK.getVeritransSDK();
 
         saveCurrentFragment = true;
         webUrl = getIntent().getStringExtra(Constants.WEBURL);
@@ -36,10 +27,8 @@ public class PaymentWebActivity extends BaseActivity {
             type = getIntent().getStringExtra(Constants.TYPE);
         }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
         initializeTheme();
 
-        fragmentManager = getSupportFragmentManager();
         toolbar.setTitle(R.string.processing_payment);
 
         setSupportActionBar(toolbar);

@@ -15,6 +15,9 @@ import android.widget.ImageView;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
+import id.co.veritrans.sdk.coreflow.callback.exception.ErrorType;
+import id.co.veritrans.sdk.coreflow.callback.exception.TransactionFailure;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
@@ -137,9 +140,37 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void makeTransaction() {
-
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        veritransSDK.snapPaymentUsingEpayBRI(veritransSDK.readAuthenticationToken());
+        veritransSDK.snapPaymentUsingEpayBRI(veritransSDK.readAuthenticationToken(), new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                SdkUIFlowUtil.hideProgressDialog();
+                if (response != null &&
+                        !TextUtils.isEmpty(response.getRedirectUrl())) {
+                    transactionResponse = response;
+                    Intent intentPaymentWeb = new Intent(EpayBriActivity.this, PaymentWebActivity.class);
+                    intentPaymentWeb.putExtra(Constants.WEBURL, response.getRedirectUrl());
+                    intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_EPAY_BRI);
+                    startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                } else {
+                    SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, getString(R.string.empty_transaction_response));
+                }
+            }
+
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                SdkUIFlowUtil.hideProgressDialog();
+                EpayBriActivity.this.errorMessage = reason;
+                SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                SdkUIFlowUtil.hideProgressDialog();
+                EpayBriActivity.this.errorMessage = error.getMessage();
+                SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, error.getMessage());
+            }
+        });
     }
 
     @Override

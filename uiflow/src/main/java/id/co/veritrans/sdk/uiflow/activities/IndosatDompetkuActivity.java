@@ -13,19 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import org.greenrobot.eventbus.Subscribe;
-
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -54,7 +46,7 @@ import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
  * <p/>
  * Created by shivam on 11/30/15.
  */
-public class IndosatDompetkuActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
+public class IndosatDompetkuActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String STATUS_FRAGMENT = "transaction_status";
@@ -142,8 +134,8 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         logo = (ImageView) findViewById(R.id.merchant_logo);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
-        textOrderId = (DefaultTextView)findViewById(R.id.text_order_id);
-        textTotalAmount = (DefaultTextView)findViewById(R.id.text_amount);
+        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
+        textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
 
         initializeTheme();
         //setup tool bar
@@ -181,7 +173,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * 2) if current fragment is status fragment  then it will send result back to {@link
      * PaymentMethodsActivity}.
      *
-     * @param view  clicked view
+     * @param view clicked view
      */
     @Override
     public void onClick(View view) {
@@ -239,17 +231,54 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * call {@link #setUpTransactionStatusFragment(TransactionResponse)}  to display appropriate
      * message.
      *
-     * @param veritransSDK  Veritrans SDK instance
+     * @param veritransSDK Veritrans SDK instance
      */
     private void transactionUsingIndosat(final VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingIndosatDompetku(veritransSDK.readAuthenticationToken(), phoneNumber);
+        veritransSDK.snapPaymentUsingIndosatDompetku(veritransSDK.readAuthenticationToken(),
+                phoneNumber, new TransactionCallback() {
+                    @Override
+                    public void onSuccess(TransactionResponse response) {
+                        SdkUIFlowUtil.hideProgressDialog();
+                        mTransactionResponse = response;
+                        if (response != null) {
+                            setUpTransactionStatusFragment(response);
+                        } else {
+                            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, SOMETHING_WENT_WRONG);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(TransactionResponse response, String reason) {
+                        mTransactionResponse = response;
+                        IndosatDompetkuActivity.this.errorMessage = reason;
+                        try {
+                            SdkUIFlowUtil.hideProgressDialog();
+                            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+                        } catch (NullPointerException ex) {
+                            Logger.e("transaction error is " + errorMessage);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        try {
+                            IndosatDompetkuActivity.this.errorMessage = error.getMessage();
+                            SdkUIFlowUtil.hideProgressDialog();
+                            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+
+                        } catch (NullPointerException e) {
+                            Logger.e("transaction error is " + e.getMessage());
+                        }
+                    }
+                });
     }
 
 
     /**
      * Displays status of transaction from {@link TransactionResponse} object.
      *
-     * @param transactionResponse   response of transaction call
+     * @param transactionResponse response of transaction call
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
@@ -276,7 +305,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         fragmentTransaction.commit();
     }
 
-
     /**
      * in case of transaction failure it will change the text of confirm payment button to 'RETRY'
      */
@@ -296,56 +324,5 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        mTransactionResponse = event.getResponse();
-
-        if (event.getResponse() != null) {
-            setUpTransactionStatusFragment(event.getResponse());
-        } else {
-            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, SOMETHING_WENT_WRONG);
-            finish();
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        mTransactionResponse = event.getResponse();
-        IndosatDompetkuActivity.this.errorMessage = event.getMessage();
-        try {
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + errorMessage);
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        IndosatDompetkuActivity.this.errorMessage = getString(R.string.no_network_msg);
-        try {
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + errorMessage);
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        IndosatDompetkuActivity.this.errorMessage = event.getMessage();
-        try {
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + errorMessage);
-        }
     }
 }

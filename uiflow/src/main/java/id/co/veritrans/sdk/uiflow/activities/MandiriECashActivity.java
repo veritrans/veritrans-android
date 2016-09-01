@@ -12,23 +12,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
-import org.greenrobot.eventbus.Subscribe;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
-import id.co.veritrans.sdk.coreflow.models.DescriptionModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -41,11 +33,12 @@ import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 /**
  * Created by Ankit on 11/30/15.
  */
-public class MandiriECashActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
+public class MandiriECashActivity extends BaseActivity implements View.OnClickListener{
 
     private static final int PAYMENT_WEB_INTENT = 152;
     private static final String STATUS_FRAGMENT = "status";
     private static final String HOME_FRAGMENT = "home";
+    private static final String TAG = "MandiriECashActivity";
     private InstructionMandiriECashFragment mandiriECashFragment = null;
     private Button buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
@@ -60,6 +53,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private FragmentManager fragmentManager;
     private String currentFragmentName = HOME_FRAGMENT;
     private TransactionResponse transactionResponseFromMerchant;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,14 +132,43 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    private void makeTransaction(){
+    private void makeTransaction() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
 
-        DescriptionModel description = new DescriptionModel("Any Description");
+        mVeritransSDK.snapPaymentUsingMandiriEcash(mVeritransSDK.readAuthenticationToken(), new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                SdkUIFlowUtil.hideProgressDialog();
 
-        mVeritransSDK.snapPaymentUsingMandiriEcash(mVeritransSDK.readAuthenticationToken());
+                if (response != null &&
+                        !TextUtils.isEmpty(response.getRedirectUrl())) {
+                    MandiriECashActivity.this.transactionResponse = response;
+                    Intent intentPaymentWeb = new Intent(MandiriECashActivity.this, PaymentWebActivity.class);
+                    intentPaymentWeb.putExtra(Constants.WEBURL, response.getRedirectUrl());
+                    intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_MANDIRI_ECASH);
+                    startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                } else {
+                    SdkUIFlowUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string
+                            .empty_transaction_response));
+                }
+            }
+
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                SdkUIFlowUtil.hideProgressDialog();
+                MandiriECashActivity.this.errorMessage =  reason;
+                MandiriECashActivity.this.transactionResponse = response;
+                SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                SdkUIFlowUtil.hideProgressDialog();
+                MandiriECashActivity.this.errorMessage = error.getMessage();
+                SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+            }
+        });
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -173,8 +196,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-
-    public void setResultAndFinish(){
+    public void setResultAndFinish() {
         Intent data = new Intent();
         if (transactionResponseFromMerchant != null) {
             data.putExtra(getString(R.string.transaction_response), transactionResponseFromMerchant);
@@ -188,52 +210,5 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         this.RESULT_CODE = resultCode;
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-
-        if (event.getResponse() != null &&
-                !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
-            MandiriECashActivity.this.transactionResponse = event.getResponse();
-            Intent intentPaymentWeb = new Intent(MandiriECashActivity.this, PaymentWebActivity.class);
-            intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
-            intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_MANDIRI_ECASH);
-            startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
-        } else {
-            SdkUIFlowUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string
-                    .empty_transaction_response));
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        try {
-            MandiriECashActivity.this.errorMessage = event.getMessage();
-            MandiriECashActivity.this.transactionResponse = event.getResponse();
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
-        } catch (NullPointerException ex) {
-            SdkUIFlowUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string.empty_transaction_response));
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        MandiriECashActivity.this.errorMessage = getString(R.string.no_network_msg);
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        MandiriECashActivity.this.errorMessage = event.getMessage();
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
-    }
 }
 
