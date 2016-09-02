@@ -7,7 +7,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,10 +86,10 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
-                    .setMerchantName("Veritrans Example Merchant")
                     .buildSDK();
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));
-        }else{
+
+        } else {
             // SDK initiation for UIflow
             VeritransSDK veritransSDK = new SdkUIFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
                     .setUIFlow(new UIFlow())// initialization uiflow mode
@@ -99,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
-                    .setMerchantName("Veritrans Example Merchant")
                     .buildSDK();
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));
         }

@@ -328,6 +328,65 @@ public class PaymentMethodsActivity extends BaseActivity{
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
+    @Subscribe
+    @Override
+    public void onEvent(GetSnapTransactionSuccessEvent snapTransactionSuccessEvent) {
+        progressContainer.setVisibility(View.GONE);
+        String logoUrl = snapTransactionSuccessEvent.getResponse().getMerchantData().getLogoUrl();
+        String merchantName = snapTransactionSuccessEvent.getResponse().getMerchantData().getDisplayName();
+        veritransSDK.setMerchantLogo(logoUrl);
+        veritransSDK.setMerchantName(merchantName);
+        showLogo(logoUrl);
+        for (String bank : snapTransactionSuccessEvent.getResponse().getTransactionData().getBankTransfer().getBanks()) {
+            bankTrasfers.add(bank);
+        }
+        List<String> paymentMethods = snapTransactionSuccessEvent.getResponse().getTransactionData().getEnabledPayments();
+        initialiseAdapterData(paymentMethods);
+        setupRecyclerView();
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(GetSnapTransactionFailedEvent snapTransactionFailedEvent) {
+        progressContainer.setVisibility(View.GONE);
+        if (snapTransactionFailedEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
+            showDefaultPaymentMethods();
+        }
+    }
+
+    @Subscribe
+    public void onEvent(GeneralErrorEvent generalErrorEvent) {
+        if (generalErrorEvent.getSource().equals(Events.GET_SNAP_TOKEN)) {
+            showErrorMessage();
+        } else if (generalErrorEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
+            progressContainer.setVisibility(View.GONE);
+            showDefaultPaymentMethods();
+        }
+    }
+
+    @Subscribe
+    public void onEvent(NetworkUnavailableEvent networkUnavailableEvent) {
+        if (networkUnavailableEvent.getSource().equals(Events.GET_SNAP_TOKEN)) {
+            showErrorMessage();
+        } else if (networkUnavailableEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
+            progressContainer.setVisibility(View.GONE);
+            showDefaultPaymentMethods();
+        }
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(GetSnapTokenSuccessEvent event) {
+        LocalDataHandler.saveString(Constants.AUTH_TOKEN, event.getResponse().getTokenId());
+        veritransSDK.getSnapTransaction(event.getResponse().getTokenId());
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(GetSnapTokenFailedEvent event) {
+        showErrorMessage();
+    }
+
     private void showLogo(String url) {
         if (!TextUtils.isEmpty(url)) {
             Picasso.with(this)

@@ -73,7 +73,6 @@ public class VeritransSDK {
         this.clientKey = sdkBuilder.clientKey;
         this.merchantServerUrl = sdkBuilder.merchantServerUrl;
         this.sdkBaseUrl = BuildConfig.SNAP_BASE_URL;
-        this.merchantName = sdkBuilder.merchantName;
         this.defaultText = sdkBuilder.defaultText;
         this.semiBoldText = sdkBuilder.semiBoldText;
         this.boldText = sdkBuilder.boldText;
@@ -165,6 +164,10 @@ public class VeritransSDK {
 
     public String getMerchantName() {
         return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
     }
 
     public String getMerchantLogo() {

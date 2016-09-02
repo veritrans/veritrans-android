@@ -23,6 +23,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
+
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.SDKConfigTest;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
@@ -202,7 +203,6 @@ public class VeritransAndroidSDKTest {
                 .setDefaultText("open_sans_regular.ttf")
                 .setSemiBoldText("open_sans_semibold.ttf")
                 .setBoldText("open_sans_bold.ttf")
-                .setMerchantName("Veritrans Example Merchant")
                 .buildSDK());
         Mockito.when(veritransSDK.readAuthenticationToken()).thenReturn(sdkTokenMock);
         veritransSDK.setTransactionManager(transactionManager);

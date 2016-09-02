@@ -44,6 +44,10 @@ public class SdkCoreFlowBuilder {
             this.merchantServerUrl = merchantServerUrl;
     }
 
+    public static SdkCoreFlowBuilder init(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl) {
+        return new SdkCoreFlowBuilder(context, clientKey, merchantServerUrl);
+    }
+
     /**
      * controls the log of sdk. Log can help you to debug application.
      * set false to disable log of sdk, by default logs are on.
@@ -53,18 +57,6 @@ public class SdkCoreFlowBuilder {
      */
     public SdkCoreFlowBuilder enableLog(boolean enableLog) {
         this.enableLog = enableLog;
-        return this;
-    }
-
-
-    /**
-     * Set merchant name.
-     *
-     * @param merchantName merchant name
-     * @return SdkCoreFlowBuilder instance
-     */
-    public SdkCoreFlowBuilder setMerchantName(String merchantName) {
-        this.merchantName = merchantName;
         return this;
     }
 
@@ -114,9 +106,5 @@ public class SdkCoreFlowBuilder {
     public SdkCoreFlowBuilder setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
         this.selectedPaymentMethods = selectedPaymentMethods;
         return this;
-    }
-
-    public static SdkCoreFlowBuilder init(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl){
-        return new SdkCoreFlowBuilder(context, clientKey, merchantServerUrl);
     }
 }
