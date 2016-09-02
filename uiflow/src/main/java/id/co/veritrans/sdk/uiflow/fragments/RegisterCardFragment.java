@@ -20,8 +20,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,8 +29,8 @@ import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
+import id.co.veritrans.sdk.coreflow.models.CreditCardFromScanner;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
@@ -426,10 +424,9 @@ public class RegisterCardFragment extends Fragment {
         fadeInAnimation.start();
     }
 
-    @Subscribe
-    public void onEvent(UpdateCreditCardDataFromScanEvent event) {
-        etCardNo.setText(event.getCardNumber());
-        etCvv.setText(event.getCvv());
-        etExpiryDate.setText(event.getExpired());
+    public void updateFromScanCardEvent(CreditCardFromScanner card) {
+        etCardNo.setText(card.getCardNumber());
+        etCvv.setText(card.getCvv());
+        etExpiryDate.setText(card.getExpired());
     }
 }

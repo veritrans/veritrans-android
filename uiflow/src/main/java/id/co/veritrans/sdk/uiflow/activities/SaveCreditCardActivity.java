@@ -27,8 +27,7 @@ import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
+import id.co.veritrans.sdk.coreflow.models.CreditCardFromScanner;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
@@ -36,6 +35,7 @@ import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.adapters.RegisterCardPagerAdapter;
 import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
+import id.co.veritrans.sdk.uiflow.fragments.RegisterCardFragment;
 import id.co.veritrans.sdk.uiflow.fragments.RegisterSavedCardFragment;
 import id.co.veritrans.sdk.uiflow.scancard.ExternalScanner;
 import id.co.veritrans.sdk.uiflow.scancard.ScannerModel;
@@ -77,9 +77,6 @@ public class SaveCreditCardActivity extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
         setContentView(R.layout.activity_save_credit_card);
 
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
@@ -103,9 +100,6 @@ public class SaveCreditCardActivity extends BaseActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     public void morphToCircle(int time) {
@@ -132,7 +126,10 @@ public class SaveCreditCardActivity extends BaseActivity{
 
     private void updateCreditCardData(String cardNumber, String cvv, String expired) {
         // Update credit card data in AddCardDetailsFragment
-        VeritransBusProvider.getInstance().post(new UpdateCreditCardDataFromScanEvent(cardNumber, cvv, expired));
+        Fragment fragment = getCurrentFagment(RegisterCardFragment.class);
+        if(fragment != null){
+            ((RegisterCardFragment)fragment).updateFromScanCardEvent(new CreditCardFromScanner(cardNumber, cvv, expired));
+        }
     }
 
     @Override
@@ -226,6 +223,11 @@ public class SaveCreditCardActivity extends BaseActivity{
                 }
 
                 @Override
+                public void onFailure(String reason) {
+
+                }
+
+                @Override
                 public void onError(Throwable error) {
                     SdkUIFlowUtil.hideProgressDialog();
                     SdkUIFlowUtil.showApiFailedMessage(SaveCreditCardActivity.this, error.getMessage());
@@ -252,6 +254,11 @@ public class SaveCreditCardActivity extends BaseActivity{
             veritransSDK.snapGetCards(userDetail.getUserId(), new GetCardCallback() {
                 @Override
                 public void onSuccess(ArrayList<SaveCardRequest> response) {
+
+                }
+
+                @Override
+                public void onFailure(String reason) {
 
                 }
 

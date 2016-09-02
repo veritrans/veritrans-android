@@ -963,7 +963,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     if(response.getStatus() == 200 || response.getStatus() == 201){
                         callback.onSuccess(saveCardResponse);
                     }else{
-                        callback.onError(new Throwable(response.getReason()));
+                        callback.onFailure(response.getReason());
                     }
                 }
                 @Override

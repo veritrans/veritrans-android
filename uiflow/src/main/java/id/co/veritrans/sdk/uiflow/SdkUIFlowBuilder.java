@@ -14,7 +14,7 @@ public class SdkUIFlowBuilder extends SdkCoreFlowBuilder {
     /**
      * It  will initialize an data required to sdk.
      *
-     * @param context           application context
+     * @param context application context
      * @param clientKey
      * @param merchantServerUrl
      */

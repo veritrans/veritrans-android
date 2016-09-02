@@ -12,5 +12,7 @@ public interface GetCardCallback {
 
     public void onSuccess(ArrayList<SaveCardRequest> response);
 
+    public void onFailure(String reason);
+
     public void onError(Throwable error);
 }
