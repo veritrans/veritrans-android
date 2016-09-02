@@ -17,12 +17,6 @@ import id.co.veritrans.sdk.coreflow.callback.PaymentOptionCallback;
 import id.co.veritrans.sdk.coreflow.callback.SaveCardCallback;
 import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.callback.TransactionFinishedCallback;
-import id.co.veritrans.sdk.coreflow.callback.exception.CardRegistrationError;
-import id.co.veritrans.sdk.coreflow.callback.exception.CheckoutError;
-import id.co.veritrans.sdk.coreflow.callback.exception.ErrorType;
-import id.co.veritrans.sdk.coreflow.callback.exception.GetCardTokenError;
-import id.co.veritrans.sdk.coreflow.callback.exception.PaymentOptionError;
-import id.co.veritrans.sdk.coreflow.callback.exception.BaseError;
 import id.co.veritrans.sdk.coreflow.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
@@ -263,14 +257,14 @@ public class VeritransSDK {
                 mSnapTransactionManager.getToken(cardTokenRequest, callback);
             } else {
                 isRunning = false;
-                callback.onError(new GetCardTokenError(context.getString(R.string.error_unable_to_connect), ErrorType.NETWORK_ERROR));
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
                 Logger.e(context.getString(R.string.error_unable_to_connect));
             }
 
         } else {
             Logger.e(context.getString(R.string.error_invalid_data_supplied));
             isRunning = false;
-            callback.onError(new GetCardTokenError(context.getString(R.string.error_invalid_data_supplied), ErrorType.GENERAL_ERROR));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -368,11 +362,11 @@ public class VeritransSDK {
                 mSnapTransactionManager.getPaymentOption(snapToken, callback);
             } else {
                 isRunning = false;
-                callback.onError(new PaymentOptionError(null, context.getString(R.string.error_unable_to_connect), ErrorType.NETWORK_ERROR));
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            callback.onError(new PaymentOptionError(null, context.getString(R.string.error_invalid_data_supplied), ErrorType.GENERAL_ERROR));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -392,11 +386,11 @@ public class VeritransSDK {
                 mSnapTransactionManager.checkout(model, callback);
             } else {
                 isRunning = false;
-                callback.onError(new CheckoutError(context.getString(R.string.error_unable_to_connect), ErrorType.NETWORK_ERROR));
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            callback.onError(new CheckoutError(context.getString(R.string.error_invalid_data_supplied), ErrorType.GENERAL_ERROR));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -854,7 +848,7 @@ public class VeritransSDK {
         }else{
             isRunning = false;
             Logger.e(context.getString(R.string.error_unable_to_connect));
-            callback.onError(new CardRegistrationError(context.getString(R.string.error_unable_to_connect), ErrorType.NETWORK_ERROR));
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
         }
     }
 
@@ -878,10 +872,10 @@ public class VeritransSDK {
                 mSnapTransactionManager.saveCards(userId, requests, callback);
             }else{
                 isRunning = false;
-                callback.onError(new BaseError(context.getString(R.string.error_unable_to_connect), ErrorType.NETWORK_ERROR));
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         }else{
-            callback.onError(new BaseError(context.getString(R.string.error_invalid_data_supplied), ErrorType.GENERAL_ERROR));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -902,7 +896,7 @@ public class VeritransSDK {
             mSnapTransactionManager.getCards(userId, callback);
         }else{
             isRunning = false;
-            callback.onError(new BaseError(context.getString(R.string.error_unable_to_connect), ErrorType.NETWORK_ERROR));
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
         }
     }
 

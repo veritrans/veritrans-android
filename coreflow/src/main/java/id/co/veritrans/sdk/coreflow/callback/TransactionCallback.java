@@ -1,6 +1,4 @@
 package id.co.veritrans.sdk.coreflow.callback;
-
-import id.co.veritrans.sdk.coreflow.callback.exception.TransactionFailure;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 
 /**

@@ -1,6 +1,5 @@
 package id.co.veritrans.sdk.coreflow.callback;
 
-import id.co.veritrans.sdk.coreflow.callback.exception.CardRegistrationError;
 import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
 
 /**

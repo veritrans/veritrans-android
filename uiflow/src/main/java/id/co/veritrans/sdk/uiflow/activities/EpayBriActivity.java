@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
-import id.co.veritrans.sdk.coreflow.callback.exception.ErrorType;
-import id.co.veritrans.sdk.coreflow.callback.exception.TransactionFailure;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;

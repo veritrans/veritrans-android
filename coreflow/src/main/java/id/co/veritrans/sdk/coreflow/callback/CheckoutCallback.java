@@ -1,6 +1,5 @@
 package id.co.veritrans.sdk.coreflow.callback;
 
-import id.co.veritrans.sdk.coreflow.callback.exception.CheckoutError;
 import id.co.veritrans.sdk.coreflow.models.snap.Token;
 
 /**

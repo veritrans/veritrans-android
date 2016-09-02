@@ -2,7 +2,6 @@ package id.co.veritrans.sdk.coreflow.callback;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.coreflow.callback.exception.BaseError;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 
 /**
