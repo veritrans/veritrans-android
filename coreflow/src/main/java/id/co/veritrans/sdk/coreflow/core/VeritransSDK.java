@@ -16,19 +16,20 @@ import id.co.veritrans.sdk.coreflow.callback.GetCardTokenCallback;
 import id.co.veritrans.sdk.coreflow.callback.PaymentOptionCallback;
 import id.co.veritrans.sdk.coreflow.callback.SaveCardCallback;
 import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionFinishedCallback;
 import id.co.veritrans.sdk.coreflow.callback.exception.CardRegistrationError;
 import id.co.veritrans.sdk.coreflow.callback.exception.CheckoutError;
 import id.co.veritrans.sdk.coreflow.callback.exception.ErrorType;
 import id.co.veritrans.sdk.coreflow.callback.exception.GetCardTokenError;
 import id.co.veritrans.sdk.coreflow.callback.exception.PaymentOptionError;
 import id.co.veritrans.sdk.coreflow.callback.exception.BaseError;
-import id.co.veritrans.sdk.coreflow.callback.exception.TransactionFailure;
 import id.co.veritrans.sdk.coreflow.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.TokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.coreflow.models.snap.TransactionResult;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.IndosatDompetkuPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
@@ -47,6 +48,7 @@ public class VeritransSDK {
     private static SharedPreferences mPreferences = null;
     private static VeritransSDK veritransSDK;
     private static boolean isLogEnabled = true;
+    private TransactionFinishedCallback transactionFinishedCallback;
     protected boolean isRunning = false;
     ISdkFlow uiflow;
     private MixpanelAnalyticsManager mMixpanelAnalyticsManager;
@@ -68,7 +70,7 @@ public class VeritransSDK {
     private String sdkBaseUrl = "";
     private int requestTimeOut = 10;
 
-    private VeritransSDK(@NonNull SdkCoreFlowBuilder sdkBuilder) {
+    private VeritransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
         this.clientKey = sdkBuilder.clientKey;
         this.merchantServerUrl = sdkBuilder.merchantServerUrl;
@@ -77,6 +79,7 @@ public class VeritransSDK {
         this.semiBoldText = sdkBuilder.semiBoldText;
         this.boldText = sdkBuilder.boldText;
         this.uiflow = sdkBuilder.sdkFlow;
+        this.transactionFinishedCallback = sdkBuilder.transactionFinishedCallback;
         this.externalScanner = sdkBuilder.externalScanner;
         themeColor = sdkBuilder.colorThemeResourceId;
 
@@ -92,7 +95,6 @@ public class VeritransSDK {
 
         initializeTheme();
         initializeSharedPreferences();
-
     }
 
     /**
@@ -100,7 +102,7 @@ public class VeritransSDK {
      *
      * @param sdkBuilder SDK Coreflow Builder
      */
-    protected static VeritransSDK getInstance(@NonNull SdkCoreFlowBuilder sdkBuilder) {
+    protected static VeritransSDK getInstance(@NonNull BaseSdkBuilder sdkBuilder) {
         if (sdkBuilder != null) {
             veritransSDK = new VeritransSDK(sdkBuilder);
         } else {
@@ -929,6 +931,19 @@ public class VeritransSDK {
         mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi(requestTimeout));
         mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
         mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
+    }
+
+    /**
+     * It will notify merchant apps that fransaction has been finished
+     *
+     * @param result Transaction Result
+     */
+    public void notifyTransactionFinished(TransactionResult result){
+        if(transactionFinishedCallback != null){
+            transactionFinishedCallback.onFinished(result);
+        } else{
+            Logger.i(TAG, context.getString(R.string.transaction_finished_callback_unimplemented));
+        }
     }
 
     public IScanner getExternalScanner() {

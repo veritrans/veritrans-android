@@ -2,14 +2,19 @@ package id.co.veritrans.sdk.uiflow;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+
+import id.co.veritrans.sdk.coreflow.callback.TransactionFinishedCallback;
+import id.co.veritrans.sdk.coreflow.core.BaseSdkBuilder;
 import id.co.veritrans.sdk.coreflow.core.IScanner;
 import id.co.veritrans.sdk.coreflow.core.ISdkFlow;
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
+import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 
 /**
  * Created by ziahaqi on 15/06/2016.
  */
-public class SdkUIFlowBuilder extends SdkCoreFlowBuilder {
+public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
 
     /**
      * It  will initialize an data required to sdk.
@@ -18,14 +23,19 @@ public class SdkUIFlowBuilder extends SdkCoreFlowBuilder {
      * @param clientKey
      * @param merchantServerUrl
      */
-    public SdkUIFlowBuilder(Context context, String clientKey, String merchantServerUrl) {
-        super(context, clientKey, merchantServerUrl);
 
+
+    private SdkUIFlowBuilder(Context context, String clientKey, String merchantServerUrl, TransactionFinishedCallback callback) {
+        this.context = context;
+        this.clientKey = clientKey;
+        this.merchantServerUrl = merchantServerUrl;
+        this.transactionFinishedCallback = callback;
+        this.sdkFlow = new UIFlow();
     }
 
-    public SdkUIFlowBuilder setUIFlow(ISdkFlow sdkFlow){
-        this.sdkFlow = sdkFlow;
-        return this;
+    public static SdkUIFlowBuilder init(Context context, String clientKey, String merchantServerUrl, TransactionFinishedCallback callback){
+        return new SdkUIFlowBuilder(context, clientKey, merchantServerUrl, callback);
+
     }
 
     public SdkUIFlowBuilder setExternalScanner(IScanner externalScanner){
@@ -56,4 +66,10 @@ public class SdkUIFlowBuilder extends SdkCoreFlowBuilder {
        this.enableLog = enableLog;
         return this;
     }
+
+    public SdkUIFlowBuilder setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
+        this.selectedPaymentMethods = selectedPaymentMethods;
+        return this;
+    }
+
 }

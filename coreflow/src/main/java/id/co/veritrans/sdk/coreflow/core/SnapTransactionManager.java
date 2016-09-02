@@ -1145,12 +1145,12 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             new Callback<TokenDetailsResponse>() {
                                 @Override
                                 public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                    consumeTokenSuccesResponse(start, tokenDetailsResponse);
+                                    consumeTokenSuccesResponse(start, tokenDetailsResponse, callback);
                                 }
 
                                 @Override
                                 public void failure(RetrofitError error) {
-                                    consumeTokenErrorResponse(start, error);
+                                    consumeTokenErrorResponse(start, error, callback);
                                 }
                             }
                     );
@@ -1166,12 +1166,12 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             cardTokenRequest.getGrossAmount(), new Callback<TokenDetailsResponse>() {
                                 @Override
                                 public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                    consumeTokenSuccesResponse(start, tokenDetailsResponse);
+                                    consumeTokenSuccesResponse(start, tokenDetailsResponse, callback);
                                 }
 
                                 @Override
                                 public void failure(RetrofitError error) {
-                                    consumeTokenErrorResponse(start, error);
+                                    consumeTokenErrorResponse(start, error, callback);
                                 }
                             });
                 }
