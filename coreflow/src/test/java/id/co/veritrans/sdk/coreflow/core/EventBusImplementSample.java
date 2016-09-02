@@ -56,7 +56,7 @@ import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriECashModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
-import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.TokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
@@ -71,7 +71,7 @@ import id.co.veritrans.sdk.coreflow.transactionmanager.BusCollaborator;
  */
 public class EventBusImplementSample implements GetAuthenticationBusCallback, DeleteCardBusCallback,
         CardRegistrationBusCallback, SaveCardBusCallback, HttpErrorCallback,
-        TokenBusCallback, TransactionBusCallback, GetCardBusCallback, GetCardsBusCallback,
+        TokenBusCallback, TransactionBusCallback, GetCardBusCallback,
         GetOfferBusCallback, GetSnapTokenCallback, GetSnapTransactionCallback {
     public String onsuccessStatusCode;
     /**
@@ -187,17 +187,6 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
     }
 
 
-        /*
-         * snap
-         */
-
-
-    public void getSnapToken(MerchantRestAPI merchantRestAPI, SnapTokenRequestModel model) {
-
-        snapTransactionManager.setMerchantPaymentAPI(merchantRestAPI);
-        snapTransactionManager.getSnapToken(model);
-
-    }
 
         /*
          * Card Registration Callback stuff
@@ -341,10 +330,7 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
         busCollaborator.onSSLErrorEvent();
     }
 
-    public void getPaymentType(SnapRestAPI restAPI, String snapToken) {
-        snapTransactionManager.setRestApi(restAPI);
-        snapTransactionManager.getSnapTransaction(snapToken);
-    }
+
 
     @Subscribe
     @Override
@@ -370,7 +356,25 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
         busCollaborator.onGetSnapTransactionFailed();
     }
 
+            /*
+         * snap
+         */
+
+/*
+    public void getSnapToken(MerchantRestAPI merchantRestAPI, TokenRequestModel model) {
+
+        snapTransactionManager.setMerchantPaymentAPI(merchantRestAPI);
+        snapTransactionManager.checkout(model);
+
+    }
+
+
     // snap
+
+    public void getPaymentType(SnapRestAPI restAPI, String snapToken) {
+        snapTransactionManager.setRestApi(restAPI);
+        snapTransactionManager.getPaymentOption(snapToken);
+    }
 
     @Subscribe
     @Override
@@ -473,4 +477,5 @@ public class EventBusImplementSample implements GetAuthenticationBusCallback, De
         snapTransactionManager.setMerchantPaymentAPI(merchantApi);
         snapTransactionManager.getCards(sampleUserId);
     }
+    */
 }
