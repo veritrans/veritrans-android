@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -24,7 +23,6 @@ import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFinishedEvent;
 import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
 import id.co.veritrans.sdk.coreflow.models.ItemDetails;
 import id.co.veritrans.sdk.coreflow.models.snap.CreditCard;
@@ -205,16 +203,17 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     }
 
     @Override
-    public void onFinished(TransactionResult result) {
+    public void onTransactionFinished(TransactionResult result) {
+        Logger.i("transfinish:result:" + result.getStatus() );
         if (result != null) {
             switch (result.getStatus()) {
-                case TransactionFinishedEvent.STATUS_SUCCESS:
+                case TransactionResult.STATUS_SUCCESS:
                     Toast.makeText(this, "Transaction Finished. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
                     break;
-                case TransactionFinishedEvent.STATUS_PENDING:
+                case TransactionResult.STATUS_PENDING:
                     Toast.makeText(this, "Transaction Pending. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
                     break;
-                case TransactionFinishedEvent.STATUS_FAILED:
+                case TransactionResult.STATUS_FAILED:
                     Toast.makeText(this, "Transaction Failed. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
                     break;
             }

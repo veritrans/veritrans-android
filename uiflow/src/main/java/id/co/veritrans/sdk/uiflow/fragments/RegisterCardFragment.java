@@ -28,7 +28,6 @@ import java.util.Date;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.CreditCardFromScanner;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
@@ -71,9 +70,6 @@ public class RegisterCardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
         ((SaveCreditCardActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.card_details));
         veritransSDK = ((SaveCreditCardActivity) getActivity()).getVeritransSDK();
     }
@@ -88,9 +84,6 @@ public class RegisterCardFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     @Override

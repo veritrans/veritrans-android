@@ -13,20 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.callback.exception.ErrorType;
 import id.co.veritrans.sdk.coreflow.callback.exception.TransactionFailure;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -35,7 +27,7 @@ import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 
-public class EpayBriActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
+public class EpayBriActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int PAYMENT_WEB_INTENT = 150;
     private static final String STATUS_FRAGMENT = "status";
@@ -67,16 +59,10 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
         initializeViews();
         setUpFragment();
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
     protected void onDestroy() {
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
         super.onDestroy();
     }
 
@@ -207,46 +193,42 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         RESULT_CODE = resultCode;
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        if (event.getResponse() != null &&
-                !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
-            transactionResponse = event.getResponse();
-            Intent intentPaymentWeb = new Intent(EpayBriActivity.this, PaymentWebActivity.class);
-            intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
-            intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_EPAY_BRI);
-            startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
-        } else {
-            SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, getString(R.string.empty_transaction_response));
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        EpayBriActivity.this.errorMessage = event.getMessage();
-
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        EpayBriActivity.this.errorMessage = getString(R.string.no_network_msg);
-
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        EpayBriActivity.this.errorMessage = event.getMessage();
-
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, event.getMessage());
-    }
+//    @Override
+//    public void onEvent(TransactionSuccessEvent event) {
+//        SdkUIFlowUtil.hideProgressDialog();
+//        if (event.getResponse() != null &&
+//                !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
+//            transactionResponse = event.getResponse();
+//            Intent intentPaymentWeb = new Intent(EpayBriActivity.this, PaymentWebActivity.class);
+//            intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
+//            intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_EPAY_BRI);
+//            startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+//        } else {
+//            SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, getString(R.string.empty_transaction_response));
+//        }
+//    }
+//
+//    @Override
+//    public void onEvent(TransactionFailedEvent event) {
+//        EpayBriActivity.this.errorMessage = event.getMessage();
+//
+//        SdkUIFlowUtil.hideProgressDialog();
+//        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
+//    }
+//
+//    @Override
+//    public void onEvent(NetworkUnavailableEvent event) {
+//        EpayBriActivity.this.errorMessage = getString(R.string.no_network_msg);
+//
+//        SdkUIFlowUtil.hideProgressDialog();
+//        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
+//    }
+//
+//    @Override
+//    public void onEvent(GeneralErrorEvent event) {
+//        EpayBriActivity.this.errorMessage = event.getMessage();
+//
+//        SdkUIFlowUtil.hideProgressDialog();
+//        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, event.getMessage());
+//    }
 }

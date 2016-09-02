@@ -12,16 +12,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
 
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.GetOfferBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GetOfferFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GetOfferSuccessEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.models.GetOffersResponseModel;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
@@ -33,7 +26,7 @@ import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 /**
  * Created by ziahaqi on 14/06/2016.
  */
-public class OffersListFragment extends Fragment implements AnyOfferClickedListener, GetOfferBusCallback {
+public class OffersListFragment extends Fragment implements AnyOfferClickedListener {
 
     private TextView textViewTitleOffers = null;
     private TextView textViewTitleCardDetails = null;
@@ -46,17 +39,11 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     @Override
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     @Nullable
@@ -178,60 +165,56 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
         }
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(GetOfferSuccessEvent event) {
-        GetOffersResponseModel getOffersResponseModel = event.getResponse();
-        SdkUIFlowUtil.hideProgressDialog();
-
-        Logger.i("offers api successful" + getOffersResponseModel);
-        if (getOffersResponseModel != null && getOffersResponseModel.getOffers()
-                != null) {
-            ((OffersActivity) getActivity()).offersListModels.clear();
-            if (!getOffersResponseModel.getOffers().getBinpromo().isEmpty()) {
-                ((OffersActivity) getActivity()).offersListModels.addAll(getOffersResponseModel.getOffers().getBinpromo());
-            }
-
-            if (!getOffersResponseModel.getOffers().getInstallments().isEmpty()) {
-                ((OffersActivity) getActivity()).offersListModels.addAll(getOffersResponseModel.getOffers().getInstallments());
-            }
-
-            if (offersAdapter != null) {
-                offersAdapter.notifyDataSetChanged();
-            }
-            if (((OffersActivity) getActivity()).offersListModels.isEmpty()) {
-                showHideEmptyOffersMessage(true);
-            } else {
-                showHideEmptyOffersMessage(false);
-            }
-        } else {
-            showHideEmptyOffersMessage(true);
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetOfferFailedEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        Logger.i("offers fetching failed :" + event.getMessage());
-        //todo
-        showHideEmptyOffersMessage(true);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        Logger.i("offers fetching failed :" + getString(R.string.no_network_msg));
-        //todo
-        showHideEmptyOffersMessage(true);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        Logger.i("offers fetching failed :" + event.getMessage());
-        showHideEmptyOffersMessage(true);
-    }
+//    @Override
+//    public void onEvent(GetOfferSuccessEvent event) {
+//        GetOffersResponseModel getOffersResponseModel = event.getResponse();
+//        SdkUIFlowUtil.hideProgressDialog();
+//
+//        Logger.i("offers api successful" + getOffersResponseModel);
+//        if (getOffersResponseModel != null && getOffersResponseModel.getOffers()
+//                != null) {
+//            ((OffersActivity) getActivity()).offersListModels.clear();
+//            if (!getOffersResponseModel.getOffers().getBinpromo().isEmpty()) {
+//                ((OffersActivity) getActivity()).offersListModels.addAll(getOffersResponseModel.getOffers().getBinpromo());
+//            }
+//
+//            if (!getOffersResponseModel.getOffers().getInstallments().isEmpty()) {
+//                ((OffersActivity) getActivity()).offersListModels.addAll(getOffersResponseModel.getOffers().getInstallments());
+//            }
+//
+//            if (offersAdapter != null) {
+//                offersAdapter.notifyDataSetChanged();
+//            }
+//            if (((OffersActivity) getActivity()).offersListModels.isEmpty()) {
+//                showHideEmptyOffersMessage(true);
+//            } else {
+//                showHideEmptyOffersMessage(false);
+//            }
+//        } else {
+//            showHideEmptyOffersMessage(true);
+//        }
+//    }
+//
+//    @Override
+//    public void onEvent(GetOfferFailedEvent event) {
+//        SdkUIFlowUtil.hideProgressDialog();
+//        Logger.i("offers fetching failed :" + event.getMessage());
+//        //todo
+//        showHideEmptyOffersMessage(true);
+//    }
+//
+//    @Override
+//    public void onEvent(NetworkUnavailableEvent event) {
+//        SdkUIFlowUtil.hideProgressDialog();
+//        Logger.i("offers fetching failed :" + getString(R.string.no_network_msg));
+//        //todo
+//        showHideEmptyOffersMessage(true);
+//    }
+//
+//    @Override
+//    public void onEvent(GeneralErrorEvent event) {
+//        SdkUIFlowUtil.hideProgressDialog();
+//        Logger.i("offers fetching failed :" + event.getMessage());
+//        showHideEmptyOffersMessage(true);
+//    }
 }

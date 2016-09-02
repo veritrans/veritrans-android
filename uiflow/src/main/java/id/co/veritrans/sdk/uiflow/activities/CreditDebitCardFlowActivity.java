@@ -31,7 +31,6 @@ import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.BillingAddress;
 import id.co.veritrans.sdk.coreflow.models.CardPaymentDetails;
@@ -111,9 +110,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
         setContentView(R.layout.activity_credit_debit_card_flow);
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
         veritransSDK = VeritransSDK.getVeritransSDK();
@@ -148,9 +144,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     public void morphToCircle(int time) {

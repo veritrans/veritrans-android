@@ -30,10 +30,8 @@ import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
 import id.co.veritrans.sdk.coreflow.core.MixpanelAnalyticsManager;
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
-import id.co.veritrans.sdk.coreflow.core.TransactionManager;
 import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
 import retrofit.RetrofitError;
 
 /**
@@ -44,7 +42,6 @@ import retrofit.RetrofitError;
 @PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class})
 @PowerMockIgnore("javax.net.ssl.*")
 public abstract class TransactionMangerMain extends APIClientMain{
-    protected TransactionManager transactionManager;
     @Mock
     protected Context context;
     @Mock
@@ -74,36 +71,33 @@ public abstract class TransactionMangerMain extends APIClientMain{
 
     @InjectMocks
     protected EventBusImplementSample eventBustImplementSample;
-    @Mock
-    protected VeritransBus veritransBus;
-
     protected VeritransSDK veritransSDK;
     protected String sampleJsonResponse = "{\"a\":\"a\"}";
     protected String mToken = "VT-423wedwe4324r34";
 
     @Before
     public void setup(){
-        PowerMockito.mockStatic(TextUtils.class);
-        PowerMockito.mockStatic(Log.class);
-        PowerMockito.mockStatic(Looper.class);
-        PowerMockito.mockStatic(Base64.class);
-        PowerMockito.mockStatic(Logger.class);
-
-        Mockito.when(context.getResources()).thenReturn(resources);
-        Mockito.when(context.getApplicationContext()).thenReturn(context);
-        Mockito.when(context.getString(R.string.success_code_200)).thenReturn("200");
-        Mockito.when(context.getString(R.string.success_code_201)).thenReturn("201");
-        Mockito.when(context.getString(R.string.success)).thenReturn("success");
-
-        veritransSDK = new SdkCoreFlowBuilder(context, "SDK", "hi")
-                .enableLog(true)
-                .setDefaultText("open_sans_regular.ttf")
-                .setSemiBoldText("open_sans_semibold.ttf")
-                .setBoldText("open_sans_bold.ttf")
-                .buildSDK();
-        mixpanelAnalyticsManagerMock.setMixpanelApi(mixpanelApiMock);
-        transactionManager = veritransSDK.getTransactionManager();
-        transactionManager.setAnalyticsManager(mixpanelAnalyticsManagerMock);
+//        PowerMockito.mockStatic(TextUtils.class);
+//        PowerMockito.mockStatic(Log.class);
+//        PowerMockito.mockStatic(Looper.class);
+//        PowerMockito.mockStatic(Base64.class);
+//        PowerMockito.mockStatic(Logger.class);
+//
+//        Mockito.when(context.getResources()).thenReturn(resources);
+//        Mockito.when(context.getApplicationContext()).thenReturn(context);
+//        Mockito.when(context.getString(R.string.success_code_200)).thenReturn("200");
+//        Mockito.when(context.getString(R.string.success_code_201)).thenReturn("201");
+//        Mockito.when(context.getString(R.string.success)).thenReturn("success");
+//
+//        veritransSDK = new SdkCoreFlowBuilder(context, "SDK", "hi")
+//                .enableLog(true)
+//                .setDefaultText("open_sans_regular.ttf")
+//                .setSemiBoldText("open_sans_semibold.ttf")
+//                .setBoldText("open_sans_bold.ttf")
+//                .buildSDK();
+//        mixpanelAnalyticsManagerMock.setMixpanelApi(mixpanelApiMock);
+//        transactionManager = veritransSDK.getTransactionManager();
+//        transactionManager.setAnalyticsManager(mixpanelAnalyticsManagerMock);
 
     }
 }

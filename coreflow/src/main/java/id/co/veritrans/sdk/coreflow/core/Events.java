@@ -1,4 +1,4 @@
-package id.co.veritrans.sdk.coreflow.eventbus.events;
+package id.co.veritrans.sdk.coreflow.core;
 
 /**
  * @author rakawm

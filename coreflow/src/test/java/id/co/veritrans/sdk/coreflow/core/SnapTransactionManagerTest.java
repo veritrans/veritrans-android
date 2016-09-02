@@ -31,7 +31,6 @@ import javax.net.ssl.SSLHandshakeException;
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.SDKConfigTest;
 import id.co.veritrans.sdk.coreflow.analytics.MixpanelApi;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.TokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
@@ -58,139 +57,139 @@ import retrofit.mime.TypedByteArray;
 @PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class})
 @PowerMockIgnore("javax.net.ssl.*")
 public class SnapTransactionManagerTest {
-
-    protected String sampleJsonResponse = "{\"response\":\"response\"}";
-
-    protected Response retrofitResponse = new Response("URL", 200, "success", Collections.EMPTY_LIST,
-            new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
-    @Mock
-    protected BusCollaborator busCollaborator;
-    @InjectMocks
-    protected EventBusImplementSample eventBusImplementSample;
-    @Mock
-    private Context contextMock;
-    @Mock
-    private Resources resourcesMock;
-    private VeritransSDK veritransSDK;
-    @Mock
-    private MixpanelAnalyticsManager mixpanelAnalyticsManagerMock;
-    @Mock
-    private MixpanelApi mixpanelApiMock;
-    private SnapTransactionManager transactionManager;
-    @Mock
-    private VeritransBus veritransBusMock;
-    @Captor
-    private ArgumentCaptor<Callback<Token>> callbackSnapTokenResponseCaptor;
-
-    @Mock
-    private Token snapTokenMock;
-    private String tokenId = "aa3afad7-a346-4db6-9cb3-737f24e4fc56";
-    @Mock
-    private MerchantRestAPI merchantApi;
-    @Mock
-    private RetrofitError retrofitError;
-    @Mock
-    private CertPathValidatorException errorInvalidCertPatMock;
-    @Mock
-    private SSLHandshakeException errorInvalidSSLException;
-    @Mock
-    private SnapRestAPI snapAPI;
-    @Captor
-    private ArgumentCaptor<Callback<Transaction>> transactionCaptorMock;
-    @Mock
-    private Transaction transactionMock;
-    @Mock
-    private java.lang.Throwable errorGeneralMock;
-    @Captor
-    private ArgumentCaptor<String> tokenIdCaptor;
-    @Captor
-    private ArgumentCaptor<TokenRequestModel> snapTokenRequestModelCaptor;
-    @Mock
-    private TokenRequestModel snapTokenRequestModelMock;
-    @Mock
-    private TransactionData transactionDataMock;
-    private String transactionId = "trans_id";
-
-    @Mock
-    private CreditCardPaymentRequest creditcardRequestMock;
-    @Captor
-    private ArgumentCaptor<CreditCardPaymentRequest> creditCardRequestCaptor;
-    @Mock
-    private CreditCardPaymentRequest transactionRequestMock;
-    @Captor
-    private ArgumentCaptor<Callback<TransactionResponse>> transactionResponseCallbackCaptor;
-    @Mock
-    private TransactionResponse transactionResponseMock;
-    @Mock
-    private BankTransferPaymentRequest bankTransferRequestMock;
-    @Captor
-    private ArgumentCaptor<BankTransferPaymentRequest> bankTransferRequestCaptor;
-    @Mock
-    private KlikBCAPaymentRequest klikBCARequestMock;
-    @Mock
-    private BasePaymentRequest basePaymentRequestMock;
-    @Captor
-    private ArgumentCaptor<KlikBCAPaymentRequest> klikBCARequestCaptor;
-
-    @Captor
-    private ArgumentCaptor<BasePaymentRequest> BCAKlikpayRequestCaptor;
-    @Mock
-    private MandiriClickPayPaymentRequest mandiriClickPayPaymentRequestMock;
-    @Captor
-    private ArgumentCaptor<MandiriClickPayPaymentRequest> mandirClickPayPaymentRequestCaptor;
-    @Captor
-    private ArgumentCaptor<BasePaymentRequest> basePaymentRequestCaptor;
-    @Mock
-    private TelkomselEcashPaymentRequest telkomselEcashPaymentRequestMock;
-    @Captor
-    private ArgumentCaptor<TelkomselEcashPaymentRequest> telkomselEcashPaymentRequestCaptor;
-    @Mock
-    private IndosatDompetkuPaymentRequest indosatDompetkuPaymentRequestMock;
-    @Captor
-    private ArgumentCaptor<IndosatDompetkuPaymentRequest> indosatDompetKuPaymentRequestCaptor;
-    private String sampleUserId = "user_id214";
-    @Mock
-    private ArrayList<SaveCardRequest> cardRequestListMock;
-    @Captor
-    private ArgumentCaptor<ArrayList<SaveCardRequest>> cardRequestListCaptor;
-    @Captor
-    private ArgumentCaptor<Callback<String>> saveCardCallbackCaptor;
-    private String saveCardResponse = "Created";
-    @Captor
-    private ArgumentCaptor<String> sampleUserIdCaptor;
-    @Captor
-    private ArgumentCaptor<Callback<ArrayList<SaveCardRequest>>> getCardCallbackCaptor;
-    @Mock
-    private ArrayList<SaveCardRequest> getCardResponseMock;
-
-    @Before
-    public void setup() {
-        PowerMockito.mockStatic(TextUtils.class);
-        PowerMockito.mockStatic(Log.class);
-        PowerMockito.mockStatic(Looper.class);
-        PowerMockito.mockStatic(Base64.class);
-        PowerMockito.mockStatic(Logger.class);
-
-        Mockito.when(contextMock.getResources()).thenReturn(resourcesMock);
-        Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
-        Mockito.when(contextMock.getString(R.string.success_code_200)).thenReturn("200");
-        Mockito.when(contextMock.getString(R.string.success_code_201)).thenReturn("201");
-        Mockito.when(contextMock.getString(R.string.success)).thenReturn("success");
-
-        veritransSDK = new SdkCoreFlowBuilder(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
-                .enableLog(true)
-                .setDefaultText("open_sans_regular.ttf")
-                .setSemiBoldText("open_sans_semibold.ttf")
-                .setBoldText("open_sans_bold.ttf")
-                .buildSDK();
-
-        mixpanelAnalyticsManagerMock.setMixpanelApi(mixpanelApiMock);
-        transactionManager = veritransSDK.getmSnapTransactionManager();
-        transactionManager.setAnalyticsManager(mixpanelAnalyticsManagerMock);
-        eventBusImplementSample.registerBus(veritransBusMock);
-        eventBusImplementSample.setTransactionManager(transactionManager);
-
-    }
+//
+//    protected String sampleJsonResponse = "{\"response\":\"response\"}";
+//
+//    protected Response retrofitResponse = new Response("URL", 200, "success", Collections.EMPTY_LIST,
+//            new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
+//    @Mock
+//    protected BusCollaborator busCollaborator;
+//    @InjectMocks
+//    protected EventBusImplementSample eventBusImplementSample;
+//    @Mock
+//    private Context contextMock;
+//    @Mock
+//    private Resources resourcesMock;
+//    private VeritransSDK veritransSDK;
+//    @Mock
+//    private MixpanelAnalyticsManager mixpanelAnalyticsManagerMock;
+//    @Mock
+//    private MixpanelApi mixpanelApiMock;
+//    private SnapTransactionManager transactionManager;
+//    @Mock
+//    private VeritransBus veritransBusMock;
+//    @Captor
+//    private ArgumentCaptor<Callback<Token>> callbackSnapTokenResponseCaptor;
+//
+//    @Mock
+//    private Token snapTokenMock;
+//    private String tokenId = "aa3afad7-a346-4db6-9cb3-737f24e4fc56";
+//    @Mock
+//    private MerchantRestAPI merchantApi;
+//    @Mock
+//    private RetrofitError retrofitError;
+//    @Mock
+//    private CertPathValidatorException errorInvalidCertPatMock;
+//    @Mock
+//    private SSLHandshakeException errorInvalidSSLException;
+//    @Mock
+//    private SnapRestAPI snapAPI;
+//    @Captor
+//    private ArgumentCaptor<Callback<Transaction>> transactionCaptorMock;
+//    @Mock
+//    private Transaction transactionMock;
+//    @Mock
+//    private java.lang.Throwable errorGeneralMock;
+//    @Captor
+//    private ArgumentCaptor<String> tokenIdCaptor;
+//    @Captor
+//    private ArgumentCaptor<TokenRequestModel> snapTokenRequestModelCaptor;
+//    @Mock
+//    private TokenRequestModel snapTokenRequestModelMock;
+//    @Mock
+//    private TransactionData transactionDataMock;
+//    private String transactionId = "trans_id";
+//
+//    @Mock
+//    private CreditCardPaymentRequest creditcardRequestMock;
+//    @Captor
+//    private ArgumentCaptor<CreditCardPaymentRequest> creditCardRequestCaptor;
+//    @Mock
+//    private CreditCardPaymentRequest transactionRequestMock;
+//    @Captor
+//    private ArgumentCaptor<Callback<TransactionResponse>> transactionResponseCallbackCaptor;
+//    @Mock
+//    private TransactionResponse transactionResponseMock;
+//    @Mock
+//    private BankTransferPaymentRequest bankTransferRequestMock;
+//    @Captor
+//    private ArgumentCaptor<BankTransferPaymentRequest> bankTransferRequestCaptor;
+//    @Mock
+//    private KlikBCAPaymentRequest klikBCARequestMock;
+//    @Mock
+//    private BasePaymentRequest basePaymentRequestMock;
+//    @Captor
+//    private ArgumentCaptor<KlikBCAPaymentRequest> klikBCARequestCaptor;
+//
+//    @Captor
+//    private ArgumentCaptor<BasePaymentRequest> BCAKlikpayRequestCaptor;
+//    @Mock
+//    private MandiriClickPayPaymentRequest mandiriClickPayPaymentRequestMock;
+//    @Captor
+//    private ArgumentCaptor<MandiriClickPayPaymentRequest> mandirClickPayPaymentRequestCaptor;
+//    @Captor
+//    private ArgumentCaptor<BasePaymentRequest> basePaymentRequestCaptor;
+//    @Mock
+//    private TelkomselEcashPaymentRequest telkomselEcashPaymentRequestMock;
+//    @Captor
+//    private ArgumentCaptor<TelkomselEcashPaymentRequest> telkomselEcashPaymentRequestCaptor;
+//    @Mock
+//    private IndosatDompetkuPaymentRequest indosatDompetkuPaymentRequestMock;
+//    @Captor
+//    private ArgumentCaptor<IndosatDompetkuPaymentRequest> indosatDompetKuPaymentRequestCaptor;
+//    private String sampleUserId = "user_id214";
+//    @Mock
+//    private ArrayList<SaveCardRequest> cardRequestListMock;
+//    @Captor
+//    private ArgumentCaptor<ArrayList<SaveCardRequest>> cardRequestListCaptor;
+//    @Captor
+//    private ArgumentCaptor<Callback<String>> saveCardCallbackCaptor;
+//    private String saveCardResponse = "Created";
+//    @Captor
+//    private ArgumentCaptor<String> sampleUserIdCaptor;
+//    @Captor
+//    private ArgumentCaptor<Callback<ArrayList<SaveCardRequest>>> getCardCallbackCaptor;
+//    @Mock
+//    private ArrayList<SaveCardRequest> getCardResponseMock;
+//
+//    @Before
+//    public void setup() {
+//        PowerMockito.mockStatic(TextUtils.class);
+//        PowerMockito.mockStatic(Log.class);
+//        PowerMockito.mockStatic(Looper.class);
+//        PowerMockito.mockStatic(Base64.class);
+//        PowerMockito.mockStatic(Logger.class);
+//
+//        Mockito.when(contextMock.getResources()).thenReturn(resourcesMock);
+//        Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
+//        Mockito.when(contextMock.getString(R.string.success_code_200)).thenReturn("200");
+//        Mockito.when(contextMock.getString(R.string.success_code_201)).thenReturn("201");
+//        Mockito.when(contextMock.getString(R.string.success)).thenReturn("success");
+//
+//        veritransSDK = new SdkCoreFlowBuilder(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
+//                .enableLog(true)
+//                .setDefaultText("open_sans_regular.ttf")
+//                .setSemiBoldText("open_sans_semibold.ttf")
+//                .setBoldText("open_sans_bold.ttf")
+//                .buildSDK();
+//
+//        mixpanelAnalyticsManagerMock.setMixpanelApi(mixpanelApiMock);
+//        transactionManager = veritransSDK.getmSnapTransactionManager();
+//        transactionManager.setAnalyticsManager(mixpanelAnalyticsManagerMock);
+//        eventBusImplementSample.registerBus(veritransBusMock);
+//        eventBusImplementSample.setTransactionManager(transactionManager);
+//
+//    }
 /*
     /**
      * Get Snap token test

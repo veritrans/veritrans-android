@@ -7,5 +7,5 @@ import id.co.veritrans.sdk.coreflow.models.snap.TransactionResult;
  */
 public interface TransactionFinishedCallback {
 
-    public void onFinished(TransactionResult result);
+    public void onTransactionFinished(TransactionResult result);
 }

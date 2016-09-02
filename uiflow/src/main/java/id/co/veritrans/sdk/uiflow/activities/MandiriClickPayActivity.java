@@ -21,7 +21,6 @@ import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.models.MandiriClickPayModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
@@ -78,16 +77,10 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         initializeViews();
         bindDataToView();
         setUpHomeFragment();
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
     protected void onDestroy() {
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
         super.onDestroy();
     }
 
@@ -282,6 +275,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
+                        SdkUIFlowUtil.hideProgressDialog();
                         MandiriClickPayActivity.this.transactionResponse = response;
                         MandiriClickPayActivity.this.errorMessage = reason;
 

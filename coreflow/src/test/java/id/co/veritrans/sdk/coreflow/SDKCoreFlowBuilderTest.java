@@ -38,22 +38,22 @@ public class SDKCoreFlowBuilderTest {
     @InjectMocks
     private SdkCoreFlowBuilder sdkCoreFlowBuilder;
 
-    @Before
-    public void setup(){
-        PowerMockito.mockStatic(Log.class);
-        Mockito.when(context.getApplicationContext()).thenReturn(context);
-        Mockito.when(context.getResources()).thenReturn(resources);
-        Mockito.when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
-        Mockito.when(connectivityManager.getActiveNetworkInfo()).thenReturn(networkInfo);
-
-        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL);
-    }
-
-    @Test
-    public void isValidDataFailedTest(){
-        Assert.assertTrue(sdkCoreFlowBuilder.isValidData());
-        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, null, SDKConfigTest.MERCHANT_BASE_URL);
-        Assert.assertFalse(sdkCoreFlowBuilder.isValidData());
-    }
+//    @Before
+//    public void setup(){
+//        PowerMockito.mockStatic(Log.class);
+//        Mockito.when(context.getApplicationContext()).thenReturn(context);
+//        Mockito.when(context.getResources()).thenReturn(resources);
+//        Mockito.when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
+//        Mockito.when(connectivityManager.getActiveNetworkInfo()).thenReturn(networkInfo);
+//
+//        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL);
+//    }
+//
+//    @Test
+//    public void isValidDataFailedTest(){
+//        Assert.assertTrue(sdkCoreFlowBuilder.isValidData());
+//        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, null, SDKConfigTest.MERCHANT_BASE_URL);
+//        Assert.assertFalse(sdkCoreFlowBuilder.isValidData());
+//    }
 
 }

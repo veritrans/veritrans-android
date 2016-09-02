@@ -61,7 +61,6 @@ public class VeritransSDK {
     private String semiBoldText = null;
     private String merchantName = null;
     private IScanner externalScanner;
-    private TransactionManager mTransactionManager;
     private SnapTransactionManager mSnapTransactionManager;
     private String merchantLogo = null;
     private TransactionRequest transactionRequest = null;
@@ -84,13 +83,10 @@ public class VeritransSDK {
         themeColor = sdkBuilder.colorThemeResourceId;
 
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi(requestTimeOut));
-        this.mTransactionManager = new TransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut),
-                VeritransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut));
+
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, VeritransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 VeritransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
-        this.mTransactionManager.setSDKLogEnabled(isLogEnabled);
-        this.mTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
         this.mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
 
         initializeTheme();
@@ -348,7 +344,7 @@ public class VeritransSDK {
     public void getOffersList() {
         if (isNetworkAvailable()) {
             isRunning = true;
-            mTransactionManager.getOffers(readAuthenticationToken());
+//            mSnapTransactionManager.getOffers(readAuthenticationToken());
         } else {
             isRunning = false;
             Logger.e(TAG, context.getString(R.string.error_unable_to_connect));
@@ -940,7 +936,7 @@ public class VeritransSDK {
      */
     public void notifyTransactionFinished(TransactionResult result){
         if(transactionFinishedCallback != null){
-            transactionFinishedCallback.onFinished(result);
+            transactionFinishedCallback.onTransactionFinished(result);
         } else{
             Logger.i(TAG, context.getString(R.string.transaction_finished_callback_unimplemented));
         }
@@ -948,14 +944,6 @@ public class VeritransSDK {
 
     public IScanner getExternalScanner() {
         return externalScanner;
-    }
-
-    public TransactionManager getTransactionManager() {
-        return mTransactionManager;
-    }
-
-    void setTransactionManager(TransactionManager transactionManager) {
-        mTransactionManager = transactionManager;
     }
 
     void setSnapTransactionManager(SnapTransactionManager snapTransactionManager) {

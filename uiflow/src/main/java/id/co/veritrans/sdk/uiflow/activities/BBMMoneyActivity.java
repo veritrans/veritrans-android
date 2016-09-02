@@ -19,11 +19,6 @@ import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -85,16 +80,10 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         initializeTheme();
         bindDataToView();
         setUpHomeFragment();
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
     protected void onDestroy() {
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
         super.onDestroy();
     }
 
@@ -279,41 +268,41 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         finish();
     }
 
-    public void onEvent(TransactionSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-
-        if (transactionResponse != null) {
-            BBMMoneyActivity.this.transactionResponse = event.getResponse();
-            appBarLayout.setExpanded(true);
-            setUpTransactionFragment(transactionResponse);
-        } else {
-            onBackPressed();
-        }
-    }
-
-    public void onEvent(TransactionFailedEvent event) {
-        try {
-            BBMMoneyActivity.this.errorMessage = event.getMessage();
-            BBMMoneyActivity.this.transactionResponse = event.getResponse();
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + errorMessage);
-        }
-    }
-
-    public void onEvent(NetworkUnavailableEvent event) {
-        BBMMoneyActivity.this.errorMessage = getString(R.string.no_network_msg);
-
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
-    }
-
-    public void onEvent(GeneralErrorEvent event) {
-        BBMMoneyActivity.this.errorMessage = event.getMessage();
-
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
-    }
+//    public void onEvent(TransactionSuccessEvent event) {
+//        SdkUIFlowUtil.hideProgressDialog();
+//
+//        if (transactionResponse != null) {
+//            BBMMoneyActivity.this.transactionResponse = event.getResponse();
+//            appBarLayout.setExpanded(true);
+//            setUpTransactionFragment(transactionResponse);
+//        } else {
+//            onBackPressed();
+//        }
+//    }
+//
+//    public void onEvent(TransactionFailedEvent event) {
+//        try {
+//            BBMMoneyActivity.this.errorMessage = event.getMessage();
+//            BBMMoneyActivity.this.transactionResponse = event.getResponse();
+//
+//            SdkUIFlowUtil.hideProgressDialog();
+//            SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+//        } catch (NullPointerException ex) {
+//            Logger.e("transaction error is " + errorMessage);
+//        }
+//    }
+//
+//    public void onEvent(NetworkUnavailableEvent event) {
+//        BBMMoneyActivity.this.errorMessage = getString(R.string.no_network_msg);
+//
+//        SdkUIFlowUtil.hideProgressDialog();
+//        SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+//    }
+//
+//    public void onEvent(GeneralErrorEvent event) {
+//        BBMMoneyActivity.this.errorMessage = event.getMessage();
+//
+//        SdkUIFlowUtil.hideProgressDialog();
+//        SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+//    }
 }

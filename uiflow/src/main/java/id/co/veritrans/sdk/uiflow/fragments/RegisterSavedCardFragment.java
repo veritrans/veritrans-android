@@ -14,19 +14,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.DeleteCardBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.DeleteCardFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.DeleteCardSuccessEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
@@ -37,7 +30,7 @@ import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
 /**
  * @author rakawm
  */
-public class RegisterSavedCardFragment extends Fragment implements DeleteCardBusCallback {
+public class RegisterSavedCardFragment extends Fragment {
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
@@ -60,16 +53,10 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         veritransSDK = VeritransSDK.getVeritransSDK();
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
     public void onDestroy() {
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
         super.onDestroy();
     }
 
@@ -284,68 +271,64 @@ public class RegisterSavedCardFragment extends Fragment implements DeleteCardBus
         }, Constants.CARD_ANIMATION_TIME);
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(DeleteCardSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        int position = -1;
-        for (int i = 0; i < creditCards.size(); i++) {
-            if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
-                position = i;
-            }
-        }
-        if (creditCards != null && !creditCards.isEmpty()) {
-            Logger.i("position to delete:" + position + "," + creditCards.size());
-            if (!creditCards.isEmpty()) {
-                for (int i = 0; i < creditCards.size(); i++) {
-                    Logger.i("cards before:" + creditCards.get(i).getSavedTokenId());
-                }
-            }
+//    @Override
+//    public void onEvent(DeleteCardSuccessEvent event) {
+//        SdkUIFlowUtil.hideProgressDialog();
+//        int position = -1;
+//        for (int i = 0; i < creditCards.size(); i++) {
+//            if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
+//                position = i;
+//            }
+//        }
+//        if (creditCards != null && !creditCards.isEmpty()) {
+//            Logger.i("position to delete:" + position + "," + creditCards.size());
+//            if (!creditCards.isEmpty()) {
+//                for (int i = 0; i < creditCards.size(); i++) {
+//                    Logger.i("cards before:" + creditCards.get(i).getSavedTokenId());
+//                }
+//            }
+//
+//            creditCards.remove(position);
+//
+//            if (!creditCards.isEmpty()) {
+//                for (int i = 0; i < creditCards.size(); i++) {
+//
+//                    Logger.i("cards after:" + creditCards.get(i).getSavedTokenId());
+//                }
+//            }
+//
+//            //notifydataset change not worked properly for viewpager so setting it again
+//            Logger.i("setting view pager value");
+//
+//            if (cardPagerAdapter != null && circlePageIndicator != null) {
+//                Logger.i("notifying data");
+//                cardPagerAdapter.notifyChangeInPosition(1);
+//                cardPagerAdapter.notifyDataSetChanged();
+//                circlePageIndicator.notifyDataSetChanged();
+//                if (creditCards.isEmpty()) {
+//                    emptyContainer.setVisibility(View.VISIBLE);
+//                } else {
+//                    emptyContainer.setVisibility(View.GONE);
+//                }
+//            }
+//        }
+//    }
 
-            creditCards.remove(position);
-
-            if (!creditCards.isEmpty()) {
-                for (int i = 0; i < creditCards.size(); i++) {
-
-                    Logger.i("cards after:" + creditCards.get(i).getSavedTokenId());
-                }
-            }
-
-            //notifydataset change not worked properly for viewpager so setting it again
-            Logger.i("setting view pager value");
-
-            if (cardPagerAdapter != null && circlePageIndicator != null) {
-                Logger.i("notifying data");
-                cardPagerAdapter.notifyChangeInPosition(1);
-                cardPagerAdapter.notifyDataSetChanged();
-                circlePageIndicator.notifyDataSetChanged();
-                if (creditCards.isEmpty()) {
-                    emptyContainer.setVisibility(View.VISIBLE);
-                } else {
-                    emptyContainer.setVisibility(View.GONE);
-                }
-            }
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(DeleteCardFailedEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(getActivity(), event.getMessage());
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.no_network_msg));
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(getActivity(), event.getMessage());
-    }
+//    @Override
+//    public void onEvent(DeleteCardFailedEvent event) {
+//        SdkUIFlowUtil.hideProgressDialog();
+//        SdkUIFlowUtil.showSnackbar(getActivity(), event.getMessage());
+//    }
+//
+//    @Override
+//    public void onEvent(NetworkUnavailableEvent event) {
+//        SdkUIFlowUtil.hideProgressDialog();
+//        SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.no_network_msg));
+//    }
+//
+//    @Override
+//    public void onEvent(GeneralErrorEvent event) {
+//        SdkUIFlowUtil.hideProgressDialog();
+//        SdkUIFlowUtil.showSnackbar(getActivity(), event.getMessage());
+//    }
 }

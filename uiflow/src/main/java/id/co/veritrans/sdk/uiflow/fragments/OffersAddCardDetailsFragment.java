@@ -31,7 +31,6 @@ import java.util.Date;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.CreditCardFromScanner;
@@ -126,10 +125,6 @@ public class OffersAddCardDetailsFragment extends Fragment {
         offerName = data.getString(OffersActivity.OFFER_NAME);
         offerType = data.getString(OffersActivity.OFFER_TYPE);
         initialiseView(view);
-        // Register bus
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
         ((OffersActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
         fadeIn();
     }
@@ -137,10 +132,6 @@ public class OffersAddCardDetailsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Unregister bus
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     private void initialiseView(View view) {

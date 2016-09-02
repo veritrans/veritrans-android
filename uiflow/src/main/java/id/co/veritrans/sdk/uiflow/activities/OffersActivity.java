@@ -29,7 +29,6 @@ import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.BillingAddress;
 import id.co.veritrans.sdk.coreflow.models.CardPaymentDetails;
@@ -134,9 +133,6 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         }
 
         initializeView();
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
         OffersListFragment offersListFragment = new OffersListFragment();
         replaceFragment(offersListFragment, R.id.offers_container, true, false);
         calculateScreenWidth();
@@ -150,9 +146,6 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     private void initializeView() {
