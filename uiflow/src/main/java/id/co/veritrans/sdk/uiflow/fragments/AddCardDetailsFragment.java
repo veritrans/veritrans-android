@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import id.co.veritrans.sdk.coreflow.callback.UpdateFromScanCardCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
@@ -61,7 +60,6 @@ public class AddCardDetailsFragment extends Fragment{
     private ArrayList<BankDetail> bankDetails;
     private String cardType = "";
     private RelativeLayout formLayout;
-    private UpdateFromScanCardCallback scancardCallback;
 
 
     public static AddCardDetailsFragment newInstance() {

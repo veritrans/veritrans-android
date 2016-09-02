@@ -13,31 +13,19 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
-import java.util.UUID;
-
+import id.co.veritrans.sdk.coreflow.callback.GetCardTokenCallback;
+import id.co.veritrans.sdk.coreflow.callback.SaveCardCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.SaveCardBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TokenBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenSuccessEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
+import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
+import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 
-public class CreditCardPaymentActivity extends AppCompatActivity implements TokenBusCallback, SaveCardBusCallback,TransactionBusCallback{
-
+public class CreditCardPaymentActivity extends AppCompatActivity{
     TextInputLayout cardNumberContainer, cvvContainer, expiredDateContainer;
     EditText cardNumber, cvv, expiredDate;
     Button payBtn;
@@ -49,11 +37,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity implements Toke
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_card_payment);
-        // Register this class into event bus
-        VeritransBusProvider.getInstance().register(this);
         initView();
-        VeritransSDK.getVeritransSDK().snapGetCards(MainActivity.userId);
-
         if(!VeritransSDK.getVeritransSDK().getTransactionRequest()
                 .getCardClickType().equals(getString(R.string.card_click_normal))){
             checkSaveCard.setVisibility(View.VISIBLE);
@@ -62,8 +46,6 @@ public class CreditCardPaymentActivity extends AppCompatActivity implements Toke
 
     @Override
     protected void onDestroy() {
-        // Unregister this class into event bus
-        VeritransBusProvider.getInstance().unregister(this);
         super.onDestroy();
     }
 
@@ -109,9 +91,102 @@ public class CreditCardPaymentActivity extends AppCompatActivity implements Toke
                             date.split("/")[1],
                             VeritransSDK.getVeritransSDK().getClientKey());
                     cardTokenRequest.setGrossAmount(20.0);
-                    VeritransSDK.getVeritransSDK().getToken(cardTokenRequest);
+                    VeritransSDK.getVeritransSDK().getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+                        @Override
+                        public void onSuccess(TokenDetailsResponse response) {
+                            String tokenId = response.getTokenId();
+                            payWithCreditCard(VeritransSDK.getVeritransSDK().readAuthenticationToken(), tokenId);
+                        }
+
+                        @Override
+                        public void onFailure(TokenDetailsResponse response, String reason) {
+                            // Handle error when get token
+                            dialog.dismiss();
+                            AlertDialog dialog = new AlertDialog.Builder(CreditCardPaymentActivity.this)
+                                    .setMessage(reason)
+                                    .create();
+                            dialog.show();
+                        }
+
+                        @Override
+                        public void onError(Throwable error) {
+                            actionOnError(error);
+                        }
+                    });
                 }
                 }
+        });
+    }
+
+    private void payWithCreditCard(String authenticationToken, String cardToken) {
+        VeritransSDK.getVeritransSDK().snapPaymentUsingCard(authenticationToken, cardToken, saveCard, new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                // Handle success transaction
+                dialog.dismiss();
+                if(!TextUtils.isEmpty(response.getSavedTokenId()) && saveCard){
+                    ArrayList<SaveCardRequest> requests = new ArrayList<>();
+                    requests.add(new SaveCardRequest(response.getSavedTokenId(),
+                            response.getMaskedCard(), "visa"));
+                    saveCreditCard(requests);
+                }
+                final AlertDialog dialog = new AlertDialog.Builder(CreditCardPaymentActivity.this)
+                        .setMessage(response.getStatusMessage())
+                        .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                        }).create();
+                dialog.show();
+            }
+
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                // Handle failed transaction
+                dialog.dismiss();
+                AlertDialog dialog = new AlertDialog.Builder(CreditCardPaymentActivity.this)
+                        .setMessage(reason)
+                        .create();
+                dialog.show();
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                actionOnError(error);
+            }
+        });
+    }
+
+    private void actionOnError(Throwable error) {
+        // Handle generic error condition
+        dialog.dismiss();
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage("Unknown error: " + error.getMessage())
+                .create();
+        dialog.show();
+    }
+
+    private void saveCreditCard(ArrayList<SaveCardRequest> requests) {
+
+        VeritransSDK.getVeritransSDK().snapSaveCard(MainActivity.userId, requests, new SaveCardCallback() {
+            @Override
+            public void onSuccess(SaveCardResponse response) {
+
+            }
+
+            @Override
+            public void onFailure(String reason) {
+                Logger.i("savecard>failed");
+                Toast.makeText(getApplicationContext(), reason, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                actionOnError(error);
+            }
         });
     }
 
@@ -162,99 +237,4 @@ public class CreditCardPaymentActivity extends AppCompatActivity implements Toke
                 && expiredDate.getText().toString().split("/").length == 2;
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent networkUnavailableEvent) {
-        // Handle network not available condition
-        dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Network is unavailable")
-                .create();
-        dialog.show();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent generalErrorEvent) {
-        // Handle generic error condition
-        dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Unknown error: " + generalErrorEvent.getMessage() )
-                .create();
-        dialog.show();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent transactionSuccessEvent) {
-        // Handle success transaction
-        dialog.dismiss();
-        if(!TextUtils.isEmpty(transactionSuccessEvent.getResponse().getSavedTokenId())){
-            ArrayList<SaveCardRequest> requests = new ArrayList<>();
-            requests.add(new SaveCardRequest(transactionSuccessEvent.getResponse().getSavedTokenId(),
-                    transactionSuccessEvent.getResponse().getMaskedCard(), "visa"));
-            VeritransSDK.getVeritransSDK().snapSaveCard(MainActivity.userId, requests);
-        }else{
-            ArrayList<SaveCardRequest> requests = new ArrayList<>();
-            requests.add(new SaveCardRequest(UUID.randomUUID().toString(),
-                    transactionSuccessEvent.getResponse().getMaskedCard(), "visa"));
-            VeritransSDK.getVeritransSDK().snapSaveCard(MainActivity.userId, requests);
-        }
-        final AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage(transactionSuccessEvent.getResponse().getStatusMessage())
-                .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        setResult(RESULT_OK);
-                        finish();
-                    }
-                }).create();
-        dialog.show();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent transactionFailedEvent) {
-        // Handle failed transaction
-        dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage(transactionFailedEvent.getMessage())
-                .create();
-        dialog.show();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetTokenSuccessEvent getTokenSuccessEvent) {
-        // Handle get token success
-        // Do the charge/payment
-        VeritransSDK.getVeritransSDK().snapPaymentUsingCard(VeritransSDK.getVeritransSDK().readAuthenticationToken(),
-                getTokenSuccessEvent.getResponse().getTokenId(), saveCard);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetTokenFailedEvent getTokenFailedEvent) {
-        // Handle error when get token
-        dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage(getTokenFailedEvent.getMessage())
-                .create();
-        dialog.show();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(SaveCardSuccessEvent event) {
-        Logger.i("savecard>success");
-        Toast.makeText(getApplicationContext(), event.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(SaveCardFailedEvent event) {
-        Logger.i("savecard>failed");
-        Toast.makeText(getApplicationContext(), event.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
-    }
 }

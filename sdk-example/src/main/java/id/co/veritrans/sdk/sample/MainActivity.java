@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
                     .setMerchantName("Veritrans Example Merchant")
                     .buildSDK();
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));
-
         }else{
             // SDK initiation for UIflow
             VeritransSDK veritransSDK = new SdkUIFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
@@ -102,12 +101,8 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
                     .setBoldText("open_sans_bold.ttf")
                     .setMerchantName("Veritrans Example Merchant")
                     .buildSDK();
-
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));
-
         }
-
-
     }
 
     /**
