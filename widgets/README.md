@@ -60,7 +60,7 @@ creditCardForm.setVeritransClientKey(VT_CLIENT_KEY);
 creditCardForm.setMerchantUrl(MERCHANT_URL);
 ```
 
-#### Start Payment
+#### Payment
 
 *Note*: You must complete previous part before proceed to start the payment.
 
@@ -87,4 +87,22 @@ First, you need to define the transaction details.
         // Set to true if you want to activate 3D secure authorization
         creditCard.setSecure(true);
         transactionRequest(creditCard);
+```
+
+Then start the payment.
+
+```Java
+if (creditCardForm.checkCardValidity()) {
+                    creditCardForm.pay(transactionRequest, new CreditCardForm.TransactionCallback() {
+                        @Override
+                        public void onSucceed(TransactionResponse response) {
+                            // Handle payment success
+                        }
+
+                        @Override
+                        public void onFailed(Throwable throwable) {
+                            // Handle payment failure
+                        }
+                    });
+                }
 ```
