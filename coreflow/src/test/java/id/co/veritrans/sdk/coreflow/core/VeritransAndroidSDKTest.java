@@ -67,7 +67,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class VeritransAndroidSDKTest {
 
 //    @Mock
-//    protected BusCollaborator busCollaborator;
+//    protected BusCollaborator callbackCollaborator;
 //    @InjectMocks
 //    protected EventBusImplementSample eventBustImplementSample;
 //    @Mock
@@ -232,7 +232,7 @@ public class VeritransAndroidSDKTest {
 //
 //        veritransSDKSSpy.getCardToken(cardTokenRequestMock);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning);
-//        busCollaborator.onGeneralErrorEvent();
+//        callbackCollaborator.onGeneralErrorEvent();
 //    }
 //
 //    @Test
@@ -388,7 +388,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
 //        veritransSDKSSpy.checkout();
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+//        Mockito.verify(callbackCollaborator).onGeneralErrorEvent();
 //    }
 //
 //    @Test
@@ -397,14 +397,14 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
 //        veritransSDKSSpy.checkout();
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+//        Mockito.verify(callbackCollaborator).onGeneralErrorEvent();
 //    }
 //
 //
 //    @Test
 //    public void getSnapTransaction() {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-//        veritransSDKSSpy.getPaymentOption(snapTOken);
+//        veritransSDKSSpy.getTransactionOptions(snapTOken);
 //        Assert.assertEquals(true, veritransSDKSSpy.isRunning());
 //
 //    }
@@ -413,18 +413,18 @@ public class VeritransAndroidSDKTest {
 //    public void getSnapTransaction_whenTokenNull() {
 //        when(TextUtils.isEmpty(null)).thenReturn(true);
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-//        veritransSDKSSpy.getPaymentOption(null);
+//        veritransSDKSSpy.getTransactionOptions(null);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+//        Mockito.verify(callbackCollaborator).onGeneralErrorEvent();
 //    }
 //
 //    @Test
 //    public void getSnapTransaction_whenNetworkUnAvailable() {
 //        when(TextUtils.isEmpty(sdkTokenMock)).thenReturn(true);
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-//        veritransSDKSSpy.getPaymentOption(null);
+//        veritransSDKSSpy.getTransactionOptions(null);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+//        Mockito.verify(callbackCollaborator).onGeneralErrorEvent();
 //    }
 //
 //    @Test
@@ -440,7 +440,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
 //        veritransSDKSSpy.snapPaymentUsingCard(cardToken, token, false);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+//        Mockito.verify(callbackCollaborator).onGeneralErrorEvent();
 //    }
 //
 //    @Test
@@ -449,7 +449,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
 //        veritransSDKSSpy.snapPaymentUsingCard(cardToken, token, false);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+//        Mockito.verify(callbackCollaborator).onNetworkUnAvailable();
 //    }
 //
 //    @Test
@@ -466,7 +466,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
 //        veritransSDKSSpy.snapPaymentUsingBankTransferBCA(email, token);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+//        Mockito.verify(callbackCollaborator).onNetworkUnAvailable();
 //    }
 //
 //    @Test
@@ -474,7 +474,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
 //        veritransSDKSSpy.snapPaymentUsingBankTransferBCA(email, token);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+//        Mockito.verify(callbackCollaborator).onGeneralErrorEvent();
 //    }
 //
 //    @Test
@@ -491,7 +491,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
 //        veritransSDKSSpy.snapPaymentUsingBankTransferPermata(email, token);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+//        Mockito.verify(callbackCollaborator).onNetworkUnAvailable();
 //    }
 //
 //    @Test
@@ -499,7 +499,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
 //        veritransSDKSSpy.snapPaymentUsingBankTransferPermata(email, token);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+//        Mockito.verify(callbackCollaborator).onGeneralErrorEvent();
 //    }
 //
 //    @Test
@@ -515,7 +515,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
 //        veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+//        Mockito.verify(callbackCollaborator).onGeneralErrorEvent();
 //    }
 //
 //    @Test
@@ -524,7 +524,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
 //        veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+//        Mockito.verify(callbackCollaborator).onNetworkUnAvailable();
 //    }
 //
 //    @Test
@@ -540,7 +540,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
 //        veritransSDKSSpy.snapPaymentUsingBCAKlikpay(token);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+//        Mockito.verify(callbackCollaborator).onGeneralErrorEvent();
 //    }
 //
 //    @Test
@@ -549,7 +549,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
 //        veritransSDKSSpy.snapPaymentUsingBCAKlikpay(token);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+//        Mockito.verify(callbackCollaborator).onNetworkUnAvailable();
 //    }
 //
 //    public void snapPaymentUsingBankTransferAllBank() {
@@ -565,7 +565,7 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
 //        veritransSDKSSpy.snapPaymentUsingBankTransferAllBank(email, token);
 //        Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+//        Mockito.verify(callbackCollaborator).onNetworkUnAvailable();
 //    }
 //
 //    @Test
@@ -573,7 +573,8 @@ public class VeritransAndroidSDKTest {
 //        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
 //        veritransSDKSSpy.snapPaymentUsingBankTransferAllBank(email, token);
 //        Assert.assertFalse(veritransSDKSSpy.isRunning());
-//        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+//        Mockito.verify(callbackCollaborator).onGeneralErrorEvent();
 //    }
 //
+
 }

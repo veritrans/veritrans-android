@@ -120,7 +120,6 @@ public class UserDetailFragment extends Fragment {
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
         ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);
-
     }
 
 }

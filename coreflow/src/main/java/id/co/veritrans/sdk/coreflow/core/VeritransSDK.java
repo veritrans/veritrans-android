@@ -349,9 +349,9 @@ public class VeritransSDK {
      * It will run background task to get snap transaction details.
      *
      * @param snapToken Snap authentication token
-     * @param callback payment option callback
+     * @param callback transaction option callback
      */
-    public void getPaymentOption(@NonNull String snapToken, @NonNull PaymentOptionCallback callback) {
+    public void getTransactionOptions(@NonNull String snapToken, @NonNull PaymentOptionCallback callback) {
         if(callback == null){
             Logger.d(TAG, context.getString(R.string.callback_unimplemented));
             return;
@@ -359,7 +359,7 @@ public class VeritransSDK {
         if (!TextUtils.isEmpty(snapToken)) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.getPaymentOption(snapToken, callback);
+                mSnapTransactionManager.getTransactionOptions(snapToken, callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));

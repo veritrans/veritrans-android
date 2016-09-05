@@ -84,7 +84,7 @@ public class CoreFlowActivity extends AppCompatActivity {
     }
 
     private void getPaymentOption(String tokenId) {
-        VeritransSDK.getVeritransSDK().getPaymentOption(tokenId, new PaymentOptionCallback() {
+        VeritransSDK.getVeritransSDK().getTransactionOptions(tokenId, new PaymentOptionCallback() {
             @Override
             public void onSuccess(Transaction transaction) {
                 if(dialog.isShowing()){

@@ -224,7 +224,7 @@ public class PaymentMethodsActivity extends BaseActivity{
     }
 
     private void getPaymentOptions(String tokenId) {
-        veritransSDK.getPaymentOption(tokenId, new PaymentOptionCallback() {
+        veritransSDK.getTransactionOptions(tokenId, new PaymentOptionCallback() {
             @Override
             public void onSuccess(Transaction transaction) {
                 try{
@@ -300,9 +300,6 @@ public class PaymentMethodsActivity extends BaseActivity{
 
             if (resultCode == RESULT_OK) {
                 TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
-                Logger.d(TAG, "sending result back with code >response" + response.getStatusMessage());
-                Logger.d(TAG, "sending result back with code >response" + response.getStatusCode());
-
                 if (response != null) {
                     if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
                         veritransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));

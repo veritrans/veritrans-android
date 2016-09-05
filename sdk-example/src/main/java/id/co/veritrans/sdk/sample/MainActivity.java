@@ -204,8 +204,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
     @Override
     public void onTransactionFinished(TransactionResult result) {
-        Logger.i("transfinish:result:" + result.getStatus() );
-        if (result != null) {
+        if (result.getResponse() != null) {
             switch (result.getStatus()) {
                 case TransactionResult.STATUS_SUCCESS:
                     Toast.makeText(this, "Transaction Finished. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();

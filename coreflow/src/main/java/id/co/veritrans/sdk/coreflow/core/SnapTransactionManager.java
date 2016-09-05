@@ -101,7 +101,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param snapToken Snap Token.
      *@param  callback callback of payment option
      */
-    public void getPaymentOption(@NonNull String snapToken, final PaymentOptionCallback callback) {
+    public void getTransactionOptions(@NonNull String snapToken, final PaymentOptionCallback callback) {
         final long start = System.currentTimeMillis();
             snapRestAPI.getPaymentOption(snapToken, new Callback<Transaction>() {
                 @Override
@@ -134,7 +134,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     long end = System.currentTimeMillis();
 
                     if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + e.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + e.getMessage());
                     }
                     callback.onError(new Throwable(e.getMessage(), e.getCause()));
                     // Track Mixpanel event
@@ -182,7 +182,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     long end = System.currentTimeMillis();
 
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, error.getMessage());
@@ -231,7 +231,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, error.getMessage());
@@ -281,7 +281,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, error.getMessage());
@@ -333,7 +333,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     long end = System.currentTimeMillis();
 
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, error.getMessage());
@@ -385,7 +385,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, error.getMessage());
@@ -434,7 +434,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, error.getMessage());
@@ -483,7 +483,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, error.getMessage());
@@ -532,7 +532,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, error.getMessage());
@@ -581,7 +581,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, error.getMessage());
@@ -630,7 +630,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, error.getMessage());
@@ -679,7 +679,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, error.getMessage());
@@ -728,7 +728,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_XL_TUNAI, end - start, error.getMessage());
@@ -777,7 +777,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, error.getMessage());
@@ -826,7 +826,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, error.getMessage());
@@ -875,7 +875,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KIOSAN, end - start, error.getMessage());
@@ -924,7 +924,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
                     long end = System.currentTimeMillis();
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, ALL_BANK, end - start, error.getMessage());
@@ -962,7 +962,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 public void failure(RetrofitError error) {
                     releaseResources();
                     if(error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException){
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                 }
@@ -988,7 +988,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if(response.getStatus() == 200 || response.getStatus() == 201){
                             callback.onSuccess(cardsResponses);
                         }else{
-                            callback.onError(new Throwable(response.getReason()));
+                            callback.onFailure(response.getReason());
                         }
                     }else{
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
@@ -999,7 +999,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 public void failure(RetrofitError error) {
                     releaseResources();
                     if(error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException){
-                        Logger.i(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                 }
@@ -1044,7 +1044,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
             public void failure(RetrofitError e) {
                 releaseResources();
                 if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                    Logger.i(TAG,"Error in SSL Certificate. " + e.getMessage());
+                    Logger.e(TAG,"Error in SSL Certificate. " + e.getMessage());
                 }
                 callback.onError(new Throwable(e.getMessage(), e.getCause()));
             }
@@ -1215,7 +1215,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
         long end = System.currentTimeMillis();
 
         if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-            Logger.i("Error in SSL Certificate. " + e.getMessage());
+            Logger.e(TAG,"Error in SSL Certificate. " + e.getMessage());
         }
         callback.onError(new Throwable(e.getMessage(), e.getCause()));
         // Track Mixpanel event
