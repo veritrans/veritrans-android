@@ -53,7 +53,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_cimb_clickpay);
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
 
         if (mVeritransSDK == null) {
             SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, Constants

@@ -68,7 +68,7 @@ public class MixPanelAnalyticsManagerTest {
         PowerMockito.mockStatic(VeritransSDK.class);
         analyticsManager = new MixpanelAnalyticsManager(mixpanelApiMock);
         mixPanelEventMock = new MixpanelEvent();
-        Mockito.when(VeritransSDK.getVeritransSDK()).thenReturn(sdkMock);
+        Mockito.when(VeritransSDK.getInstance()).thenReturn(sdkMock);
         mixpanelAnalyticsManagerSpy = Mockito.spy(analyticsManager);
 
     }

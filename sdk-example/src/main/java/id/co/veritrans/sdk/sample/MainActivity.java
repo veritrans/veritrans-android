@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         coreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransSDK.getVeritransSDK().setTransactionRequest(initializePurchaseRequest());
+                VeritransSDK.getInstance().setTransactionRequest(initializePurchaseRequest());
                 Intent intent = new Intent(MainActivity.this, CoreFlowActivity.class);
                 startActivity(intent);
             }
@@ -155,12 +155,12 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         uiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.i("config>clientkey:" + VeritransSDK.getVeritransSDK().getClientKey());
-                Logger.i("config>merchantUrl:" + VeritransSDK.getVeritransSDK().getMerchantServerUrl());
-                Logger.i("config>sdkurl:" + VeritransSDK.getVeritransSDK().getSdkBaseUrl());
-                Logger.i("config>timeout:" + VeritransSDK.getVeritransSDK().getRequestTimeOut());
-                VeritransSDK.getVeritransSDK().setTransactionRequest(initializePurchaseRequest());
-                VeritransSDK.getVeritransSDK().startPaymentUiFlow(MainActivity.this);
+                Logger.i("config>clientkey:" + VeritransSDK.getInstance().getClientKey());
+                Logger.i("config>merchantUrl:" + VeritransSDK.getInstance().getMerchantServerUrl());
+                Logger.i("config>sdkurl:" + VeritransSDK.getInstance().getSdkBaseUrl());
+                Logger.i("config>timeout:" + VeritransSDK.getInstance().getRequestTimeOut());
+                VeritransSDK.getInstance().setTransactionRequest(initializePurchaseRequest());
+                VeritransSDK.getInstance().startPaymentUiFlow(MainActivity.this);
             }
         });
 
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         uiCardRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransSDK.getVeritransSDK().startRegisterCardUIFlow(MainActivity.this);
+                VeritransSDK.getInstance().startRegisterCardUIFlow(MainActivity.this);
             }
         });
     }

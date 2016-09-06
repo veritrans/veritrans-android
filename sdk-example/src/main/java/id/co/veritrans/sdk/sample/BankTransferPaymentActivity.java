@@ -42,8 +42,8 @@ public class BankTransferPaymentActivity extends AppCompatActivity{
                 dialog.show();
                 String type = getIntent().getStringExtra(TRANSFER_TYPE);
                 if(type.equals(getString(R.string.label_bank_transfer_bca))){
-                    VeritransSDK.getVeritransSDK().snapPaymentUsingBankTransferBCA(
-                            VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                    VeritransSDK.getInstance().snapPaymentUsingBankTransferBCA(
+                            VeritransSDK.getInstance().readAuthenticationToken(),
                             sampleEmail, new TransactionCallback() {
                                 @Override
                                 public void onSuccess(TransactionResponse response) {
@@ -61,8 +61,8 @@ public class BankTransferPaymentActivity extends AppCompatActivity{
                                 }
                             });
                 }else if(type.equals(getString(R.string.label_bank_transfer_permata))){
-                    VeritransSDK.getVeritransSDK().snapPaymentUsingBankTransferPermata(
-                            VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                    VeritransSDK.getInstance().snapPaymentUsingBankTransferPermata(
+                            VeritransSDK.getInstance().readAuthenticationToken(),
                             sampleEmail, new TransactionCallback() {
                                 @Override
                                 public void onSuccess(TransactionResponse response) {

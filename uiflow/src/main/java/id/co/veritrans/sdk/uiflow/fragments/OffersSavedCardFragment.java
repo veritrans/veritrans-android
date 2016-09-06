@@ -26,7 +26,6 @@ import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator;
 
 public class OffersSavedCardFragment extends Fragment {
@@ -74,7 +73,7 @@ public class OffersSavedCardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
     }
 
     @Override

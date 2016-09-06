@@ -94,7 +94,7 @@ public class VeritransSDK {
      *
      * @param sdkBuilder SDK Coreflow Builder
      */
-    protected static VeritransSDK getInstance(@NonNull BaseSdkBuilder sdkBuilder) {
+    protected static VeritransSDK delegateInstance(@NonNull BaseSdkBuilder sdkBuilder) {
         if (sdkBuilder != null) {
             veritransSDK = new VeritransSDK(sdkBuilder);
         } else {
@@ -108,8 +108,7 @@ public class VeritransSDK {
      *
      * @return VeritransSDK instance
      */
-    public static VeritransSDK getVeritransSDK() {
-
+    public static VeritransSDK getInstance() {
         return veritransSDK;
     }
 

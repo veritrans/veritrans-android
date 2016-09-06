@@ -37,8 +37,8 @@ public class KlikBcaPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                VeritransSDK.getVeritransSDK().snapPaymentUsingKlikBCA(
-                        VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                VeritransSDK.getInstance().snapPaymentUsingKlikBCA(
+                        VeritransSDK.getInstance().readAuthenticationToken(),
                         sampleUserId, new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

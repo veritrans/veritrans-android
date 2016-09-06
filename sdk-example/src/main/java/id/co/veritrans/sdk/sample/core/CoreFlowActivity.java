@@ -56,7 +56,7 @@ public class CoreFlowActivity extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setMessage("get payment methods");
         dialog.show();
-        VeritransSDK.getVeritransSDK().checkout(new CheckoutCallback() {
+        VeritransSDK.getInstance().checkout(new CheckoutCallback() {
             @Override
             public void onSuccess(Token token) {
                 Logger.i("snaptoken>success");
@@ -84,7 +84,7 @@ public class CoreFlowActivity extends AppCompatActivity {
     }
 
     private void getPaymentOption(String tokenId) {
-        VeritransSDK.getVeritransSDK().getTransactionOptions(tokenId, new TransactionOptionsCallback() {
+        VeritransSDK.getInstance().getTransactionOptions(tokenId, new TransactionOptionsCallback() {
             @Override
             public void onSuccess(Transaction transaction) {
                 if(dialog.isShowing()){

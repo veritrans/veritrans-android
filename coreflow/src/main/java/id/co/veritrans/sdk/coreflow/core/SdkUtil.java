@@ -154,7 +154,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_permata));
+        bankTransfer.setBank(VeritransSDK.getInstance().getContext().getString(R.string.payment_permata));
 
         return new PermataBankTransfer(bankTransfer,
                 transactionDetails, request.getItemDetails(),
@@ -182,7 +182,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_bca));
+        bankTransfer.setBank(VeritransSDK.getInstance().getContext().getString(R.string.payment_bca));
 
 
         BCABankTransfer model =
@@ -217,7 +217,7 @@ public class SdkUtil {
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
 
-        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indomaret));
+        model.setPaymentType(VeritransSDK.getInstance().getContext().getString(R.string.payment_indomaret));
 
         model.setItem_details(request.getItemDetails());
         model.setCustomerDetails(request.getCustomerDetails());
@@ -374,7 +374,7 @@ public class SdkUtil {
 
         model.setCustomerDetails(request.getCustomerDetails(), request
                 .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indosat_dompetku));
+        model.setPaymentType(VeritransSDK.getInstance().getContext().getString(R.string.payment_indosat_dompetku));
 
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();
@@ -410,7 +410,7 @@ public class SdkUtil {
         CustomerDetails mCustomerDetails = null;
 
         try {
-            userDetail = LocalDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext().getString(R.string.user_details), UserDetail.class);
+            userDetail = LocalDataHandler.readObject(VeritransSDK.getInstance().getContext().getString(R.string.user_details), UserDetail.class);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
@@ -517,7 +517,7 @@ public class SdkUtil {
     public static String getDeviceId() {
         String deviceId = "UNKNOWN";
         try {
-            deviceId = Settings.Secure.getString(VeritransSDK.getVeritransSDK().getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+            deviceId = Settings.Secure.getString(VeritransSDK.getInstance().getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         } catch (Exception ex) {
             Logger.e(ex.toString());
         }

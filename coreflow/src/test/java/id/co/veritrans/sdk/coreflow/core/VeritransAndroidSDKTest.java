@@ -317,7 +317,7 @@ public class VeritransAndroidSDKTest {
 
     @Test
     public void getInstanceTest() {
-        VeritransSDK.getInstance(null);
+        VeritransSDK.delegateInstance(null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString());
     }

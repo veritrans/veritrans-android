@@ -22,7 +22,7 @@ public class BaseActivity extends AppCompatActivity {
     protected  boolean saveCurrentFragment = false;
 
     public void initializeTheme() {
-        VeritransSDK mVeritransSDK = VeritransSDK.getVeritransSDK();
+        VeritransSDK mVeritransSDK = VeritransSDK.getInstance();
         if (mVeritransSDK != null) {
             ImageView logo = (ImageView) findViewById(R.id.merchant_logo);
             if (logo != null) {

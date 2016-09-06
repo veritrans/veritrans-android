@@ -84,7 +84,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_transfer);
 
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
 
         // get position of selected payment method
         Intent data = getIntent();
@@ -339,7 +339,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         }
 
 
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        final VeritransSDK veritransSDK = VeritransSDK.getInstance();
 
         if (veritransSDK != null) {
             //transaction details

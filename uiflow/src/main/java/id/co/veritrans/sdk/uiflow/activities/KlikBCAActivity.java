@@ -58,7 +58,7 @@ public class KlikBCAActivity extends BaseActivity {
         setContentView(R.layout.activity_klik_bca);
 
         // Get Veritrans SDK instance
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
 
         // Initialize views
         mTextViewOrderId = (TextView) findViewById(R.id.text_order_id);

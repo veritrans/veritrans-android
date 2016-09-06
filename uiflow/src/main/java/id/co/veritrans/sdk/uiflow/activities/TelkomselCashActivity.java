@@ -56,7 +56,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telkomsel);
 
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
 
         initializeView();
         bindDataToView();
@@ -170,7 +170,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         }
 
 
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        final VeritransSDK veritransSDK = VeritransSDK.getInstance();
 
         if (veritransSDK != null) {
 

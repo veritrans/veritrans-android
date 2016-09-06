@@ -64,7 +64,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kioson);
 
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
 
         // get position of selected payment method
         Intent data = getIntent();

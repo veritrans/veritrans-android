@@ -80,7 +80,7 @@ public class SaveCreditCardActivity extends BaseActivity{
         setContentView(R.layout.activity_save_credit_card);
 
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.title_header);

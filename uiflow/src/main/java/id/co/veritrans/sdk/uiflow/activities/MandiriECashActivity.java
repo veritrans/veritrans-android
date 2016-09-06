@@ -58,7 +58,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_mandiri_e_cash);
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
 
         if (mVeritransSDK == null) {
             SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, Constants

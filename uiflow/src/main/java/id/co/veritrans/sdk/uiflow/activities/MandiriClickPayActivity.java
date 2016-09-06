@@ -65,7 +65,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
         setContentView(R.layout.activity_mandiri_clickpay);
 
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
 
         if (mVeritransSDK == null) {
             SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this, Constants

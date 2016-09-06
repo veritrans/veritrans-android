@@ -34,8 +34,8 @@ public class IndosatDompetkuPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                VeritransSDK.getVeritransSDK().snapPaymentUsingIndosatDompetku(
-                        VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                VeritransSDK.getInstance().snapPaymentUsingIndosatDompetku(
+                        VeritransSDK.getInstance().readAuthenticationToken(),
                         sampleMSISDN, new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

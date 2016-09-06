@@ -112,7 +112,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_debit_card_flow);
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.text_title);

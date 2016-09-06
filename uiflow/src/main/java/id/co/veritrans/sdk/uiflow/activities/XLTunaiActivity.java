@@ -63,7 +63,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xl_tunai);
 
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
 
         // get position of selected payment method
         Intent data = getIntent();

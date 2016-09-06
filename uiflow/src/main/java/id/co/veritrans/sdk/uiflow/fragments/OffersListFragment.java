@@ -13,9 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.GetOffersResponseModel;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.uiflow.adapters.OffersAdapter;
@@ -52,7 +50,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
             savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_offers_list, container, false);
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
         initialiseView(view);
         setUpOffersList();
         return view;

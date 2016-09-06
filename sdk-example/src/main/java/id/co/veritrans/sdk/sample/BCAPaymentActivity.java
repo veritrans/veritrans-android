@@ -42,8 +42,8 @@ public class BCAPaymentActivity extends AppCompatActivity{
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                VeritransSDK.getVeritransSDK().snapPaymentUsingBankTransferBCA(
-                        VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                VeritransSDK.getInstance().snapPaymentUsingBankTransferBCA(
+                        VeritransSDK.getInstance().readAuthenticationToken(),
                         sampleEmail, new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

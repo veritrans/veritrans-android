@@ -72,7 +72,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indosat);
 
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
 
         initializeView();
         bindDataToView();
@@ -205,7 +205,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         }
 
 
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        final VeritransSDK veritransSDK = VeritransSDK.getInstance();
 
         if (veritransSDK != null) {
 

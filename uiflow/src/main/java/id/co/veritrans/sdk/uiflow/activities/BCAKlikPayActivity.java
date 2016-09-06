@@ -1,7 +1,9 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +36,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
     private static final int PAYMENT_WEB_INTENT = 152;
     private static final java.lang.String TAG = "BCAKlikPayActivity";
+    private static final String STATUS_FRAGMENT = "status";
     private BCAKlikPayInstructionFragment bcaKlikPayInstructionFragment = null;
     private Button buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
@@ -53,7 +56,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_bca_klikpay);
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
 
         if (mVeritransSDK == null) {
             SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, Constants
@@ -116,6 +119,8 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
             onBackPressed();
         }
         return false;
@@ -175,8 +180,12 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i(TAG, "reqCode:" + requestCode + ",res:" + resultCode);
+        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
+        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         if (resultCode == RESULT_OK) {
-            RESULT_CODE = RESULT_OK;
+            currentFragmentName = STATUS_FRAGMENT;
+            mToolbar.setNavigationIcon(closeIcon);
+            setSupportActionBar(mToolbar);
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
                     mVeritransSDK.getTransactionRequest().getOrderId(), String.valueOf(mVeritransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_bca_click), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =

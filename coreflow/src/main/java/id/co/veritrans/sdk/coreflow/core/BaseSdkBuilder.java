@@ -51,12 +51,12 @@ public abstract class BaseSdkBuilder<T> {
      * @return it returns fully initialized object of veritrans sdk.
      */
     public VeritransSDK buildSDK() {
-        if(VeritransSDK.getVeritransSDK() != null){
-            return VeritransSDK.getVeritransSDK();
+        if(VeritransSDK.getInstance() != null){
+            return VeritransSDK.getInstance();
         }
 
-        if (VeritransSDK.getVeritransSDK() == null && isValidData()) {
-            VeritransSDK veritransSDK = VeritransSDK.getInstance(this);
+        if (VeritransSDK.getInstance() == null && isValidData()) {
+            VeritransSDK veritransSDK = VeritransSDK.delegateInstance(this);
             return veritransSDK;
 
         } else {

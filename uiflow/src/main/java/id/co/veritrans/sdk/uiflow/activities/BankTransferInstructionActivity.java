@@ -57,7 +57,7 @@ public class BankTransferInstructionActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
         setContentView(R.layout.activity_bank_transfer_instruction);
         initializeViews();
     }

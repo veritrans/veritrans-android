@@ -48,7 +48,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_epay_bri);
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
         if (veritransSDK == null) {
             SdkUIFlowUtil.showSnackbar(EpayBriActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);

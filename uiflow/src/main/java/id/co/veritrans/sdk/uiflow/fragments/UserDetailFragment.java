@@ -50,7 +50,7 @@ public class UserDetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        VeritransSDK veritransSDK = VeritransSDK.getInstance();
         UserDetailsActivity userDetailsActivity = (UserDetailsActivity) getActivity();
         if (userDetailsActivity != null && userDetailsActivity.getSupportActionBar() != null) {
             userDetailsActivity.getSupportActionBar().setTitle(getString(R.string.title_user_details));

@@ -117,7 +117,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offers);
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
         fragmentManager = getSupportFragmentManager();
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
         morphToCircle(0);

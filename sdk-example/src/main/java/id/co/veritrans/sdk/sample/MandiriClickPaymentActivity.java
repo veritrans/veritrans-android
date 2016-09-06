@@ -54,8 +54,8 @@ public class MandiriClickPaymentActivity extends AppCompatActivity {
                 refreshView();
                 if (inputValidator()) {
                     dialog.show();
-                    VeritransSDK.getVeritransSDK().snapPaymentUsingMandiriClickPay(
-                            VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                    VeritransSDK.getInstance().snapPaymentUsingMandiriClickPay(
+                            VeritransSDK.getInstance().readAuthenticationToken(),
                             sampleMandiriCardNumber,
                             sampleTokenResponse,
                             input3, new TransactionCallback() {

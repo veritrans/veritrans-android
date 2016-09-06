@@ -76,7 +76,7 @@ public class PaymentMethodsActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments_method);
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
         initializeTheme();
 
         UserDetail userDetail = null;
@@ -178,7 +178,7 @@ public class PaymentMethodsActivity extends BaseActivity{
      */
     private void bindDataToView() {
 
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        VeritransSDK veritransSDK = VeritransSDK.getInstance();
 
         if (veritransSDK != null) {
             String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount()));

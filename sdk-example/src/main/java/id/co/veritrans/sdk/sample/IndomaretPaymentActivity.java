@@ -41,8 +41,8 @@ public class IndomaretPaymentActivity extends AppCompatActivity{
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                VeritransSDK.getVeritransSDK().snapPaymentUsingIndomaret(
-                        VeritransSDK.getVeritransSDK().readAuthenticationToken(), new TransactionCallback() {
+                VeritransSDK.getInstance().snapPaymentUsingIndomaret(
+                        VeritransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {
                                 actionTransactionSuccess(response);

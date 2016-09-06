@@ -43,8 +43,8 @@ public class BCAKlikPayActivity extends AppCompatActivity{
                 // Show progress dialog
                 dialog.show();
                 // Do payment
-                VeritransSDK.getVeritransSDK().snapPaymentUsingBCAKlikpay(
-                        VeritransSDK.getVeritransSDK().readAuthenticationToken(), new TransactionCallback() {
+                VeritransSDK.getInstance().snapPaymentUsingBCAKlikpay(
+                        VeritransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {
                                 actionTransactionSuccess(response);

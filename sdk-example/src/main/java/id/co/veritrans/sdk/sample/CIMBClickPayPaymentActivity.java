@@ -33,8 +33,8 @@ public class CIMBClickPayPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                VeritransSDK.getVeritransSDK().snapPaymentUsingCIMBClick(
-                        VeritransSDK.getVeritransSDK().readAuthenticationToken(), new TransactionCallback() {
+                VeritransSDK.getInstance().snapPaymentUsingCIMBClick(
+                        VeritransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {
                                 actionTransactionSuccess(response);

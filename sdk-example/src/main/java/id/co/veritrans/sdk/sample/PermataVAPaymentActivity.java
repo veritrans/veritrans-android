@@ -41,8 +41,8 @@ public class PermataVAPaymentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                VeritransSDK.getVeritransSDK().snapPaymentUsingBankTransferPermata(
-                        VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                VeritransSDK.getInstance().snapPaymentUsingBankTransferPermata(
+                        VeritransSDK.getInstance().readAuthenticationToken(),
                         sampleEmail, new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

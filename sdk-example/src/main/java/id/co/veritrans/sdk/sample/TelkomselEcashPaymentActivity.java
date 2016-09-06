@@ -34,8 +34,8 @@ public class TelkomselEcashPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                VeritransSDK.getVeritransSDK().snapPaymentUsingTelkomselEcash(
-                        VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                VeritransSDK.getInstance().snapPaymentUsingTelkomselEcash(
+                        VeritransSDK.getInstance().readAuthenticationToken(),
                         sampleCustomerPhone, new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

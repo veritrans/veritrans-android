@@ -41,8 +41,8 @@ public class MandiriBillPaymentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                VeritransSDK.getVeritransSDK().snapPaymentUsingMandiriBillPay(
-                        VeritransSDK.getVeritransSDK().readAuthenticationToken(),
+                VeritransSDK.getInstance().snapPaymentUsingMandiriBillPay(
+                        VeritransSDK.getInstance().readAuthenticationToken(),
                         sampleEmail, new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

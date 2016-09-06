@@ -86,7 +86,7 @@ public class SdkConfigDialogFragment extends DialogFragment {
                 if(!checkFormValidity()){
                     return;
                 }
-                VeritransSDK.getVeritransSDK().changeSdkConfig(snapUrl, merchantUrl,merchantClientKey, Integer.valueOf(requestTimeout));
+                VeritransSDK.getInstance().changeSdkConfig(snapUrl, merchantUrl,merchantClientKey, Integer.valueOf(requestTimeout));
                 dismiss();
             }
         });
@@ -101,7 +101,7 @@ public class SdkConfigDialogFragment extends DialogFragment {
     }
 
     private void initForm() {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        VeritransSDK veritransSDK = VeritransSDK.getInstance();
         Logger.d("edittimeout:" + veritransSDK.getRequestTimeOut());
         Logger.d("edittimeout>view:" + editTimeout);
 
