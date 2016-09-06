@@ -2,7 +2,6 @@ package id.co.veritrans.sdk.uiflow;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import id.co.veritrans.sdk.coreflow.core.ISdkFlow;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
@@ -16,7 +15,7 @@ public class UIFlow implements ISdkFlow {
 
     @Override
     public void runUIFlow(Context context) {
-        VeritransSDK sdk = VeritransSDK.getVeritransSDK();
+        VeritransSDK sdk = VeritransSDK.getInstance();
         if(sdk != null){
             context.startActivity(new Intent(context,
                     UserDetailsActivity.class));

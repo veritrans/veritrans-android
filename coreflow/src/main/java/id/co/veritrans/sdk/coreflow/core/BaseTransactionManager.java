@@ -83,7 +83,7 @@ public abstract class BaseTransactionManager {
     }
 
     protected void releaseResources() {
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        VeritransSDK veritransSDK = VeritransSDK.getInstance();
         if (veritransSDK != null) {
             veritransSDK.releaseResource();
             Logger.i("released transaction");

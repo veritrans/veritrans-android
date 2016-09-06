@@ -13,19 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
-
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -38,7 +30,7 @@ import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 /**
  * @author rakawm
  */
-public class TelkomselCashActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
+public class TelkomselCashActivity extends BaseActivity implements View.OnClickListener{
 
     public static final String HOME_FRAGMENT = "home";
     public static final String STATUS_FRAGMENT = "transaction_status";
@@ -64,23 +56,17 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telkomsel);
 
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
 
         initializeView();
         bindDataToView();
 
         setUpHomeFragment();
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     /**
@@ -123,8 +109,8 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         logo = (ImageView) findViewById(R.id.merchant_logo);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
-        textOrderId = (DefaultTextView)findViewById(R.id.text_order_id);
-        textTotalAmount = (DefaultTextView)findViewById(R.id.text_amount);
+        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
+        textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
 
         initializeTheme();
         //setup tool bar
@@ -184,7 +170,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         }
 
 
-        final VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        final VeritransSDK veritransSDK = VeritransSDK.getInstance();
 
         if (veritransSDK != null) {
 
@@ -198,7 +184,36 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
     }
 
     private void transactionUsingTelkomsel(final VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingTelkomselEcash(veritransSDK.readAuthenticationToken(), telkomselToken);
+        veritransSDK.snapPaymentUsingTelkomselEcash(veritransSDK.readAuthenticationToken(),
+                telkomselToken, new TransactionCallback() {
+                    @Override
+                    public void onSuccess(TransactionResponse response) {
+                        SdkUIFlowUtil.hideProgressDialog();
+                        mTransactionResponse = response;
+
+                        if (response != null) {
+                            setUpTransactionStatusFragment(response);
+                        } else {
+                            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, SOMETHING_WENT_WRONG);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(TransactionResponse response, String reason) {
+                        SdkUIFlowUtil.hideProgressDialog();
+                        mTransactionResponse = response;
+                        errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
+                        SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_message_invalid_input_telkomsel));
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        SdkUIFlowUtil.hideProgressDialog();
+                        errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
+                        SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, errorMessage);
+                    }
+                });
     }
 
     /**
@@ -250,56 +265,5 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-        mTransactionResponse = event.getResponse();
-
-        if (event.getResponse() != null) {
-            setUpTransactionStatusFragment(event.getResponse());
-        } else {
-            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, SOMETHING_WENT_WRONG);
-            finish();
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        mTransactionResponse = event.getResponse();
-        errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
-        try {
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_message_invalid_input_telkomsel));
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + errorMessage);
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        errorMessage = getString(R.string.no_network_msg);
-        try {
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, errorMessage);
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + errorMessage);
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
-        try {
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, errorMessage);
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + errorMessage);
-        }
     }
 }

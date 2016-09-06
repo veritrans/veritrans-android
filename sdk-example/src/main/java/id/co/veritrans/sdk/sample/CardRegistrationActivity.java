@@ -8,25 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
-
+import id.co.veritrans.sdk.coreflow.callback.CardRegistrationCallback;
+import id.co.veritrans.sdk.coreflow.callback.SaveCardCallback;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.CardRegistrationBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.SaveCardBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.CardRegistrationFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.CardRegistrationSuccessEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.SaveCardSuccessEvent;
+import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
-import id.co.veritrans.sdk.coreflow.models.snap.SaveCardsRequest;
+import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
 
-public class CardRegistrationActivity extends AppCompatActivity implements CardRegistrationBusCallback, SaveCardBusCallback {
+public class CardRegistrationActivity extends AppCompatActivity{
     TextInputLayout cardNumberContainer, cvvContainer, expiredDateContainer;
     EditText cardNumber, cvv, expiredDate;
     Button saveBtn;
@@ -36,15 +26,11 @@ public class CardRegistrationActivity extends AppCompatActivity implements CardR
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_registration);
-        // Register this class into event bus
-        VeritransBusProvider.getInstance().register(this);
         initView();
     }
 
     @Override
     protected void onDestroy() {
-        // Unregister this class into event bus
-        VeritransBusProvider.getInstance().unregister(this);
         super.onDestroy();
     }
 
@@ -71,13 +57,52 @@ public class CardRegistrationActivity extends AppCompatActivity implements CardR
                     dialog.show();
                     // Create token request before payment
                     String date = expiredDate.getText().toString();
-                    VeritransSDK.getVeritransSDK().snapCardRegistration(cardNumber.getText().toString(),
+                    VeritransSDK.getInstance().snapCardRegistration(cardNumber.getText().toString(),
                             cvv.getText().toString(),
                             date.split("/")[0],
-                            "20" + date.split("/")[1]);
+                            "20" + date.split("/")[1], new CardRegistrationCallback() {
+                                @Override
+                                public void onSuccess(CardRegistrationResponse response) {
+                                    // Handle card registration success
+                                    SaveCardRequest request = new SaveCardRequest();
+                                    request.setCode(response.getStatusCode());
+                                    request.setSavedTokenId(response.getSavedTokenId());
+                                    request.setMaskedCard(response.getMaskedCard());
+                                    request.setTransactionId(response.getTransactionId());
+                                    ArrayList<SaveCardRequest> saveCardsRequests = new ArrayList<>();
+                                    SaveCardRequest req = new SaveCardRequest(response.getSavedTokenId(),
+                                            response.getMaskedCard(), "visa");
+                                    saveCardsRequests.add(req);
+                                    saveCreditCards(saveCardsRequests);
+                                }
+
+                                @Override
+                                public void onFailure(CardRegistrationResponse response, String reason) {
+                                    // Handle card registration failed
+                                    dialog.dismiss();
+                                    AlertDialog dialog = new AlertDialog.Builder(CardRegistrationActivity.this)
+                                            .setMessage(reason)
+                                            .create();
+                                    dialog.show();
+                                }
+
+                                @Override
+                                public void onError(Throwable error) {
+                                    actionOnError(error);
+                                }
+                            });
                 }
             }
         });
+    }
+
+    private void actionOnError(Throwable error) {
+        // Handle generic error condition
+        dialog.dismiss();
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage("Unknown error: " + error.getMessage())
+                .create();
+        dialog.show();
     }
 
     private void refreshView() {
@@ -127,73 +152,33 @@ public class CardRegistrationActivity extends AppCompatActivity implements CardR
                 && expiredDate.getText().toString().split("/").length == 2;
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(CardRegistrationSuccessEvent cardRegistrationSuccessEvent) {
-        // Handle card registration success
-        SaveCardRequest request = new SaveCardRequest();
-        request.setCode(cardRegistrationSuccessEvent.getResponse().getStatusCode());
-        request.setSavedTokenId(cardRegistrationSuccessEvent.getResponse().getSavedTokenId());
-        request.setMaskedCard(cardRegistrationSuccessEvent.getResponse().getMaskedCard());
-        request.setTransactionId(cardRegistrationSuccessEvent.getResponse().getTransactionId());
-        ArrayList<SaveCardRequest> saveCardsRequests = new ArrayList<>();
-        SaveCardRequest req = new SaveCardRequest(cardRegistrationSuccessEvent.getResponse().getSavedTokenId(),
-                cardRegistrationSuccessEvent.getResponse().getMaskedCard(), "visa");
-        saveCardsRequests.add(req);
-        VeritransSDK.getVeritransSDK().snapSaveCard("user01",saveCardsRequests);
+
+    private void saveCreditCards(ArrayList<SaveCardRequest> saveCardsRequests) {
+        VeritransSDK.getInstance().snapSaveCard("user01", saveCardsRequests, new SaveCardCallback() {
+            @Override
+            public void onSuccess(SaveCardResponse response) {
+                dialog.dismiss();
+                AlertDialog dialog = new AlertDialog.Builder(CardRegistrationActivity.this)
+                        .setMessage("Card is successfully registered")
+                        .create();
+                dialog.show();
+            }
+
+            @Override
+            public void onFailure(String reason) {
+                // Handle card registration failed
+                dialog.dismiss();
+                AlertDialog dialog = new AlertDialog.Builder(CardRegistrationActivity.this)
+                        .setMessage(reason)
+                        .create();
+                dialog.show();
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                actionOnError(error);
+            }
+        });
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(CardRegistrationFailedEvent cardRegistrationFailedEvent) {
-        // Handle card registration failed
-        dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage(cardRegistrationFailedEvent.getMessage())
-                .create();
-        dialog.show();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent networkUnavailableEvent) {
-        // Handle network not available condition
-        dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Network is unavailable")
-                .create();
-        dialog.show();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent generalErrorEvent) {
-        // Handle generic error condition
-        dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Unknown error: " + generalErrorEvent.getMessage() )
-                .create();
-        dialog.show();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(SaveCardSuccessEvent saveCardSuccessEvent) {
-        dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Card is successfully registered")
-                .create();
-        dialog.show();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(SaveCardFailedEvent saveCardFailedEvent) {
-        // Handle card registration failed
-        dialog.dismiss();
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage(saveCardFailedEvent.getMessage())
-                .create();
-        dialog.show();
-    }
 }

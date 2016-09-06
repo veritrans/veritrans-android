@@ -20,31 +20,23 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionOptionsCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.GetSnapTokenCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.GetSnapTransactionCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFinishedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
 import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.coreflow.models.snap.Token;
+import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
+import id.co.veritrans.sdk.coreflow.models.snap.TransactionResult;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.PaymentMethods;
 import id.co.veritrans.sdk.uiflow.R;
@@ -56,7 +48,7 @@ import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
  * <p/>
  * Created by shivam on 10/16/15.
  */
-public class PaymentMethodsActivity extends BaseActivity implements GetSnapTransactionCallback, GetSnapTokenCallback {
+public class PaymentMethodsActivity extends BaseActivity{
 
     public static final String PAYABLE_AMOUNT = "Payable Amount";
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
@@ -83,11 +75,8 @@ public class PaymentMethodsActivity extends BaseActivity implements GetSnapTrans
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
         setContentView(R.layout.activity_payments_method);
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
         initializeTheme();
 
         UserDetail userDetail = null;
@@ -189,7 +178,7 @@ public class PaymentMethodsActivity extends BaseActivity implements GetSnapTrans
      */
     private void bindDataToView() {
 
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        VeritransSDK veritransSDK = VeritransSDK.getInstance();
 
         if (veritransSDK != null) {
             String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount()));
@@ -215,7 +204,59 @@ public class PaymentMethodsActivity extends BaseActivity implements GetSnapTrans
 
     private void getPaymentPages() {
         progressContainer.setVisibility(View.VISIBLE);
-        veritransSDK.getSnapToken();
+        veritransSDK.checkout(new CheckoutCallback() {
+            @Override
+            public void onSuccess(Token token) {
+                LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
+                getPaymentOptions(token.getTokenId());
+            }
+
+            @Override
+            public void onFailure(Token token, String reason) {
+                showErrorMessage();
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                showErrorMessage();
+            }
+        });
+    }
+
+    private void getPaymentOptions(String tokenId) {
+        veritransSDK.getTransactionOptions(tokenId, new TransactionOptionsCallback() {
+            @Override
+            public void onSuccess(Transaction transaction) {
+                try{
+                    progressContainer.setVisibility(View.GONE);
+                    String logoUrl = transaction.getMerchantData().getLogoUrl();
+                    String merchantName = transaction.getMerchantData().getDisplayName();
+                    veritransSDK.setMerchantLogo(logoUrl);
+                    veritransSDK.setMerchantName(merchantName);
+                    showLogo(logoUrl);
+                    for (String bank : transaction.getTransactionData().getBankTransfer().getBanks()) {
+                        bankTrasfers.add(bank);
+                    }
+                    List<String> paymentMethods = transaction.getTransactionData().getEnabledPayments();
+                    initialiseAdapterData(paymentMethods);
+                    setupRecyclerView();
+                } catch (NullPointerException e){
+                    Logger.e(TAG, e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Transaction transaction, String reason) {
+                progressContainer.setVisibility(View.GONE);
+                showDefaultPaymentMethods();
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                progressContainer.setVisibility(View.GONE);
+                showDefaultPaymentMethods();
+            }
+        });
     }
 
     /**
@@ -234,9 +275,6 @@ public class PaymentMethodsActivity extends BaseActivity implements GetSnapTrans
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     @Override
@@ -264,14 +302,14 @@ public class PaymentMethodsActivity extends BaseActivity implements GetSnapTrans
                 TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
                 if (response != null) {
                     if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
-                        VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(response, null, TransactionFinishedEvent.STATUS_SUCCESS));
+                        veritransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
                     } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
-                        VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(response, null, TransactionFinishedEvent.STATUS_PENDING));
+                        veritransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
                     } else {
-                        VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(response, null, TransactionFinishedEvent.STATUS_FAILED));
+                        veritransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
                     }
                 } else {
-                    VeritransBusProvider.getInstance().post(new TransactionFinishedEvent());
+                    veritransSDK.notifyTransactionFinished(new TransactionResult());
                 }
                 finish();
             }
@@ -283,65 +321,6 @@ public class PaymentMethodsActivity extends BaseActivity implements GetSnapTrans
 
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetSnapTransactionSuccessEvent snapTransactionSuccessEvent) {
-        progressContainer.setVisibility(View.GONE);
-        String logoUrl = snapTransactionSuccessEvent.getResponse().getMerchantData().getLogoUrl();
-        String merchantName = snapTransactionSuccessEvent.getResponse().getMerchantData().getDisplayName();
-        veritransSDK.setMerchantLogo(logoUrl);
-        veritransSDK.setMerchantName(merchantName);
-        showLogo(logoUrl);
-        for (String bank : snapTransactionSuccessEvent.getResponse().getTransactionData().getBankTransfer().getBanks()) {
-            bankTrasfers.add(bank);
-        }
-        List<String> paymentMethods = snapTransactionSuccessEvent.getResponse().getTransactionData().getEnabledPayments();
-        initialiseAdapterData(paymentMethods);
-        setupRecyclerView();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetSnapTransactionFailedEvent snapTransactionFailedEvent) {
-        progressContainer.setVisibility(View.GONE);
-        if (snapTransactionFailedEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
-            showDefaultPaymentMethods();
-        }
-    }
-
-    @Subscribe
-    public void onEvent(GeneralErrorEvent generalErrorEvent) {
-        if (generalErrorEvent.getSource().equals(Events.GET_SNAP_TOKEN)) {
-            showErrorMessage();
-        } else if (generalErrorEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
-            progressContainer.setVisibility(View.GONE);
-            showDefaultPaymentMethods();
-        }
-    }
-
-    @Subscribe
-    public void onEvent(NetworkUnavailableEvent networkUnavailableEvent) {
-        if (networkUnavailableEvent.getSource().equals(Events.GET_SNAP_TOKEN)) {
-            showErrorMessage();
-        } else if (networkUnavailableEvent.getSource().equals(Events.GET_SNAP_TRANSACTION)) {
-            progressContainer.setVisibility(View.GONE);
-            showDefaultPaymentMethods();
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetSnapTokenSuccessEvent event) {
-        LocalDataHandler.saveString(Constants.AUTH_TOKEN, event.getResponse().getTokenId());
-        veritransSDK.getSnapTransaction(event.getResponse().getTokenId());
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetSnapTokenFailedEvent event) {
-        showErrorMessage();
     }
 
     private void showLogo(String url) {

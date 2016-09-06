@@ -8,24 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
-import java.util.UUID;
 
+import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionOptionsCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.GetSnapTokenCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.GetSnapTransactionCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTransactionSuccessEvent;
-import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
-import id.co.veritrans.sdk.coreflow.models.ItemDetails;
+import id.co.veritrans.sdk.coreflow.models.snap.Token;
+import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 import id.co.veritrans.sdk.sample.BCAKlikPayActivity;
 import id.co.veritrans.sdk.sample.BankTransferPaymentActivity;
 import id.co.veritrans.sdk.sample.CIMBClickPayPaymentActivity;
@@ -44,7 +36,7 @@ import id.co.veritrans.sdk.sample.utils.RecyclerItemClickListener;
 /**
  * @author rakawm
  */
-public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenCallback, GetSnapTransactionCallback {
+public class CoreFlowActivity extends AppCompatActivity {
     private static final int REQ_PAYMENT = 12;
     private RecyclerView coreMethods;
     private CoreFlowListAdapter adapter;
@@ -55,7 +47,6 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core_flow);
-        VeritransBusProvider.getInstance().register(this);
         dialog = new ProgressDialog(this);
         init();
         getpaymentPages();
@@ -65,7 +56,74 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
         dialog.setIndeterminate(true);
         dialog.setMessage("get payment methods");
         dialog.show();
-        VeritransSDK.getVeritransSDK().getSnapToken();
+        VeritransSDK.getInstance().checkout(new CheckoutCallback() {
+            @Override
+            public void onSuccess(Token token) {
+                Logger.i("snaptoken>success");
+                String tokenId = token.getTokenId();
+                LocalDataHandler.saveString(Constants.AUTH_TOKEN, tokenId);
+                getPaymentOption(tokenId);
+            }
+
+            @Override
+            public void onFailure(Token token, String reason) {
+                Logger.i("snaptoken>failure");
+                if(dialog.isShowing()){
+                    dialog.dismiss();
+                }
+                adapter.clear();
+                showAlertDialog(reason);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                Logger.i("snaptoken>error");
+
+            }
+        });
+    }
+
+    private void getPaymentOption(String tokenId) {
+        VeritransSDK.getInstance().getTransactionOptions(tokenId, new TransactionOptionsCallback() {
+            @Override
+            public void onSuccess(Transaction transaction) {
+                if(dialog.isShowing()){
+                    dialog.dismiss();
+                }
+                paymentMethodList.clear();
+                for(String method : transaction.getTransactionData().getEnabledPayments()){
+                    if(method.equalsIgnoreCase(getString(R.string.label_bank_transfer))){
+                        for(String bank : transaction.getTransactionData().getBankTransfer().getBanks()){
+                            //mandiri bank tranfer & other bank transfer unsupported yet
+                            CoreViewModel viewModel = generateBankViewModels(bank);
+                            if(viewModel != null){
+                                paymentMethodList.add(viewModel);
+                            }
+                        }
+                    }else{
+                        CoreViewModel viewModel = generateCoreViewModels(method);
+                        if(viewModel != null){
+                            paymentMethodList.add(viewModel);
+                        }
+                    }
+                }
+                adapter.setData(paymentMethodList);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Transaction transaction, String reason) {
+                Logger.i("snaptransaction>failure");
+                if(dialog.isShowing()){
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                Logger.i("snaptransaction>error");
+            }
+        });
     }
 
     private void init() {
@@ -161,53 +219,6 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
         startActivityForResult(intent, REQ_PAYMENT);
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(GetSnapTokenSuccessEvent event) {
-        Logger.i("snaptoken>success");
-        String token = event.getResponse().getTokenId();
-        LocalDataHandler.saveString(Constants.AUTH_TOKEN, token);
-        VeritransSDK.getVeritransSDK().getSnapTransaction(token);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetSnapTokenFailedEvent event) {
-        Logger.i("snaptoken>error");
-        if(dialog.isShowing()){
-            dialog.dismiss();
-        }
-        adapter.clear();
-        showAlertDialog(event.getMessage());
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetSnapTransactionSuccessEvent event) {
-        if(dialog.isShowing()){
-            dialog.dismiss();
-        }
-        paymentMethodList.clear();
-        for(String method : event.getResponse().getTransactionData().getEnabledPayments()){
-            if(method.equalsIgnoreCase(getString(R.string.label_bank_transfer))){
-                for(String bank : event.getResponse().getTransactionData().getBankTransfer().getBanks()){
-                    //mandiri bank tranfer & other bank transfer unsupported yet
-                    CoreViewModel viewModel = generateBankViewModels(bank);
-                    if(viewModel != null){
-                        paymentMethodList.add(viewModel);
-                    }
-                }
-            }else{
-                CoreViewModel viewModel = generateCoreViewModels(method);
-                if(viewModel != null){
-                    paymentMethodList.add(viewModel);
-                }
-            }
-        }
-        adapter.setData(paymentMethodList);
-        adapter.notifyDataSetChanged();
-    }
-
     private CoreViewModel generateBankViewModels(String bank) {
         if(bank.equals(getString(R.string.label_bank_transfer_bca))){
             return new CoreViewModel(getString(R.string.name_bank_transfer_bca), R.drawable.ic_atm);
@@ -219,15 +230,6 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
             return new CoreViewModel(getString(R.string.name_bank_transfer_others), R.drawable.ic_atm);
         }else{
             return null;
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetSnapTransactionFailedEvent event) {
-        Logger.i("snaptransaction>error");
-        if(dialog.isShowing()){
-            dialog.dismiss();
         }
     }
 
@@ -255,9 +257,6 @@ public class CoreFlowActivity extends AppCompatActivity implements GetSnapTokenC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     @Override

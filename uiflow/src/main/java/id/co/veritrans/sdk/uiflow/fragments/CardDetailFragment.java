@@ -68,7 +68,7 @@ public class CardDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
         cardDetail = (SaveCardRequest) getArguments().getSerializable(ARG_PARAM);
         if (cardDetail != null) {
             Logger.i("cardDetail:" + cardDetail.getMaskedCard());

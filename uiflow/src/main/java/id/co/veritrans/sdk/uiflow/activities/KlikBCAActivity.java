@@ -17,17 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
-
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -38,7 +30,7 @@ import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 /**
  * @author rakawm
  */
-public class KlikBCAActivity extends BaseActivity implements TransactionBusCallback {
+public class KlikBCAActivity extends BaseActivity {
 
     public static final String PAYMENT_FRAGMENT = "payment";
     public static final String STATUS_FRAGMENT = "transaction_status";
@@ -63,14 +55,10 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Subscribe to Event Bus
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
         setContentView(R.layout.activity_klik_bca);
 
         // Get Veritrans SDK instance
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
 
         // Initialize views
         mTextViewOrderId = (TextView) findViewById(R.id.text_order_id);
@@ -126,7 +114,30 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
                     if (klikBCAFragment.checkUserId()) {
                         // Do the payment
                         SdkUIFlowUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
-                        mVeritransSDK.snapPaymentUsingKlikBCA(mVeritransSDK.readAuthenticationToken(), klikBCAFragment.getUserId());
+                        mVeritransSDK.snapPaymentUsingKlikBCA(mVeritransSDK.readAuthenticationToken(),
+                                klikBCAFragment.getUserId(), new TransactionCallback() {
+                                    @Override
+                                    public void onSuccess(TransactionResponse response) {
+                                        SdkUIFlowUtil.hideProgressDialog();
+                                        transactionResponse = response;
+                                        errorMessage = response.getStatusMessage();
+                                        setUpTransactionStatusFragment(response);
+                                    }
+
+                                    @Override
+                                    public void onFailure(TransactionResponse response, String reason) {
+                                        errorMessage = reason;
+                                        SdkUIFlowUtil.hideProgressDialog();
+                                        SdkUIFlowUtil.showSnackbar(KlikBCAActivity.this, reason);
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable error) {
+                                        errorMessage = error.getMessage();
+                                        SdkUIFlowUtil.hideProgressDialog();
+                                        SdkUIFlowUtil.showSnackbar(KlikBCAActivity.this, error.getMessage());
+                                    }
+                                });
                     }
                 }
             }
@@ -136,10 +147,6 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Unsubscribe to Event Bus
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     /**
@@ -171,44 +178,6 @@ public class KlikBCAActivity extends BaseActivity implements TransactionBusCallb
         fragmentTransaction.commit();
 
         mButtonConfirmPayment.setText(R.string.complete_payment_at_klik_bca);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        if (event.getSource().equals(Events.SNAP_PAYMENT)) {
-            SdkUIFlowUtil.hideProgressDialog();
-            this.transactionResponse = event.getResponse();
-            this.errorMessage = event.getResponse().getStatusMessage();
-            setUpTransactionStatusFragment(event.getResponse());
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        if (event.getSource().equals(Events.SNAP_PAYMENT)) {
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(this, event.getMessage());
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        if (event.getSource().equals(Events.SNAP_PAYMENT)) {
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(this, getString(R.string.error_unable_to_connect));
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        if (event.getSource().equals(Events.SNAP_PAYMENT)) {
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(this, event.getMessage());
-        }
     }
 
     @Override

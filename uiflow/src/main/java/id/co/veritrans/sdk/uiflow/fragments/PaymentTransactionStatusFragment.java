@@ -68,7 +68,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         if (getArguments() != null) {
             transactionResponse = (TransactionResponse) getArguments().getSerializable(TRANSACTION_RESPONSE_PARAM);
         }
-        veritrans = VeritransSDK.getVeritransSDK();
+        veritrans = VeritransSDK.getInstance();
     }
 
     @Nullable

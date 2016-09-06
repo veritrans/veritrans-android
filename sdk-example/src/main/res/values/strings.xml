@@ -11,6 +11,7 @@
     <string name="register">Register</string>
     <string name="buy_with_core">Core flow</string>
     <string name="buy_with_ui">UI flow</string>
+    <string name="show_card_widget">Show Widget</string>
     <string name="buy_with_credit_card">Buy using credit card</string>
     <string name="buy_with_permata_va">Buy using Permata VA</string>
     <string name="buy_with_mandiri_bill">Buy using Mandiri Bill</string>

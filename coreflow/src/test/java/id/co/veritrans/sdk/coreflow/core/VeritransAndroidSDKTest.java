@@ -26,7 +26,10 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.SDKConfigTest;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBus;
+import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
+import id.co.veritrans.sdk.coreflow.callback.GetCardTokenCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionOptionsCallback;
 import id.co.veritrans.sdk.coreflow.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.coreflow.models.BBMMoneyRequestModel;
 import id.co.veritrans.sdk.coreflow.models.BCABankTransfer;
@@ -51,7 +54,6 @@ import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
-import id.co.veritrans.sdk.coreflow.transactionmanager.BusCollaborator;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 
 import static org.powermock.api.mockito.PowerMockito.spy;
@@ -67,14 +69,26 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 public class VeritransAndroidSDKTest {
 
+    private GetCardTokenCallback getCardTokenCallbackMock;
+    private String sampleToken = "token";
+    private String sampleText = "text";
+    private String sampleMerchantLogoStr = "merchantLogo";
+    private CheckoutCallback checkoutCallbackMock;
+    private TransactionOptionsCallback transactionOptionCallbackMock;
+    private TransactionCallback transactionCallbackMock;
+
+    @Test
+    public void test(){
+        Assert.assertEquals(1,1);
+    }
     @Mock
-    protected BusCollaborator busCollaborator;
+    protected CallbackCollaborator callbackCollaborator;
     @InjectMocks
-    protected EventBusImplementSample eventBustImplementSample;
+    protected CallbackImplementSample callbackSample;
     @Mock
     Context contextMock;
     @Mock
-    TransactionManager transactionManager;
+    SnapTransactionManager transactionManager;
     @Mock
     MerchantRestAPI merchantRestAPI;
     @Mock
@@ -101,8 +115,6 @@ public class VeritransAndroidSDKTest {
     private java.lang.Boolean isconnectedMock;
     @Mock
     private CardTokenRequest cardTokenRequestMock;
-    @Mock
-    private VeritransBus busMock;
     private VeritransSDK veritransSDKSSpy;
     @Mock
     private TransactionRequest transactionRequestMock;
@@ -185,9 +197,6 @@ public class VeritransAndroidSDKTest {
         PowerMockito.mockStatic(Looper.class);
         PowerMockito.mockStatic(Utils.class);
         PowerMockito.mockStatic(SdkUtil.class);
-
-        eventBustImplementSample.registerBus(busMock);
-
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(contextMock.getString(R.string.error_unable_to_connect)).thenReturn("not connected");
         Mockito.when(contextMock.getResources()).thenReturn(resourceMock);
@@ -198,23 +207,32 @@ public class VeritransAndroidSDKTest {
         Mockito.when(networkInfo.isConnected()).thenReturn(false);
         Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preference);
 
-        VeritransSDK veritransSDK = (new SdkCoreFlowBuilder(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
+        this.checkoutCallbackMock = callbackSample.getCheckoutCallback();
+        this.transactionOptionCallbackMock = callbackSample.getTransactionOptionCallback();
+        this.transactionCallbackMock = callbackSample.getTransactionCallback();
+        this.getCardTokenCallbackMock = callbackSample.getCardTokenCallback();
+
+        VeritransSDK veritransSDK = SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .enableLog(true)
                 .setDefaultText("open_sans_regular.ttf")
                 .setSemiBoldText("open_sans_semibold.ttf")
                 .setBoldText("open_sans_bold.ttf")
-                .buildSDK());
+                .buildSDK();
         Mockito.when(veritransSDK.readAuthenticationToken()).thenReturn(sdkTokenMock);
-        veritransSDK.setTransactionManager(transactionManager);
-        veritransSDK.setSnapTransactionManager(snapTransctionmanagerMock);
+        veritransSDK.setSnapTransactionManager(transactionManager);
         transactionManager.setAnalyticsManager(mixpanelMock);
         veritransSDKSSpy = spy(veritransSDK);
 
     }
 
     @Test
+    public void sampelTest(){
+        Assert.assertTrue(true);
+    }
+
+    @Test
     public void getToken_whenCardTokenRequestNull() {
-        veritransSDKSSpy.getToken(null);
+        veritransSDKSSpy.getCardToken(null, getCardTokenCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning);
     }
 
@@ -222,7 +240,7 @@ public class VeritransAndroidSDKTest {
     public void getToken_whenCardTokenRequestNotNull_networkAvailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
 
-        veritransSDKSSpy.getToken(cardTokenRequestMock);
+        veritransSDKSSpy.getCardToken(cardTokenRequestMock, getCardTokenCallbackMock);
         Assert.assertEquals(true, veritransSDKSSpy.isRunning);
     }
 
@@ -230,17 +248,9 @@ public class VeritransAndroidSDKTest {
     public void getToken_whenCardTokenRequestNotNull_networkUnavailable() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
 
-        veritransSDKSSpy.getToken(cardTokenRequestMock);
+        veritransSDKSSpy.getCardToken(cardTokenRequestMock, getCardTokenCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning);
-        busCollaborator.onGeneralErrorEvent();
-    }
-
-    @Test
-    public void getOffersList_whenNetworkAvailable() {
-        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.getOffersList();
-        Mockito.verify(transactionManager).getOffers("");
-        Assert.assertTrue(veritransSDKSSpy.isRunning);
+        callbackCollaborator.onError();
     }
 
     @Test
@@ -270,7 +280,7 @@ public class VeritransAndroidSDKTest {
 
         veritransSDKSSpy.startPaymentUiFlow(contextMock);
         verifyStatic(Mockito.times(2));
-        Logger.e(Matchers.anyString());
+        Logger.e(Matchers.anyString(), Matchers.anyString());
 
     }
 
@@ -282,7 +292,7 @@ public class VeritransAndroidSDKTest {
 
         veritransSDKSSpy.startPaymentUiFlow(contextMock);
         verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString());
+        Logger.e(Matchers.anyString(), Matchers.anyString());
 
     }
 
@@ -290,8 +300,8 @@ public class VeritransAndroidSDKTest {
     public void getMerhcantToken() {
         PowerMockito.mockStatic(LocalDataHandler.class);
         when(LocalDataHandler.readObject(contextMock.getString(R.string.user_details), UserDetail.class)).thenReturn(userDetailMock);
-        when(userDetailMock.getMerchantToken()).thenReturn("token");
-        Assert.assertEquals("token", veritransSDKSSpy.getMerchantToken());
+        when(userDetailMock.getMerchantToken()).thenReturn(sampleToken);
+        Assert.assertEquals(sampleToken, veritransSDKSSpy.getMerchantToken());
 
     }
 
@@ -307,21 +317,21 @@ public class VeritransAndroidSDKTest {
 
     @Test
     public void getInstanceTest() {
-        VeritransSDK.getInstance(null);
+        VeritransSDK.delegateInstance(null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString());
     }
 
     @Test
     public void getDefaultText() {
-        String defaultText = "text";
+        String defaultText = sampleText;
         veritransSDKSSpy.setDefaultText(defaultText);
         Assert.assertEquals(defaultText, veritransSDKSSpy.getDefaultText());
     }
 
     @Test
     public void boldtext() {
-        String boldtext = "text";
+        String boldtext = sampleText;
         veritransSDKSSpy.setBoldText(boldtext);
         Assert.assertEquals(boldtext, veritransSDKSSpy.getBoldText());
 
@@ -329,7 +339,7 @@ public class VeritransAndroidSDKTest {
 
     @Test
     public void semiboldtext() {
-        String text = "text";
+        String text = sampleText;
         veritransSDKSSpy.setSemiBoldText(text);
         Assert.assertEquals(text, veritransSDKSSpy.getSemiBoldText());
 
@@ -345,7 +355,7 @@ public class VeritransAndroidSDKTest {
 
     @Test
     public void merchantLogo() {
-        String merchantLogo = "merchantLogo";
+        String merchantLogo = sampleMerchantLogoStr;
         veritransSDKSSpy.setMerchantLogo(merchantLogo);
         Assert.assertEquals(merchantLogo, veritransSDKSSpy.getMerchantLogo());
 
@@ -358,15 +368,6 @@ public class VeritransAndroidSDKTest {
         Assert.assertEquals(paymentMethodMock, veritransSDKSSpy.getSelectedPaymentMethods());
     }
 
-    @Test
-    public void getOverLimit_whenNoetworkAvailable() throws Exception {
-        when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-
-        veritransSDKSSpy.getOffersList();
-        Mockito.verify(transactionManager, Mockito.times(1)).getOffers(sdkTokenMock);
-        Assert.assertTrue(veritransSDKSSpy.isRunning);
-    }
-
 
     @Test
     public void TransactionRequestTest() {
@@ -375,36 +376,36 @@ public class VeritransAndroidSDKTest {
     }
 
     @Test
-    public void getTokenTest() {
+    public void checkout() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.getSnapToken();
+        veritransSDKSSpy.checkout(checkoutCallbackMock);
         Assert.assertEquals(true, veritransSDKSSpy.isRunning());
     }
 
     @Test
-    public void getTokenTest_whenTransactionRequestNull() {
+    public void checkout_whenTransactionRequestNull() {
         veritransSDKSSpy.setTransactionRequest(null);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.getSnapToken();
+        veritransSDKSSpy.checkout(checkoutCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
-    public void getTokenTest_whenNetworkUnAvailable() {
+    public void checkout_whenNetworkUnAvailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        veritransSDKSSpy.getSnapToken();
+        veritransSDKSSpy.checkout(checkoutCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
 
     @Test
     public void getSnapTransaction() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.getSnapTransaction(snapTOken);
+        veritransSDKSSpy.getTransactionOptions(snapTOken, transactionOptionCallbackMock);
         Assert.assertEquals(true, veritransSDKSSpy.isRunning());
 
     }
@@ -413,50 +414,50 @@ public class VeritransAndroidSDKTest {
     public void getSnapTransaction_whenTokenNull() {
         when(TextUtils.isEmpty(null)).thenReturn(true);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.getSnapTransaction(null);
+        veritransSDKSSpy.getTransactionOptions(null, transactionOptionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void getSnapTransaction_whenNetworkUnAvailable() {
         when(TextUtils.isEmpty(sdkTokenMock)).thenReturn(true);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        veritransSDKSSpy.getSnapTransaction(null);
+        veritransSDKSSpy.getTransactionOptions(null, transactionOptionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void snapPaymentUsingCard() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingCard(cardToken, token, false);
+        veritransSDKSSpy.snapPaymentUsingCard(cardToken, token, false, transactionCallbackMock);
         Assert.assertEquals(true, veritransSDKSSpy.isRunning);
     }
 
     @Test
     public void snapPaymentUsingCard_whenTransactionRequestNull() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingCard(cardToken, token, false);
+        veritransSDKSSpy.snapPaymentUsingCard(cardToken, token, false, transactionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void snapPaymentUsingCard_whenNetworkUnavailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        veritransSDKSSpy.snapPaymentUsingCard(cardToken, token, false);
+        veritransSDKSSpy.snapPaymentUsingCard(cardToken, token, false, transactionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void snapPaymentUsingBankTransferBCA() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingBankTransferBCA(email, token);
+        veritransSDKSSpy.snapPaymentUsingBankTransferBCA(email, token, transactionCallbackMock);
         Assert.assertEquals(true, veritransSDKSSpy.isRunning());
     }
 
@@ -464,24 +465,24 @@ public class VeritransAndroidSDKTest {
     public void snapPaymentUsingBankTransferBCA_whenNetworkUnavailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        veritransSDKSSpy.snapPaymentUsingBankTransferBCA(email, token);
+        veritransSDKSSpy.snapPaymentUsingBankTransferBCA(email, token, transactionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void snapPaymentUsingBankTransferBCA_whenTransactionRequestNull() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingBankTransferBCA(email, token);
+        veritransSDKSSpy.snapPaymentUsingBankTransferBCA(email, token, transactionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void snapPaymentUsingBankTransferPermata() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingBankTransferPermata(email, token);
+        veritransSDKSSpy.snapPaymentUsingBankTransferPermata(email, token, transactionCallbackMock);
         Assert.assertEquals(true, veritransSDKSSpy.isRunning());
     }
 
@@ -489,73 +490,73 @@ public class VeritransAndroidSDKTest {
     public void snapPaymentUsingBankTransferPermata_whenNetworkUnavailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        veritransSDKSSpy.snapPaymentUsingBankTransferPermata(email, token);
+        veritransSDKSSpy.snapPaymentUsingBankTransferPermata(email, token,transactionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void snapPaymentUsingBankTransferPermata_whenTransactionRequestNull() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingBankTransferPermata(email, token);
+        veritransSDKSSpy.snapPaymentUsingBankTransferPermata(email, token, transactionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void snapPaymentUsingKlikBCA() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token);
+        veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token, transactionCallbackMock);
         Assert.assertEquals(true, veritransSDKSSpy.isRunning());
     }
 
     @Test
     public void snapPaymentUsingKlikBCA_whenTransactionRequestNull() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token);
+        veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token, transactionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void snapPaymentUsingKlikBCA_whenNetworkUnavailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token);
+        veritransSDKSSpy.snapPaymentUsingKlikBCA(userId, token, transactionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void snapPaymentUsingBCAKlikpay() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingBCAKlikpay(token);
+        veritransSDKSSpy.snapPaymentUsingBCAKlikpay(token, transactionCallbackMock);
         Assert.assertEquals(true, veritransSDKSSpy.isRunning());
     }
 
     @Test
     public void snapPaymentUsingBCAKlikpay_whenTransactionRequestNull() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingBCAKlikpay(token);
+        veritransSDKSSpy.snapPaymentUsingBCAKlikpay(token, transactionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void snapPaymentUsingBCAKlikpay_whenNetworkUnavailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        veritransSDKSSpy.snapPaymentUsingBCAKlikpay(token);
+        veritransSDKSSpy.snapPaymentUsingBCAKlikpay(token, transactionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     public void snapPaymentUsingBankTransferAllBank() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingBankTransferAllBank(email, token);
+        veritransSDKSSpy.snapPaymentUsingBankTransferAllBank(email, token, transactionCallbackMock);
         Assert.assertEquals(true, veritransSDKSSpy.isRunning());
     }
 
@@ -563,16 +564,16 @@ public class VeritransAndroidSDKTest {
     public void snapPaymentUsingBankTransferAllBank_whenNetworkUnavailable() {
         veritransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        veritransSDKSSpy.snapPaymentUsingBankTransferAllBank(email, token);
+        veritransSDKSSpy.snapPaymentUsingBankTransferAllBank(email, token, transactionCallbackMock);
         Assert.assertEquals(false, veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onNetworkUnAvailable();
+        Mockito.verify(callbackCollaborator).onError();
     }
 
     @Test
     public void snapPaymentUsingBankTransferAllBank_whenTransactionRequestNull() {
         when(veritransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        veritransSDKSSpy.snapPaymentUsingBankTransferAllBank(email, token);
+        veritransSDKSSpy.snapPaymentUsingBankTransferAllBank(email, token, transactionCallbackMock);
         Assert.assertFalse(veritransSDKSSpy.isRunning());
-        Mockito.verify(busCollaborator).onGeneralErrorEvent();
+        Mockito.verify(callbackCollaborator).onError();
     }
 }
