@@ -14,7 +14,7 @@ import id.co.veritrans.sdk.coreflow.callback.CardRegistrationCallback;
 import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
 import id.co.veritrans.sdk.coreflow.callback.GetCardCallback;
 import id.co.veritrans.sdk.coreflow.callback.GetCardTokenCallback;
-import id.co.veritrans.sdk.coreflow.callback.PaymentOptionCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionOptionsCallback;
 import id.co.veritrans.sdk.coreflow.callback.SaveCardCallback;
 import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
@@ -101,7 +101,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param snapToken Snap Token.
      *@param  callback callback of payment option
      */
-    public void getTransactionOptions(@NonNull String snapToken, final PaymentOptionCallback callback) {
+    public void getTransactionOptions(@NonNull String snapToken, final TransactionOptionsCallback callback) {
         final long start = System.currentTimeMillis();
             snapRestAPI.getPaymentOption(snapToken, new Callback<Transaction>() {
                 @Override

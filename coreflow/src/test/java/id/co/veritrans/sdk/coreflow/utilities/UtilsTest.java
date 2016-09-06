@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.verification.Times;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -189,7 +187,7 @@ public class UtilsTest {
 
     @Test
     public void getValidtyTime_whenParseExcetion(){
-        String sampleTime = "fasd 23423 234";
+        String sampleTime = "string error 23423 234";
         Assert.assertEquals(sampleTime, Utils.getValidityTime(sampleTime));
         PowerMockito.verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString());

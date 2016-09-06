@@ -6,7 +6,7 @@ import id.co.veritrans.sdk.coreflow.callback.CardRegistrationCallback;
 import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
 import id.co.veritrans.sdk.coreflow.callback.GetCardCallback;
 import id.co.veritrans.sdk.coreflow.callback.GetCardTokenCallback;
-import id.co.veritrans.sdk.coreflow.callback.PaymentOptionCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionOptionsCallback;
 import id.co.veritrans.sdk.coreflow.callback.SaveCardCallback;
 import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
@@ -29,9 +29,9 @@ import id.co.veritrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentReq
 /**
  * Created by ziahaqi on 9/5/16.
  */
-public class CallbackImplementSample implements TransactionCallback, CheckoutCallback, PaymentOptionCallback,
+public class CallbackImplementSample implements TransactionCallback, CheckoutCallback, TransactionOptionsCallback,
         SaveCardCallback, GetCardCallback, CardRegistrationCallback, GetCardTokenCallback{
-        public String onsuccessStatusCode;
+
     /**
      * Created by ziahaqi on 25/06/2016.
      */
@@ -51,293 +51,6 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
         this.snapTransactionManager.setMerchantPaymentAPI(merchantRestAPI);
         this.snapTransactionManager.setVeritransPaymentAPI(veritransRestAPI);
     }
-
-//
-//
-//        /*
-//         * Card Registration Callback stuff
-//         */
-//
-//    @Override
-//    @Subscribe
-//    public void onEvent(CardRegistrationSuccessEvent event) {
-//        callbackCollaborator.onCardRegistrationSuccess();
-//        onsuccessStatusCode = event.getResponse().getStatusCode();
-//    }
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(CardRegistrationFailedEvent event) {
-//        callbackCollaborator.onCardRegistrationFailed();
-//    }
-//
-//    @Override
-//    @Subscribe
-//    public void onEvent(NetworkUnavailableEvent event) {
-//        callbackCollaborator.onNetworkUnAvailable();
-//    }
-//
-//    @Override
-//    @Subscribe
-//    public void onEvent(GeneralErrorEvent event) {
-//        callbackCollaborator.onGeneralErrorEvent();
-//    }
-//
-//    /*
-//     * token bus callback stuff
-//     */
-//    @Subscribe
-//    @Override
-//    public void onEvent(GetTokenSuccessEvent event) {
-//        callbackCollaborator.onGetTokenSuccessEvent();
-//    }
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(GetTokenFailedEvent event) {
-//        callbackCollaborator.onGetTokenFailedEvent();
-//    }
-//
-//
-//    /*
-//     * transaction bus callbaack
-//     */
-//    @Subscribe
-//    @Override
-//    public void onEvent(TransactionSuccessEvent event) {
-//        callbackCollaborator.onTransactionSuccessEvent();
-//    }
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(TransactionFailedEvent event) {
-//        callbackCollaborator.onTransactionFailedEvent();
-//    }
-//
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(AuthenticationEvent event) {
-//        callbackCollaborator.onAuthenticationEvent();
-//    }
-//
-//    public void getOffers(MerchantRestAPI merchantRestAPIMock, String mToken) {
-//        transactionManager.setMerchantPaymentAPI(merchantRestAPIMock);
-//        transactionManager.getOffers(mToken);
-//    }
-//
-//    @Override
-//    @Subscribe
-//    public void onEvent(GetOfferSuccessEvent event) {
-//        callbackCollaborator.onGetOfferSuccesEvent();
-//
-//    }
-//
-//    @Override
-//    @Subscribe
-//    public void onEvent(GetOfferFailedEvent event) {
-//        callbackCollaborator.onGetOfferFailedEvent();
-//    }
-//
-//    public void deleteCard(MerchantRestAPI merchantRestAPIMock, SaveCardRequest requestModel, String mToken) {
-//        transactionManager.setMerchantPaymentAPI(merchantRestAPIMock);
-//        transactionManager.deleteCard(requestModel, mToken);
-//    }
-//
-//    @Override
-//    @Subscribe
-//    public void onEvent(DeleteCardSuccessEvent event) {
-//        callbackCollaborator.onDeleteCardSuccessEvent();
-//    }
-//
-//    @Override
-//    @Subscribe
-//    public void onEvent(DeleteCardFailedEvent event) {
-//        callbackCollaborator.onDeleteCardFailedEvent();
-//    }
-//
-//    public void getCards(MerchantRestAPI merchantRestAPIMock, String mToken) {
-//        transactionManager.setMerchantPaymentAPI(merchantRestAPIMock);
-//        transactionManager.getCards(mToken);
-//    }
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(GetCardsSuccessEvent event) {
-//        callbackCollaborator.onGetCardSuccess();
-//    }
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(GetCardFailedEvent event) {
-//        callbackCollaborator.onGetCardFailed();
-//    }
-//
-//    public void saveCard(MerchantRestAPI merchantRestAPIMock, SaveCardRequest request, String mToken) {
-//        transactionManager.setMerchantPaymentAPI(merchantRestAPIMock);
-//        transactionManager.saveCards(request, mToken);
-//    }
-//
-//    @Override
-//    @Subscribe
-//    public void onEvent(SaveCardSuccessEvent event) {
-//        callbackCollaborator.onSaveCardSuccessEvent();
-//    }
-//
-//    @Override
-//    @Subscribe
-//    public void onEvent(SaveCardFailedEvent event) {
-//        callbackCollaborator.onsaveCardFailedEvent();
-//    }
-//
-//    @Override
-//    @Subscribe
-//    public void onEvent(SSLErrorEvent errorEvent) {
-//        callbackCollaborator.onSSLErrorEvent();
-//    }
-//
-//
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(GetSnapTokenSuccessEvent event) {
-//        callbackCollaborator.onGetSnapTokenSuccess();
-//    }
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(GetSnapTokenFailedEvent event) {
-//        callbackCollaborator.onGetSnapTokenFailed();
-//    }
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(GetSnapTransactionSuccessEvent event) {
-//        callbackCollaborator.onGetSnapTransactionSuccess();
-//    }
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(GetSnapTransactionFailedEvent event) {
-//        callbackCollaborator.onGetSnapTransactionFailed();
-//    }
-//    public void getSnapToken(MerchantRestAPI merchantRestAPI, TokenRequestModel model) {
-//
-//        snapTransactionManager.setMerchantPaymentAPI(merchantRestAPI);
-//        snapTransactionManager.checkout(model);
-//
-//    }
-//
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetCardsSuccessEvent event) {
-//        callbackCollaborator.onGetCardsSnapSuccess();
-//
-//    }
-//
-//    @Subscribe
-//    @Override
-//    public void onEvent(GetCardsFailedEvent event) {
-//        callbackCollaborator.onGetCardsSnapFailed();
-//    }
-
-    // snap
-
-//    public void getPaymentType(SnapRestAPI restAPI, String snapToken) {
-//        snapTransactionManager.setRestApi(restAPI);
-//        snapTransactionManager.getTransactionOptions(snapToken);
-//    }
-//
-//    public void paymentUsingSnapCreditCard(SnapRestAPI snapAPI, CreditCardPaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingCreditCard(request);
-//    }
-//
-//    public void paymentUsingSnapBankTransferBCA(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingBankTransferBCA(request);
-//    }
-//
-//    public void paymentUsingSnapBankTransferPermata(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingBankTransferPermata(request);
-//    }
-//
-//    public void paymentUsingKlikBCA(SnapRestAPI snapAPI, KlikBCAPaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingKlikBCA(request);
-//    }
-//
-//    public void paymentUsingBCAKlikpay(SnapRestAPI snapAPI, BasePaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingBCAKlikpay(request);
-//    }
-//
-//    public void paymentUsingSnapMandiriBillpay(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingMandiriBillPay(request);
-//    }
-//
-//    public void paymentUsingSnapMandiriClickPay(SnapRestAPI snapAPI, MandiriClickPayPaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingMandiriClickPay(request);
-//    }
-//
-//    public void paymentUsingSnapCIMBClick(SnapRestAPI snapAPI, BasePaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingCIMBClick(request);
-//    }
-//
-//    public void paymentUsingSnapBRIEpay(SnapRestAPI snapAPI, BasePaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingBRIEpay(request);
-//    }
-//
-//    public void paymentUsingSnapMandirEcash(SnapRestAPI snapAPI, BasePaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingMandiriEcash(request);
-//    }
-//
-//    public void paymentUsingSnapTelkomselEcash(SnapRestAPI snapAPI, TelkomselEcashPaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingTelkomselCash(request);
-//    }
-//
-//    public void paymentUsingSnapXLTunai(SnapRestAPI snapAPI, BasePaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingXLTunai(request);
-//    }
-//
-//    public void paymentUsingSnapIndomaret(SnapRestAPI snapAPI, BasePaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingIndomaret(request);
-//    }
-//
-//    public void paymentUsingSnapIndosatDompetku(SnapRestAPI snapAPI, IndosatDompetkuPaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingIndosatDompetku(request);
-//    }
-//
-//    public void paymentUsingSnapKiosan(SnapRestAPI snapAPI, BasePaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingKiosan(request);
-//    }
-//
-//    public void paymentUsingSnapBankTransferAllBank(SnapRestAPI snapAPI, BankTransferPaymentRequest request) {
-//        snapTransactionManager.setRestApi(snapAPI);
-//        snapTransactionManager.paymentUsingBankTransferAllBank(request);
-//    }
-//
-//    public void snapSaveCard(MerchantRestAPI restAPI, String userId, ArrayList<SaveCardRequest> requests) {
-//        snapTransactionManager.setMerchantPaymentAPI(restAPI);
-//        snapTransactionManager.saveCards(userId, requests);
-//    }
-//
-//    public void snapGetCards(MerchantRestAPI merchantApi, String sampleUserId) {
-//        snapTransactionManager.setMerchantPaymentAPI(merchantApi);
-//        snapTransactionManager.getCards(sampleUserId);
-//    }
 
     @Override
     public void onSuccess(Token token) {
@@ -497,5 +210,21 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
 
     public void getToken(CardTokenRequest cardTokenRequest) {
         snapTransactionManager.getToken(cardTokenRequest, this);
+    }
+
+    public CheckoutCallback getCheckoutCallback() {
+        return this;
+    }
+
+    public TransactionOptionsCallback getTransactionOptionCallback() {
+        return this;
+    }
+
+    public TransactionCallback getTransactionCallback() {
+        return this;
+    }
+
+    public GetCardTokenCallback getCardTokenCallback() {
+        return this;
     }
 }

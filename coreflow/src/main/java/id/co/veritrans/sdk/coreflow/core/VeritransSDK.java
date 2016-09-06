@@ -13,7 +13,7 @@ import id.co.veritrans.sdk.coreflow.callback.CardRegistrationCallback;
 import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
 import id.co.veritrans.sdk.coreflow.callback.GetCardCallback;
 import id.co.veritrans.sdk.coreflow.callback.GetCardTokenCallback;
-import id.co.veritrans.sdk.coreflow.callback.PaymentOptionCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionOptionsCallback;
 import id.co.veritrans.sdk.coreflow.callback.SaveCardCallback;
 import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.callback.TransactionFinishedCallback;
@@ -41,7 +41,7 @@ public class VeritransSDK {
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static SharedPreferences mPreferences = null;
     private static VeritransSDK veritransSDK;
-    private static boolean isLogEnabled = true;
+    private  boolean isLogEnabled = false;
     private TransactionFinishedCallback transactionFinishedCallback;
     protected boolean isRunning = false;
     ISdkFlow uiflow;
@@ -75,6 +75,7 @@ public class VeritransSDK {
         this.transactionFinishedCallback = sdkBuilder.transactionFinishedCallback;
         this.externalScanner = sdkBuilder.externalScanner;
         themeColor = sdkBuilder.colorThemeResourceId;
+        this.isLogEnabled = sdkBuilder.enableLog;
 
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi(requestTimeOut));
 
@@ -82,6 +83,7 @@ public class VeritransSDK {
                 VeritransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
         this.mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
+        this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
 
         initializeTheme();
         initializeSharedPreferences();
@@ -351,7 +353,7 @@ public class VeritransSDK {
      * @param snapToken Snap authentication token
      * @param callback transaction option callback
      */
-    public void getTransactionOptions(@NonNull String snapToken, @NonNull PaymentOptionCallback callback) {
+    public void getTransactionOptions(@NonNull String snapToken, @NonNull TransactionOptionsCallback callback) {
         if(callback == null){
             Logger.d(TAG, context.getString(R.string.callback_unimplemented));
             return;

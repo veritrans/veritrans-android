@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
-import id.co.veritrans.sdk.coreflow.callback.PaymentOptionCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionOptionsCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
@@ -224,7 +224,7 @@ public class PaymentMethodsActivity extends BaseActivity{
     }
 
     private void getPaymentOptions(String tokenId) {
-        veritransSDK.getTransactionOptions(tokenId, new PaymentOptionCallback() {
+        veritransSDK.getTransactionOptions(tokenId, new TransactionOptionsCallback() {
             @Override
             public void onSuccess(Transaction transaction) {
                 try{

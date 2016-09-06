@@ -1,4 +1,4 @@
-package id.co.veritrans.sdk.coreflow;
+package id.co.veritrans.sdk.coreflow.core;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -17,7 +17,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
+import id.co.veritrans.sdk.coreflow.SDKConfigTest;
 
 /**
  * Created by ziahaqi on 26/06/2016.
@@ -38,22 +38,21 @@ public class SDKCoreFlowBuilderTest {
     @InjectMocks
     private SdkCoreFlowBuilder sdkCoreFlowBuilder;
 
-//    @Before
-//    public void setup(){
-//        PowerMockito.mockStatic(Log.class);
-//        Mockito.when(context.getApplicationContext()).thenReturn(context);
-//        Mockito.when(context.getResources()).thenReturn(resources);
-//        Mockito.when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
-//        Mockito.when(connectivityManager.getActiveNetworkInfo()).thenReturn(networkInfo);
-//
-//        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL);
-//    }
-//
-//    @Test
-//    public void isValidDataFailedTest(){
-//        Assert.assertTrue(sdkCoreFlowBuilder.isValidData());
-//        sdkCoreFlowBuilder = new SdkCoreFlowBuilder(context, null, SDKConfigTest.MERCHANT_BASE_URL);
-//        Assert.assertFalse(sdkCoreFlowBuilder.isValidData());
-//    }
+    @Before
+    public void setup(){
+        PowerMockito.mockStatic(Log.class);
+        Mockito.when(context.getApplicationContext()).thenReturn(context);
+        Mockito.when(context.getResources()).thenReturn(resources);
+        Mockito.when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
+        Mockito.when(connectivityManager.getActiveNetworkInfo()).thenReturn(networkInfo);
 
+        sdkCoreFlowBuilder = SdkCoreFlowBuilder.init(context, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL);
+    }
+
+    @Test
+    public void isValidDataFailedTest(){
+        Assert.assertTrue(sdkCoreFlowBuilder.isValidData());
+        sdkCoreFlowBuilder = SdkCoreFlowBuilder.init(context, null, SDKConfigTest.MERCHANT_BASE_URL);
+        Assert.assertFalse(sdkCoreFlowBuilder.isValidData());
+    }
 }

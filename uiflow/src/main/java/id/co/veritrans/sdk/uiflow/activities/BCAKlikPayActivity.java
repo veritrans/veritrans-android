@@ -176,6 +176,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i(TAG, "reqCode:" + requestCode + ",res:" + resultCode);
         if (resultCode == RESULT_OK) {
+            RESULT_CODE = RESULT_OK;
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
                     mVeritransSDK.getTransactionRequest().getOrderId(), String.valueOf(mVeritransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_bca_click), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =

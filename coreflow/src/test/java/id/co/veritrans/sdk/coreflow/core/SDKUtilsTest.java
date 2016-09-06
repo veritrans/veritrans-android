@@ -531,8 +531,6 @@ public class SDKUtilsTest {
     @Test
     public void getBankTransferPaymentRequest() {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
-//        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionManagerMock);
-
         Assert.assertEquals(email, SdkUtil.getBankTransferPaymentRequest(email, token).getEmailAddress());
         Assert.assertEquals(token, SdkUtil.getBankTransferPaymentRequest(email, token).getTransactionId());
     }
@@ -540,8 +538,6 @@ public class SDKUtilsTest {
     @Test
     public void getKlikBCAPaymentRequest() {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
-//        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionManagerMock);
-
         Assert.assertEquals(klikBCAUserId, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, token).getUserId());
         Assert.assertEquals(token, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, token).getTransactionId());
     }

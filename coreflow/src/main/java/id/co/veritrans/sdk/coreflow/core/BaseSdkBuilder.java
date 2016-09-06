@@ -14,7 +14,7 @@ public abstract class BaseSdkBuilder<T> {
     private static final String TAG = "BaseSdkBuilder";
     protected String clientKey = null;
     protected Context context = null;
-    protected boolean enableLog = true;
+    protected boolean enableLog = false;
     protected String merchantServerUrl = null;
     protected String colorTheme = null;
     protected int colorThemeResourceId = 0;

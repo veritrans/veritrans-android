@@ -5,7 +5,7 @@ import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
 /**
  * Created by ziahaqi on 8/31/16.
  */
-public interface PaymentOptionCallback {
+public interface TransactionOptionsCallback {
 
     public void onSuccess(Transaction transaction);
 

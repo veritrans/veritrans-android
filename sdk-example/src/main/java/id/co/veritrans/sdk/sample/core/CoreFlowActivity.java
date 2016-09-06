@@ -11,7 +11,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
-import id.co.veritrans.sdk.coreflow.callback.PaymentOptionCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionOptionsCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
@@ -84,7 +84,7 @@ public class CoreFlowActivity extends AppCompatActivity {
     }
 
     private void getPaymentOption(String tokenId) {
-        VeritransSDK.getVeritransSDK().getTransactionOptions(tokenId, new PaymentOptionCallback() {
+        VeritransSDK.getVeritransSDK().getTransactionOptions(tokenId, new TransactionOptionsCallback() {
             @Override
             public void onSuccess(Transaction transaction) {
                 if(dialog.isShowing()){

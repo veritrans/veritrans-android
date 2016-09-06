@@ -6,5 +6,4 @@ package id.co.veritrans.sdk.coreflow;
 public class SDKConfigTest {
     public static final String CLIENT_KEY = "client_key";
     public static final String MERCHANT_BASE_URL = "https://sample-merchant-url/api/";
-
 }
