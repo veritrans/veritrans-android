@@ -23,31 +23,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
+import id.co.veritrans.sdk.coreflow.callback.GetCardTokenCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.GetSnapTokenCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TokenBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GetTokenSuccessEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.snap.GetSnapTokenSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import id.co.veritrans.sdk.coreflow.models.snap.Token;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.widgets.utils.CardUtils;
 import id.co.veritrans.sdk.widgets.utils.WidgetException;
@@ -57,7 +46,7 @@ import id.co.veritrans.sdk.widgets.utils.WidgetException;
  *
  * @author rakawm
  */
-public class CreditCardForm extends NestedScrollView implements TokenBusCallback, TransactionBusCallback, GetSnapTokenCallback {
+public class CreditCardForm extends NestedScrollView{
     private static final int MONTH_COUNT = 12;
 
     private ImageView logo;
@@ -67,7 +56,7 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
 
     private AlertDialog webViewDialog;
     private TokenCallback tokenCallback;
-    private TransactionCallback transactionCallback;
+    private WidgetTransactionCallback widgetTransactionCallback;
     private String veritransClientKey;
     private String merchantUrl;
     private String cardToken;
@@ -76,25 +65,15 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
 
     public CreditCardForm(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initEventBus();
         init(context, attrs);
         initCardNumberEditText();
         initCardExpiryEditText();
         initCardCVVEditText();
     }
 
-    private void initEventBus() {
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
-    }
-
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -148,9 +127,9 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
         payBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (transactionCallback != null) {
+                if (widgetTransactionCallback != null) {
                     if (transactionRequest != null) {
-                        pay(transactionRequest, transactionCallback);
+                        pay(transactionRequest, widgetTransactionCallback);
                     } else {
                         throw new WidgetException(getResources().getString(R.string.error_transaction_request_missing));
                     }
@@ -173,7 +152,7 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
                 throw new WidgetException(getResources().getString(R.string.error_merchant_url_missing));
             }
 
-            return new SdkCoreFlowBuilder(getContext(), veritransClientKey, merchantUrl)
+            return SdkCoreFlowBuilder.init(getContext(), veritransClientKey, merchantUrl)
                     .enableLog(true)
                     .buildSDK();
         }
@@ -458,10 +437,10 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
         }
     }
 
-    public void pay(TransactionRequest transactionRequest, TransactionCallback transactionCallback) {
+    public void pay(TransactionRequest transactionRequest, WidgetTransactionCallback widgetTransactionCallback) {
         if (checkCardValidity()) {
             setTransactionRequest(transactionRequest);
-            setTransactionCallback(transactionCallback);
+            setWidgetTransactionCallback(widgetTransactionCallback);
             CardTokenRequest cardTokenRequest = new CardTokenRequest(
                     cardNumber.getText().toString().replace(" ", ""),
                     cardCvvNumber.getText().toString(),
@@ -471,7 +450,38 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
             );
             cardTokenRequest.setGrossAmount(transactionRequest.getAmount());
             cardTokenRequest.setSecure(transactionRequest.isSecureCard());
-            getVeritransSDK().getToken(cardTokenRequest);
+            getVeritransSDK().getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+                @Override
+                public void onSuccess(TokenDetailsResponse response) {
+                    if (tokenCallback != null) {
+                        tokenCallback.onSucceed(response);
+                    }
+
+                    if (!TextUtils.isEmpty(response.getRedirectUrl())) {
+                        start3DS(response.getTokenId(), response.getRedirectUrl());
+                    } else {
+                        charge(response.getTokenId(), CreditCardForm.this.transactionRequest);
+                    }
+                }
+
+                @Override
+                public void onFailure(TokenDetailsResponse response, String reason) {
+                    if (tokenCallback != null) {
+                        tokenCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
+                    }
+
+                    if (CreditCardForm.this.widgetTransactionCallback != null) {
+                        CreditCardForm.this.widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
+                    }
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    if (tokenCallback != null) {
+                        tokenCallback.onFailed(new WidgetException(error.getMessage()));
+                    }
+                }
+            });
         }
     }
 
@@ -479,66 +489,53 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
         this.transactionRequest = request;
         getVeritransSDK().setTransactionRequest(request);
         this.cardToken = cardToken;
-        getVeritransSDK().getSnapToken();
+        getVeritransSDK().checkout(new CheckoutCallback() {
+            @Override
+            public void onSuccess(Token token) {
+                payUsingCreditCard(token);
+            }
+
+            @Override
+            public void onFailure(Token token, String reason) {
+                if (widgetTransactionCallback != null) {
+                    widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_charge)));
+                }
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                if (tokenCallback != null) {
+                    tokenCallback.onFailed(new WidgetException(error.getMessage()));
+                }
+            }
+        });
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(GetTokenSuccessEvent event) {
-        if (tokenCallback != null) {
-            tokenCallback.onSucceed(event.getResponse());
-        }
+    private void payUsingCreditCard(Token token) {
+        getVeritransSDK().snapPaymentUsingCard(token.getTokenId(), CreditCardForm.this.cardToken,
+                false, new TransactionCallback() {
+                    @Override
+                    public void onSuccess(TransactionResponse response) {
+                        if (widgetTransactionCallback != null) {
+                            widgetTransactionCallback.onSucceed(response);
+                        }
+                    }
 
-        if (!TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
-            start3DS(event.getResponse().getTokenId(), event.getResponse().getRedirectUrl());
-        } else {
-            charge(event.getResponse().getTokenId(), transactionRequest);
-        }
-    }
+                    @Override
+                    public void onFailure(TransactionResponse response, String reason) {
+                        if (widgetTransactionCallback != null) {
+                            widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_charge)));
+                        }
+                    }
 
-    @Subscribe
-    @Override
-    public void onEvent(GetTokenFailedEvent event) {
-        if (tokenCallback != null) {
-            tokenCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
-        }
+                    @Override
+                    public void onError(Throwable error) {
+                        if (widgetTransactionCallback != null) {
+                            widgetTransactionCallback.onFailed(new WidgetException(error.getMessage()));
+                        }
+                    }
+                });
 
-        if (transactionCallback != null) {
-            transactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        if (event.getSource().equals(Events.TOKENIZE)) {
-            if (tokenCallback != null) {
-                tokenCallback.onFailed(new WidgetException(getResources().getString(R.string.error_network)));
-            }
-        }
-
-        if (event.getSource().equals(Events.SNAP_PAYMENT) || event.getSource().equals(Events.GET_SNAP_TOKEN)) {
-            if (transactionCallback != null) {
-                transactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_network)));
-            }
-        }
-
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        if (event.getSource().equals(Events.TOKENIZE)) {
-            if (tokenCallback != null) {
-                tokenCallback.onFailed(new WidgetException(getResources().getString(R.string.error_unknown)));
-            }
-        }
-
-        if (event.getSource().equals(Events.SNAP_PAYMENT) || event.getSource().equals(Events.GET_SNAP_TOKEN)) {
-            if (transactionCallback != null) {
-                transactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_unknown)));
-            }
-        }
     }
 
     public String getVeritransClientKey() {
@@ -557,42 +554,12 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
         this.merchantUrl = merchantUrl;
     }
 
-    public void setTransactionCallback(TransactionCallback transactionCallback) {
-        this.transactionCallback = transactionCallback;
+    public void setWidgetTransactionCallback(WidgetTransactionCallback widgetTransactionCallback) {
+        this.widgetTransactionCallback = widgetTransactionCallback;
     }
 
     public void setTransactionRequest(TransactionRequest transactionRequest) {
         this.transactionRequest = transactionRequest;
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        if (transactionCallback != null) {
-            transactionCallback.onSucceed(event.getResponse());
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        if (transactionCallback != null) {
-            transactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_charge)));
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetSnapTokenSuccessEvent event) {
-        getVeritransSDK().snapPaymentUsingCard(event.getResponse().getTokenId(), cardToken, false);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GetSnapTokenFailedEvent event) {
-        if (transactionCallback != null) {
-            transactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_charge)));
-        }
     }
 
     private void start3DS(final String tokenId, String redirectUrl) {
@@ -664,7 +631,7 @@ public class CreditCardForm extends NestedScrollView implements TokenBusCallback
     /**
      * Will be used to get response callback after charging in this view.
      */
-    public interface TransactionCallback {
+    public interface WidgetTransactionCallback {
         void onSucceed(TransactionResponse transactionResponse);
 
         void onFailed(Throwable throwable);

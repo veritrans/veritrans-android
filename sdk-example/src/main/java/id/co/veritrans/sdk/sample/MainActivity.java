@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,10 +37,8 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     public static String userId = "user214";
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
-    private TextView authToken;
     private Button coreBtn, uiBtn, widgetBtn;
-    private Button coreCardRegistration, uiCardRegistration,
-            getAuthenticationToken, refresh_token;
+    private Button coreCardRegistration, uiCardRegistration;
     private RadioButton normal, twoClick, oneClick;
     private Toolbar toolbar;
     @Override
@@ -50,8 +47,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         setContentView(R.layout.activity_main);
         initSDK();
         initView();
-        Logger.i("timestamp:" + new Timestamp(new Date().getTime()));
-        Logger.i("timestamp2:" + new Date().getTime());
     }
 
     @Override

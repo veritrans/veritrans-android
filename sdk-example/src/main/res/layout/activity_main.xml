@@ -216,7 +216,7 @@
                 <Button
                     android:id="@+id/show_core_example"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginRight="@dimen/eight_dp"
                     android:layout_weight="0.5"
                     android:text="@string/btn_show_core"
@@ -226,7 +226,7 @@
                 <Button
                     android:id="@+id/show_ui_flow"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/eight_dp"
                     android:layout_weight="0.5"
                     android:text="@string/btn_show_ui_flow"
