@@ -19,9 +19,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import org.greenrobot.eventbus.Subscribe;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,17 +27,16 @@ import java.util.Date;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
+import id.co.veritrans.sdk.coreflow.models.CreditCardFromScanner;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
 
-public class AddCardDetailsFragment extends Fragment {
+public class AddCardDetailsFragment extends Fragment{
     TextInputLayout tilCardNo, tilCvv, tilExpiry;
     private String lastExpDate = "";
     private EditText etCardNo;
@@ -63,8 +59,6 @@ public class AddCardDetailsFragment extends Fragment {
     private String cardType = "";
     private RelativeLayout formLayout;
 
-    public AddCardDetailsFragment() {
-    }
 
     public static AddCardDetailsFragment newInstance() {
         AddCardDetailsFragment fragment = new AddCardDetailsFragment();
@@ -107,10 +101,6 @@ public class AddCardDetailsFragment extends Fragment {
         }
         bindViews(view);
 
-        // Register bus
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
         ((CreditDebitCardFlowActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
         fadeIn();
     }
@@ -118,10 +108,6 @@ public class AddCardDetailsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Unregister bus
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     private void bindViews(View view) {
@@ -508,11 +494,10 @@ public class AddCardDetailsFragment extends Fragment {
         fadeInAnimation.start();
     }
 
-    @Subscribe
-    public void onEvent(UpdateCreditCardDataFromScanEvent event) {
-        etCardNo.setText(event.getCardNumber());
-        etCvv.setText(event.getCvv());
-        etExpiryDate.setText(event.getExpired());
-    }
 
+    public void updateFromScanCardEvent(CreditCardFromScanner creditCardFromScanner) {
+        etCardNo.setText(creditCardFromScanner.getCardNumber());
+        etCvv.setText(creditCardFromScanner.getCvv());
+        etExpiryDate.setText(creditCardFromScanner.getExpired());
+    }
 }

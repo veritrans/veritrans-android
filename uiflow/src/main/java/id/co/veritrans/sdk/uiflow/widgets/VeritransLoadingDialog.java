@@ -37,7 +37,7 @@ public class VeritransLoadingDialog extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.layout_material_progress);
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        VeritransSDK veritransSDK = VeritransSDK.getInstance();
         progressWheel = (ProgressWheel) findViewById(R.id.progress_wheel);
         messageTv = (TextView) findViewById(R.id.text_loading_message);
         if(!TextUtils.isEmpty(message)){

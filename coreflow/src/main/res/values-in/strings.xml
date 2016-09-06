@@ -325,4 +325,6 @@
     <string name="btn_close">Tutup</string>
     <string name="payment_canceled">3D Secure authorization has been cancelled.</string>
     <string name="error_card_unavailable">Kartu Kredit Tidak Tidak <Ada></Ada></string>
+    <string name="callback_unimplemented">Callback Belum diimplementasikan</string>
+    <string name="transaction_finished_callback_unimplemented">TransactionFinishedCallback belum dimplementasikan</string>
 </resources>

@@ -25,7 +25,6 @@ public class KiosonInstructionActivity extends BaseActivity {
         initializeViews();
     }
 
-
     /**
      * handles click of back arrow given on action bar.
      *

@@ -15,18 +15,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.greenrobot.eventbus.Subscribe;
-
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -39,7 +31,7 @@ import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 /**
  * Created by ziahaqi on 8/26/16.
  */
-public class KiosonActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback{
+public class KiosonActivity extends BaseActivity implements View.OnClickListener{
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
     public static final String STATUS_FRAGMENT = "transaction_status";
@@ -64,6 +56,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
     private int position = Constants.PAYMENT_METHOD_KIOSON;
     private int RESULT_CODE = RESULT_CANCELED;
     private FragmentManager fragmentManager;
+    private java.lang.String TAG = "KiosonActivity";
 
 
     @Override
@@ -71,7 +64,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kioson);
 
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
 
         // get position of selected payment method
         Intent data = getIntent();
@@ -86,17 +79,11 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
         initializeView();
         bindDataToView();
         setUpHomeFragment();
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
 
@@ -238,14 +225,50 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                 false);
 
         //Execute transaction
-        veritransSDK.snapPaymentUsingKiosan(veritransSDK.readAuthenticationToken());
-    }
+        veritransSDK.snapPaymentUsingKiosan(veritransSDK.readAuthenticationToken(), new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                SdkUIFlowUtil.hideProgressDialog();
 
+                if (response != null) {
+                    KiosonActivity.this.transactionResponse = response;
+                    appBarLayout.setExpanded(true);
+                    setUpTransactionFragment(response);
+                } else {
+                    onBackPressed();
+                }
+            }
+
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                SdkUIFlowUtil.hideProgressDialog();
+
+                try {
+                    KiosonActivity.this.errorMessage = reason;
+                    KiosonActivity.this.transactionResponse = response;
+                    SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + reason);
+                } catch (NullPointerException ex) {
+                    Logger.e(TAG, "transaction error is " + ex.getMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                SdkUIFlowUtil.hideProgressDialog();
+
+                try {
+                    KiosonActivity.this.errorMessage = error.getMessage();
+                    SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + error.getMessage());
+                } catch (NullPointerException ex) {
+                    Logger.e(TAG, "transaction error is " + ex.getMessage());
+                }
+            }
+        });
+    }
 
     public int getPosition() {
         return position;
     }
-
 
     /**
      * in case of transaction failure it will change the text of confirm payment button to 'RETRY'
@@ -266,59 +289,5 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
         data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-
-        if (event.getResponse() != null) {
-            KiosonActivity.this.transactionResponse = event.getResponse();
-            appBarLayout.setExpanded(true);
-            setUpTransactionFragment(event.getResponse());
-        } else {
-            onBackPressed();
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        try {
-            KiosonActivity.this.errorMessage = event.getMessage();
-            KiosonActivity.this.transactionResponse = event.getResponse();
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + event.getMessage());
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + event.getMessage());
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        try {
-            KiosonActivity.this.errorMessage = getString(R.string.no_network_msg);
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + getString(R.string.no_network_msg));
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + getString(R.string.no_network_msg));
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        try {
-            KiosonActivity.this.errorMessage = event.getMessage();
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + event.getMessage());
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + event.getMessage());
-        }
     }
 }

@@ -15,18 +15,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -40,7 +32,7 @@ import id.co.veritrans.sdk.uiflow.widgets.VeritransDialog;
 /**
  * Created by Ankit on 12/3/15.
  */
-public class BBMMoneyActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
+public class BBMMoneyActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";
@@ -72,7 +64,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bbm_money);
 
-        veritransSDK = VeritransSDK.getVeritransSDK();
+        veritransSDK = VeritransSDK.getInstance();
 
         // get position of selected payment method
         Intent data = getIntent();
@@ -88,16 +80,10 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         initializeTheme();
         bindDataToView();
         setUpHomeFragment();
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
     protected void onDestroy() {
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
         super.onDestroy();
     }
 
@@ -282,49 +268,41 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         finish();
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-
-        if (transactionResponse != null) {
-            BBMMoneyActivity.this.transactionResponse = event.getResponse();
-            appBarLayout.setExpanded(true);
-            setUpTransactionFragment(transactionResponse);
-        } else {
-            onBackPressed();
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        try {
-            BBMMoneyActivity.this.errorMessage = event.getMessage();
-            BBMMoneyActivity.this.transactionResponse = event.getResponse();
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
-        } catch (NullPointerException ex) {
-            Logger.e("transaction error is " + errorMessage);
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        BBMMoneyActivity.this.errorMessage = getString(R.string.no_network_msg);
-
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        BBMMoneyActivity.this.errorMessage = event.getMessage();
-
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
-    }
+//    public void onEvent(TransactionSuccessEvent event) {
+//        SdkUIFlowUtil.hideProgressDialog();
+//
+//        if (transactionResponse != null) {
+//            BBMMoneyActivity.this.transactionResponse = event.getResponse();
+//            appBarLayout.setExpanded(true);
+//            setUpTransactionFragment(transactionResponse);
+//        } else {
+//            onBackPressed();
+//        }
+//    }
+//
+//    public void onEvent(TransactionFailedEvent event) {
+//        try {
+//            BBMMoneyActivity.this.errorMessage = event.getMessage();
+//            BBMMoneyActivity.this.transactionResponse = event.getResponse();
+//
+//            SdkUIFlowUtil.hideProgressDialog();
+//            SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+//        } catch (NullPointerException ex) {
+//            Logger.e("transaction error is " + errorMessage);
+//        }
+//    }
+//
+//    public void onEvent(NetworkUnavailableEvent event) {
+//        BBMMoneyActivity.this.errorMessage = getString(R.string.no_network_msg);
+//
+//        SdkUIFlowUtil.hideProgressDialog();
+//        SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+//    }
+//
+//    public void onEvent(GeneralErrorEvent event) {
+//        BBMMoneyActivity.this.errorMessage = event.getMessage();
+//
+//        SdkUIFlowUtil.hideProgressDialog();
+//        SdkUIFlowUtil.showSnackbar(BBMMoneyActivity.this, "" + errorMessage);
+//    }
 }

@@ -52,7 +52,7 @@ public class BankTransferFragment extends Fragment {
             e.printStackTrace();
         }
         mEditTextEmailId = (EditText) view.findViewById(R.id.et_email);
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        VeritransSDK veritransSDK = VeritransSDK.getInstance();
         try {
             mEditTextEmailId.setText(userDetail.getEmail());
         } catch (NullPointerException e) {

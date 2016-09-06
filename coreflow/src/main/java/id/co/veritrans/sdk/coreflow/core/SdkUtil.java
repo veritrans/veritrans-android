@@ -30,7 +30,7 @@ import id.co.veritrans.sdk.coreflow.models.MandiriClickPayRequestModel;
 import id.co.veritrans.sdk.coreflow.models.MandiriECashModel;
 import id.co.veritrans.sdk.coreflow.models.PermataBankTransfer;
 import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
-import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.TokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.SnapTransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.TransactionDetails;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
@@ -154,7 +154,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_permata));
+        bankTransfer.setBank(VeritransSDK.getInstance().getContext().getString(R.string.payment_permata));
 
         return new PermataBankTransfer(bankTransfer,
                 transactionDetails, request.getItemDetails(),
@@ -182,7 +182,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_bca));
+        bankTransfer.setBank(VeritransSDK.getInstance().getContext().getString(R.string.payment_bca));
 
 
         BCABankTransfer model =
@@ -217,7 +217,7 @@ public class SdkUtil {
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
 
-        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indomaret));
+        model.setPaymentType(VeritransSDK.getInstance().getContext().getString(R.string.payment_indomaret));
 
         model.setItem_details(request.getItemDetails());
         model.setCustomerDetails(request.getCustomerDetails());
@@ -374,7 +374,7 @@ public class SdkUtil {
 
         model.setCustomerDetails(request.getCustomerDetails(), request
                 .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        model.setPaymentType(VeritransSDK.getVeritransSDK().getContext().getString(R.string.payment_indosat_dompetku));
+        model.setPaymentType(VeritransSDK.getInstance().getContext().getString(R.string.payment_indosat_dompetku));
 
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();
@@ -410,7 +410,7 @@ public class SdkUtil {
         CustomerDetails mCustomerDetails = null;
 
         try {
-            userDetail = LocalDataHandler.readObject(VeritransSDK.getVeritransSDK().getContext().getString(R.string.user_details), UserDetail.class);
+            userDetail = LocalDataHandler.readObject(VeritransSDK.getInstance().getContext().getString(R.string.user_details), UserDetail.class);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
@@ -517,14 +517,14 @@ public class SdkUtil {
     public static String getDeviceId() {
         String deviceId = "UNKNOWN";
         try {
-            deviceId = Settings.Secure.getString(VeritransSDK.getVeritransSDK().getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+            deviceId = Settings.Secure.getString(VeritransSDK.getInstance().getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         } catch (Exception ex) {
             Logger.e(ex.toString());
         }
         return deviceId;
     }
 
-    public static SnapTokenRequestModel getSnapTokenRequestModel(TransactionRequest transactionRequest) {
+    public static TokenRequestModel getSnapTokenRequestModel(TransactionRequest transactionRequest) {
 
         if (transactionRequest.isUiEnabled()) {
             //get user details only if using default ui.
@@ -533,7 +533,7 @@ public class SdkUtil {
 
         SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), (int) transactionRequest.getAmount());
 
-        return new SnapTokenRequestModel(
+        return new TokenRequestModel(
                 details,
                 transactionRequest.getItemDetails(),
                 transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());

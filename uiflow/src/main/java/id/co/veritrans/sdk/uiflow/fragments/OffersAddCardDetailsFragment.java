@@ -23,9 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.greenrobot.eventbus.Subscribe;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,10 +31,9 @@ import java.util.Date;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.events.UpdateCreditCardDataFromScanEvent;
 import id.co.veritrans.sdk.coreflow.models.BankDetail;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
+import id.co.veritrans.sdk.coreflow.models.CreditCardFromScanner;
 import id.co.veritrans.sdk.coreflow.models.OffersListModel;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.uiflow.R;
@@ -129,10 +125,6 @@ public class OffersAddCardDetailsFragment extends Fragment {
         offerName = data.getString(OffersActivity.OFFER_NAME);
         offerType = data.getString(OffersActivity.OFFER_TYPE);
         initialiseView(view);
-        // Register bus
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
         ((OffersActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
         fadeIn();
     }
@@ -140,10 +132,6 @@ public class OffersAddCardDetailsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Unregister bus
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
     }
 
     private void initialiseView(View view) {
@@ -670,10 +658,9 @@ public class OffersAddCardDetailsFragment extends Fragment {
         fadeInAnimation.start();
     }
 
-    @Subscribe
-    public void onEvent(UpdateCreditCardDataFromScanEvent event) {
-        etCardNo.setText(event.getCardNumber());
-        etCvv.setText(event.getCvv());
-        etExpiryDate.setText(event.getExpired());
+    public void updateFromScanCardEvent(CreditCardFromScanner card) {
+        etCardNo.setText(card.getCardNumber());
+        etCvv.setText(card.getCvv());
+        etExpiryDate.setText(card.getExpired());
     }
 }

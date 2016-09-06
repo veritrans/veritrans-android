@@ -45,7 +45,7 @@ public class WidgetExampleActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (creditCardForm.checkCardValidity()) {
                     dialog.show();
-                    creditCardForm.pay(initializePurchaseRequest(), new CreditCardForm.TransactionCallback() {
+                    creditCardForm.pay(initializePurchaseRequest(), new CreditCardForm.WidgetTransactionCallback() {
                         @Override
                         public void onSucceed(TransactionResponse response) {
                             dialog.dismiss();

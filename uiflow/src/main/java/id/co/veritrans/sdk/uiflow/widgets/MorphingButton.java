@@ -172,7 +172,7 @@ public class MorphingButton extends Button {
         int cornerRadius = (int) resources.getDimension(R.dimen.mb_corner_radius_2);
         int primary = SdkUIFlowUtil.fetchPrimaryColor(getContext());
         int primaryDark = SdkUIFlowUtil.fetchPrimaryDarkColor(getContext());
-        VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+        VeritransSDK veritransSDK = VeritransSDK.getInstance();
         if (veritransSDK != null && veritransSDK.getThemeColor() != 0) {
             primary = veritransSDK.getThemeColor();
             primaryDark = veritransSDK.getThemeColor();

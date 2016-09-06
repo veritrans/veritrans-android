@@ -16,21 +16,7 @@ import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
  *</p>
  * You can also enable or disable using {@link #enableLog(boolean)}
  */
-public class SdkCoreFlowBuilder {
-
-    protected String clientKey = null;
-    protected Context context = null;
-    protected boolean enableLog = true;
-    protected String merchantServerUrl = null;
-    protected String colorTheme = null;
-    protected int colorThemeResourceId = 0;
-    protected String merchantName = null;
-    protected ISdkFlow sdkFlow;
-    protected String defaultText;
-    protected String boldText;
-    protected String semiBoldText;
-    protected ArrayList<PaymentMethodsModel> selectedPaymentMethods;
-    protected IScanner externalScanner;
+public class SdkCoreFlowBuilder extends BaseSdkBuilder<SdkCoreFlowBuilder> {
 
     /**
      * It  will initialize an data required to sdk.
@@ -38,10 +24,14 @@ public class SdkCoreFlowBuilder {
      * @param context   application context
 
      */
-    public SdkCoreFlowBuilder(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl) {
+    private SdkCoreFlowBuilder(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl) {
             this.context = context.getApplicationContext();
             this.clientKey = clientKey;
             this.merchantServerUrl = merchantServerUrl;
+    }
+
+    public static SdkCoreFlowBuilder init(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl) {
+        return new SdkCoreFlowBuilder(context, clientKey, merchantServerUrl);
     }
 
     /**
@@ -56,45 +46,6 @@ public class SdkCoreFlowBuilder {
         return this;
     }
 
-
-    /**
-     * Set merchant name.
-     *
-     * @param merchantName merchant name
-     * @return SdkCoreFlowBuilder instance
-     */
-    public SdkCoreFlowBuilder setMerchantName(String merchantName) {
-        this.merchantName = merchantName;
-        return this;
-    }
-
-    /**
-     * This method will start payment flow if you have set useUi field to true.
-     *
-     * @return it returns fully initialized object of veritrans sdk.
-     */
-    public VeritransSDK buildSDK() {
-        if(VeritransSDK.getVeritransSDK() != null){
-            return VeritransSDK.getVeritransSDK();
-        }
-
-        if (VeritransSDK.getVeritransSDK() == null && isValidData()) {
-            VeritransSDK veritransSDK = VeritransSDK.getInstance(this);
-            return veritransSDK;
-
-        } else {
-            Logger.e("already performing an transaction");
-        }
-        return null;
-    }
-
-    public boolean isValidData() {
-        if(merchantServerUrl == null || clientKey == null || context == null){
-            Logger.e("invalid data supplied to sdk");
-            return false;
-        }
-        return true;
-    }
 
     public SdkCoreFlowBuilder setDefaultText(String defaultText) {
         this.defaultText = defaultText;
@@ -114,9 +65,5 @@ public class SdkCoreFlowBuilder {
     public SdkCoreFlowBuilder setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
         this.selectedPaymentMethods = selectedPaymentMethods;
         return this;
-    }
-
-    public static SdkCoreFlowBuilder init(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl){
-        return new SdkCoreFlowBuilder(context, clientKey, merchantServerUrl);
     }
 }

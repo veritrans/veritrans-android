@@ -1,7 +1,9 @@
 package id.co.veritrans.sdk.uiflow.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
@@ -10,24 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
-import com.squareup.okhttp.internal.Util;
-
-import org.greenrobot.eventbus.Subscribe;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.callback.TransactionBusCallback;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionFailedEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
@@ -40,9 +32,11 @@ import id.co.veritrans.sdk.uiflow.widgets.DefaultTextView;
 /**
  * @author rakawm
  */
-public class BCAKlikPayActivity extends BaseActivity implements View.OnClickListener, TransactionBusCallback {
+public class BCAKlikPayActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int PAYMENT_WEB_INTENT = 152;
+    private static final java.lang.String TAG = "BCAKlikPayActivity";
+    private static final String STATUS_FRAGMENT = "status";
     private BCAKlikPayInstructionFragment bcaKlikPayInstructionFragment = null;
     private Button buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
@@ -62,7 +56,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_bca_klikpay);
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
 
         if (mVeritransSDK == null) {
             SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, Constants
@@ -71,16 +65,10 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         }
         initializeViews();
         setUpFragment();
-        if (!VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().register(this);
-        }
     }
 
     @Override
     protected void onDestroy() {
-        if (VeritransBusProvider.getInstance().isRegistered(this)) {
-            VeritransBusProvider.getInstance().unregister(this);
-        }
         super.onDestroy();
     }
 
@@ -131,6 +119,8 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
             onBackPressed();
         }
         return false;
@@ -145,15 +135,57 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
     private void makeTransaction(){
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        mVeritransSDK.snapPaymentUsingBCAKlikpay(mVeritransSDK.readAuthenticationToken());
+        mVeritransSDK.snapPaymentUsingBCAKlikpay(mVeritransSDK.readAuthenticationToken(), new TransactionCallback() {
+                    @Override
+                    public void onSuccess(TransactionResponse response) {
+                        SdkUIFlowUtil.hideProgressDialog();
+
+                        if (response != null &&
+                                !TextUtils.isEmpty(response.getRedirectUrl())) {
+                            BCAKlikPayActivity.this.transactionResponse = response;
+                            Intent intentPaymentWeb = new Intent(BCAKlikPayActivity.this, PaymentWebActivity.class);
+                            intentPaymentWeb.putExtra(Constants.WEBURL, response.getRedirectUrl());
+                            intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_BCA_KLIKPAY);
+                            startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                        } else {
+                            SdkUIFlowUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string
+                                    .empty_transaction_response));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(TransactionResponse response, String reason) {
+                        try {
+                            BCAKlikPayActivity.this.errorMessage = reason;
+                            BCAKlikPayActivity.this.transactionResponse = response;
+
+                            SdkUIFlowUtil.hideProgressDialog();
+                            SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
+                        } catch (NullPointerException ex) {
+                            SdkUIFlowUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string.empty_transaction_response));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        BCAKlikPayActivity.this.errorMessage = error.getMessage();
+                        SdkUIFlowUtil.hideProgressDialog();
+                        SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
+                    }
+                });
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
+        Logger.i(TAG, "reqCode:" + requestCode + ",res:" + resultCode);
+        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
+        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         if (resultCode == RESULT_OK) {
+            currentFragmentName = STATUS_FRAGMENT;
+            mToolbar.setNavigationIcon(closeIcon);
+            setSupportActionBar(mToolbar);
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
                     mVeritransSDK.getTransactionRequest().getOrderId(), String.valueOf(mVeritransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_bca_click), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
@@ -182,51 +214,4 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         this.RESULT_CODE = resultCode;
     }
 
-    @Subscribe
-    @Override
-    public void onEvent(TransactionSuccessEvent event) {
-        SdkUIFlowUtil.hideProgressDialog();
-
-        if (event.getResponse() != null &&
-                !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
-            BCAKlikPayActivity.this.transactionResponse = event.getResponse();
-            Intent intentPaymentWeb = new Intent(BCAKlikPayActivity.this, PaymentWebActivity.class);
-            intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
-            intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_BCA_KLIKPAY);
-            startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
-        } else {
-            SdkUIFlowUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string
-                    .empty_transaction_response));
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(TransactionFailedEvent event) {
-        try {
-            BCAKlikPayActivity.this.errorMessage = event.getMessage();
-            BCAKlikPayActivity.this.transactionResponse = event.getResponse();
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
-        } catch (NullPointerException ex) {
-            SdkUIFlowUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string.empty_transaction_response));
-        }
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(NetworkUnavailableEvent event) {
-        BCAKlikPayActivity.this.errorMessage = getString(R.string.no_network_msg);
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
-    }
-
-    @Subscribe
-    @Override
-    public void onEvent(GeneralErrorEvent event) {
-        BCAKlikPayActivity.this.errorMessage = event.getMessage();
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
-    }
 }

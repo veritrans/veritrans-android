@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -21,7 +22,7 @@ public class BaseActivity extends AppCompatActivity {
     protected  boolean saveCurrentFragment = false;
 
     public void initializeTheme() {
-        VeritransSDK mVeritransSDK = VeritransSDK.getVeritransSDK();
+        VeritransSDK mVeritransSDK = VeritransSDK.getInstance();
         if (mVeritransSDK != null) {
             ImageView logo = (ImageView) findViewById(R.id.merchant_logo);
             if (logo != null) {
@@ -61,5 +62,13 @@ public class BaseActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    protected Fragment getCurrentFagment(Class fragmentClass){
+        if(!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equals(fragmentClass.getName())){
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(currentFragmentName);
+            return currentFragment;
+        }
+        return null;
     }
 }

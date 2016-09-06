@@ -32,7 +32,7 @@ public class ReadBankDetailTask extends AsyncTask<Void, Void ,ArrayList<BankDeta
         this.callback = callback;
     }
 
-
+    @SuppressWarnings("unchecked")
     @Override
     protected ArrayList<BankDetail> doInBackground(Void... params) {
         try {
@@ -43,8 +43,12 @@ public class ReadBankDetailTask extends AsyncTask<Void, Void ,ArrayList<BankDeta
         }
         ArrayList<BankDetail> bankDetails = new ArrayList<>();
         try {
-            bankDetails = LocalDataHandler.readObject(context.getString(R.string.bank_details), BankDetailArray.class).getBankDetails();
-            Logger.i("bankDetails:" + bankDetails.size());
+            Class<ArrayList<BankDetail>> bankDetailClazz = (Class) ArrayList.class;
+            ArrayList<BankDetail> loadedBankDetails = LocalDataHandler.readObject(context.getString(R.string.bank_details), bankDetailClazz);
+            if(loadedBankDetails != null && !loadedBankDetails.isEmpty()){
+                bankDetails.addAll(loadedBankDetails);
+                Logger.i("bankDetails:" + bankDetails.size());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -9,16 +9,21 @@ import java.util.ArrayList;
 
 import id.co.veritrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.coreflow.R;
-import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
-import id.co.veritrans.sdk.coreflow.eventbus.events.Events;
-import id.co.veritrans.sdk.coreflow.eventbus.events.GeneralErrorEvent;
-import id.co.veritrans.sdk.coreflow.eventbus.events.NetworkUnavailableEvent;
+import id.co.veritrans.sdk.coreflow.callback.CardRegistrationCallback;
+import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
+import id.co.veritrans.sdk.coreflow.callback.GetCardCallback;
+import id.co.veritrans.sdk.coreflow.callback.GetCardTokenCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionOptionsCallback;
+import id.co.veritrans.sdk.coreflow.callback.SaveCardCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
+import id.co.veritrans.sdk.coreflow.callback.TransactionFinishedCallback;
 import id.co.veritrans.sdk.coreflow.models.BBMCallBackUrl;
 import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
 import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
-import id.co.veritrans.sdk.coreflow.models.SnapTokenRequestModel;
+import id.co.veritrans.sdk.coreflow.models.TokenRequestModel;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.coreflow.models.snap.TransactionResult;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.IndosatDompetkuPaymentRequest;
 import id.co.veritrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
@@ -29,13 +34,15 @@ import id.co.veritrans.sdk.coreflow.utilities.Utils;
  */
 public class VeritransSDK {
 
+    private static final String TAG = "VeritransSDK";
     public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
             "details are necessary.";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static SharedPreferences mPreferences = null;
     private static VeritransSDK veritransSDK;
-    private static boolean isLogEnabled = true;
+    private  boolean isLogEnabled = false;
+    private TransactionFinishedCallback transactionFinishedCallback;
     protected boolean isRunning = false;
     ISdkFlow uiflow;
     private MixpanelAnalyticsManager mMixpanelAnalyticsManager;
@@ -48,7 +55,6 @@ public class VeritransSDK {
     private String semiBoldText = null;
     private String merchantName = null;
     private IScanner externalScanner;
-    private TransactionManager mTransactionManager;
     private SnapTransactionManager mSnapTransactionManager;
     private String merchantLogo = null;
     private TransactionRequest transactionRequest = null;
@@ -57,32 +63,30 @@ public class VeritransSDK {
     private String sdkBaseUrl = "";
     private int requestTimeOut = 10;
 
-    private VeritransSDK(@NonNull SdkCoreFlowBuilder sdkBuilder) {
+    private VeritransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
         this.clientKey = sdkBuilder.clientKey;
         this.merchantServerUrl = sdkBuilder.merchantServerUrl;
         this.sdkBaseUrl = BuildConfig.SNAP_BASE_URL;
-        this.merchantName = sdkBuilder.merchantName;
         this.defaultText = sdkBuilder.defaultText;
         this.semiBoldText = sdkBuilder.semiBoldText;
         this.boldText = sdkBuilder.boldText;
         this.uiflow = sdkBuilder.sdkFlow;
+        this.transactionFinishedCallback = sdkBuilder.transactionFinishedCallback;
         this.externalScanner = sdkBuilder.externalScanner;
         themeColor = sdkBuilder.colorThemeResourceId;
+        this.isLogEnabled = sdkBuilder.enableLog;
 
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi(requestTimeOut));
-        this.mTransactionManager = new TransactionManager(sdkBuilder.context, VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut),
-                VeritransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut));
+
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, VeritransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 VeritransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
-        this.mTransactionManager.setSDKLogEnabled(isLogEnabled);
-        this.mTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
         this.mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
+        this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
 
         initializeTheme();
         initializeSharedPreferences();
-
     }
 
     /**
@@ -90,7 +94,7 @@ public class VeritransSDK {
      *
      * @param sdkBuilder SDK Coreflow Builder
      */
-    protected static VeritransSDK getInstance(@NonNull SdkCoreFlowBuilder sdkBuilder) {
+    protected static VeritransSDK delegateInstance(@NonNull BaseSdkBuilder sdkBuilder) {
         if (sdkBuilder != null) {
             veritransSDK = new VeritransSDK(sdkBuilder);
         } else {
@@ -104,8 +108,7 @@ public class VeritransSDK {
      *
      * @return VeritransSDK instance
      */
-    public static VeritransSDK getVeritransSDK() {
-
+    public static VeritransSDK getInstance() {
         return veritransSDK;
     }
 
@@ -154,6 +157,10 @@ public class VeritransSDK {
 
     public String getMerchantName() {
         return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
     }
 
     public String getMerchantLogo() {
@@ -229,37 +236,45 @@ public class VeritransSDK {
         this.selectedPaymentMethods = selectedPaymentMethods;
     }
 
-    /**
-     * It will execute an api request to retrieve a token.
-     *
-     * @param cardTokenRequest token request object
-     */
-    public void getToken(CardTokenRequest cardTokenRequest) {
-
-        if (cardTokenRequest != null) {
-            if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
-                mSnapTransactionManager.getToken(cardTokenRequest);
-            } else {
-                isRunning = false;
-                Logger.e(context.getString(R.string.error_unable_to_connect));
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.TOKENIZE));
-            }
-
-        } else {
-            Logger.e(context.getString(R.string.error_invalid_data_supplied));
-            isRunning = false;
-        }
-    }
-
     public TransactionRequest getTransactionRequest() {
         return transactionRequest;
     }
 
     /**
+     * It will execute an api request to retrieve a token.
+     *
+     * @param cardTokenRequest token request object
+     * @param callback get card token callback
+     */
+    public void getCardToken(CardTokenRequest cardTokenRequest, GetCardTokenCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (cardTokenRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.getToken(cardTokenRequest, callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+            }
+
+        } else {
+            Logger.e(context.getString(R.string.error_invalid_data_supplied));
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+
+    /**
      * Set transaction information that you want to execute.
      *
-     * @param transactionRequest request token object
+     * @param transactionRequest transaction request  object
+     *
      */
     public void setTransactionRequest(TransactionRequest transactionRequest) {
         if (!isRunning) {
@@ -267,11 +282,11 @@ public class VeritransSDK {
             if (transactionRequest != null) {
                 this.transactionRequest = transactionRequest;
             } else {
-                Logger.e(ADD_TRANSACTION_DETAILS);
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             }
 
         } else {
-            Logger.e(context.getString(R.string.error_already_running));
+            Logger.e(TAG, context.getString(R.string.error_already_running));
         }
     }
 
@@ -306,9 +321,9 @@ public class VeritransSDK {
 
         } else {
             if (transactionRequest == null) {
-                Logger.e(ADD_TRANSACTION_DETAILS);
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(context.getString(R.string.error_already_running));
+                Logger.e(TAG, context.getString(R.string.error_already_running));
             }
         }
     }
@@ -324,10 +339,10 @@ public class VeritransSDK {
     public void getOffersList() {
         if (isNetworkAvailable()) {
             isRunning = true;
-            mTransactionManager.getOffers(readAuthenticationToken());
+//            mSnapTransactionManager.getOffers(readAuthenticationToken());
         } else {
             isRunning = false;
-            Logger.e(context.getString(R.string.error_unable_to_connect));
+            Logger.e(TAG, context.getString(R.string.error_unable_to_connect));
         }
     }
 
@@ -335,38 +350,48 @@ public class VeritransSDK {
      * It will run background task to get snap transaction details.
      *
      * @param snapToken Snap authentication token
+     * @param callback transaction option callback
      */
-    public void getSnapTransaction(@NonNull String snapToken) {
+    public void getTransactionOptions(@NonNull String snapToken, @NonNull TransactionOptionsCallback callback) {
+        if(callback == null){
+            Logger.d(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
         if (!TextUtils.isEmpty(snapToken)) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.getSnapTransaction(snapToken);
+                mSnapTransactionManager.getTransactionOptions(snapToken, callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.GET_SNAP_TRANSACTION));
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.GET_SNAP_TRANSACTION));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
     /**
-     * It will run background task to get snap token.
+     * It will run background task to  checkout on merchant server.
+     * @param callback checkout callback
      */
-    public void getSnapToken() {
+    public void checkout(@NonNull CheckoutCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                SnapTokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
-                mSnapTransactionManager.getSnapToken(model);
+                TokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
+                mSnapTransactionManager.checkout(model, callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.GET_SNAP_TOKEN));
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.GET_SNAP_TOKEN));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -375,19 +400,25 @@ public class VeritransSDK {
      * @param tokenId authentication token
      * @param cardToken card token form PAPI backend
      * @param saveCard is saving credit card
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingCard(@NonNull String tokenId, @NonNull String cardToken, boolean saveCard) {
+    public void snapPaymentUsingCard(@NonNull String tokenId, @NonNull String cardToken, boolean saveCard, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingCreditCard(SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequest, tokenId));
+                mSnapTransactionManager.paymentUsingCreditCard(SdkUtil.getCreditCardPaymentRequest(cardToken,
+                        saveCard, transactionRequest, tokenId), callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -396,19 +427,26 @@ public class VeritransSDK {
      *
      * @param tokenId authentication token
      * @param email user email
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingBankTransferBCA(@NonNull String tokenId, @NonNull String email) {
+    public void snapPaymentUsingBankTransferBCA(@NonNull String tokenId, @NonNull String email,
+                                                @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingBankTransferBCA(SdkUtil.getBankTransferPaymentRequest(email, tokenId));
+                mSnapTransactionManager.paymentUsingBankTransferBCA(SdkUtil.getBankTransferPaymentRequest(email, tokenId),
+                        callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -417,19 +455,25 @@ public class VeritransSDK {
      *
      * @param tokenId authentication token
      * @param email user email
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingBankTransferPermata(@NonNull String tokenId, @NonNull String email) {
+    public void snapPaymentUsingBankTransferPermata(@NonNull String tokenId, @NonNull String email, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingBankTransferPermata(SdkUtil.getBankTransferPaymentRequest(email, tokenId));
+                mSnapTransactionManager.paymentUsingBankTransferPermata(SdkUtil.getBankTransferPaymentRequest(email, tokenId),
+                        callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -438,19 +482,26 @@ public class VeritransSDK {
      *
      * @param tokenId authentication token
      * @param userId user id
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingKlikBCA(@NonNull String tokenId, @NonNull String userId) {
+    public void snapPaymentUsingKlikBCA(@NonNull String tokenId, @NonNull String userId, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingKlikBCA(SdkUtil.getKlikBCAPaymentRequest(userId, tokenId));
+                mSnapTransactionManager.paymentUsingKlikBCA(SdkUtil.getKlikBCAPaymentRequest(userId, tokenId),
+                        callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_PAYMENT));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -458,19 +509,25 @@ public class VeritransSDK {
      * It will run backround task to charge payment using BCA Klik Pay
      *
      * @param tokenId authentication token
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingBCAKlikpay(@NonNull String tokenId) {
+    public void snapPaymentUsingBCAKlikpay(@NonNull String tokenId, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingBCAKlikpay(new BasePaymentRequest(tokenId));
+                mSnapTransactionManager.paymentUsingBCAKlikpay(new BasePaymentRequest(tokenId), callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -479,19 +536,25 @@ public class VeritransSDK {
      *
      * @param token authentication token
      * @param email user email
+     * @param callback
      */
-    public void snapPaymentUsingMandiriBillPay(@NonNull String token, @NonNull String email) {
+    public void snapPaymentUsingMandiriBillPay(@NonNull String token, @NonNull String email, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingMandiriBillPay(SdkUtil.getBankTransferPaymentRequest(email, token));
+                mSnapTransactionManager.paymentUsingMandiriBillPay(SdkUtil.getBankTransferPaymentRequest(email, token),
+                        callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -502,19 +565,26 @@ public class VeritransSDK {
      * @param mandiriCardNumber  number of mandiri card
      * @param input3 5 digit generated number
      * @param tokenResponse token
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingMandiriClickPay(@NonNull String token, @NonNull String mandiriCardNumber, @NonNull String tokenResponse, @NonNull String input3) {
+    public void snapPaymentUsingMandiriClickPay(@NonNull String token, @NonNull String mandiriCardNumber,
+                                                @NonNull String tokenResponse, @NonNull String input3, TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingMandiriClickPay(SdkUtil.getMandiriClickPaymentRequest(token, mandiriCardNumber, tokenResponse, input3));
+                mSnapTransactionManager.paymentUsingMandiriClickPay(SdkUtil.getMandiriClickPaymentRequest(token,
+                        mandiriCardNumber, tokenResponse, input3), callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -522,19 +592,24 @@ public class VeritransSDK {
      * It will run backround task to charge payment using CIMB Click
      *
      * @param token authentication token
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingCIMBClick(@NonNull String token) {
+    public void snapPaymentUsingCIMBClick(@NonNull String token, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingCIMBClick(new BasePaymentRequest(token));
+                mSnapTransactionManager.paymentUsingCIMBClick(new BasePaymentRequest(token), callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -542,19 +617,24 @@ public class VeritransSDK {
      * It will run backround task to charge payment using mandiri E-Cash
      *
      * @param token authentication token
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingMandiriEcash(@NonNull String token) {
+    public void snapPaymentUsingMandiriEcash(@NonNull String token, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingMandiriEcash(new BasePaymentRequest(token));
+                mSnapTransactionManager.paymentUsingMandiriEcash(new BasePaymentRequest(token), callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -563,19 +643,27 @@ public class VeritransSDK {
      *
      * @param token authentication token
      * @param customerPhoneNumber user phone number
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingTelkomselEcash(@NonNull String token, String customerPhoneNumber) {
+    public void snapPaymentUsingTelkomselEcash(@NonNull String token, @NonNull String customerPhoneNumber,
+                                               @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingTelkomselCash(new TelkomselEcashPaymentRequest(token, customerPhoneNumber));
+                mSnapTransactionManager.paymentUsingTelkomselCash(new TelkomselEcashPaymentRequest(token, customerPhoneNumber),
+                        callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -583,19 +671,25 @@ public class VeritransSDK {
      * It will run backround task to charge payment using XL Tunai
      *
      * @param token authentication token
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingXLTunai(@NonNull String token) {
+    public void snapPaymentUsingXLTunai(@NonNull String token, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingXLTunai(new BasePaymentRequest(token));
+                mSnapTransactionManager.paymentUsingXLTunai(new BasePaymentRequest(token), callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -603,19 +697,25 @@ public class VeritransSDK {
      * It will run backround task to charge payment using Indomaret
      *
      * @param token authentication token
+     * @param callback transction callback
      */
-    public void snapPaymentUsingIndomaret(@NonNull String token) {
+    public void snapPaymentUsingIndomaret(@NonNull String token, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingIndomaret(new BasePaymentRequest(token));
+                mSnapTransactionManager.paymentUsingIndomaret(new BasePaymentRequest(token), callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -624,19 +724,25 @@ public class VeritransSDK {
      *
      * @param token authentication token
      * @param msisdn msisdn number
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingIndosatDompetku(@NonNull String token, @NonNull String msisdn) {
+    public void snapPaymentUsingIndosatDompetku(@NonNull String token, @NonNull String msisdn, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingIndosatDompetku(new IndosatDompetkuPaymentRequest(token, msisdn));
+                mSnapTransactionManager.paymentUsingIndosatDompetku(new IndosatDompetkuPaymentRequest(token, msisdn), callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -644,19 +750,25 @@ public class VeritransSDK {
      * It will run backround task to charge payment using Kiosan
      *
      * @param token authentication token
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingKiosan(@NonNull String token) {
+    public void snapPaymentUsingKiosan(@NonNull String token, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingKiosan(new BasePaymentRequest(token));
+                mSnapTransactionManager.paymentUsingKiosan(new BasePaymentRequest(token), callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -664,19 +776,25 @@ public class VeritransSDK {
      * It will run backround task to charge payment using Epay BRI
      *
      * @param token authentication token
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingEpayBRI(@NonNull String token) {
+    public void snapPaymentUsingEpayBRI(@NonNull String token, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingBRIEpay(new BasePaymentRequest(token));
+                mSnapTransactionManager.paymentUsingBRIEpay(new BasePaymentRequest(token), callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -685,19 +803,25 @@ public class VeritransSDK {
      *
      * @param tokenId authentication token
      * @param email user email
+     * @param callback transaction callback
      */
-    public void snapPaymentUsingBankTransferAllBank(@NonNull String tokenId, @NonNull String email) {
+    public void snapPaymentUsingBankTransferAllBank(@NonNull String tokenId, @NonNull String email, @NonNull TransactionCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingBankTransferAllBank(SdkUtil.getBankTransferPaymentRequest(email, tokenId));
+                mSnapTransactionManager.paymentUsingBankTransferAllBank(SdkUtil.getBankTransferPaymentRequest(email, tokenId),
+                        callback);
             } else {
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new NetworkUnavailableEvent());
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         } else {
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -708,17 +832,24 @@ public class VeritransSDK {
      * @param cardCvv credit card cvv
      * @param cardExpMonth credit card expired month
      * @param cardExpYear credit card expired year
+     * @param callback Credit card registration callback
      */
     public void snapCardRegistration(@NonNull String cardNumber,
                                  @NonNull String cardCvv, @NonNull String cardExpMonth,
-                                 @NonNull String cardExpYear) {
+                                 @NonNull String cardExpYear, @NonNull CardRegistrationCallback callback) {
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
         if(Utils.isNetworkAvailable(context)){
             isRunning = true;
-            mSnapTransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey);
+            mSnapTransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey,
+                    callback);
         }else{
             isRunning = false;
             Logger.e(context.getString(R.string.error_unable_to_connect));
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.CARD_REGISTRATION));
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
         }
     }
 
@@ -727,18 +858,25 @@ public class VeritransSDK {
      *
      * @param userId id user
      * @param requests  save card request model
+     * @param callback save card callback
      */
-    public void snapSaveCard(@NonNull String userId, @NonNull ArrayList<SaveCardRequest> requests){
+    public void snapSaveCard(@NonNull String userId, @NonNull ArrayList<SaveCardRequest> requests,
+                             @NonNull SaveCardCallback callback){
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
         if(requests != null){
             if(Utils.isNetworkAvailable(context)){
                 isRunning = true;
-                mSnapTransactionManager.saveCards(userId, requests);
+                mSnapTransactionManager.saveCards(userId, requests, callback);
             }else{
                 isRunning = false;
-                VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.SNAP_CARD_REGISTRATION));
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
             }
         }else{
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_invalid_data_supplied), Events.SNAP_CARD_REGISTRATION));
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -746,19 +884,26 @@ public class VeritransSDK {
      * It will run backround task to get card from merchant server
      *
      * @param userId id user
+     * @param  callback Get credit card callback
      */
-    public void snapGetCards(@NonNull String userId){
+    public void snapGetCards(@NonNull String userId, GetCardCallback callback){
+        if(callback == null){
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
         if(Utils.isNetworkAvailable(context)){
             isRunning = true;
-            mSnapTransactionManager.getCards(userId);
+            mSnapTransactionManager.getCards(userId, callback);
         }else{
             isRunning = false;
-            VeritransBusProvider.getInstance().post(new GeneralErrorEvent(context.getString(R.string.error_unable_to_connect), Events.SNAP_GET_CARD));
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
         }
     }
 
     /**
-     * it will change configuration
+     * it will change SDK configuration
+     *
      * @param baseUrl  SDK api base url
      * @param merchantUrl merchant base url
      * @param merchantClientKey merchant client key
@@ -769,24 +914,31 @@ public class VeritransSDK {
         this.merchantServerUrl = merchantUrl;
         this.clientKey = merchantClientKey;
         this.requestTimeOut = requestTimeout;
+
         mSnapTransactionManager = new SnapTransactionManager(context, VeritransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeout),
                 VeritransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeout),
                 VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeout));
+
         mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi(requestTimeout));
         mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
         mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
 
+    /**
+     * It will notify merchant apps that fransaction has been finished
+     *
+     * @param result Transaction Result
+     */
+    public void notifyTransactionFinished(TransactionResult result){
+        if(transactionFinishedCallback != null){
+            transactionFinishedCallback.onTransactionFinished(result);
+        } else{
+            Logger.i(TAG, context.getString(R.string.transaction_finished_callback_unimplemented));
+        }
+    }
+
     public IScanner getExternalScanner() {
         return externalScanner;
-    }
-
-    public TransactionManager getTransactionManager() {
-        return mTransactionManager;
-    }
-
-    void setTransactionManager(TransactionManager transactionManager) {
-        mTransactionManager = transactionManager;
     }
 
     void setSnapTransactionManager(SnapTransactionManager snapTransactionManager) {

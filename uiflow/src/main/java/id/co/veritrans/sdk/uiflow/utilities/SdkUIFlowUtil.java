@@ -215,7 +215,7 @@ public class SdkUIFlowUtil {
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
             if (!TextUtils.isEmpty(errorMessage)) {
-                VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
+                VeritransSDK veritransSDK = VeritransSDK.getInstance();
                 if (veritransSDK != null) {
                     Context context = veritransSDK.getContext();
                     if (context != null) {

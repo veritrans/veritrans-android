@@ -50,7 +50,7 @@ public class SelectBankTransferActivity extends BaseActivity {
         //initialize views
         initializeTheme();
         bindActivity();
-        mVeritransSDK = VeritransSDK.getVeritransSDK();
+        mVeritransSDK = VeritransSDK.getInstance();
         TransactionRequest transactionRequest = null;
         if (mVeritransSDK != null) {
             transactionRequest = mVeritransSDK.getTransactionRequest();
