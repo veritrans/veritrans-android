@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,8 +38,10 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     public static String userId = "user214";
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
-    private Button coreBtn, uiBtn;
-    private Button coreCardRegistration, uiCardRegistration;
+    private TextView authToken;
+    private Button coreBtn, uiBtn, widgetBtn;
+    private Button coreCardRegistration, uiCardRegistration,
+            getAuthenticationToken, refresh_token;
     private RadioButton normal, twoClick, oneClick;
     private Toolbar toolbar;
     @Override
@@ -134,6 +137,14 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
         dialog.setMessage("Loading");
+
+        widgetBtn = (Button) findViewById(R.id.show_card_widget);
+        widgetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, WidgetExampleActivity.class));
+            }
+        });
 
         // Initialize radio button
         normal = (RadioButton) findViewById(R.id.radio_card_normal);

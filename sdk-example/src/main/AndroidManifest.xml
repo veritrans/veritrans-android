@@ -39,6 +39,7 @@
         <activity android:name=".BCAPaymentActivity" />
         <activity android:name=".MandiriClickPaymentActivity" />
         <activity android:name=".CardRegistrationActivity" />
+        <activity android:name=".WidgetExampleActivity" />
     </application>
 
 </manifest>

@@ -53,6 +53,8 @@ dependencies {
         exclude module: 'uiflow'
     }
 
+    compile(project(path: ':widgets'))
+
     androidTestCompile('com.android.support.test:runner:0.3') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
