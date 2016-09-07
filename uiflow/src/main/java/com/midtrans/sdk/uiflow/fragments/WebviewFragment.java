@@ -89,7 +89,7 @@ public class WebviewFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-        webView.setWebViewClient(new VeritransWebViewClient());
+        webView.setWebViewClient(new MidtransWebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.addJavascriptInterface(new JsInterface(), getString(R.string.veritrans_response));
        // webView.addJavascriptInterface(new WebAppInterface(getActivity()), "Android");
@@ -101,7 +101,7 @@ public class WebviewFragment extends Fragment {
         }
     }
 
-    private class VeritransWebViewClient extends WebViewClient {
+    private class MidtransWebViewClient extends WebViewClient {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {

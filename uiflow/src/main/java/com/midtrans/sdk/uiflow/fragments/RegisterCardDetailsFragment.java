@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.SaveCardRequest;
 import com.midtrans.sdk.coreflow.utilities.Utils;
 import com.midtrans.sdk.uiflow.activities.OffersActivity;
@@ -44,7 +44,7 @@ public class RegisterCardDetailsFragment extends Fragment {
     private ImageView deleteIv;
     private ImageView logo;
     private Button payNowFrontBt;
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
     private Fragment parentFragment;
     private Activity activity;
 
@@ -62,7 +62,7 @@ public class RegisterCardDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
         cardDetail = (SaveCardRequest) getArguments().getSerializable(ARG_PARAM);
         if (cardDetail != null) {
             Logger.i("cardDetail:" + cardDetail.getMaskedCard());

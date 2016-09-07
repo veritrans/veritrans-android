@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.LocalDataHandler;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.UserAddress;
 import com.midtrans.sdk.coreflow.models.UserDetail;
 import com.midtrans.sdk.uiflow.activities.PaymentMethodsActivity;
@@ -37,7 +37,7 @@ import com.midtrans.sdk.uiflow.R;
 
 public class UserAddressFragment extends Fragment {
 
-    VeritransSDK veritransSDK;
+    MidtransSDK midtransSDK;
     private EditText etAddress;
     private EditText etCity;
     private EditText etZipcode;
@@ -104,7 +104,7 @@ public class UserAddressFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
         findViews(view);
         retrieveCountryCode();
 
@@ -135,8 +135,8 @@ public class UserAddressFragment extends Fragment {
         btnNext = (Button) view.findViewById(R.id.btn_next);
 
 
-        if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
-            btnNext.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
+        if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
+            btnNext.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
         }
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override

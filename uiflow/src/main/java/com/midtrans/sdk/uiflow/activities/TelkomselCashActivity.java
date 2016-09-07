@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
 import com.midtrans.sdk.uiflow.fragments.BankTransactionStatusFragment;
@@ -40,7 +40,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
     private Button mButtonConfirmPayment = null;
 
-    private VeritransSDK mVeritransSDK = null;
+    private MidtransSDK mMidtransSDK = null;
     private Toolbar mToolbar = null;
     private ImageView logo = null;
     private DefaultTextView textTitle, textOrderId, textTotalAmount;
@@ -57,7 +57,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telkomsel);
 
-        mVeritransSDK = VeritransSDK.getInstance();
+        mMidtransSDK = MidtransSDK.getInstance();
 
         initializeView();
         bindDataToView();
@@ -125,14 +125,14 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
      */
     private void bindDataToView() {
         textTitle.setText(R.string.telkomsel_cash);
-        if (mVeritransSDK != null) {
-            if (mVeritransSDK.getSemiBoldText() != null) {
-                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+        if (mMidtransSDK != null) {
+            if (mMidtransSDK.getSemiBoldText() != null) {
+                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
             mButtonConfirmPayment.setOnClickListener(this);
-            textOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
+            textOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
+                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         } else {
             SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_something_wrong));
             finish();
@@ -171,12 +171,12 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         }
 
 
-        final VeritransSDK veritransSDK = VeritransSDK.getInstance();
+        final MidtransSDK midtransSDK = MidtransSDK.getInstance();
 
-        if (veritransSDK != null) {
+        if (midtransSDK != null) {
 
             SdkUIFlowUtil.showProgressDialog(TelkomselCashActivity.this, getString(R.string.processing_payment), false);
-            transactionUsingTelkomsel(veritransSDK);
+            transactionUsingTelkomsel(midtransSDK);
 
         } else {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
@@ -184,8 +184,8 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    private void transactionUsingTelkomsel(final VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingTelkomselEcash(veritransSDK.readAuthenticationToken(),
+    private void transactionUsingTelkomsel(final MidtransSDK midtransSDK) {
+        midtransSDK.snapPaymentUsingTelkomselEcash(midtransSDK.readAuthenticationToken(),
                 telkomselToken, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {

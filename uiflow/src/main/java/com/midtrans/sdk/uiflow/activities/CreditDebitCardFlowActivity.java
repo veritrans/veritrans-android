@@ -30,7 +30,7 @@ import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.LocalDataHandler;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.BankDetail;
 import com.midtrans.sdk.coreflow.models.BillingAddress;
 import com.midtrans.sdk.coreflow.models.CardPaymentDetails;
@@ -74,7 +74,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private int RESULT_CODE = RESULT_CANCELED;
     private Toolbar toolbar;
     private FragmentManager fragmentManager;
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
     private float cardWidth;
     private UserDetail userDetail;
     private TokenDetailsResponse tokenDetailsResponse;
@@ -113,7 +113,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_debit_card_flow);
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.text_title);
@@ -127,17 +127,17 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
-        if (veritransSDK != null) {
-            if (!veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+        if (midtransSDK != null) {
+            if (!midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
                 getCreditCards();
             } else {
                 AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
                 replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
                 titleHeaderTextView.setText(getString(R.string.card_details));
             }
-            textOrderId.setText(veritransSDK.getTransactionRequest().getOrderId());
+            textOrderId.setText(midtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
+                    Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
         }
         readBankDetails();
     }
@@ -181,7 +181,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardTokenRequest;
         Logger.i("isSecure:" + this.cardTokenRequest.isSecure());
-        veritransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+        midtransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
                 actionGetCardTokenSuccess(response);
@@ -210,7 +210,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
         CreditDebitCardFlowActivity.this.tokenDetailsResponse = tokenDetailsResponse;
 
-        if (veritransSDK.getTransactionRequest().isSecureCard()) {
+        if (midtransSDK.getTransactionRequest().isSecureCard()) {
             SdkUIFlowUtil.hideProgressDialog();
             if (tokenDetailsResponse != null) {
                 if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
@@ -234,12 +234,12 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "", userDetail.getEmail(), userDetail.getPhoneNumber());
 
         ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-        TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.
+        TransactionDetails transactionDetails = new TransactionDetails("" + midtransSDK.
                 getTransactionRequest().getAmount(),
-                veritransSDK.getTransactionRequest().getOrderId());
+                midtransSDK.getTransactionRequest().getOrderId());
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-        if (veritransSDK.getTransactionRequest().getItemDetails() != null && veritransSDK.getTransactionRequest().getItemDetails().size() > 0) {
-            itemDetailsArrayList = veritransSDK.getTransactionRequest().getItemDetails();
+        if (midtransSDK.getTransactionRequest().getItemDetails() != null && midtransSDK.getTransactionRequest().getItemDetails().size() > 0) {
+            itemDetailsArrayList = midtransSDK.getTransactionRequest().getItemDetails();
         }
         if (userAddresses != null && !userAddresses.isEmpty()) {
             ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
@@ -280,7 +280,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 e.printStackTrace();
             }
             //for one click
-            if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
+            if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
                     (getString(R.string.card_click_type_one_click)) &&
                     !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
                 cardPaymentDetails = new CardPaymentDetails("",
@@ -302,7 +302,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     itemDetailsArrayList, billingAddresses, shippingAddresses, customerDetails);
         }
 
-        veritransSDK.snapPaymentUsingCard(veritransSDK.readAuthenticationToken(),
+        midtransSDK.snapPaymentUsingCard(midtransSDK.readAuthenticationToken(),
                 tokenDetailsResponse.getTokenId(), saveCard, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
@@ -351,7 +351,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         Logger.i(TAG, "paymentResponse:" + cardPaymentResponse.getStatusCode());
 
         if (cardPaymentResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200)) ||
-                cardPaymentResponse.getStatusCode().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
+                cardPaymentResponse.getStatusCode().equalsIgnoreCase(midtransSDK.getContext().getString(R.string.success_code_201))) {
 
             transactionResponse = cardPaymentResponse;
 
@@ -398,8 +398,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
     }
 
-    public VeritransSDK getVeritransSDK() {
-        return veritransSDK;
+    public MidtransSDK getMidtransSDK() {
+        return midtransSDK;
     }
 
     public UserDetail getUserDetail() {
@@ -433,7 +433,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     public void saveCreditCards(ArrayList<SaveCardRequest> requests, boolean isRemoveCard){
         this.removeExistCard = isRemoveCard;
-        veritransSDK.snapSaveCard(userDetail.getUserId(), requests, new SaveCardCallback() {
+        midtransSDK.snapSaveCard(userDetail.getUserId(), requests, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
                 if(removeExistCard){
@@ -530,7 +530,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         try {
             UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
             if(userDetail != null){
-                veritransSDK.snapGetCards(userDetail.getUserId(), new GetCardCallback() {
+                midtransSDK.snapGetCards(userDetail.getUserId(), new GetCardCallback() {
                     @Override
                     public void onSuccess(ArrayList<SaveCardRequest> response) {
                         ArrayList<SaveCardRequest> cardResponse = response;
@@ -603,11 +603,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         this.cardTokenRequest.setSavedTokenId(cardDetail.getSavedTokenId());
         this.cardTokenRequest.setCardCVV(cardDetail.getCardCVV());
         this.cardTokenRequest.setTwoClick(true);
-        this.cardTokenRequest.setSecure(veritransSDK.getTransactionRequest().isSecureCard());
-        this.cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
+        this.cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
+        this.cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
         this.cardTokenRequest.setBank("");
-        this.cardTokenRequest.setClientKey(veritransSDK.getClientKey());
-        veritransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+        this.cardTokenRequest.setClientKey(midtransSDK.getClientKey());
+        midtransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
                 actionGetCardTokenSuccess(response);

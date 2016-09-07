@@ -16,10 +16,7 @@ import com.midtrans.sdk.coreflow.models.BillInfoModel;
 import com.midtrans.sdk.coreflow.models.ItemDetails;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.models.snap.CreditCard;
-import com.midtrans.sdk.sample.R;
 import com.midtrans.sdk.widgets.CreditCardForm;
-
-import com.midtrans.sdk.sample.BuildConfig;
 
 /**
  * @author rakawm
@@ -39,7 +36,7 @@ public class WidgetExampleActivity extends AppCompatActivity {
         dialog.setCancelable(false);
 
         creditCardForm = (CreditCardForm) findViewById(R.id.credit_card_form);
-        creditCardForm.setVeritransClientKey(BuildConfig.CLIENT_KEY);
+        creditCardForm.setMidtransClientKey(BuildConfig.CLIENT_KEY);
         creditCardForm.setMerchantUrl(BuildConfig.BASE_URL);
 
         getToken = (Button) findViewById(R.id.btn_get_token);

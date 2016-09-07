@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.util.regex.Pattern;
 
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.uiflow.activities.BCAKlikPayActivity;
 import com.midtrans.sdk.uiflow.activities.CIMBClickPayActivity;
@@ -35,7 +35,6 @@ import com.midtrans.sdk.uiflow.activities.MandiriECashActivity;
 public class PaymentTransactionStatusFragment extends Fragment {
 
     private static final String TRANSACTION_RESPONSE_PARAM = "transaction_response_param";
-    private VeritransSDK veritrans;
     private TransactionResponse transactionResponse;
     private boolean isSuccessful;
 
@@ -70,7 +69,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
         if (getArguments() != null) {
             transactionResponse = (TransactionResponse) getArguments().getSerializable(TRANSACTION_RESPONSE_PARAM);
         }
-        veritrans = VeritransSDK.getInstance();
     }
 
     @Nullable

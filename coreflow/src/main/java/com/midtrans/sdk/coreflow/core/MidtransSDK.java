@@ -34,15 +34,15 @@ import com.midtrans.sdk.coreflow.utilities.Utils;
 /**
  * Created by shivam on 10/19/15.
  */
-public class VeritransSDK {
+public class MidtransSDK {
 
-    private static final String TAG = "VeritransSDK";
+    private static final String TAG = "MidtransSDK";
     public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
             "details are necessary.";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static SharedPreferences mPreferences = null;
-    private static VeritransSDK veritransSDK;
+    private static MidtransSDK midtransSDK;
     private  boolean isLogEnabled = false;
     private TransactionFinishedCallback transactionFinishedCallback;
     protected boolean isRunning = false;
@@ -65,7 +65,7 @@ public class VeritransSDK {
     private String sdkBaseUrl = "";
     private int requestTimeOut = 10;
 
-    private VeritransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
+    private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
         this.clientKey = sdkBuilder.clientKey;
         this.merchantServerUrl = sdkBuilder.merchantServerUrl;
@@ -79,11 +79,11 @@ public class VeritransSDK {
         themeColor = sdkBuilder.colorThemeResourceId;
         this.isLogEnabled = sdkBuilder.enableLog;
 
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi(requestTimeOut));
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(MidtransRestAdapter.getMixpanelApi(requestTimeOut));
 
-        this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, VeritransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
-                VeritransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
-                VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
+        this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
+                MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
+                MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
         this.mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
 
@@ -96,22 +96,22 @@ public class VeritransSDK {
      *
      * @param sdkBuilder SDK Coreflow Builder
      */
-    protected static VeritransSDK delegateInstance(@NonNull BaseSdkBuilder sdkBuilder) {
+    protected static MidtransSDK delegateInstance(@NonNull BaseSdkBuilder sdkBuilder) {
         if (sdkBuilder != null) {
-            veritransSDK = new VeritransSDK(sdkBuilder);
+            midtransSDK = new MidtransSDK(sdkBuilder);
         } else {
             Logger.e("sdk is not initialized.");
         }
-        return veritransSDK;
+        return midtransSDK;
     }
 
     /**
      * Returns instance of midtrans sdk.
      *
-     * @return VeritransSDK instance
+     * @return MidtransSDK instance
      */
-    public static VeritransSDK getInstance() {
-        return veritransSDK;
+    public static MidtransSDK getInstance() {
+        return midtransSDK;
     }
 
     /**
@@ -917,11 +917,11 @@ public class VeritransSDK {
         this.clientKey = merchantClientKey;
         this.requestTimeOut = requestTimeout;
 
-        mSnapTransactionManager = new SnapTransactionManager(context, VeritransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeout),
-                VeritransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeout),
-                VeritransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeout));
+        mSnapTransactionManager = new SnapTransactionManager(context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeout),
+                MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeout),
+                MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeout));
 
-        mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(VeritransRestAdapter.getMixpanelApi(requestTimeout));
+        mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(MidtransRestAdapter.getMixpanelApi(requestTimeout));
         mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
         mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }

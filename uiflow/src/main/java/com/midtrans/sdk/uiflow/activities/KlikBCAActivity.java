@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
 import com.midtrans.sdk.uiflow.fragments.BankTransactionStatusFragment;
@@ -50,7 +50,7 @@ public class KlikBCAActivity extends BaseActivity {
 
     private KlikBCAFragment klikBCAFragment;
 
-    private VeritransSDK mVeritransSDK;
+    private MidtransSDK mMidtransSDK;
     private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
@@ -60,7 +60,7 @@ public class KlikBCAActivity extends BaseActivity {
         setContentView(R.layout.activity_klik_bca);
 
         // Get Veritrans SDK instance
-        mVeritransSDK = VeritransSDK.getInstance();
+        mMidtransSDK = MidtransSDK.getInstance();
 
         // Initialize views
         mTextViewOrderId = (TextView) findViewById(R.id.text_order_id);
@@ -85,13 +85,13 @@ public class KlikBCAActivity extends BaseActivity {
         // Set title
         mTextViewTitle.setText(R.string.klik_bca);
         // Set transaction details
-        mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
-        mTextViewOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
+        mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
+        mTextViewOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
 
 
         // Set custom font if available
-        if (mVeritransSDK.getSemiBoldText() != null) {
-            mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+        if (mMidtransSDK.getSemiBoldText() != null) {
+            mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
         }
 
         // Initialize fragment
@@ -116,7 +116,7 @@ public class KlikBCAActivity extends BaseActivity {
                     if (klikBCAFragment.checkUserId()) {
                         // Do the payment
                         SdkUIFlowUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
-                        mVeritransSDK.snapPaymentUsingKlikBCA(mVeritransSDK.readAuthenticationToken(),
+                        mMidtransSDK.snapPaymentUsingKlikBCA(mMidtransSDK.readAuthenticationToken(),
                                 klikBCAFragment.getUserId(), new TransactionCallback() {
                                     @Override
                                     public void onSuccess(TransactionResponse response) {

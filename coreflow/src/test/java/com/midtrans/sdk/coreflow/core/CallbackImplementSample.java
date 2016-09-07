@@ -38,18 +38,18 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
     CallbackCollaborator callbackCollaborator;
     private SnapTransactionManager snapTransactionManager;
     private SnapRestAPI snapRestAPI;
-    private VeritransRestAPI veritransRestAPI;
+    private MidtransRestAPI midtransRestAPI;
     private MerchantRestAPI merchantRestAPI;
 
     public void setTransactionManager(SnapTransactionManager transactionManager, MerchantRestAPI merchantRestAPI,
-                                      VeritransRestAPI veritransRestAPI, SnapRestAPI snapRestAPI) {
+                                      MidtransRestAPI midtransRestAPI, SnapRestAPI snapRestAPI) {
         this.snapRestAPI = snapRestAPI;
         this.merchantRestAPI = merchantRestAPI;
-        this.veritransRestAPI = veritransRestAPI;
+        this.midtransRestAPI = midtransRestAPI;
         this.snapTransactionManager = transactionManager;
         this.snapTransactionManager.setRestApi(snapRestAPI);
         this.snapTransactionManager.setMerchantPaymentAPI(merchantRestAPI);
-        this.snapTransactionManager.setVeritransPaymentAPI(veritransRestAPI);
+        this.snapTransactionManager.setMidtransPaymentAPI(midtransRestAPI);
     }
 
     @Override

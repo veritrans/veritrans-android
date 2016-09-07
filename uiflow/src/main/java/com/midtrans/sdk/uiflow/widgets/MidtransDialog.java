@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.midtrans.sdk.uiflow.R;
 
-public class VeritransDialog extends android.app.Dialog {
+public class MidtransDialog extends android.app.Dialog {
 
     private String title;
     private String message;
@@ -28,8 +28,8 @@ public class VeritransDialog extends android.app.Dialog {
     private ImageView titleImage;
     private Drawable drawable;
 
-    public VeritransDialog(Context context, String title, String message, String positiveButtonText,
-                           String negativeButtonText) {
+    public MidtransDialog(Context context, String title, String message, String positiveButtonText,
+                          String negativeButtonText) {
 
         super(context, R.style.TransperentTheme);
 
@@ -40,9 +40,9 @@ public class VeritransDialog extends android.app.Dialog {
         this.negativeButtonText = negativeButtonText;
     }
 
-    public VeritransDialog(Context context, Drawable titleDrawable, String message, String
+    public MidtransDialog(Context context, Drawable titleDrawable, String message, String
             positiveButtonText,
-                           String negativeButtonText) {
+                          String negativeButtonText) {
         super(context, R.style.TransperentTheme);
 
         this.drawable = titleDrawable;

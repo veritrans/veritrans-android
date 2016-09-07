@@ -20,9 +20,9 @@ import retrofit.converter.GsonConverter;
 /**
  * Created by chetan on 16/10/15.
  */
-public class VeritransRestAdapter {
+public class MidtransRestAdapter {
     private static final RestAdapter.LogLevel LOG_LEVEL = BuildConfig.FLAVOR.equalsIgnoreCase("development") ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
-    private static final String TAG = VeritransRestAdapter.class.getName();
+    private static final String TAG = MidtransRestAdapter.class.getName();
 
     /**
      * It will return instance of PaymentAPI using that we can execute api calls.
@@ -30,7 +30,7 @@ public class VeritransRestAdapter {
      * @param baseUrl base URL of PAPI
      * @return Payment API implementation
      */
-    public static VeritransRestAPI getVeritransApiClient(String baseUrl, int timeout) {
+    public static MidtransRestAPI getVeritransApiClient(String baseUrl, int timeout) {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(timeout, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(timeout, TimeUnit.SECONDS);
@@ -45,7 +45,7 @@ public class VeritransRestAdapter {
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient));
         RestAdapter restAdapter = builder.build();
-        return restAdapter.create(VeritransRestAPI.class);
+        return restAdapter.create(MidtransRestAPI.class);
     }
 
     /**

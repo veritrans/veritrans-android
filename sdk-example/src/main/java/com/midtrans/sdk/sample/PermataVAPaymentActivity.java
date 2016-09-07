@@ -8,9 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
-import com.midtrans.sdk.sample.R;
 
 public class PermataVAPaymentActivity extends AppCompatActivity {
     Button payBtn;
@@ -42,8 +41,8 @@ public class PermataVAPaymentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                VeritransSDK.getInstance().snapPaymentUsingBankTransferPermata(
-                        VeritransSDK.getInstance().readAuthenticationToken(),
+                MidtransSDK.getInstance().snapPaymentUsingBankTransferPermata(
+                        MidtransSDK.getInstance().readAuthenticationToken(),
                         sampleEmail, new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

@@ -15,7 +15,7 @@ import com.midtrans.sdk.coreflow.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.LocalDataHandler;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.snap.Token;
 import com.midtrans.sdk.coreflow.models.snap.Transaction;
 import com.midtrans.sdk.sample.BCAKlikPayActivity;
@@ -57,7 +57,7 @@ public class CoreFlowActivity extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setMessage("get payment methods");
         dialog.show();
-        VeritransSDK.getInstance().checkout(new CheckoutCallback() {
+        MidtransSDK.getInstance().checkout(new CheckoutCallback() {
             @Override
             public void onSuccess(Token token) {
                 Logger.i("snaptoken>success");
@@ -85,7 +85,7 @@ public class CoreFlowActivity extends AppCompatActivity {
     }
 
     private void getPaymentOption(String tokenId) {
-        VeritransSDK.getInstance().getTransactionOptions(tokenId, new TransactionOptionsCallback() {
+        MidtransSDK.getInstance().getTransactionOptions(tokenId, new TransactionOptionsCallback() {
             @Override
             public void onSuccess(Transaction transaction) {
                 if(dialog.isShowing()){

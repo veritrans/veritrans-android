@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.midtrans.sdk.coreflow.core.LocalDataHandler;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.UserDetail;
 import com.midtrans.sdk.uiflow.R;
 import com.midtrans.sdk.uiflow.activities.BankTransferInstructionActivity;
@@ -52,14 +52,14 @@ public class BankTransferFragment extends Fragment {
             e.printStackTrace();
         }
         mEditTextEmailId = (EditText) view.findViewById(R.id.et_email);
-        VeritransSDK veritransSDK = VeritransSDK.getInstance();
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         try {
             mEditTextEmailId.setText(userDetail.getEmail());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        if (veritransSDK != null) {
-            mEditTextEmailId.setHintTextColor(veritransSDK.getThemeColor());
+        if (midtransSDK != null) {
+            mEditTextEmailId.setHintTextColor(midtransSDK.getThemeColor());
         }
         btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override

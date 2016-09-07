@@ -15,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 import com.midtrans.sdk.coreflow.APIClientMain;
 import com.midtrans.sdk.coreflow.SDKConfigTest;
 import com.midtrans.sdk.coreflow.core.MerchantRestAPI;
-import com.midtrans.sdk.coreflow.core.VeritransRestAPI;
+import com.midtrans.sdk.coreflow.core.MidtransRestAPI;
 import com.midtrans.sdk.coreflow.models.CardTransfer;
 import com.midtrans.sdk.coreflow.models.TokenDetailsResponse;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
@@ -47,7 +47,7 @@ public class CardTransactionTest extends APIClientMain {
     @Test
     public void vt_testGetTokenSuccess() throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
-        VeritransRestAPI paymentAPI = createVeritransPaymentAPIMock(VT_GET_TOKEN_SUCCESS, 200, "success");
+        MidtransRestAPI paymentAPI = createVeritransPaymentAPIMock(VT_GET_TOKEN_SUCCESS, 200, "success");
         paymentAPI.get3DSToken(CARD_NUMBER, CARD_CVV, CARD_EXP_MONTH, CARD_EXP_YEAR,
                 SDKConfigTest.CLIENT_KEY, null, false, false, 0.0, new Callback<TokenDetailsResponse>() {
                     @Override

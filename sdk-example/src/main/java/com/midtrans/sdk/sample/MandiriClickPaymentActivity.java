@@ -10,9 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
-import com.midtrans.sdk.sample.R;
 
 public class MandiriClickPaymentActivity extends AppCompatActivity {
     TextInputLayout cardNumberContainer, tokenContainer;
@@ -55,8 +54,8 @@ public class MandiriClickPaymentActivity extends AppCompatActivity {
                 refreshView();
                 if (inputValidator()) {
                     dialog.show();
-                    VeritransSDK.getInstance().snapPaymentUsingMandiriClickPay(
-                            VeritransSDK.getInstance().readAuthenticationToken(),
+                    MidtransSDK.getInstance().snapPaymentUsingMandiriClickPay(
+                            MidtransSDK.getInstance().readAuthenticationToken(),
                             sampleMandiriCardNumber,
                             sampleTokenResponse,
                             input3, new TransactionCallback() {

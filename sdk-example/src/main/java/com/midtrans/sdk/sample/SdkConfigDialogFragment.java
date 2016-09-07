@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 
 
 /**
@@ -86,7 +86,7 @@ public class SdkConfigDialogFragment extends DialogFragment {
                 if(!checkFormValidity()){
                     return;
                 }
-                VeritransSDK.getInstance().changeSdkConfig(snapUrl, merchantUrl,merchantClientKey, Integer.valueOf(requestTimeout));
+                MidtransSDK.getInstance().changeSdkConfig(snapUrl, merchantUrl,merchantClientKey, Integer.valueOf(requestTimeout));
                 dismiss();
             }
         });
@@ -101,15 +101,15 @@ public class SdkConfigDialogFragment extends DialogFragment {
     }
 
     private void initForm() {
-        VeritransSDK veritransSDK = VeritransSDK.getInstance();
-        Logger.d("edittimeout:" + veritransSDK.getRequestTimeOut());
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        Logger.d("edittimeout:" + midtransSDK.getRequestTimeOut());
         Logger.d("edittimeout>view:" + editTimeout);
 
-        editSnapUrl.setText(veritransSDK.getSdkBaseUrl());
-        editMerchantUrl.setText(veritransSDK.getMerchantServerUrl());
-        editClientKey.setText(veritransSDK.getClientKey());
+        editSnapUrl.setText(midtransSDK.getSdkBaseUrl());
+        editMerchantUrl.setText(midtransSDK.getMerchantServerUrl());
+        editClientKey.setText(midtransSDK.getClientKey());
 
-        editTimeout.setText(String.valueOf(veritransSDK.getRequestTimeOut()));
+        editTimeout.setText(String.valueOf(midtransSDK.getRequestTimeOut()));
     }
 
     private boolean checkFormValidity(){

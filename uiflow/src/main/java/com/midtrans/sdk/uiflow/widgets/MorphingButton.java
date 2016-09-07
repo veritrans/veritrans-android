@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 import com.midtrans.sdk.uiflow.R;
@@ -173,10 +173,10 @@ public class MorphingButton extends Button {
         int cornerRadius = (int) resources.getDimension(R.dimen.mb_corner_radius_2);
         int primary = SdkUIFlowUtil.fetchPrimaryColor(getContext());
         int primaryDark = SdkUIFlowUtil.fetchPrimaryDarkColor(getContext());
-        VeritransSDK veritransSDK = VeritransSDK.getInstance();
-        if (veritransSDK != null && veritransSDK.getThemeColor() != 0) {
-            primary = veritransSDK.getThemeColor();
-            primaryDark = veritransSDK.getThemeColor();
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null && midtransSDK.getThemeColor() != 0) {
+            primary = midtransSDK.getThemeColor();
+            primaryDark = midtransSDK.getThemeColor();
         }
         StateListDrawable background = new StateListDrawable();
         mDrawableNormal = createDrawable(primary, cornerRadius, 0);

@@ -15,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 
 import com.midtrans.sdk.coreflow.APIClientMain;
 import com.midtrans.sdk.coreflow.SDKConfigTest;
-import com.midtrans.sdk.coreflow.core.VeritransRestAPI;
+import com.midtrans.sdk.coreflow.core.MidtransRestAPI;
 import com.midtrans.sdk.coreflow.models.CardRegistrationResponse;
 
 import retrofit.Callback;
@@ -40,7 +40,7 @@ public class PaymentApiTest extends APIClientMain {
     @Test
     public void vt_ApiCardRegistrationSuccess() throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
-        VeritransRestAPI paymentAPI = createVeritransPaymentAPIMock(VT_CARD_REG_RESPONSE_SUCCESS, 200, "success");
+        MidtransRestAPI paymentAPI = createVeritransPaymentAPIMock(VT_CARD_REG_RESPONSE_SUCCESS, 200, "success");
         paymentAPI.registerCard(APIClientMain.CARD_NUMBER,
                 APIClientMain.CARD_CVV,
                 APIClientMain.CARD_EXP_MONTH,

@@ -11,9 +11,8 @@ import android.widget.Toast;
 
 
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
-import com.midtrans.sdk.sample.R;
 
 /**
  * Created by ziahaqi on 8/3/16.
@@ -36,8 +35,8 @@ public class EpayBRIPaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.show();
-                VeritransSDK.getInstance().snapPaymentUsingEpayBRI(
-                        VeritransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
+                MidtransSDK.getInstance().snapPaymentUsingEpayBRI(
+                        MidtransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {
                                 actionTransactionSuccess(response);

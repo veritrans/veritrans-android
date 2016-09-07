@@ -26,7 +26,7 @@ import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.LocalDataHandler;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.CreditCardFromScanner;
 import com.midtrans.sdk.coreflow.models.SaveCardRequest;
 import com.midtrans.sdk.coreflow.models.SaveCardResponse;
@@ -52,7 +52,7 @@ public class SaveCreditCardActivity extends BaseActivity{
     private int RESULT_CODE = RESULT_CANCELED;
     private Toolbar toolbar;
     private ImageView logo;
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
     private RelativeLayout processingLayout;
     private String currentFragmentName;
     private float cardWidth;
@@ -81,7 +81,7 @@ public class SaveCreditCardActivity extends BaseActivity{
         setContentView(R.layout.activity_save_credit_card);
 
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.title_header);
@@ -159,8 +159,8 @@ public class SaveCreditCardActivity extends BaseActivity{
         }
     }
 
-    public VeritransSDK getVeritransSDK() {
-        return veritransSDK;
+    public MidtransSDK getMidtransSDK() {
+        return midtransSDK;
     }
 
     public Toolbar getToolbar() {
@@ -214,7 +214,7 @@ public class SaveCreditCardActivity extends BaseActivity{
         cardRequests.add(creditCard);
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         if(userDetail != null){
-            veritransSDK.snapSaveCard(userDetail.getUserId(), cardRequests, new SaveCardCallback() {
+            midtransSDK.snapSaveCard(userDetail.getUserId(), cardRequests, new SaveCardCallback() {
                 @Override
                 public void onSuccess(SaveCardResponse response) {
                     SdkUIFlowUtil.hideProgressDialog();
@@ -252,7 +252,7 @@ public class SaveCreditCardActivity extends BaseActivity{
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         if(userDetail != null){
-            veritransSDK.snapGetCards(userDetail.getUserId(), new GetCardCallback() {
+            midtransSDK.snapGetCards(userDetail.getUserId(), new GetCardCallback() {
                 @Override
                 public void onSuccess(ArrayList<SaveCardRequest> response) {
 

@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
 import com.midtrans.sdk.uiflow.fragments.BankTransactionStatusFragment;
@@ -57,7 +57,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     private DefaultTextView textTitle, textOrderId, textTotalAmount;
 
 
-    private VeritransSDK mVeritransSDK = null;
+    private MidtransSDK mMidtransSDK = null;
     private Toolbar mToolbar = null;
     private ImageView logo = null;
     private InstructionIndosatFragment mIndosatFragment = null;
@@ -73,7 +73,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indosat);
 
-        mVeritransSDK = VeritransSDK.getInstance();
+        mMidtransSDK = MidtransSDK.getInstance();
 
         initializeView();
         bindDataToView();
@@ -143,14 +143,14 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      */
     private void bindDataToView() {
         textTitle.setText(getString(R.string.indosat_dompetku));
-        if (mVeritransSDK != null) {
-            if (mVeritransSDK.getSemiBoldText() != null) {
-                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+        if (mMidtransSDK != null) {
+            if (mMidtransSDK.getSemiBoldText() != null) {
+                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
             mButtonConfirmPayment.setOnClickListener(this);
-            textOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
+            textOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
+                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         } else {
             SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_something_wrong));
             Logger.e(IndosatDompetkuActivity.class.getSimpleName(), Constants
@@ -198,7 +198,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
             if (!TextUtils.isEmpty(phoneNumber) && SdkUIFlowUtil.isPhoneNumberValid(phoneNumber)) {
                 Logger.i("setting phone number " + phoneNumber);
-                mVeritransSDK.getTransactionRequest().getCustomerDetails().setPhone(phoneNumber.trim());
+                mMidtransSDK.getTransactionRequest().getCustomerDetails().setPhone(phoneNumber.trim());
             } else {
                 SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_invalid_phone_number));
                 return;
@@ -206,12 +206,12 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         }
 
 
-        final VeritransSDK veritransSDK = VeritransSDK.getInstance();
+        final MidtransSDK midtransSDK = MidtransSDK.getInstance();
 
-        if (veritransSDK != null) {
+        if (midtransSDK != null) {
 
             SdkUIFlowUtil.showProgressDialog(IndosatDompetkuActivity.this, getString(R.string.processing_payment), false);
-            transactionUsingIndosat(veritransSDK);
+            transactionUsingIndosat(midtransSDK);
 
         } else {
             Logger.e(Constants.ERROR_SDK_IS_NOT_INITIALIZED);
@@ -225,10 +225,10 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * call {@link #setUpTransactionStatusFragment(TransactionResponse)}  to display appropriate
      * message.
      *
-     * @param veritransSDK Veritrans SDK instance
+     * @param midtransSDK Veritrans SDK instance
      */
-    private void transactionUsingIndosat(final VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingIndosatDompetku(veritransSDK.readAuthenticationToken(),
+    private void transactionUsingIndosat(final MidtransSDK midtransSDK) {
+        midtransSDK.snapPaymentUsingIndosatDompetku(midtransSDK.readAuthenticationToken(),
                 phoneNumber, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {

@@ -7,10 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.squareup.picasso.Picasso;
 
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
 import com.midtrans.sdk.uiflow.R;
 
 /**
@@ -22,13 +22,13 @@ public class BaseActivity extends AppCompatActivity {
     protected  boolean saveCurrentFragment = false;
 
     public void initializeTheme() {
-        VeritransSDK mVeritransSDK = VeritransSDK.getInstance();
-        if (mVeritransSDK != null) {
+        MidtransSDK mMidtransSDK = MidtransSDK.getInstance();
+        if (mMidtransSDK != null) {
             ImageView logo = (ImageView) findViewById(R.id.merchant_logo);
             if (logo != null) {
-                if (mVeritransSDK.getMerchantLogo() != null) {
+                if (mMidtransSDK.getMerchantLogo() != null) {
                     Picasso.with(this)
-                            .load(mVeritransSDK.getMerchantLogo())
+                            .load(mMidtransSDK.getMerchantLogo())
                             .into(logo);
                 }
             }

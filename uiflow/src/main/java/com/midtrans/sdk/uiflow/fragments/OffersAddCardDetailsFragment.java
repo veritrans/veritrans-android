@@ -30,7 +30,7 @@ import java.util.Date;
 
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.BankDetail;
 import com.midtrans.sdk.coreflow.models.CardTokenRequest;
 import com.midtrans.sdk.coreflow.models.CreditCardFromScanner;
@@ -38,7 +38,7 @@ import com.midtrans.sdk.coreflow.models.OffersListModel;
 import com.midtrans.sdk.coreflow.models.UserDetail;
 import com.midtrans.sdk.uiflow.activities.OffersActivity;
 import com.midtrans.sdk.uiflow.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uiflow.widgets.VeritransDialog;
+import com.midtrans.sdk.uiflow.widgets.MidtransDialog;
 
 import com.midtrans.sdk.uiflow.R;
 
@@ -76,7 +76,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     private String[] expDateArray;
     private int expMonth;
     private int expYear;
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
     private UserDetail userDetail;
     private ArrayList<BankDetail> bankDetails;
     private String cardType = "";
@@ -105,7 +105,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        veritransSDK = ((OffersActivity) getActivity()).getVeritransSDK();
+        midtransSDK = ((OffersActivity) getActivity()).getMidtransSDK();
         userDetail = ((OffersActivity) getActivity()).getUserDetail();
         bankDetails = ((OffersActivity) getActivity()).getBankDetails();
     }
@@ -179,21 +179,21 @@ public class OffersAddCardDetailsFragment extends Fragment {
                 }
             });
 
-            if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
-                payNowBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
-                scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getDefaultText()));
-                if (veritransSDK.getExternalScanner() != null) {
+            if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
+                payNowBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
+                scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getDefaultText()));
+                if (midtransSDK.getExternalScanner() != null) {
                     scanCardBtn.setVisibility(View.VISIBLE);
                     scanCardBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            veritransSDK.getExternalScanner().startScan(getActivity(), OffersActivity.SCAN_REQUEST_CODE);
+                            midtransSDK.getExternalScanner().startScan(getActivity(), OffersActivity.SCAN_REQUEST_CODE);
                         }
                     });
                 } else {
                     scanCardBtn.setVisibility(View.GONE);
                 }
-                if (veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+                if (midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
                     cbStoreCard.setVisibility(View.GONE);
                     questionImg.setVisibility(View.GONE);
                 } else {
@@ -326,7 +326,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
                     String year = "20" + date.split("/")[1];
                     CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv,
                             month, year,
-                            veritransSDK.getClientKey());
+                            midtransSDK.getClientKey());
 
                     int instalmentTerm = 0;
                     if (isInstalment) {
@@ -343,8 +343,8 @@ public class OffersAddCardDetailsFragment extends Fragment {
                     }
 
                     cardTokenRequest.setIsSaved(cbStoreCard.isChecked());
-                    cardTokenRequest.setSecure(veritransSDK.getTransactionRequest().isSecureCard());
-                    cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest()
+                    cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
+                    cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest()
                             .getAmount());
                     cardTokenRequest.setCardType(cardType);
                     cardTokenRequest.setBins(bins);
@@ -367,9 +367,9 @@ public class OffersAddCardDetailsFragment extends Fragment {
         questionImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
+                MidtransDialog midtransDialog = new MidtransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
-                veritransDialog.show();
+                midtransDialog.show();
             }
         });
 

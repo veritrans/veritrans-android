@@ -6,7 +6,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
 
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 
 /**
  * @author rakawm
@@ -35,7 +35,7 @@ public class DefaultTextView extends TextViewWithImages {
     }
 
     private void init() {
-        VeritransSDK paymentSdk = VeritransSDK.getInstance();
+        MidtransSDK paymentSdk = MidtransSDK.getInstance();
         if (paymentSdk != null) {
             if (paymentSdk.getDefaultText() != null) {
                 Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getDefaultText());

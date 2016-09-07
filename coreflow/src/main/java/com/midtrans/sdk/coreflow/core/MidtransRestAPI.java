@@ -14,7 +14,7 @@ import retrofit.http.Query;
 /**
  * Created by ziahaqi on 27/06/2016.
  */
-public interface VeritransRestAPI {
+public interface MidtransRestAPI {
 
 
     /*

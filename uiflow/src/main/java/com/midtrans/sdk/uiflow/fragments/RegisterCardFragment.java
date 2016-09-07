@@ -27,13 +27,13 @@ import java.util.Date;
 
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.BankDetail;
 import com.midtrans.sdk.coreflow.models.CreditCardFromScanner;
 import com.midtrans.sdk.coreflow.models.UserDetail;
 import com.midtrans.sdk.uiflow.activities.SaveCreditCardActivity;
 import com.midtrans.sdk.uiflow.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uiflow.widgets.VeritransDialog;
+import com.midtrans.sdk.uiflow.widgets.MidtransDialog;
 
 import com.midtrans.sdk.uiflow.R;
 
@@ -58,7 +58,7 @@ public class RegisterCardFragment extends Fragment {
     private String[] expDateArray;
     private int expMonth;
     private int expYear;
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
     private UserDetail userDetail;
     private ArrayList<BankDetail> bankDetails;
     private String cardType = "";
@@ -72,7 +72,7 @@ public class RegisterCardFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((SaveCreditCardActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.card_details));
-        veritransSDK = ((SaveCreditCardActivity) getActivity()).getVeritransSDK();
+        midtransSDK = ((SaveCreditCardActivity) getActivity()).getMidtransSDK();
     }
 
     @Override
@@ -128,16 +128,16 @@ public class RegisterCardFragment extends Fragment {
                 checkCardValidity();
             }
         });
-        if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
-            saveBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
-            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getDefaultText()));
+        if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
+            saveBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
+            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getDefaultText()));
 
-            if (veritransSDK.getExternalScanner() != null) {
+            if (midtransSDK.getExternalScanner() != null) {
                 scanCardBtn.setVisibility(View.VISIBLE);
                 scanCardBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        veritransSDK.getExternalScanner().startScan(getActivity(), SaveCreditCardActivity.SCAN_REQUEST_CODE);
+                        midtransSDK.getExternalScanner().startScan(getActivity(), SaveCreditCardActivity.SCAN_REQUEST_CODE);
                     }
                 });
             } else {
@@ -163,17 +163,17 @@ public class RegisterCardFragment extends Fragment {
         questionImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
+                MidtransDialog midtransDialog = new MidtransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
-                veritransDialog.show();
+                midtransDialog.show();
             }
         });
         questionSaveCardImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getResources().getDrawable(R.drawable.cart_dialog),
+                MidtransDialog midtransDialog = new MidtransDialog(getActivity(), getResources().getDrawable(R.drawable.cart_dialog),
                         getString(R.string.message_save_card), getString(R.string.got_it), "");
-                veritransDialog.show();
+                midtransDialog.show();
             }
         });
 

@@ -51,11 +51,11 @@ public class SnapTransactionManager extends BaseTransactionManager {
 
     private SnapRestAPI snapRestAPI;
 
-    SnapTransactionManager(Context context, SnapRestAPI snapRestAPI, MerchantRestAPI merchantApiClient, VeritransRestAPI veritransRestAPI) {
+    SnapTransactionManager(Context context, SnapRestAPI snapRestAPI, MerchantRestAPI merchantApiClient, MidtransRestAPI midtransRestAPI) {
         this.context = context;
         this.snapRestAPI = snapRestAPI;
         this.merchantPaymentAPI = merchantApiClient;
-        this.veritransPaymentAPI = veritransRestAPI;
+        this.midtransPaymentAPI = midtransRestAPI;
     }
 
     protected void setRestApi(SnapRestAPI restApi) {
@@ -1026,7 +1026,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                                  String cardCvv,
                                  String cardExpMonth,
                                  String cardExpYear, String clientKey, final CardRegistrationCallback callback) {
-        veritransPaymentAPI.registerCard(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey, new Callback<CardRegistrationResponse>() {
+        midtransPaymentAPI.registerCard(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey, new Callback<CardRegistrationResponse>() {
             @Override
             public void success(CardRegistrationResponse cardRegistrationResponse, Response response) {
                 releaseResources();
@@ -1063,7 +1063,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
         final long start = System.currentTimeMillis();
         if (cardTokenRequest.isTwoClick()) {
             if (cardTokenRequest.isInstalment()) {
-                veritransPaymentAPI.getTokenInstalmentOfferTwoClick(
+                midtransPaymentAPI.getTokenInstalmentOfferTwoClick(
                         cardTokenRequest.getCardCVV(),
                         cardTokenRequest.getSavedTokenId(),
                         cardTokenRequest.isTwoClick(),
@@ -1084,7 +1084,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             }
                         });
             } else {
-                veritransPaymentAPI.getTokenTwoClick(
+                midtransPaymentAPI.getTokenTwoClick(
                         cardTokenRequest.getCardCVV(),
                         cardTokenRequest.getSavedTokenId(),
                         cardTokenRequest.isTwoClick(),
@@ -1106,7 +1106,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
 
         } else {
             if (cardTokenRequest.isInstalment()) {
-                veritransPaymentAPI.get3DSTokenInstalmentOffers(cardTokenRequest.getCardNumber(),
+                midtransPaymentAPI.get3DSTokenInstalmentOffers(cardTokenRequest.getCardNumber(),
                         cardTokenRequest.getCardCVV(),
                         cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
                                 .getCardExpiryYear(),
@@ -1130,7 +1130,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
             } else {
                 //normal request
                 if (!cardTokenRequest.isSecure()) {
-                    veritransPaymentAPI.getToken(
+                    midtransPaymentAPI.getToken(
                             cardTokenRequest.getCardNumber(),
                             cardTokenRequest.getCardCVV(),
                             cardTokenRequest.getCardExpiryMonth(),
@@ -1149,7 +1149,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             }
                     );
                 } else {
-                    veritransPaymentAPI.get3DSToken(cardTokenRequest.getCardNumber(),
+                    midtransPaymentAPI.get3DSToken(cardTokenRequest.getCardNumber(),
                             cardTokenRequest.getCardCVV(),
                             cardTokenRequest.getCardExpiryMonth(),
                             cardTokenRequest.getCardExpiryYear(),

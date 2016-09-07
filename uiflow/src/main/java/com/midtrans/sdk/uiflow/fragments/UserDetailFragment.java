@@ -13,13 +13,13 @@ import android.widget.EditText;
 import java.io.IOException;
 import java.util.UUID;
 
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.uiflow.R;
 import com.midtrans.sdk.uiflow.activities.UserDetailsActivity;
 import com.midtrans.sdk.coreflow.core.LocalDataHandler;
 import com.midtrans.sdk.coreflow.core.Logger;
 import com.midtrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
 import com.midtrans.sdk.coreflow.models.UserDetail;
 
 public class UserDetailFragment extends Fragment {
@@ -51,7 +51,7 @@ public class UserDetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        VeritransSDK veritransSDK = VeritransSDK.getInstance();
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         UserDetailsActivity userDetailsActivity = (UserDetailsActivity) getActivity();
         if (userDetailsActivity != null && userDetailsActivity.getSupportActionBar() != null) {
             userDetailsActivity.getSupportActionBar().setTitle(getString(R.string.title_user_details));
@@ -60,8 +60,8 @@ public class UserDetailFragment extends Fragment {
         phoneEt = (EditText) view.findViewById(R.id.et_phone);
         emailEt = (EditText) view.findViewById(R.id.et_email);
         nextBtn = (Button) view.findViewById(R.id.btn_next);
-        if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
-            nextBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
+        if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
+            nextBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
         }
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override

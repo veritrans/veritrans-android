@@ -8,9 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
-import com.midtrans.sdk.sample.R;
 
 public class MandiriBillPaymentActivity extends AppCompatActivity {
     Button payBtn;
@@ -42,8 +41,8 @@ public class MandiriBillPaymentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                VeritransSDK.getInstance().snapPaymentUsingMandiriBillPay(
-                        VeritransSDK.getInstance().readAuthenticationToken(),
+                MidtransSDK.getInstance().snapPaymentUsingMandiriBillPay(
+                        MidtransSDK.getInstance().readAuthenticationToken(),
                         sampleEmail, new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

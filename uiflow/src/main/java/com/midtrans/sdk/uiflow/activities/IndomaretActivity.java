@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.CstoreEntity;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
@@ -49,7 +49,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     private TextView textViewTitle = null;
     private ImageView logo = null;
 
-    private VeritransSDK veritransSDK = null;
+    private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
 
     private InstructionIndomaretFragment instructionIndomaretFragment = null;
@@ -66,7 +66,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indomaret);
 
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
 
         // get position of selected payment method
         Intent data = getIntent();
@@ -137,12 +137,12 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
 
     private void bindDataToView() {
         textViewTitle.setText(getString(R.string.indomaret));
-        if (veritransSDK != null) {
+        if (midtransSDK != null) {
             textViewAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
-            textViewOrderId.setText("" + veritransSDK.getTransactionRequest().getOrderId());
-            if (veritransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), veritransSDK.getSemiBoldText()));
+                    Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
+            textViewOrderId.setText("" + midtransSDK.getTransactionRequest().getOrderId());
+            if (midtransSDK.getSemiBoldText() != null) {
+                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), midtransSDK.getSemiBoldText()));
             }
             buttonConfirmPayment.setOnClickListener(this);
         }
@@ -230,7 +230,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         cstoreEntity.setStore("indomaret");
 
         //Execute transaction
-        veritransSDK.snapPaymentUsingIndomaret(veritransSDK.readAuthenticationToken(), new TransactionCallback() {
+        midtransSDK.snapPaymentUsingIndomaret(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();

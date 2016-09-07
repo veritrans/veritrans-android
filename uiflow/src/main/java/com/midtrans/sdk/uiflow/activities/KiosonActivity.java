@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
 import com.midtrans.sdk.uiflow.fragments.KiosonPaymentFragment;
@@ -46,7 +46,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
     private TextView textViewTitle = null;
     private ImageView logo = null;
 
-    private VeritransSDK veritransSDK = null;
+    private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
 
     private InstructionKiosonFragment instructionKiosonFragment = null;
@@ -65,7 +65,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kioson);
 
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
 
         // get position of selected payment method
         Intent data = getIntent();
@@ -137,12 +137,12 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
     private void bindDataToView() {
         textViewTitle.setText(getString(R.string.kioson));
-        if (veritransSDK != null) {
+        if (midtransSDK != null) {
             textViewAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
-            textViewOrderId.setText("" + veritransSDK.getTransactionRequest().getOrderId());
-            if (veritransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), veritransSDK.getSemiBoldText()));
+                    Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
+            textViewOrderId.setText("" + midtransSDK.getTransactionRequest().getOrderId());
+            if (midtransSDK.getSemiBoldText() != null) {
+                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), midtransSDK.getSemiBoldText()));
             }
             buttonConfirmPayment.setOnClickListener(this);
         }
@@ -226,7 +226,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                 false);
 
         //Execute transaction
-        veritransSDK.snapPaymentUsingKiosan(veritransSDK.readAuthenticationToken(), new TransactionCallback() {
+        midtransSDK.snapPaymentUsingKiosan(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();

@@ -21,7 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.CardTokenRequest;
 import com.midtrans.sdk.coreflow.models.SaveCardRequest;
 import com.midtrans.sdk.coreflow.utilities.Utils;
@@ -29,7 +29,7 @@ import com.midtrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uiflow.activities.OffersActivity;
 import com.midtrans.sdk.uiflow.utilities.FlipAnimation;
 import com.midtrans.sdk.uiflow.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uiflow.widgets.VeritransDialog;
+import com.midtrans.sdk.uiflow.widgets.MidtransDialog;
 
 import com.midtrans.sdk.uiflow.R;
 
@@ -47,7 +47,7 @@ public class CardDetailFragment extends Fragment {
     private ImageButton deleteIv;
     private ImageView logo;
     private Button payNowFrontBt;
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
     private Fragment parentFragment;
     private Activity activity;
 
@@ -69,7 +69,7 @@ public class CardDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
         cardDetail = (SaveCardRequest) getArguments().getSerializable(ARG_PARAM);
         if (cardDetail != null) {
             Logger.i("cardDetail:" + cardDetail.getMaskedCard());
@@ -108,16 +108,16 @@ public class CardDetailFragment extends Fragment {
         cardContainerFront.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
-                    VeritransDialog veritransDialog = new VeritransDialog(getActivity(), getString(R.string.payment_confirmation_title), getString(R.string.payment_confirmation_description, cardNoTv.getText().toString(), Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())), getString(R.string.text_yes), getString(R.string.text_no));
+                if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
+                    MidtransDialog midtransDialog = new MidtransDialog(getActivity(), getString(R.string.payment_confirmation_title), getString(R.string.payment_confirmation_description, cardNoTv.getText().toString(), Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())), getString(R.string.text_yes), getString(R.string.text_no));
                     View.OnClickListener positiveClickListner = new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             cardTransactionProcess("");
                         }
                     };
-                    veritransDialog.setOnAcceptButtonClickListener(positiveClickListner);
-                    veritransDialog.show();
+                    midtransDialog.setOnAcceptButtonClickListener(positiveClickListner);
+                    midtransDialog.show();
 
                 } else {
                     flipCard();
@@ -154,9 +154,9 @@ public class CardDetailFragment extends Fragment {
             }
         });
 
-        Logger.i("veritransSDK.getCardClickType()" + veritransSDK.getTransactionRequest()
+        Logger.i("midtransSDK.getCardClickType()" + midtransSDK.getTransactionRequest()
                 .getCardClickType());
-        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
+        if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
             payNowFrontBt.setVisibility(View.GONE);
         } else {
             payNowFrontBt.setVisibility(View.GONE);
@@ -221,7 +221,7 @@ public class CardDetailFragment extends Fragment {
             }
         }
 
-        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
+        if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
 
             if (activity != null) {
                 CardTokenRequest request = new CardTokenRequest();
@@ -232,7 +232,7 @@ public class CardDetailFragment extends Fragment {
                     ((OffersActivity) getActivity()).oneClickPayment(request);
                 }
             }
-        } else if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
+        } else if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
                 (getString(R.string.card_click_type_two_click))) {
 
             if (activity != null) {
@@ -259,7 +259,7 @@ public class CardDetailFragment extends Fragment {
     }
 
     private void flipCard() {
-        if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
+        if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
             return;
         }
         Animation scaleDown = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_down);

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 
 public class BCAKlikPayActivity extends AppCompatActivity{
@@ -43,8 +43,8 @@ public class BCAKlikPayActivity extends AppCompatActivity{
                 // Show progress dialog
                 dialog.show();
                 // Do payment
-                VeritransSDK.getInstance().snapPaymentUsingBCAKlikpay(
-                        VeritransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
+                MidtransSDK.getInstance().snapPaymentUsingBCAKlikpay(
+                        MidtransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {
                                 actionTransactionSuccess(response);

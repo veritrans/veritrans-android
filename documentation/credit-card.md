@@ -68,13 +68,13 @@ To start the tokenize call code below.
 
 ```Java
 // CardTokenRequest class contains card details required for getting token.
-CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv, month, year, veritransSDK.getClientKey());
+CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv, month, year, midtransSDK.getClientKey());
 // Optional mode
 cardTokenRequest.setIsSaved(true); // Set to true if this token will be used later (one click or two click)
 cardTokenRequest.setTwoClick(true); // Set to true if using two click
 cardTokenRequest.setSavedTokenId(SAVED_TOKEN_ID); // Set the saved token id if using two click 
 // Start the tokenize
-veritransSDK.getToken(cardTokenRequest);
+midtransSDK.getToken(cardTokenRequest);
 ```
 
 ### Handle 3D Secure Authorization

@@ -16,8 +16,8 @@ import java.util.List;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.LocalDataHandler;
 import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.core.TransactionRequest;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
 import com.midtrans.sdk.coreflow.models.BankTransferModel;
 import com.midtrans.sdk.coreflow.models.CustomerDetails;
 import com.midtrans.sdk.coreflow.models.UserDetail;
@@ -33,7 +33,7 @@ public class SelectBankTransferActivity extends BaseActivity {
 
     public static final String EXTRA_BANK = "extra.bank";
     private static final String TAG = SelectBankTransferActivity.class.getSimpleName();
-    VeritransSDK mVeritransSDK;
+    MidtransSDK mMidtransSDK;
 
     private ArrayList<BankTransferModel> data = new ArrayList<>();
 
@@ -50,10 +50,10 @@ public class SelectBankTransferActivity extends BaseActivity {
         //initialize views
         initializeTheme();
         bindActivity();
-        mVeritransSDK = VeritransSDK.getInstance();
+        mMidtransSDK = MidtransSDK.getInstance();
         TransactionRequest transactionRequest = null;
-        if (mVeritransSDK != null) {
-            transactionRequest = mVeritransSDK.getTransactionRequest();
+        if (mMidtransSDK != null) {
+            transactionRequest = mMidtransSDK.getTransactionRequest();
             UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
             CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "", userDetail.getEmail(), userDetail.getPhoneNumber());
             transactionRequest.setCustomerDetails(customerDetails);

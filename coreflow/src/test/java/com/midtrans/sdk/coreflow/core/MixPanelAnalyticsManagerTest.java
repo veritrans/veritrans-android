@@ -19,9 +19,7 @@ import java.util.Collections;
 
 import com.midtrans.sdk.coreflow.analytics.MixpanelApi;
 import com.midtrans.sdk.coreflow.analytics.MixpanelEvent;
-import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.MixpanelAnalyticsManager;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -31,7 +29,7 @@ import retrofit.mime.TypedByteArray;
  * Created by ziahaqi on 7/19/16.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({VeritransSDK.class, Log.class,  Logger.class, Base64.class})
+@PrepareForTest({MidtransSDK.class, Log.class,  Logger.class, Base64.class})
 
 public class MixPanelAnalyticsManagerTest {
 
@@ -57,7 +55,7 @@ public class MixPanelAnalyticsManagerTest {
     private String eventName = "eventName";
     private String paymentType = "paymentType";
     @Mock
-    private VeritransSDK sdkMock;
+    private MidtransSDK sdkMock;
     private MixpanelAnalyticsManager mixpanelAnalyticsManagerSpy;
     private String bankType = "bankType";
     private String erorMessage = "errorMessage";
@@ -68,10 +66,10 @@ public class MixPanelAnalyticsManagerTest {
         PowerMockito.mockStatic(Base64.class);
         PowerMockito.mockStatic(Logger.class);
 
-        PowerMockito.mockStatic(VeritransSDK.class);
+        PowerMockito.mockStatic(MidtransSDK.class);
         analyticsManager = new MixpanelAnalyticsManager(mixpanelApiMock);
         mixPanelEventMock = new MixpanelEvent();
-        Mockito.when(VeritransSDK.getInstance()).thenReturn(sdkMock);
+        Mockito.when(MidtransSDK.getInstance()).thenReturn(sdkMock);
         mixpanelAnalyticsManagerSpy = Mockito.spy(analyticsManager);
 
     }

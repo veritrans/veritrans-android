@@ -18,16 +18,16 @@ import java.util.UUID;
 
 import com.midtrans.sdk.coreflow.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.coreflow.core.TransactionRequest;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
 import com.midtrans.sdk.coreflow.models.BillInfoModel;
 import com.midtrans.sdk.coreflow.models.ItemDetails;
 import com.midtrans.sdk.coreflow.models.snap.CreditCard;
 import com.midtrans.sdk.coreflow.models.snap.TransactionResult;
 
 import com.midtrans.sdk.sample.core.CoreFlowActivity;
-import id.co.veritrans.sdk.scancard.ScanCard;
+import com.midtrans.sdk.scancard.ScanCard;
 
 import com.midtrans.sdk.uiflow.SdkUIFlowBuilder;
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         // SDK initiation for coreflow
         if(mysdkFlow == CORE_FLOW){
-            VeritransSDK veritransSDK = SdkCoreFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
+            MidtransSDK midtransSDK = SdkCoreFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
                     .enableLog(true)
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     .buildSDK();
         } else {
             // SDK initiation for UIflow
-            VeritransSDK veritransSDK = SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
+            MidtransSDK midtransSDK = SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
                     .enableLog(true)
                     .setDefaultText("open_sans_regular.ttf")
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         coreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransSDK.getInstance().setTransactionRequest(initializePurchaseRequest());
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest());
                 Intent intent = new Intent(MainActivity.this, CoreFlowActivity.class);
                 startActivity(intent);
             }
@@ -161,12 +161,12 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         uiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.i("config>clientkey:" + VeritransSDK.getInstance().getClientKey());
-                Logger.i("config>merchantUrl:" + VeritransSDK.getInstance().getMerchantServerUrl());
-                Logger.i("config>sdkurl:" + VeritransSDK.getInstance().getSdkBaseUrl());
-                Logger.i("config>timeout:" + VeritransSDK.getInstance().getRequestTimeOut());
-                VeritransSDK.getInstance().setTransactionRequest(initializePurchaseRequest());
-                VeritransSDK.getInstance().startPaymentUiFlow(MainActivity.this);
+                Logger.i("config>clientkey:" + MidtransSDK.getInstance().getClientKey());
+                Logger.i("config>merchantUrl:" + MidtransSDK.getInstance().getMerchantServerUrl());
+                Logger.i("config>sdkurl:" + MidtransSDK.getInstance().getSdkBaseUrl());
+                Logger.i("config>timeout:" + MidtransSDK.getInstance().getRequestTimeOut());
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest());
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this);
             }
         });
 
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         uiCardRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeritransSDK.getInstance().startRegisterCardUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startRegisterCardUIFlow(MainActivity.this);
             }
         });
     }

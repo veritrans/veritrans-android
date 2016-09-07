@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 
 /**
@@ -42,8 +42,8 @@ public class BankTransferPaymentActivity extends AppCompatActivity{
                 dialog.show();
                 String type = getIntent().getStringExtra(TRANSFER_TYPE);
                 if(type.equals(getString(R.string.label_bank_transfer_bca))){
-                    VeritransSDK.getInstance().snapPaymentUsingBankTransferBCA(
-                            VeritransSDK.getInstance().readAuthenticationToken(),
+                    MidtransSDK.getInstance().snapPaymentUsingBankTransferBCA(
+                            MidtransSDK.getInstance().readAuthenticationToken(),
                             sampleEmail, new TransactionCallback() {
                                 @Override
                                 public void onSuccess(TransactionResponse response) {
@@ -61,8 +61,8 @@ public class BankTransferPaymentActivity extends AppCompatActivity{
                                 }
                             });
                 }else if(type.equals(getString(R.string.label_bank_transfer_permata))){
-                    VeritransSDK.getInstance().snapPaymentUsingBankTransferPermata(
-                            VeritransSDK.getInstance().readAuthenticationToken(),
+                    MidtransSDK.getInstance().snapPaymentUsingBankTransferPermata(
+                            MidtransSDK.getInstance().readAuthenticationToken(),
                             sampleEmail, new TransactionCallback() {
                                 @Override
                                 public void onSuccess(TransactionResponse response) {

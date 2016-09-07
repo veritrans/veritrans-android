@@ -7,7 +7,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 
 /**
  * @author rakawm
@@ -36,7 +36,7 @@ public class BoldTextView extends TextView {
     }
 
     private void init() {
-        VeritransSDK paymentSdk = VeritransSDK.getInstance();
+        MidtransSDK paymentSdk = MidtransSDK.getInstance();
         if (paymentSdk != null) {
             if (paymentSdk.getDefaultText() != null) {
                 Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getDefaultText());

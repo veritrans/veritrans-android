@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
 import com.midtrans.sdk.uiflow.R;
@@ -33,7 +33,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     private static int RESULT_CODE = RESULT_CANCELED;
     private Button btConfirmPayment = null;
     private Toolbar toolbar = null;
-    private VeritransSDK veritransSDK = null;
+    private MidtransSDK midtransSDK = null;
     private ImageView logo = null;
     private InstructionEpayBriFragment instructionEpayBriFragment;
     private TransactionResponse transactionResponse;
@@ -48,8 +48,8 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_epay_bri);
-        veritransSDK = VeritransSDK.getInstance();
-        if (veritransSDK == null) {
+        midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK == null) {
             SdkUIFlowUtil.showSnackbar(EpayBriActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -83,13 +83,13 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
     private void bindData() {
         textTitle.setText(getString(R.string.epay_bri));
-        if (veritransSDK != null) {
-            if (veritransSDK.getSemiBoldText() != null) {
-                btConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), veritransSDK.getSemiBoldText()));
+        if (midtransSDK != null) {
+            if (midtransSDK.getSemiBoldText() != null) {
+                btConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), midtransSDK.getSemiBoldText()));
             }
-            textOrderId.setText(veritransSDK.getTransactionRequest().getOrderId());
+            textOrderId.setText(midtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
+                    Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
         }
     }
 
@@ -125,7 +125,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
     private void makeTransaction() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        veritransSDK.snapPaymentUsingEpayBRI(veritransSDK.readAuthenticationToken(), new TransactionCallback() {
+        midtransSDK.snapPaymentUsingEpayBRI(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();

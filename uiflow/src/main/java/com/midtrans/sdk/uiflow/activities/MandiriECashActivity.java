@@ -19,7 +19,7 @@ import java.util.UUID;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
 import com.midtrans.sdk.uiflow.fragments.InstructionMandiriECashFragment;
@@ -44,7 +44,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private Toolbar mToolbar = null;
     private ImageView logo = null;
     private DefaultTextView textTitle, textOrderId, textTotalAmount;
-    private VeritransSDK mVeritransSDK = null;
+    private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
     private int RESULT_CODE = RESULT_CANCELED;
@@ -59,9 +59,9 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_mandiri_e_cash);
-        mVeritransSDK = VeritransSDK.getInstance();
+        mMidtransSDK = MidtransSDK.getInstance();
 
-        if (mVeritransSDK == null) {
+        if (mMidtransSDK == null) {
             SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -84,13 +84,13 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
 
         initializeTheme();
-        if (mVeritransSDK != null) {
-            if (mVeritransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+        if (mMidtransSDK != null) {
+            if (mMidtransSDK.getSemiBoldText() != null) {
+                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
-            textOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
+            textOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
+                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
         textTitle.setText(getString(R.string.mandiri_e_cash));
         mToolbar.setTitle("");
@@ -129,7 +129,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private void makeTransaction() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
 
-        mVeritransSDK.snapPaymentUsingMandiriEcash(mVeritransSDK.readAuthenticationToken(), new TransactionCallback() {
+        mMidtransSDK.snapPaymentUsingMandiriEcash(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();
@@ -175,7 +175,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             mToolbar.setNavigationIcon(closeIcon);
             setSupportActionBar(mToolbar);
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
-                    mVeritransSDK.getTransactionRequest().getOrderId(), String.valueOf(mVeritransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_mandiri_ecash), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
+                    mMidtransSDK.getTransactionRequest().getOrderId(), String.valueOf(mMidtransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_mandiri_ecash), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
             PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
             replaceFragment(paymentTransactionStatusFragment, R.id.instruction_container, false, false);
             buttonConfirmPayment.setVisibility(View.GONE);

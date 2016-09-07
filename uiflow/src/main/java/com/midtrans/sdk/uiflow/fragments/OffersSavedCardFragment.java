@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.OffersListModel;
 import com.midtrans.sdk.coreflow.models.SaveCardRequest;
 import com.midtrans.sdk.uiflow.activities.OffersActivity;
@@ -46,7 +46,7 @@ public class OffersSavedCardFragment extends Fragment {
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
     private ArrayList<SaveCardRequest> creditCards;
     private CardPagerAdapter cardPagerAdapter;
     private TextView emptyCardsTextView;
@@ -74,7 +74,7 @@ public class OffersSavedCardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
     }
 
     @Override

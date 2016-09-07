@@ -9,9 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
-import com.midtrans.sdk.sample.R;
 
 /**
  * Created by ziahaqi on 8/9/16.
@@ -35,8 +34,8 @@ public class IndosatDompetkuPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                VeritransSDK.getInstance().snapPaymentUsingIndosatDompetku(
-                        VeritransSDK.getInstance().readAuthenticationToken(),
+                MidtransSDK.getInstance().snapPaymentUsingIndosatDompetku(
+                        MidtransSDK.getInstance().readAuthenticationToken(),
                         sampleMSISDN, new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

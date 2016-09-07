@@ -42,7 +42,7 @@
 }
 
 # Keep the BuildConfig
--keep class id.co.veritrans.sdk.BuildConfig { *; }
+-keep class com.midtrans.sdk.BuildConfig { *; }
 
 # Keep the support library
 -keep class android.support.v4.** { *; }
@@ -93,20 +93,20 @@
 # Also you must note that if you are using GSON for conversion from JSON to POJO representation, you must ignore those POJO classes from being obfuscated.
 # Here include the POJO's that have you have created for mapping JSON response to POJO for example.
 #-keep class id.co.midtrans.sdk.activities.**{ *;}
--keep class id.co.veritrans.sdk.fragments.**{*;}
--keep class id.co.veritrans.sdk.models.** { *; }
--keep class id.co.veritrans.sdk.eventbus.**{*;}
--keep class id.co.veritrans.sdk.analytics.MixpanelEvent{*;}
--keep class id.co.veritrans.sdk.analytics.MixpanelProperties{*;}
--keep class id.co.veritrans.sdk.core.VeritransSDK {*;}
--keep class id.co.veritrans.sdk.core.VeritransBuilder {*;}
--keep class id.co.veritrans.sdk.core.TransactionRequest {*;}
--keep class id.co.veritrans.sdk.core.LocalDataHandler {*;}
--keep class id.co.veritrans.sdk.core.Logger {*;}
--keep class id.co.veritrans.sdk.core.Constants {*;}
--keep class id.co.veritrans.sdk.core.SdkUtil {*;}
--keep class id.co.veritrans.sdk.core.ExternalScanner{*;}
--keep class id.co.veritrans.sdk.core.PaymentMethods{*;}
+-keep class com.midtrans.sdk.fragments.**{*;}
+-keep class com.midtrans.sdk.models.** { *; }
+-keep class com.midtrans.sdk.eventbus.**{*;}
+-keep class com.midtrans.sdk.analytics.MixpanelEvent{*;}
+-keep class com.midtrans.sdk.analytics.MixpanelProperties{*;}
+-keep class com.midtrans.sdk.core.VeritransSDK {*;}
+-keep class com.midtrans.sdk.core.VeritransBuilder {*;}
+-keep class com.midtrans.sdk.core.TransactionRequest {*;}
+-keep class com.midtrans.sdk.core.LocalDataHandler {*;}
+-keep class com.midtrans.sdk.core.Logger {*;}
+-keep class com.midtrans.sdk.core.Constants {*;}
+-keep class com.midtrans.sdk.core.SdkUtil {*;}
+-keep class com.midtrans.sdk.core.ExternalScanner{*;}
+-keep class com.midtrans.sdk.core.PaymentMethods{*;}
 #-keep class id.co.midtrans.sdk.widget.**{*;}
 #-keep class id.co.midtrans.sdk.** {*;}
 

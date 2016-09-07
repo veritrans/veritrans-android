@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.MandiriClickPayModel;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
@@ -53,7 +53,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     private AppBarLayout appBar = null;
     private ImageView logo = null;
     private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
-    private VeritransSDK mVeritransSDK = null;
+    private MidtransSDK mMidtransSDK = null;
     // for result
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
@@ -66,9 +66,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
         setContentView(R.layout.activity_mandiri_clickpay);
 
-        mVeritransSDK = VeritransSDK.getInstance();
+        mMidtransSDK = MidtransSDK.getInstance();
 
-        if (mVeritransSDK == null) {
+        if (mMidtransSDK == null) {
             SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -111,16 +111,16 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
     private void bindDataToView() {
         mTextTitle.setText(getString(R.string.mandiri_click_pay));
-        if (mVeritransSDK != null) {
-            if (mVeritransSDK.getSemiBoldText() != null) {
-                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+        if (mMidtransSDK != null) {
+            if (mMidtransSDK.getSemiBoldText() != null) {
+                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
-            mTextOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
+            mTextOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
             mTextTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
+                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
         mTextViewInput1.setText("");
-        mTextViewInput2.setText("" + mVeritransSDK.getTransactionRequest().getAmount());
+        mTextViewInput2.setText("" + mMidtransSDK.getTransactionRequest().getAmount());
         mTextViewInput3.setText("" + SdkUIFlowUtil.generateRandomNumber());
     }
 
@@ -258,7 +258,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
      * @param mandiriClickPayModel  Mandiri click pay request object
      */
     private void makeTransaction(MandiriClickPayModel mandiriClickPayModel) {
-        mVeritransSDK.snapPaymentUsingMandiriClickPay(mVeritransSDK.readAuthenticationToken(),
+        mMidtransSDK.snapPaymentUsingMandiriClickPay(mMidtransSDK.readAuthenticationToken(),
                 mandiriClickPayModel.getCardNumber(), mandiriClickPayModel.getToken(),
                 mandiriClickPayModel.getInput3(), new TransactionCallback() {
                     @Override

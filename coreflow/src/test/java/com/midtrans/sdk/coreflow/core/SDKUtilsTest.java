@@ -87,7 +87,7 @@ public class SDKUtilsTest {
     @Mock
     private Context contextMock;
 
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
     private String paymermataName;
     @Mock
     private CstoreEntity cstoreMock;
@@ -153,13 +153,13 @@ public class SDKUtilsTest {
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(contextMock.getResources()).thenReturn(resourceMock);
 
-        VeritransSDK veritransSDK = (SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
+        MidtransSDK midtransSDK = (SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .enableLog(true)
                 .setDefaultText("open_sans_regular.ttf")
                 .setSemiBoldText("open_sans_semibold.ttf")
                 .setBoldText("open_sans_bold.ttf")
                 .buildSDK());
-        veritransSDK = spy(veritransSDK);
+        midtransSDK = spy(midtransSDK);
 
         when(contextMock.getString(R.string.payment_permata)).thenReturn(paymermataName);
     }
@@ -361,7 +361,7 @@ public class SDKUtilsTest {
 
     @Test
     public void getIndosatDompetkuRequestModel_whenSDKNull() throws ClassNotFoundException {
-        veritransSDK = null;
+        midtransSDK = null;
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
         Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
@@ -401,7 +401,7 @@ public class SDKUtilsTest {
     @Test
     public void getUserDetailTest(){
         initSDK();
-        VeritransSDK.setmPreferences(mpreferenceMock);
+        MidtransSDK.setmPreferences(mpreferenceMock);
         mockStatic(LocalDataHandler.class);
         when(LocalDataHandler.readObject(userDetail, UserDetail.class)).thenReturn(userDetailMock);
         when(contextMock.getString(R.string.user_details)).thenReturn(userDetail);
@@ -417,7 +417,7 @@ public class SDKUtilsTest {
     @Test
     public void getUserDetailTest_whenUserDetailNotNull(){
         initSDK();
-        VeritransSDK.setmPreferences(mpreferenceMock);
+        MidtransSDK.setmPreferences(mpreferenceMock);
         mockStatic(LocalDataHandler.class);
         when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
         when(userDetailMock.getMerchantToken()).thenReturn("token");
@@ -434,7 +434,7 @@ public class SDKUtilsTest {
     @Test
     public void getUserDetailTest_whenUserUserFullNameNull(){
         initSDK();
-        VeritransSDK.setmPreferences(mpreferenceMock);
+        MidtransSDK.setmPreferences(mpreferenceMock);
         mockStatic(LocalDataHandler.class);
         when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
         when(userDetailMock.getMerchantToken()).thenReturn("token");

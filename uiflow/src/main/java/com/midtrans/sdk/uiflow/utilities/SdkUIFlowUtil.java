@@ -23,11 +23,11 @@ import java.util.regex.Pattern;
 import com.midtrans.sdk.coreflow.BuildConfig;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.BBMCallBackUrl;
 import com.midtrans.sdk.coreflow.models.BBMUrlEncodeJson;
 import com.midtrans.sdk.uiflow.R;
-import com.midtrans.sdk.uiflow.widgets.VeritransLoadingDialog;
+import com.midtrans.sdk.uiflow.widgets.MidtransLoadingDialog;
 
 /**
  * It contains utility methods required for sdk.
@@ -36,7 +36,7 @@ import com.midtrans.sdk.uiflow.widgets.VeritransLoadingDialog;
  */
 public class SdkUIFlowUtil {
 
-    private static VeritransLoadingDialog progressDialog;
+    private static MidtransLoadingDialog progressDialog;
 
     /**
      * it will validate an given email-id.
@@ -143,7 +143,7 @@ public class SdkUIFlowUtil {
 
         if (activity != null) {
             try {
-                progressDialog = new VeritransLoadingDialog(activity);
+                progressDialog = new MidtransLoadingDialog(activity);
                 progressDialog.setCanceledOnTouchOutside(true);
                 progressDialog.setCancelable(isCancelable);
                 progressDialog.show();
@@ -170,7 +170,7 @@ public class SdkUIFlowUtil {
 
         if (activity != null) {
             try {
-                progressDialog = new VeritransLoadingDialog(activity, message);
+                progressDialog = new MidtransLoadingDialog(activity, message);
                 progressDialog.setCanceledOnTouchOutside(true);
                 progressDialog.setCancelable(isCancelable);
                 progressDialog.show();
@@ -186,7 +186,7 @@ public class SdkUIFlowUtil {
     /**
      * @return an instance of progress dialog if visible any else returns null.
      */
-    public static VeritransLoadingDialog getProgressDialog() {
+    public static MidtransLoadingDialog getProgressDialog() {
         return progressDialog;
     }
 
@@ -215,9 +215,9 @@ public class SdkUIFlowUtil {
     public static void showApiFailedMessage(Activity activity, String errorMessage) {
         try {
             if (!TextUtils.isEmpty(errorMessage)) {
-                VeritransSDK veritransSDK = VeritransSDK.getInstance();
-                if (veritransSDK != null) {
-                    Context context = veritransSDK.getContext();
+                MidtransSDK midtransSDK = MidtransSDK.getInstance();
+                if (midtransSDK != null) {
+                    Context context = midtransSDK.getContext();
                     if (context != null) {
                         if (errorMessage.contains(context.getString(R.string.retrofit_network_message))) {
                             SdkUIFlowUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));

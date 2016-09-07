@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.midtrans.sdk.coreflow.BuildConfig;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
 import com.midtrans.sdk.uiflow.R;
@@ -27,7 +27,7 @@ import com.midtrans.sdk.uiflow.fragments.BBMMoneyPaymentStatusFragment;
 import com.midtrans.sdk.uiflow.fragments.BankTransferFragment;
 import com.midtrans.sdk.uiflow.fragments.InstructionBBMMoneyFragment;
 import com.midtrans.sdk.uiflow.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uiflow.widgets.VeritransDialog;
+import com.midtrans.sdk.uiflow.widgets.MidtransDialog;
 
 /**
  * Created by Ankit on 12/3/15.
@@ -47,7 +47,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
     private TextView textViewTitle = null;
     private LinearLayout layoutPayWithBBM = null;
 
-    private VeritransSDK veritransSDK = null;
+    private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
 
     private InstructionBBMMoneyFragment instructionBBMMoneyFragment = null;
@@ -64,7 +64,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bbm_money);
 
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
 
         // get position of selected payment method
         Intent data = getIntent();
@@ -138,11 +138,11 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void bindDataToView() {
-        if (veritransSDK != null) {
-            textViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount())));
-            textViewOrderId.setText("" + veritransSDK.getTransactionRequest().getOrderId());
-            if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), veritransSDK.getSemiBoldText()));
+        if (midtransSDK != null) {
+            textViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
+            textViewOrderId.setText("" + midtransSDK.getTransactionRequest().getOrderId());
+            if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
+                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), midtransSDK.getSemiBoldText()));
             }
             buttonConfirmPayment.setOnClickListener(this);
             layoutPayWithBBM.setOnClickListener(this);
@@ -175,21 +175,21 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
 
             } else {
                 Logger.i("BBM Not present");
-                VeritransDialog veritransDialog = new VeritransDialog(BBMMoneyActivity.this,
+                MidtransDialog midtransDialog = new MidtransDialog(BBMMoneyActivity.this,
                         getString(R.string.title_bbm_not_found),
                         getString(R.string.message_bbm_not_found), getString(R.string.got_it), "");
-                veritransDialog.show();
+                midtransDialog.show();
             }
         }
 
         if (view.getId() == R.id.layout_pay_with_bbm) {
 
-            if (veritransSDK != null && veritransSDK.getBBMCallBackUrl() != null) {
+            if (midtransSDK != null && midtransSDK.getBBMCallBackUrl() != null) {
 
                 String encodedUrl = SdkUIFlowUtil.createEncodedUrl(bbmMoneyPaymentFragment.PERMATA_VA,
-                        veritransSDK.getBBMCallBackUrl().getCheckStatus(),
-                        veritransSDK.getBBMCallBackUrl().getBeforePaymentError(),
-                        veritransSDK.getBBMCallBackUrl().getUserCancel());
+                        midtransSDK.getBBMCallBackUrl().getCheckStatus(),
+                        midtransSDK.getBBMCallBackUrl().getBeforePaymentError(),
+                        midtransSDK.getBBMCallBackUrl().getUserCancel());
 
                 String feedUrl = BuildConfig.BBM_PREFIX_URL + encodedUrl;
 

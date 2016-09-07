@@ -43,7 +43,7 @@ public abstract class BaseTransactionManager {
     protected Context context;
     protected MixpanelAnalyticsManager analyticsManager;
     protected boolean isSDKLogEnabled = false;
-    protected VeritransRestAPI veritransPaymentAPI;
+    protected MidtransRestAPI midtransPaymentAPI;
     protected MerchantRestAPI merchantPaymentAPI;
 
     protected static void displayResponse(TransactionResponse
@@ -83,9 +83,9 @@ public abstract class BaseTransactionManager {
     }
 
     protected void releaseResources() {
-        VeritransSDK veritransSDK = VeritransSDK.getInstance();
-        if (veritransSDK != null) {
-            veritransSDK.releaseResource();
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null) {
+            midtransSDK.releaseResource();
             Logger.i("released transaction");
         }
     }
@@ -94,8 +94,8 @@ public abstract class BaseTransactionManager {
         this.analyticsManager = analyticsManager;
     }
 
-    public void setVeritransPaymentAPI(VeritransRestAPI veritransPaymentAPI) {
-        this.veritransPaymentAPI = veritransPaymentAPI;
+    public void setMidtransPaymentAPI(MidtransRestAPI midtransPaymentAPI) {
+        this.midtransPaymentAPI = midtransPaymentAPI;
     }
 
     public void setMerchantPaymentAPI(MerchantRestAPI merchantPaymentAPI) {

@@ -78,7 +78,7 @@ public class SnapTransactionManagerTest {
     private Context contextMock;
     @Mock
     private Resources resourcesMock;
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
     @Mock
     private MixpanelAnalyticsManager mixpanelAnalyticsManagerMock;
     @Mock
@@ -169,7 +169,7 @@ public class SnapTransactionManagerTest {
     @Mock
     private ArrayList<SaveCardRequest> getCardResponseMock;
     @Mock
-    private VeritransRestAPI veritransApi;
+    private MidtransRestAPI midtransAPI;
 
     // get card token properties
 
@@ -242,17 +242,17 @@ public class SnapTransactionManagerTest {
         Mockito.when(contextMock.getString(R.string.success_code_201)).thenReturn("201");
         Mockito.when(contextMock.getString(R.string.success)).thenReturn("success");
 
-        veritransSDK = SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
+        midtransSDK = SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .setDefaultText("open_sans_regular.ttf")
                 .setSemiBoldText("open_sans_semibold.ttf")
                 .setBoldText("open_sans_bold.ttf")
                 .buildSDK();
 
         mixpanelAnalyticsManagerMock.setMixpanelApi(mixpanelApiMock);
-        transactionManager = veritransSDK.getmSnapTransactionManager();
+        transactionManager = midtransSDK.getmSnapTransactionManager();
         transactionManager.setAnalyticsManager(mixpanelAnalyticsManagerMock);
         transactionManager.setSDKLogEnabled(false);
-        callbackImplement.setTransactionManager(transactionManager, merchantApi, veritransApi, snapAPI);
+        callbackImplement.setTransactionManager(transactionManager, merchantApi, midtransAPI, snapAPI);
     }
 /*
     /**
@@ -1639,7 +1639,7 @@ public class SnapTransactionManagerTest {
         registrationResponse.setStatusCode("200");
         callbackImplement.cardRegistration(CARD_NUMBER, CARD_CVV, CARD_EXP_MONTH,
                 CARD_EXP_YEAR, mAuthToken);
-        Mockito.verify(veritransApi, Mockito.times(1)).registerCard(callbackArgumentCaptorCardNumber.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).registerCard(callbackArgumentCaptorCardNumber.capture(),
                 callbackArgumentCaptorCardCVV.capture(),
                 callbackArgumentCaptorCardMonth.capture(),
                 callbackArgumentCaptorCardYear.capture(),
@@ -1658,7 +1658,7 @@ public class SnapTransactionManagerTest {
         //retrofitResponse success but transacation not success
         callbackImplement.cardRegistration(CARD_NUMBER, CARD_CVV, CARD_EXP_MONTH,
                 CARD_EXP_YEAR, mAuthToken);
-        Mockito.verify(veritransApi, Mockito.times(1)).registerCard(callbackArgumentCaptorCardNumber.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).registerCard(callbackArgumentCaptorCardNumber.capture(),
                 callbackArgumentCaptorCardCVV.capture(),
                 callbackArgumentCaptorCardMonth.capture(),
                 callbackArgumentCaptorCardYear.capture(),
@@ -1678,7 +1678,7 @@ public class SnapTransactionManagerTest {
         //retrofitResponse success but transacation not success
         callbackImplement.cardRegistration(CARD_NUMBER, CARD_CVV, CARD_EXP_MONTH,
                 CARD_EXP_YEAR, mAuthToken);
-        Mockito.verify(veritransApi, Mockito.times(1)).registerCard(callbackArgumentCaptorCardNumber.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).registerCard(callbackArgumentCaptorCardNumber.capture(),
                 callbackArgumentCaptorCardCVV.capture(),
                 callbackArgumentCaptorCardMonth.capture(),
                 callbackArgumentCaptorCardYear.capture(),
@@ -1695,7 +1695,7 @@ public class SnapTransactionManagerTest {
         registrationResponse.setStatusCode("400");
         callbackImplement.cardRegistration(CARD_NUMBER, CARD_CVV, CARD_EXP_MONTH,
                 CARD_EXP_YEAR, mAuthToken);
-        Mockito.verify(veritransApi, Mockito.times(1)).registerCard(callbackArgumentCaptorCardNumber.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).registerCard(callbackArgumentCaptorCardNumber.capture(),
                 callbackArgumentCaptorCardCVV.capture(),
                 callbackArgumentCaptorCardMonth.capture(),
                 callbackArgumentCaptorCardYear.capture(),
@@ -1713,7 +1713,7 @@ public class SnapTransactionManagerTest {
         registrationResponse.setStatusCode("400");
         callbackImplement.cardRegistration(CARD_NUMBER, CARD_CVV, CARD_EXP_MONTH,
                 CARD_EXP_YEAR, mAuthToken);
-        Mockito.verify(veritransApi, Mockito.times(1)).registerCard(callbackArgumentCaptorCardNumber.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).registerCard(callbackArgumentCaptorCardNumber.capture(),
                 callbackArgumentCaptorCardCVV.capture(),
                 callbackArgumentCaptorCardMonth.capture(),
                 callbackArgumentCaptorCardYear.capture(),
@@ -1745,7 +1745,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
@@ -1760,7 +1760,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
@@ -1782,7 +1782,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
@@ -1797,7 +1797,7 @@ public class SnapTransactionManagerTest {
     public void testGetTokenError_getToken(){
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
@@ -1830,7 +1830,7 @@ public class SnapTransactionManagerTest {
         cardTokenRequest.setSecure(true);
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).get3DSToken(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).get3DSToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(),
@@ -1848,7 +1848,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).get3DSToken(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).get3DSToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(),
@@ -1873,7 +1873,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).get3DSToken(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).get3DSToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(),
@@ -1891,7 +1891,7 @@ public class SnapTransactionManagerTest {
         cardTokenRequest.setSecure(true);
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).get3DSToken(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).get3DSToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(),
@@ -1929,7 +1929,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).get3DSTokenInstalmentOffers(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).get3DSTokenInstalmentOffers(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(),
@@ -1950,7 +1950,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).get3DSTokenInstalmentOffers(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).get3DSTokenInstalmentOffers(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(),
@@ -1981,7 +1981,7 @@ public class SnapTransactionManagerTest {
         cardTokenRequest.setInstalment(true);
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).get3DSTokenInstalmentOffers(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).get3DSTokenInstalmentOffers(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(),
@@ -2001,7 +2001,7 @@ public class SnapTransactionManagerTest {
         cardTokenRequest.setInstalment(true);
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).get3DSTokenInstalmentOffers(cardNumberCaptor.capture(),
+        Mockito.verify(midtransAPI, Mockito.times(1)).get3DSTokenInstalmentOffers(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(),
@@ -2043,7 +2043,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getTokenTwoClick(
+        Mockito.verify(midtransAPI, Mockito.times(1)).getTokenTwoClick(
                 cardCVVCaptor.capture(),
                 tokenIdCaptor.capture(),
                 twoClickCaptor.capture(),
@@ -2070,7 +2070,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getTokenTwoClick(
+        Mockito.verify(midtransAPI, Mockito.times(1)).getTokenTwoClick(
                 cardCVVCaptor.capture(),
                 tokenIdCaptor.capture(),
                 twoClickCaptor.capture(),
@@ -2101,7 +2101,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getTokenTwoClick(
+        Mockito.verify(midtransAPI, Mockito.times(1)).getTokenTwoClick(
                 cardCVVCaptor.capture(),
                 tokenIdCaptor.capture(),
                 twoClickCaptor.capture(),
@@ -2124,7 +2124,7 @@ public class SnapTransactionManagerTest {
         cardTokenRequest.setTwoClick(true);
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getTokenTwoClick(
+        Mockito.verify(midtransAPI, Mockito.times(1)).getTokenTwoClick(
                 cardCVVCaptor.capture(),
                 tokenIdCaptor.capture(),
                 twoClickCaptor.capture(),
@@ -2169,7 +2169,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getTokenInstalmentOfferTwoClick(
+        Mockito.verify(midtransAPI, Mockito.times(1)).getTokenInstalmentOfferTwoClick(
                 cardCVVCaptor.capture(),
                 tokenIdCaptor.capture(),
                 twoClickCaptor.capture(),
@@ -2197,7 +2197,7 @@ public class SnapTransactionManagerTest {
         cardTokenRequest.setTwoClick(true);
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getTokenInstalmentOfferTwoClick(
+        Mockito.verify(midtransAPI, Mockito.times(1)).getTokenInstalmentOfferTwoClick(
                 cardCVVCaptor.capture(),
                 tokenIdCaptor.capture(),
                 twoClickCaptor.capture(),
@@ -2227,7 +2227,7 @@ public class SnapTransactionManagerTest {
         cardTokenRequest.setTwoClick(true);
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getTokenInstalmentOfferTwoClick(
+        Mockito.verify(midtransAPI, Mockito.times(1)).getTokenInstalmentOfferTwoClick(
                 cardCVVCaptor.capture(),
                 tokenIdCaptor.capture(),
                 twoClickCaptor.capture(),
@@ -2252,7 +2252,7 @@ public class SnapTransactionManagerTest {
 
         callbackImplement.getToken(cardTokenRequest);
 
-        Mockito.verify(veritransApi, Mockito.times(1)).getTokenInstalmentOfferTwoClick(
+        Mockito.verify(midtransAPI, Mockito.times(1)).getTokenInstalmentOfferTwoClick(
                 cardCVVCaptor.capture(),
                 tokenIdCaptor.capture(),
                 twoClickCaptor.capture(),

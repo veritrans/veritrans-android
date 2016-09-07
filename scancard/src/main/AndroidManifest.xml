@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="id.co.veritrans.sdk.scancard">
+    package="com.midtrans.sdk.scancard">
 
     <application
         android:allowBackup="true"

@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.uiflow.fragments.InstructionBCAFragment;
 import com.midtrans.sdk.uiflow.fragments.InstructionBCAKlikFragment;
 import com.midtrans.sdk.uiflow.fragments.InstructionBCAMobileFragment;
@@ -53,12 +53,12 @@ public class BankTransferInstructionActivity extends BaseActivity {
     private ViewPager mViewPager = null;
     private TabLayout mTabLayout = null;
     private Button downloadInstruction = null;
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
         setContentView(R.layout.activity_bank_transfer_instruction);
         initializeViews();
     }

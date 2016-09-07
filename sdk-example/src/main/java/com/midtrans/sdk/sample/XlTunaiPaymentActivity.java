@@ -9,9 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
-import com.midtrans.sdk.sample.R;
 
 /**
  * Created by ziahaqi on 8/9/16.
@@ -34,8 +33,8 @@ public class XlTunaiPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                VeritransSDK.getInstance().snapPaymentUsingXLTunai(
-                        VeritransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
+                MidtransSDK.getInstance().snapPaymentUsingXLTunai(
+                        MidtransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {
                                 actionTransactionSuccess(response);

@@ -20,8 +20,8 @@ import android.widget.TextView;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.core.SdkUtil;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionDetails;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
@@ -68,7 +68,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     private Button mButtonConfirmPayment = null;
     private AppBarLayout mAppBarLayout = null;
     private TextView mTextViewTitle = null;
-    private VeritransSDK mVeritransSDK = null;
+    private MidtransSDK mMidtransSDK = null;
     private Toolbar mToolbar = null;
 
     private BankTransferFragment bankTransferFragment = null;
@@ -86,7 +86,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_transfer);
 
-        mVeritransSDK = VeritransSDK.getInstance();
+        mMidtransSDK = MidtransSDK.getInstance();
 
         // get position of selected payment method
         Intent data = getIntent();
@@ -182,12 +182,12 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      */
     private void bindDataToView() {
 
-        if (mVeritransSDK != null) {
+        if (mMidtransSDK != null) {
 
-            mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
-            mTextViewOrderId.setText("" + mVeritransSDK.getTransactionRequest().getOrderId());
-            if (mVeritransSDK.getSemiBoldText() != null) {
-                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+            mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
+            mTextViewOrderId.setText("" + mMidtransSDK.getTransactionRequest().getOrderId());
+            if (mMidtransSDK.getSemiBoldText() != null) {
+                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
             mButtonConfirmPayment.setOnClickListener(this);
 
@@ -333,7 +333,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
             String emailId = bankTransferFragment.getEmailId();
             if (!TextUtils.isEmpty(emailId) && SdkUIFlowUtil.isEmailValid(emailId)) {
-                mVeritransSDK.getTransactionRequest().getCustomerDetails().setEmail(emailId.trim());
+                mMidtransSDK.getTransactionRequest().getCustomerDetails().setEmail(emailId.trim());
             } else if (!TextUtils.isEmpty(emailId) && emailId.trim().length() > 0) {
                 SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_invalid_email_id));
                 return;
@@ -341,24 +341,24 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         }
 
 
-        final VeritransSDK veritransSDK = VeritransSDK.getInstance();
+        final MidtransSDK midtransSDK = MidtransSDK.getInstance();
 
-        if (veritransSDK != null) {
+        if (midtransSDK != null) {
             //transaction details
             TransactionDetails transactionDetails =
-                    new TransactionDetails("" + mVeritransSDK.getTransactionRequest().getAmount(),
-                            mVeritransSDK.getTransactionRequest().getOrderId());
+                    new TransactionDetails("" + mMidtransSDK.getTransactionRequest().getAmount(),
+                            mMidtransSDK.getTransactionRequest().getOrderId());
 
             SdkUIFlowUtil.showProgressDialog(BankTransferActivity.this, getString(R.string.processing_payment), false);
 
             if (position == Constants.BANK_TRANSFER_PERMATA) {
-                permataBankPayTransaction(veritransSDK);
+                permataBankPayTransaction(midtransSDK);
             } else if(position == Constants.BANK_TRANSFER_BCA) {
-                bcaBankTransferTransaction(veritransSDK);
+                bcaBankTransferTransaction(midtransSDK);
             } else if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
-                mandiriBillPayTransaction(veritransSDK);
+                mandiriBillPayTransaction(midtransSDK);
             } else {
-                otherBankTransaction(veritransSDK);
+                otherBankTransaction(midtransSDK);
             }
 
 
@@ -372,11 +372,11 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * it performs BCA bank transfer and in onSuccess() of callback method it will call {@link
      * #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
      *
-     * @param veritransSDK  Veritrans SDK instance
+     * @param midtransSDK  Veritrans SDK instance
      */
-    private void bcaBankTransferTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingBankTransferBCA(veritransSDK.readAuthenticationToken(),
-                veritransSDK.getTransactionRequest().getCustomerDetails().getEmail(), new TransactionCallback() {
+    private void bcaBankTransferTransaction(MidtransSDK midtransSDK) {
+        midtransSDK.snapPaymentUsingBankTransferBCA(midtransSDK.readAuthenticationToken(),
+                midtransSDK.getTransactionRequest().getCustomerDetails().getEmail(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         actionPaymentSuccess(response);
@@ -398,11 +398,11 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * it performs bank transfer and in onSuccess() of callback method it will call {@link
      * #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
      *
-     * @param veritransSDK  Veritrans SDK instance
+     * @param midtransSDK  Veritrans SDK instance
      */
-    private void permataBankPayTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingBankTransferPermata(veritransSDK.readAuthenticationToken(),
-                veritransSDK.getTransactionRequest().getCustomerDetails().getEmail(), new TransactionCallback() {
+    private void permataBankPayTransaction(MidtransSDK midtransSDK) {
+        midtransSDK.snapPaymentUsingBankTransferPermata(midtransSDK.readAuthenticationToken(),
+                midtransSDK.getTransactionRequest().getCustomerDetails().getEmail(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         actionPaymentSuccess(response);
@@ -424,11 +424,11 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * It execute mandiri bill payment transaction and in onSuccess() of callback method it will
      * call {@link #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
      *
-     * @param veritransSDK  Veritrans SDK instance
+     * @param midtransSDK  Veritrans SDK instance
      */
-    private void mandiriBillPayTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingMandiriBillPay(veritransSDK.readAuthenticationToken(),
-                SdkUtil.getEmailAddress(veritransSDK.getTransactionRequest()), new TransactionCallback() {
+    private void mandiriBillPayTransaction(MidtransSDK midtransSDK) {
+        midtransSDK.snapPaymentUsingMandiriBillPay(midtransSDK.readAuthenticationToken(),
+                SdkUtil.getEmailAddress(midtransSDK.getTransactionRequest()), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         actionPaymentSuccess(response);
@@ -446,9 +446,9 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                 });
     }
 
-    private void otherBankTransaction(VeritransSDK veritransSDK) {
-        veritransSDK.snapPaymentUsingBankTransferAllBank(veritransSDK.readAuthenticationToken(),
-                SdkUtil.getEmailAddress(veritransSDK.getTransactionRequest()), new TransactionCallback() {
+    private void otherBankTransaction(MidtransSDK midtransSDK) {
+        midtransSDK.snapPaymentUsingBankTransferAllBank(midtransSDK.readAuthenticationToken(),
+                SdkUtil.getEmailAddress(midtransSDK.getTransactionRequest()), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         actionPaymentSuccess(response);

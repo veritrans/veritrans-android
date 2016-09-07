@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
 import com.midtrans.sdk.uiflow.fragments.InstructionCIMBFragment;
@@ -38,7 +38,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     private Button buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
     private ImageView logo = null;
-    private VeritransSDK mVeritransSDK = null;
+    private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
     private int RESULT_CODE = RESULT_CANCELED;
@@ -55,9 +55,9 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_cimb_clickpay);
-        mVeritransSDK = VeritransSDK.getInstance();
+        mMidtransSDK = MidtransSDK.getInstance();
 
-        if (mVeritransSDK == null) {
+        if (mMidtransSDK == null) {
             SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -89,13 +89,13 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
 
     private void bindData() {
         textTitle.setText(getString(R.string.cimb_clicks));
-        if (mVeritransSDK != null) {
-            if (mVeritransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mVeritransSDK.getSemiBoldText()));
+        if (mMidtransSDK != null) {
+            if (mMidtransSDK.getSemiBoldText() != null) {
+                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
-            textOrderId.setText(mVeritransSDK.getTransactionRequest().getOrderId());
+            textOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(mVeritransSDK.getTransactionRequest().getAmount())));
+                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
     }
 
@@ -128,7 +128,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
 
     private void makeTransaction() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        mVeritransSDK.snapPaymentUsingCIMBClick(mVeritransSDK.readAuthenticationToken(), new TransactionCallback() {
+        mMidtransSDK.snapPaymentUsingCIMBClick(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();

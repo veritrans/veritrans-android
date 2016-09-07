@@ -50,14 +50,14 @@ public abstract class BaseSdkBuilder<T> {
      *
      * @return it returns fully initialized object of midtrans sdk.
      */
-    public VeritransSDK buildSDK() {
-        if(VeritransSDK.getInstance() != null){
-            return VeritransSDK.getInstance();
+    public MidtransSDK buildSDK() {
+        if(MidtransSDK.getInstance() != null){
+            return MidtransSDK.getInstance();
         }
 
-        if (VeritransSDK.getInstance() == null && isValidData()) {
-            VeritransSDK veritransSDK = VeritransSDK.delegateInstance(this);
-            return veritransSDK;
+        if (MidtransSDK.getInstance() == null && isValidData()) {
+            MidtransSDK midtransSDK = MidtransSDK.delegateInstance(this);
+            return midtransSDK;
 
         } else {
             Logger.e("already performing an transaction");

@@ -18,7 +18,7 @@ import com.midtrans.sdk.coreflow.callback.GetCardTokenCallback;
 import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.CardTokenRequest;
 import com.midtrans.sdk.coreflow.models.SaveCardRequest;
 import com.midtrans.sdk.coreflow.models.SaveCardResponse;
@@ -38,7 +38,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_card_payment);
         initView();
-        if(!VeritransSDK.getInstance().getTransactionRequest()
+        if(!MidtransSDK.getInstance().getTransactionRequest()
                 .getCardClickType().equals(getString(R.string.card_click_normal))){
             checkSaveCard.setVisibility(View.VISIBLE);
         }
@@ -89,13 +89,13 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
                             cvv.getText().toString(),
                             date.split("/")[0],
                             date.split("/")[1],
-                            VeritransSDK.getInstance().getClientKey());
+                            MidtransSDK.getInstance().getClientKey());
                     cardTokenRequest.setGrossAmount(20.0);
-                    VeritransSDK.getInstance().getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+                    MidtransSDK.getInstance().getCardToken(cardTokenRequest, new GetCardTokenCallback() {
                         @Override
                         public void onSuccess(TokenDetailsResponse response) {
                             String tokenId = response.getTokenId();
-                            payWithCreditCard(VeritransSDK.getInstance().readAuthenticationToken(), tokenId);
+                            payWithCreditCard(MidtransSDK.getInstance().readAuthenticationToken(), tokenId);
                         }
 
                         @Override
@@ -119,7 +119,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
     }
 
     private void payWithCreditCard(String authenticationToken, String cardToken) {
-        VeritransSDK.getInstance().snapPaymentUsingCard(authenticationToken, cardToken, saveCard, new TransactionCallback() {
+        MidtransSDK.getInstance().snapPaymentUsingCard(authenticationToken, cardToken, saveCard, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 // Handle success transaction
@@ -171,7 +171,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
 
     private void saveCreditCard(ArrayList<SaveCardRequest> requests) {
 
-        VeritransSDK.getInstance().snapSaveCard(MainActivity.userId, requests, new SaveCardCallback() {
+        MidtransSDK.getInstance().snapSaveCard(MainActivity.userId, requests, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
 

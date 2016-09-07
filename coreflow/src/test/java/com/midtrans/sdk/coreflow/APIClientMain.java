@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import java.util.Collections;
 
 import com.midtrans.sdk.coreflow.core.MerchantRestAPI;
-import com.midtrans.sdk.coreflow.core.VeritransRestAPI;
+import com.midtrans.sdk.coreflow.core.MidtransRestAPI;
 import com.midtrans.sdk.coreflow.restapi.RestAPIMocUtilites;
 import com.midtrans.sdk.coreflow.restapi.RetrofitMockClient;
 import retrofit.RestAdapter;
@@ -42,7 +42,7 @@ public abstract class APIClientMain {
 
     protected String sampleJsonResponse = "{\"a\":\"a\"}";
 
-    protected VeritransRestAPI createVeritransPaymentAPIMock(String jsonResponseName, int responseCode, String reason) throws Exception {
+    protected MidtransRestAPI createVeritransPaymentAPIMock(String jsonResponseName, int responseCode, String reason) throws Exception {
 
         RetrofitMockClient client = RestAPIMocUtilites.getClient(this.getClass().getClassLoader(),
                 responseCode, reason, jsonResponseName);
@@ -51,7 +51,7 @@ public abstract class APIClientMain {
                 .setClient(client)
                 .setConverter(new GsonConverter(new Gson()))
                 .build();
-        return restAdapter.create(VeritransRestAPI.class);
+        return restAdapter.create(MidtransRestAPI.class);
     }
 
     protected MerchantRestAPI createMerchantPaymentAPIMock(String jsonResponseName, int responseCode, String reason) throws Exception {

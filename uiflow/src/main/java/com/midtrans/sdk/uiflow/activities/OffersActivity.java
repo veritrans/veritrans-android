@@ -28,7 +28,7 @@ import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.LocalDataHandler;
 import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.BankDetail;
 import com.midtrans.sdk.coreflow.models.BillingAddress;
 import com.midtrans.sdk.coreflow.models.CardPaymentDetails;
@@ -80,7 +80,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     public ArrayList<SaveCardRequest> creditCards = new ArrayList<>();
     private Toolbar toolbar = null;
     private TextView textViewTitleOffers = null;
-    private VeritransSDK veritransSDK = null;
+    private MidtransSDK midtransSDK = null;
     private TextView textViewTitleCardDetails = null;
     private TextView textViewOfferName = null;
     private OffersListFragment offersListFragment = null;
@@ -117,7 +117,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offers);
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
         fragmentManager = getSupportFragmentManager();
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
         morphToCircle(0);
@@ -137,7 +137,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         replaceFragment(offersListFragment, R.id.offers_container, true, false);
         calculateScreenWidth();
         // Only fetch credit card when card click type is two click or one click
-        if (!veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+        if (!midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
             getCreditCards();
         }
         readBankDetails();
@@ -196,7 +196,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardTokenRequest;
         Logger.i("isSecure:" + this.cardTokenRequest.isSecure());
-        veritransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+        midtransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
                 actionGetCardTokenSuccess(response);
@@ -225,12 +225,12 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                 userDetail.getEmail(), userDetail.getPhoneNumber());
 
         ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-        TransactionDetails transactionDetails = new TransactionDetails("" + veritransSDK.
+        TransactionDetails transactionDetails = new TransactionDetails("" + midtransSDK.
                 getTransactionRequest().getAmount(),
-                veritransSDK.getTransactionRequest().getOrderId());
+                midtransSDK.getTransactionRequest().getOrderId());
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-        if (veritransSDK.getTransactionRequest().getItemDetails() != null && veritransSDK.getTransactionRequest().getItemDetails().size() > 0) {
-            itemDetailsArrayList = veritransSDK.getTransactionRequest().getItemDetails();
+        if (midtransSDK.getTransactionRequest().getItemDetails() != null && midtransSDK.getTransactionRequest().getItemDetails().size() > 0) {
+            itemDetailsArrayList = midtransSDK.getTransactionRequest().getItemDetails();
         }
         if (userAddresses != null && !userAddresses.isEmpty()) {
             ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
@@ -272,7 +272,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                 e.printStackTrace();
             }
             //for one click
-            if (veritransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
+            if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
                     && !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
                 if (cardTokenRequest.isInstalment()) {
                     cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
@@ -311,8 +311,8 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                     itemDetailsArrayList, billingAddresses, shippingAddresses, customerDetails);
 
         }
-        veritransSDK.snapPaymentUsingCard(cardTokenRequest.getSavedTokenId(),
-                veritransSDK.readAuthenticationToken(), false, new TransactionCallback() {
+        midtransSDK.snapPaymentUsingCard(cardTokenRequest.getSavedTokenId(),
+                midtransSDK.readAuthenticationToken(), false, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         actionPaymentSuccess(response);
@@ -375,7 +375,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     public void fetchCreditCards() {
         textViewTitleOffers.setText(getString(R.string.fetching_cards));
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        veritransSDK.snapGetCards(userDetail.getUserId(), new GetCardCallback() {
+        midtransSDK.snapGetCards(userDetail.getUserId(), new GetCardCallback() {
             @Override
             public void onSuccess(ArrayList<SaveCardRequest> response) {
                 ArrayList<SaveCardRequest> cardResponse = response;
@@ -435,11 +435,11 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         this.cardTokenRequest.setSavedTokenId(cardDetail.getSavedTokenId());
         this.cardTokenRequest.setCardCVV(cardDetail.getCardCVV());
         this.cardTokenRequest.setTwoClick(true);
-        this.cardTokenRequest.setSecure(veritransSDK.getTransactionRequest().isSecureCard());
-        this.cardTokenRequest.setGrossAmount(veritransSDK.getTransactionRequest().getAmount());
+        this.cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
+        this.cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
         this.cardTokenRequest.setBank("");
-        this.cardTokenRequest.setClientKey(veritransSDK.getClientKey());
-        veritransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+        this.cardTokenRequest.setClientKey(midtransSDK.getClientKey());
+        midtransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
                 TokenDetailsResponse tokenDetailsResponse = response;
@@ -449,8 +449,8 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                 OffersActivity.this.tokenDetailsResponse = tokenDetailsResponse;
                 if (tokenDetailsResponse != null) {
                     Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
-                            + veritransSDK.getTransactionRequest().isSecureCard());
-                    if (veritransSDK.getTransactionRequest().isSecureCard()) {
+                            + midtransSDK.getTransactionRequest().isSecureCard());
+                    if (midtransSDK.getTransactionRequest().isSecureCard()) {
                         SdkUIFlowUtil.hideProgressDialog();
                         if (tokenDetailsResponse.getRedirectUrl() != null &&
                                 !tokenDetailsResponse.getRedirectUrl().equals("")) {
@@ -594,8 +594,8 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         this.tokenDetailsResponse = tokenDetailsResponse;
         if (tokenDetailsResponse != null) {
             Logger.i("token suc:" + tokenDetailsResponse.getTokenId() + ","
-                    + veritransSDK.getTransactionRequest().isSecureCard());
-            if (veritransSDK.getTransactionRequest().isSecureCard()) {
+                    + midtransSDK.getTransactionRequest().isSecureCard());
+            if (midtransSDK.getTransactionRequest().isSecureCard()) {
                 SdkUIFlowUtil.hideProgressDialog();
                 if (tokenDetailsResponse.getRedirectUrl() != null &&
                         !tokenDetailsResponse.getRedirectUrl().equals("")) {
@@ -714,8 +714,8 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         textViewTitleOffers.setText(getString(R.string.title_payment_status));
     }
 
-    public VeritransSDK getVeritransSDK() {
-        return veritransSDK;
+    public MidtransSDK getMidtransSDK() {
+        return midtransSDK;
     }
 
     public UserDetail getUserDetail() {
@@ -743,7 +743,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     public void saveCreditCards(SaveCardRequest creditCard) {
         ArrayList<SaveCardRequest> cardRequests = new ArrayList<>(getCreditCardList());
         cardRequests.add(creditCard);
-        veritransSDK.snapSaveCard(userDetail.getUserId(), cardRequests, new SaveCardCallback() {
+        midtransSDK.snapSaveCard(userDetail.getUserId(), cardRequests, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
                 Logger.i(TAG, "save cards success");

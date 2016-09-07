@@ -1,4 +1,4 @@
-package id.co.veritrans.sdk.scancard;
+package com.midtrans.sdk.scancard;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -11,7 +11,7 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import com.midtrans.sdk.coreflow.callback.CardRegistrationCallback;
 import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.CardRegistrationResponse;
 import com.midtrans.sdk.coreflow.models.SaveCardRequest;
 import com.midtrans.sdk.coreflow.models.SaveCardResponse;
@@ -57,7 +57,7 @@ public class CardRegistrationActivity extends AppCompatActivity{
                     dialog.show();
                     // Create token request before payment
                     String date = expiredDate.getText().toString();
-                    VeritransSDK.getInstance().snapCardRegistration(cardNumber.getText().toString(),
+                    MidtransSDK.getInstance().snapCardRegistration(cardNumber.getText().toString(),
                             cvv.getText().toString(),
                             date.split("/")[0],
                             "20" + date.split("/")[1], new CardRegistrationCallback() {
@@ -154,7 +154,7 @@ public class CardRegistrationActivity extends AppCompatActivity{
 
 
     private void saveCreditCards(ArrayList<SaveCardRequest> saveCardsRequests) {
-        VeritransSDK.getInstance().snapSaveCard("user01", saveCardsRequests, new SaveCardCallback() {
+        MidtransSDK.getInstance().snapSaveCard("user01", saveCardsRequests, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
                 dialog.dismiss();

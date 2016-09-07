@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.uiflow.R;
 
 /**
@@ -19,13 +19,13 @@ public class MandiriClickPayInstructionActivity extends BaseActivity {
 
     private Toolbar mToolbar = null;
     private ImageView logo = null;
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruction_mandiri_click_pay);
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
         initializeViews();
     }
 

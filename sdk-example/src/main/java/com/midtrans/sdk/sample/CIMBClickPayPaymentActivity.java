@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 
 /**
@@ -33,8 +33,8 @@ public class CIMBClickPayPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                VeritransSDK.getInstance().snapPaymentUsingCIMBClick(
-                        VeritransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
+                MidtransSDK.getInstance().snapPaymentUsingCIMBClick(
+                        MidtransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {
                                 actionTransactionSuccess(response);

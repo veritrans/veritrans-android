@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -29,7 +30,6 @@ import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.LocalDataHandler;
 import com.midtrans.sdk.coreflow.core.Logger;
 import com.midtrans.sdk.coreflow.core.TransactionRequest;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
 import com.midtrans.sdk.coreflow.models.CustomerDetails;
 import com.midtrans.sdk.coreflow.models.PaymentMethodsModel;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
@@ -59,7 +59,7 @@ public class PaymentMethodsActivity extends BaseActivity{
     private static final float PERCENTAGE_TOTAL = 1f;
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
 
-    private VeritransSDK veritransSDK = null;
+    private MidtransSDK midtransSDK = null;
     private boolean isHideToolbarView = false;
 
     //Views
@@ -77,7 +77,7 @@ public class PaymentMethodsActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments_method);
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
 
         UserDetail userDetail = null;
@@ -87,8 +87,8 @@ public class PaymentMethodsActivity extends BaseActivity{
             ex.printStackTrace();
         }
         TransactionRequest transactionRequest = null;
-        if (veritransSDK != null) {
-            transactionRequest = veritransSDK.getTransactionRequest();
+        if (midtransSDK != null) {
+            transactionRequest = midtransSDK.getTransactionRequest();
             if(transactionRequest != null){
                 CustomerDetails customerDetails = null;
                 if (userDetail != null) {
@@ -179,10 +179,10 @@ public class PaymentMethodsActivity extends BaseActivity{
      */
     private void bindDataToView() {
 
-        VeritransSDK veritransSDK = VeritransSDK.getInstance();
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
 
-        if (veritransSDK != null) {
-            String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(veritransSDK.getTransactionRequest().getAmount()));
+        if (midtransSDK != null) {
+            String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount()));
 
             amountText.setText(amount);
         }
@@ -205,7 +205,7 @@ public class PaymentMethodsActivity extends BaseActivity{
 
     private void getPaymentPages() {
         progressContainer.setVisibility(View.VISIBLE);
-        veritransSDK.checkout(new CheckoutCallback() {
+        midtransSDK.checkout(new CheckoutCallback() {
             @Override
             public void onSuccess(Token token) {
                 LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
@@ -225,15 +225,15 @@ public class PaymentMethodsActivity extends BaseActivity{
     }
 
     private void getPaymentOptions(String tokenId) {
-        veritransSDK.getTransactionOptions(tokenId, new TransactionOptionsCallback() {
+        midtransSDK.getTransactionOptions(tokenId, new TransactionOptionsCallback() {
             @Override
             public void onSuccess(Transaction transaction) {
                 try{
                     progressContainer.setVisibility(View.GONE);
                     String logoUrl = transaction.getMerchantData().getLogoUrl();
                     String merchantName = transaction.getMerchantData().getDisplayName();
-                    veritransSDK.setMerchantLogo(logoUrl);
-                    veritransSDK.setMerchantName(merchantName);
+                    midtransSDK.setMerchantLogo(logoUrl);
+                    midtransSDK.setMerchantName(merchantName);
                     showLogo(logoUrl);
                     for (String bank : transaction.getTransactionData().getBankTransfer().getBanks()) {
                         bankTrasfers.add(bank);
@@ -303,14 +303,14 @@ public class PaymentMethodsActivity extends BaseActivity{
                 TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
                 if (response != null) {
                     if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
-                        veritransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
                     } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
-                        veritransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
                     } else {
-                        veritransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
                     }
                 } else {
-                    veritransSDK.notifyTransactionFinished(new TransactionResult());
+                    midtransSDK.notifyTransactionFinished(new TransactionResult());
                 }
                 finish();
             }

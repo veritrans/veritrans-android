@@ -32,7 +32,7 @@ import com.midtrans.sdk.coreflow.callback.GetCardTokenCallback;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.coreflow.core.TransactionRequest;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.CardTokenRequest;
 import com.midtrans.sdk.coreflow.models.TokenDetailsResponse;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
@@ -57,11 +57,11 @@ public class CreditCardForm extends NestedScrollView{
     private AlertDialog webViewDialog;
     private TokenCallback tokenCallback;
     private WidgetTransactionCallback widgetTransactionCallback;
-    private String veritransClientKey;
+    private String midtransClientKey;
     private String merchantUrl;
     private String cardToken;
     private TransactionRequest transactionRequest;
-    private VeritransSDK veritransSDK;
+    private MidtransSDK midtransSDK;
 
     public CreditCardForm(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -109,7 +109,7 @@ public class CreditCardForm extends NestedScrollView{
 
         // Get values from XML
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CreditCardFormStyle);
-        veritransClientKey = typedArray.getString(R.styleable.CreditCardFormStyle_vtcc_client_key);
+        midtransClientKey = typedArray.getString(R.styleable.CreditCardFormStyle_vtcc_client_key);
         merchantUrl = typedArray.getString(R.styleable.CreditCardFormStyle_vtcc_merchant_url);
         boolean isPayBtnShown = typedArray.getBoolean(R.styleable.CreditCardFormStyle_vtcc_show_pay, false);
 
@@ -140,11 +140,11 @@ public class CreditCardForm extends NestedScrollView{
         });
     }
 
-    private VeritransSDK getVeritransSDK() {
-        if (veritransSDK != null) {
-            return veritransSDK;
+    private MidtransSDK getMidtransSDK() {
+        if (midtransSDK != null) {
+            return midtransSDK;
         } else {
-            if (TextUtils.isEmpty(veritransClientKey)) {
+            if (TextUtils.isEmpty(midtransClientKey)) {
                 throw new WidgetException(getResources().getString(R.string.error_client_key_missing));
             }
 
@@ -152,7 +152,7 @@ public class CreditCardForm extends NestedScrollView{
                 throw new WidgetException(getResources().getString(R.string.error_merchant_url_missing));
             }
 
-            return SdkCoreFlowBuilder.init(getContext(), veritransClientKey, merchantUrl)
+            return SdkCoreFlowBuilder.init(getContext(), midtransClientKey, merchantUrl)
                     .enableLog(true)
                     .buildSDK();
         }
@@ -446,11 +446,11 @@ public class CreditCardForm extends NestedScrollView{
                     cardCvvNumber.getText().toString(),
                     cardExpiry.getText().toString().split("/")[0],
                     cardExpiry.getText().toString().split("/")[1],
-                    veritransClientKey
+                    midtransClientKey
             );
             cardTokenRequest.setGrossAmount(transactionRequest.getAmount());
             cardTokenRequest.setSecure(transactionRequest.isSecureCard());
-            getVeritransSDK().getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+            getMidtransSDK().getCardToken(cardTokenRequest, new GetCardTokenCallback() {
                 @Override
                 public void onSuccess(TokenDetailsResponse response) {
                     if (tokenCallback != null) {
@@ -487,9 +487,9 @@ public class CreditCardForm extends NestedScrollView{
 
     private void charge(String cardToken, TransactionRequest request) {
         this.transactionRequest = request;
-        getVeritransSDK().setTransactionRequest(request);
+        getMidtransSDK().setTransactionRequest(request);
         this.cardToken = cardToken;
-        getVeritransSDK().checkout(new CheckoutCallback() {
+        getMidtransSDK().checkout(new CheckoutCallback() {
             @Override
             public void onSuccess(Token token) {
                 payUsingCreditCard(token);
@@ -512,7 +512,7 @@ public class CreditCardForm extends NestedScrollView{
     }
 
     private void payUsingCreditCard(Token token) {
-        getVeritransSDK().snapPaymentUsingCard(token.getTokenId(), CreditCardForm.this.cardToken,
+        getMidtransSDK().snapPaymentUsingCard(token.getTokenId(), CreditCardForm.this.cardToken,
                 false, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
@@ -538,12 +538,12 @@ public class CreditCardForm extends NestedScrollView{
 
     }
 
-    public String getVeritransClientKey() {
-        return veritransClientKey;
+    public String getMidtransClientKey() {
+        return midtransClientKey;
     }
 
-    public void setVeritransClientKey(String veritransClientKey) {
-        this.veritransClientKey = veritransClientKey;
+    public void setMidtransClientKey(String midtransClientKey) {
+        this.midtransClientKey = midtransClientKey;
     }
 
     public String getMerchantUrl() {

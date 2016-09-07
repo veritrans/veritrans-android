@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.uiflow.activities.OffersActivity;
 import com.midtrans.sdk.uiflow.adapters.OffersAdapter;
 import com.midtrans.sdk.uiflow.callbacks.AnyOfferClickedListener;
@@ -32,7 +32,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
     private TextView textViewOfferName = null;
     private RecyclerView recyclerViewOffers = null;
     private OffersAdapter offersAdapter = null;
-    private VeritransSDK veritransSDK = null;
+    private MidtransSDK midtransSDK = null;
     private RelativeLayout emptyOffersLayout;
 
     @Override
@@ -51,7 +51,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
             savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_offers_list, container, false);
-        veritransSDK = VeritransSDK.getInstance();
+        midtransSDK = MidtransSDK.getInstance();
         initialiseView(view);
         setUpOffersList();
         return view;
@@ -123,9 +123,9 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
             SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.fetching_offers),
                     false);
             showHideEmptyOffersMessage(false);
-            if (veritransSDK != null) {
+            if (midtransSDK != null) {
 
-                veritransSDK.getOffersList();
+                midtransSDK.getOffersList();
             }
         }
     }

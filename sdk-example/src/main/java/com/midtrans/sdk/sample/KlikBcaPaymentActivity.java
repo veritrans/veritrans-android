@@ -11,9 +11,8 @@ import android.widget.Toast;
 
 
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
-import com.midtrans.sdk.sample.R;
 
 public class KlikBcaPaymentActivity extends AppCompatActivity{
 
@@ -38,8 +37,8 @@ public class KlikBcaPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                VeritransSDK.getInstance().snapPaymentUsingKlikBCA(
-                        VeritransSDK.getInstance().readAuthenticationToken(),
+                MidtransSDK.getInstance().snapPaymentUsingKlikBCA(
+                        MidtransSDK.getInstance().readAuthenticationToken(),
                         sampleUserId, new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

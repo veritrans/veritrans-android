@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.midtrans.sdk.coreflow.core.ISdkFlow;
-import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.uiflow.activities.SaveCreditCardActivity;
 import com.midtrans.sdk.uiflow.activities.UserDetailsActivity;
 
@@ -15,7 +15,7 @@ public class UIFlow implements ISdkFlow {
 
     @Override
     public void runUIFlow(Context context) {
-        VeritransSDK sdk = VeritransSDK.getInstance();
+        MidtransSDK sdk = MidtransSDK.getInstance();
         if(sdk != null){
             context.startActivity(new Intent(context,
                     UserDetailsActivity.class));
