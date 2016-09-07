@@ -4,7 +4,7 @@ apply plugin: 'maven-publish'
 apply from: '../jacoco.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
-group = 'id.co.veritrans'
+group = 'com.midtrans'
 version = '0.11.2'
 
 buildscript {
@@ -96,6 +96,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
 
+    compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
 
     compile 'com.squareup.retrofit:retrofit:1.9.0'
@@ -143,9 +144,9 @@ publishing {
     publications {
         BintrayPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/coreflow-development-release.aar")
+            artifact("$buildDir/outputs/aar/corekit-development-release.aar")
             groupId group
-            artifactId 'coreflow'
+            artifactId 'corekit'
             version version + "-SANDBOX"
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
@@ -157,7 +158,7 @@ publishing {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
-                    if (it.group == 'id.co.veritrans') {
+                    if (it.group == 'com.midtrans') {
                         dependencyNode.appendNode('version', it.version + '-SANDBOX')
                     } else {
                         dependencyNode.appendNode('version', it.version)
@@ -168,9 +169,9 @@ publishing {
 
         BintrayProductionPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/coreflow-production-release.aar")
+            artifact("$buildDir/outputs/aar/corekit-production-release.aar")
             groupId group
-            artifactId 'coreflow'
+            artifactId 'corekit'
             version version
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
@@ -199,8 +200,8 @@ bintray {
         userOrg = 'pt-midtrans'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
-        desc = 'Android SDK for integrating with veritrans.co.id'
-        websiteUrl = "https://veritrans.co.id"
+        desc = 'Android SDK for integrating with midtrans.com'
+        websiteUrl = "https://midtrans.com"
         publish = true
         publicDownloadNumbers = true
     }

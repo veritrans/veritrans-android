@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
-group = 'id.co.veritrans'
+group = 'com.midtrans'
 version = '0.11.2'
 
 android {
@@ -50,8 +50,8 @@ bintray {
         userOrg = 'pt-midtrans'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
-        desc = 'External scanner plugin for Veritrans Android SDK'
-        websiteUrl = "https://veritrans.co.id"
+        desc = 'External scanner plugin for Midtrans Android SDK'
+        websiteUrl = "https://midtrans.com"
         publish = true
         publicDownloadNumbers = true
     }

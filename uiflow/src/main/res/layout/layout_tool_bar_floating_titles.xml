@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<id.co.veritrans.sdk.uiflow.widgets.HeaderView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.midtrans.sdk.uiflow.widgets.HeaderView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/float_header_view"
     android:layout_width="match_parent"
@@ -12,7 +12,7 @@
     tools:ignore="RtlSymmetry">
 
     <!-- Title -->
-    <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+    <com.midtrans.sdk.uiflow.widgets.DefaultTextView
         android:id="@+id/header_view_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         android:textSize="@dimen/secondary_text_size"/>
 
     <!-- Subtitle -->
-    <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+    <com.midtrans.sdk.uiflow.widgets.DefaultTextView
         android:id="@+id/header_view_sub_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,4 +39,4 @@
             android:background="@color/gray_divider" />
     </RelativeLayout>
 
-</id.co.veritrans.sdk.uiflow.widgets.HeaderView>
+</com.midtrans.sdk.uiflow.widgets.HeaderView>

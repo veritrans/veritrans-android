@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Veritrans SDK Sample</string>
+    <string name="app_name">Midtrans SDK Sample</string>
     <string name="buy">Buy</string>
     <string name="header_token">Token : </string>
     <string name="btn_get_token">Get Token</string>

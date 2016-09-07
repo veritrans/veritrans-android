@@ -12,7 +12,7 @@
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp">
 
-        <id.co.veritrans.sdk.uiflow.widgets.SemiBoldTextView
+        <com.midtrans.sdk.uiflow.widgets.SemiBoldTextView
             android:id="@+id/text_offer_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:textSize="@dimen/seventeen_sp"
             tools:text="@string/text_demo" />
 
-        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_offer_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

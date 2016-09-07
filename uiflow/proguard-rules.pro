@@ -47,8 +47,8 @@
 }
 
 # Keep the BuildConfig
--keep class id.co.veritrans.sdk.coreflow.BuildConfig { *; }
--keep class id.co.veritrans.sdk.uiflow.BuildConfig { *; }
+-keep class com.midtrans.sdk.coreflow.BuildConfig { *; }
+-keep class com.midtrans.sdk.uiflow.BuildConfig { *; }
 
 # Keep the support library
 -keep class android.support.v4.** { *; }
@@ -98,29 +98,29 @@
 
 # Also you must note that if you are using GSON for conversion from JSON to POJO representation, you must ignore those POJO classes from being obfuscated.
 # Here include the POJO's that have you have created for mapping JSON response to POJO for example.
-#-keep class id.co.veritrans.sdk.activities.**{ *;}
--keep class id.co.veritrans.sdk.uiflow.fragments.**{*;}
--keep class id.co.veritrans.sdk.coreflow.models.** { *; }
--keep class id.co.veritrans.sdk.uiflow.scancard.** { *; }
--keep class id.co.veritrans.sdk.coreflow.eventbus.**{*;}
--keep class id.co.veritrans.sdk.coreflow.analytics.MixpanelEvent{*;}
--keep class id.co.veritrans.sdk.coreflow.analytics.MixpanelProperties{*;}
--keep class id.co.veritrans.sdk.coreflow.core.VeritransSDK {*;}
--keep class id.co.veritrans.sdk.coreflow.core.TransactionRequest {*;}
--keep class id.co.veritrans.sdk.coreflow.core.LocalDataHandler {*;}
--keep class id.co.veritrans.sdk.coreflow.core.Logger {*;}
--keep class id.co.veritrans.sdk.coreflow.core.Constants {*;}
--keep class id.co.veritrans.sdk.coreflow.core.SdkUtil {*;}
--keep class id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder {*;}
--keep class id.co.veritrans.sdk.coreflow.core.ISdkFlow {*;}
--keep class id.co.veritrans.sdk.coreflow.core.IScanner {*;}
--keep class id.co.veritrans.sdk.coreflow.utilities.** {*;}
--keep class id.co.veritrans.sdk.uiflow.utilities.SdkUiFlowUtil {*;}
--keep class id.co.veritrans.sdk.uiflow.SdkUIFlowBuilder {*;}
--keep class id.co.veritrans.sdk.uiflow.UIFlow {*;}
--keep class id.co.veritrans.sdk.uiflow.PaymentMethods {*;}
--keep class id.co.veritrans.sdk.uiflow.scancard.ExternalScanner{*;}
--keep class id.co.veritrans.sdk.coreflow.core.PaymentMethods{*;}
+#-keep class id.co.midtrans.sdk.activities.**{ *;}
+-keep class com.midtrans.sdk.uiflow.fragments.**{*;}
+-keep class com.midtrans.sdk.coreflow.models.** { *; }
+-keep class com.midtrans.sdk.uiflow.scancard.** { *; }
+-keep class com.midtrans.sdk.coreflow.eventbus.**{*;}
+-keep class MixpanelEvent{*;}
+-keep class MixpanelProperties{*;}
+-keep class VeritransSDK {*;}
+-keep class TransactionRequest {*;}
+-keep class LocalDataHandler {*;}
+-keep class Logger {*;}
+-keep class Constants {*;}
+-keep class SdkUtil {*;}
+-keep class SdkCoreFlowBuilder {*;}
+-keep class ISdkFlow {*;}
+-keep class IScanner {*;}
+-keep class com.midtrans.sdk.coreflow.utilities.** {*;}
+-keep class com.midtrans.sdk.uiflow.utilities.SdkUiFlowUtil {*;}
+-keep class SdkUIFlowBuilder {*;}
+-keep class UIFlow {*;}
+-keep class PaymentMethods {*;}
+-keep class ExternalScanner{*;}
+-keep class com.midtrans.sdk.coreflow.core.PaymentMethods{*;}
 
 
 # RxJava 0.21

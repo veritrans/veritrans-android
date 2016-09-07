@@ -15,7 +15,7 @@
         android:padding="@dimen/sixteen_dp">
 
 
-        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -27,7 +27,7 @@
             />
 
 
-        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_company_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             />
 
 
-        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -52,7 +52,7 @@
             />
 
 
-        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_bill_pay_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             android:textSize="@dimen/header_text_size" />
 
 
-        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_validaty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

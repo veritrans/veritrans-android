@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="id.co.veritrans.sdk.uiflow.activities.PaymentWebActivity">
+    tools:context="com.midtrans.sdk.uiflow.activities.PaymentWebActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -30,7 +30,7 @@
                 android:scaleType="centerInside"
                 tools:src="@drawable/ic_veritrans" />
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:id="@+id/title_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -18,10 +18,10 @@ besides [initialization step](https://github.com/veritrans/veritrans-android/wik
 To apply Custom fonts, you can use this code.
 
 ```Java
-VeritransSDK veritransSDK = VeritransSDK.getVeritransSDK();
-veritransSDK.setDefaultText("open_sans_regular.ttf");
-veritransSDK.setSemiBoldText("open_sans_semibold.ttf");
-veritransSDK.setBoldText("open_sans_bold.ttf");
+VeritransSDK midtransSDK = VeritransSDK.getVeritransSDK();
+midtransSDK.setDefaultText("open_sans_regular.ttf");
+midtransSDK.setSemiBoldText("open_sans_semibold.ttf");
+midtransSDK.setBoldText("open_sans_bold.ttf");
 ```
 Note: open_sans_regular.ttf, open_sans_semibold.ttf, open_sans_bold.ttf is path of the custom font on the assets directory.
 
@@ -86,7 +86,7 @@ In this flow you **must** set transaction request information to SDK.
 
 ```Java
 TransactionRequest transactionRequest = new TransactionRequest(TRANSACTION_ID, TRANSACTION_AMOUNT);
-veritransSDK.setTransactionRequest(transactionRequest);
+midtransSDK.setTransactionRequest(transactionRequest);
 ```
 
 If you support credit card payment, you must select one of three card click types.
@@ -109,7 +109,7 @@ To use default UI for Charging Transactions, you can call `startPaymentUiFlow` u
 
 ```Java
 // start ui flow using activity context
-mVeritransSDK.startPaymentUiFlow(context);
+mMidtransSDK.startPaymentUiFlow(context);
 ```
 
 ### Register Card Mode
@@ -117,5 +117,5 @@ To use default UI of Registering Card, you can call `startRegisterCardUIFlow` us
 
 ```Java
 // start ui flow using activity context
-mVeritransSDK.startRegisterCardUIFlow(context);
+mMidtransSDK.startRegisterCardUIFlow(context);
 ```

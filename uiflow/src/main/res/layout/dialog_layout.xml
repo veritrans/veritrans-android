@@ -20,7 +20,7 @@
             android:paddingBottom="8dp"
             android:paddingTop="8dp">
 
-            <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
+            <com.midtrans.sdk.uiflow.widgets.BoldTextView
                 android:id="@+id/title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                 />
         </RelativeLayout>
 
-        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/message_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

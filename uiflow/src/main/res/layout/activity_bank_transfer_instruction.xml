@@ -63,7 +63,7 @@
                     android:scaleType="centerInside"
                     tools:src="@drawable/ic_launcher" />
 
-                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                     android:id="@+id/title_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -38,7 +38,7 @@ Execute Transaction using following method to get response back.
 
 ```Java
 // Using Permata
-veritransSDK.snapPaymentUsingBankTransferPermata(CHECKOUT_TOKEN, CUSTOMER_EMAIL);
+midtransSDK.snapPaymentUsingBankTransferPermata(CHECKOUT_TOKEN, CUSTOMER_EMAIL);
 // Using BCA 
 VeritransSDK.getVeritransSDK().snapPaymentUsingBankTransferBCA(CHECKOUT_TOKEN, CUSTOMER_EMAIL);
 // Using Other Banks

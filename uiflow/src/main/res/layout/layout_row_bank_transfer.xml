@@ -25,7 +25,7 @@
         android:layout_toEndOf="@id/img_bank_icon"
         android:layout_toRightOf="@id/img_bank_icon">
 
-        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_bank_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

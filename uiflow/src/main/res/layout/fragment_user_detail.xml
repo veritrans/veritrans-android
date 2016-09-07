@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context="id.co.veritrans.sdk.uiflow.fragments.UserDetailFragment">
+    tools:context="com.midtrans.sdk.uiflow.fragments.UserDetailFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

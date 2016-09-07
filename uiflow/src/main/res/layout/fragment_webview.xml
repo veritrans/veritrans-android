@@ -2,7 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="id.co.veritrans.sdk.uiflow.fragments.WebviewFragment">
+                tools:context="com.midtrans.sdk.uiflow.fragments.WebviewFragment">
 
     <WebView
         android:id="@+id/webview"

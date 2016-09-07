@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
-group = 'id.co.veritrans'
+group = 'com.midtrans'
 version = '0.11.2'
 
 ext{
@@ -87,9 +87,9 @@ publishing {
     publications {
         BintrayPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/uiflow-development-release.aar")
+            artifact("$buildDir/outputs/aar/uikit-development-release.aar")
             groupId group
-            artifactId 'uiflow'
+            artifactId 'uikit'
             version version + "-SANDBOX"
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
@@ -101,7 +101,7 @@ publishing {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
-                    if (it.group == 'id.co.veritrans') {
+                    if (it.group == 'com.midtrans') {
                         dependencyNode.appendNode('version', it.version + '-SANDBOX')
                     } else {
                         dependencyNode.appendNode('version', it.version)
@@ -112,9 +112,9 @@ publishing {
 
         BintrayProductionPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/uiflow-production-release.aar")
+            artifact("$buildDir/outputs/aar/uikit-production-release.aar")
             groupId group
-            artifactId 'uiflow'
+            artifactId 'uikit'
             version version
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
@@ -143,8 +143,8 @@ bintray {
         userOrg = 'pt-midtrans'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
-        desc = 'Android SDK for integrating with veritrans.co.id'
-        websiteUrl = "https://veritrans.co.id"
+        desc = 'Android SDK for integrating with midtrans.com'
+        websiteUrl = "https://midtrans.com"
         publish = true
         publicDownloadNumbers = true
     }

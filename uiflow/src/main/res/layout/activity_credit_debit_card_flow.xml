@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="id.co.veritrans.sdk.uiflow.activities.CreditDebitCardFlowActivity">
+    tools:context="com.midtrans.sdk.uiflow.activities.CreditDebitCardFlowActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/appbar"
@@ -39,7 +39,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.35"
@@ -47,7 +47,7 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/secondary_text_size" />
 
-                        <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
+                        <com.midtrans.sdk.uiflow.widgets.BoldTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.1"
@@ -57,7 +57,7 @@
                             android:textSize="@dimen/secondary_text_size"
                             android:textStyle="bold" />
 
-                        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                             android:id="@+id/text_order_id"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.35"
@@ -83,7 +83,7 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/secondary_text_size" />
 
-                        <id.co.veritrans.sdk.uiflow.widgets.BoldTextView
+                        <com.midtrans.sdk.uiflow.widgets.BoldTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.1"
@@ -93,7 +93,7 @@
                             android:textSize="@dimen/secondary_text_size"
                             android:textStyle="bold" />
 
-                        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                             android:id="@+id/text_amount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                         android:scaleType="centerInside"
                         tools:src="@drawable/ic_veritrans" />
 
-                    <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                    <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                         android:id="@+id/text_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
 
     </RelativeLayout>
 
-    <id.co.veritrans.sdk.uiflow.widgets.MorphingButton
+    <com.midtrans.sdk.uiflow.widgets.MorphingButton
         android:id="@+id/btnMorph1"
         android:layout_width="@dimen/btn_height"
         android:layout_height="@dimen/btn_height"
