@@ -1,0 +1,7 @@
+---
+version: 0.11.2
+commit: Bump to version %.%.%
+files:
+  coreflow/build.gradle: version = '%.%.%'
+  uiflow/build.gradle: version = '%.%.%'
+  scancard/build.gradle: version = '%.%.%'

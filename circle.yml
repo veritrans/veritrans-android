@@ -1,0 +1,62 @@
+#
+# Build configuration for Circle CI
+#
+
+general:
+    artifacts:
+        - /home/ubuntu/veritrans-android/sdk-example/build/outputs/apk/
+
+machine:
+    ruby:
+        version: 2.0.0-p648
+    environment:
+        ANDROID_HOME: /usr/local/android-sdk-linux
+        GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
+        _JAVA_OPTIONS: "-Xms512m -Xmx2048m"
+dependencies:
+    pre:
+        # Installing auto bumping version tools
+        - gem install bmp
+        # Copy environment variables to gradle.properties
+        - source environmentSetup.sh && copyEnvVarsToGradleProperties
+    override:
+        - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-23.0.3,android-23,extra-google-m2repository,extra-google-google_play_services,extra-android-m2repository
+        - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
+
+test:
+    override:
+        # Build
+       - (./gradlew coreflow:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
+            timeout: 3600
+
+
+    post:
+       - cp -r coreflow/build/reports $CIRCLE_ARTIFACTS
+       - cp -r coreflow/build/reports/ $CIRCLE_TEST_REPORTS
+
+
+
+# Deployment section
+deployment:
+    release:
+        tag: /v[0-9]+(\.[0-9]+)*/
+        owner: veritrans
+        commands:
+            - ./gradlew :clean :coreflow:assembleRelease :coreflow:bintrayUpload -PdisablePreDex
+            - ./gradlew :clean :uiflow:assembleRelease :uiflow:bintrayUpload -PdisablePreDex
+            - ./gradlew :clean :scancard:assembleRelease :scancard:bintrayUpload -PdisablePreDex
+            # using ghr to release latest version to github
+            - ./gradlew :clean :sdk-example:assembleDevelopmentDebug -PdisablePredex
+            - go get github.com/tcnksm/ghr
+            - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace --prerelease `git describe --tags` sdk-example/build/outputs/apk/
+
+
+    bump:
+      branch: master
+      owner: veritrans
+      commands:
+            - bmp -p
+            - source environmentSetup.sh && setGit
+            - bmp -c
+            - git checkout release && git merge master
+            - git push origin release --tag
