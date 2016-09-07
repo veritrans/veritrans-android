@@ -5,9 +5,9 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
-import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.models.BankTransferModel;
-import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
+import com.midtrans.sdk.coreflow.core.Constants;
+import com.midtrans.sdk.coreflow.models.BankTransferModel;
+import com.midtrans.sdk.coreflow.models.PaymentMethodsModel;
 
 /**
  * Payment method list.

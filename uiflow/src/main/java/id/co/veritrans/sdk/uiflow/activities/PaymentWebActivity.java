@@ -7,7 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import id.co.veritrans.sdk.coreflow.core.Constants;
+import com.midtrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
 

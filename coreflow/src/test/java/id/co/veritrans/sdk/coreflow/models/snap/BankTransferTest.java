@@ -11,6 +11,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.midtrans.sdk.coreflow.models.snap.BankTransfer;
+
 import static org.junit.Assert.assertEquals;
 
 /**

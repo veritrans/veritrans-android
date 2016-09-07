@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
+import com.midtrans.sdk.coreflow.models.TransactionStatusResponse;
+
 /**
  * Created by ziahaqi on 7/14/16.
  */

@@ -1,16 +1,10 @@
 package id.co.veritrans.sdk.coreflow.restapi;
 
-import android.content.Context;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.SQLOutput;
-
-import id.co.veritrans.sdk.coreflow.models.CardTransfer;
 
 /**
  * Created by ziahaqi on 23/06/2016.

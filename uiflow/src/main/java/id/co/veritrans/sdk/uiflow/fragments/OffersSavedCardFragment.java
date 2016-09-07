@@ -18,11 +18,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.OffersListModel;
-import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import com.midtrans.sdk.coreflow.core.Constants;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.models.OffersListModel;
+import com.midtrans.sdk.coreflow.models.SaveCardRequest;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.uiflow.adapters.CardPagerAdapter;

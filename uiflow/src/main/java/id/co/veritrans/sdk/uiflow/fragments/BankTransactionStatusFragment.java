@@ -14,9 +14,8 @@ import android.widget.TextView;
 
 import java.util.regex.Pattern;
 
-import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.coreflow.core.Constants;
+import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.BankTransferActivity;
 import id.co.veritrans.sdk.uiflow.activities.BankTransferInstructionActivity;

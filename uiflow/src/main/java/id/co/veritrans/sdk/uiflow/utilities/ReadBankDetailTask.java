@@ -8,11 +8,11 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.models.BankDetail;
-import id.co.veritrans.sdk.coreflow.models.BankDetailArray;
-import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import com.midtrans.sdk.coreflow.core.LocalDataHandler;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.models.BankDetail;
+import com.midtrans.sdk.coreflow.models.BankDetailArray;
+import com.midtrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.uiflow.R;
 
 /**

@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.uiflow.fragments.RegisterCardDetailsFragment;
-import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
+import com.midtrans.sdk.coreflow.models.SaveCardRequest;
 
 /**
  * @author rakawm

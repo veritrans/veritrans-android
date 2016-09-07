@@ -1,13 +1,12 @@
 package id.co.veritrans.sdk.coreflow.models;
 
-import junit.textui.TestRunner;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+
+import com.midtrans.sdk.coreflow.models.CardPaymentDetails;
 
 /**
  * Created by ziahaqi on 7/19/16.

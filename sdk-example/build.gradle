@@ -13,7 +13,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "id.co.veritrans.sdk.example"
+        applicationId "id.co.midtrans.sdk.example"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
@@ -22,12 +22,12 @@ android {
 
     productFlavors {
         development {
-            applicationId "id.co.veritrans.sdk.sample.development"
+            applicationId "id.co.midtrans.sdk.sample.development"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
         }
         production {
-            applicationId "id.co.veritrans.sdk.sample.production"
+            applicationId "id.co.midtrans.sdk.sample.production"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_PRODUCTION
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_PRODUCTION
         }

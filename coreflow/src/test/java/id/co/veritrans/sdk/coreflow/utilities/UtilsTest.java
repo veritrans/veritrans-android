@@ -18,7 +18,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import id.co.veritrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.utilities.Utils;
 
 /**
  * Created by ziahaqi on 7/14/16.

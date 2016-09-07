@@ -16,8 +16,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
 
 
 /**

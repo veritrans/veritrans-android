@@ -16,12 +16,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
-import id.co.veritrans.sdk.coreflow.models.BillingAddress;
-import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
-import id.co.veritrans.sdk.coreflow.models.ItemDetails;
-import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import com.midtrans.sdk.coreflow.core.Constants;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.TransactionRequest;
+import com.midtrans.sdk.coreflow.models.BillInfoModel;
+import com.midtrans.sdk.coreflow.models.BillingAddress;
+import com.midtrans.sdk.coreflow.models.CustomerDetails;
+import com.midtrans.sdk.coreflow.models.ItemDetails;
+import com.midtrans.sdk.coreflow.models.ShippingAddress;
+import com.midtrans.sdk.coreflow.utilities.Utils;
 
 /**
  * Created by ziahaqi on 7/13/16.

@@ -14,11 +14,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import com.midtrans.sdk.coreflow.core.Constants;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.models.SaveCardRequest;
+import com.midtrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.OffersActivity;
 import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;

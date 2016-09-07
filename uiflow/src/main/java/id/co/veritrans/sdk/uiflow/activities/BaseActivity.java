@@ -9,8 +9,8 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.uiflow.R;
 
 /**

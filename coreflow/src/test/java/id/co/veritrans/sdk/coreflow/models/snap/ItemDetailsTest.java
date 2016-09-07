@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
+import com.midtrans.sdk.coreflow.models.snap.ItemDetails;
+
 import static org.junit.Assert.assertEquals;
 
 /**

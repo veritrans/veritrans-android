@@ -15,8 +15,8 @@ import java.util.concurrent.CountDownLatch;
 
 import id.co.veritrans.sdk.coreflow.APIClientMain;
 import id.co.veritrans.sdk.coreflow.SDKConfigTest;
-import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
-import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
+import com.midtrans.sdk.coreflow.core.VeritransRestAPI;
+import com.midtrans.sdk.coreflow.models.CardRegistrationResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

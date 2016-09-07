@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
-group = 'id.co.veritrans'
+group = 'id.co.midtrans'
 version = '0.11.2'
 
 android {
@@ -49,9 +49,9 @@ bintray {
         name = 'scan-card'
         userOrg = 'pt-midtrans'
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
+        vcsUrl = 'https://github.com/midtrans/midtrans-android.git'
         desc = 'External scanner plugin for Veritrans Android SDK'
-        websiteUrl = "https://veritrans.co.id"
+        websiteUrl = "https://midtrans.co.id"
         publish = true
         publicDownloadNumbers = true
     }

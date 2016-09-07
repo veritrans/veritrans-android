@@ -16,6 +16,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
 
+import com.midtrans.sdk.coreflow.models.BCAVANumber;
+import com.midtrans.sdk.coreflow.models.TransactionResponse;
+
 /**
  * Created by ziahaqi on 7/14/16.
  */

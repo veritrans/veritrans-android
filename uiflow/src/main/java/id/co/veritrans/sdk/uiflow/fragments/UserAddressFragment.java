@@ -21,12 +21,12 @@ import com.google.gson.reflect.TypeToken;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.UserAddress;
-import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import com.midtrans.sdk.coreflow.core.Constants;
+import com.midtrans.sdk.coreflow.core.LocalDataHandler;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.models.UserAddress;
+import com.midtrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.PaymentMethodsActivity;
 import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;

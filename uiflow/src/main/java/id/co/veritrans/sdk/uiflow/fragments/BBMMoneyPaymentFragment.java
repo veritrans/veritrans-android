@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import com.midtrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.coreflow.utilities.Utils;
 
 /**
  * Created by Ankit on 12/03/15.

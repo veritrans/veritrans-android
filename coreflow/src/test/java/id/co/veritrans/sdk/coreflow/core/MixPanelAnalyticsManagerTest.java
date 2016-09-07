@@ -17,8 +17,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Collections;
 
-import id.co.veritrans.sdk.coreflow.analytics.MixpanelApi;
-import id.co.veritrans.sdk.coreflow.analytics.MixpanelEvent;
+import com.midtrans.sdk.coreflow.analytics.MixpanelApi;
+import com.midtrans.sdk.coreflow.analytics.MixpanelEvent;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.MixpanelAnalyticsManager;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

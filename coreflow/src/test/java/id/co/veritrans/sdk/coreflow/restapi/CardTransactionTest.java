@@ -14,11 +14,11 @@ import java.util.concurrent.CountDownLatch;
 
 import id.co.veritrans.sdk.coreflow.APIClientMain;
 import id.co.veritrans.sdk.coreflow.SDKConfigTest;
-import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
-import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
-import id.co.veritrans.sdk.coreflow.models.CardTransfer;
-import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.coreflow.core.MerchantRestAPI;
+import com.midtrans.sdk.coreflow.core.VeritransRestAPI;
+import com.midtrans.sdk.coreflow.models.CardTransfer;
+import com.midtrans.sdk.coreflow.models.TokenDetailsResponse;
+import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

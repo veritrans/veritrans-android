@@ -4,12 +4,10 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.coreflow.callback.TransactionFinishedCallback;
-import id.co.veritrans.sdk.coreflow.core.BaseSdkBuilder;
-import id.co.veritrans.sdk.coreflow.core.IScanner;
-import id.co.veritrans.sdk.coreflow.core.ISdkFlow;
-import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
-import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
+import com.midtrans.sdk.coreflow.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.coreflow.core.BaseSdkBuilder;
+import com.midtrans.sdk.coreflow.core.IScanner;
+import com.midtrans.sdk.coreflow.models.PaymentMethodsModel;
 
 /**
  * Created by ziahaqi on 15/06/2016.

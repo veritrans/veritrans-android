@@ -92,7 +92,7 @@
 
 # Also you must note that if you are using GSON for conversion from JSON to POJO representation, you must ignore those POJO classes from being obfuscated.
 # Here include the POJO's that have you have created for mapping JSON response to POJO for example.
-#-keep class id.co.veritrans.sdk.activities.**{ *;}
+#-keep class id.co.midtrans.sdk.activities.**{ *;}
 -keep class id.co.veritrans.sdk.fragments.**{*;}
 -keep class id.co.veritrans.sdk.models.** { *; }
 -keep class id.co.veritrans.sdk.eventbus.**{*;}
@@ -107,8 +107,8 @@
 -keep class id.co.veritrans.sdk.core.SdkUtil {*;}
 -keep class id.co.veritrans.sdk.core.ExternalScanner{*;}
 -keep class id.co.veritrans.sdk.core.PaymentMethods{*;}
-#-keep class id.co.veritrans.sdk.widget.**{*;}
-#-keep class id.co.veritrans.sdk.** {*;}
+#-keep class id.co.midtrans.sdk.widget.**{*;}
+#-keep class id.co.midtrans.sdk.** {*;}
 
 
 # RxJava 0.21

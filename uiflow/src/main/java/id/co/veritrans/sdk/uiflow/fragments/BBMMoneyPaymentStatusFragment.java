@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.BBMMoneyActivity;
-import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.coreflow.core.Constants;
+import com.midtrans.sdk.coreflow.models.TransactionResponse;
 
 /**
  * Created by shivam on 10/27/15.

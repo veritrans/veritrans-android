@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.coreflow.models.TransactionResponse;
 
 /**
  * Created by chetan on 01/12/15.

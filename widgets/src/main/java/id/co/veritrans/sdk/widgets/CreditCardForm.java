@@ -27,17 +27,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
-import id.co.veritrans.sdk.coreflow.callback.GetCardTokenCallback;
-import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
-import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
-import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
-import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.models.snap.Token;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import com.midtrans.sdk.coreflow.callback.CheckoutCallback;
+import com.midtrans.sdk.coreflow.callback.GetCardTokenCallback;
+import com.midtrans.sdk.coreflow.callback.TransactionCallback;
+import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
+import com.midtrans.sdk.coreflow.core.TransactionRequest;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.models.CardTokenRequest;
+import com.midtrans.sdk.coreflow.models.TokenDetailsResponse;
+import com.midtrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.coreflow.models.snap.Token;
+import com.midtrans.sdk.coreflow.utilities.Utils;
 import id.co.veritrans.sdk.widgets.utils.CardUtils;
 import id.co.veritrans.sdk.widgets.utils.WidgetException;
 

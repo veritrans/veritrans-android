@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.uiflow.R;
 
 /**

@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import java.util.regex.Pattern;
 
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.BCAKlikPayActivity;
 import id.co.veritrans.sdk.uiflow.activities.CIMBClickPayActivity;

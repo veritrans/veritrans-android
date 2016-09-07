@@ -5,7 +5,7 @@ import android.content.Context;
 /**
  * Created by shivam on 10/20/15.
  * <p/>
- * helper class to create object of veritrans sdk.
+ * helper class to create object of midtrans sdk.
  * </p>
  * Call its constructor with activity , client_key and sever_key.
  *</p>
@@ -82,7 +82,7 @@ public class VeritransBuilder {
     /**
      * This method will start payment flow if you have set useUi field to true.
      *
-     * @return it returns fully initialized object of veritrans sdk.
+     * @return it returns fully initialized object of midtrans sdk.
      */
     public VeritransSDK buildSDK() {
 

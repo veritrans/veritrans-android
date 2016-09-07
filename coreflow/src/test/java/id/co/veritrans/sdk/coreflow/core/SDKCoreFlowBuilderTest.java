@@ -18,6 +18,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import id.co.veritrans.sdk.coreflow.SDKConfigTest;
+import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 
 /**
  * Created by ziahaqi on 26/06/2016.

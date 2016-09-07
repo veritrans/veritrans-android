@@ -51,7 +51,7 @@ public interface PaymentAPI {
 
     /**
      * card_cvv, token_id, two_click, bank, secure, gross_amount
-     * this api call hit veritrans server
+     * this api call hit midtrans server
      *
      * @return observable of transaction response
      */
@@ -302,7 +302,7 @@ public interface PaymentAPI {
      * @param cardCVV           credit card cvv number
      * @param cardExpiryMonth   credit card expiry month in number
      * @param cardExpiryYear    credit card expiry year in 4 digit (example: 2020)
-     * @param clientKey         veritrans API client key
+     * @param clientKey         midtrans API client key
      *
      * @return observable of token
      */

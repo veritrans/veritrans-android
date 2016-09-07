@@ -3,8 +3,8 @@ package id.co.veritrans.sdk.uiflow;
 import android.content.Context;
 import android.content.Intent;
 
-import id.co.veritrans.sdk.coreflow.core.ISdkFlow;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.ISdkFlow;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
 import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
 

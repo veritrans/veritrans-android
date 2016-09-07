@@ -6,7 +6,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
 
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
 
 /**
  * @author rakawm

@@ -13,20 +13,18 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.UUID;
 
-import id.co.veritrans.sdk.coreflow.callback.TransactionFinishedCallback;
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.SdkCoreFlowBuilder;
-import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
-import id.co.veritrans.sdk.coreflow.models.ItemDetails;
-import id.co.veritrans.sdk.coreflow.models.snap.CreditCard;
-import id.co.veritrans.sdk.coreflow.models.snap.TransactionResult;
+import com.midtrans.sdk.coreflow.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
+import com.midtrans.sdk.coreflow.core.TransactionRequest;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.models.BillInfoModel;
+import com.midtrans.sdk.coreflow.models.ItemDetails;
+import com.midtrans.sdk.coreflow.models.snap.CreditCard;
+import com.midtrans.sdk.coreflow.models.snap.TransactionResult;
 import id.co.veritrans.sdk.sample.core.CoreFlowActivity;
 import id.co.veritrans.sdk.scancard.ScanCard;
 import id.co.veritrans.sdk.uiflow.SdkUIFlowBuilder;

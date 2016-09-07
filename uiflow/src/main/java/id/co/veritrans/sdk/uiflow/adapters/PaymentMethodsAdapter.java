@@ -12,9 +12,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.models.PaymentMethodsModel;
+import com.midtrans.sdk.coreflow.core.Constants;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.models.PaymentMethodsModel;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.BBMMoneyActivity;
 import id.co.veritrans.sdk.uiflow.activities.BCAKlikPayActivity;

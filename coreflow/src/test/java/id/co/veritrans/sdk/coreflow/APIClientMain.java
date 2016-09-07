@@ -1,19 +1,12 @@
 package id.co.veritrans.sdk.coreflow;
 
-import android.content.Context;
-
 import com.google.gson.Gson;
-
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 
 import java.util.Collections;
 
-import id.co.veritrans.sdk.coreflow.core.MerchantRestAPI;
-import id.co.veritrans.sdk.coreflow.core.VeritransRestAPI;
+import com.midtrans.sdk.coreflow.core.MerchantRestAPI;
+import com.midtrans.sdk.coreflow.core.VeritransRestAPI;
 import id.co.veritrans.sdk.coreflow.restapi.RestAPIMocUtilites;
 import id.co.veritrans.sdk.coreflow.restapi.RetrofitMockClient;
 import retrofit.RestAdapter;

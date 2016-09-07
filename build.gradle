@@ -10,7 +10,7 @@ buildscript {
 apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
-group = 'id.co.veritrans'
+group = 'id.co.midtrans'
 version = '0.10.8'
 
 android {
@@ -28,7 +28,7 @@ android {
         versionName version
         buildConfigField "String", "MIXPANEL_URL", "\"https://api.mixpanel.com/\""
         buildConfigField "String", "CALLBACK_STRING", "\"/token/callback/\""
-        buildConfigField "String", "CALLBACK_URL", "\"https://hangout.betas.in/veritrans/api/paymentstatus\""
+        buildConfigField "String", "CALLBACK_URL", "\"https://hangout.betas.in/midtrans/api/paymentstatus\""
         buildConfigField "String", "BBM_MONEY_PACKAGE", "\"com.monitise.client.android.bbmmoney\""
         buildConfigField "String", "MARKET_URL", "\"market://details?id=\""
         buildConfigField "String", "PLAY_STORE_URL", "\"https://play.google.com/store/apps/details?id=\""
@@ -45,12 +45,12 @@ android {
 
     productFlavors {
         development {
-            buildConfigField "String", "BASE_URL", "\"https://api.sandbox.veritrans.co.id/v2/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.sandbox.midtrans.co.id/v2/\""
             buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_SANDBOX
         }
 
         production {
-            buildConfigField "String", "BASE_URL", "\"https://api.veritrans.co.id/v2/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.midtrans.co.id/v2/\""
             buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_PRODUCTION
         }
     }
@@ -81,9 +81,9 @@ bintray {
         name = project.name
         userOrg = 'pt-midtrans'
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
-        desc = 'Android SDK for integrating with veritrans.co.id'
-        websiteUrl = "https://veritrans.co.id"
+        vcsUrl = 'https://github.com/midtrans/midtrans-android.git'
+        desc = 'Android SDK for integrating with midtrans.co.id'
+        websiteUrl = "https://midtrans.co.id"
         publish = true
         publicDownloadNumbers = true
     }
@@ -100,7 +100,7 @@ publishing {
     publications {
         BintrayPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/veritrans-android-development-release.aar")
+            artifact("$buildDir/outputs/aar/midtrans-android-development-release.aar")
             groupId group
             artifactId 'androidsdk'
             version version + "-SANDBOX"
@@ -121,7 +121,7 @@ publishing {
 
         BintrayProductionPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/veritrans-android-production-release.aar")
+            artifact("$buildDir/outputs/aar/midtrans-android-production-release.aar")
             groupId group
             artifactId 'androidsdk'
             version version

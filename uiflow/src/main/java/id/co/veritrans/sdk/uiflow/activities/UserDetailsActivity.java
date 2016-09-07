@@ -11,10 +11,9 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.models.UserAddress;
-import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import com.midtrans.sdk.coreflow.core.LocalDataHandler;
+import com.midtrans.sdk.coreflow.models.UserAddress;
+import com.midtrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.UserAddressFragment;
 import id.co.veritrans.sdk.uiflow.fragments.UserDetailFragment;

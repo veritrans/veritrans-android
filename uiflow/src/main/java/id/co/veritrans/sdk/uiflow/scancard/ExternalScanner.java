@@ -1,8 +1,6 @@
 package id.co.veritrans.sdk.uiflow.scancard;
 
-import android.app.Activity;
-
-import id.co.veritrans.sdk.coreflow.core.IScanner;
+import com.midtrans.sdk.coreflow.core.IScanner;
 
 /**
  * Abstract class of external scanner implementation.

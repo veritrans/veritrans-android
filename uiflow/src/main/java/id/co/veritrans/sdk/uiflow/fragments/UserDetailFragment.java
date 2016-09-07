@@ -15,11 +15,11 @@ import java.util.UUID;
 
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
-import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
-import id.co.veritrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.LocalDataHandler;
+import com.midtrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.models.UserDetail;
 
 public class UserDetailFragment extends Fragment {
 

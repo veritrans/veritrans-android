@@ -23,23 +23,31 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.coreflow.R;
+import com.midtrans.sdk.coreflow.R;
 import id.co.veritrans.sdk.coreflow.SDKConfigTest;
-import id.co.veritrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
-import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
-import id.co.veritrans.sdk.coreflow.models.BillingAddress;
-import id.co.veritrans.sdk.coreflow.models.CardPaymentDetails;
-import id.co.veritrans.sdk.coreflow.models.CstoreEntity;
-import id.co.veritrans.sdk.coreflow.models.CustomerDetails;
-import id.co.veritrans.sdk.coreflow.models.DescriptionModel;
-import id.co.veritrans.sdk.coreflow.models.ItemDetails;
-import id.co.veritrans.sdk.coreflow.models.KlikBCADescriptionModel;
-import id.co.veritrans.sdk.coreflow.models.MandiriClickPayModel;
-import id.co.veritrans.sdk.coreflow.models.ShippingAddress;
-import id.co.veritrans.sdk.coreflow.models.UserAddress;
-import id.co.veritrans.sdk.coreflow.models.UserDetail;
-import id.co.veritrans.sdk.coreflow.models.snap.payment.PaymentDetails;
-import id.co.veritrans.sdk.coreflow.utilities.Utils;
+import com.midtrans.sdk.coreflow.core.Constants;
+import com.midtrans.sdk.coreflow.core.LocalDataHandler;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
+import com.midtrans.sdk.coreflow.core.SdkUtil;
+import com.midtrans.sdk.coreflow.core.TransactionRequest;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
+import com.midtrans.sdk.coreflow.models.BillInfoModel;
+import com.midtrans.sdk.coreflow.models.BillingAddress;
+import com.midtrans.sdk.coreflow.models.CardPaymentDetails;
+import com.midtrans.sdk.coreflow.models.CstoreEntity;
+import com.midtrans.sdk.coreflow.models.CustomerDetails;
+import com.midtrans.sdk.coreflow.models.DescriptionModel;
+import com.midtrans.sdk.coreflow.models.ItemDetails;
+import com.midtrans.sdk.coreflow.models.KlikBCADescriptionModel;
+import com.midtrans.sdk.coreflow.models.MandiriClickPayModel;
+import com.midtrans.sdk.coreflow.models.ShippingAddress;
+import com.midtrans.sdk.coreflow.models.UserAddress;
+import com.midtrans.sdk.coreflow.models.UserDetail;
+import com.midtrans.sdk.coreflow.models.MandiriBillPayTransferModel;
+import com.midtrans.sdk.coreflow.models.snap.payment.PaymentDetails;
+import com.midtrans.sdk.coreflow.utilities.Utils;
 
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
@@ -74,7 +82,7 @@ public class SDKUtilsTest {
     @Mock
     private CustomerDetails costumerDetailMock;
     @Mock
-    private id.co.veritrans.sdk.coreflow.models.MandiriBillPayTransferModel modelMock;
+    private MandiriBillPayTransferModel modelMock;
     @Mock
     private MandiriClickPayModel mandiriClickPayModelMock;
     @Mock

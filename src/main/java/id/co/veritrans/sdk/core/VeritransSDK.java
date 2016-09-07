@@ -103,7 +103,7 @@ public class VeritransSDK {
     }
 
     /**
-     * Returns instance of veritrans sdk.
+     * Returns instance of midtrans sdk.
      *
      * @return VeritransSDK instance
      */

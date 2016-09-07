@@ -9,12 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import java.util.ArrayList;
-import id.co.veritrans.sdk.coreflow.callback.CardRegistrationCallback;
-import id.co.veritrans.sdk.coreflow.callback.SaveCardCallback;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
-import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
-import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
+import com.midtrans.sdk.coreflow.callback.CardRegistrationCallback;
+import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.models.CardRegistrationResponse;
+import com.midtrans.sdk.coreflow.models.SaveCardRequest;
+import com.midtrans.sdk.coreflow.models.SaveCardResponse;
 
 public class CardRegistrationActivity extends AppCompatActivity{
     TextInputLayout cardNumberContainer, cvvContainer, expiredDateContainer;

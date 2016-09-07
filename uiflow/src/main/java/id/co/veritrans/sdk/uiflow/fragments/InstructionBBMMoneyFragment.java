@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import id.co.veritrans.sdk.coreflow.BuildConfig;
+import com.midtrans.sdk.coreflow.BuildConfig;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 

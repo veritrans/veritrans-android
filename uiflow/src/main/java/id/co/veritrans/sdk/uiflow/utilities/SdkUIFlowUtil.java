@@ -20,12 +20,12 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import id.co.veritrans.sdk.coreflow.BuildConfig;
-import id.co.veritrans.sdk.coreflow.core.Constants;
-import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.BBMCallBackUrl;
-import id.co.veritrans.sdk.coreflow.models.BBMUrlEncodeJson;
+import com.midtrans.sdk.coreflow.BuildConfig;
+import com.midtrans.sdk.coreflow.core.Constants;
+import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.models.BBMCallBackUrl;
+import com.midtrans.sdk.coreflow.models.BBMUrlEncodeJson;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.widgets.VeritransLoadingDialog;
 

@@ -10,9 +10,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
-import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.coreflow.callback.TransactionCallback;
+import com.midtrans.sdk.coreflow.core.VeritransSDK;
+import com.midtrans.sdk.coreflow.models.TransactionResponse;
 
 public class KlikBcaPaymentActivity extends AppCompatActivity{
 

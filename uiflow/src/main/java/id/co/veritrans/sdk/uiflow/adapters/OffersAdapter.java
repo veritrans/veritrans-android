@@ -9,7 +9,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.coreflow.models.OffersListModel;
+import com.midtrans.sdk.coreflow.models.OffersListModel;
 
 /**
  * adapter for offers list recycler view.

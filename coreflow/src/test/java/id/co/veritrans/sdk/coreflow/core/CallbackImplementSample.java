@@ -2,29 +2,33 @@ package id.co.veritrans.sdk.coreflow.core;
 
 import java.util.ArrayList;
 
-import id.co.veritrans.sdk.coreflow.callback.CardRegistrationCallback;
-import id.co.veritrans.sdk.coreflow.callback.CheckoutCallback;
-import id.co.veritrans.sdk.coreflow.callback.GetCardCallback;
-import id.co.veritrans.sdk.coreflow.callback.GetCardTokenCallback;
-import id.co.veritrans.sdk.coreflow.callback.TransactionOptionsCallback;
-import id.co.veritrans.sdk.coreflow.callback.SaveCardCallback;
-import id.co.veritrans.sdk.coreflow.callback.TransactionCallback;
-import id.co.veritrans.sdk.coreflow.models.CardRegistrationResponse;
-import id.co.veritrans.sdk.coreflow.models.CardTokenRequest;
-import id.co.veritrans.sdk.coreflow.models.SaveCardRequest;
-import id.co.veritrans.sdk.coreflow.models.SaveCardResponse;
-import id.co.veritrans.sdk.coreflow.models.TokenDetailsResponse;
-import id.co.veritrans.sdk.coreflow.models.TokenRequestModel;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.models.snap.Token;
-import id.co.veritrans.sdk.coreflow.models.snap.Transaction;
-import id.co.veritrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
-import id.co.veritrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
-import id.co.veritrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
-import id.co.veritrans.sdk.coreflow.models.snap.payment.IndosatDompetkuPaymentRequest;
-import id.co.veritrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
-import id.co.veritrans.sdk.coreflow.models.snap.payment.MandiriClickPayPaymentRequest;
-import id.co.veritrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
+import com.midtrans.sdk.coreflow.callback.CardRegistrationCallback;
+import com.midtrans.sdk.coreflow.callback.CheckoutCallback;
+import com.midtrans.sdk.coreflow.callback.GetCardCallback;
+import com.midtrans.sdk.coreflow.callback.GetCardTokenCallback;
+import com.midtrans.sdk.coreflow.callback.TransactionOptionsCallback;
+import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
+import com.midtrans.sdk.coreflow.callback.TransactionCallback;
+import com.midtrans.sdk.coreflow.core.MerchantRestAPI;
+import com.midtrans.sdk.coreflow.core.SnapRestAPI;
+import com.midtrans.sdk.coreflow.core.SnapTransactionManager;
+import com.midtrans.sdk.coreflow.core.VeritransRestAPI;
+import com.midtrans.sdk.coreflow.models.CardRegistrationResponse;
+import com.midtrans.sdk.coreflow.models.CardTokenRequest;
+import com.midtrans.sdk.coreflow.models.SaveCardRequest;
+import com.midtrans.sdk.coreflow.models.SaveCardResponse;
+import com.midtrans.sdk.coreflow.models.TokenDetailsResponse;
+import com.midtrans.sdk.coreflow.models.TokenRequestModel;
+import com.midtrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.coreflow.models.snap.Token;
+import com.midtrans.sdk.coreflow.models.snap.Transaction;
+import com.midtrans.sdk.coreflow.models.snap.payment.BankTransferPaymentRequest;
+import com.midtrans.sdk.coreflow.models.snap.payment.BasePaymentRequest;
+import com.midtrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
+import com.midtrans.sdk.coreflow.models.snap.payment.IndosatDompetkuPaymentRequest;
+import com.midtrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
+import com.midtrans.sdk.coreflow.models.snap.payment.MandiriClickPayPaymentRequest;
+import com.midtrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
 
 /**
  * Created by ziahaqi on 9/5/16.

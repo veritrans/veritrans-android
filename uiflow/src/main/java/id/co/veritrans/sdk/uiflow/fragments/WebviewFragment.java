@@ -16,8 +16,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import id.co.veritrans.sdk.coreflow.BuildConfig;
-import id.co.veritrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.coreflow.BuildConfig;
+import com.midtrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 

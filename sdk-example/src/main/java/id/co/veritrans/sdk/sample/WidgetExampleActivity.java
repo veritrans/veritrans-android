@@ -11,11 +11,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import id.co.veritrans.sdk.coreflow.core.TransactionRequest;
-import id.co.veritrans.sdk.coreflow.models.BillInfoModel;
-import id.co.veritrans.sdk.coreflow.models.ItemDetails;
-import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
-import id.co.veritrans.sdk.coreflow.models.snap.CreditCard;
+import com.midtrans.sdk.coreflow.core.TransactionRequest;
+import com.midtrans.sdk.coreflow.models.BillInfoModel;
+import com.midtrans.sdk.coreflow.models.ItemDetails;
+import com.midtrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.coreflow.models.snap.CreditCard;
 import id.co.veritrans.sdk.widgets.CreditCardForm;
 
 /**
