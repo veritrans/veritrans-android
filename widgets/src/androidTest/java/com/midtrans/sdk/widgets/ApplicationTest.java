@@ -1,4 +1,4 @@
-package id.co.veritrans.sdk.widgets;
+package com.midtrans.sdk.widgets;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
