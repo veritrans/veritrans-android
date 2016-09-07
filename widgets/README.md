@@ -35,7 +35,7 @@ For now there is only one widget that can be used.
 Implementation in layout.xml
 
 ```xml
-<id.co.veritrans.sdk.widgets.CreditCardForm
+<CreditCardForm
 	android:id="@+id/credit_card_form"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"

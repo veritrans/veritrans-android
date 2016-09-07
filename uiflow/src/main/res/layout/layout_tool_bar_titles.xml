@@ -8,7 +8,7 @@
     android:padding="@dimen/eight_dp">
 
     <!-- Title -->
-    <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+    <com.midtrans.sdk.uiflow.widgets.DefaultTextView
         android:id="@+id/header_view_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         android:textSize="@dimen/secondary_text_size" />
 
     <!-- Subtitle -->
-    <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+    <com.midtrans.sdk.uiflow.widgets.DefaultTextView
         android:id="@+id/header_view_sub_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

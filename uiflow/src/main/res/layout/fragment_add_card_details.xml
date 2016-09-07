@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:fillViewport="true"
-    tools:context="id.co.veritrans.sdk.uiflow.fragments.AddCardDetailsFragment">
+    tools:context="com.midtrans.sdk.uiflow.fragments.AddCardDetailsFragment">
 
     <RelativeLayout
         android:id="@+id/form_layout"
@@ -133,7 +133,7 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@id/cb_store_card">
 
-            <id.co.veritrans.sdk.uiflow.widgets.MorphingButton
+            <com.midtrans.sdk.uiflow.widgets.MorphingButton
                 android:id="@+id/btnMorph1"
                 android:layout_width="@dimen/btn_height"
                 android:layout_height="@dimen/btn_height"

@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+    <com.midtrans.sdk.uiflow.widgets.DefaultTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/sixteen_dp"

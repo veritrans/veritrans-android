@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:background="@android:color/white"
     android:orientation="vertical"
-              tools:context="id.co.veritrans.sdk.uiflow.fragments.SavedCardFragment">
+              tools:context="com.midtrans.sdk.uiflow.fragments.SavedCardFragment">
 
     <LinearLayout
         android:id="@+id/credit_card_holder"
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:id="@+id/text_empty_saved_cards"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content" />
         </RelativeLayout>
 
-        <id.co.veritrans.sdk.uiflow.widgets.CirclePageIndicator
+        <com.midtrans.sdk.uiflow.widgets.CirclePageIndicator
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
             android:src="@drawable/curve_arrow"
             />
 
-        <id.co.veritrans.sdk.uiflow.widgets.SemiBoldTextView
+        <com.midtrans.sdk.uiflow.widgets.SemiBoldTextView
             android:id="@+id/text_card_number"
             android:layout_width="270dp"
             android:layout_height="wrap_content"

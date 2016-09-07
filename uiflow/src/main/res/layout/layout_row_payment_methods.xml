@@ -26,7 +26,7 @@
         android:layout_toRightOf="@id/img_payment_method_icon"
         >
 
-        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
             android:id="@+id/text_payment_method_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

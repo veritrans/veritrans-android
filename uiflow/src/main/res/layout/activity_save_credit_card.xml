@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity">
+    tools:context="com.midtrans.sdk.uiflow.activities.SaveCreditCardActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/main_appbar"
@@ -29,7 +29,7 @@
                 android:scaleType="centerInside"
                 tools:src="@drawable/ic_veritrans" />
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:id="@+id/title_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         android:background="@android:color/white"
         android:visibility="gone" />
 
-    <id.co.veritrans.sdk.uiflow.widgets.MorphingButton
+    <com.midtrans.sdk.uiflow.widgets.MorphingButton
         android:id="@+id/btnMorph1"
         android:layout_width="@dimen/btn_height"
         android:layout_height="@dimen/btn_height"

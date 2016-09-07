@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+        <com.midtrans.sdk.uiflow.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -30,7 +30,7 @@
             android:paddingBottom="@dimen/eight_dp"
             android:paddingTop="@dimen/eight_dp">
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/five_dp"
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/instruction_bca_1" />
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/light_gray"
@@ -66,7 +66,7 @@
             android:paddingBottom="@dimen/eight_dp"
             android:paddingTop="@dimen/eight_dp">
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/five_dp"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/instruction_bca_2" />
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="2dp"
@@ -101,7 +101,7 @@
             android:paddingBottom="@dimen/eight_dp"
             android:paddingTop="@dimen/eight_dp">
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/five_dp"
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/instruction_bca_3" />
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="2dp"
@@ -137,7 +137,7 @@
             android:paddingBottom="@dimen/eight_dp"
             android:paddingTop="@dimen/eight_dp">
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/five_dp"
@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/instruction_bca_4" />
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="2dp"
@@ -172,7 +172,7 @@
             android:paddingBottom="@dimen/eight_dp"
             android:paddingTop="@dimen/eight_dp">
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/light_gray"
@@ -189,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/instruction_bca_5" />
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/eight_dp"
@@ -211,7 +211,7 @@
             android:paddingBottom="@dimen/eight_dp"
             android:paddingTop="@dimen/eight_dp">
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/five_dp"
@@ -227,7 +227,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/instruction_bca_6" />
 
-            <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+            <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/eight_dp"

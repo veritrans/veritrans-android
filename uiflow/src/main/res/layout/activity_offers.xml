@@ -34,7 +34,7 @@
                 android:gravity="end"
                 android:orientation="vertical">
 
-                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                     android:id="@+id/text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                     android:textColor="@color/dark_gray"
                     android:textSize="@dimen/tool_bar_title_size" />
 
-                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                     android:id="@+id/text_title_card_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                     android:textColor="@color/dark_gray"
                     android:textSize="@dimen/primary_text_size" />
 
-                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                     android:id="@+id/text_title_offer_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         android:background="@android:color/white"
         android:visibility="gone" />
 
-    <id.co.veritrans.sdk.uiflow.widgets.MorphingButton
+    <com.midtrans.sdk.uiflow.widgets.MorphingButton
         android:id="@+id/btnMorph1"
         android:layout_width="@dimen/btn_height"
         android:layout_height="@dimen/btn_height"

@@ -48,7 +48,7 @@
 
 # Keep the BuildConfig
 -keep class id.co.veritrans.sdk.coreflow.BuildConfig { *; }
--keep class id.co.veritrans.sdk.uiflow.BuildConfig { *; }
+-keep class com.midtrans.sdk.uiflow.BuildConfig { *; }
 
 # Keep the support library
 -keep class android.support.v4.** { *; }
@@ -116,10 +116,10 @@
 -keep class IScanner {*;}
 -keep class id.co.veritrans.sdk.coreflow.utilities.** {*;}
 -keep class id.co.veritrans.sdk.uiflow.utilities.SdkUiFlowUtil {*;}
--keep class id.co.veritrans.sdk.uiflow.SdkUIFlowBuilder {*;}
--keep class id.co.veritrans.sdk.uiflow.UIFlow {*;}
--keep class id.co.veritrans.sdk.uiflow.PaymentMethods {*;}
--keep class id.co.veritrans.sdk.uiflow.scancard.ExternalScanner{*;}
+-keep class SdkUIFlowBuilder {*;}
+-keep class UIFlow {*;}
+-keep class PaymentMethods {*;}
+-keep class ExternalScanner{*;}
 -keep class id.co.veritrans.sdk.coreflow.core.PaymentMethods{*;}
 
 

@@ -5,7 +5,7 @@
     android:background="@color/colorAccentLight"
     android:fillViewport="true"
     android:orientation="vertical"
-    tools:context="id.co.veritrans.sdk.uiflow.fragments.UserAddressFragment">
+    tools:context="com.midtrans.sdk.uiflow.fragments.UserAddressFragment">
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/addressScrollView"
@@ -14,7 +14,7 @@
         android:layout_weight="1"
         android:background="@color/colorAccentLight"
         android:fillViewport="true"
-        tools:context="id.co.veritrans.sdk.uiflow.fragments.UserAddressFragment">
+        tools:context="com.midtrans.sdk.uiflow.fragments.UserAddressFragment">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -130,7 +130,7 @@
                     android:background="@android:color/white"
                     android:padding="@dimen/sixteen_dp">
 
-                    <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                    <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                         android:id="@+id/text_shipping"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

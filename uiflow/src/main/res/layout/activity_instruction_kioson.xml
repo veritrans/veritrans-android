@@ -34,7 +34,7 @@
                     android:layout_height="@dimen/logo_height"
                     android:scaleType="centerInside" />
 
-                <id.co.veritrans.sdk.uiflow.widgets.DefaultTextView
+                <com.midtrans.sdk.uiflow.widgets.DefaultTextView
                     android:id="@+id/text_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
