@@ -144,9 +144,9 @@ publishing {
     publications {
         BintrayPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/coreflow-development-release.aar")
+            artifact("$buildDir/outputs/aar/corekit-development-release.aar")
             groupId group
-            artifactId 'coreflow'
+            artifactId 'corekit'
             version version + "-SANDBOX"
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
@@ -169,9 +169,9 @@ publishing {
 
         BintrayProductionPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/coreflow-production-release.aar")
+            artifact("$buildDir/outputs/aar/corekit-production-release.aar")
             groupId group
-            artifactId 'coreflow'
+            artifactId 'corekit'
             version version
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
@@ -201,7 +201,7 @@ bintray {
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
         desc = 'Android SDK for integrating with midtrans.com'
-        websiteUrl = "https://veritrans.co.id"
+        websiteUrl = "https://midtrans.com"
         publish = true
         publicDownloadNumbers = true
     }

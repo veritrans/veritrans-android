@@ -87,9 +87,9 @@ publishing {
     publications {
         BintrayPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/uiflow-development-release.aar")
+            artifact("$buildDir/outputs/aar/uikit-development-release.aar")
             groupId group
-            artifactId 'uiflow'
+            artifactId 'uikit'
             version version + "-SANDBOX"
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
@@ -112,9 +112,9 @@ publishing {
 
         BintrayProductionPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/uiflow-production-release.aar")
+            artifact("$buildDir/outputs/aar/uikit-production-release.aar")
             groupId group
-            artifactId 'uiflow'
+            artifactId 'uikit'
             version version
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
@@ -144,7 +144,7 @@ bintray {
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
         desc = 'Android SDK for integrating with midtrans.com'
-        websiteUrl = "https://veritrans.co.id"
+        websiteUrl = "https://midtrans.com"
         publish = true
         publicDownloadNumbers = true
     }
