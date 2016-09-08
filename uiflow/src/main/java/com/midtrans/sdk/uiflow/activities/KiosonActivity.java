@@ -226,7 +226,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                 false);
 
         //Execute transaction
-        midtransSDK.snapPaymentUsingKiosan(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
+        midtransSDK.paymentUsingKiosan(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();

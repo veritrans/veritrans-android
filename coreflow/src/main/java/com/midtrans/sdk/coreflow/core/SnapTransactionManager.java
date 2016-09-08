@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.midtrans.sdk.coreflow.callback.GetCardTokenCallback;
+import com.midtrans.sdk.coreflow.callback.CardTokenCallback;
 import com.midtrans.sdk.coreflow.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.coreflow.models.TokenRequestModel;
 import com.midtrans.sdk.coreflow.models.snap.Transaction;
@@ -1059,7 +1059,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param cardTokenRequest information about credit card.
      * @param callback get creditcard token callback
      */
-    public void getToken(@NonNull CardTokenRequest cardTokenRequest, @NonNull  final GetCardTokenCallback callback) {
+    public void getToken(@NonNull CardTokenRequest cardTokenRequest, @NonNull  final CardTokenCallback callback) {
         final long start = System.currentTimeMillis();
         if (cardTokenRequest.isTwoClick()) {
             if (cardTokenRequest.isInstalment()) {
@@ -1174,7 +1174,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
-    private  void consumeTokenSuccesResponse(long start, TokenDetailsResponse tokenDetailsResponse, GetCardTokenCallback callback) {
+    private  void consumeTokenSuccesResponse(long start, TokenDetailsResponse tokenDetailsResponse, CardTokenCallback callback) {
         releaseResources();
 
         long end = System.currentTimeMillis();
@@ -1212,7 +1212,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
-    private void consumeTokenErrorResponse(long start, RetrofitError e, GetCardTokenCallback callback) {
+    private void consumeTokenErrorResponse(long start, RetrofitError e, CardTokenCallback callback) {
         releaseResources();
         long end = System.currentTimeMillis();
 

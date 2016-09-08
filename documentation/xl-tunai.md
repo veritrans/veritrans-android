@@ -1,46 +1,54 @@
 # Overview
 
-XL Tunai is like Bank Transfer transaction. It will create a virtual account for the paymenr.
+XL Tunai is like Bank Transfer transaction. It will create a virtual account for the payment.
 
 # Implementation
-
-## Setup Event Bus
-
-Before doing the charging, you must setup the event bus subscriber to your calling class.
-
-We provide interface to make this easier. You just need to implement `TransactionBusCallback` in your class.
-
-It contains four implemented methods `onSuccess`, `onFailure` and two general callback methods
+We provide interface for transaction callback. You just need to implement TransactionCallback when make a transaction to get transaction response.
+It contains three implemented methods `onSuccess`, `onFailure` and `onError`.
 
 ```Java
-@Subscribe
-@Override
-public void onEvent(TransactionSuccessEvent event) {
-    // Success Event
-}
+public interface TransactionCallback {
+    //transaction response when success
+    public void onSuccess(TransactionResponse response);
 
-@Subscribe
-@Override
-public void onEvent(TransactionFailedEvent event) {
-    // Failed Event
-    String errorMessage = event.getMessage();
+    //response when transaction failed
+    public void onFailure(TransactionResponse response, String reason);
+
+    //general error
+    public void onError(Throwable error);
 }
 ```
 
 ## Start the Payment
 
-To start the payment use `snapPaymentUsingXLTunai ` from `VeritransSDK` instance using checkout token as the parameter.
+To start the payment use `paymentUsingXLTunai ` from `MidtansSDK` instance using checkout token as the parameter.
 
 ```Java
-VeritransSDK.getVeritransSDK().snapPaymentUsingXLTunai(CHECKOUT_TOKEN);
+MidtransSDK.getInstance().paymentUsingXLTunai(AUTHENTICATION_TOKEN, new TransactionCallback() {
+        @Override
+        public void onSuccess(TransactionResponse response) {
+        //action when transaction success
+        }
+
+        @Override
+        public void onFailure(TransactionResponse response, String reason) {
+        //action when transaction failed
+        }
+
+        @Override
+        public void onError(Throwable error) {
+        //action when error
+        }
+    }
+);
 ```
 
 ## Capture Transaction Information
 
-Merchant needs to show the order ID, merchant ID and expiration time. They are provided in `TransactionSuccessEvent`.
+Merchant needs to show the order ID, merchant ID and expiration time. They are provided in `TransactionResponse`.
 
 ```Java
-String expiration = transactionSuccessEvent.getResponse().getXlTunaiExpiration();
-String orderId = transactionSuccessEvent.getResponse().getXlTunaiOrderId();
-String merchantId = transactionSuccessEvent.getResponse().getXlTunaiMerchantId();
+String expiration = response.getXlTunaiExpiration();
+String orderId = response.getXlTunaiOrderId();
+String merchantId = response.getXlTunaiMerchantId();
 ```

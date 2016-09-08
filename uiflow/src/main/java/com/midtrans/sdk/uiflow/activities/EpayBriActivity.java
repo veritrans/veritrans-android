@@ -125,7 +125,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
     private void makeTransaction() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        midtransSDK.snapPaymentUsingEpayBRI(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
+        midtransSDK.paymentUsingEpayBRI(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();

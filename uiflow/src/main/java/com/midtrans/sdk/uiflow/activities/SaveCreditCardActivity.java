@@ -214,7 +214,7 @@ public class SaveCreditCardActivity extends BaseActivity{
         cardRequests.add(creditCard);
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         if(userDetail != null){
-            midtransSDK.snapSaveCard(userDetail.getUserId(), cardRequests, new SaveCardCallback() {
+            midtransSDK.saveCards(userDetail.getUserId(), cardRequests, new SaveCardCallback() {
                 @Override
                 public void onSuccess(SaveCardResponse response) {
                     SdkUIFlowUtil.hideProgressDialog();
@@ -252,7 +252,7 @@ public class SaveCreditCardActivity extends BaseActivity{
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         if(userDetail != null){
-            midtransSDK.snapGetCards(userDetail.getUserId(), new GetCardCallback() {
+            midtransSDK.getCards(userDetail.getUserId(), new GetCardCallback() {
                 @Override
                 public void onSuccess(ArrayList<SaveCardRequest> response) {
 

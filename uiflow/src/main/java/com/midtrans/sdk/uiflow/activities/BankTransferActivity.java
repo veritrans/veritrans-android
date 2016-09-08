@@ -375,7 +375,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param midtransSDK  Veritrans SDK instance
      */
     private void bcaBankTransferTransaction(MidtransSDK midtransSDK) {
-        midtransSDK.snapPaymentUsingBankTransferBCA(midtransSDK.readAuthenticationToken(),
+        midtransSDK.paymentUsingBankTransferBCA(midtransSDK.readAuthenticationToken(),
                 midtransSDK.getTransactionRequest().getCustomerDetails().getEmail(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
@@ -401,7 +401,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param midtransSDK  Veritrans SDK instance
      */
     private void permataBankPayTransaction(MidtransSDK midtransSDK) {
-        midtransSDK.snapPaymentUsingBankTransferPermata(midtransSDK.readAuthenticationToken(),
+        midtransSDK.paymentUsingBankTransferPermata(midtransSDK.readAuthenticationToken(),
                 midtransSDK.getTransactionRequest().getCustomerDetails().getEmail(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
@@ -427,7 +427,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      * @param midtransSDK  Veritrans SDK instance
      */
     private void mandiriBillPayTransaction(MidtransSDK midtransSDK) {
-        midtransSDK.snapPaymentUsingMandiriBillPay(midtransSDK.readAuthenticationToken(),
+        midtransSDK.paymentUsingMandiriBillPay(midtransSDK.readAuthenticationToken(),
                 SdkUtil.getEmailAddress(midtransSDK.getTransactionRequest()), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
@@ -447,7 +447,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void otherBankTransaction(MidtransSDK midtransSDK) {
-        midtransSDK.snapPaymentUsingBankTransferAllBank(midtransSDK.readAuthenticationToken(),
+        midtransSDK.paymentUsingBankTransferAllBank(midtransSDK.readAuthenticationToken(),
                 SdkUtil.getEmailAddress(midtransSDK.getTransactionRequest()), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {

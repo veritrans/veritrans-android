@@ -54,7 +54,7 @@ public class MandiriClickPaymentActivity extends AppCompatActivity {
                 refreshView();
                 if (inputValidator()) {
                     dialog.show();
-                    MidtransSDK.getInstance().snapPaymentUsingMandiriClickPay(
+                    MidtransSDK.getInstance().paymentUsingMandiriClickPay(
                             MidtransSDK.getInstance().readAuthenticationToken(),
                             sampleMandiriCardNumber,
                             sampleTokenResponse,

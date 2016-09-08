@@ -41,7 +41,7 @@ public class MandiriBillPaymentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                MidtransSDK.getInstance().snapPaymentUsingMandiriBillPay(
+                MidtransSDK.getInstance().paymentUsingMandiriBillPay(
                         MidtransSDK.getInstance().readAuthenticationToken(),
                         sampleEmail, new TransactionCallback() {
                             @Override

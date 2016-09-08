@@ -34,7 +34,7 @@ public class IndosatDompetkuPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                MidtransSDK.getInstance().snapPaymentUsingIndosatDompetku(
+                MidtransSDK.getInstance().paymentUsingIndosatDompetku(
                         MidtransSDK.getInstance().readAuthenticationToken(),
                         sampleMSISDN, new TransactionCallback() {
                             @Override

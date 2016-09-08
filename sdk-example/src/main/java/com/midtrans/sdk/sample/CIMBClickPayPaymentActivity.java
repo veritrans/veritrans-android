@@ -33,7 +33,7 @@ public class CIMBClickPayPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                MidtransSDK.getInstance().snapPaymentUsingCIMBClick(
+                MidtransSDK.getInstance().paymentUsingCIMBClick(
                         MidtransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

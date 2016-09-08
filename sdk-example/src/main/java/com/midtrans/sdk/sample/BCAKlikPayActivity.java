@@ -43,7 +43,7 @@ public class BCAKlikPayActivity extends AppCompatActivity{
                 // Show progress dialog
                 dialog.show();
                 // Do payment
-                MidtransSDK.getInstance().snapPaymentUsingBCAKlikpay(
+                MidtransSDK.getInstance().paymentUsingBCAKlikpay(
                         MidtransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

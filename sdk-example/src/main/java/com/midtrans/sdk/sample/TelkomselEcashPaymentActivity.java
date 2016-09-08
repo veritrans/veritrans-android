@@ -34,7 +34,7 @@ public class TelkomselEcashPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                MidtransSDK.getInstance().snapPaymentUsingTelkomselEcash(
+                MidtransSDK.getInstance().paymentUsingTelkomselEcash(
                         MidtransSDK.getInstance().readAuthenticationToken(),
                         sampleCustomerPhone, new TransactionCallback() {
                             @Override

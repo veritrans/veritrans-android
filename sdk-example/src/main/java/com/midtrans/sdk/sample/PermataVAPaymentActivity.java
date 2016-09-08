@@ -41,7 +41,7 @@ public class PermataVAPaymentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                MidtransSDK.getInstance().snapPaymentUsingBankTransferPermata(
+                MidtransSDK.getInstance().paymentUsingBankTransferPermata(
                         MidtransSDK.getInstance().readAuthenticationToken(),
                         sampleEmail, new TransactionCallback() {
                             @Override
@@ -58,7 +58,8 @@ public class PermataVAPaymentActivity extends AppCompatActivity {
                             public void onError(Throwable error) {
                                 actionTransactionError(error);
                             }
-                        });
+                        }
+                );
             }
         });
     }

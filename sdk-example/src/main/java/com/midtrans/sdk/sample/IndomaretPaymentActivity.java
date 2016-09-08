@@ -41,7 +41,7 @@ public class IndomaretPaymentActivity extends AppCompatActivity{
             public void onClick(View v) {
                 // Show progress dialog
                 dialog.show();
-                MidtransSDK.getInstance().snapPaymentUsingIndomaret(
+                MidtransSDK.getInstance().paymentUsingIndomaret(
                         MidtransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

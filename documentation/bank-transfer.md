@@ -7,47 +7,64 @@ There are two banks supported at this SDK.
 - Other Banks (Using Permata)
 
 # Implementation
+We provide interface for transaction callback. You just need to implement TransactionCallback when make a transaction to get transaction response.
+It contains three implemented methods `onSuccess`, `onFailure` and `onError`.
 
-## Event Bus Setup
-
-Before doing the charging, you must setup the event bus subscriber to your calling class.
-
-We provide interface to make this easier. You just need to implement TransactionBusCallback in your class.
-
-It contains four implemented methods onSuccess, onFailure and two general callback methods
 ```Java
-@Subscribe
-@Override
-public void onEvent(TransactionSuccessEvent event) {
-    // Success Event
-}
+public interface TransactionCallback {
+    //transaction response when success
+    public void onSuccess(TransactionResponse response);
 
-@Subscribe
-@Override
-public void onEvent(TransactionFailedEvent event) {
-    // Failed Event
-    String errorMessage = event.getMessage();
+    //response when transaction failed
+    public void onFailure(TransactionResponse response, String reason);
+
+    //general error
+    public void onError(Throwable error);
 }
 ```
 
 ## Start the payment
-
+for transaction using bank transfer, You can use methods API of midtrans SDK below
+```Java
+//bank transfer BCA
+midtransSDK.paymentUsingBankTransferBCA(
+        AUTHENTICATION_TOKEN, EMAIL_USER, transactionCallback);
+//bank tranfer permata
+midtransSDK.paymentUsingBankTransferPermata(
+        AUTHENTICATION_TOKEN, EMAIL_USER, transactionCallback);
+//bank tranfer all
+midtransSDK.paymentUsingBankTransferAllBank(
+        AUTHENTICATION_TOKEN, EMAIL_USER, transactionCallback);
+```
 You need the checkout token and customer email before starting the payment.
 
-Execute Transaction using following method to get response back.
+Execute Transaction using following method to get response back. below sample transaction using bank tranfer permata
 
 ```Java
-// Using Permata
-midtransSDK.snapPaymentUsingBankTransferPermata(CHECKOUT_TOKEN, CUSTOMER_EMAIL);
-// Using BCA 
-VeritransSDK.getVeritransSDK().snapPaymentUsingBankTransferBCA(CHECKOUT_TOKEN, CUSTOMER_EMAIL);
-// Using Other Banks
-VeritransSDK.getVeritransSDK().snapPaymentUsingBankTransferAllBank(CHECKOUT_TOKEN, CUSTOMER_EMAIL);
+midtransSDK.paymentUsingBankTransferPermata(
+        AUTHENTICATION_TOKEN,
+        EMAIL_USER, new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                //actionTransactionSuccess(response);
+            }
+
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                //actionTransactionFailure(response, reason);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                //actionTransactionError(error);
+            }
+        }
+);
 ```
 
 ## Get Virtual Account Information
 
-User need to get the virtual account number. It is provided in `TransactionSuccessEvent`.
+User need to get the virtual account number. It is provided in `TransactionResponse`.
 
 BCA and Permata has different data structure so we must handle it in different way.
 
@@ -56,11 +73,11 @@ BCA and Permata has different data structure so we must handle it in different w
 BCA can provide more than one virtual account, so we get a list of `BCAVANumber` object.
 
 ```Java
-List<BCAVANumber> virtualAccounts = transactionSuccessEvent.getResponse().getAccountNumbers();
+List<BCAVANumber> virtualAccounts = response.getAccountNumbers();
 ```
 
 ### Permata and Other Bank Virtual Account
 
 ```Java
-String virtualAccount = transactionSuccessEvent.getResponse().getPermataVANumber();
+String virtualAccount = response.getPermataVANumber();
 ```

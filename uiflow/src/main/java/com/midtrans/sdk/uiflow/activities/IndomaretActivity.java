@@ -230,7 +230,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         cstoreEntity.setStore("indomaret");
 
         //Execute transaction
-        midtransSDK.snapPaymentUsingIndomaret(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
+        midtransSDK.paymentUsingIndomaret(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();

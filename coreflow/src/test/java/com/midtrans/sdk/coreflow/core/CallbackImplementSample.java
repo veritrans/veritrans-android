@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.midtrans.sdk.coreflow.callback.CardRegistrationCallback;
 import com.midtrans.sdk.coreflow.callback.CheckoutCallback;
 import com.midtrans.sdk.coreflow.callback.GetCardCallback;
-import com.midtrans.sdk.coreflow.callback.GetCardTokenCallback;
+import com.midtrans.sdk.coreflow.callback.CardTokenCallback;
 import com.midtrans.sdk.coreflow.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
@@ -30,7 +30,7 @@ import com.midtrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentReques
  * Created by ziahaqi on 9/5/16.
  */
 public class CallbackImplementSample implements TransactionCallback, CheckoutCallback, TransactionOptionsCallback,
-        SaveCardCallback, GetCardCallback, CardRegistrationCallback, GetCardTokenCallback{
+        SaveCardCallback, GetCardCallback, CardRegistrationCallback, CardTokenCallback {
 
     /**
      * Created by ziahaqi on 25/06/2016.
@@ -224,7 +224,7 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
         return this;
     }
 
-    public GetCardTokenCallback getCardTokenCallback() {
+    public CardTokenCallback getCardTokenCallback() {
         return this;
     }
 }

@@ -57,7 +57,7 @@ public class CardRegistrationActivity extends AppCompatActivity{
                     dialog.show();
                     // Create token request before payment
                     String date = expiredDate.getText().toString();
-                    MidtransSDK.getInstance().snapCardRegistration(cardNumber.getText().toString(),
+                    MidtransSDK.getInstance().cardRegistration(cardNumber.getText().toString(),
                             cvv.getText().toString(),
                             date.split("/")[0],
                             "20" + date.split("/")[1], new CardRegistrationCallback() {
@@ -154,7 +154,7 @@ public class CardRegistrationActivity extends AppCompatActivity{
 
 
     private void saveCreditCards(ArrayList<SaveCardRequest> saveCardsRequests) {
-        MidtransSDK.getInstance().snapSaveCard("user01", saveCardsRequests, new SaveCardCallback() {
+        MidtransSDK.getInstance().saveCards("user01", saveCardsRequests, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
                 dialog.dismiss();
