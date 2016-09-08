@@ -37,30 +37,21 @@ IS_SECURE - set to true if using 3D secure
 ```
 
 ## Tokenize Credit Card Details
-
-Before doing the tokenize, you must setup the event bus subscriber to your calling class.
- 
-We provide interface to make this easier. You just need to implement `TokenBusCallback` in your class.
-
-It contains four implemented methods onSuccess, onFailure and two general callback methods.
+We provide interface to make tokenize.. You  need to implement `CardTokenCallback` when make a tokenize to get card token.
+It contains three implemented methods `onSuccess`, `onFailure` and `onError`.
 
 ```Java
-@Subscribe
-@Override
-public void onEvent(GetTokenSuccess event) {
-    // Success Event
-    TokenDetailsResponse response = event.getResponse();
-}
+public interface CardTokenCallback {
 
-@Subscribe
-@Override
-public void onEvent(GetSuccessFailedEvent event) {
-    // Failed Event
-    String errorMessage = event.getMessage();
+    public void onSuccess(TokenDetailsResponse response);
+
+    public void onFailure(TokenDetailsResponse response, String reason);
+
+    public void onError(Throwable error);
 }
 ```
 
-On success of get token api call, it will return token id and other parameters in `TokenDetailsResponse` in `event.getResponse()`.
+On success of get token api call, it will return token id and other parameters in `TokenDetailsResponse` response.
 
 If secure flow is available then it will return redirect_url which will take user to web page for 3d secure validation.
 
@@ -72,19 +63,34 @@ CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv, month,
 // Optional mode
 cardTokenRequest.setIsSaved(true); // Set to true if this token will be used later (one click or two click)
 cardTokenRequest.setTwoClick(true); // Set to true if using two click
-cardTokenRequest.setSavedTokenId(SAVED_TOKEN_ID); // Set the saved token id if using two click 
+cardTokenRequest.setSavedTokenId(SAVED_TOKEN_ID); // Set the saved token id if using two click
 // Start the tokenize
-midtransSDK.getToken(cardTokenRequest);
+midtransSDK.getCardToken(cardTokenRequest, new CardTokenCallback() {
+    @Override
+    public void onSuccess(TokenDetailsResponse response) {
+        //actionGetCardTokenSuccess(response);
+    }
+
+    @Override
+    public void onFailure(TokenDetailsResponse response, String reason) {
+        //actionGetCardTokenFailure(response, reason);
+    }
+
+    @Override
+    public void onError(Throwable error) {
+        //actionGetCardTokenError(error);
+    }
+});
 ```
 
 ### Handle 3D Secure Authorization
 
-If you use secure mode when doing tokenize, you will get redirect URL on `GetTokenSuccessEvent`.
+If you use secure mode when doing tokenize, you will get redirect URL on `TokenDetailsResponse`.
 
 To get the redirect URL, use following code.
 
 ```Java
-String redirectUrl = getTokenSuccessEvent.getResponse().getRedirectUrl();
+String redirectUrl = response.getRedirectUrl();
 ```
 
 Then you need a webview with a custom client to capture redirect URL if the authorization was completed.
@@ -123,30 +129,42 @@ webView.setWebViewClient(new VeritransWebViewClient());
 ## Payment(Charge) using Credit/Debit card
 
 Before doing the charging, you must setup the event bus subscriber to your calling class.
- 
-We provide interface to make this easier. You just need to implement `TransactionBusCallback` in your class.
+
+We provide interface to make this easier. You just need to implement `TransactionCallback` in your class.
 
 It contains four implemented methods onSuccess, onFailure and two general callback methods.
 
 ```Java
-@Subscribe
-@Override
-public void onEvent(TransactionSuccessEvent event) {
-    // Success Event
-}
+public interface TransactionCallback {
 
-@Subscribe
-@Override
-public void onEvent(TransactionFailedEvent event) {
-    // Failed Event
-    String errorMessage = event.getMessage();
+    public void onSuccess(TransactionResponse response);
+
+    public void onFailure(TransactionResponse response, String reason);
+
+    public void onError(Throwable error);
 }
 ```
 
 To start the payment, you need a `checkout_token`.
 
 ```Java
-VeritransSDK.getVeritransSDK().snapPaymentUsingCard(CHECKOUT_TOKEN, CARD_TOKEN, IS_SAVE_CARD);
+MidtransSDK.getInstance().paymentUsingCard(AUTHENTICATION_TOKEN, CARD_TOKEN, IS_SAVE_CARD, new TransactionCallback() {
+        @Override
+        public void onSuccess(TransactionResponse response) {
+        // actionSuccess(response);
+        }
+
+        @Override
+        public void onFailure(TransactionResponse response, String reason) {
+        // actionFailure(response, reason);
+        }
+
+        @Override
+        public void onError(Throwable error) {
+        // actionError(error);
+        }
+    }
+);
 ```
 
 After successful transaction card information will be saved, if user permits. In `TransactionResponse` a *saved_token_id* field contains a new token that can be stored and reused in future transaction.

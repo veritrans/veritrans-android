@@ -42,7 +42,7 @@ public class BankTransferPaymentActivity extends AppCompatActivity{
                 dialog.show();
                 String type = getIntent().getStringExtra(TRANSFER_TYPE);
                 if(type.equals(getString(R.string.label_bank_transfer_bca))){
-                    MidtransSDK.getInstance().snapPaymentUsingBankTransferBCA(
+                    MidtransSDK.getInstance().paymentUsingBankTransferBCA(
                             MidtransSDK.getInstance().readAuthenticationToken(),
                             sampleEmail, new TransactionCallback() {
                                 @Override
@@ -61,7 +61,7 @@ public class BankTransferPaymentActivity extends AppCompatActivity{
                                 }
                             });
                 }else if(type.equals(getString(R.string.label_bank_transfer_permata))){
-                    MidtransSDK.getInstance().snapPaymentUsingBankTransferPermata(
+                    MidtransSDK.getInstance().paymentUsingBankTransferPermata(
                             MidtransSDK.getInstance().readAuthenticationToken(),
                             sampleEmail, new TransactionCallback() {
                                 @Override

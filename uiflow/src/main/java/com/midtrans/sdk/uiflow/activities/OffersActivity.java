@@ -22,7 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import com.midtrans.sdk.coreflow.callback.GetCardCallback;
-import com.midtrans.sdk.coreflow.callback.GetCardTokenCallback;
+import com.midtrans.sdk.coreflow.callback.CardTokenCallback;
 import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
@@ -196,7 +196,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardTokenRequest;
         Logger.i("isSecure:" + this.cardTokenRequest.isSecure());
-        midtransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+        midtransSDK.getCardToken(cardTokenRequest, new CardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
                 actionGetCardTokenSuccess(response);
@@ -311,7 +311,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                     itemDetailsArrayList, billingAddresses, shippingAddresses, customerDetails);
 
         }
-        midtransSDK.snapPaymentUsingCard(cardTokenRequest.getSavedTokenId(),
+        midtransSDK.paymentUsingCard(cardTokenRequest.getSavedTokenId(),
                 midtransSDK.readAuthenticationToken(), false, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
@@ -375,7 +375,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     public void fetchCreditCards() {
         textViewTitleOffers.setText(getString(R.string.fetching_cards));
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        midtransSDK.snapGetCards(userDetail.getUserId(), new GetCardCallback() {
+        midtransSDK.getCards(userDetail.getUserId(), new GetCardCallback() {
             @Override
             public void onSuccess(ArrayList<SaveCardRequest> response) {
                 ArrayList<SaveCardRequest> cardResponse = response;
@@ -439,7 +439,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
         this.cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
         this.cardTokenRequest.setBank("");
         this.cardTokenRequest.setClientKey(midtransSDK.getClientKey());
-        midtransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+        midtransSDK.getCardToken(cardTokenRequest, new CardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
                 TokenDetailsResponse tokenDetailsResponse = response;
@@ -743,7 +743,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
     public void saveCreditCards(SaveCardRequest creditCard) {
         ArrayList<SaveCardRequest> cardRequests = new ArrayList<>(getCreditCardList());
         cardRequests.add(creditCard);
-        midtransSDK.snapSaveCard(userDetail.getUserId(), cardRequests, new SaveCardCallback() {
+        midtransSDK.saveCards(userDetail.getUserId(), cardRequests, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
                 Logger.i(TAG, "save cards success");

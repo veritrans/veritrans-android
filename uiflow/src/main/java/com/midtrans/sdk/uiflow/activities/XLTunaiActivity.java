@@ -216,7 +216,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     private void performTransaction() {
         SdkUIFlowUtil.showProgressDialog(XLTunaiActivity.this, getString(R.string.processing_payment), false);
         //Execute transaction
-        midtransSDK.snapPaymentUsingXLTunai(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
+        midtransSDK.paymentUsingXLTunai(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();

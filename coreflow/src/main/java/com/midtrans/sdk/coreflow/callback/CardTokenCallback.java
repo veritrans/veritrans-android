@@ -5,7 +5,7 @@ import com.midtrans.sdk.coreflow.models.TokenDetailsResponse;
 /**
  * Created by ziahaqi on 8/31/16.
  */
-public interface GetCardTokenCallback {
+public interface CardTokenCallback {
 
     public void onSuccess(TokenDetailsResponse response);
 

@@ -18,7 +18,7 @@ besides [initialization step](https://github.com/veritrans/veritrans-android/wik
 To apply Custom fonts, you can use this code.
 
 ```Java
-VeritransSDK midtransSDK = VeritransSDK.getVeritransSDK();
+MidtransSDK midtransSDK = MidtransSDK.getInstance();
 midtransSDK.setDefaultText("open_sans_regular.ttf");
 midtransSDK.setSemiBoldText("open_sans_semibold.ttf");
 midtransSDK.setBoldText("open_sans_bold.ttf");
@@ -48,37 +48,16 @@ Then to ensure this replace library theme, please add these lines into your `And
 
 ## Event Bus Setup
 
-In your calling activity, just implement `TransactionFinishedCallback`. `@Subscribe` annotation must be added to implemented methods of `TransactionFinishedCallback`.
-
-To enable event bus subscription your activity will need to subscribe to `VeritransBusProvider`. Just add these line in your class.
+In your calling activity, just implement `TransactionFinishedCallback`.
 
 ```Java
-// Subscribe to VeritransBusProvider
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    VeritransBusProvider.getInstance().register(this);
-}
-
-// Unsubscribe to VeritransBusProvider
-@Override
-protected void onDestroy() {
-    super.onDestroy();
-    VeritransBusProvider.getInstance().unregister(this);
-}
 
 // Implemented methods of TransactionFinishedCallback interface
-@Subscribe
-@Override
-public void onEvent(TransactionFinishedEvent transactionFinishedEvent) {
-    // Get the response
-    TransactionResponse response = transactionFinishedEvent.getResponse();
-}
+    public void onTransactionFinished(TransactionResult result);
 ```
-
 ## Starting UI Flow
 
-There are two modes of UI flow. 
+There are two modes of UI flow.
 
 ### Payment Mode
 
@@ -112,10 +91,3 @@ To use default UI for Charging Transactions, you can call `startPaymentUiFlow` u
 mMidtransSDK.startPaymentUiFlow(context);
 ```
 
-### Register Card Mode
-To use default UI of Registering Card, you can call `startRegisterCardUIFlow` using current context.
-
-```Java
-// start ui flow using activity context
-mMidtransSDK.startRegisterCardUIFlow(context);
-```

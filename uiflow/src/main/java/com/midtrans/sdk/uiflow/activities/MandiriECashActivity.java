@@ -129,7 +129,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private void makeTransaction() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
 
-        mMidtransSDK.snapPaymentUsingMandiriEcash(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
+        mMidtransSDK.paymentUsingMandiriEcash(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();

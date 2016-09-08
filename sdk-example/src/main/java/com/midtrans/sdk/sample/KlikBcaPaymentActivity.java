@@ -37,7 +37,7 @@ public class KlikBcaPaymentActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.show();
-                MidtransSDK.getInstance().snapPaymentUsingKlikBCA(
+                MidtransSDK.getInstance().paymentUsingKlikBCA(
                         MidtransSDK.getInstance().readAuthenticationToken(),
                         sampleUserId, new TransactionCallback() {
                             @Override

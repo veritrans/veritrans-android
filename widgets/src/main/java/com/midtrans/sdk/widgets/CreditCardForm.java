@@ -28,7 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.midtrans.sdk.coreflow.callback.CheckoutCallback;
-import com.midtrans.sdk.coreflow.callback.GetCardTokenCallback;
+import com.midtrans.sdk.coreflow.callback.CardTokenCallback;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.coreflow.core.TransactionRequest;
@@ -450,7 +450,7 @@ public class CreditCardForm extends NestedScrollView{
             );
             cardTokenRequest.setGrossAmount(transactionRequest.getAmount());
             cardTokenRequest.setSecure(transactionRequest.isSecureCard());
-            getMidtransSDK().getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+            getMidtransSDK().getCardToken(cardTokenRequest, new CardTokenCallback() {
                 @Override
                 public void onSuccess(TokenDetailsResponse response) {
                     if (tokenCallback != null) {
@@ -512,7 +512,7 @@ public class CreditCardForm extends NestedScrollView{
     }
 
     private void payUsingCreditCard(Token token) {
-        getMidtransSDK().snapPaymentUsingCard(token.getTokenId(), CreditCardForm.this.cardToken,
+        getMidtransSDK().paymentUsingCard(token.getTokenId(), CreditCardForm.this.cardToken,
                 false, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {

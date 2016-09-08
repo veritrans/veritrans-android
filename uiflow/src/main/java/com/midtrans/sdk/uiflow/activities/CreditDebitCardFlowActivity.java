@@ -24,7 +24,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import com.midtrans.sdk.coreflow.callback.GetCardCallback;
-import com.midtrans.sdk.coreflow.callback.GetCardTokenCallback;
+import com.midtrans.sdk.coreflow.callback.CardTokenCallback;
 import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Constants;
@@ -181,7 +181,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardTokenRequest;
         Logger.i("isSecure:" + this.cardTokenRequest.isSecure());
-        midtransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+        midtransSDK.getCardToken(cardTokenRequest, new CardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
                 actionGetCardTokenSuccess(response);
@@ -302,7 +302,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     itemDetailsArrayList, billingAddresses, shippingAddresses, customerDetails);
         }
 
-        midtransSDK.snapPaymentUsingCard(midtransSDK.readAuthenticationToken(),
+        midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(),
                 tokenDetailsResponse.getTokenId(), saveCard, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
@@ -433,7 +433,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     public void saveCreditCards(ArrayList<SaveCardRequest> requests, boolean isRemoveCard){
         this.removeExistCard = isRemoveCard;
-        midtransSDK.snapSaveCard(userDetail.getUserId(), requests, new SaveCardCallback() {
+        midtransSDK.saveCards(userDetail.getUserId(), requests, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
                 if(removeExistCard){
@@ -530,7 +530,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         try {
             UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
             if(userDetail != null){
-                midtransSDK.snapGetCards(userDetail.getUserId(), new GetCardCallback() {
+                midtransSDK.getCards(userDetail.getUserId(), new GetCardCallback() {
                     @Override
                     public void onSuccess(ArrayList<SaveCardRequest> response) {
                         ArrayList<SaveCardRequest> cardResponse = response;
@@ -607,7 +607,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         this.cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
         this.cardTokenRequest.setBank("");
         this.cardTokenRequest.setClientKey(midtransSDK.getClientKey());
-        midtransSDK.getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+        midtransSDK.getCardToken(cardTokenRequest, new CardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
                 actionGetCardTokenSuccess(response);

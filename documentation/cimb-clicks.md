@@ -3,42 +3,43 @@
 CIMB Clicks is payment using direct debit on CIMB. It uses Webview to handle the payment.
 
 # Implementation
-
-## Setup Event Bus
-
-Before doing the charging, you must setup the event bus subscriber to your calling class.
-
-We provide interface to make this easier. You just need to implement `TransactionBusCallback` in your class.
-
-It contains four implemented methods `onSuccess`, `onFailure` and two general callback methods
-
+We provide interface for transaction callback. You just need to implement TransactionCallback when make a transaction to get transaction response.
+It contains three implemented methods `onSuccess`, `onFailure` and `onError`.
 ```Java
-@Subscribe
-@Override
-public void onEvent(TransactionSuccessEvent event) {
-    // Success Event
-}
+public interface TransactionCallback {
+    //transaction response when success
+    public void onSuccess(TransactionResponse response);
 
-@Subscribe
-@Override
-public void onEvent(TransactionFailedEvent event) {
-    // Failed Event
-    String errorMessage = event.getMessage();
+    //response when transaction failed
+    public void onFailure(TransactionResponse response, String reason);
+
+    //general error
+    public void onError(Throwable error);
 }
 ```
 
 ## Start the Payment
 
-First, create `DescriptionModel` instance.
+To start the payment use `snapPaymentUsingCIMBClick` on `MidtransSDK` instance.
 
 ```Java
-DescriptionModel cimbDescription = new DescriptionModel(PAYMENT_DESCRIPTION);
-```
+MidtransSDK.getInstance().snapPaymentUsingCIMBClick(AUTHENTICATION_TOKEN, new TransactionCallback() {
+        @Override
+        public void onSuccess(TransactionResponse response) {
+        //action when transaction success
+        }
 
-To start the payment use `snapPaymentUsingCIMBClick` on `VeritransSDK` instance.
+        @Override
+        public void onFailure(TransactionResponse response, String reason) {
+        //action when transaction failure
+        }
 
-```Java
-VeritransSDK.getVeritransSDK().snapPaymentUsingCIMBClick(CHECKOUT_TOKEN);
+        @Override
+        public void onError(Throwable error) {
+        //action when error
+        }
+    }
+);
 ```
 
 ## Capture Redirect URL and Handle the Webview

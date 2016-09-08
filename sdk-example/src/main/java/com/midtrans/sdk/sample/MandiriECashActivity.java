@@ -42,7 +42,7 @@ public class MandiriECashActivity extends AppCompatActivity{
                 // Show progress dialog
                 dialog.show();
                 // Do payment
-                MidtransSDK.getInstance().snapPaymentUsingMandiriEcash(
+                MidtransSDK.getInstance().paymentUsingMandiriEcash(
                         MidtransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

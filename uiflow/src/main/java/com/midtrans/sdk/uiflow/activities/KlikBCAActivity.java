@@ -116,7 +116,7 @@ public class KlikBCAActivity extends BaseActivity {
                     if (klikBCAFragment.checkUserId()) {
                         // Do the payment
                         SdkUIFlowUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
-                        mMidtransSDK.snapPaymentUsingKlikBCA(mMidtransSDK.readAuthenticationToken(),
+                        mMidtransSDK.paymentUsingKlikBCA(mMidtransSDK.readAuthenticationToken(),
                                 klikBCAFragment.getUserId(), new TransactionCallback() {
                                     @Override
                                     public void onSuccess(TransactionResponse response) {

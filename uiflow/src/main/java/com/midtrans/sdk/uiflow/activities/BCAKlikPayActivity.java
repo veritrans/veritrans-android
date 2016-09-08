@@ -137,7 +137,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
     private void makeTransaction(){
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        mMidtransSDK.snapPaymentUsingBCAKlikpay(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
+        mMidtransSDK.paymentUsingBCAKlikpay(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         SdkUIFlowUtil.hideProgressDialog();

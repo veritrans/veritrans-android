@@ -2,7 +2,6 @@
 
 This flow assumes that the App Developer implements the User interface necessary for receiving user inputs to and library only provides the payments infrastructure.
 
-
 To perform transaction using core, follow the steps given below:
 
 1. Set transaction request information to SDK.
@@ -14,96 +13,61 @@ To perform transaction using core, follow the steps given below:
 The main difference between the core and UI flow is that
 
 * Get payment response -
-  * In Core Flow - Use TransactionBusCallback(EventBus).
-  * In UI Flow - Use TransactionFinishedCallback (EventBus)
+  * In Core Flow - Use TransactionCallback
+  * In UI Flow - Use TransactionFinishedCallback
 
 * Payment Selection Method -
   * In Core Flow - Call paymentUsingXXX().
   * In UI Flow - Call startPaymentUiFlow() to see all specified payment methods.
 
-# Usage 
+# Usage
+this new SDK you don't need to use event bus, like on the previous VeritransSDK. in this version we replace whole the event bus stuff with java callback, to make the SDK usage easier.
 
-## Setup Event Bus
+Each API usage has its own `Callback` interface to capture finished API access. Please implement one of this callback interface that accessing the SDK.
 
-### Using Event Bus
+* `CheckoutCallback`
+* `TransactionOptionsCallback`
+* `CardTokenCallback`
+* `TransactionCallback`
+* `SaveCardCallback`
+* `GetCardCallback`
+* `CardRegistrationCallback`
+* `TransactionFinishedCallback`
 
-This SDK using Event Bus implementation which don't require activity as a parameter. Instead, you need to register your subscribed class using `Event Bus`.
-
-For default implementation of the `core flow` please add this code blocks into `onCreate` and `onDestroy` method on your Activity/Fragment that needs to implement this SDK. This to ensure only one event bus registered for each shown activity.
-
-```Java
-@Override
-public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    if(!VeritransBusProvider.getInstance().isRegistered(this)) {
-        VeritransBusProvider.getInstance().register(this);
-    }
-}
-
-@Override
-public void onDestroy() {
-    super.onDestroy();
-    if(VeritransBusProvider.getInstance().isRegistered(this)) {
-        VeritransBusProvider.getInstance().unregister(this);
-    }
-}
-```
-
-Each API usage has its own `onEvent` interface to capture finished API access. Please implement one of this Event interface on Activity or Fragment that accessing the SDK.
-
-* `TokenBusCallback`
-* `GetCardBusCallback`
-* `SaveCardBusCallback`
-* `DeleteCardBusCallback`
-* `GetOfferBusCallback`
-* `TransactionBusCallback`
-* `CardRegistrationBusCallback`
-* `GetAuthenticationBusCallback`
-
-This interface will implement 2 general error handler, success event and failed event.
-
+All of this interface will implement 3 method, `onSuccess`, `onFailure` and `onError`.
 For example, `TransactionBusCallback` will have to implement these methods.
 
 ```Java
 // Need to attach @Subscribe annotation to enable Event Bus registration
-@Subscribe
+//transaction success with response body
 @Override
-public void onEvent(NetworkUnavailableEvent event) {
-    //Network unavailable event implementation
+public void onSuccess(TransactionResponse response) {
+// actionSuccess(response);
+}
+//transaction failed with response body and the reason
+@Override
+public void onFailure(TransactionResponse response, String reason) {
+// actionFailure(response, reason);
 }
 
-@Subscribe
+//general error(on network unavailable, on transaction failed, on callback unimplemented etc)
 @Override
-public void onEvent(GeneralErrorEvent event) {
-    //Generic error event implementation
-}
-
-@Subscribe
-@Override
-public void onEvent(TransactionSuccessEvent event) {
-   //Success event implementation
-}
-
-@Subscribe
-@Override
-public void onEvent(TransactionFailedEvent event) {
-    //Failed event implementation
+public void onError(Throwable error) {
+// actionError(error);
 }
 ```
-
-**Note**: Need to add `@Subscribe` annotation on implemented methods above.
 
 ## Common request information
 
 These are common parameters which are required in all types of transaction.
 
-### Set customer details 
+### Set customer details
 
 **CustomerDetails** class holds information about customer. To set information about customer in TransactionRequest use following code -
 
 ```Java
 CustomerDetails customer = new CustomerDetails(String firstName, String lastName, String email, String phone);
-// Set customer details on 
+// Set customer details on
 transactionRequest.setCustomerDetails(customer);
 ```
 
@@ -160,7 +124,7 @@ shippingAddressList.add(shippingAddress1);
 transactionRequest.setShippingAddressArrayList(shippingAddressList);
 ```
 
-### Set Bill Info 
+### Set Bill Info
 
 **BillInfoModel** class holds information about billing information that will be shown at billing details.
 
@@ -209,7 +173,7 @@ VeritransSDK.getVeritransSDK().setTransactionRequest(transactionRequest);
 
 ## Get Checkout Token
 
-After set the transaction details, you must checkout your transaction and get a `checkout_token` by using this function to be able to proceed the payment.
+After set the transaction details, you must checkout your transaction and get a `authentication_token` by using this function to be able to proceed the payment.
 
 **Note : This is must do process before do the payment charging because the charging needs the checkout token.**
 
@@ -217,22 +181,14 @@ After set the transaction details, you must checkout your transaction and get a 
 
 Setup your event bus on your class. Read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Core-Flow#using-event-bus).
 
-Implement `GetSnapTokenCallback` in your class. There will be 2 implemented methods. 
+you have to implement `CheckoutCallback` when make a chackout to merchant server. There will be three implemented methods.
 
 ```Java
-@Subscribe
-@Override
-public void onEvent(GetSnapTokenSuccessEvent event){
-	// Get the checkout token
-	String checkoutToken = event.getResponse().getTokenId();
-}
+    public void onSuccess(Token token);
 
-@Subscribe
-@Override
-public void onEvent(GetSnapTokenFailedEvent event) {
-	// Get error message
-	String errorMessage = event.getMessage();
-}
+    public void onFailure(Token token, String reason);
+
+    public void onError(Throwable error);
 ```
 
 ### Proceed to Checkout a Transaction
@@ -240,39 +196,46 @@ public void onEvent(GetSnapTokenFailedEvent event) {
 Do the checkout using this code.
 
 ```Java
-VeritransSDK.getVeritransSDK().getSnapToken();
+MidtransSDK.getInstance().checkout(new CheckoutCallback() {
+    @Override
+    public void onSuccess(Token token) {
+    //acton when Successed
+    }
+
+    @Override
+    public void onFailure(Token token, String reason) {
+    //action whe  failed
+    }
+
+    @Override
+    public void onError(Throwable error) {
+    //action when error
+    }
+});
 ```
 
-## Payment Methods
+## Payment Options
 
 There are several payment methods supported by this SDK.
 
-### Get Enabled Payment Methods
+### Get Enabled Transaction Options
 
-To get all enabled payment methods (also full transaction details) you can use `getSnapTransaction` function from `VeritransSDK` instance with a `checkout_token`.
+To get all enabled payment methods (also full transaction details) you can use `getTransactionOptions` function from `MidtransSDK` instance with a `authentication_token`.
 
 ```Java
-VeritransSDK.getVeritransSDK().getSnapTransaction();
+MidtransSDK.getInstance().getTransactionOptions();
 ```
 
 **Warning** : You must set up event bus in your calling class.
 
-Implement `GetSnapTransactionCallback`.
+Implement `TransactionOptionsCallback`.
 
 ```Java
-@Subscribe
-@Override
-public void onEvent(GetSnapTransactionSuccessEvent event) {
-	// Read the response 
-	Transaction transaction = event.getResponse();
-}
+    public void onSuccess(Transaction transaction);
 
-@Subscribe
-@Override
-public void onEvent(GetSnapTransactionFailedEvent event) {
-	// Get the error message
-	String errorMessage = event.getErrorMessage();
-}
+    public void onFailure(Transaction transaction, String reason);
+
+    public void onError(Throwable error);
 ```
 
 
@@ -324,3 +287,4 @@ To implement Indosat Dompetku payment read [this wiki](https://github.com/veritr
 ### Indomaret
 
 To implement Indomaret payment read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Indomaret-Payment-Usage).
+

@@ -14,7 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 import java.util.ArrayList;
-import com.midtrans.sdk.coreflow.callback.GetCardTokenCallback;
+import com.midtrans.sdk.coreflow.callback.CardTokenCallback;
 import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Logger;
@@ -91,7 +91,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
                             date.split("/")[1],
                             MidtransSDK.getInstance().getClientKey());
                     cardTokenRequest.setGrossAmount(20.0);
-                    MidtransSDK.getInstance().getCardToken(cardTokenRequest, new GetCardTokenCallback() {
+                    MidtransSDK.getInstance().getCardToken(cardTokenRequest, new CardTokenCallback() {
                         @Override
                         public void onSuccess(TokenDetailsResponse response) {
                             String tokenId = response.getTokenId();
@@ -119,7 +119,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
     }
 
     private void payWithCreditCard(String authenticationToken, String cardToken) {
-        MidtransSDK.getInstance().snapPaymentUsingCard(authenticationToken, cardToken, saveCard, new TransactionCallback() {
+        MidtransSDK.getInstance().paymentUsingCard(authenticationToken, cardToken, saveCard, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 // Handle success transaction
@@ -171,7 +171,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
 
     private void saveCreditCard(ArrayList<SaveCardRequest> requests) {
 
-        MidtransSDK.getInstance().snapSaveCard(MainActivity.userId, requests, new SaveCardCallback() {
+        MidtransSDK.getInstance().saveCards(MainActivity.userId, requests, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
 

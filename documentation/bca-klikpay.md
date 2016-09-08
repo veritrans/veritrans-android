@@ -3,44 +3,52 @@
 BCA Klikpay used webview to redirect users to the payment page provided by BCA.
 
 # Implementation
-
-## Event Bus Setup
-
-Before doing the charging, you must setup the event bus subscriber to your calling class.
-
-We provide interface to make this easier. You just need to implement `TransactionBusCallback` in your class.
-
-It contains four implemented methods onSuccess, onFailure and two general callback methods
+We provide interface for transaction callback. You just need to implement TransactionCallback when make a transaction to get transaction response.
+It contains three implemented methods `onSuccess`, `onFailure` and `onError`.
 
 ```Java
-@Subscribe
-@Override
-public void onEvent(TransactionSuccessEvent event) {
-    // Success Event
-}
+public interface TransactionCallback {
+    //transaction response when success
+    public void onSuccess(TransactionResponse response);
 
-@Subscribe
-@Override
-public void onEvent(TransactionFailedEvent event) {
-    // Failed Event
-    String errorMessage = event.getMessage();
+    //response when transaction failed
+    public void onFailure(TransactionResponse response, String reason);
+
+    //general error
+    public void onError(Throwable error);
 }
 ```
 
 ## Start The Payment
 
-To start the payment, use `snapPaymentUsingBCAKlikpay ` function from `VeritransSDK` instance with a `checkout_token`.
+To start the payment, use `paymentUsingBCAKlikpay ` function from `MidtransSDK` instance with a `checkout_token`.
 
 ```Java
-VeritransSDK.getVeritransSDK().snapPaymentUsingBCAKlikpay(CHECKOUT_TOKEN);
+MidtransSDK.getInstance().paymentUsingBCAKlikpay(AUTHENTICATION_TOKEN, new TransactionCallback() {
+        @Override
+        public void onSuccess(TransactionResponse response) {
+        //action when transaction success
+        }
+
+        @Override
+        public void onFailure(TransactionResponse response, String reason) {
+        //action when transaction failure
+        }
+
+        @Override
+        public void onError(Throwable error) {
+        //action when error
+        }
+    }
+);
 ```
 
 ## Capture Redirect URL and handle the Webview
 
-Redirect URL is got from `TransactionSuccessEvent`.
+Redirect URL is got from `TransactionResponse`.
 
 ```Java
-String redirect = transactionSuccessEvent.getResponse().getRedirectUrl();
+String redirect = response.getRedirectUrl();
 ```
 
 Then you must load `redirect` into your webview.

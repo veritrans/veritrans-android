@@ -35,7 +35,7 @@ public class EpayBRIPaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.show();
-                MidtransSDK.getInstance().snapPaymentUsingEpayBRI(
+                MidtransSDK.getInstance().paymentUsingEpayBRI(
                         MidtransSDK.getInstance().readAuthenticationToken(), new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {

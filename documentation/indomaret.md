@@ -3,42 +3,50 @@
 Indomaret payment will create payment code that will be paid on Indomaret Convenience Store.
 
 # Implementation
-
-## Setup Event Bus
-
-Before doing the charging, you must setup the event bus subscriber to your calling class.
-
-We provide interface to make this easier. You just need to implement `TransactionBusCallback` in your class.
-
-It contains four implemented methods `onSuccess`, `onFailure` and two general callback methods
+We provide interface for transaction callback. You just need to implement TransactionCallback when make a transaction to get transaction response.
+It contains three implemented methods `onSuccess`, `onFailure` and `onError`.
 
 ```Java
-@Subscribe
-@Override
-public void onEvent(TransactionSuccessEvent event) {
-    // Success Event
-}
+public interface TransactionCallback {
+    //transaction response when success
+    public void onSuccess(TransactionResponse response);
 
-@Subscribe
-@Override
-public void onEvent(TransactionFailedEvent event) {
-    // Failed Event
-    String errorMessage = event.getMessage();
+    //response when transaction failed
+    public void onFailure(TransactionResponse response, String reason);
+
+    //general error
+    public void onError(Throwable error);
 }
 ```
 
 ## Start the Payment
 
-To start the payment use `snapPaymentUsingIndomaret` from VeritransSDK instance.
+To start the payment use `paymentUsingIndomaret` from `MidtransSDK` instance.
 
 ```Java
-VeritransSDK.getVeritransSDK().snapPaymentUsingIndomaret(CHECKOUT_TOKEN);
+MidtransSDK.getInstance().paymentUsingIndomaret(AUTHENTICATION_TOKEN, new TransactionCallback() {
+        @Override
+        public void onSuccess(TransactionResponse response) {
+        //action when transaction success
+        }
+
+        @Override
+        public void onFailure(TransactionResponse response, String reason) {
+        //action when transaction failure
+        }
+
+        @Override
+        public void onError(Throwable error) {
+        //action when error
+        }
+    }
+);
 ```
 
 ## Capture Transaction Information
 
-Payment code is provided in `TransactionSuccessEvent`.
+Payment code is provided in `TransactionResponse`.
 
 ```Java
-String indomaretCode = transactionSuccessEvent.getResponse().getPaymentCodeIndomaret();
+String indomaretCode = response.getPaymentCodeIndomaret();
 ```

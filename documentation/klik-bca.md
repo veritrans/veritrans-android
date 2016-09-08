@@ -8,45 +8,46 @@ KlikBCA payment flow is rather simple.
 2. Veritrans will add their payment to the respective KlikBCA account
 
 # Implementation
-
-There are three steps to implement this payment.
-
-## Event Bus Setup
-
-Before doing the charging, you must setup the event bus subscriber to your calling class.
-
-We provide interface to make this easier. You just need to implement TransactionBusCallback in your class.
-
-It contains four implemented methods onSuccess, onFailure and two general callback methods
+We provide interface for transaction callback. You just need to implement TransactionCallback when make a transaction to get transaction response.
+It contains three implemented methods `onSuccess`, `onFailure` and `onError`.
 
 ```Java
-@Subscribe
-@Override
-public void onEvent(TransactionSuccessEvent event) {
-    // Success Event
-}
+public interface TransactionCallback {
+    //transaction response when success
+    public void onSuccess(TransactionResponse response);
 
-@Subscribe
-@Override
-public void onEvent(TransactionFailedEvent event) {
-    // Failed Event
-    String errorMessage = event.getMessage();
+    //response when transaction failed
+    public void onFailure(TransactionResponse response, String reason);
+
+    //general error
+    public void onError(Throwable error);
 }
 ```
 
 ## Start The Payment
 
-To start payment, call `snapPaymentUsingKlikBCA ` function from `VeritransSDK` instance with `checkout_token` and `user_id`.
+To start payment, call `paymentUsingKlikBCA ` function from `MidtransSDK` instance with `checkout_token` and `user_id`.
 
 ```Java
-VeritransSDK.getVeritransSDK().snapPaymentUsingKlikBCA(CHECKOUT_TOKEN, KLIK_BCA_USER_ID);
+MidtransSDK.getInstance().paymentUsingBCAKlikpay(AUTHENTICATION_TOKEN, USER_ID,
+new TransactionCallback() {
+        @Override
+        public void onSuccess(TransactionResponse response) {
+        //action when transaction success
+        }
+
+        @Override
+        public void onFailure(TransactionResponse response, String reason) {
+        //action when transaction failure
+        }
+
+        @Override
+        public void onError(Throwable error) {
+        //action when error
+        }
+    }
+);
 ```
 
 ## Get Payment Information
-
-It is provided in `TransactionSuccessEvent`.
-
-```Java
-TransactionResponse response = transactionSuccessEvent.getResponse();
-```
-
+It is provided in `TransactionResponse`.

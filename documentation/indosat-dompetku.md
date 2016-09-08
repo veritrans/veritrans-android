@@ -3,44 +3,52 @@
 Indosat Dompetku is payment method by using direct debit to Indosat phone credits.
 
 # Implementation
-
-## Setup Event Bus
-
-Before doing the charging, you must setup the event bus subscriber to your calling class.
-
-We provide interface to make this easier. You just need to implement `TransactionBusCallback` in your class.
-
-It contains four implemented methods `onSuccess`, `onFailure` and two general callback methods
+We provide interface for transaction callback. You just need to implement TransactionCallback when make a transaction to get transaction response.
+It contains three implemented methods `onSuccess`, `onFailure` and `onError`.
 
 ```Java
-@Subscribe
-@Override
-public void onEvent(TransactionSuccessEvent event) {
-    // Success Event
-}
+public interface TransactionCallback {
+    //transaction response when success
+    public void onSuccess(TransactionResponse response);
 
-@Subscribe
-@Override
-public void onEvent(TransactionFailedEvent event) {
-    // Failed Event
-    String errorMessage = event.getMessage();
+    //response when transaction failed
+    public void onFailure(TransactionResponse response, String reason);
+
+    //general error
+    public void onError(Throwable error);
 }
 ```
 
 ## Start the Payment
 
-To start the payment use `snapPaymentUsingIndosatDompetku` method from `VeritransSDK` instance and pass the phone number as a parameter.
+To start the payment use `paymentUsingIndosatDompetku` method from `MidtransSDK` instance and pass the phone number as a parameter.
 
 ```Java
-VeritransSDK.getVeritransSDK().snapPaymentUsingIndosatDompetku(CHECKOUT_TOKEN, PHONE_NUMBER);
+MidtransSDK.getInstance().paymentUsingBCAKlikpay(AUTHENTICATION_TOKEN, PHONE_NUMBER, new TransactionCallback() {
+        @Override
+        public void onSuccess(TransactionResponse response) {
+        //action when transaction success
+        }
+
+        @Override
+        public void onFailure(TransactionResponse response, String reason) {
+        //action when transaction failure
+        }
+
+        @Override
+        public void onError(Throwable error) {
+        //action when error
+        }
+    }
+);
 ```
 
 ## Capture Redirect URL and handle the Webview
 
-Redirect URL is provided in `TransactionSuccessEvent`.
+Redirect URL is provided in `TransactionResponse`.
 
 ```Java
-String redirect = transactionSuccessEvent.getResponse.getRedirectUrl();
+String redirect = response.getRedirectUrl();
 ```
 
 Then load `redirect` into Webview.

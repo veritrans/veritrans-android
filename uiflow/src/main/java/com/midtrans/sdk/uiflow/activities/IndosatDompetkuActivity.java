@@ -228,7 +228,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * @param midtransSDK Veritrans SDK instance
      */
     private void transactionUsingIndosat(final MidtransSDK midtransSDK) {
-        midtransSDK.snapPaymentUsingIndosatDompetku(midtransSDK.readAuthenticationToken(),
+        midtransSDK.paymentUsingIndosatDompetku(midtransSDK.readAuthenticationToken(),
                 phoneNumber, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {

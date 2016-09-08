@@ -185,7 +185,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
     }
 
     private void transactionUsingTelkomsel(final MidtransSDK midtransSDK) {
-        midtransSDK.snapPaymentUsingTelkomselEcash(midtransSDK.readAuthenticationToken(),
+        midtransSDK.paymentUsingTelkomselEcash(midtransSDK.readAuthenticationToken(),
                 telkomselToken, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
