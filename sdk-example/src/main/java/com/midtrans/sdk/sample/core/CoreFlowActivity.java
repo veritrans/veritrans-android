@@ -1,4 +1,5 @@
 package com.midtrans.sdk.sample.core;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import java.util.ArrayList;
 
 import com.midtrans.sdk.coreflow.callback.CheckoutCallback;
 import com.midtrans.sdk.coreflow.callback.TransactionOptionsCallback;
@@ -34,6 +34,8 @@ import com.midtrans.sdk.sample.TelkomselEcashPaymentActivity;
 import com.midtrans.sdk.sample.XlTunaiPaymentActivity;
 import com.midtrans.sdk.sample.utils.RecyclerItemClickListener;
 
+import java.util.ArrayList;
+
 /**
  * @author rakawm
  */
@@ -55,7 +57,7 @@ public class CoreFlowActivity extends AppCompatActivity {
 
     private void getpaymentPages() {
         dialog.setIndeterminate(true);
-        dialog.setMessage("get payment methods");
+        dialog.setMessage("Loading");
         dialog.show();
         MidtransSDK.getInstance().checkout(new CheckoutCallback() {
             @Override

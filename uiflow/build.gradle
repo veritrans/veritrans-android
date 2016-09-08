@@ -87,7 +87,7 @@ publishing {
     publications {
         BintrayPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/uikit-development-release.aar")
+            artifact("$buildDir/outputs/aar/uiflow-development-release.aar")
             groupId group
             artifactId 'uikit'
             version version + "-SANDBOX"
@@ -112,7 +112,7 @@ publishing {
 
         BintrayProductionPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/uikit-production-release.aar")
+            artifact("$buildDir/outputs/aar/uiflow-production-release.aar")
             groupId group
             artifactId 'uikit'
             version version
