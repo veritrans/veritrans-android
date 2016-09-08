@@ -144,7 +144,7 @@ publishing {
     publications {
         BintrayPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/corekit-development-release.aar")
+            artifact("$buildDir/outputs/aar/coreflow-development-release.aar")
             groupId group
             artifactId 'corekit'
             version version + "-SANDBOX"
@@ -169,7 +169,7 @@ publishing {
 
         BintrayProductionPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/corekit-production-release.aar")
+            artifact("$buildDir/outputs/aar/coreflow-production-release.aar")
             groupId group
             artifactId 'corekit'
             version version
