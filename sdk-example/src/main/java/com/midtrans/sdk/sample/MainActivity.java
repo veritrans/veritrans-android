@@ -12,10 +12,6 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-
-import java.util.ArrayList;
-import java.util.UUID;
-
 import com.midtrans.sdk.coreflow.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.coreflow.core.Logger;
 import com.midtrans.sdk.coreflow.core.MidtransSDK;
@@ -25,11 +21,12 @@ import com.midtrans.sdk.coreflow.models.BillInfoModel;
 import com.midtrans.sdk.coreflow.models.ItemDetails;
 import com.midtrans.sdk.coreflow.models.snap.CreditCard;
 import com.midtrans.sdk.coreflow.models.snap.TransactionResult;
-
 import com.midtrans.sdk.sample.core.CoreFlowActivity;
 import com.midtrans.sdk.scancard.ScanCard;
-
 import com.midtrans.sdk.uiflow.SdkUIFlowBuilder;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback{
     private static final int CORE_FLOW = 1;
@@ -145,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         normal = (RadioButton) findViewById(R.id.radio_card_normal);
         twoClick = (RadioButton) findViewById(R.id.radio_card_two_click);
         oneClick = (RadioButton) findViewById(R.id.radio_card_one_click);
+        oneClick.setVisibility(View.GONE);
 
         //
         coreBtn = (Button) findViewById(R.id.show_core_example);
