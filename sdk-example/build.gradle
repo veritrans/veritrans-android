@@ -72,4 +72,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     }
+
+    // Leak Canary
+    developmentCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 }
