@@ -5,7 +5,7 @@ This flow assumes that the App Developer implements the User interface necessary
 To perform transaction using core, follow the steps given below:
 
 1. Set transaction request information to SDK.
-2. Setup `TransactionCallback` to catch the transaction results.
+2. Setup event bus handler to catch the transaction results.
 3. Call the implemented method of the desired payment mode.
 
 ## Differences between core flow and the UI flow.
