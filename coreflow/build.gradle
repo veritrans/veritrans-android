@@ -71,8 +71,8 @@ android {
 
         production {
             DEFAULT_PUBLISH = "productionRelease"
-            buildConfigField "String", "BASE_URL", "\"https://api.veritrans.co.id/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.veritrans.co.id/snap\""
+            buildConfigField "String", "BASE_URL", "\"https://api.midtrans.com/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.midtrans.com/snap\""
             buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_PRODUCTION
         }
     }
