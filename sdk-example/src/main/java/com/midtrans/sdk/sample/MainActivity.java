@@ -58,15 +58,12 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         // SDK initiation for coreflow
         if(mysdkFlow == CORE_FLOW){
-            MidtransSDK midtransSDK = SdkCoreFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
+            SdkCoreFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
                     .enableLog(true)
-                    .setDefaultText("open_sans_regular.ttf")
-                    .setSemiBoldText("open_sans_semibold.ttf")
-                    .setBoldText("open_sans_bold.ttf")
                     .buildSDK();
         } else {
             // SDK initiation for UIflow
-            MidtransSDK midtransSDK = SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
+            SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
                     .enableLog(true)
                     .setDefaultText("open_sans_regular.ttf")
