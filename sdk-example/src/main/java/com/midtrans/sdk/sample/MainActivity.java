@@ -63,12 +63,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     .buildSDK();
         } else {
             // SDK initiation for UIflow
-            SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, new TransactionFinishedCallback() {
-                @Override
-                public void onTransactionFinished(TransactionResult result) {
-
-                }
-            })
+            SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
                     .enableLog(true)
                     .setDefaultText("open_sans_regular.ttf")
