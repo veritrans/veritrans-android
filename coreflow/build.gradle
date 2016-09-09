@@ -51,7 +51,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
 
             consumerProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -72,7 +72,7 @@ android {
         production {
             DEFAULT_PUBLISH = "productionRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.veritrans.co.id/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.stg.veritrans.co.id/snap\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.veritrans.co.id/snap\""
             buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_PRODUCTION
         }
     }
@@ -94,11 +94,7 @@ tasks.withType(Test) {
 }
 dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-
-    compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
-
     compile 'com.squareup.retrofit:retrofit:1.9.0'
 
     /*
