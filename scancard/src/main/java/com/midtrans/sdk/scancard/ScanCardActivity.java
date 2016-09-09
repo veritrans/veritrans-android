@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.midtrans.sdk.uiflow.scancard.ExternalScanner;
 import com.midtrans.sdk.uiflow.scancard.ScannerModel;
-
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
@@ -31,7 +30,6 @@ public class ScanCardActivity extends AppCompatActivity {
         scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
         scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, true); // default: false
         scanIntent.putExtra(CardIOActivity.EXTRA_KEEP_APPLICATION_THEME, true);
-        scanIntent.putExtra(CardIOActivity.EXTRA_HIDE_CARDIO_LOGO, true);
 
         // SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
         startActivityForResult(scanIntent, SCAN_REQUEST_CODE);
