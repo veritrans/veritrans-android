@@ -98,29 +98,30 @@
 
 # Also you must note that if you are using GSON for conversion from JSON to POJO representation, you must ignore those POJO classes from being obfuscated.
 # Here include the POJO's that have you have created for mapping JSON response to POJO for example.
-#-keep class id.co.midtrans.sdk.activities.**{ *;}
+#-keep class com.midtrans.sdk.activities.**{ *;}
 -keep class com.midtrans.sdk.uiflow.fragments.**{*;}
 -keep class com.midtrans.sdk.coreflow.models.** { *; }
 -keep class com.midtrans.sdk.uiflow.scancard.** { *; }
 -keep class com.midtrans.sdk.coreflow.eventbus.**{*;}
--keep class MixpanelEvent{*;}
--keep class MixpanelProperties{*;}
--keep class VeritransSDK {*;}
--keep class TransactionRequest {*;}
--keep class LocalDataHandler {*;}
--keep class Logger {*;}
--keep class Constants {*;}
--keep class SdkUtil {*;}
--keep class SdkCoreFlowBuilder {*;}
--keep class ISdkFlow {*;}
--keep class BaseTransactionManager{*;}
--keep class IScanner {*;}
+-keep class com.midtrans.sdk.coreflow.analytics.MixpanelEvent{*;}
+-keep class com.midtrans.sdk.coreflow.analytics.MixpanelProperties{*;}
+-keep class com.midtrans.sdk.coreflow.core.MidtransSDK {*;}
+-keep class com.midtrans.sdk.coreflow.core.TransactionRequest {*;}
+-keep class com.midtrans.sdk.coreflow.core.LocalDataHandler {*;}
+-keep class com.midtrans.sdk.coreflow.core.Logger {*;}
+-keep class com.midtrans.sdk.coreflow.core.Constants {*;}
+-keep class com.midtrans.sdk.coreflow.core.SdkUtil {*;}
+-keep class com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder {*;}
+-keep class com.midtrans.sdk.coreflow.core.BaseSdkBuilder {*;}
+-keep class com.midtrans.sdk.coreflow.core.ISdkFlow {*;}
+-keep class com.midtrans.sdk.coreflow.core.IScanner {*;}
 -keep class com.midtrans.sdk.coreflow.utilities.** {*;}
 -keep class com.midtrans.sdk.uiflow.utilities.SdkUiFlowUtil {*;}
--keep class SdkUIFlowBuilder {*;}
--keep class UIFlow {*;}
--keep class ExternalScanner{*;}
+-keep class com.midtrans.sdk.uiflow.SdkUIFlowBuilder {*;}
+-keep class com.midtrans.sdk.uiflow.UIFlow {*;}
+-keep class com.midtrans.sdk.uiflow.scancard.ExternalScanner{*;}
 -keep class com.midtrans.sdk.coreflow.core.PaymentMethods{*;}
+-keep class com.midtrans.sdk.coreflow.callback.** { *; }
 
 
 # RxJava 0.21
