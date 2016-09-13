@@ -4,9 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,56 +12,46 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
-import com.midtrans.sdk.coreflow.callback.CardTokenCallback;
-import com.midtrans.sdk.coreflow.callback.CheckoutCallback;
-import com.midtrans.sdk.coreflow.callback.TransactionCallback;
+import com.midtrans.sdk.coreflow.callback.CardRegistrationCallback;
+import com.midtrans.sdk.coreflow.callback.GetCardCallback;
+import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
 import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
-import com.midtrans.sdk.coreflow.core.TransactionRequest;
-import com.midtrans.sdk.coreflow.models.CardTokenRequest;
-import com.midtrans.sdk.coreflow.models.TokenDetailsResponse;
-import com.midtrans.sdk.coreflow.models.TransactionResponse;
-import com.midtrans.sdk.coreflow.models.snap.Token;
+import com.midtrans.sdk.coreflow.models.CardRegistrationResponse;
+import com.midtrans.sdk.coreflow.models.SaveCardRequest;
+import com.midtrans.sdk.coreflow.models.SaveCardResponse;
 import com.midtrans.sdk.coreflow.utilities.Utils;
 import com.midtrans.sdk.widgets.utils.CardUtils;
 import com.midtrans.sdk.widgets.utils.WidgetException;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 /**
- * Custom widget for showing credit card form.
- *
- * @author rakawm
+ * Created by rakawm on 9/13/16.
  */
-public class CreditCardForm extends NestedScrollView{
+public class CreditCardRegisterForm extends LinearLayout {
     private static final int MONTH_COUNT = 12;
 
     private ImageView logo;
-    private Button payBtn, cvvHelpBtn;
+    private Button registerButton, cvvHelpBtn;
     private EditText cardNumber, cardCvvNumber, cardExpiry;
     private TextInputLayout cardNumberContainer, cardCvvNumberContainer, cardExpiryContainer;
-
-    private AlertDialog webViewDialog;
-    private TokenCallback tokenCallback;
-    private WidgetTransactionCallback widgetTransactionCallback;
+    private WidgetSaveCardCallback widgetTransactionCallback;
     private String midtransClientKey;
     private String merchantUrl;
-    private String cardToken;
-    private TransactionRequest transactionRequest;
+    private String userId;
     private MidtransSDK midtransSDK;
 
-    public CreditCardForm(Context context, AttributeSet attrs) {
+    public CreditCardRegisterForm(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
         initCardNumberEditText();
@@ -80,7 +68,7 @@ public class CreditCardForm extends NestedScrollView{
         // Inflate custom layout
         LayoutInflater.from(context).inflate(R.layout.credit_card_form, this, true);
         // Define layout components
-        payBtn = (Button) findViewById(R.id.button_pay);
+        registerButton = (Button) findViewById(R.id.button_pay);
         cvvHelpBtn = (Button) findViewById(R.id.button_what_is_cvv);
         cardNumber = (EditText) findViewById(R.id.card_number);
         cardCvvNumber = (EditText) findViewById(R.id.card_cvv_number);
@@ -109,62 +97,41 @@ public class CreditCardForm extends NestedScrollView{
 
         // Get values from XML
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CreditCardFormStyle);
+        userId = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_user_id);
         midtransClientKey = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_client_key);
         merchantUrl = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_merchant_url);
-        boolean isPayBtnShown = typedArray.getBoolean(R.styleable.CreditCardFormStyle_mtcc_show_pay, false);
+        boolean isRegisterButtonShown = typedArray.getBoolean(R.styleable.CreditCardFormStyle_mtcc_show_pay, false);
 
         // Update charge button visibility
-        if (isPayBtnShown) {
-            showPayButton();
+        if (isRegisterButtonShown) {
+            showRegisterButton();
         } else {
-            hidePayButton();
+            hideRegisterButton();
         }
 
         typedArray.recycle();
     }
 
-    private void initPayButton() {
-        payBtn.setOnClickListener(new OnClickListener() {
+    private void initRegisterButton() {
+        registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (widgetTransactionCallback != null) {
-                    if (transactionRequest != null) {
-                        pay(transactionRequest, widgetTransactionCallback);
-                    } else {
-                        throw new WidgetException(getResources().getString(R.string.error_transaction_request_missing));
-                    }
+                    register(widgetTransactionCallback);
                 } else {
-                    throw new WidgetException("Must provide transaction callback");
+                    throw new WidgetException("Must provide save card callback");
                 }
             }
         });
     }
 
-    private MidtransSDK getMidtransSDK() {
-        if (midtransSDK != null) {
-            return midtransSDK;
-        } else {
-            if (TextUtils.isEmpty(midtransClientKey)) {
-                throw new WidgetException(getResources().getString(R.string.error_client_key_missing));
-            }
-
-            if (TextUtils.isEmpty(merchantUrl)) {
-                throw new WidgetException(getResources().getString(R.string.error_merchant_url_missing));
-            }
-
-            return SdkCoreFlowBuilder.init(getContext(), midtransClientKey, merchantUrl)
-                    .enableLog(true)
-                    .buildSDK();
-        }
+    public void showRegisterButton() {
+        registerButton.setVisibility(VISIBLE);
+        initRegisterButton();
     }
 
-    public void showPayButton() {
-        payBtn.setVisibility(VISIBLE);
-        initPayButton();
-    }
-
-    public void hidePayButton() {
-        payBtn.setVisibility(GONE);
+    public void hideRegisterButton() {
+        registerButton.setVisibility(GONE);
     }
 
     private void initCardNumberEditText() {
@@ -437,105 +404,134 @@ public class CreditCardForm extends NestedScrollView{
         }
     }
 
-    public void pay(TransactionRequest transactionRequest, WidgetTransactionCallback widgetTransactionCallback) {
-        if (checkCardValidity()) {
-            setTransactionRequest(transactionRequest);
-            setWidgetTransactionCallback(widgetTransactionCallback);
-            CardTokenRequest cardTokenRequest = new CardTokenRequest(
-                    cardNumber.getText().toString().replace(" ", ""),
-                    cardCvvNumber.getText().toString(),
-                    cardExpiry.getText().toString().split("/")[0],
-                    cardExpiry.getText().toString().split("/")[1],
-                    midtransClientKey
-            );
-            cardTokenRequest.setGrossAmount(transactionRequest.getAmount());
-            cardTokenRequest.setSecure(transactionRequest.isSecureCard());
-            getMidtransSDK().getCardToken(cardTokenRequest, new CardTokenCallback() {
-                @Override
-                public void onSuccess(TokenDetailsResponse response) {
-                    if (tokenCallback != null) {
-                        tokenCallback.onSucceed(response);
-                    }
+    private MidtransSDK getMidtransSDK() {
+        if (midtransSDK != null) {
+            return midtransSDK;
+        } else {
+            if (TextUtils.isEmpty(midtransClientKey)) {
+                throw new WidgetException(getResources().getString(R.string.error_client_key_missing));
+            }
 
-                    if (!TextUtils.isEmpty(response.getRedirectUrl())) {
-                        start3DS(response.getTokenId(), response.getRedirectUrl());
-                    } else {
-                        charge(response.getTokenId(), CreditCardForm.this.transactionRequest);
-                    }
-                }
+            if (TextUtils.isEmpty(merchantUrl)) {
+                throw new WidgetException(getResources().getString(R.string.error_merchant_url_missing));
+            }
 
-                @Override
-                public void onFailure(TokenDetailsResponse response, String reason) {
-                    if (tokenCallback != null) {
-                        tokenCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
-                    }
-
-                    if (CreditCardForm.this.widgetTransactionCallback != null) {
-                        CreditCardForm.this.widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
-                    }
-                }
-
-                @Override
-                public void onError(Throwable error) {
-                    if (tokenCallback != null) {
-                        tokenCallback.onFailed(new WidgetException(error.getMessage()));
-                    }
-                }
-            });
+            return SdkCoreFlowBuilder.init(getContext(), midtransClientKey, merchantUrl)
+                    .enableLog(true)
+                    .buildSDK();
         }
     }
 
-    private void charge(String cardToken, TransactionRequest request) {
-        this.transactionRequest = request;
-        getMidtransSDK().setTransactionRequest(request);
-        this.cardToken = cardToken;
-        getMidtransSDK().checkout(new CheckoutCallback() {
+    public void register(WidgetSaveCardCallback cardCallback) {
+        if (checkCardValidity()) {
+            setWidgetTransactionCallback(cardCallback);
+            getMidtransSDK().cardRegistration(
+                    cardNumber.getText().toString().replace(" ", ""),
+                    cardCvvNumber.getText().toString(),
+                    cardExpiry.getText().toString().split("/")[0],
+                    "20" + cardExpiry.getText().toString().split("/")[1],
+                    new CardRegistrationCallback() {
+                        @Override
+                        public void onSuccess(CardRegistrationResponse response) {
+                            getCards(response);
+                        }
+
+                        @Override
+                        public void onFailure(CardRegistrationResponse response, String reason) {
+                            if (widgetTransactionCallback != null) {
+                                widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable error) {
+                            if (widgetTransactionCallback != null) {
+                                widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
+                            }
+                        }
+                    }
+            );
+        }
+    }
+
+    private void getCards(final CardRegistrationResponse cardRegistrationResponse) {
+        if (TextUtils.isEmpty(userId)) {
+            userId = UUID.randomUUID().toString();
+        }
+        getMidtransSDK().getCards(userId, new GetCardCallback() {
             @Override
-            public void onSuccess(Token token) {
-                payUsingCreditCard(token);
+            public void onSuccess(ArrayList<SaveCardRequest> response) {
+                SaveCardRequest request = new SaveCardRequest(
+                        cardRegistrationResponse.getSavedTokenId(),
+                        cardRegistrationResponse.getMaskedCard(),
+                        Utils.getCardType(cardNumber.getText().toString().replace(" ", ""))
+                );
+                response.add(request);
+                saveCard(response);
             }
 
             @Override
-            public void onFailure(Token token, String reason) {
+            public void onFailure(String reason) {
+                SaveCardRequest request = new SaveCardRequest(
+                        cardRegistrationResponse.getSavedTokenId(),
+                        cardRegistrationResponse.getMaskedCard(),
+                        Utils.getCardType(cardNumber.getText().toString().replace(" ", ""))
+                );
+                ArrayList<SaveCardRequest> saveCardRequests = new ArrayList<>();
+                saveCardRequests.add(request);
+                saveCard(saveCardRequests);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                SaveCardRequest request = new SaveCardRequest(
+                        cardRegistrationResponse.getSavedTokenId(),
+                        cardRegistrationResponse.getMaskedCard(),
+                        Utils.getCardType(cardNumber.getText().toString().replace(" ", ""))
+                );
+                ArrayList<SaveCardRequest> saveCardRequests = new ArrayList<>();
+                saveCardRequests.add(request);
+                saveCard(saveCardRequests);
+            }
+        });
+
+    }
+
+    private void saveCard(ArrayList<SaveCardRequest> saveCardRequests) {
+        getMidtransSDK().saveCards(userId, saveCardRequests, new SaveCardCallback() {
+            @Override
+            public void onSuccess(SaveCardResponse response) {
                 if (widgetTransactionCallback != null) {
-                    widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_charge)));
+                    widgetTransactionCallback.onSucceed(response);
+                }
+            }
+
+            @Override
+            public void onFailure(String reason) {
+                if (widgetTransactionCallback != null) {
+                    widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_saving_card)));
                 }
             }
 
             @Override
             public void onError(Throwable error) {
-                if (tokenCallback != null) {
-                    tokenCallback.onFailed(new WidgetException(error.getMessage()));
+                if (widgetTransactionCallback != null) {
+                    widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_saving_card)));
                 }
             }
         });
     }
 
-    private void payUsingCreditCard(Token token) {
-        getMidtransSDK().paymentUsingCard(token.getTokenId(), CreditCardForm.this.cardToken,
-                false, new TransactionCallback() {
-                    @Override
-                    public void onSuccess(TransactionResponse response) {
-                        if (widgetTransactionCallback != null) {
-                            widgetTransactionCallback.onSucceed(response);
-                        }
-                    }
+    public void setWidgetTransactionCallback(WidgetSaveCardCallback widgetTransactionCallback) {
+        this.widgetTransactionCallback = widgetTransactionCallback;
+    }
 
-                    @Override
-                    public void onFailure(TransactionResponse response, String reason) {
-                        if (widgetTransactionCallback != null) {
-                            widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_charge)));
-                        }
-                    }
+    public String getUserId() {
+        return userId;
+    }
 
-                    @Override
-                    public void onError(Throwable error) {
-                        if (widgetTransactionCallback != null) {
-                            widgetTransactionCallback.onFailed(new WidgetException(error.getMessage()));
-                        }
-                    }
-                });
-
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getMidtransClientKey() {
@@ -554,86 +550,13 @@ public class CreditCardForm extends NestedScrollView{
         this.merchantUrl = merchantUrl;
     }
 
-    public void setWidgetTransactionCallback(WidgetTransactionCallback widgetTransactionCallback) {
-        this.widgetTransactionCallback = widgetTransactionCallback;
-    }
-
-    public void setTransactionRequest(TransactionRequest transactionRequest) {
-        this.transactionRequest = transactionRequest;
-    }
-
-    private void start3DS(final String tokenId, String redirectUrl) {
-        WebView webView = new WebView(getContext());
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                if (url.contains("/token/callback/")) {
-                    webViewDialog.dismiss();
-                    charge(tokenId, transactionRequest);
-                }
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode,
-                                        String description, String failingUrl) {
-                super.onReceivedError(view, errorCode, description, failingUrl);
-                webViewDialog.dismiss();
-            }
-        });
-
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setInitialScale(1);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setSupportZoom(false);
-        webView.getSettings().setBuiltInZoomControls(false);
-        webView.getSettings().setUseWideViewPort(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
-        webView.setWebChromeClient(new WebChromeClient());
-        webView.loadUrl(redirectUrl);
-        webViewDialog = new AlertDialog.Builder(getContext())
-                .setCancelable(false)
-                .setNegativeButton(R.string.btn_close, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setView(webView)
-                .create();
-
-        webViewDialog.setCanceledOnTouchOutside(false);
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        layoutParams.copyFrom(webViewDialog.getWindow().getAttributes());
-        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
-        webViewDialog.show();
-        webViewDialog.getWindow().setAttributes(layoutParams);
-    }
-
-    /**
-     * Will be used to get response callback after getting token in this view.
-     */
-    public interface TokenCallback {
-        void onSucceed(TokenDetailsResponse tokenDetailsResponse);
-
-        void onFailed(Throwable throwable);
-    }
-
     /**
      * Will be used to get response callback after charging in this view.
      */
-    public interface WidgetTransactionCallback {
-        void onSucceed(TransactionResponse transactionResponse);
+    public interface WidgetSaveCardCallback {
+        void onSucceed(SaveCardResponse transactionResponse);
 
         void onFailed(Throwable throwable);
     }
+
 }

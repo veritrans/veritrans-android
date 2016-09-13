@@ -490,6 +490,7 @@
     <string name="btn_close">Close</string>
     <string name="payment_canceled">3DS Authorization was cancelled.</string>
     <string name="btn_pay">Pay</string>
+    <string name="btn_register">Register</string>
     <string name="hint_input_cvv">Input CVV</string>
 
     <string name="payment_confirmation_title">Payment Confirmation</string>
