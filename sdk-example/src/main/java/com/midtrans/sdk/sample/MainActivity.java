@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     public static String userId = "user214";
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
-    private Button coreBtn, uiBtn, widgetBtn;
+    private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn;
     private Button coreCardRegistration, uiCardRegistration;
     private RadioButton normal, twoClick, oneClick;
     private Toolbar toolbar;
@@ -132,6 +132,14 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, WidgetExampleActivity.class));
+            }
+        });
+
+        widgetRegisterBtn = (Button) findViewById(R.id.show_card_widget_register);
+        widgetRegisterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, WidgetRegisterExampleActivity.class));
             }
         });
 

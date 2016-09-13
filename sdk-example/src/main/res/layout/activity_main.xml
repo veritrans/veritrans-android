@@ -231,6 +231,18 @@
                     android:layout_weight="0.5"
                     android:text="@string/btn_show_ui_flow"
                     android:textColor="@color/white" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/title_card_widget" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <Button
                     android:id="@+id/show_card_widget"
@@ -238,9 +250,19 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_marginLeft="10dp"
                     android:layout_weight="0.5"
                     android:text="@string/show_card_widget"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/show_card_widget_register"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/show_card_widget_register"
                     android:textColor="@color/white" />
             </LinearLayout>
 

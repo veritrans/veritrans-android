@@ -5,6 +5,7 @@
     <string name="btn_get_token">Get Token</string>
     <string name="btn_refresh_token">Refresh Token</string>
     <string name="title_show_example">Payment Flow</string>
+    <string name="title_card_widget">Widget Example</string>
     <string name="title_credit_card_options">Credit Card Options</string>
     <string name="btn_show_core">Core Flow</string>
     <string name="btn_show_ui_flow">UI Flow</string>
@@ -12,6 +13,7 @@
     <string name="buy_with_core">Core flow</string>
     <string name="buy_with_ui">UI flow</string>
     <string name="show_card_widget">Show Widget</string>
+    <string name="show_card_widget_register">Show Register Widget</string>
     <string name="buy_with_credit_card">Buy using credit card</string>
     <string name="buy_with_permata_va">Buy using Permata VA</string>
     <string name="buy_with_mandiri_bill">Buy using Mandiri Bill</string>
