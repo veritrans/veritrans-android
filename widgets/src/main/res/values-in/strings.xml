@@ -22,4 +22,7 @@
     <string name="payment_credit_card_validation_message_invalid_expiry_date">Masukkan tanggal kadaluarsa yang tepat</string>
     <string name="payment_credit_card_validation_message_card_no">Masukkan nomor kartu</string>
     <string name="payment_credit_card_validation_message_invalid_card_no">Masukkan nomor kartu yang tepat</string>
+    <string name="hint_input_cvv">Masukkan CVV</string>
+    <string name="pay_with_new_card">Bayar Degan kartu Baru</string>
+
 </resources>

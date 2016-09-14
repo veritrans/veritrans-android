@@ -38,6 +38,7 @@ public class WidgetExampleActivity extends AppCompatActivity {
         creditCardForm = (CreditCardForm) findViewById(R.id.credit_card_form);
         creditCardForm.setMidtransClientKey(BuildConfig.CLIENT_KEY);
         creditCardForm.setMerchantUrl(BuildConfig.BASE_URL);
+        creditCardForm.setEnableTwoClick(true);
 
         getToken = (Button) findViewById(R.id.btn_get_token);
         getToken.setOnClickListener(new View.OnClickListener() {

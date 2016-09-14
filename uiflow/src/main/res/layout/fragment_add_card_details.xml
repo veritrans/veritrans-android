@@ -56,7 +56,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="date"
                     android:maxLength="5"
-                    android:nextFocusDown="@+id/et_cvv"
+                        android:nextFocusDown="@+id/et_cvv"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
