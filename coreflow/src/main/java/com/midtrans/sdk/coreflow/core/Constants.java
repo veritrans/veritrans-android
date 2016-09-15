@@ -85,6 +85,5 @@ public class Constants {
     public static final long FADE_IN_FORM_TIME = 300;
 
     public static final String AUTH_TOKEN = "authentication.token";
-    public static final String WIDGET_USER_ID = "widget.userid";
     public static final String WEBVIEW_REDIRECT_URL = "redirect_url";
 }

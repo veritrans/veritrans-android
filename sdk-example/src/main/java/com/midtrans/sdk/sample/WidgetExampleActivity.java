@@ -28,6 +28,7 @@ public class WidgetExampleActivity extends AppCompatActivity {
     private CreditCardForm creditCardForm;
     private Button getToken;
     private ProgressDialog dialog;
+    private String userId = "random-userid-example";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class WidgetExampleActivity extends AppCompatActivity {
         creditCardForm = (CreditCardForm) findViewById(R.id.credit_card_form);
         creditCardForm.setMidtransClientKey(BuildConfig.CLIENT_KEY);
         creditCardForm.setMerchantUrl(BuildConfig.BASE_URL);
+        creditCardForm.setUserId(this.userId);
         creditCardForm.setEnableTwoClick(true);
 
         getToken = (Button) findViewById(R.id.btn_get_token);

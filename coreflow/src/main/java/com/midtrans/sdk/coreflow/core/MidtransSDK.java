@@ -969,15 +969,4 @@ public class MidtransSDK {
         return requestTimeOut;
     }
 
-    public void createUserid() {
-        String savedUserId = LocalDataHandler.readString(Constants.WIDGET_USER_ID);
-        if(TextUtils.isEmpty(savedUserId)){
-            LocalDataHandler.saveString(Constants.WIDGET_USER_ID, UUID.randomUUID().toString());
-        }
-    }
-
-    public String getUserId(){
-        String userId = LocalDataHandler.readString(Constants.WIDGET_USER_ID);
-        return userId;
-    }
 }

@@ -101,6 +101,7 @@ public class CreditCardForm extends NestedScrollView{
     private CheckBox checkboxStoreCard;
     private CardTokenRequest cardTokenRequest;
     private Button backButton;
+    private String userId;
 
     public CreditCardForm(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -109,7 +110,6 @@ public class CreditCardForm extends NestedScrollView{
         initCardExpiryEditText();
         initCardCVVEditText();
         midtransSDK = MidtransSDK.getInstance();
-        midtransSDK.createUserid();
     }
 
     @Override
@@ -184,6 +184,7 @@ public class CreditCardForm extends NestedScrollView{
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CreditCardFormStyle);
         midtransClientKey = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_client_key);
         merchantUrl = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_merchant_url);
+        userId = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_user_id);
         boolean isPayBtnShown = typedArray.getBoolean(R.styleable.CreditCardFormStyle_mtcc_show_pay, false);
 
         // Update charge button visibility
@@ -762,7 +763,7 @@ public class CreditCardForm extends NestedScrollView{
             newCardRequests.addAll(this.creditCardList);
         }
 
-        getMidtransSDK().saveCards(midtransSDK.getUserId(), newCardRequests, new SaveCardCallback() {
+        getMidtransSDK().saveCards(this.userId, newCardRequests, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
             }
@@ -879,6 +880,10 @@ public class CreditCardForm extends NestedScrollView{
         }
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
 
     /**
      * Will be used to get response callback after getting token in this view.
@@ -904,7 +909,7 @@ public class CreditCardForm extends NestedScrollView{
 
     public void getCardList() {
         layoutProgress.setVisibility(VISIBLE);
-        getMidtransSDK().getCards(midtransSDK.getUserId(), new GetCardCallback() {
+        getMidtransSDK().getCards(this.userId, new GetCardCallback() {
             @Override
             public void onSuccess(ArrayList<SaveCardRequest> response) {
                 showCreditCardLayout(false);
