@@ -9,7 +9,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.midtrans.sdk.coreflow.models.SaveCardRequest;
 import com.midtrans.sdk.widgets.utils.CardUtils;
@@ -19,11 +22,11 @@ import com.midtrans.sdk.widgets.utils.FlipAnimation;
  * Created by ziahaqi on 9/13/16.
  */
 public class CardDetailForm extends RelativeLayout{
-    private final CardDetailListener listener;
     private SaveCardRequest cardDetail;
     private EditText editCardDetailCvv;
     private RelativeLayout layoutCardList, cardContainerFront, cardContainerBack;
     private String cardCvv;
+    private TextView textCardNumber;
 
     public SaveCardRequest getSelectedCard() {
         return cardDetail;
@@ -32,6 +35,7 @@ public class CardDetailForm extends RelativeLayout{
     public boolean checkFormValidity() {
         this.cardCvv = editCardDetailCvv.getText().toString();
         if(TextUtils.isEmpty(cardCvv)){
+            Toast.makeText(getContext(), getContext().getString(R.string.cvv_empty), Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -41,14 +45,9 @@ public class CardDetailForm extends RelativeLayout{
         return this.cardCvv;
     }
 
-    public interface CardDetailListener{
-        public void onTwoClickPay(SaveCardRequest cardDetail, String cvv);
-        public void onDeleteCard();
-    }
-    public CardDetailForm(Context context, SaveCardRequest cardDetail, CardDetailListener listener) {
+    public CardDetailForm(Context context, SaveCardRequest cardDetail) {
         super(context);
         this.cardDetail = cardDetail;
-        this.listener = listener;
         initView();
     }
 
@@ -59,6 +58,12 @@ public class CardDetailForm extends RelativeLayout{
         layoutCardList = (RelativeLayout) findViewById(R.id.layout_card_list);
         cardContainerFront = (RelativeLayout) findViewById(R.id.card_container_front_side);
         cardContainerBack = (RelativeLayout) findViewById(R.id.card_container_back_side);
+        textCardNumber = (TextView) findViewById(R.id.text_card_number);
+        if(cardDetail != null){
+            int length = cardDetail.getMaskedCard().length();
+            String cardNumber = cardDetail.getMaskedCard().substring(length - 5 , length);
+            textCardNumber.setText(getContext().getString(R.string.card_prefix) + cardNumber);
+        }
         initCardListActionHandler();
     }
 
@@ -77,64 +82,16 @@ public class CardDetailForm extends RelativeLayout{
                 flipCard();
             }
         });
+
     }
-//
-//
-//    public void getCardList() {
-//        loadingDialog.show();
-//        midtransSDK.readAuthenticationToken();
-//        midtransSDK.getCards(midtransSDK.getUserId(), new GetCardCallback() {
-//            @Override
-//            public void onSuccess(ArrayList<SaveCardRequest> response) {
-//                showCreditCardLayout(false);
-//                layoutCardList.setVisibility(VISIBLE);
-//                if(response != null && !response.isEmpty()){
-//                    creditCardList.clear();
-//                    creditCardList.addAll(response);
-//                }
-//                showCardsList();
-//
-//                if(loadingDialog.isShowing()){
-//                    loadingDialog.dismiss();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(String reason) {
-//                showCreditCardLayout(true);
-//                if(loadingDialog.isShowing()){
-//                    loadingDialog.dismiss();
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Throwable error) {
-//                showCreditCardLayout(true);
-//                if(loadingDialog.isShowing()){
-//                    loadingDialog.dismiss();
-//                }
-//            }
-//        });
-//    }
 
-
-//    private void showCreditCardLayout(boolean showFormCreditCard) {
-//        if(showFormCreditCard){
-//            if(layoutCardList.getVisibility() == View.VISIBLE){
-//                layoutCardList.setVisibility(View.GONE);
-//            }
-//            if(layoutCardForm.getVisibility() == View.GONE){
-//                layoutCardForm.setVisibility(View.VISIBLE);
-//            }
-//        }{
-//            if(layoutCardList.getVisibility() == View.GONE){
-//                layoutCardList.setVisibility(View.VISIBLE);
-//            }
-//            if(layoutCardForm.getVisibility() == View.VISIBLE){
-//                layoutCardForm.setVisibility(View.GONE);
-//            }
-//        }
-//    }
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        layoutCardList = null;
+        cardContainerFront = null;
+        cardContainerBack = null;
+    }
 
     private void flipCard() {
         Animation scaleDown = AnimationUtils.loadAnimation(getContext(), R.anim.scale_down);

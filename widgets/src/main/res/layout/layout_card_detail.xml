@@ -30,7 +30,7 @@
                 android:clickable="true"
                 android:contentDescription="@string/description_delete_card"
                 android:src="@drawable/delete"
-                android:visibility="visible" />
+                android:visibility="invisible" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -131,7 +131,6 @@
                     android:maxLength="6"
                     android:padding="@dimen/four_dp"
                     android:textColor="@color/black" />
-
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

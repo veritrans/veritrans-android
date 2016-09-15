@@ -140,10 +140,19 @@
                     android:src="@drawable/ic_cvvinfo" />
             </RelativeLayout>
 
+            <Button
+                android:visibility="gone"
+                style="?borderlessButtonStyle"
+                android:layout_below="@id/container_save_card"
+                android:id="@+id/button_back"
+                android:textColor="?colorPrimary"
+                android:text="@string/back_tolist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:layout_marginTop="@dimen/eight_dp"
-                android:layout_below="@id/container_save_card"
+                android:layout_below="@id/button_back"
                 android:id="@+id/button_pay"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
@@ -168,32 +177,37 @@
                     android:layout_height="wrap_content" />
 
                 <com.midtrans.sdk.widgets.utils.CirclePageIndicator
-                    android:layout_below="@id/saved_card_pager"
                     android:id="@+id/indicator"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="100dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/sixteen_dp"
+                    android:padding="@dimen/eight_dp"
                     app:fillColor="?colorPrimary"
                     app:radius="4dp"
                     />
 
+                <android.support.design.widget.FloatingActionButton
+                    android:layout_marginTop="@dimen/four_dp"
+                    android:layout_below="@id/saved_card_pager"
+                    app:fabSize="mini"
+                    android:id="@+id/btn_pay_new_card"
+                    android:layout_width="wrap_content"
+
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:foregroundGravity="bottom|right"
+                    android:padding="0dp"
+                    android:src="@drawable/ic_plus_action"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    app:borderWidth="0dp"
+                    app:elevation="0dp" />
             </RelativeLayout>
 
-            <android.support.design.widget.FloatingActionButton
-                android:layout_below="@id/credit_card_holder"
-                app:fabSize="mini"
-                android:id="@+id/btn_pay_new_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:foregroundGravity="bottom|right"
-                android:padding="0dp"
-                android:src="@drawable/ic_plus_action"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                app:borderWidth="0dp"
-                app:elevation="0dp" />
+
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/layout_progress"
@@ -206,5 +220,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
+
     </FrameLayout>
+
 </android.support.v4.widget.NestedScrollView>

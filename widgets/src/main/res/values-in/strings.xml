@@ -24,5 +24,7 @@
     <string name="payment_credit_card_validation_message_invalid_card_no">Masukkan nomor kartu yang tepat</string>
     <string name="hint_input_cvv">Masukkan CVV</string>
     <string name="pay_with_new_card">Bayar Degan kartu Baru</string>
+    <string name="back_tolist">kembali</string>
+    <string name="cvv_empty">CVV Masih Kosong</string>
 
 </resources>

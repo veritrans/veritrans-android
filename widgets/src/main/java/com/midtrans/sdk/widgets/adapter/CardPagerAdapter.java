@@ -1,12 +1,17 @@
 package com.midtrans.sdk.widgets.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.midtrans.sdk.coreflow.models.SaveCardRequest;
 import com.midtrans.sdk.widgets.CardDetailForm;
+import com.midtrans.sdk.widgets.R;
 
 import java.util.ArrayList;
 
@@ -15,13 +20,11 @@ import java.util.ArrayList;
  */
 public class CardPagerAdapter extends PagerAdapter{
     private final Context context;
-    private final CardDetailForm.CardDetailListener listener;
     private ArrayList<SaveCardRequest> cardDetails = new ArrayList<>();
     private CardDetailForm selectedItem;
 
     public CardPagerAdapter(Context context, ArrayList<SaveCardRequest>
-            cardDetails, CardDetailForm.CardDetailListener listener) {
-        this.listener = listener;
+            cardDetails) {
         this.context = context;
         this.cardDetails.clear();
         this.cardDetails.addAll(cardDetails);
@@ -29,7 +32,7 @@ public class CardPagerAdapter extends PagerAdapter{
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        CardDetailForm cardDetailForm =  new CardDetailForm(context, cardDetails.get(position), listener);
+        CardDetailForm cardDetailForm =  new CardDetailForm(context, cardDetails.get(position));
         container.addView(cardDetailForm);
         this.selectedItem = cardDetailForm;
         return cardDetailForm;
@@ -47,7 +50,26 @@ public class CardPagerAdapter extends PagerAdapter{
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
+        View view = (View) object;
+        RelativeLayout imageBack = (RelativeLayout) view.findViewById(R.id.card_container_back_side);
+        BitmapDrawable bmpDrawableBack = (BitmapDrawable) imageBack.getBackground();
+        if (bmpDrawableBack != null && bmpDrawableBack.getBitmap() != null) {
+            Bitmap bitmap = bmpDrawableBack.getBitmap();
+            if(!bitmap.isRecycled()){
+                bitmap.recycle();
+            }
+        }
+
+        RelativeLayout imgViewFront = (RelativeLayout) view.findViewById(R.id.card_container_front_side);
+        BitmapDrawable bmpDrawableFront = (BitmapDrawable) imgViewFront.getBackground();
+        if (bmpDrawableFront != null && bmpDrawableFront.getBitmap() != null ) {
+            Bitmap bitmap = bmpDrawableFront.getBitmap();
+            if(!bitmap.isRecycled()){
+                bitmap.recycle();
+            }
+        }
+        container.removeView((View) view);
+        view = null;
     }
 
     public void updateData(ArrayList<SaveCardRequest> creditCardList) {
@@ -59,4 +81,5 @@ public class CardPagerAdapter extends PagerAdapter{
     public CardDetailForm getSelectedItem() {
         return this.selectedItem;
     }
+
 }
