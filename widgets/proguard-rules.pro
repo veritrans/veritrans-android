@@ -100,6 +100,7 @@
 -keep class com.midtrans.sdk.coreflow.callback.** { *; }
 -keep class com.midtrans.sdk.widgets.CreditCardForm {*;}
 -keep class com.midtrans.sdk.widgets.CreditCardForm$* {*;}
+-keep class com.midtrans.sdk.widgets.CreditCardRegisterForm* {*;}
 
 
 # RxJava 0.21

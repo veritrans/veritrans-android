@@ -45,7 +45,6 @@ import com.midtrans.sdk.coreflow.callback.TransactionCallback;
 import com.midtrans.sdk.coreflow.core.Logger;
 import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.coreflow.core.TransactionRequest;
-import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.models.CardTokenRequest;
 import com.midtrans.sdk.coreflow.models.SaveCardRequest;
 import com.midtrans.sdk.coreflow.models.SaveCardResponse;
@@ -57,6 +56,10 @@ import com.midtrans.sdk.widgets.adapter.CardPagerAdapter;
 import com.midtrans.sdk.widgets.utils.CardUtils;
 import com.midtrans.sdk.widgets.utils.CirclePageIndicator;
 import com.midtrans.sdk.widgets.utils.WidgetException;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Custom widget for showing credit card form.
@@ -178,9 +181,9 @@ public class CreditCardForm extends NestedScrollView{
 
         // Get values from XML
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CreditCardFormStyle);
-        midtransClientKey = typedArray.getString(R.styleable.CreditCardFormStyle_vtcc_client_key);
-        merchantUrl = typedArray.getString(R.styleable.CreditCardFormStyle_vtcc_merchant_url);
-        this.isPayBtnShown = typedArray.getBoolean(R.styleable.CreditCardFormStyle_vtcc_show_pay, false);
+        midtransClientKey = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_client_key);
+        merchantUrl = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_merchant_url);
+        boolean isPayBtnShown = typedArray.getBoolean(R.styleable.CreditCardFormStyle_mtcc_show_pay, false);
 
         // Update charge button visibility
         showHidePayButton(isPayBtnShown);
