@@ -9,6 +9,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,12 +24,19 @@ import com.midtrans.sdk.widgets.utils.FlipAnimation;
  * Created by ziahaqi on 9/13/16.
  */
 public class CardDetailForm extends RelativeLayout{
+    private final CardDetailListener callback;
     private SaveCardRequest cardDetail;
     private EditText editCardDetailCvv;
-    private RelativeLayout layoutCardList, cardContainerFront, cardContainerBack;
+    private RelativeLayout layoutCardList;
+    private RelativeLayout cardContainerFront, cardContainerBack;
     private String cardCvv;
     private TextView textCardNumber;
+    private ImageButton imageDelete, imageNew;
 
+    public interface CardDetailListener{
+        public void onDelete(CardDetailForm form);
+        public void onAddNewCard();
+    }
     public SaveCardRequest getSelectedCard() {
         return cardDetail;
     }
@@ -41,13 +50,18 @@ public class CardDetailForm extends RelativeLayout{
         return true;
     }
 
+    public SaveCardRequest getCardDetail() {
+        return cardDetail;
+    }
+
     public String getCardCVV() {
         return this.cardCvv;
     }
 
-    public CardDetailForm(Context context, SaveCardRequest cardDetail) {
+    public CardDetailForm(Context context, SaveCardRequest cardDetail, CardDetailListener callback) {
         super(context);
         this.cardDetail = cardDetail;
+        this.callback = callback;
         initView();
     }
 
@@ -59,6 +73,9 @@ public class CardDetailForm extends RelativeLayout{
         cardContainerFront = (RelativeLayout) findViewById(R.id.card_container_front_side);
         cardContainerBack = (RelativeLayout) findViewById(R.id.card_container_back_side);
         textCardNumber = (TextView) findViewById(R.id.text_card_number);
+        imageDelete = (ImageButton) findViewById(R.id.image_delete_card);
+        imageNew = (ImageButton) findViewById(R.id.image_new_card);
+
         if(cardDetail != null){
             int length = cardDetail.getMaskedCard().length();
             String cardNumber = cardDetail.getMaskedCard().substring(length - 5 , length);
@@ -83,14 +100,28 @@ public class CardDetailForm extends RelativeLayout{
             }
         });
 
+        imageDelete.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(callback != null){
+                    callback.onDelete(CardDetailForm.this);
+                }
+            }
+        });
+
+        imageNew.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(callback != null){
+                    callback.onAddNewCard();
+                }
+            }
+        });
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        layoutCardList = null;
-        cardContainerFront = null;
-        cardContainerBack = null;
     }
 
     private void flipCard() {
@@ -104,7 +135,7 @@ public class CardDetailForm extends RelativeLayout{
         FlipAnimation flipAnimation = new FlipAnimation(cardContainerFront, cardContainerBack);
         flipAnimation.setStartOffset(100);
         flipAnimation.setDuration(200);
-        if (cardContainerFront.getVisibility() == View.GONE) {
+        if (cardContainerFront != null && cardContainerFront.getVisibility() == View.GONE) {
             flipAnimation.reverse();
             CardUtils.hideKeyboard(getContext());
         }

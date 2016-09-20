@@ -2,7 +2,6 @@ package com.midtrans.sdk.coreflow.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -17,7 +16,6 @@ import com.midtrans.sdk.coreflow.models.UserDetail;
 import com.midtrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import com.midtrans.sdk.coreflow.BuildConfig;
 import com.midtrans.sdk.coreflow.R;

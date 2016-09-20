@@ -1,17 +1,13 @@
 package com.midtrans.sdk.widgets.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import com.midtrans.sdk.coreflow.models.SaveCardRequest;
+import com.midtrans.sdk.coreflow.core.Logger;
 import com.midtrans.sdk.widgets.CardDetailForm;
-import com.midtrans.sdk.widgets.R;
 
 import java.util.ArrayList;
 
@@ -19,23 +15,23 @@ import java.util.ArrayList;
  * Created by ziahaqi on 9/13/16.
  */
 public class CardPagerAdapter extends PagerAdapter{
-    private final Context context;
-    private ArrayList<SaveCardRequest> cardDetails = new ArrayList<>();
-    private CardDetailForm selectedItem;
+    private ArrayList<CardDetailForm> cardDetails = new ArrayList<>();
 
-    public CardPagerAdapter(Context context, ArrayList<SaveCardRequest>
-            cardDetails) {
-        this.context = context;
-        this.cardDetails.clear();
-        this.cardDetails.addAll(cardDetails);
+
+    @Override
+    public int getItemPosition(Object object) {
+        int index = cardDetails.indexOf (object);
+        if (index == -1)
+            return POSITION_NONE;
+        else
+            return index;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        CardDetailForm cardDetailForm =  new CardDetailForm(context, cardDetails.get(position));
-        container.addView(cardDetailForm);
-        this.selectedItem = cardDetailForm;
-        return cardDetailForm;
+        View v = cardDetails.get (position);
+        container.addView (v);
+        return v;
     }
 
     @Override
@@ -50,36 +46,38 @@ public class CardPagerAdapter extends PagerAdapter{
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        View view = (View) object;
-        RelativeLayout imageBack = (RelativeLayout) view.findViewById(R.id.card_container_back_side);
-        BitmapDrawable bmpDrawableBack = (BitmapDrawable) imageBack.getBackground();
-        if (bmpDrawableBack != null && bmpDrawableBack.getBitmap() != null) {
-            Bitmap bitmap = bmpDrawableBack.getBitmap();
-            if(!bitmap.isRecycled()){
-                bitmap.recycle();
-            }
-        }
+        CardDetailForm view = (CardDetailForm) object;
 
-        RelativeLayout imgViewFront = (RelativeLayout) view.findViewById(R.id.card_container_front_side);
-        BitmapDrawable bmpDrawableFront = (BitmapDrawable) imgViewFront.getBackground();
-        if (bmpDrawableFront != null && bmpDrawableFront.getBitmap() != null ) {
-            Bitmap bitmap = bmpDrawableFront.getBitmap();
-            if(!bitmap.isRecycled()){
-                bitmap.recycle();
-            }
-        }
-        container.removeView((View) view);
-        view = null;
+        container.removeView(view);
     }
 
-    public void updateData(ArrayList<SaveCardRequest> creditCardList) {
-        this.cardDetails.clear();
-        this.cardDetails.addAll(creditCardList);
+    public int addView(CardDetailForm form){
+        return addView(form, cardDetails.size());
+    }
+
+    private int addView(CardDetailForm form, int position){
+        cardDetails.add(position, form);
+        return position;
+    }
+
+    public int removeView(ViewPager pager, CardDetailForm view){
+        return removeView(pager, cardDetails.indexOf(view));
+    }
+
+    private int removeView (ViewPager pager, int position)
+    {
+        pager.setAdapter (null);
+        cardDetails.remove (position);
         this.notifyDataSetChanged();
+
+        pager.setAdapter (this);
+        return position;
     }
 
-    public CardDetailForm getSelectedItem() {
-        return this.selectedItem;
+    public CardDetailForm getCurrentItem(ViewPager pager)
+    {
+        return cardDetails.get (pager.getCurrentItem());
     }
+
 
 }

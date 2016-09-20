@@ -187,24 +187,6 @@
                     app:radius="4dp"
                     />
 
-                <android.support.design.widget.FloatingActionButton
-                    android:layout_marginTop="@dimen/four_dp"
-                    android:layout_below="@id/saved_card_pager"
-                    app:fabSize="mini"
-                    android:id="@+id/btn_pay_new_card"
-                    android:layout_width="wrap_content"
-
-
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:foregroundGravity="bottom|right"
-                    android:padding="0dp"
-                    android:src="@drawable/ic_plus_action"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    app:borderWidth="0dp"
-                    app:elevation="0dp" />
             </RelativeLayout>
 
 
