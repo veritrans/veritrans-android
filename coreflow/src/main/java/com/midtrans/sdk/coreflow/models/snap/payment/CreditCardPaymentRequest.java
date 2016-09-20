@@ -36,4 +36,6 @@ public class CreditCardPaymentRequest extends BasePaymentRequest {
     public void setSaveCard(boolean saveCard) {
         this.saveCard = saveCard;
     }
+
+
 }

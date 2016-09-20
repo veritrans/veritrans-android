@@ -9,12 +9,15 @@ public class BasePaymentRequest {
     @SerializedName("transaction_id")
     protected String transactionId;
     protected String authenticityToken;
+    @SerializedName("payment_type")
+    protected String paymentType;
 
     public BasePaymentRequest() {
 
     }
 
-    public BasePaymentRequest(String transactionId) {
+    public BasePaymentRequest(String transactionId, String paymentType) {
+        setPaymentType(paymentType);
         setTransactionId(transactionId);
     }
 
@@ -32,5 +35,9 @@ public class BasePaymentRequest {
 
     public void setAuthenticityToken(String authenticityToken) {
         this.authenticityToken = authenticityToken;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
     }
 }

@@ -11,9 +11,10 @@ public class TelkomselEcashPaymentRequest extends BasePaymentRequest {
     @SerializedName("customer")
     private String customer;
 
-    public TelkomselEcashPaymentRequest(String token, String customerPhoneNumber) {
+    public TelkomselEcashPaymentRequest(String token, String customerPhoneNumber, String paymentType) {
         this.transactionId = token;
         this.customer = customerPhoneNumber;
+        this.paymentType = paymentType;
     }
 
     public String getCustomer() {
