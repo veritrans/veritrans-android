@@ -66,7 +66,7 @@ public class CreditCardRegisterForm extends LinearLayout {
 
     private void init(Context context, AttributeSet attrs) {
         // Inflate custom layout
-        LayoutInflater.from(context).inflate(R.layout.credit_card_form, this, true);
+        LayoutInflater.from(context).inflate(R.layout.credit_card_register_form, this, true);
         // Define layout components
         registerButton = (Button) findViewById(R.id.button_pay);
         cvvHelpBtn = (Button) findViewById(R.id.button_what_is_cvv);

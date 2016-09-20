@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -82,6 +81,7 @@ public class WebviewFragment extends Fragment {
     @SuppressLint("AddJavascriptInterface")
     private void initwebview() {
         SdkUIFlowUtil.showProgressDialog(getActivity(), true);
+        webView.getSettings().setAllowFileAccess(false);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setInitialScale(1);
         webView.getSettings().setLoadWithOverviewMode(true);
@@ -91,14 +91,6 @@ public class WebviewFragment extends Fragment {
         }
         webView.setWebViewClient(new MidtransWebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
-        webView.addJavascriptInterface(new JsInterface(), getString(R.string.veritrans_response));
-       // webView.addJavascriptInterface(new WebAppInterface(getActivity()), "Android");
-    }
-
-    public void webviewBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack();
-        }
     }
 
     private class MidtransWebViewClient extends WebViewClient {
@@ -157,34 +149,5 @@ public class WebviewFragment extends Fragment {
             }
             SdkUIFlowUtil.showProgressDialog(getActivity(), false);
         }
-    }
-
-
-
-    public class JsInterface {
-        /**
-         * code is written on merchant server (redirect url)
-         * doctype html
-         html
-         head
-         title= title
-         script(type='text/javascript').
-         function paymentStatus(data) {
-         Android.paymentResponse(data);
-         }
-
-         body(onload="paymentStatus('" + paymentStatus + "')")
-         h1 Success.
-         * @param data  JS data
-         */
-        @JavascriptInterface
-        public void paymentResponse(String data) {
-            Logger.i("paymentStatus:"+data);
-            Intent intent = new Intent();
-            intent.putExtra(getString(R.string.payment_response), data);
-            getActivity().setResult(getActivity().RESULT_OK, intent);
-            getActivity().finish();
-        }
-
     }
 }
