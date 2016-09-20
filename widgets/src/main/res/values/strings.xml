@@ -30,4 +30,10 @@
     <string name="payment_credit_card_expiry_month_format">%1$s/</string>
     <string name="payment_credit_card_expiry_month_int_format">%1$d/</string>
     <string name="payment_credit_card_expiry_month_single_digit_format">0%1$s/</string>
+    <string name="hint_input_cvv">Input CVV</string>
+    <string name="pay_with_new_card">Pay With New Card</string>
+    <string name="back_tolist">card list</string>
+    <string name="card_prefix">XXXX-XXXX-XXXX-</string>
+    <string name="cvv_empty">CVV is Empty</string>
+
 </resources>

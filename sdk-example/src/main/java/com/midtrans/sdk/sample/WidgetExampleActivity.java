@@ -13,7 +13,10 @@ import java.util.UUID;
 
 import com.midtrans.sdk.coreflow.core.TransactionRequest;
 import com.midtrans.sdk.coreflow.models.BillInfoModel;
+import com.midtrans.sdk.coreflow.models.BillingAddress;
+import com.midtrans.sdk.coreflow.models.CustomerDetails;
 import com.midtrans.sdk.coreflow.models.ItemDetails;
+import com.midtrans.sdk.coreflow.models.ShippingAddress;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.models.snap.CreditCard;
 import com.midtrans.sdk.widgets.CreditCardForm;
@@ -25,6 +28,7 @@ public class WidgetExampleActivity extends AppCompatActivity {
     private CreditCardForm creditCardForm;
     private Button getToken;
     private ProgressDialog dialog;
+    private String userId = "random-userid-example";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +42,8 @@ public class WidgetExampleActivity extends AppCompatActivity {
         creditCardForm = (CreditCardForm) findViewById(R.id.credit_card_form);
         creditCardForm.setMidtransClientKey(BuildConfig.CLIENT_KEY);
         creditCardForm.setMerchantUrl(BuildConfig.BASE_URL);
+        creditCardForm.setUserId(this.userId);
+        creditCardForm.setEnableTwoClick(true);
 
         getToken = (Button) findViewById(R.id.btn_get_token);
         getToken.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +79,32 @@ public class WidgetExampleActivity extends AppCompatActivity {
         TransactionRequest transactionRequestNew = new
                 TransactionRequest(UUID.randomUUID().toString(), 360000);
 
+        //define customer detail (mandatory)
+        CustomerDetails mCustomerDetails = new CustomerDetails();
+        mCustomerDetails.setPhone("24234234234");
+        mCustomerDetails.setFirstName("samle full name");
+        mCustomerDetails.setEmail("mail@mail.com");
+
+        ShippingAddress shippingAddress = new ShippingAddress();
+        shippingAddress.setAddress("jalan kalangan");
+        shippingAddress.setCity("yogyakarta");
+        shippingAddress.setCountryCode("IDN");
+        shippingAddress.setPostalCode("72168");
+        shippingAddress.setFirstName(mCustomerDetails.getFirstName());
+        shippingAddress.setPhone(mCustomerDetails.getPhone());
+        mCustomerDetails.setShippingAddress(shippingAddress);
+
+        BillingAddress billingAddress = new BillingAddress();
+        billingAddress.setAddress("jalan kalangan");
+        billingAddress.setCity("yogyakarta");
+        billingAddress.setCountryCode("IDN");
+        billingAddress.setPostalCode("72168");
+        billingAddress.setFirstName(mCustomerDetails.getFirstName());
+        billingAddress.setPhone(mCustomerDetails.getPhone());
+        mCustomerDetails.setBillingAddress(billingAddress);
+        transactionRequestNew.setCustomerDetails(mCustomerDetails);
+
+
         // Define item details
         ItemDetails itemDetails = new ItemDetails("1", 120000, 1, "Trekking Shoes");
         ItemDetails itemDetails1 = new ItemDetails("2", 100000, 1, "Casual Shoes");
@@ -90,6 +122,7 @@ public class WidgetExampleActivity extends AppCompatActivity {
 
         CreditCard creditCard = new CreditCard();
         creditCard.setSecure(true);
+        creditCard.setSaveCard(true);
         transactionRequestNew.setCreditCard(creditCard);
 
         return transactionRequestNew;

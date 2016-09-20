@@ -1,6 +1,13 @@
 package com.midtrans.sdk.widgets.utils;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
+import com.midtrans.sdk.coreflow.core.Logger;
 
 /**
  * Credit card utilities.
@@ -64,5 +71,43 @@ public class CardUtils {
 
             }
         }
+    }
+
+    /**
+     * Utility method which will help to close the keyboard.
+     *
+     * @param context Context instance
+     */
+    public static void hideKeyboard(Context context) {
+        try {
+            Logger.i("hide keyboard");
+            View view = ((Activity)context).getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context
+                        .INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * shows keyboard on screen forcefully.
+     *
+     * @param context  Context instance
+     * @param editText  edittext instance
+     */
+    public static void showKeyboard(Context context, EditText editText) {
+        Logger.i("show keyboard");
+        if (editText != null) {
+            editText.requestFocus();
+            editText.setFocusable(true);
+            editText.setFocusableInTouchMode(true);
+        }
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context
+                .INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+
     }
 }

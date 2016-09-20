@@ -50,7 +50,9 @@ Implementation in layout.xml
 - `vtcc_client_key` : Midtrans payment client key required to enable the payment.
 - `vtcc_merchant_url` : Merchant server base URL for charging the payment. Merchant server must use `SNAP`. Implementation follow [this link](https://github.com/veritrans/?utf8=%E2%9C%93&query=snap).
 
-Java implementation.
+###### Java implementation.
+
+to implement the widget, you need to intiatate it in your code like below. if you want to enable `two click`, you just need to call  `setEnableTwoClick(true)` method.
 
 ```Java
 CreditCardForm creditCardForm = (CreditCardForm) findViewById(R.id.credit_card_form);
@@ -58,10 +60,12 @@ CreditCardForm creditCardForm = (CreditCardForm) findViewById(R.id.credit_card_f
 creditCardForm.setMidtransClientKey(VT_CLIENT_KEY);
 // Set merchant URL (string)
 creditCardForm.setMerchantUrl(MERCHANT_URL);
+//enable twoclick feature
+creditCardForm.setEnableTwoClick(true);
+
 ```
 
-#### Payment
-
+## Payment
 *Note*: You must complete previous part before proceed to start the payment.
 
 First, you need to define the transaction details.
@@ -69,6 +73,30 @@ First, you need to define the transaction details.
 ```Java
 		// Create new Transaction Request
         TransactionRequest transactionRequest = new TransactionRequest(TRANSACTION_ID, TRANSACTION_AMOUNT);
+        //define customer detail (mandatory)
+        CustomerDetails mCustomerDetails = new CustomerDetails();
+        mCustomerDetails.setPhone("24234234234");
+        mCustomerDetails.setFirstName("samle full name");
+        mCustomerDetails.setEmail("mail@mail.com");
+
+        ShippingAddress shippingAddress = new ShippingAddress();
+        shippingAddress.setAddress("jalan kalangan");
+        shippingAddress.setCity("yogyakarta");
+        shippingAddress.setCountryCode("IDN");
+        shippingAddress.setPostalCode("72168");
+        shippingAddress.setFirstName(mCustomerDetails.getFirstName());
+        shippingAddress.setPhone(mCustomerDetails.getPhone());
+        mCustomerDetails.setShippingAddress(shippingAddress);
+
+        BillingAddress billingAddress = new BillingAddress();
+        billingAddress.setAddress("jalan kalangan");
+        billingAddress.setCity("yogyakarta");
+        billingAddress.setCountryCode("IDN");
+        billingAddress.setPostalCode("72168");
+        billingAddress.setFirstName(mCustomerDetails.getFirstName());
+        billingAddress.setPhone(mCustomerDetails.getPhone());
+        mCustomerDetails.setBillingAddress(billingAddress);
+        transactionRequestNew.setCustomerDetails(mCustomerDetails);
 
         // Define item details
         ItemDetails itemDetails = new ItemDetails(ITEM1_ID, ITEM1_PRICE, ITEM1_AMOUNT, ITEM1_NAME);
@@ -89,7 +117,6 @@ First, you need to define the transaction details.
         transactionRequest(creditCard);
 ```
 
-Then start the payment.
 
 ```Java
 if (creditCardForm.checkCardValidity()) {
@@ -120,11 +147,11 @@ Implementation in layout.xml
 	android:layout_height="wrap_content"
 	app:mtcc_show_pay="false"
 	app:mtcc_client_key="@string/vt_client_key"
-	app:mtcc_merchant_url="@string/merchant_url" 
+	app:mtcc_merchant_url="@string/merchant_url"
 	app:mtcc_user_id="@string/user_id/>
 ```
 
-*Note*: 
+*Note*:
 
 - `vtcc_show_pay` : flag to show payment button provided on widget or not.
 - `vtcc_client_key` : Midtrans payment client key required to enable the payment.

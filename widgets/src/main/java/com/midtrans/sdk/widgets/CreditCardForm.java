@@ -1,40 +1,60 @@
 package com.midtrans.sdk.widgets;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
-import com.midtrans.sdk.coreflow.callback.CardTokenCallback;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import com.midtrans.sdk.coreflow.callback.CheckoutCallback;
+import com.midtrans.sdk.coreflow.callback.CardTokenCallback;
+import com.midtrans.sdk.coreflow.callback.GetCardCallback;
+import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
 import com.midtrans.sdk.coreflow.callback.TransactionCallback;
+import com.midtrans.sdk.coreflow.core.Logger;
 import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.coreflow.core.TransactionRequest;
 import com.midtrans.sdk.coreflow.models.CardTokenRequest;
+import com.midtrans.sdk.coreflow.models.SaveCardRequest;
+import com.midtrans.sdk.coreflow.models.SaveCardResponse;
 import com.midtrans.sdk.coreflow.models.TokenDetailsResponse;
 import com.midtrans.sdk.coreflow.models.TransactionResponse;
 import com.midtrans.sdk.coreflow.models.snap.Token;
 import com.midtrans.sdk.coreflow.utilities.Utils;
+import com.midtrans.sdk.widgets.adapter.CardPagerAdapter;
 import com.midtrans.sdk.widgets.utils.CardUtils;
+import com.midtrans.sdk.widgets.utils.CirclePageIndicator;
 import com.midtrans.sdk.widgets.utils.WidgetException;
 
 import java.text.SimpleDateFormat;
@@ -48,9 +68,10 @@ import java.util.Date;
  */
 public class CreditCardForm extends NestedScrollView{
     private static final int MONTH_COUNT = 12;
+    private static final float CARD_ASPECT_RATIO = 0.52222f;
 
-    private ImageView logo;
-    private Button payBtn, cvvHelpBtn;
+    private ImageView logo, cvvHelpImage;
+    private Button payBtn;
     private EditText cardNumber, cardCvvNumber, cardExpiry;
     private TextInputLayout cardNumberContainer, cardCvvNumberContainer, cardExpiryContainer;
 
@@ -62,6 +83,24 @@ public class CreditCardForm extends NestedScrollView{
     private String cardToken;
     private TransactionRequest transactionRequest;
     private MidtransSDK midtransSDK;
+    private boolean enableTwoClick;
+    private RelativeLayout layoutCardForm;
+    private ArrayList<SaveCardRequest> creditCardList = new ArrayList<>();
+    private RelativeLayout layoutSavedCards;
+    private ViewPager savedCardPager;
+    private RelativeLayout creditCardLayout;
+    private CirclePageIndicator circlePageIndicator;
+    private float cardWidth;
+    private CardPagerAdapter cardPagerAdapter;
+    private RelativeLayout layoutProgress;
+    private FloatingActionButton newCardBtn;
+    private boolean isPayBtnShown;
+    private RelativeLayout saveCardContainer;
+    private boolean iSTwoClickPayment;
+    private CheckBox checkboxStoreCard;
+    private CardTokenRequest cardTokenRequest;
+    private Button backButton;
+    private String userId;
 
     public CreditCardForm(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -69,11 +108,17 @@ public class CreditCardForm extends NestedScrollView{
         initCardNumberEditText();
         initCardExpiryEditText();
         initCardCVVEditText();
+        midtransSDK = MidtransSDK.getInstance();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        layoutProgress = null;
+        layoutSavedCards = null;
+        layoutCardForm = null;
+        creditCardLayout = null;
+        cardPagerAdapter = null;
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -81,7 +126,8 @@ public class CreditCardForm extends NestedScrollView{
         LayoutInflater.from(context).inflate(R.layout.credit_card_form, this, true);
         // Define layout components
         payBtn = (Button) findViewById(R.id.button_pay);
-        cvvHelpBtn = (Button) findViewById(R.id.button_what_is_cvv);
+        newCardBtn = (FloatingActionButton) findViewById(R.id.btn_pay_new_card);
+        cvvHelpImage = (ImageView) findViewById(R.id.image_what_is_cvv);
         cardNumber = (EditText) findViewById(R.id.card_number);
         cardCvvNumber = (EditText) findViewById(R.id.card_cvv_number);
         cardExpiry = (EditText) findViewById(R.id.card_expiry);
@@ -89,9 +135,19 @@ public class CreditCardForm extends NestedScrollView{
         cardCvvNumberContainer = (TextInputLayout) findViewById(R.id.card_cvv_number_container);
         cardExpiryContainer = (TextInputLayout) findViewById(R.id.card_expiry_container);
         logo = (ImageView) findViewById(R.id.payment_card_logo);
+        layoutCardForm = (RelativeLayout) findViewById(R.id.layout_card_form);
+        layoutProgress = (RelativeLayout) findViewById(R.id.layout_progress);
+        saveCardContainer = (RelativeLayout) findViewById(R.id.container_save_card);
+        checkboxStoreCard = (CheckBox) findViewById(R.id.cb_store_card);
+        backButton = (Button) findViewById(R.id.button_back);
+        //saved cards layouts
+        layoutSavedCards = (RelativeLayout) findViewById(R.id.layout_saved_cards);
+        savedCardPager = (ViewPager) findViewById(R.id.saved_card_pager);
+        creditCardLayout = (RelativeLayout) findViewById(R.id.credit_card_holder);
 
+        calculateScreenWidth();
         // Show dialog for CVV hint
-        cvvHelpBtn.setOnClickListener(new OnClickListener() {
+        cvvHelpImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog dialog = new AlertDialog.Builder(getContext())
@@ -107,26 +163,115 @@ public class CreditCardForm extends NestedScrollView{
             }
         });
 
+        backButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iSTwoClickPayment = true;
+                showCreditCardLayout(false);
+            }
+        });
+        newCardBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCreditCardLayout(true);
+                iSTwoClickPayment = false;
+            }
+        });
+
+
         // Get values from XML
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CreditCardFormStyle);
         midtransClientKey = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_client_key);
         merchantUrl = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_merchant_url);
+        userId = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_user_id);
         boolean isPayBtnShown = typedArray.getBoolean(R.styleable.CreditCardFormStyle_mtcc_show_pay, false);
 
         // Update charge button visibility
-        if (isPayBtnShown) {
-            showPayButton();
-        } else {
-            hidePayButton();
-        }
-
+        showHidePayButton(isPayBtnShown);
         typedArray.recycle();
+
+    }
+
+    private void initNormalMode() {
+        checkboxStoreCard.setChecked(false);
+        saveCardContainer.setVisibility(GONE);
+        showCreditCardLayout(true);
+    }
+
+    private void initTwoClickMode() {
+        saveCardContainer.setVisibility(VISIBLE);
+        getCardList();
+    }
+
+    private void showCreditCardLayout(boolean normalMode) {
+        if (normalMode) {
+            if (layoutSavedCards.getVisibility() == View.VISIBLE) {
+                layoutSavedCards.setVisibility(View.GONE);
+            }
+            if (layoutCardForm.getVisibility() == View.GONE) {
+                layoutCardForm.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (layoutSavedCards.getVisibility() == View.GONE) {
+                layoutSavedCards.setVisibility(View.VISIBLE);
+            }
+            if (layoutCardForm.getVisibility() == View.VISIBLE) {
+                layoutCardForm.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
+    private void initSavedCards() {
+        float cardHeight = cardWidth * CARD_ASPECT_RATIO;
+        Logger.i("card width:" + cardWidth + ",height:" + cardHeight);
+        RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(ViewGroup
+                .LayoutParams.MATCH_PARENT, (int) cardHeight);
+        savedCardPager.setLayoutParams(parms);
+        circlePageIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
+        setViewPagerValues();
+    }
+
+    private void setViewPagerValues() {
+        cardPagerAdapter = new CardPagerAdapter(getContext(), creditCardList);
+        savedCardPager.setAdapter(cardPagerAdapter);
+        savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int
+                    positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        circlePageIndicator.setViewPager(savedCardPager);
+        cardPagerAdapter.notifyDataSetChanged();
+        if (creditCardList.isEmpty()) {
+            backButton.setVisibility(GONE);
+        }
+    }
+
+    private void calculateScreenWidth() {
+        Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        float density = getResources().getDisplayMetrics().density;
+        cardWidth = outMetrics.widthPixels;
+        cardWidth = cardWidth - ((2 * getResources().getDimension(R.dimen.sixteen_dp)) / density);
     }
 
     private void initPayButton() {
         payBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (widgetTransactionCallback != null) {
                     if (transactionRequest != null) {
                         pay(transactionRequest, widgetTransactionCallback);
@@ -158,13 +303,14 @@ public class CreditCardForm extends NestedScrollView{
         }
     }
 
-    public void showPayButton() {
-        payBtn.setVisibility(VISIBLE);
+    public void showHidePayButton(boolean show) {
+        if (show) {
+            payBtn.setVisibility(VISIBLE);
+        } else {
+            payBtn.setVisibility(GONE);
+        }
         initPayButton();
-    }
 
-    public void hidePayButton() {
-        payBtn.setVisibility(GONE);
     }
 
     private void initCardNumberEditText() {
@@ -314,11 +460,17 @@ public class CreditCardForm extends NestedScrollView{
         });
     }
 
+    /*
+     * check form validity when normal payment
+     */
     public boolean checkCardValidity() {
-        boolean cardNumberValidity = checkCardNumberValidity();
-        boolean cardExpiryValidity = checkCardExpiryValidity();
-        boolean cardCVVValidity = checkCardCVVValidity();
-        return cardNumberValidity && cardExpiryValidity && cardCVVValidity;
+        if (!enableTwoClick) {
+            boolean cardNumberValidity = checkCardNumberValidity();
+            boolean cardExpiryValidity = checkCardExpiryValidity();
+            boolean cardCVVValidity = checkCardCVVValidity();
+            return cardNumberValidity && cardExpiryValidity && cardCVVValidity;
+        }
+        return true;
     }
 
     private boolean checkCardNumberValidity() {
@@ -438,50 +590,103 @@ public class CreditCardForm extends NestedScrollView{
     }
 
     public void pay(TransactionRequest transactionRequest, WidgetTransactionCallback widgetTransactionCallback) {
-        if (checkCardValidity()) {
-            setTransactionRequest(transactionRequest);
-            setWidgetTransactionCallback(widgetTransactionCallback);
-            CardTokenRequest cardTokenRequest = new CardTokenRequest(
-                    cardNumber.getText().toString().replace(" ", ""),
-                    cardCvvNumber.getText().toString(),
-                    cardExpiry.getText().toString().split("/")[0],
-                    cardExpiry.getText().toString().split("/")[1],
-                    midtransClientKey
-            );
-            cardTokenRequest.setGrossAmount(transactionRequest.getAmount());
-            cardTokenRequest.setSecure(transactionRequest.isSecureCard());
-            getMidtransSDK().getCardToken(cardTokenRequest, new CardTokenCallback() {
-                @Override
-                public void onSuccess(TokenDetailsResponse response) {
-                    if (tokenCallback != null) {
-                        tokenCallback.onSucceed(response);
+        if (enableTwoClick && iSTwoClickPayment) {
+            CardDetailForm cardDetailForm = cardPagerAdapter.getSelectedItem();
+            if (cardDetailForm != null && cardDetailForm.checkFormValidity()) {
+                setTransactionRequest(transactionRequest);
+                setWidgetTransactionCallback(widgetTransactionCallback);
+                actionPaymentTwoClick(cardDetailForm.getSelectedCard(), cardDetailForm.getCardCVV());
+            } else {
+                widgetTransactionCallback.onFailed(new WidgetException(getContext().getString(R.string.cvv_empty)));
+            }
+        } else {
+            if (checkCardValidity()) {
+                setTransactionRequest(transactionRequest);
+                setWidgetTransactionCallback(widgetTransactionCallback);
+                CardTokenRequest cardTokenRequest = new CardTokenRequest(
+                        cardNumber.getText().toString().replace(" ", ""),
+                        cardCvvNumber.getText().toString(),
+                        cardExpiry.getText().toString().split("/")[0],
+                        cardExpiry.getText().toString().split("/")[1],
+                        midtransClientKey
+                );
+                cardTokenRequest.setIsSaved(checkboxStoreCard.isChecked());
+                cardTokenRequest.setGrossAmount(transactionRequest.getAmount());
+                cardTokenRequest.setSecure(transactionRequest.isSecureCard());
+                this.cardTokenRequest = cardTokenRequest;
+                getMidtransSDK().getCardToken(cardTokenRequest, new CardTokenCallback() {
+                    @Override
+                    public void onSuccess(TokenDetailsResponse response) {
+                        actionGetCardTokenSuccess(response);
                     }
 
-                    if (!TextUtils.isEmpty(response.getRedirectUrl())) {
-                        start3DS(response.getTokenId(), response.getRedirectUrl());
-                    } else {
-                        charge(response.getTokenId(), CreditCardForm.this.transactionRequest);
-                    }
-                }
-
-                @Override
-                public void onFailure(TokenDetailsResponse response, String reason) {
-                    if (tokenCallback != null) {
-                        tokenCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
+                    @Override
+                    public void onFailure(TokenDetailsResponse response, String reason) {
+                        actionGetCardTokenFailure(response, reason);
                     }
 
-                    if (CreditCardForm.this.widgetTransactionCallback != null) {
-                        CreditCardForm.this.widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
+                    @Override
+                    public void onError(Throwable error) {
+                        actionGetCardTokenError(error);
                     }
-                }
+                });
+            }
+        }
 
-                @Override
-                public void onError(Throwable error) {
-                    if (tokenCallback != null) {
-                        tokenCallback.onFailed(new WidgetException(error.getMessage()));
-                    }
-                }
-            });
+    }
+
+    private void actionPaymentTwoClick(SaveCardRequest selectedCard, String cardCVV) {
+        CardTokenRequest request = new CardTokenRequest();
+        request.setSavedTokenId(selectedCard.getSavedTokenId());
+        request.setCardCVV(cardCVV);
+        request.setTwoClick(true);
+        request.setGrossAmount(transactionRequest.getAmount());
+        request.setSecure(transactionRequest.isSecureCard());
+        request.setClientKey(this.midtransClientKey);
+        midtransSDK.getCardToken(request, new CardTokenCallback() {
+            @Override
+            public void onSuccess(TokenDetailsResponse response) {
+                actionGetCardTokenSuccess(response);
+            }
+
+            @Override
+            public void onFailure(TokenDetailsResponse response, String reason) {
+                actionGetCardTokenFailure(response, reason);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                actionGetCardTokenError(error);
+            }
+        });
+
+    }
+
+    private void actionGetCardTokenError(Throwable error) {
+        if (tokenCallback != null) {
+            tokenCallback.onFailed(new WidgetException(error.getMessage()));
+        }
+    }
+
+    private void actionGetCardTokenFailure(TokenDetailsResponse response, String reason) {
+        if (tokenCallback != null) {
+            tokenCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
+        }
+
+        if (CreditCardForm.this.widgetTransactionCallback != null) {
+            CreditCardForm.this.widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_get_token)));
+        }
+    }
+
+    private void actionGetCardTokenSuccess(TokenDetailsResponse response) {
+        if (tokenCallback != null) {
+            tokenCallback.onSucceed(response);
+        }
+
+        if (!TextUtils.isEmpty(response.getRedirectUrl())) {
+            start3DS(response.getTokenId(), response.getRedirectUrl());
+        } else {
+            charge(response.getTokenId(), CreditCardForm.this.transactionRequest);
         }
     }
 
@@ -513,9 +718,13 @@ public class CreditCardForm extends NestedScrollView{
 
     private void payUsingCreditCard(Token token) {
         getMidtransSDK().paymentUsingCard(token.getTokenId(), CreditCardForm.this.cardToken,
-                false, new TransactionCallback() {
+                checkboxStoreCard.isChecked(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
+
+                        if (enableTwoClick && checkboxStoreCard.isChecked()) {
+                            saveCards(response);
+                        }
                         if (widgetTransactionCallback != null) {
                             widgetTransactionCallback.onSucceed(response);
                         }
@@ -536,6 +745,36 @@ public class CreditCardForm extends NestedScrollView{
                     }
                 });
 
+    }
+
+    private void saveCards(TransactionResponse response) {
+        if (cardTokenRequest == null) {
+            return;
+        }
+        String firstPart = cardTokenRequest.getCardNumber().substring(0, 6);
+        String secondPart = cardTokenRequest.getCardNumber().substring(12);
+        String maskedCard = firstPart + "-" + secondPart;
+        SaveCardRequest newSaveCardRequest = new SaveCardRequest(response.getSavedTokenId(), maskedCard, cardTokenRequest.getCardType());
+
+        ArrayList<SaveCardRequest> newCardRequests = new ArrayList<>();
+        newCardRequests.add(newSaveCardRequest);
+        if (this.creditCardList != null && !this.creditCardList.isEmpty()) {
+            newCardRequests.addAll(this.creditCardList);
+        }
+
+        getMidtransSDK().saveCards(this.userId, newCardRequests, new SaveCardCallback() {
+            @Override
+            public void onSuccess(SaveCardResponse response) {
+            }
+
+            @Override
+            public void onFailure(String reason) {
+            }
+
+            @Override
+            public void onError(Throwable error) {
+            }
+        });
     }
 
     public String getMidtransClientKey() {
@@ -620,6 +859,32 @@ public class CreditCardForm extends NestedScrollView{
     }
 
     /**
+     * Will be used to enable two click payment type
+     *
+     * @param enableTwoClick
+     */
+    public void setEnableTwoClick(boolean enableTwoClick) {
+        this.enableTwoClick = enableTwoClick;
+        if (enableTwoClick) {
+            initTwoClickMode();
+        } else {
+            initNormalMode();
+            backButton.setVisibility(GONE);
+        }
+    }
+
+    private void showBackButton() {
+        if (creditCardList != null && !creditCardList.isEmpty()) {
+            backButton.setVisibility(VISIBLE);
+        }
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+
+    /**
      * Will be used to get response callback after getting token in this view.
      */
     public interface TokenCallback {
@@ -635,5 +900,54 @@ public class CreditCardForm extends NestedScrollView{
         void onSucceed(TransactionResponse transactionResponse);
 
         void onFailed(Throwable throwable);
+    }
+
+    /*
+     * Saved Cards Stuff
+     */
+
+    public void getCardList() {
+        layoutProgress.setVisibility(VISIBLE);
+        getMidtransSDK().getCards(this.userId, new GetCardCallback() {
+            @Override
+            public void onSuccess(ArrayList<SaveCardRequest> response) {
+                showCreditCardLayout(false);
+                initSavedCards();
+                if (response != null && !response.isEmpty()) {
+                    creditCardList.clear();
+                    creditCardList.addAll(response);
+                    cardPagerAdapter.updateData(creditCardList);
+                    iSTwoClickPayment = true;
+                }
+                showBackButton();
+                if (layoutProgress.getVisibility() == VISIBLE) {
+                    layoutProgress.setVisibility(GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(String reason) {
+                showCreditCardLayout(true);
+                if (layoutProgress.getVisibility() == VISIBLE) {
+                    layoutProgress.setVisibility(GONE);
+                }
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                if (layoutProgress.getVisibility() == VISIBLE) {
+                    layoutProgress.setVisibility(GONE);
+                }
+            }
+        });
+    }
+
+    private SaveCardRequest findByCardNumber(String maskedCard) {
+        for (SaveCardRequest request : this.creditCardList) {
+            if (request.getMaskedCard().equals(maskedCard)) {
+                return request;
+            }
+        }
+        return null;
     }
 }
