@@ -124,6 +124,9 @@ public class SDKUtilsTest {
     private ArrayList<UserAddress> userAddressListMock;
     @Mock
     private ContentResolver contentResolverMock;
+    private String cardPaymentType = "credit_card";
+    private String bankTransferPaymentType = "bank_transfer";
+    private String klikBCAPaymentType = "bca_klikbca";
 
     @Before
     public void setup(){
@@ -524,23 +527,23 @@ public class SDKUtilsTest {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
 
-        Assert.assertEquals(cardToken, SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequestMock, token).getTokenId());
-        Assert.assertEquals(token, SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequestMock, token).getTransactionId());
-        Assert.assertEquals(saveCard, SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequestMock, token).isSaveCard());
+        Assert.assertEquals(cardToken, SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequestMock, token, cardPaymentType).getTokenId());
+        Assert.assertEquals(token, SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequestMock, token, cardPaymentType).getTransactionId());
+        Assert.assertEquals(saveCard, SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequestMock, token, cardPaymentType).isSaveCard());
     }
 
     @Test
     public void getBankTransferPaymentRequest() {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
-        Assert.assertEquals(email, SdkUtil.getBankTransferPaymentRequest(email, token).getEmailAddress());
-        Assert.assertEquals(token, SdkUtil.getBankTransferPaymentRequest(email, token).getTransactionId());
+        Assert.assertEquals(email, SdkUtil.getBankTransferPaymentRequest(email, token, bankTransferPaymentType).getEmailAddress());
+        Assert.assertEquals(token, SdkUtil.getBankTransferPaymentRequest(email, token, bankTransferPaymentType).getTransactionId());
     }
 
     @Test
     public void getKlikBCAPaymentRequest() {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
-        Assert.assertEquals(klikBCAUserId, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, token).getUserId());
-        Assert.assertEquals(token, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, token).getTransactionId());
+        Assert.assertEquals(klikBCAUserId, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, token, klikBCAPaymentType).getUserId());
+        Assert.assertEquals(token, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, token, klikBCAPaymentType).getTransactionId());
     }
 
     @Test
