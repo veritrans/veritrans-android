@@ -70,7 +70,7 @@ public class CreditCardForm extends NestedScrollView implements CardDetailForm.C
     private static final int MONTH_COUNT = 12;
     private static final float CARD_ASPECT_RATIO = 0.62222f;
 
-    private ImageView logo, cvvHelpImage;
+    private ImageView logo, cvvHelpImage, saveCardImage;
     private Button payBtn;
     private EditText cardNumber, cardCvvNumber, cardExpiry;
     private TextInputLayout cardNumberContainer, cardCvvNumberContainer, cardExpiryContainer;
@@ -126,6 +126,7 @@ public class CreditCardForm extends NestedScrollView implements CardDetailForm.C
         // Define layout components
         payBtn = (Button) findViewById(R.id.button_pay);
         cvvHelpImage = (ImageView) findViewById(R.id.image_what_is_cvv);
+        saveCardImage = (ImageView) findViewById(R.id.image_question_save_card);
         cardNumber = (EditText) findViewById(R.id.card_number);
         cardCvvNumber = (EditText) findViewById(R.id.card_cvv_number);
         cardExpiry = (EditText) findViewById(R.id.card_expiry);
@@ -150,6 +151,22 @@ public class CreditCardForm extends NestedScrollView implements CardDetailForm.C
             public void onClick(View view) {
                 AlertDialog dialog = new AlertDialog.Builder(getContext())
                         .setView(R.layout.dialog_cvv)
+                        .setPositiveButton(R.string.cvv_hint_got_it, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                dialog.show();
+            }
+        });
+
+        saveCardImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                        .setView(R.layout.dialog_save_card)
                         .setPositiveButton(R.string.cvv_hint_got_it, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -714,12 +731,11 @@ public class CreditCardForm extends NestedScrollView implements CardDetailForm.C
                 checkboxStoreCard.isChecked(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
-
-                        if (enableTwoClick && checkboxStoreCard.isChecked()) {
-                            saveCards(response);
-                        }
                         if (widgetTransactionCallback != null) {
                             widgetTransactionCallback.onSucceed(response);
+                        }
+                        if (enableTwoClick && checkboxStoreCard.isChecked()) {
+                            saveCards(response);
                         }
                     }
 

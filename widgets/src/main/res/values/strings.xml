@@ -35,5 +35,6 @@
     <string name="back_tolist">card list</string>
     <string name="card_prefix">XXXX-XXXX-XXXX-</string>
     <string name="cvv_empty">CVV is Empty</string>
+    <string name="save_card_hint_message">Save your card for faster checkout process.</string>
 
 </resources>

@@ -28,5 +28,6 @@
     <string name="pay_with_new_card">Bayar Degan kartu Baru</string>
     <string name="back_tolist">daftar kartu</string>
     <string name="cvv_empty">CVV Masih Kosong</string>
+    <string name="save_card_hint_message">Simpan kartu anda untuk proses checkout lebih cepat.</string>
 
 </resources>
