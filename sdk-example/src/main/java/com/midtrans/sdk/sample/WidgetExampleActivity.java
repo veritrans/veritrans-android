@@ -127,4 +127,11 @@ public class WidgetExampleActivity extends AppCompatActivity {
 
         return transactionRequestNew;
     }
+
+    @Override
+    protected void onDestroy() {
+        creditCardForm.removeAllViews();
+        creditCardForm = null;
+        super.onDestroy();
+    }
 }
