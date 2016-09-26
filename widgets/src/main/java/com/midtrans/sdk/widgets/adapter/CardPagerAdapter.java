@@ -116,6 +116,7 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
                 }
             }
         });
+
         holder.editCardDetailcvv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -132,6 +133,7 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
                 cardCVV = editable.toString().trim();
             }
         });
+
     }
 
     @Override

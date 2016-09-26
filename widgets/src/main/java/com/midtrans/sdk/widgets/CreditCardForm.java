@@ -990,6 +990,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
 
     //update cards on server when a card deleted
     private void updateCardOnMerchantServer(ArrayList<SaveCardRequest> newCards, final SaveCardRequest card) {
+        layoutProgress.setVisibility(VISIBLE);
         getMidtransSDK().saveCards(this.userId, newCards, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
@@ -1007,6 +1008,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
                 if(layoutProgress.getVisibility() == VISIBLE){
                     layoutProgress.setVisibility(GONE);
                 }
+                layoutProgress.setVisibility(GONE);
             }
 
             @Override
