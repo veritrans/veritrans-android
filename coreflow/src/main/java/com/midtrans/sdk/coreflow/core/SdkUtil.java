@@ -1,25 +1,20 @@
 package com.midtrans.sdk.coreflow.core;
 
-import android.provider.Settings;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-
-import com.midtrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
-import com.midtrans.sdk.coreflow.models.BillingAddress;
-import com.midtrans.sdk.coreflow.models.CardTransfer;
-import com.midtrans.sdk.coreflow.models.CstoreEntity;
-import com.midtrans.sdk.coreflow.models.ShippingAddress;
-import com.midtrans.sdk.coreflow.models.TokenRequestModel;
-
-import java.util.ArrayList;
 
 import com.midtrans.sdk.coreflow.R;
 import com.midtrans.sdk.coreflow.models.BBMMoneyRequestModel;
 import com.midtrans.sdk.coreflow.models.BCABankTransfer;
+import com.midtrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
 import com.midtrans.sdk.coreflow.models.BCAKlikPayModel;
 import com.midtrans.sdk.coreflow.models.BankTransfer;
+import com.midtrans.sdk.coreflow.models.BillingAddress;
 import com.midtrans.sdk.coreflow.models.CIMBClickPayModel;
 import com.midtrans.sdk.coreflow.models.CardPaymentDetails;
+import com.midtrans.sdk.coreflow.models.CardTransfer;
+import com.midtrans.sdk.coreflow.models.CstoreEntity;
 import com.midtrans.sdk.coreflow.models.CustomerDetails;
 import com.midtrans.sdk.coreflow.models.DescriptionModel;
 import com.midtrans.sdk.coreflow.models.EpayBriTransfer;
@@ -32,7 +27,9 @@ import com.midtrans.sdk.coreflow.models.MandiriClickPayModel;
 import com.midtrans.sdk.coreflow.models.MandiriClickPayRequestModel;
 import com.midtrans.sdk.coreflow.models.MandiriECashModel;
 import com.midtrans.sdk.coreflow.models.PermataBankTransfer;
+import com.midtrans.sdk.coreflow.models.ShippingAddress;
 import com.midtrans.sdk.coreflow.models.SnapTransactionDetails;
+import com.midtrans.sdk.coreflow.models.TokenRequestModel;
 import com.midtrans.sdk.coreflow.models.TransactionDetails;
 import com.midtrans.sdk.coreflow.models.UserAddress;
 import com.midtrans.sdk.coreflow.models.UserDetail;
@@ -41,6 +38,9 @@ import com.midtrans.sdk.coreflow.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.coreflow.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.coreflow.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.coreflow.models.snap.payment.PaymentDetails;
+import com.midtrans.sdk.coreflow.utilities.Installation;
+
+import java.util.ArrayList;
 
 /**
  * Created by ziahaqi on 18/06/2016.
@@ -515,10 +515,10 @@ public class SdkUtil {
      *
      * @return device identifier
      */
-    public static String getDeviceId() {
+    public static String getDeviceId(Context context) {
         String deviceId = "UNKNOWN";
         try {
-            deviceId = Settings.Secure.getString(MidtransSDK.getInstance().getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+            deviceId = Installation.id(context);
         } catch (Exception ex) {
             Logger.e(ex.toString());
         }
