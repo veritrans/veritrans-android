@@ -150,4 +150,15 @@ public class WebviewFragment extends Fragment {
             SdkUIFlowUtil.showProgressDialog(getActivity(), false);
         }
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if(webView != null){
+            webView.removeAllViews();
+            webView.destroyDrawingCache();
+            webView.clearHistory();
+            webView.destroy();
+        }
+    }
 }

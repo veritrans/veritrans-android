@@ -110,7 +110,7 @@ public class MidtransSDK {
      *
      * @return MidtransSDK instance
      */
-    public static MidtransSDK getInstance() {
+    public synchronized static MidtransSDK getInstance() {
         return midtransSDK;
     }
 

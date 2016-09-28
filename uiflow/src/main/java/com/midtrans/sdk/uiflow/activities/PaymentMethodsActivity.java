@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.midtrans.sdk.coreflow.core.MidtransSDK;
 import com.squareup.picasso.Picasso;
@@ -49,7 +50,7 @@ import com.midtrans.sdk.uiflow.R;
  * <p/>
  * Created by shivam on 10/16/15.
  */
-public class PaymentMethodsActivity extends BaseActivity{
+public class PaymentMethodsActivity extends BaseActivity implements PaymentMethodsAdapter.PaymentMethodListener{
 
     public static final String PAYABLE_AMOUNT = "Payable Amount";
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
@@ -72,6 +73,8 @@ public class PaymentMethodsActivity extends BaseActivity{
     private LinearLayout progressContainer = null;
     private ImageView logo = null;
     private ArrayList<String> bankTrasfers = new ArrayList<>();
+    private PaymentMethodsAdapter paymentMethodsAdapter;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,7 @@ public class PaymentMethodsActivity extends BaseActivity{
         setContentView(R.layout.activity_payments_method);
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
-
+        paymentMethodsAdapter = new PaymentMethodsAdapter(this);
         UserDetail userDetail = null;
         try {
             userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
@@ -164,12 +167,11 @@ public class PaymentMethodsActivity extends BaseActivity{
     }
 
     private void setupRecyclerView() {
-        PaymentMethodsAdapter paymentMethodsAdapter = new PaymentMethodsAdapter(this, data);
+        paymentMethodsAdapter.setData(data);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(paymentMethodsAdapter);
-
         // disable scrolling of recycler view if there is no need of it.
         handleScrollingOfRecyclerView();
     }
@@ -273,10 +275,6 @@ public class PaymentMethodsActivity extends BaseActivity{
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -342,41 +340,144 @@ public class PaymentMethodsActivity extends BaseActivity{
     }
 
     private void showErrorMessage() {
-        AlertDialog alert = new AlertDialog.Builder(this)
-                .setMessage(getString(R.string.txt_error_snap_token))
-                .setPositiveButton(R.string.btn_retry, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        getPaymentPages();
-                    }
-                })
-                .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        finish();
-                    }
-                })
-                .create();
-        alert.show();
+        if(!isFinishing()){
+            alertDialog = new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.txt_error_snap_token))
+                    .setPositiveButton(R.string.btn_retry, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            getPaymentPages();
+                        }
+                    })
+                    .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .create();
+            alertDialog.show();
+        }
     }
 
     private void showErrorAlertDialog(String message){
-        AlertDialog alert = new AlertDialog.Builder(this)
-                .setMessage(message)
-                .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        finish();
-                    }
-                })
-                .create();
-        alert.show();
+        if(!isFinishing()){
+            alertDialog = new AlertDialog.Builder(this)
+                    .setMessage(message)
+                    .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .create();
+            alertDialog.show();
+        }
     }
 
     public ArrayList<String> getBankTrasfers() {
         return bankTrasfers;
+    }
+
+
+
+    @Override
+    public void onItemClick(int position) {
+        if(paymentMethodsAdapter != null){
+            PaymentMethodsModel item = paymentMethodsAdapter.getItem(position);
+            String name = item.getName();
+
+            if (name.equalsIgnoreCase(getString(R.string.payment_method_credit_card))) {
+
+                Intent intent = new Intent(this, CreditDebitCardFlowActivity.class);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bank_transfer))) {
+
+                Intent startBankPayment = new Intent(this, SelectBankTransferActivity.class);
+                startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTrasfers());
+                startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_clickpay))) {
+
+                Intent startMandiriClickpay = new Intent(this, MandiriClickPayActivity.class);
+                startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bri_epay))) {
+
+                Intent startMandiriClickpay = new Intent(this, EpayBriActivity.class);
+                startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_cimb_clicks))) {
+
+                Intent startCIMBClickpay = new Intent(this, CIMBClickPayActivity.class);
+                startActivityForResult(startCIMBClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_ecash))) {
+                Intent startMandiriECash = new Intent(this, MandiriECashActivity.class);
+                startActivityForResult(startMandiriECash, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_indosat_dompetku))) {
+
+                Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
+                startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_indomaret))) {
+
+                Intent startIndomaret = new Intent(this, IndomaretActivity.class);
+                startActivityForResult(startIndomaret, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bbm_money))) {
+
+                Intent startBBMMoney = new Intent(this, BBMMoneyActivity.class);
+                startActivityForResult(startBBMMoney, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_offers))) {
+
+                Intent startOffersActivity = new Intent(this, OffersActivity.class);
+                startActivityForResult(startOffersActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bca_klikpay))) {
+
+                Intent startBCAKlikPayActivity = new Intent(this, BCAKlikPayActivity.class);
+                startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_klik_bca))) {
+
+                Intent startKlikBcaActivity = new Intent(this, KlikBCAActivity.class);
+                startKlikBcaActivity.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
+                startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_telkomsel_cash))) {
+
+                Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
+                startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_xl_tunai))) {
+
+                Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
+                startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            }else if (name.equalsIgnoreCase(getString(R.string.payment_method_kioson))){
+
+                Intent kiosanActvity = new Intent(this, KiosonActivity.class);
+                startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+            }else {
+
+                Toast.makeText(this.getApplicationContext(),
+                        "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(alertDialog != null){
+            alertDialog.cancel();
+        }
     }
 }

@@ -44,14 +44,27 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
     private static final String TAG = PaymentMethodsAdapter.class.getSimpleName();
 
-    private static Activity sActivity;
     private ArrayList<PaymentMethodsModel> data = null;
+    private PaymentMethodListener paymentMethodListener;
 
-    public PaymentMethodsAdapter(Activity activity, ArrayList<PaymentMethodsModel> data) {
-        sActivity = activity;
-        this.data = data;
+    public PaymentMethodsModel getItem(int position) {
+        return data.get(position);
     }
 
+    public interface PaymentMethodListener {
+        void onItemClick(int position);
+    }
+
+    public PaymentMethodsAdapter(PaymentMethodListener listener) {
+        this.paymentMethodListener = listener;
+        this.data = new ArrayList<>();
+    }
+
+    public void setData(ArrayList<PaymentMethodsModel> models){
+        this.data.clear();
+        this.data.addAll(models);
+        this.notifyDataSetChanged();
+    }
 
     @Override
     public PaymentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -59,7 +72,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_row_payment_methods, parent, false);
 
-        PaymentViewHolder paymentViewHolder = new PaymentViewHolder(view);
+        PaymentViewHolder paymentViewHolder = new PaymentViewHolder(view, paymentMethodListener);
         return paymentViewHolder;
     }
 
@@ -79,91 +92,24 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
     /**
      * public static view holder class.
      */
-    public static class PaymentViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+    public static class PaymentViewHolder extends RecyclerView.ViewHolder{
 
         TextView name;
         ImageView mImageView;
 
-        public PaymentViewHolder(View itemView) {
+        public PaymentViewHolder(View itemView, final PaymentMethodListener listener) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.text_payment_method_name);
             mImageView = (ImageView) itemView.findViewById(R.id.img_payment_method_icon);
-            itemView.setOnClickListener(this);
-        }
-
-
-        /**
-         * starts payment flow, it compares name of that view to payment method to start
-         * particular payment flow.
-         *
-         * @param view  clicked view
-         */
-        @Override
-        public void onClick(View view) {
-
-            TextView nameText = (TextView) view.findViewById(R.id.text_payment_method_name);
-            String name = nameText.getText().toString().trim();
-
-            if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_credit_card))) {
-                Intent intent = new Intent(sActivity, CreditDebitCardFlowActivity.class);
-                sActivity.startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_bank_transfer))) {
-                Intent startBankPayment = new Intent(sActivity, SelectBankTransferActivity.class);
-                if (sActivity instanceof PaymentMethodsActivity) {
-                    startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, ((PaymentMethodsActivity) sActivity).getBankTrasfers());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        listener.onItemClick(getAdapterPosition());
+                    }
                 }
-                sActivity.startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_mandiri_clickpay))) {
-                Intent startMandiriClickpay = new Intent(sActivity, MandiriClickPayActivity.class);
-                sActivity.startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_bri_epay))) {
-                Intent startMandiriClickpay = new Intent(sActivity, EpayBriActivity.class);
-                sActivity.startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_cimb_clicks))) {
-                Intent startCIMBClickpay = new Intent(sActivity, CIMBClickPayActivity.class);
-                sActivity.startActivityForResult(startCIMBClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_mandiri_ecash))) {
-                Intent startMandiriECash = new Intent(sActivity, MandiriECashActivity.class);
-                sActivity.startActivityForResult(startMandiriECash, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_indosat_dompetku))) {
-                Intent startIndosatPaymentActivity = new Intent(sActivity, IndosatDompetkuActivity.class);
-                sActivity.startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_indomaret))) {
-                Intent startIndomaret = new Intent(sActivity, IndomaretActivity.class);
-                sActivity.startActivityForResult(startIndomaret, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_bbm_money))) {
-                Intent startBBMMoney = new Intent(sActivity, BBMMoneyActivity.class);
-                sActivity.startActivityForResult(startBBMMoney, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_offers))) {
-                Intent startOffersActivity = new Intent(sActivity, OffersActivity.class);
-                sActivity.startActivityForResult(startOffersActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_bca_klikpay))) {
-                Intent startBCAKlikPayActivity = new Intent(sActivity, BCAKlikPayActivity.class);
-                sActivity.startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_klik_bca))) {
-                Intent startKlikBcaActivity = new Intent(sActivity, KlikBCAActivity.class);
-                startKlikBcaActivity.putExtra(sActivity.getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
-                sActivity.startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_telkomsel_cash))) {
-                Intent telkomselCashActivity = new Intent(sActivity, TelkomselCashActivity.class);
-                sActivity.startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_xl_tunai))) {
-                Intent xlTunaiActivity = new Intent(sActivity, XLTunaiActivity.class);
-                sActivity.startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            }else if (name.equalsIgnoreCase(sActivity.getString(R.string.payment_method_kioson))){
-                Intent kiosanActvity = new Intent(sActivity, KiosonActivity.class);
-                sActivity.startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            }else {
-                showMessage();
-            }
+            });
         }
-
-        public void showMessage() {
-            Toast.makeText(sActivity.getApplicationContext(),
-                    "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
-        }
-
     }
 
 }
