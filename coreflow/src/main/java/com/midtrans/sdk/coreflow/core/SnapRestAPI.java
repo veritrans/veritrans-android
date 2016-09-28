@@ -37,7 +37,7 @@ public interface SnapRestAPI {
      * @param creditCardPaymentRequest    Payment Request Details.
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_credit_card")
     void paymentUsingCreditCard(@Body CreditCardPaymentRequest creditCardPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -47,7 +47,7 @@ public interface SnapRestAPI {
      * @param bankTransferPaymentRequest  Payment Request Details.
      * @param transactionResponseCallback Callback
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_bank_transfer")
     void paymentUsingBankTransfer(@Body BankTransferPaymentRequest bankTransferPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -57,7 +57,7 @@ public interface SnapRestAPI {
      * @param klikBCAPaymentRequest       Payment Request Details.
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_bca_klikbca")
     void paymentUsingKlikBCA(@Body KlikBCAPaymentRequest klikBCAPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -66,7 +66,7 @@ public interface SnapRestAPI {
      *
      * @param basePaymentRequest Payment Request Details.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_bca_klikpay")
     void paymentUsingBCAKlikPay(@Body BasePaymentRequest basePaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -77,7 +77,7 @@ public interface SnapRestAPI {
      * @param request                     bankTransferPaymentrqeust
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_permata")
     void paymentUsingBankTransferPermata(@Body BankTransferPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -88,7 +88,7 @@ public interface SnapRestAPI {
      * @param request                     BankTransferPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_bank_transfer_bca")
     void paymentUsingBankTransferBCA(@Body BankTransferPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -99,7 +99,7 @@ public interface SnapRestAPI {
      * @param request                     BankTransferPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_mandiri_billpayment")
     void paymentUsingMandiriBillPay(@Body BankTransferPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -110,7 +110,7 @@ public interface SnapRestAPI {
      * @param request                     MandiriClickPayPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_mandiri_clickpay")
     void paymentUsingMandiriClickPay(@Body MandiriClickPayPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -120,7 +120,7 @@ public interface SnapRestAPI {
      * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_cimb_clicks")
     void paymentUsingCIMBClick(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -130,7 +130,7 @@ public interface SnapRestAPI {
      * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_bri_epay")
     void paymentUsingBRIEpay(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -140,7 +140,7 @@ public interface SnapRestAPI {
      * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_mandiri_ecash")
     void paymentUsingMandiriEcash(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -150,7 +150,7 @@ public interface SnapRestAPI {
      * @param request                     TelkomselEcashPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_telkomsel_cash")
     void paymentUsingTelkomselEcash(@Body TelkomselEcashPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -160,7 +160,7 @@ public interface SnapRestAPI {
      * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_xl_tunai")
     void paymentUsingXlTunai(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -170,7 +170,7 @@ public interface SnapRestAPI {
      * @param request                     IndosatDompetkuPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_indomaret")
     void paymentUsingIndomaret(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -181,7 +181,7 @@ public interface SnapRestAPI {
      * @param request                     IndosatDompetkuPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_indosat_dompetku")
     void paymentUsingIndosatDompetku(@Body IndosatDompetkuPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -191,7 +191,7 @@ public interface SnapRestAPI {
      * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/pay_with_kioson")
     void paymentUsingKiosan(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
@@ -201,7 +201,7 @@ public interface SnapRestAPI {
      * @param request                     BasePaymentRequest model.
      * @param transactionResponseCallback Callback.
      */
-    @Headers({"Content-Type: application/json", "Accept: application/json", "X-Source: mobile"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/va_all_bank")
     void paymentUsingBankTransferAllBank(@Body BankTransferPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 }

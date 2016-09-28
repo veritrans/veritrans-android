@@ -75,6 +75,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private ArrayList<String> bankTrasfers = new ArrayList<>();
     private PaymentMethodsAdapter paymentMethodsAdapter;
     private AlertDialog alertDialog;
+    private boolean backButtonEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +162,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bindDataToView();
         getPaymentPages();
@@ -208,6 +208,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void getPaymentPages() {
         progressContainer.setVisibility(View.VISIBLE);
+        enableButtonBack(false);
         midtransSDK.checkout(new CheckoutCallback() {
             @Override
             public void onSuccess(Token token) {
@@ -217,20 +218,32 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             @Override
             public void onFailure(Token token, String reason) {
+                enableButtonBack(true);
                 showErrorMessage();
             }
 
             @Override
             public void onError(Throwable error) {
+                enableButtonBack(true);
                 showErrorMessage();
             }
         });
+    }
+
+    private void enableButtonBack(boolean enable) {
+        if(enable){
+            backButtonEnabled = true;
+        }else{
+            backButtonEnabled = false;
+        }
     }
 
     private void getPaymentOptions(String tokenId) {
         midtransSDK.getTransactionOptions(tokenId, new TransactionOptionsCallback() {
             @Override
             public void onSuccess(Transaction transaction) {
+                enableButtonBack(true);
+                showBackButton();
                 try{
                     progressContainer.setVisibility(View.GONE);
                     String logoUrl = transaction.getMerchantData().getLogoUrl();
@@ -251,12 +264,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             @Override
             public void onFailure(Transaction transaction, String reason) {
+                enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
                 showDefaultPaymentMethods();
             }
 
             @Override
             public void onError(Throwable error) {
+                enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
                 showDefaultPaymentMethods();
             }
@@ -479,6 +494,25 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         super.onStop();
         if(alertDialog != null){
             alertDialog.cancel();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!backButtonEnabled){
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    private void showBackButton(){
+        if(backButtonEnabled && getSupportActionBar() != null){
+            new  Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                }
+            }, 50);
         }
     }
 }

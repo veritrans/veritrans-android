@@ -10,12 +10,6 @@ import com.squareup.leakcanary.RefWatcher;
  * @author rakawm
  */
 public class MyApplication extends Application {
-    private RefWatcher refWatcher;
-
-    public static RefWatcher getRefWatcher(Context context) {
-        MyApplication application = (MyApplication) context.getApplicationContext();
-        return application.refWatcher;
-    }
 
     @Override
     public void onCreate() {
