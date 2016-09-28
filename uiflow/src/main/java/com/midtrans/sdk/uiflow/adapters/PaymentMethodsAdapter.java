@@ -1,38 +1,15 @@
 package com.midtrans.sdk.uiflow.adapters;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-
-import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
 import com.midtrans.sdk.coreflow.models.PaymentMethodsModel;
-import com.midtrans.sdk.uiflow.activities.EpayBriActivity;
-import com.midtrans.sdk.uiflow.activities.OffersActivity;
-import com.midtrans.sdk.uiflow.activities.SelectBankTransferActivity;
-
 import com.midtrans.sdk.uiflow.R;
-import com.midtrans.sdk.uiflow.activities.BBMMoneyActivity;
-import com.midtrans.sdk.uiflow.activities.BCAKlikPayActivity;
-import com.midtrans.sdk.uiflow.activities.CIMBClickPayActivity;
-import com.midtrans.sdk.uiflow.activities.CreditDebitCardFlowActivity;
-import com.midtrans.sdk.uiflow.activities.IndomaretActivity;
-import com.midtrans.sdk.uiflow.activities.IndosatDompetkuActivity;
-import com.midtrans.sdk.uiflow.activities.KiosonActivity;
-import com.midtrans.sdk.uiflow.activities.KlikBCAActivity;
-import com.midtrans.sdk.uiflow.activities.MandiriClickPayActivity;
-import com.midtrans.sdk.uiflow.activities.MandiriECashActivity;
-import com.midtrans.sdk.uiflow.activities.PaymentMethodsActivity;
-import com.midtrans.sdk.uiflow.activities.TelkomselCashActivity;
-import com.midtrans.sdk.uiflow.activities.XLTunaiActivity;
 
 /**
  * adapter for payment methods recycler view.

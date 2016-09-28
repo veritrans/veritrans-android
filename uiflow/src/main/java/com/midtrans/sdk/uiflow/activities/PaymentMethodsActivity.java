@@ -82,7 +82,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         setContentView(R.layout.activity_payments_method);
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
-        paymentMethodsAdapter = new PaymentMethodsAdapter(this);
         UserDetail userDetail = null;
         try {
             userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
@@ -101,6 +100,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     Logger.d(String.format("Customer name: %s, Customer email: %s, Customer phone: %s", userDetail.getUserFullName(), userDetail.getEmail(), userDetail.getPhoneNumber() ));
                 }
                 setUpPaymentMethods();
+                setupRecyclerView();
+
             }else{
                 showErrorAlertDialog(getString(R.string.error_transaction_empty));
             }
@@ -167,7 +168,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     }
 
     private void setupRecyclerView() {
-        paymentMethodsAdapter.setData(data);
+        paymentMethodsAdapter = new PaymentMethodsAdapter(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -242,7 +243,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     }
                     List<String> paymentMethods = transaction.getTransactionData().getEnabledPayments();
                     initialiseAdapterData(paymentMethods);
-                    setupRecyclerView();
+                    paymentMethodsAdapter.setData(data);
                 } catch (NullPointerException e){
                     Logger.e(TAG, e.getMessage());
                 }
@@ -336,7 +337,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         progressContainer.setVisibility(View.GONE);
         List<String> paymentMethods = PaymentMethods.getDefaultPaymentList(this);
         initialiseAdapterData(paymentMethods);
-        setupRecyclerView();
+        paymentMethodsAdapter.setData(data);
     }
 
     private void showErrorMessage() {
