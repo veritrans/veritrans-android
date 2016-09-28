@@ -8,6 +8,25 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.midtrans.sdk.coreflow.R;
+import com.midtrans.sdk.coreflow.SDKConfigTest;
+import com.midtrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
+import com.midtrans.sdk.coreflow.models.BillInfoModel;
+import com.midtrans.sdk.coreflow.models.BillingAddress;
+import com.midtrans.sdk.coreflow.models.CardPaymentDetails;
+import com.midtrans.sdk.coreflow.models.CstoreEntity;
+import com.midtrans.sdk.coreflow.models.CustomerDetails;
+import com.midtrans.sdk.coreflow.models.DescriptionModel;
+import com.midtrans.sdk.coreflow.models.ItemDetails;
+import com.midtrans.sdk.coreflow.models.KlikBCADescriptionModel;
+import com.midtrans.sdk.coreflow.models.MandiriBillPayTransferModel;
+import com.midtrans.sdk.coreflow.models.MandiriClickPayModel;
+import com.midtrans.sdk.coreflow.models.ShippingAddress;
+import com.midtrans.sdk.coreflow.models.UserAddress;
+import com.midtrans.sdk.coreflow.models.UserDetail;
+import com.midtrans.sdk.coreflow.models.snap.payment.PaymentDetails;
+import com.midtrans.sdk.coreflow.utilities.Utils;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,25 +41,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
-
-import com.midtrans.sdk.coreflow.R;
-import com.midtrans.sdk.coreflow.SDKConfigTest;
-import com.midtrans.sdk.coreflow.models.BCAKlikPayDescriptionModel;
-import com.midtrans.sdk.coreflow.models.BillInfoModel;
-import com.midtrans.sdk.coreflow.models.BillingAddress;
-import com.midtrans.sdk.coreflow.models.CardPaymentDetails;
-import com.midtrans.sdk.coreflow.models.CstoreEntity;
-import com.midtrans.sdk.coreflow.models.CustomerDetails;
-import com.midtrans.sdk.coreflow.models.DescriptionModel;
-import com.midtrans.sdk.coreflow.models.ItemDetails;
-import com.midtrans.sdk.coreflow.models.KlikBCADescriptionModel;
-import com.midtrans.sdk.coreflow.models.MandiriClickPayModel;
-import com.midtrans.sdk.coreflow.models.ShippingAddress;
-import com.midtrans.sdk.coreflow.models.UserAddress;
-import com.midtrans.sdk.coreflow.models.UserDetail;
-import com.midtrans.sdk.coreflow.models.MandiriBillPayTransferModel;
-import com.midtrans.sdk.coreflow.models.snap.payment.PaymentDetails;
-import com.midtrans.sdk.coreflow.utilities.Utils;
 
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
@@ -272,19 +272,6 @@ public class SDKUtilsTest {
 
 
     @Test
-    public void getIndomaretRequestModel_whenSDKNull() throws ClassNotFoundException {
-
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-        Assert.assertNotNull(SdkUtil.getIndomaretRequestModel(transactionRequestMock, cstoreMock).getCustomerDetails());
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString());
-
-    }
-
-
-    @Test
     public void getBBMMoneyRequestModel() throws ClassNotFoundException {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
@@ -359,18 +346,6 @@ public class SDKUtilsTest {
         Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
 
         Assert.assertEquals(itemDetailMock, SdkUtil.getIndosatDompetkuRequestModel(transactionRequestMock, "").getItemDetails());
-
-    }
-
-    @Test
-    public void getIndosatDompetkuRequestModel_whenSDKNull() throws ClassNotFoundException {
-        midtransSDK = null;
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-        Assert.assertEquals(itemDetailMock, SdkUtil.getIndosatDompetkuRequestModel(transactionRequestMock,msisdn).getItemDetails());
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString());
 
     }
 
@@ -503,15 +478,6 @@ public class SDKUtilsTest {
         TransactionRequest request = SdkUtil.extractUserAddress(userDetailMock, userAddressListMock, transactionRequest);
         Assert.assertEquals(1, request.getBillingAddressArrayList().size());
         Assert.assertEquals(0, request.getShippingAddressArrayList().size());
-    }
-
-    @Test
-    public void getDeviceIdTest(){
-        Assert.assertEquals(null, SdkUtil.getDeviceId());
-
-        when(contextMock.getContentResolver()).thenReturn(contentResolverMock);
-        when(Settings.Secure.getString(Matchers.any(ContentResolver.class), Matchers.anyString())).thenReturn("deviceId");
-        Assert.assertEquals("deviceId", SdkUtil.getDeviceId());
     }
 
     @Test

@@ -1,15 +1,15 @@
 package com.midtrans.sdk.coreflow.core;
 
+import com.google.gson.Gson;
+
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 
-import com.google.gson.Gson;
-import com.midtrans.sdk.coreflow.analytics.MixpanelEvent;
-import com.midtrans.sdk.coreflow.analytics.MixpanelProperties;
-
 import com.midtrans.sdk.coreflow.BuildConfig;
 import com.midtrans.sdk.coreflow.analytics.MixpanelApi;
+import com.midtrans.sdk.coreflow.analytics.MixpanelEvent;
+import com.midtrans.sdk.coreflow.analytics.MixpanelProperties;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -21,11 +21,6 @@ import retrofit.client.Response;
 public class MixpanelAnalyticsManager {
     // Platform properties
     private static final String PLATFORM = "Android";
-
-    public void setMixpanelApi(MixpanelApi mixpanelApi) {
-        this.mixpanelApi = mixpanelApi;
-    }
-
     /**
      * Track event for mixpanel.
      *
@@ -36,6 +31,10 @@ public class MixpanelAnalyticsManager {
     private MixpanelApi mixpanelApi;
 
     public MixpanelAnalyticsManager(@NonNull MixpanelApi mixpanelApi) {
+        this.mixpanelApi = mixpanelApi;
+    }
+
+    public void setMixpanelApi(MixpanelApi mixpanelApi) {
         this.mixpanelApi = mixpanelApi;
     }
 
@@ -72,7 +71,7 @@ public class MixpanelAnalyticsManager {
         properties.setOsVersion(Build.VERSION.RELEASE);
         properties.setVersion(BuildConfig.VERSION_NAME);
         properties.setPlatform(PLATFORM);
-        properties.setDeviceId(SdkUtil.getDeviceId());
+        properties.setDeviceId(SdkUtil.getDeviceId(MidtransSDK.getInstance().getContext()));
         properties.setToken(BuildConfig.MIXPANEL_TOKEN);
         properties.setMerchant(MidtransSDK.getInstance() != null &&
                 MidtransSDK.getInstance().getMerchantName() != null ?
@@ -97,7 +96,7 @@ public class MixpanelAnalyticsManager {
         properties.setOsVersion(Build.VERSION.RELEASE);
         properties.setVersion(BuildConfig.VERSION_NAME);
         properties.setPlatform(PLATFORM);
-        properties.setDeviceId(SdkUtil.getDeviceId());
+        properties.setDeviceId(SdkUtil.getDeviceId(MidtransSDK.getInstance().getContext()));
         properties.setToken(BuildConfig.MIXPANEL_TOKEN);
         properties.setMerchant(MidtransSDK.getInstance() != null &&
                 MidtransSDK.getInstance().getMerchantName() != null ?
@@ -119,7 +118,7 @@ public class MixpanelAnalyticsManager {
         properties.setOsVersion(Build.VERSION.RELEASE);
         properties.setVersion(BuildConfig.VERSION_NAME);
         properties.setPlatform(PLATFORM);
-        properties.setDeviceId(SdkUtil.getDeviceId());
+        properties.setDeviceId(SdkUtil.getDeviceId(MidtransSDK.getInstance().getContext()));
         properties.setToken(BuildConfig.MIXPANEL_TOKEN);
         properties.setPaymentType(paymentType);
         properties.setMerchant(MidtransSDK.getInstance() != null &&
@@ -142,7 +141,7 @@ public class MixpanelAnalyticsManager {
         properties.setOsVersion(Build.VERSION.RELEASE);
         properties.setVersion(BuildConfig.VERSION_NAME);
         properties.setPlatform(PLATFORM);
-        properties.setDeviceId(SdkUtil.getDeviceId());
+        properties.setDeviceId(SdkUtil.getDeviceId(MidtransSDK.getInstance().getContext()));
         properties.setToken(BuildConfig.MIXPANEL_TOKEN);
         properties.setPaymentType(paymentType);
         properties.setBank(bank);
