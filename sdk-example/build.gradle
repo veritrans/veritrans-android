@@ -74,6 +74,7 @@ dependencies {
     }
 
     // Leak Canary
+    developmentCompile 'com.squareup.haha:haha:2.0.3'
     developmentCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 }

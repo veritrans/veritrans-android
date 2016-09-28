@@ -99,6 +99,8 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     private CardTokenRequest cardTokenRequest;
     private Button backButton;
     private String userId;
+    private WebView webView;
+    private Animation layoutAnimation;
 
     public CreditCardForm(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -111,14 +113,25 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
 
     @Override
     protected void onDetachedFromWindow() {
+        if(cardPagerAdapter != null){
+            cardPagerAdapter.clearAll(savedCardPager);
+            cardPagerAdapter = null;
+        }
+        savedCardPager = null;
+        if(webView != null){
+            webView.removeAllViews();
+            webView.destroyDrawingCache();
+            webView.clearHistory();
+            webView.clearCache(true);
+            webView.pauseTimers();
+            webView.destroy();
+        }
+        layoutAnimation = null;
         layoutProgress = null;
         layoutSavedCards = null;
         layoutCardForm = null;
         creditCardLayout = null;
-        cardPagerAdapter.clearAll(savedCardPager);
-        cardPagerAdapter = null;
-        savedCardPager = null;
-
+        webViewDialog = null;
         super.onDetachedFromWindow();
     }
 
@@ -151,7 +164,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         cvvHelpImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                AlertDialog dialog = new AlertDialog.Builder(getContext().getApplicationContext())
                         .setView(R.layout.dialog_cvv)
                         .setPositiveButton(R.string.cvv_hint_got_it, new DialogInterface.OnClickListener() {
                             @Override
@@ -167,7 +180,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         saveCardImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                AlertDialog dialog = new AlertDialog.Builder(getContext().getApplicationContext())
                         .setView(R.layout.dialog_save_card)
                         .setPositiveButton(R.string.cvv_hint_got_it, new DialogInterface.OnClickListener() {
                             @Override
@@ -309,7 +322,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
                 throw new WidgetException(getResources().getString(R.string.error_merchant_url_missing));
             }
 
-            return SdkCoreFlowBuilder.init(getContext(), midtransClientKey, merchantUrl)
+            return SdkCoreFlowBuilder.init(getContext().getApplicationContext(), midtransClientKey, merchantUrl)
                     .enableLog(true)
                     .buildSDK();
         }
@@ -806,7 +819,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     private void start3DS(final String tokenId, String redirectUrl) {
-        WebView webView = new WebView(getContext());
+        webView = new WebView(getContext().getApplicationContext());
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -837,6 +850,13 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         webView.getSettings().setSupportZoom(false);
         webView.getSettings().setBuiltInZoomControls(false);
         webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setAppCacheEnabled(false);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webView.getSettings().setDatabaseEnabled(false);
+        webView.getSettings().setDomStorageEnabled(false);
+        webView.getSettings().setGeolocationEnabled(false);
+        webView.getSettings().setSaveFormData(false);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
@@ -1049,9 +1069,9 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     private void fadeInAnimation(final RelativeLayout layout){
-        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        layoutAnimation = AnimationUtils.loadAnimation(getContext().getApplicationContext(), R.anim.fade_in);
 
-        animation.setAnimationListener(new Animation.AnimationListener() {
+        layoutAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -1068,6 +1088,6 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
             }
         });
 
-        layout.startAnimation(animation);
+        layout.startAnimation(layoutAnimation);
     }
 }

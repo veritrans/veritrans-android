@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
      * Initialize Veritrans SDK using SdkCoreFlowBuilder.
      */
     private void initSDK() {
-
+        Log.i("sdkinit", "start");
         // SDK initiation for coreflow
         if(mysdkFlow == CORE_FLOW){
             SdkCoreFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
@@ -131,7 +132,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         widgetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, WidgetExampleActivity.class));
+                Intent i = new Intent(MainActivity.this, WidgetExampleActivity.class);
+                i.putExtra(WidgetExampleActivity.CARD_PAYMENT_TYPE, twoClick.isChecked());
+                startActivity(i);
             }
         });
 

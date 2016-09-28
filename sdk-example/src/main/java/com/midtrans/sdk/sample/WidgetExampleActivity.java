@@ -25,6 +25,7 @@ import com.midtrans.sdk.widgets.CreditCardForm;
  * @author rakawm
  */
 public class WidgetExampleActivity extends AppCompatActivity {
+    public static final String CARD_PAYMENT_TYPE = "card_payment_type";
     private CreditCardForm creditCardForm;
     private Button getToken;
     private ProgressDialog dialog;
@@ -39,12 +40,17 @@ public class WidgetExampleActivity extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
 
+        boolean isTwoclik = getIntent().getBooleanExtra(CARD_PAYMENT_TYPE, false);
+
         creditCardForm = (CreditCardForm) findViewById(R.id.credit_card_form);
         creditCardForm.setMidtransClientKey(BuildConfig.CLIENT_KEY);
         creditCardForm.setMerchantUrl(BuildConfig.BASE_URL);
         creditCardForm.setUserId(this.userId);
-        creditCardForm.setEnableTwoClick(true);
 
+        //enable twoclick on card widget
+        if(isTwoclik){
+            creditCardForm.setEnableTwoClick(true);
+        }
         getToken = (Button) findViewById(R.id.btn_get_token);
         getToken.setOnClickListener(new View.OnClickListener() {
             @Override

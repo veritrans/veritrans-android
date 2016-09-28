@@ -72,7 +72,7 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent) {
         if (layoutInflater == null) {
-            layoutInflater = LayoutInflater.from(parent.getContext());
+            layoutInflater = LayoutInflater.from(parent.getContext().getApplicationContext());
         }
 
         // Inflate view
