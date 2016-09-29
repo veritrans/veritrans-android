@@ -26,13 +26,13 @@ dependencies:
 test:
     override:
         # Build
-       - (./gradlew coreflow:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
+       - (./gradlew corekit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
             timeout: 3600
 
 
     post:
-       - cp -r coreflow/build/reports $CIRCLE_ARTIFACTS
-       - cp -r coreflow/build/reports/ $CIRCLE_TEST_REPORTS
+       - cp -r corekit/build/reports $CIRCLE_ARTIFACTS
+       - cp -r corekit/build/reports/ $CIRCLE_TEST_REPORTS
 
 
 
@@ -42,9 +42,10 @@ deployment:
         tag: /v[0-9]+(\.[0-9]+)*/
         owner: veritrans
         commands:
-            - ./gradlew :clean :coreflow:assembleRelease :coreflow:bintrayUpload -PdisablePreDex
-            - ./gradlew :clean :uiflow:assembleRelease :uiflow:bintrayUpload -PdisablePreDex
+            - ./gradlew :clean :corekit:assembleRelease :corekit:bintrayUpload -PdisablePreDex
+            - ./gradlew :clean :uikit:assembleRelease :uikit:bintrayUpload -PdisablePreDex
             - ./gradlew :clean :scancard:assembleRelease :scancard:bintrayUpload -PdisablePreDex
+            - ./gradlew :clean :widgets:assembleRelease :widgets:bintrayUpload -PdisablePreDex
             # using ghr to release latest version to github
             - ./gradlew :clean :sdk-example:assembleDevelopmentDebug -PdisablePredex
             - go get github.com/tcnksm/ghr

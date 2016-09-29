@@ -9,10 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-
-import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.MidtransSDK;
-import com.midtrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.corekit.callback.TransactionCallback;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
 
 /**
  * Created by ziahaqi on 8/3/16.

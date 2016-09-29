@@ -13,17 +13,19 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.midtrans.sdk.corekit.callback.CardTokenCallback;
+import com.midtrans.sdk.corekit.callback.SaveCardCallback;
+import com.midtrans.sdk.corekit.callback.TransactionCallback;
+import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.CardTokenRequest;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.SaveCardResponse;
+import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
+
 import java.util.ArrayList;
-import com.midtrans.sdk.coreflow.callback.CardTokenCallback;
-import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
-import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.MidtransSDK;
-import com.midtrans.sdk.coreflow.models.CardTokenRequest;
-import com.midtrans.sdk.coreflow.models.SaveCardRequest;
-import com.midtrans.sdk.coreflow.models.SaveCardResponse;
-import com.midtrans.sdk.coreflow.models.TokenDetailsResponse;
-import com.midtrans.sdk.coreflow.models.TransactionResponse;
 
 public class CreditCardPaymentActivity extends AppCompatActivity{
     TextInputLayout cardNumberContainer, cvvContainer, expiredDateContainer;
@@ -66,11 +68,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
         checkSaveCard.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    saveCard = true;
-                }else{
-                    saveCard = false;
-                }
+                saveCard = checked;
             }
         });
         payBtn = (Button)findViewById(R.id.btn_payment);

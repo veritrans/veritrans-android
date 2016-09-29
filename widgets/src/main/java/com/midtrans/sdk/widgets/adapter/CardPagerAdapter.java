@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.midtrans.sdk.coreflow.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.widgets.R;
 import com.midtrans.sdk.widgets.utils.CardUtils;
 import com.midtrans.sdk.widgets.utils.FlipAnimation;
@@ -37,10 +37,7 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
     }
 
     public boolean checkCardValidity() {
-        if(!TextUtils.isEmpty(this.cardCVV)){
-            return true;
-        }
-        return false;
+        return !TextUtils.isEmpty(this.cardCVV);
     }
 
     public String getCardCVV() {
@@ -55,10 +52,6 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
         destroyedItems.clear();
     }
 
-    public interface CardPagerListner{
-        public void onDelete(SaveCardRequest card);
-        public void onAddNew();
-    }
     @Override
     public int getItemPosition(Object object) {
         int index = cardDetails.indexOf (object);
@@ -67,7 +60,6 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
         else
             return index;
     }
-
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent) {
@@ -182,26 +174,6 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
         return cardDetails.get (pager.getCurrentItem());
     }
 
-    public static class MyViewHolder extends BaseAdapter.ViewHolder{
-        ImageView imageDelete, imageNew;
-        RelativeLayout layoutImageCardFront, layoutImageCardBack, layoutCardList;
-        EditText editCardDetailcvv;
-
-        public MyViewHolder(View convertView) {
-            super(convertView);
-            layoutImageCardBack = (RelativeLayout)convertView.findViewById(R.id.card_container_back_side);
-            layoutImageCardFront = (RelativeLayout)convertView.findViewById(R.id.card_container_front_side);
-            layoutCardList = (RelativeLayout)convertView.findViewById(R.id.layout_card_list);
-            imageDelete = (ImageView)convertView.findViewById(R.id.image_delete_card);
-            imageNew = (ImageView)convertView.findViewById(R.id.image_new_card);
-            editCardDetailcvv  = (EditText)convertView.findViewById(R.id.edit_cvv);
-        }
-
-        public void show(SaveCardRequest card) {
-            // TODO: update views with foo
-        }
-    }
-
     private void flipCard(final Context context, final MyViewHolder holder) {
         Animation scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down);
         scaleDown.setDuration(150);
@@ -255,5 +227,31 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
         animationSet.addAnimation(flipAnimation);
         animationSet.addAnimation(scaleUp);
         holder.layoutCardList.startAnimation(animationSet);
+    }
+
+    public interface CardPagerListner {
+        void onDelete(SaveCardRequest card);
+
+        void onAddNew();
+    }
+
+    public static class MyViewHolder extends BaseAdapter.ViewHolder {
+        ImageView imageDelete, imageNew;
+        RelativeLayout layoutImageCardFront, layoutImageCardBack, layoutCardList;
+        EditText editCardDetailcvv;
+
+        public MyViewHolder(View convertView) {
+            super(convertView);
+            layoutImageCardBack = (RelativeLayout) convertView.findViewById(R.id.card_container_back_side);
+            layoutImageCardFront = (RelativeLayout) convertView.findViewById(R.id.card_container_front_side);
+            layoutCardList = (RelativeLayout) convertView.findViewById(R.id.layout_card_list);
+            imageDelete = (ImageView) convertView.findViewById(R.id.image_delete_card);
+            imageNew = (ImageView) convertView.findViewById(R.id.image_new_card);
+            editCardDetailcvv = (EditText) convertView.findViewById(R.id.edit_cvv);
+        }
+
+        public void show(SaveCardRequest card) {
+            // TODO: update views with foo
+        }
     }
 }

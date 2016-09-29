@@ -7,9 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.MidtransSDK;
-import com.midtrans.sdk.coreflow.models.TransactionResponse;
+
+import com.midtrans.sdk.corekit.callback.TransactionCallback;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
 
 public class BCAKlikPayActivity extends AppCompatActivity{
     Button payBtn;

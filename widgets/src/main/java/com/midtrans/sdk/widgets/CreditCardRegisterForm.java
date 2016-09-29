@@ -17,15 +17,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.midtrans.sdk.coreflow.callback.CardRegistrationCallback;
-import com.midtrans.sdk.coreflow.callback.GetCardCallback;
-import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
-import com.midtrans.sdk.coreflow.core.MidtransSDK;
-import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
-import com.midtrans.sdk.coreflow.models.CardRegistrationResponse;
-import com.midtrans.sdk.coreflow.models.SaveCardRequest;
-import com.midtrans.sdk.coreflow.models.SaveCardResponse;
-import com.midtrans.sdk.coreflow.utilities.Utils;
+import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
+import com.midtrans.sdk.corekit.callback.GetCardCallback;
+import com.midtrans.sdk.corekit.callback.SaveCardCallback;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
+import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.SaveCardResponse;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.widgets.utils.CardUtils;
 import com.midtrans.sdk.widgets.utils.WidgetException;
 

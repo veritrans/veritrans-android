@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/sixteen_dp">
+
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:paddingTop="@dimen/four_dp"
+            android:text="@string/virtual_account_number"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/secondary_text_size"
+            />
+
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_virtual_account_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/eight_dp"
+            android:text="@string/virtual_account_number"
+            android:textColor="@color/black"
+            android:textSize="@dimen/header_text_size"
+            />
+
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_validaty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@color/faint_yellow"
+            android:gravity="left"
+            android:padding="@dimen/sixteen_dp"
+            android:text="@string/text_sample_valid_date"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            />
+
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:background="@color/faint_pink"
+            android:gravity="left"
+            android:padding="@dimen/sixteen_dp"
+            android:text="@string/bank_transfer_dummy_text"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            />
+
+        <Button
+            android:id="@+id/btn_copy_va"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:paddingTop="@dimen/eight_dp"
+            android:text="@string/copy_va_number"
+            android:textColor="?colorPrimary"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_see_instruction"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/see_instruction"
+            android:textColor="?colorPrimary"
+            android:visibility="visible" />
+
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

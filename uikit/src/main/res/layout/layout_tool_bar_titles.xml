@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar_header_view"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    android:background="?colorPrimary"
+    android:padding="@dimen/eight_dp">
+
+    <!-- Title -->
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:id="@+id/header_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/payable_amount"
+        android:textColor="@color/white"
+        android:textSize="@dimen/secondary_text_size" />
+
+    <!-- Subtitle -->
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:id="@+id/header_view_sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/header_text_size"
+        tools:text="Subtitle" />
+
+</RelativeLayout>

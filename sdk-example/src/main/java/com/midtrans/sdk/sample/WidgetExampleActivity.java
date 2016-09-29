@@ -8,18 +8,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.models.BillInfoModel;
+import com.midtrans.sdk.corekit.models.BillingAddress;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.ItemDetails;
+import com.midtrans.sdk.corekit.models.ShippingAddress;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.CreditCard;
+import com.midtrans.sdk.widgets.CreditCardForm;
+
 import java.util.ArrayList;
 import java.util.UUID;
-
-import com.midtrans.sdk.coreflow.core.TransactionRequest;
-import com.midtrans.sdk.coreflow.models.BillInfoModel;
-import com.midtrans.sdk.coreflow.models.BillingAddress;
-import com.midtrans.sdk.coreflow.models.CustomerDetails;
-import com.midtrans.sdk.coreflow.models.ItemDetails;
-import com.midtrans.sdk.coreflow.models.ShippingAddress;
-import com.midtrans.sdk.coreflow.models.TransactionResponse;
-import com.midtrans.sdk.coreflow.models.snap.CreditCard;
-import com.midtrans.sdk.widgets.CreditCardForm;
 
 /**
  * @author rakawm

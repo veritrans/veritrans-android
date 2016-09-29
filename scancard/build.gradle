@@ -3,7 +3,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 group = 'com.midtrans'
-version = '0.11.2'
+version = '1.0.0'
 
 android {
     compileSdkVersion 23
@@ -37,7 +37,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.+'
     testCompile 'junit:junit:4.12'
     compile 'io.card:android-sdk:5.3.4'
-    compile project(path: ':uiflow', configuration: 'developmentRelease')
+    compile project(path: ':uikit', configuration: 'developmentRelease')
 }
 
 bintray {
@@ -46,7 +46,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = 'maven'
-        name = 'scan-card'
+        name = project.name
         userOrg = 'pt-midtrans'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
