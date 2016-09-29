@@ -1,23 +1,17 @@
 package com.midtrans.sdk.uiflow.adapters;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import com.midtrans.sdk.coreflow.core.Constants;
 import com.midtrans.sdk.coreflow.core.Logger;
 import com.midtrans.sdk.coreflow.models.BankTransferModel;
 import com.midtrans.sdk.uiflow.R;
-import com.midtrans.sdk.uiflow.activities.BankTransferActivity;
 
 /**
  * @author rakawm
@@ -25,19 +19,27 @@ import com.midtrans.sdk.uiflow.activities.BankTransferActivity;
 public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferListAdapter.BankTransferViewHolder>{
     private static final String TAG = BankTransferListAdapter.class.getSimpleName();
 
-    private static Context sContext;
-    private ArrayList<BankTransferModel> mData = null;
+    private ArrayList<BankTransferModel> mData = new ArrayList<>();
+    private BankTransferAdapterListener listener;
 
-    public BankTransferListAdapter(Context context, ArrayList<BankTransferModel> data) {
-        sContext = context;
-        mData = data;
+    public BankTransferModel getItem(int position) {
+        return mData.get(position);
+    }
+
+    public interface BankTransferAdapterListener{
+        public void onItemClick(int position);
+    }
+    public BankTransferListAdapter(BankTransferAdapterListener listener, ArrayList<BankTransferModel> data) {
+        this.listener = listener;
+        this.mData.clear();
+        this.mData.addAll(data);
     }
 
     @Override
     public BankTransferViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_row_bank_transfer, parent, false);
-        return new BankTransferViewHolder(view);
+        return new BankTransferViewHolder(view, listener);
     }
 
     @Override
@@ -53,68 +55,23 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
     }
 
 
-    public static class BankTransferViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class BankTransferViewHolder extends RecyclerView.ViewHolder {
         TextView bankName;
         ImageView bankIcon;
 
-        public BankTransferViewHolder(View itemView) {
+        public BankTransferViewHolder(View itemView, final BankTransferAdapterListener listener) {
             super(itemView);
             bankName = (TextView)itemView.findViewById(R.id.text_bank_name);
             bankIcon = (ImageView)itemView.findViewById(R.id.img_bank_icon);
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        listener.onItemClick(getAdapterPosition());
+                    }
+                }
+            });
         }
 
-
-        @Override
-        public void onClick(View v) {
-            TextView nameText = (TextView) v.findViewById(R.id.text_bank_name);
-            String name = nameText.getText().toString().trim();
-            Activity activity = (Activity)sContext;
-            if(name.equals(sContext.getString(R.string.bca_bank_transfer))) {
-                Intent startBankPayment = new Intent(activity, BankTransferActivity.class);
-                startBankPayment.putExtra(
-                        activity.getString(R.string.position),
-                        Constants.BANK_TRANSFER_BCA
-                );
-
-                activity.startActivityForResult(
-                        startBankPayment,
-                        Constants.RESULT_CODE_PAYMENT_TRANSFER
-                );
-            } else if(name.equals(sContext.getString(R.string.permata_bank_transfer))){
-                Intent startBankPayment = new Intent(activity, BankTransferActivity.class);
-                startBankPayment.putExtra(
-                        activity.getString(R.string.position),
-                        Constants.BANK_TRANSFER_PERMATA);
-
-                activity.startActivityForResult(
-                        startBankPayment,
-                        Constants.RESULT_CODE_PAYMENT_TRANSFER
-                );
-            } else if (name.equals(sContext.getString(R.string.mandiri_bank_transfer))) {
-                Intent startMandiriBankPayment = new Intent(activity, BankTransferActivity.class);
-                startMandiriBankPayment.putExtra(activity.getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
-                activity.startActivityForResult(
-                        startMandiriBankPayment,
-                        Constants.RESULT_CODE_PAYMENT_TRANSFER
-                );
-            } else if (name.equals(sContext.getString(R.string.all_bank_transfer))) {
-                Intent startOtherBankPayment = new Intent(activity, BankTransferActivity.class);
-                startOtherBankPayment.putExtra(
-                        sContext.getString(R.string.position),
-                        Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK
-                );
-                activity.startActivityForResult(
-                        startOtherBankPayment,
-                        Constants.RESULT_CODE_PAYMENT_TRANSFER
-                );
-            } else {
-                showMessage();
-            }
-        }
-
-        public void showMessage() {
-            Toast.makeText(sContext, "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
-        }
     }
 }

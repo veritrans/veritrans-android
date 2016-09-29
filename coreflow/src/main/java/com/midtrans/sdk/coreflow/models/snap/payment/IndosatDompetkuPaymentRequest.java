@@ -19,8 +19,9 @@ public class IndosatDompetkuPaymentRequest extends BasePaymentRequest {
     }
 
 
-    public IndosatDompetkuPaymentRequest(String token, String msisdn) {
+    public IndosatDompetkuPaymentRequest(String token, String msisdn, String paymentType) {
         this.transactionId = token;
         this.msisdn = msisdn;
+        this.paymentType = paymentType;
     }
 }

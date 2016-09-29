@@ -2,7 +2,6 @@ package com.midtrans.sdk.coreflow.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -17,7 +16,6 @@ import com.midtrans.sdk.coreflow.models.UserDetail;
 import com.midtrans.sdk.coreflow.models.snap.payment.TelkomselEcashPaymentRequest;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import com.midtrans.sdk.coreflow.BuildConfig;
 import com.midtrans.sdk.coreflow.R;
@@ -112,7 +110,7 @@ public class MidtransSDK {
      *
      * @return MidtransSDK instance
      */
-    public static MidtransSDK getInstance() {
+    public synchronized static MidtransSDK getInstance() {
         return midtransSDK;
     }
 
@@ -415,7 +413,8 @@ public class MidtransSDK {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
                 mSnapTransactionManager.paymentUsingCreditCard(SdkUtil.getCreditCardPaymentRequest(cardToken,
-                        saveCard, transactionRequest, authenticationToken), callback);
+                        saveCard, transactionRequest, authenticationToken,
+                        context.getString(R.string.payment_credit_debit)), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -442,8 +441,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingBankTransferBCA(SdkUtil.getBankTransferPaymentRequest(email, authenticationToken),
-                        callback);
+                mSnapTransactionManager.paymentUsingBankTransferBCA(SdkUtil.getBankTransferPaymentRequest(email,
+                        authenticationToken, context.getString(R.string.payment_bank_transfer)), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -469,7 +468,7 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingBankTransferPermata(SdkUtil.getBankTransferPaymentRequest(email, authenticationToken),
+                mSnapTransactionManager.paymentUsingBankTransferPermata(SdkUtil.getBankTransferPaymentRequest(email, authenticationToken, context.getString(R.string.payment_bank_transfer)),
                         callback);
             } else {
                 isRunning = false;
@@ -497,7 +496,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingKlikBCA(SdkUtil.getKlikBCAPaymentRequest(userId, authenticationToken),
+                mSnapTransactionManager.paymentUsingKlikBCA(SdkUtil.getKlikBCAPaymentRequest(userId, authenticationToken,
+                        context.getString(R.string.payment_klik_bca)),
                         callback);
             } else {
                 isRunning = false;
@@ -524,7 +524,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingBCAKlikpay(new BasePaymentRequest(authenticationToken), callback);
+                mSnapTransactionManager.paymentUsingBCAKlikpay(
+                        new BasePaymentRequest(authenticationToken, context.getString(R.string.payment_method_bca_klikpay)), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -550,7 +551,7 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingMandiriBillPay(SdkUtil.getBankTransferPaymentRequest(email, authenticationToken),
+                mSnapTransactionManager.paymentUsingMandiriBillPay(SdkUtil.getBankTransferPaymentRequest(email, authenticationToken, context.getString(R.string.payment_mandiri_bill_payment)),
                         callback);
             } else {
                 isRunning = false;
@@ -581,7 +582,7 @@ public class MidtransSDK {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
                 mSnapTransactionManager.paymentUsingMandiriClickPay(SdkUtil.getMandiriClickPaymentRequest(authenticationToken,
-                        mandiriCardNumber, tokenResponse, input3), callback);
+                        mandiriCardNumber, tokenResponse, input3, context.getString(R.string.payment_mandiri_clickpay)), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -606,7 +607,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingCIMBClick(new BasePaymentRequest(authenticationToken), callback);
+                mSnapTransactionManager.paymentUsingCIMBClick(
+                        new BasePaymentRequest(authenticationToken, context.getString(R.string.payment_cimb_clicks)), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -631,7 +633,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingMandiriEcash(new BasePaymentRequest(authenticationToken), callback);
+                mSnapTransactionManager.paymentUsingMandiriEcash(
+                        new BasePaymentRequest(authenticationToken, context.getString(R.string.payment_mandiri_ecash)), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -659,7 +662,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingTelkomselCash(new TelkomselEcashPaymentRequest(authenticationToken, customerPhoneNumber),
+                mSnapTransactionManager.paymentUsingTelkomselCash(
+                        new TelkomselEcashPaymentRequest(authenticationToken, customerPhoneNumber, context.getString(R.string.payment_telkomsel_cash)),
                         callback);
             } else {
                 isRunning = false;
@@ -686,7 +690,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingXLTunai(new BasePaymentRequest(authenticationToken), callback);
+                mSnapTransactionManager.paymentUsingXLTunai(
+                        new BasePaymentRequest(authenticationToken, context.getString(R.string.payment_xl_tunai)), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -712,7 +717,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingIndomaret(new BasePaymentRequest(authenticationToken), callback);
+                mSnapTransactionManager.paymentUsingIndomaret(
+                        new BasePaymentRequest(authenticationToken, context.getString(R.string.payment_indomaret)), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -739,7 +745,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingIndosatDompetku(new IndosatDompetkuPaymentRequest(authenticationToken, msisdn), callback);
+                mSnapTransactionManager.paymentUsingIndosatDompetku(
+                        new IndosatDompetkuPaymentRequest(authenticationToken, msisdn, context.getString(R.string.payment_indosat_dompetku)), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -765,7 +772,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingKiosan(new BasePaymentRequest(authenticationToken), callback);
+                mSnapTransactionManager.paymentUsingKiosan(
+                        new BasePaymentRequest(authenticationToken, context.getString(R.string.payment_kioson)), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -791,7 +799,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingBRIEpay(new BasePaymentRequest(authenticationToken), callback);
+                mSnapTransactionManager.paymentUsingBRIEpay(
+                        new BasePaymentRequest(authenticationToken, context.getString(R.string.payment_epay_bri)), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -817,7 +826,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingBankTransferAllBank(SdkUtil.getBankTransferPaymentRequest(email, authenticationToken),
+                mSnapTransactionManager.paymentUsingBankTransferAllBank(SdkUtil.getBankTransferPaymentRequest(email,
+                        authenticationToken, context.getString(R.string.payment_bank_transfer)),
                         callback);
             } else {
                 isRunning = false;

@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uiflow.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ import com.midtrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 /**
  * @author rakawm
  */
-public class SelectBankTransferActivity extends BaseActivity {
+public class SelectBankTransferActivity extends BaseActivity implements BankTransferListAdapter.BankTransferAdapterListener{
 
     public static final String EXTRA_BANK = "extra.bank";
     private static final String TAG = SelectBankTransferActivity.class.getSimpleName();
@@ -42,6 +45,7 @@ public class SelectBankTransferActivity extends BaseActivity {
     private RecyclerView mRecyclerView = null;
     private ImageView logo = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
+    private BankTransferListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +82,7 @@ public class SelectBankTransferActivity extends BaseActivity {
         } else {
             initialiseAdapterData();
         }
-        BankTransferListAdapter adapter = new
-                BankTransferListAdapter(this, data);
+        adapter = new BankTransferListAdapter(this, data);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -158,5 +161,61 @@ public class SelectBankTransferActivity extends BaseActivity {
 
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        BankTransferModel item = adapter.getItem(position);
+        String name = item.getBankName();
+
+        if(name.equals(getString(R.string.bca_bank_transfer))) {
+
+            Intent startBankPayment = new Intent(this, BankTransferActivity.class);
+            startBankPayment.putExtra(
+                    this.getString(R.string.position),
+                    Constants.BANK_TRANSFER_BCA
+            );
+
+            startActivityForResult(
+                    startBankPayment,
+                    Constants.RESULT_CODE_PAYMENT_TRANSFER
+            );
+
+        } else if(name.equals(getString(R.string.permata_bank_transfer))){
+
+            Intent startBankPayment = new Intent(this, BankTransferActivity.class);
+            startBankPayment.putExtra(
+                    getString(R.string.position),
+                    Constants.BANK_TRANSFER_PERMATA);
+
+            startActivityForResult(
+                    startBankPayment,
+                    Constants.RESULT_CODE_PAYMENT_TRANSFER
+            );
+
+        } else if (name.equals(getString(R.string.mandiri_bank_transfer))) {
+
+            Intent startMandiriBankPayment = new Intent(this, BankTransferActivity.class);
+            startMandiriBankPayment.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
+            startActivityForResult(
+                    startMandiriBankPayment,
+                    Constants.RESULT_CODE_PAYMENT_TRANSFER
+            );
+
+        } else if (name.equals(getString(R.string.all_bank_transfer))) {
+
+            Intent startOtherBankPayment = new Intent(this, BankTransferActivity.class);
+            startOtherBankPayment.putExtra(
+                    getString(R.string.position),
+                    Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK
+            );
+            startActivityForResult(
+                    startOtherBankPayment,
+                    Constants.RESULT_CODE_PAYMENT_TRANSFER
+            );
+
+        } else {
+            Toast.makeText(this, "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

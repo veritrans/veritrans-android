@@ -548,7 +548,8 @@ public class SdkUtil {
         return paymentDetails;
     }
 
-    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String cardToken, boolean saveCard, TransactionRequest transactionRequest, String tokenId) {
+    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String cardToken, boolean saveCard, TransactionRequest transactionRequest,
+                                                                       String tokenId, String paymentType) {
         if (transactionRequest.isUiEnabled()) {
             // get user details only if using default ui
             transactionRequest = initializeUserInfo(transactionRequest);
@@ -561,22 +562,24 @@ public class SdkUtil {
         paymentRequest.setSaveCard(saveCard);
         paymentRequest.setPaymentDetails(paymentDetails);
         paymentRequest.setTransactionId(tokenId);
+        paymentRequest.setPaymentType(paymentType);
         return paymentRequest;
     }
 
-    public static BankTransferPaymentRequest getBankTransferPaymentRequest(String email, String tokenId) {
+    public static BankTransferPaymentRequest getBankTransferPaymentRequest(String email,
+                                                                           String tokenId, String paymentType) {
         BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest();
         paymentRequest.setEmailAddress(email);
         paymentRequest.setTransactionId(tokenId);
-
+        paymentRequest.setPaymentType(paymentType);
         return paymentRequest;
     }
 
-    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId, String tokenId) {
+    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId, String tokenId, String paymentType) {
         KlikBCAPaymentRequest klikBCAPaymentRequest = new KlikBCAPaymentRequest();
         klikBCAPaymentRequest.setUserId(userId);
         klikBCAPaymentRequest.setTransactionId(tokenId);
-
+        klikBCAPaymentRequest.setPaymentType(paymentType);
         return klikBCAPaymentRequest;
     }
 
@@ -584,12 +587,14 @@ public class SdkUtil {
         return transactionRequest.getCustomerDetails().getEmail();
     }
 
-    public static MandiriClickPayPaymentRequest getMandiriClickPaymentRequest(String token, String mandiriCardNumber, String tokenResponse, String input3) {
+    public static MandiriClickPayPaymentRequest getMandiriClickPaymentRequest(String token, String mandiriCardNumber,
+                                                                              String tokenResponse, String input3, String paymentType) {
         MandiriClickPayPaymentRequest request = new MandiriClickPayPaymentRequest();
         request.setTransactionId(token);
         request.setMandiriCardNumber(mandiriCardNumber);
         request.setTokenResponse(tokenResponse);
         request.setInput3(input3);
+        request.setPaymentType(paymentType);
         return request;
     }
 

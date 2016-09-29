@@ -442,7 +442,7 @@
 
     <!--Payment List-->
     <string name="payment_epay_bri">bri_epay</string>
-    <string name="payment_bank_transfer">bank_transfer</string>
+    <string name="payment_bank_transfer">bankTransfer</string>
     <string name="payment_mandiri_bill_payment">echannel</string>
     <string name="payment_mandiri_clickpay">mandiri_clickpay</string>
     <string name="payment_cimb_clicks">cimb_clicks</string>

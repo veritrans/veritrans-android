@@ -420,10 +420,11 @@
     <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_klik_bca">KlikBCA</string>
+    
     <!--Payment List-->
     <string name="payment_offers">offers</string>
     <string name="payment_epay_bri">bri_epay</string>
-    <string name="payment_bank_transfer">bank_transfer</string>
+    <string name="payment_bank_transfer">bankTransfer</string>
     <string name="payment_mandiri_bill_payment">echannel</string>
     <string name="payment_mandiri_clickpay">mandiri_clickpay</string>
     <string name="payment_cimb_clicks">cimb_clicks</string>
@@ -436,6 +437,10 @@
     <string name="payment_permata">permata</string>
     <string name="payment_bca">bca</string>
     <string name="payment_klik_bca">bca_klikbca</string>
+    <string name="payment_telkomsel_cash">telkomsel_cash</string>
+    <string name="payment_xl_tunai">xl_tunai</string>
+    <string name="payment_kioson">kioson</string>
+
     <!--Error Response-->
     <string name="error_empty_response">failed to retrieve response from server.</string>
     <string name="error_sdk_not_initialized">sdk is not initialized.</string>

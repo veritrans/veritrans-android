@@ -558,5 +558,6 @@ public class CreditCardRegisterForm extends LinearLayout {
 
         void onFailed(Throwable throwable);
     }
+    
 
 }

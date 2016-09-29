@@ -30,7 +30,21 @@
                 android:clickable="true"
                 android:contentDescription="@string/description_delete_card"
                 android:src="@drawable/delete"
-                android:visibility="invisible" />
+                android:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/image_new_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/eight_dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:contentDescription="@string/description_delete_card"
+                android:src="@drawable/ic_add"
+
+                android:visibility="visible" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
