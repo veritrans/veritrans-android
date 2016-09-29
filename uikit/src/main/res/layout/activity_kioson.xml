@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <include layout="@layout/layout_appbar_payment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_confirm_payment" />
+
+    <Button
+        android:id="@+id/btn_confirm_payment"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/sixteen_dp"
+        android:text="@string/confirm_payment"
+        android:textAllCaps="true"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

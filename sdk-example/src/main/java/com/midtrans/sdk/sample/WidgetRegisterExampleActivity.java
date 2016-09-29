@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.midtrans.sdk.coreflow.models.SaveCardResponse;
+import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.widgets.CreditCardRegisterForm;
 
 /**

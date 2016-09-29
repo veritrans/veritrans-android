@@ -16,8 +16,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 
 
 /**
@@ -50,7 +50,7 @@ public class SdkConfigDialogFragment extends DialogFragment {
             int width = screenSize.x;
             WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
             layoutParams.copyFrom(dialog.getWindow().getAttributes());
-            layoutParams.width = (int) (width);
+            layoutParams.width = width;
             dialog.getWindow().setAttributes(layoutParams);
         }
     }

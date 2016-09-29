@@ -1,0 +1,90 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.midtrans.sdk.uikit">
+
+    <application
+        android:allowBackup="true"
+        android:theme="@style/VeritransAppTheme">
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.UserDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.PaymentMethodsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.BankTransferActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.PaymentWebActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.MandiriClickPayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.EpayBriActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.CIMBClickPayActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.MandiriECashActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.IndosatDompetkuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.IndomaretActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.NotificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.BBMMoneyActivity"
+            android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.OffersActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.SelectBankTransferActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.BCAKlikPayActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.SaveCreditCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.KlikBCAActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.TelkomselCashActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.XLTunaiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.KiosonActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.KiosonInstructionActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

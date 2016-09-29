@@ -9,16 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-
-import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.MidtransSDK;
-import com.midtrans.sdk.coreflow.models.TransactionResponse;
+import com.midtrans.sdk.corekit.callback.TransactionCallback;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
 
 public class KlikBcaPaymentActivity extends AppCompatActivity{
 
-    private String sampleUserId = "userid";
-
     ProgressDialog dialog;
+    private String sampleUserId = "userid";
     private Button buttonPay;
 
     @Override

@@ -8,13 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
+import com.midtrans.sdk.corekit.callback.SaveCardCallback;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.SaveCardResponse;
+
 import java.util.ArrayList;
-import com.midtrans.sdk.coreflow.callback.CardRegistrationCallback;
-import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
-import com.midtrans.sdk.coreflow.core.MidtransSDK;
-import com.midtrans.sdk.coreflow.models.CardRegistrationResponse;
-import com.midtrans.sdk.coreflow.models.SaveCardRequest;
-import com.midtrans.sdk.coreflow.models.SaveCardResponse;
 
 public class CardRegistrationActivity extends AppCompatActivity{
     TextInputLayout cardNumberContainer, cvvContainer, expiredDateContainer;

@@ -34,32 +34,32 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.midtrans.sdk.corekit.callback.CardTokenCallback;
+import com.midtrans.sdk.corekit.callback.CheckoutCallback;
+import com.midtrans.sdk.corekit.callback.GetCardCallback;
+import com.midtrans.sdk.corekit.callback.SaveCardCallback;
+import com.midtrans.sdk.corekit.callback.TransactionCallback;
+import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
+import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.models.CardTokenRequest;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.SaveCardResponse;
+import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.Token;
+import com.midtrans.sdk.corekit.utilities.Utils;
+import com.midtrans.sdk.widgets.adapter.CardPagerAdapter;
+import com.midtrans.sdk.widgets.utils.CardUtils;
+import com.midtrans.sdk.widgets.utils.CirclePageIndicator;
+import com.midtrans.sdk.widgets.utils.WidgetException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
-
-import com.midtrans.sdk.coreflow.callback.CheckoutCallback;
-import com.midtrans.sdk.coreflow.callback.CardTokenCallback;
-import com.midtrans.sdk.coreflow.callback.GetCardCallback;
-import com.midtrans.sdk.coreflow.callback.SaveCardCallback;
-import com.midtrans.sdk.coreflow.callback.TransactionCallback;
-import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.MidtransSDK;
-import com.midtrans.sdk.coreflow.core.SdkCoreFlowBuilder;
-import com.midtrans.sdk.coreflow.core.TransactionRequest;
-import com.midtrans.sdk.coreflow.models.CardTokenRequest;
-import com.midtrans.sdk.coreflow.models.SaveCardRequest;
-import com.midtrans.sdk.coreflow.models.SaveCardResponse;
-import com.midtrans.sdk.coreflow.models.TokenDetailsResponse;
-import com.midtrans.sdk.coreflow.models.TransactionResponse;
-import com.midtrans.sdk.coreflow.models.snap.Token;
-import com.midtrans.sdk.coreflow.utilities.Utils;
-import com.midtrans.sdk.widgets.adapter.CardPagerAdapter;
-import com.midtrans.sdk.widgets.utils.CardUtils;
-import com.midtrans.sdk.widgets.utils.CirclePageIndicator;
-import com.midtrans.sdk.widgets.utils.WidgetException;
 
 /**
  * Custom widget for showing credit card form.
@@ -164,7 +164,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         cvvHelpImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog dialog = new AlertDialog.Builder(getContext().getApplicationContext())
+                AlertDialog dialog = new AlertDialog.Builder(getContext())
                         .setView(R.layout.dialog_cvv)
                         .setPositiveButton(R.string.cvv_hint_got_it, new DialogInterface.OnClickListener() {
                             @Override
@@ -924,20 +924,6 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         iSTwoClickPayment = false;
     }
 
-
-    /**
-     * Will be used to get response callback after charging in this view.
-     */
-    public interface WidgetTransactionCallback {
-        void onSucceed(TransactionResponse transactionResponse);
-
-        void onFailed(Throwable throwable);
-    }
-
-    /*
-     * Saved Cards Stuff
-     */
-
     public void getCardList() {
         layoutProgress.setVisibility(VISIBLE);
         initUserIdIfNotExist();
@@ -975,6 +961,10 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         });
     }
 
+    /*
+     * Saved Cards Stuff
+     */
+
     private void setCardsListToCardAdapter() {
         cardPagerAdapter.addViews(savedCardPager, this.creditCardList);
     }
@@ -991,12 +981,6 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         }
     }
 
-    /*
-     * Card Detail Callback
-     */
-
-
-
     //get new cards
     private ArrayList<SaveCardRequest> getNewCards(SaveCardRequest deletedItem) {
         ArrayList<SaveCardRequest> newCards = new ArrayList<>();
@@ -1007,6 +991,10 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         }
         return newCards;
     }
+
+    /*
+     * Card Detail Callback
+     */
 
     //update cards on server when a card deleted
     private void updateCardOnMerchantServer(ArrayList<SaveCardRequest> newCards, final SaveCardRequest card) {
@@ -1089,5 +1077,14 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         });
 
         layout.startAnimation(layoutAnimation);
+    }
+
+    /**
+     * Will be used to get response callback after charging in this view.
+     */
+    public interface WidgetTransactionCallback {
+        void onSucceed(TransactionResponse transactionResponse);
+
+        void onFailed(Throwable throwable);
     }
 }

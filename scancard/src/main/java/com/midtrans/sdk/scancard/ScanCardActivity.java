@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.midtrans.sdk.uiflow.scancard.ExternalScanner;
-import com.midtrans.sdk.uiflow.scancard.ScannerModel;
+import com.midtrans.sdk.uikit.scancard.ExternalScanner;
+import com.midtrans.sdk.uikit.scancard.ScannerModel;
 
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;

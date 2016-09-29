@@ -3,7 +3,7 @@ package com.midtrans.sdk.scancard;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.midtrans.sdk.uiflow.scancard.ExternalScanner;
+import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 
 
 /**

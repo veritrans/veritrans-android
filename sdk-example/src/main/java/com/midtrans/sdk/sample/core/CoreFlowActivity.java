@@ -10,14 +10,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.midtrans.sdk.coreflow.callback.CheckoutCallback;
-import com.midtrans.sdk.coreflow.callback.TransactionOptionsCallback;
-import com.midtrans.sdk.coreflow.core.Constants;
-import com.midtrans.sdk.coreflow.core.LocalDataHandler;
-import com.midtrans.sdk.coreflow.core.Logger;
-import com.midtrans.sdk.coreflow.core.MidtransSDK;
-import com.midtrans.sdk.coreflow.models.snap.Token;
-import com.midtrans.sdk.coreflow.models.snap.Transaction;
+import com.midtrans.sdk.corekit.callback.CheckoutCallback;
+import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
+import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.LocalDataHandler;
+import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.snap.Token;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.sample.BCAKlikPayActivity;
 import com.midtrans.sdk.sample.BankTransferPaymentActivity;
 import com.midtrans.sdk.sample.CIMBClickPayPaymentActivity;
@@ -239,14 +239,14 @@ public class CoreFlowActivity extends AppCompatActivity {
     private void showAlertDialog(String message){
             AlertDialog alert = new AlertDialog.Builder(this)
                     .setMessage(message)
-                    .setPositiveButton(com.midtrans.sdk.uiflow.R.string.btn_retry, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(com.midtrans.sdk.uikit.R.string.btn_retry, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             getpaymentPages();
                         }
                     })
-                    .setNegativeButton(com.midtrans.sdk.uiflow.R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(com.midtrans.sdk.uikit.R.string.btn_cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();

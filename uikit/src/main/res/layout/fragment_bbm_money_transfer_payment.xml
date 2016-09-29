@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_validaty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/faint_yellow"
+            android:gravity="start"
+            android:padding="@dimen/sixteen_dp"
+            android:text="@string/text_sample_valid_date"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:padding="@dimen/sixteen_dp"
+
+            android:text="@string/payment_code"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/secondary_text_size"
+            />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_payment_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:text="@string/payment_code"
+            android:textColor="@color/black"
+            android:textSize="@dimen/header_text_size"
+            />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="@dimen/sixteen_dp"
+            android:background="@color/gray_divider"
+            />
+
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:text="@string/instruction"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/primary_text_size"
+            />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:background="@color/light_gray"
+            android:paddingBottom="@dimen/five_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/five_dp"
+            android:text="@string/bbm_money_instruction_step1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:lineSpacingExtra="2dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:text="@string/bbm_money_instruction_step2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            />
+
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:background="@color/light_gray"
+            android:lineSpacingExtra="2dp"
+            android:paddingBottom="@dimen/five_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/five_dp"
+            android:text="@string/bbm_money_instruction_step3"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:lineSpacingExtra="2dp"
+            android:paddingBottom="@dimen/five_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/five_dp"
+            android:text="@string/bbm_money_instruction_step4"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:background="@color/light_gray"
+            android:lineSpacingExtra="2dp"
+            android:paddingBottom="@dimen/five_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/five_dp"
+            android:text="@string/bbm_money_instruction_step5"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:lineSpacingExtra="2dp"
+            android:paddingBottom="@dimen/five_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/five_dp"
+            android:text="@string/bbm_money_instruction_step6"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            />
+
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

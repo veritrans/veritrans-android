@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.midtrans.sdk.coreflow.core.Logger;
+import com.midtrans.sdk.corekit.core.Logger;
 
 /**
  * Credit card utilities.
