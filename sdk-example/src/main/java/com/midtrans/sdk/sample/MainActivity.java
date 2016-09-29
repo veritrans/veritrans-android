@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
      * Initialize Veritrans SDK using SdkCoreFlowBuilder.
      */
     private void initSDK() {
-        Log.i("sdkinit", "start");
         // SDK initiation for coreflow
         if(mysdkFlow == CORE_FLOW){
             SdkCoreFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
