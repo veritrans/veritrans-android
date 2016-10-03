@@ -440,6 +440,9 @@
     <string name="payment_telkomsel_cash">telkomsel_cash</string>
     <string name="payment_xl_tunai">xl_tunai</string>
     <string name="payment_kioson">kioson</string>
+    <string name="payment_permata_va">permata_va</string>
+    <string name="payment_bca_va">bca_va</string>
+    <string name="payment_all_va">all_va</string>
 
     <!--Error Response-->
     <string name="error_empty_response">failed to retrieve response from server.</string>

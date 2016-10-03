@@ -1,19 +1,21 @@
 package com.midtrans.sdk.corekit.models.snap.payment;
 
 import com.google.gson.annotations.SerializedName;
+import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
 
 /**
  * @author rakawm
  */
 public class KlikBCAPaymentRequest extends BasePaymentRequest {
-    @SerializedName("user_id")
-    private String userId;
+    @SerializedName("payment_params")
+    private KlikBcaPaymentParams paymentParams;
 
-    public String getUserId() {
-        return userId;
+    public KlikBCAPaymentRequest(String paymentType, KlikBcaPaymentParams paymentParams) {
+        super(paymentType);
+        this.paymentParams = paymentParams;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public KlikBcaPaymentParams getPaymentParams() {
+        return paymentParams;
     }
 }

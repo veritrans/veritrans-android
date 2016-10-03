@@ -104,7 +104,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         if (banks.size() > 0) {
 
             for (String bank : banks) {
-
                 BankTransferModel model = PaymentMethods.getBankTransferModel(this, bank);
                 if (model != null) {
                     data.add(model);

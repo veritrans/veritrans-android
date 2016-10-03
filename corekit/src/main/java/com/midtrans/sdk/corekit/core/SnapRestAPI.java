@@ -34,174 +34,155 @@ public interface SnapRestAPI {
     /**
      * Charge payment using credit card token.
      *
+     * @param authenticationToken
      * @param creditCardPaymentRequest    Payment Request Details.
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_credit_card")
-    void paymentUsingCreditCard(@Body CreditCardPaymentRequest creditCardPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingCreditCard(@Path("token") String authenticationToken, @Body CreditCardPaymentRequest creditCardPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
-     * Charge payment using bank transfer.
+     * Charge payment using bank transfer Virtual account.
      *
-     * @param bankTransferPaymentRequest  Payment Request Details.
+     * @param paymentRequest  Payment Request Details.
      * @param transactionResponseCallback Callback
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_bank_transfer")
-    void paymentUsingBankTransfer(@Body BankTransferPaymentRequest bankTransferPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingBankTransfer(@Path("token") String authenticationToken, @Body BankTransferPaymentRequest paymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using KlikBCA.
      *
+     * @param authenticationToken
      * @param klikBCAPaymentRequest       Payment Request Details.
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_bca_klikbca")
-    void paymentUsingKlikBCA(@Body KlikBCAPaymentRequest klikBCAPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingKlikBCA(@Path("token") String authenticationToken, @Body KlikBCAPaymentRequest klikBCAPaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using BCA Klikpay.
      *
+     * @param authenticationToken
      * @param basePaymentRequest Payment Request Details.
+     * @param transactionResponseCallback transaction callback
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_bca_klikpay")
-    void paymentUsingBCAKlikPay(@Body BasePaymentRequest basePaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
-
-
-    /**
-     * Charge payment using permata bank.
-     *
-     * @param request                     bankTransferPaymentrqeust
-     * @param transactionResponseCallback Callback.
-     */
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_permata")
-    void paymentUsingBankTransferPermata(@Body BankTransferPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
-
-
-    /**
-     * Charge payment using bank tranfer bca.
-     *
-     * @param request                     BankTransferPaymentRequest model
-     * @param transactionResponseCallback Callback.
-     */
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_bank_transfer_bca")
-    void paymentUsingBankTransferBCA(@Body BankTransferPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
-
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingBCAKlikPay(@Path("token") String authenticationToken, @Body BasePaymentRequest basePaymentRequest, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using mandiri bill pay.
      *
+     * @param authenticationToken
      * @param request                     BankTransferPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_mandiri_billpayment")
-    void paymentUsingMandiriBillPay(@Body BankTransferPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingMandiriBillPay(@Path("token") String authenticationToken, @Body BankTransferPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
 
     /**
      * Charge payment using mandiri click pay.
      *
+     * @param authenticationToken
      * @param request                     MandiriClickPayPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_mandiri_clickpay")
-    void paymentUsingMandiriClickPay(@Body MandiriClickPayPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingMandiriClickPay(@Path("token") String authenticationToken, @Body MandiriClickPayPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using cimb clicks.
      *
+     * @param authenticationToken
      * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_cimb_clicks")
-    void paymentUsingCIMBClick(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingCIMBClick(@Path("token") String authenticationToken, @Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using bri epay.
      *
+     * @param authenticationToken
      * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_bri_epay")
-    void paymentUsingBRIEpay(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingBRIEpay(@Path("token") String authenticationToken, @Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using mandiri ecash.
      *
+     * @param authenticationToken
      * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_mandiri_ecash")
-    void paymentUsingMandiriEcash(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingMandiriEcash(@Path("token") String authenticationToken, @Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using telkomsel cash.
      *
+     * @param authenticationToken
      * @param request                     TelkomselEcashPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_telkomsel_cash")
-    void paymentUsingTelkomselEcash(@Body TelkomselEcashPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingTelkomselEcash(@Path("token") String authenticationToken, @Body TelkomselEcashPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using telkomsel cash.
      *
+     * @param authenticationToken
      * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_xl_tunai")
-    void paymentUsingXlTunai(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingXlTunai(@Path("token") String authenticationToken, @Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using indosat dompetku.
      *
+     * @param authenticationToken
      * @param request                     IndosatDompetkuPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_indomaret")
-    void paymentUsingIndomaret(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingIndomaret(@Path("token") String authenticationToken, @Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
 
     /**
      * Charge payment using indosat dompetku.
-     *
+     *@param authenticationToken
      * @param request                     IndosatDompetkuPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_indosat_dompetku")
-    void paymentUsingIndosatDompetku(@Body IndosatDompetkuPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingIndosatDompetku(@Path("token") String authenticationToken, @Body IndosatDompetkuPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
     /**
      * Charge payment using kiosan.
      *
+     * @param authenticationToken
      * @param request                     BasePaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/pay_with_kioson")
-    void paymentUsingKiosan(@Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingKiosan(@Path("token") String authenticationToken, @Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 
-    /**
-     * Charge payment using Bank Transfer All Bank.
-     *
-     * @param request                     BasePaymentRequest model.
-     * @param transactionResponseCallback Callback.
-     */
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/v1/va_all_bank")
-    void paymentUsingBankTransferAllBank(@Body BankTransferPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
 }

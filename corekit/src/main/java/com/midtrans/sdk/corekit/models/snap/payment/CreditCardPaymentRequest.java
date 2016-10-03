@@ -1,41 +1,29 @@
 package com.midtrans.sdk.corekit.models.snap.payment;
 
 import com.google.gson.annotations.SerializedName;
+import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 
 /**
  * @author rakawm
  */
 public class CreditCardPaymentRequest extends BasePaymentRequest {
-    @SerializedName("token_id")
-    private String tokenId;
-    @SerializedName("payment_detail")
-    private PaymentDetails paymentDetails;
-    @SerializedName("save_card")
-    private boolean saveCard;
+    @SerializedName("payment_params")
+    private CreditCardPaymentParams paymentParams;
 
-    public String getTokenId() {
-        return tokenId;
+    @SerializedName("customer_details")
+    private CustomerDetailRequest customerDetails;
+
+    public CreditCardPaymentRequest(String paymentType, CreditCardPaymentParams paymentParams, CustomerDetailRequest customerDetails) {
+        super(paymentType);
+        this.paymentParams = paymentParams;
+        this.customerDetails = customerDetails;
     }
 
-    public void setTokenId(String tokenId) {
-        this.tokenId = tokenId;
+    public CreditCardPaymentParams getPaymentParams() {
+        return paymentParams;
     }
 
-    public PaymentDetails getPaymentDetails() {
-        return paymentDetails;
+    public CustomerDetailRequest getCustomerDetails() {
+        return customerDetails;
     }
-
-    public void setPaymentDetails(PaymentDetails paymentDetails) {
-        this.paymentDetails = paymentDetails;
-    }
-
-    public boolean isSaveCard() {
-        return saveCard;
-    }
-
-    public void setSaveCard(boolean saveCard) {
-        this.saveCard = saveCard;
-    }
-
-
 }

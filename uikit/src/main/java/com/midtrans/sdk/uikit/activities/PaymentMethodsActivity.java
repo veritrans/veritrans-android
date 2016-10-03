@@ -245,9 +245,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
                     showLogo(logoUrl);
-                    for (String bank : transaction.getTransactionData().getBankTransfer().getBanks()) {
-                        bankTrasfers.add(bank);
-                    }
                     List<String> paymentMethods = transaction.getTransactionData().getEnabledPayments();
                     initialiseAdapterData(paymentMethods);
                     paymentMethodsAdapter.setData(data);
@@ -277,10 +274,24 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
      */
     private void initialiseAdapterData(List<String> enabledPayments) {
         data.clear();
+        bankTrasfers.clear();
         for (String paymentType : enabledPayments) {
             PaymentMethodsModel model = PaymentMethods.getMethods(this, paymentType);
             if (model != null) {
                 data.add(model);
+            }
+            if(paymentType.equals(getString(R.string.payment_permata_va)) ||
+                    paymentType.equals(getString(R.string.payment_bca_va)) ||
+                    paymentType.equals(getString(R.string.payment_mandiri_bill_payment)) ||
+                    paymentType.equals(getString(R.string.payment_all_va))){
+                bankTrasfers.add(paymentType);
+            }
+        }
+        if(!bankTrasfers.isEmpty()){
+            if(data.size() > 0){
+                data.add(1, PaymentMethods.getMethods(this,getString(R.string.payment_bank_transfer)));
+            }else{
+                data.add(PaymentMethods.getMethods(this,getString(R.string.payment_bank_transfer)));
             }
         }
     }

@@ -175,13 +175,13 @@ public class PaymentMethods {
     }
 
     public static BankTransferModel getBankTransferModel(Context context, String name) {
-        if (name.equals(context.getString(R.string.bank_transfer_bca))) {
+        if (name.equals(context.getString(R.string.payment_bca_va))) {
             return new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true);
-        } else if (name.equals(context.getString(R.string.bank_transfer_permata))) {
+        } else if (name.equals(context.getString(R.string.payment_permata_va))) {
             return new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true);
-        } else if (name.equals(context.getString(R.string.bank_transfer_all_bank))) {
+        } else if (name.equals(context.getString(R.string.payment_all_va))) {
             return new BankTransferModel(context.getString(R.string.all_bank_transfer), R.drawable.ic_other_bank, true);
-        } else if (name.equals(context.getString(R.string.bank_transfer_mandiri))) {
+        } else if (name.equals(context.getString(R.string.payment_mandiri_bill_payment))) {
             return new BankTransferModel(context.getString(R.string.mandiri_bank_transfer), R.drawable.ic_mandiri_bill_payment2, true);
         } else {
             return null;

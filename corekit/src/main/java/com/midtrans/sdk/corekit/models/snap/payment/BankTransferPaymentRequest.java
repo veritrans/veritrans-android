@@ -6,15 +6,16 @@ import com.google.gson.annotations.SerializedName;
  * @author rakawm
  */
 public class BankTransferPaymentRequest extends BasePaymentRequest {
-    @SerializedName("email_address")
-    private String emailAddress;
 
+    @SerializedName("customer_details")
+    private CustomerDetailRequest customerDetails;
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public BankTransferPaymentRequest(String paymentType, CustomerDetailRequest customerDetails) {
+        super(paymentType);
+        this.customerDetails = customerDetails;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public CustomerDetailRequest getCustomerDetails() {
+        return customerDetails;
     }
 }
