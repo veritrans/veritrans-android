@@ -1,26 +1,18 @@
 package com.midtrans.sdk.corekit.models.snap.payment;
 
 import com.google.gson.annotations.SerializedName;
+import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
 
 /**
  * Created by ziahaqi on 8/1/16.
  */
 public class IndosatDompetkuPaymentRequest extends BasePaymentRequest {
 
-    @SerializedName("msisdn")
-    private String msisdn;
+    @SerializedName("payment_params")
+    IndosatDompetkuPaymentParams paymentParams;
 
-    public IndosatDompetkuPaymentRequest(String token, String msisdn, String paymentType) {
-        this.transactionId = token;
-        this.msisdn = msisdn;
-        this.paymentType = paymentType;
-    }
-
-    public String getMsisdn() {
-        return msisdn;
-    }
-
-    public void setMsisdn(String msisdn) {
-        this.msisdn = msisdn;
+    public IndosatDompetkuPaymentRequest(String paymentType, IndosatDompetkuPaymentParams paymentParams) {
+        super(paymentType);
+        this.paymentParams = paymentParams;
     }
 }

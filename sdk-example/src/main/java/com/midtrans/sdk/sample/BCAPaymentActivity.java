@@ -43,8 +43,7 @@ public class BCAPaymentActivity extends AppCompatActivity{
                 // Show progress dialog
                 dialog.show();
                 MidtransSDK.getInstance().paymentUsingBankTransferBCA(
-                        MidtransSDK.getInstance().readAuthenticationToken(),
-                        sampleEmail, new TransactionCallback() {
+                        MidtransSDK.getInstance().readAuthenticationToken(), sampleEmail, new TransactionCallback() {
                             @Override
                             public void onSuccess(TransactionResponse response) {
                                 actionTransactionSuccess(response);

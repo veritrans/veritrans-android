@@ -422,7 +422,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      */
     private void mandiriBillPayTransaction(MidtransSDK midtransSDK) {
         midtransSDK.paymentUsingMandiriBillPay(midtransSDK.readAuthenticationToken(),
-                SdkUtil.getEmailAddress(midtransSDK.getTransactionRequest()), new TransactionCallback() {
+                midtransSDK.getTransactionRequest().getCustomerDetails().getEmail(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         actionPaymentSuccess(response);

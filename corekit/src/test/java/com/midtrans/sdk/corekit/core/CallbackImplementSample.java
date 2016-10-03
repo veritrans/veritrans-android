@@ -132,68 +132,68 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
         snapTransactionManager.getTransactionOptions(token, this);
     }
 
-    public void paymentUsingCreditCard(CreditCardPaymentRequest request) {
-        snapTransactionManager.paymentUsingCreditCard(request, this);
+    public void paymentUsingCreditCard(CreditCardPaymentRequest request, String token) {
+        snapTransactionManager.paymentUsingCreditCard(token, request, this);
     }
 
-    public void paymentUsingSnapBankTransferBCA(BankTransferPaymentRequest request) {
-        snapTransactionManager.paymentUsingBankTransferBCA(request, this);
+    public void paymentUsingSnapBankTransferBCA(String tokenId, BankTransferPaymentRequest request) {
+        snapTransactionManager.paymentUsingBankTransferBCA(tokenId, request, this);
     }
 
-    public void paymentUsingSnapBankTransferPermata(BankTransferPaymentRequest request) {
-        snapTransactionManager.paymentUsingBankTransferPermata(request, this);
+    public void paymentUsingSnapBankTransferPermata(String token, BankTransferPaymentRequest request) {
+        snapTransactionManager.paymentUsingBankTransferPermata(token, request, this);
     }
 
-    public void paymentUsingKlikBCA(KlikBCAPaymentRequest request) {
-        snapTransactionManager.paymentUsingKlikBCA(request, this);
+    public void paymentUsingKlikBCA(String token, KlikBCAPaymentRequest request) {
+        snapTransactionManager.paymentUsingKlikBCA(token, request, this);
     }
 
-    public void paymentUsingBCAKlikpay(BasePaymentRequest request) {
-        snapTransactionManager.paymentUsingBCAKlikpay(request, this);
+    public void paymentUsingBCAKlikpay(String token,BasePaymentRequest request) {
+        snapTransactionManager.paymentUsingBCAKlikpay(token,request, this);
     }
 
-    public void paymentUsingSnapMandiriBillpay(BankTransferPaymentRequest request) {
-        snapTransactionManager.paymentUsingMandiriBillPay(request, this);
+    public void paymentUsingSnapMandiriBillpay(String token, BankTransferPaymentRequest request) {
+        snapTransactionManager.paymentUsingMandiriBillPay(token, request, this);
     }
 
-    public void paymentUsingSnapMandiriClickPay(MandiriClickPayPaymentRequest request) {
-        snapTransactionManager.paymentUsingMandiriClickPay(request, this);
+    public void paymentUsingSnapMandiriClickPay(String token, MandiriClickPayPaymentRequest request) {
+        snapTransactionManager.paymentUsingMandiriClickPay(token, request, this);
     }
 
-    public void paymentUsingSnapCIMBClick(BasePaymentRequest request) {
-        snapTransactionManager.paymentUsingCIMBClick(request, this);
+    public void paymentUsingSnapCIMBClick(String token,BasePaymentRequest request) {
+        snapTransactionManager.paymentUsingCIMBClick(token, request, this);
     }
 
-    public void paymentUsingSnapBRIEpay(BasePaymentRequest request) {
-        snapTransactionManager.paymentUsingBRIEpay(request, this);
+    public void paymentUsingSnapBRIEpay(String token, BasePaymentRequest request) {
+        snapTransactionManager.paymentUsingBRIEpay(token, request, this);
     }
 
-    public void paymentUsingSnapMandirEcash(BasePaymentRequest request) {
-        snapTransactionManager.paymentUsingMandiriEcash(request, this);
+    public void paymentUsingSnapMandirEcash(String token, BasePaymentRequest request) {
+        snapTransactionManager.paymentUsingMandiriEcash(token, request, this);
     }
 
-    public void paymentUsingSnapTelkomselEcash(TelkomselEcashPaymentRequest request) {
-        snapTransactionManager.paymentUsingTelkomselCash(request, this);
+    public void paymentUsingSnapTelkomselEcash(String token, TelkomselEcashPaymentRequest request) {
+        snapTransactionManager.paymentUsingTelkomselCash(token, request, this);
     }
 
-    public void paymentUsingSnapXLTunai(BasePaymentRequest request) {
-        snapTransactionManager.paymentUsingXLTunai(request, this);
+    public void paymentUsingSnapXLTunai(String token, BasePaymentRequest request) {
+        snapTransactionManager.paymentUsingXLTunai(token, request, this);
     }
 
-    public void paymentUsingSnapIndomaret(BasePaymentRequest request) {
-        snapTransactionManager.paymentUsingIndomaret(request, this);
+    public void paymentUsingSnapIndomaret(String token, BasePaymentRequest request) {
+        snapTransactionManager.paymentUsingIndomaret(token, request, this);
     }
 
-    public void paymentUsingSnapIndosatDompetku(IndosatDompetkuPaymentRequest request) {
-        snapTransactionManager.paymentUsingIndosatDompetku(request, this);
+    public void paymentUsingSnapIndosatDompetku(String token, IndosatDompetkuPaymentRequest request) {
+        snapTransactionManager.paymentUsingIndosatDompetku(token, request, this);
     }
 
-    public void paymentUsingSnapKiosan(BasePaymentRequest request) {
-        snapTransactionManager.paymentUsingKiosan(request, this);
+    public void paymentUsingSnapKiosan(String token, BasePaymentRequest request) {
+        snapTransactionManager.paymentUsingKiosan(token, request, this);
     }
 
-    public void paymentUsingSnapBankTransferAllBank(BankTransferPaymentRequest request) {
-        snapTransactionManager.paymentUsingBankTransferAllBank(request, this);
+    public void paymentUsingSnapBankTransferAllBank(String token, BankTransferPaymentRequest request) {
+        snapTransactionManager.paymentUsingBankTransferAllBank(token, request, this);
     }
 
     public void saveCards(String userId, ArrayList<SaveCardRequest> requests) {

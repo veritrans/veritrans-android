@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Created by ziahaqi on 7/19/16.
  */
 
-public class CardPaymentDetailsTest {
+public class CardCustomerDetailRequestTest {
     CardPaymentDetails details;
     private String bank = "bank";
     private String tokenId = "tokenId";

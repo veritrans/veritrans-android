@@ -34,10 +34,13 @@ import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.params.MandiriClickPayPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.PaymentDetails;
+import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
 
 import java.util.ArrayList;
@@ -538,46 +541,38 @@ public class SdkUtil {
                 transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());
     }
 
-    public static PaymentDetails initializePaymentDetails(TransactionRequest transactionRequest) {
-        PaymentDetails paymentDetails = new PaymentDetails();
-        paymentDetails.setFullName(transactionRequest.getCustomerDetails().getFirstName());
-        paymentDetails.setPhone(transactionRequest.getCustomerDetails().getPhone());
-        paymentDetails.setEmail(transactionRequest.getCustomerDetails().getEmail());
-        return paymentDetails;
+    public static CustomerDetailRequest initializePaymentDetails(TransactionRequest transactionRequest) {
+        CustomerDetailRequest customerDetailRequest = new CustomerDetailRequest();
+        customerDetailRequest.setFullName(transactionRequest.getCustomerDetails().getFirstName());
+        customerDetailRequest.setPhone(transactionRequest.getCustomerDetails().getPhone());
+        customerDetailRequest.setEmail(transactionRequest.getCustomerDetails().getEmail());
+        return customerDetailRequest;
     }
 
-    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String cardToken, boolean saveCard, TransactionRequest transactionRequest,
-                                                                       String tokenId, String paymentType) {
+    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String cardToken, boolean saveCard, TransactionRequest transactionRequest) {
         if (transactionRequest.isUiEnabled()) {
             // get user details only if using default ui
             transactionRequest = initializeUserInfo(transactionRequest);
         }
 
-        PaymentDetails paymentDetails = initializePaymentDetails(transactionRequest);
+        CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transactionRequest);
+        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(cardToken, saveCard);
+        CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
 
-        CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest();
-        paymentRequest.setTokenId(cardToken);
-        paymentRequest.setSaveCard(saveCard);
-        paymentRequest.setPaymentDetails(paymentDetails);
-        paymentRequest.setTransactionId(tokenId);
-        paymentRequest.setPaymentType(paymentType);
         return paymentRequest;
     }
 
-    public static BankTransferPaymentRequest getBankTransferPaymentRequest(String email,
-                                                                           String tokenId, String paymentType) {
-        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest();
-        paymentRequest.setEmailAddress(email);
-        paymentRequest.setTransactionId(tokenId);
-        paymentRequest.setPaymentType(paymentType);
+    public static BankTransferPaymentRequest getBankTransferPaymentRequest(String email, String paymentType) {
+        CustomerDetailRequest request = new CustomerDetailRequest();
+        request.setEmail(email);
+        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest(paymentType, request);
         return paymentRequest;
     }
 
-    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId, String tokenId, String paymentType) {
-        KlikBCAPaymentRequest klikBCAPaymentRequest = new KlikBCAPaymentRequest();
-        klikBCAPaymentRequest.setUserId(userId);
-        klikBCAPaymentRequest.setTransactionId(tokenId);
-        klikBCAPaymentRequest.setPaymentType(paymentType);
+    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId,  String paymentType) {
+
+        KlikBCAPaymentRequest klikBCAPaymentRequest = new KlikBCAPaymentRequest(
+                paymentType, new KlikBcaPaymentParams(userId));
         return klikBCAPaymentRequest;
     }
 
@@ -585,14 +580,12 @@ public class SdkUtil {
         return transactionRequest.getCustomerDetails().getEmail();
     }
 
-    public static MandiriClickPayPaymentRequest getMandiriClickPaymentRequest(String token, String mandiriCardNumber,
-                                                                              String tokenResponse, String input3, String paymentType) {
-        MandiriClickPayPaymentRequest request = new MandiriClickPayPaymentRequest();
-        request.setTransactionId(token);
-        request.setMandiriCardNumber(mandiriCardNumber);
-        request.setTokenResponse(tokenResponse);
-        request.setInput3(input3);
-        request.setPaymentType(paymentType);
+    public static MandiriClickPayPaymentRequest getMandiriClickPaymentRequest(String mandiriCardNumber, String tokenResponse,
+                                                                              String input3, String paymentType) {
+
+        MandiriClickPayPaymentParams paymentParams = new MandiriClickPayPaymentParams(mandiriCardNumber, input3, tokenResponse);
+        MandiriClickPayPaymentRequest request = new MandiriClickPayPaymentRequest(paymentType, paymentParams);
+
         return request;
     }
 

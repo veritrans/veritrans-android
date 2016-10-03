@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 
 public class MandiriClickPaymentActivity extends AppCompatActivity {
@@ -22,6 +23,8 @@ public class MandiriClickPaymentActivity extends AppCompatActivity {
     private String sampleMandiriCardNumber = "4111111111111111";
     private String sampleTokenResponse = "000000";
     private String input3 = "59478";
+    private String sampleInput1 = "13123";
+    private String sampleInput2 = "11231";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +58,10 @@ public class MandiriClickPaymentActivity extends AppCompatActivity {
                 refreshView();
                 if (inputValidator()) {
                     dialog.show();
+
                     MidtransSDK.getInstance().paymentUsingMandiriClickPay(
                             MidtransSDK.getInstance().readAuthenticationToken(),
-                            sampleMandiriCardNumber,
-                            sampleTokenResponse,
-                            input3, new TransactionCallback() {
+                            sampleMandiriCardNumber, sampleTokenResponse, input3, new TransactionCallback() {
                                 @Override
                                 public void onSuccess(TransactionResponse response) {
                                     actionTransactionSuccess(response);

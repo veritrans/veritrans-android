@@ -1,41 +1,18 @@
 package com.midtrans.sdk.corekit.models.snap.payment;
 
 import com.google.gson.annotations.SerializedName;
+import com.midtrans.sdk.corekit.models.snap.params.MandiriClickPayPaymentParams;
 
 /**
  * Created by ziahaqi on 8/1/16.
  */
 public class MandiriClickPayPaymentRequest extends BasePaymentRequest {
 
-    @SerializedName("mandiri_card_no")
-    private String mandiriCardNumber;
+    @SerializedName("payment_params")
+    private MandiriClickPayPaymentParams paymentParams;
 
-    private String input3;
-
-    @SerializedName("token_response")
-    private String tokenResponse;
-
-    public String getMandiriCardNumber() {
-        return mandiriCardNumber;
-    }
-
-    public void setMandiriCardNumber(String mandiriCardNumber) {
-        this.mandiriCardNumber = mandiriCardNumber;
-    }
-
-    public String getInput3() {
-        return input3;
-    }
-
-    public void setInput3(String input3) {
-        this.input3 = input3;
-    }
-
-    public String getTokenResponse() {
-        return tokenResponse;
-    }
-
-    public void setTokenResponse(String tokenResponse) {
-        this.tokenResponse = tokenResponse;
+    public MandiriClickPayPaymentRequest(String paymentType, MandiriClickPayPaymentParams paymentParams) {
+        super(paymentType);
+        this.paymentParams = paymentParams;
     }
 }

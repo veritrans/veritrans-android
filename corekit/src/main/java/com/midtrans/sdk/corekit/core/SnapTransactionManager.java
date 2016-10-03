@@ -151,10 +151,10 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback     Transaction callback
      */
 
-    public void paymentUsingCreditCard(CreditCardPaymentRequest requestModel, final TransactionCallback callback) {
+    public void paymentUsingCreditCard(String authenticationToken, CreditCardPaymentRequest requestModel, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (requestModel != null) {
-            snapRestAPI.paymentUsingCreditCard(requestModel, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingCreditCard(authenticationToken, requestModel, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -201,10 +201,10 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest Payment Details.
      * @param callback       Transaction callback
      */
-    public void paymentUsingBankTransferBCA(BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingBankTransferBCA(String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingBankTransferBCA(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingBankTransfer(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -247,13 +247,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for Payment Using Bank Transfer Permata
      *
+     * @param authenticationToken authentication token
      * @param paymentRequest payment Details
      * @param callback       transaction callback
      */
-    public void paymentUsingBankTransferPermata(final BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingBankTransferPermata(String authenticationToken, final BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingBankTransferPermata(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingBankTransfer(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -300,10 +301,10 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param request  Payment details
      * @param callback transaction callback
      */
-    public void paymentUsingKlikBCA(KlikBCAPaymentRequest request, final TransactionCallback callback) {
+    public void paymentUsingKlikBCA(String authenticationToken, KlikBCAPaymentRequest request, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (request != null) {
-            snapRestAPI.paymentUsingKlikBCA(request, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingKlikBCA(authenticationToken, request, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -353,10 +354,10 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest payment request for BCA Klik pay
      * @param callback       transaction callback
      */
-    public void paymentUsingBCAKlikpay(BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingBCAKlikpay(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingBCAKlikPay(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingBCAKlikPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -401,13 +402,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using Mandiri Bill Pay.
      *
+     * @param authenticationToken
      * @param paymentRequest payment request for Mandiri Bill pay
      * @param callback       transaction callback
      */
-    public void paymentUsingMandiriBillPay(BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingMandiriBillPay(String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingMandiriBillPay(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingMandiriBillPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -450,13 +452,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using Mandiri Click Pay.
      *
+     * @param authenticationToken
      * @param paymentRequest payment request for Mandiri Click Pay
      * @param callback       transaction callback
      */
-    public void paymentUsingMandiriClickPay(MandiriClickPayPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingMandiriClickPay(String authenticationToken, MandiriClickPayPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingMandiriClickPay(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingMandiriClickPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -499,13 +502,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using CIMB Click.
      *
+     * @param authenticationToken
      * @param paymentRequest payment request for CIMB Click
      * @param callback       transaction callback
      */
-    public void paymentUsingCIMBClick(BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingCIMBClick(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingCIMBClick(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingCIMBClick(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -548,13 +552,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using BRI Epay.
      *
+     * @param authenticationToken
      * @param paymentRequest payment request for BRI Epay.
      * @param callback       transaction callback
      */
-    public void paymentUsingBRIEpay(BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingBRIEpay(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingBRIEpay(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingBRIEpay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -597,13 +602,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using Mandiri E-Cash
      *
+     * @param authenticationToken
      * @param paymentRequest payment request for Mandiri E-Cash
      * @param callback       transaction callbaack
      */
-    public void paymentUsingMandiriEcash(BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingMandiriEcash(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingMandiriEcash(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingMandiriEcash(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -649,10 +655,10 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest payment request for Telkomsel E-Cash
      * @param callback       transaction callback
      */
-    public void paymentUsingTelkomselCash(TelkomselEcashPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingTelkomselCash(String authenticationToken, TelkomselEcashPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingTelkomselEcash(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingTelkomselEcash(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -695,13 +701,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using XL Tunai
      *
+     * @param authenticationToken
      * @param paymentRequest payment request for XL Tunai
      * @param callback       transaction callback
      */
-    public void paymentUsingXLTunai(BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingXLTunai(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingXlTunai(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingXlTunai(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -744,13 +751,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using Indomaret
      *
+     * @param authenticationToken
      * @param paymentRequest payment request for Indomaret
      * @param callback       Transaction callback
      */
-    public void paymentUsingIndomaret(BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingIndomaret(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingIndomaret(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingIndomaret(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -793,13 +801,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using Indosat Dompetku
      *
+     * @param authenticationToken
      * @param paymentRequest payment request for Indosat Dompetku
      * @param callback       transaction callback
      */
-    public void paymentUsingIndosatDompetku(IndosatDompetkuPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingIndosatDompetku(String authenticationToken, IndosatDompetkuPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingIndosatDompetku(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingIndosatDompetku(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -842,13 +851,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using Kiosan
      *
+     * @param authenticationToken
      * @param paymentRequest payment request for Kiosan
      * @param callback       transaction callback
      */
-    public void paymentUsingKiosan(BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingKiosan(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingKiosan(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingKiosan(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
@@ -891,13 +901,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using Bank Transfer
      *
+     * @param authenticationToken
      * @param paymentRequest payment request for Bank Transfer
      * @param callback       transaction callback
      */
-    public void paymentUsingBankTransferAllBank(BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingBankTransferAllBank(String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
-            snapRestAPI.paymentUsingBankTransferAllBank(paymentRequest, new Callback<TransactionResponse>() {
+            snapRestAPI.paymentUsingBankTransfer(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
                     releaseResources();
