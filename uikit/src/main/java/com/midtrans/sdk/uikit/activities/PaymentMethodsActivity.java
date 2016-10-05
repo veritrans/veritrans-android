@@ -25,6 +25,7 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
@@ -294,12 +295,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         }
         if(!bankTrasfers.isEmpty()){
-            if(data.size() > 0){
-                data.add(1, PaymentMethods.getMethods(this,getString(R.string.payment_bank_transfer)));
-            }else{
-                data.add(PaymentMethods.getMethods(this,getString(R.string.payment_bank_transfer)));
-            }
+            data.add(PaymentMethods.getMethods(this,getString(R.string.payment_bank_transfer)));
         }
+        SdkUtil.sortPaymentMethodsByPriority(data);
     }
 
 

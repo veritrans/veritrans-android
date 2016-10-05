@@ -26,6 +26,7 @@ import com.midtrans.sdk.corekit.models.MandiriBillPayTransferModel;
 import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.MandiriClickPayRequestModel;
 import com.midtrans.sdk.corekit.models.MandiriECashModel;
+import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.PermataBankTransfer;
 import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.SnapTransactionDetails;
@@ -44,6 +45,9 @@ import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by ziahaqi on 18/06/2016.
@@ -589,4 +593,15 @@ public class SdkUtil {
         return request;
     }
 
+    /**
+     * Sorting payment method by priority (Ascending)
+     */
+    public static void sortPaymentMethodsByPriority(ArrayList<PaymentMethodsModel> paymentMethodsModels) {
+        Collections.sort(paymentMethodsModels, new Comparator<PaymentMethodsModel>() {
+            @Override
+            public int compare(PaymentMethodsModel lhs, PaymentMethodsModel rhs) {
+                return lhs.getPriority().compareTo(rhs.getPriority());
+            }
+        });
+    }
 }
