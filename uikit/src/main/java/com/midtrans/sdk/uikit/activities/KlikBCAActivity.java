@@ -126,9 +126,9 @@ public class KlikBCAActivity extends BaseActivity {
 
                                     @Override
                                     public void onFailure(TransactionResponse response, String reason) {
-                                        errorMessage = reason;
+                                        errorMessage = getString(R.string.message_payment_cannot_proccessed);
                                         SdkUIFlowUtil.hideProgressDialog();
-                                        SdkUIFlowUtil.showSnackbar(KlikBCAActivity.this, reason);
+                                        SdkUIFlowUtil.showSnackbar(KlikBCAActivity.this, errorMessage);
                                     }
 
                                     @Override

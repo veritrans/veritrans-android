@@ -242,7 +242,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
                         mTransactionResponse = response;
-                        IndosatDompetkuActivity.this.errorMessage = reason;
+                        IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_denied);
                         try {
                             SdkUIFlowUtil.hideProgressDialog();
                             SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
