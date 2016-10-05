@@ -68,6 +68,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private TextView headerTextView = null;
     private TextView textViewMeasureHeight = null;
     private TextView amountText = null;
+    private TextView merchantName = null;
     private LinearLayout progressContainer = null;
     private ImageView logo = null;
     private ArrayList<String> bankTrasfers = new ArrayList<>();
@@ -201,6 +202,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         amountText = (TextView) findViewById(R.id.header_view_sub_title);
         textViewMeasureHeight = (TextView) findViewById(R.id.textview_to_compare);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+        merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
     }
 
@@ -245,6 +247,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
                     showLogo(logoUrl);
+                    if (TextUtils.isEmpty(logoUrl)) {
+                        showName(merchantName);
+                    }
+
                     List<String> paymentMethods = transaction.getTransactionData().getEnabledPayments();
                     initialiseAdapterData(paymentMethods);
                     paymentMethodsAdapter.setData(data);
@@ -349,8 +355,16 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             Picasso.with(this)
                     .load(url)
                     .into(logo);
+            merchantName.setVisibility(View.GONE);
         } else {
             logo.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void showName(String name) {
+        if (!TextUtils.isEmpty(name)) {
+            merchantName.setVisibility(View.VISIBLE);
+            merchantName.setText(name);
         }
     }
 
