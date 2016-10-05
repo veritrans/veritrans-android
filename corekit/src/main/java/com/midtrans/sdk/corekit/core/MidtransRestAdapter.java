@@ -21,8 +21,7 @@ import retrofit.converter.GsonConverter;
  * Created by chetan on 16/10/15.
  */
 public class MidtransRestAdapter {
-    //private static final RestAdapter.LogLevel LOG_LEVEL = BuildConfig.FLAVOR.equalsIgnoreCase("development") ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
-    private static final RestAdapter.LogLevel LOG_LEVEL = RestAdapter.LogLevel.FULL;
+    private static final RestAdapter.LogLevel LOG_LEVEL = MidtransSDK.getInstance().isLogEnabled() ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
     private static final String TAG = MidtransRestAdapter.class.getName();
 
     /**
