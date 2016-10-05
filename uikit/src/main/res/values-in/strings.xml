@@ -403,8 +403,8 @@
     <string name="kioson">Kioson</string>
     <string name="kioson_valid">Konfirmasi pembayaran anda di outlet Kioson Sebelum : </string>
     <string name="kioson_payment_instrution">Instruksi Pembayaran Kioson</string>
-    <string name="message_payment_cannot_proccessed">Transaksi anda tidak dapat diproses. Pastikan info pembayaran and benar</string>
+    <string name="message_payment_cannot_proccessed">Transaksi anda tidak dapat diproses. Pastikan info pembayaran anda benar</string>
     <string name="message_payment_failed">Pembayaran Gagal! Silakan coba lagi.</string>
-    <string name="message_payment_denied">Transaksi anda ditolak! Silahkan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
-    <string name="validation_message_please_fillup_form">Silahkan isi dengan informasi yang tepat.</string>
+    <string name="message_payment_denied">Transaksi anda ditolak! Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
+    <string name="validation_message_please_fillup_form">Silakan isi dengan informasi yang tepat.</string>
 </resources>
