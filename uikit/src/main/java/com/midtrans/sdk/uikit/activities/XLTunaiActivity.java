@@ -232,9 +232,9 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onFailure(TransactionResponse response, String reason) {
                 SdkUIFlowUtil.hideProgressDialog();
-                errorMessage = reason;
+                errorMessage = getString(R.string.message_payment_failed);
                 transactionResponse = response;
-                SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + reason);
+                SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + errorMessage);
             }
 
             @Override

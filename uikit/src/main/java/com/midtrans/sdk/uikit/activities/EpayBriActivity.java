@@ -144,7 +144,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onFailure(TransactionResponse response, String reason) {
                 SdkUIFlowUtil.hideProgressDialog();
-                EpayBriActivity.this.errorMessage = reason;
+                EpayBriActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
             }
 
@@ -191,42 +191,4 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         RESULT_CODE = resultCode;
     }
 
-//    @Override
-//    public void onEvent(TransactionSuccessEvent event) {
-//        SdkUIFlowUtil.hideProgressDialog();
-//        if (event.getResponse() != null &&
-//                !TextUtils.isEmpty(event.getResponse().getRedirectUrl())) {
-//            transactionResponse = event.getResponse();
-//            Intent intentPaymentWeb = new Intent(EpayBriActivity.this, PaymentWebActivity.class);
-//            intentPaymentWeb.putExtra(Constants.WEBURL, event.getResponse().getRedirectUrl());
-//            intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_EPAY_BRI);
-//            startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
-//        } else {
-//            SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, getString(R.string.empty_transaction_response));
-//        }
-//    }
-//
-//    @Override
-//    public void onEvent(TransactionFailedEvent event) {
-//        EpayBriActivity.this.errorMessage = event.getMessage();
-//
-//        SdkUIFlowUtil.hideProgressDialog();
-//        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
-//    }
-//
-//    @Override
-//    public void onEvent(NetworkUnavailableEvent event) {
-//        EpayBriActivity.this.errorMessage = getString(R.string.no_network_msg);
-//
-//        SdkUIFlowUtil.hideProgressDialog();
-//        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
-//    }
-//
-//    @Override
-//    public void onEvent(GeneralErrorEvent event) {
-//        EpayBriActivity.this.errorMessage = event.getMessage();
-//
-//        SdkUIFlowUtil.hideProgressDialog();
-//        SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, event.getMessage());
-//    }
 }

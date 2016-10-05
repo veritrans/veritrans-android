@@ -564,5 +564,9 @@
     <string name="kioson">Kioson</string>
     <string name="kioson_valid">Please complete your payment at Kioson Outlet Before : </string>
     <string name="kioson_payment_instrution">Kioson Payment Instruction</string>
+    <string name="message_payment_cannot_proccessed">Transaction cannot proccessed. Make sure your payment informations is correct</string>
+    <string name="message_payment_failed">Payment failed! Please try again.</string>
+    <string name="message_payment_denied">Transaction denied! please try again or try another payment method.</string>
+    <string name="validation_message_please_fillup_form">Please fill up information properly.</string>
 
 </resources>

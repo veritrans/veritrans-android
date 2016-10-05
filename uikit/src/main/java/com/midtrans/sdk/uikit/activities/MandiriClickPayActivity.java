@@ -238,8 +238,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
             } else {
                 SdkUIFlowUtil.showSnackbar(
-                        MandiriClickPayActivity.this,
-                        "Please fill up information properly."
+                        MandiriClickPayActivity.this, getString(R.string.validation_message_please_fillup_form)
                 );
             }
 

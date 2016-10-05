@@ -149,13 +149,13 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onFailure(TransactionResponse response, String reason) {
                 try {
-                    CIMBClickPayActivity.this.errorMessage = reason;
+                    CIMBClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                     CIMBClickPayActivity.this.transactionResponse = response;
 
                     SdkUIFlowUtil.hideProgressDialog();
                     SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
                 } catch (NullPointerException ex) {
-                    SdkUIFlowUtil.showApiFailedMessage(CIMBClickPayActivity.this, getString(R.string.empty_transaction_response));
+                    SdkUIFlowUtil.showApiFailedMessage(CIMBClickPayActivity.this, getString(R.string.message_payment_failed));
                 }
             }
 
