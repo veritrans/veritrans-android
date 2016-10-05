@@ -13,7 +13,7 @@ import com.midtrans.sdk.corekit.BuildConfig;
 public class Logger {
 
     public static void d(String tag, String message) {
-        if (MidtransSDK.getInstance().isLogEnabled()) {
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("development")) {
             Log.d("" + tag, "" + message);
         }
     }
@@ -26,26 +26,26 @@ public class Logger {
 
 
     public static void i(String tag, String message) {
-        if (MidtransSDK.getInstance().isLogEnabled()) {
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("development")) {
             Log.i("" + tag, "" + message);
         }
     }
 
     public static void i(String message) {
-        if (MidtransSDK.getInstance().isLogEnabled()) {
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("development")) {
             Log.i(Constants.TAG, "" + message);
         }
     }
 
 
     public static void e(String tag, String message) {
-        if (MidtransSDK.getInstance().isLogEnabled()) {
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("development")) {
             Log.e("" + tag, "" + message);
         }
     }
 
     public static void e(String message) {
-        if (MidtransSDK.getInstance().isLogEnabled()) {
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("development")) {
             Log.e(Constants.TAG, "" + message);
         }
     }
