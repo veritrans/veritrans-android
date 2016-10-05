@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -24,11 +26,16 @@ public class BaseActivity extends AppCompatActivity {
         MidtransSDK mMidtransSDK = MidtransSDK.getInstance();
         if (mMidtransSDK != null) {
             ImageView logo = (ImageView) findViewById(R.id.merchant_logo);
+            TextView name = (TextView) findViewById(R.id.merchant_name);
             if (logo != null) {
                 if (mMidtransSDK.getMerchantLogo() != null) {
+                    name.setVisibility(View.GONE);
                     Picasso.with(this)
                             .load(mMidtransSDK.getMerchantLogo())
                             .into(logo);
+                } else if (name != null && !TextUtils.isEmpty(mMidtransSDK.getMerchantName())) {
+                    name.setVisibility(View.VISIBLE);
+                    name.setText(mMidtransSDK.getMerchantName());
                 }
             }
         }

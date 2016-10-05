@@ -12,7 +12,6 @@ import com.midtrans.sdk.corekit.BuildConfig;
  */
 public class Logger {
 
-
     public static void d(String tag, String message) {
         if (BuildConfig.FLAVOR.equalsIgnoreCase("development")) {
             Log.d("" + tag, "" + message);

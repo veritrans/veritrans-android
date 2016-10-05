@@ -127,6 +127,15 @@
                     app:layout_collapseMode="pin"
                     app:title="">
 
+                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                        android:id="@+id/merchant_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="@dimen/tool_bar_title_size"
+                        android:visibility="gone"
+                        tools:text="Name" />
+
                     <ImageView
                         android:id="@+id/merchant_logo"
                         android:layout_width="@dimen/logo_width"
