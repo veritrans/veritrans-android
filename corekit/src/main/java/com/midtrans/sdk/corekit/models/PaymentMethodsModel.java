@@ -12,10 +12,13 @@ public class PaymentMethodsModel {
     private int imageId;
     private int paymentType;
     private boolean isSelected;
+    private Integer priority;
 
-    public PaymentMethodsModel(String name, int imageId, int paymentType) {
+    public PaymentMethodsModel(String name, int imageId, int paymentType, int priority) {
+        this.paymentType = paymentType;
         this.imageId = imageId;
         this.name = name;
+        this.priority = priority;
     }
 
     public String getName() {
@@ -32,5 +35,9 @@ public class PaymentMethodsModel {
 
     public void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
+    }
+
+    public Integer getPriority() {
+        return priority;
     }
 }
