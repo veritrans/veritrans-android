@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Animation.AppCompat.Dialog"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:paddingTop="25dp"
+        android:orientation="vertical"
+        android:id="@+id/layout_sdkconfig_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="@string/activity_sdk_config_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="?colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"/>
+
+    </LinearLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_below="@+id/layout_sdkconfig_title"
+        android:id="@+id/til_sdkconfig_snap_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_sdkconfig_snap_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_sdkconfig_snapurl"
+            android:inputType="text"
+            android:maxLength="100"
+            android:singleLine="true"
+            android:textColorHint="@color/colorAccent" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_below="@+id/til_sdkconfig_snap_url"
+        android:id="@+id/til_sdkconfig_merchant_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_sdkconfig_merchant_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_sdkconfig_merchant_url"
+            android:inputType="text"
+            android:maxLength="100"
+            android:singleLine="true"
+            android:textColorHint="@color/colorAccent" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_below="@id/til_sdkconfig_merchant_url"
+        android:id="@+id/til_sdkconfig_clientkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_sdkconfig_clientkey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_sdkconfig_merchant_clientkey"
+            android:maxLength="100"
+            android:singleLine="true"
+            android:textColorHint="@color/colorAccent" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/til_sdkconfig_clientkey"
+        android:id="@+id/til_sdkconfig_timeout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/et_sdkconfig_timeout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_sdkconfig_timeout"
+            android:maxLength="100"
+            android:singleLine="true"
+            android:textColorHint="@color/colorAccent" />
+    </android.support.design.widget.TextInputLayout>
+    <Button
+        style="?borderlessButtonStyle"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/til_sdkconfig_timeout"
+        android:id="@+id/btn_sdkconfig_save"
+        android:text="@string/btn_sdkconfig_save"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content" />
+    <Button
+        style="?borderlessButtonStyle"
+        android:layout_toLeftOf="@+id/btn_sdkconfig_save"
+        android:layout_below="@id/til_sdkconfig_timeout"
+        android:text="@string/btn_sdkconfig_cancel"
+        android:id="@+id/btn_sdkconfig_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

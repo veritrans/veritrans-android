@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CreditCardFormStyle">
+        <attr name="mtcc_merchant_url" format="string" />
+        <attr name="mtcc_client_key" format="string" />
+        <attr name="mtcc_show_pay" format="boolean" />
+        <attr name="mtcc_user_id" format="string" />
+    </declare-styleable>
+</resources>

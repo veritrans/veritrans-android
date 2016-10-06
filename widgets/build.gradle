@@ -1,0 +1,138 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+group = 'com.midtrans'
+version = '1.0.0'
+
+repositories {
+    jcenter()
+}
+
+android {
+    def DEFAULT_PUBLISH
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 1
+        versionName version
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        development {
+            DEFAULT_PUBLISH = "developmentRelease"
+        }
+
+        production {
+            DEFAULT_PUBLISH = "productionRelease"
+        }
+    }
+
+    defaultPublishConfig = DEFAULT_PUBLISH
+    publishNonDefault true
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+    developmentCompile project(path: ':corekit', configuration: 'developmentRelease')
+    productionCompile project(path: ':corekit', configuration: 'productionRelease')
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = project.name
+        userOrg = 'pt-midtrans'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
+        desc = 'Android Widget for Midtrans Payment Gateway'
+        websiteUrl = "https://midtrans.com"
+        publish = true
+        publicDownloadNumbers = true
+    }
+    publications = ['BintrayPublication', 'BintrayProductionPublication']
+
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "source"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.10' //version required
+}
+
+publishing {
+    publications {
+        BintrayPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/widgets-development-release.aar")
+            groupId group
+            artifactId project.name
+            version version + "-SANDBOX"
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+
+                configurations.developmentCompile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version + '-SANDBOX')
+                }
+            }
+        }
+
+        BintrayProductionPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/widgets-production-release.aar")
+            groupId group
+            artifactId project.name
+            version version
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+
+                configurations.productionCompile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+            }
+        }
+    }
+}
+

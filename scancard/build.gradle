@@ -2,10 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
-group = 'id.co.veritrans'
-version = '0.11.1'
+group = 'com.midtrans'
+version = '1.0.0'
 
 android {
+    def DEFAULT_PUBLISH
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
     lintOptions {
@@ -24,6 +25,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        development {
+            DEFAULT_PUBLISH = "developmentRelease"
+        }
+
+        production {
+            DEFAULT_PUBLISH = "productionRelease"
+        }
+    }
+
+    defaultPublishConfig = DEFAULT_PUBLISH
+    publishNonDefault true
 }
 
 repositories {
@@ -37,9 +51,10 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.+'
     testCompile 'junit:junit:4.12'
     compile 'io.card:android-sdk:5.3.4'
-    compile project(path: ':uiflow', configuration: 'developmentRelease')
-
+    developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
+    productionCompile project(path: ':uikit', configuration: 'productionRelease')
 }
+
 
 bintray {
     user = System.getenv('BINTRAY_USER')
@@ -47,16 +62,16 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = 'maven'
-        name = 'scan-card'
+        name = project.name
         userOrg = 'pt-midtrans'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
-        desc = 'External scanner plugin for Veritrans Android SDK'
-        websiteUrl = "https://veritrans.co.id"
+        desc = 'External scanner plugin for Midtrans Android SDK'
+        websiteUrl = "https://midtrans.com"
         publish = true
         publicDownloadNumbers = true
     }
-    publications = ['BintrayPublication']
+    publications = ['BintrayProductionPublication', 'BintrayPublication']
 
 }
 
@@ -67,9 +82,9 @@ task sourceJar(type: Jar) {
 
 publishing {
     publications {
-        BintrayPublication(MavenPublication) {
+        BintrayProductionPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/scancard-release.aar")
+            artifact("$buildDir/outputs/aar/scancard-production-release.aar")
             groupId group
             artifactId 'scancard'
             version version
@@ -84,6 +99,41 @@ publishing {
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
                     dependencyNode.appendNode('version', it.version)
+                }
+
+                configurations.productionCompile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+            }
+        }
+
+        BintrayPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/scancard-development-release.aar")
+            groupId group
+            artifactId project.name
+            version version + "-SANDBOX"
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+
+                configurations.developmentCompile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version + '-SANDBOX')
                 }
             }
         }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CreditCardFormTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/default_color_primary</item>
+        <item name="colorPrimaryDark">@color/default_color_primary_dark</item>
+        <item name="colorAccent">@color/default_color_accent</item>
+        <item name="colorButtonNormal">@color/default_color_accent</item>
+    </style>
+
+    <style name="CreditCardFormStyle">
+        <item name="android:padding">@dimen/card_form_padding</item>
+    </style>
+</resources>

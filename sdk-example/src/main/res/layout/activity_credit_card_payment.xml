@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="id.co.veritrans.sdk.sample.CreditCardPaymentActivity">
+    tools:context=".CreditCardPaymentActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -59,7 +59,12 @@
                 android:hint="CVV"
                 android:inputType="numberPassword" />
         </android.support.design.widget.TextInputLayout>
-
+            <CheckBox
+                android:visibility="gone"
+                android:id="@+id/check_paycard_savecard"
+                android:text="save credit card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         <Button
             android:id="@+id/btn_payment"
             style="@style/Widget.AppCompat.Button"

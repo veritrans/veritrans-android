@@ -13,7 +13,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "id.co.veritrans.sdk.example"
+        applicationId "com.midtrans.sdk.example"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
@@ -22,19 +22,19 @@ android {
 
     productFlavors {
         development {
-            applicationId "id.co.veritrans.sdk.sample.development"
+            applicationId "com.midtrans.sdk.sample.development"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
         }
         production {
-            applicationId "id.co.veritrans.sdk.sample.production"
+            applicationId "com.midtrans.sdk.sample.production"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_PRODUCTION
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_PRODUCTION
         }
     }
     buildTypes {
         debug {
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -47,9 +47,45 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:cardview-v7:23.4.0'
-    developmentCompile project(path: ':uiflow', configuration: 'developmentRelease')
-    productionCompile project(path: ':uiflow', configuration: 'productionRelease')
-    compile (project(':scancard')) {
-        exclude module: 'uiflow'
+
+    developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
+    productionCompile project(path: ':uikit', configuration: 'productionRelease')
+    developmentCompile(project(path: ':scancard', configuration: 'developmentRelease')) {
+        exclude module: 'uikit'
+        exclude module: 'corekit'
     }
+    productionCompile(project(path: ':scancard', configuration: 'productionRelease')) {
+        exclude module: 'uikit'
+        exclude module: 'corekit'
+    }
+    developmentCompile(project(path: ':widgets', configuration: 'developmentRelease')) {
+        exclude module: 'corekit'
+    }
+    productionCompile(project(path: ':widgets', configuration: 'productionRelease')) {
+        exclude module: 'corekit'
+    }
+
+    androidTestCompile('com.android.support.test:runner:0.3') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile('com.android.support.test:rules:0.3') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile('com.android.support.test.espresso:espresso-intents:2.2') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
+
+    // Leak Canary
+    developmentCompile 'com.squareup.haha:haha:2.0.3'
+    developmentCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 }

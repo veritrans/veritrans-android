@@ -1,0 +1,1 @@
+{"bank_transfer":{"bank":"bca"},"billing_address":[],"item_details":[{"id":"1","name":"shoes","price":360000.0,"quantity":1.0}],"payment_type":"bank_transfer","shipping_address":[],"transaction_details":{"gross_amount":"360000.0","order_id":"2d740a53-8a32-4a3c-aaea-0b82c99d1c0b"}}

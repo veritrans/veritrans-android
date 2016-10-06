@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/sixtyfour_dp"
+    android:background="@android:color/white"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/sixteen_dp">
+
+
+        <ImageView
+            android:id="@+id/img_transaction_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:contentDescription="@string/description_transaction_status"
+            android:src="@drawable/ic_pending"/>
+
+
+        <com.midtrans.sdk.uikit.widgets.SemiBoldTextView
+            android:id="@+id/text_transaction_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/sixteen_dp"
+            android:text="@string/payment_pending"
+            android:textColor="@color/black"
+            android:textSize="@dimen/primary_text_size"
+            android:textStyle="bold"/>
+
+
+        <com.midtrans.sdk.uikit.widgets.SemiBoldTextView
+            android:id="@+id/text_payment_error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/ic_error_info"
+            android:drawableStart="@drawable/ic_error_info"
+            android:gravity="center"
+            android:text="@string/payment_unsuccessful_msg"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/secondary_text_size"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:orientation="horizontal">
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="left"
+                    android:text="@string/amount"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/secondary_text_size" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="right"
+                    android:text="@string/orderId"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/text_amount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="left"
+                    android:text="@string/text_amount_here"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/primary_text_size" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/text_order_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="right"
+                    android:text="@string/text_order_id_here"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/primary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:orientation="horizontal">
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="left"
+                    android:text="@string/transactionTime"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/secondary_text_size" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="right"
+                    android:text="@string/paymentType"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/text_transaction_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:text="@string/text_transaction_time_here"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/primary_text_size"
+                    />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/text_payment_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="@string/text_payment_type_here"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/primary_text_size"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

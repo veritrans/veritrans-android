@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:visible="true"
+        android:id="@+id/menu_sdk_config"
+        app:showAsAction="never"
+        android:title="Config SDK">
+    </item>
+</menu>

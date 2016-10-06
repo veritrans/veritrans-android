@@ -1,0 +1,207 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+apply from: '../jacoco.gradle'
+apply plugin: 'com.vanniktech.android.junit.jacoco'
+
+group = 'com.midtrans'
+version = '1.0.0'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.3'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+        classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.4.0'
+    }
+}
+repositories {
+    jcenter()
+}
+
+
+android {
+    def DEFAULT_PUBLISH
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    lintOptions {
+        abortOnError false
+    }
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 2
+        versionName version
+        buildConfigField "String", "MIXPANEL_URL", "\"https://api.mixpanel.com/\""
+        buildConfigField "String", "CALLBACK_STRING", "\"/token/callback/\""
+        buildConfigField "String", "CALLBACK_URL", "\"https://hangout.betas.in/veritrans/api/paymentstatus\""
+        buildConfigField "String", "BBM_MONEY_PACKAGE", "\"com.monitise.client.android.bbmmoney\""
+        buildConfigField "String", "MARKET_URL", "\"market://details?id=\""
+        buildConfigField "String", "PLAY_STORE_URL", "\"https://play.google.com/store/apps/details?id=\""
+        buildConfigField "String", "BBM_PREFIX_URL", "\"bbmmoney://api/payment/imp?data=\""
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+
+            consumerProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            testCoverageEnabled = true;
+        }
+    }
+
+    productFlavors {
+        development {
+            DEFAULT_PUBLISH = "developmentRelease"
+            buildConfigField "String", "BASE_URL", "\"https://api.sandbox.veritrans.co.id/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.veritrans.co.id/snap\""
+            buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_SANDBOX
+        }
+
+        production {
+            DEFAULT_PUBLISH = "productionRelease"
+            buildConfigField "String", "BASE_URL", "\"https://api.midtrans.com/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.midtrans.com/snap\""
+            buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_PRODUCTION
+        }
+    }
+
+    defaultPublishConfig = DEFAULT_PUBLISH
+    publishNonDefault true
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "source"
+}
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.10' //version required
+}
+
+tasks.withType(Test) {
+    jvmArgs '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
+}
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+
+    /*
+     * test dependencies
+     */
+    // Android JUnit Runner
+    androidTestCompile 'com.android.support.test:runner:0.5'
+
+    testCompile 'junit:junit:4.12'
+
+    testCompile 'org.mockito:mockito-core:1.10.19'
+
+    testCompile ('org.powermock:powermock-api-mockito:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+    testCompile ('org.powermock:powermock-module-junit4:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+
+    testCompile ('org.powermock:powermock-api-mockito:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+    testCompile ('org.powermock:powermock-module-junit4-rule:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+
+    testCompile ('org.powermock:powermock-classloading-xstream:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+
+    androidTestCompile ('org.powermock:powermock-mockito-release-full:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+}
+
+publishing {
+    publications {
+        BintrayPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/corekit-development-release.aar")
+            groupId group
+            artifactId 'corekit'
+            version version + "-SANDBOX"
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    if (it.group == 'com.midtrans') {
+                        dependencyNode.appendNode('version', it.version + '-SANDBOX')
+                    } else {
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+
+        BintrayProductionPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/corekit-production-release.aar")
+            groupId group
+            artifactId 'corekit'
+            version version
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = project.name
+        userOrg = 'pt-midtrans'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
+        desc = 'Android SDK for integrating with midtrans.com'
+        websiteUrl = "https://midtrans.com"
+        publish = true
+        publicDownloadNumbers = true
+    }
+    publications = ['BintrayProductionPublication', 'BintrayPublication']
+
+}
+

@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+    android:background="@android:color/holo_red_dark"
+    android:padding="@dimen/sixteen_dp"
+    tools:context="com.midtrans.sdk.uikit.fragments.BlankFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <com.midtrans.sdk.uikit.widgets.MorphingButton
+        android:id="@+id/btnMorph1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/text_test"
+        android:textColor="@android:color/white"/>
+</RelativeLayout>

@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Widgets</string>
+    <string name="hint_card_number">Card Number</string>
+    <string name="hint_cvv">CVV Number</string>
+    <string name="hint_expiry">Expiry (MM/YY)</string>
+    <string name="button_what_is_cvv">What is CVV?</string>
+    <string name="button_pay">Pay Now</string>
+    <string name="button_register">Save Card</string>
+    <string name="cvv_hint_title">What is CVV?</string>
+    <string name="cvv_hint_message">CVV is 3 or 4 digits number printed at the back side of the card.</string>
+    <string name="cvv_hint_got_it">Got it</string>
+
+    <string name="error_client_key_missing">Veritrans Client key is needed to pay using Veritrans.</string>
+    <string name="error_merchant_url_missing">Merchant URL is needed to pay using Veritrans.</string>
+    <string name="error_transaction_request_missing">Transaction Request is needed to pay using Veritrans.</string>
+    <string name="error_must_be_get_token_before_charge">You must get token first before charging.</string>
+    <string name="error_failed_get_token">Cannot get card token. Please check your card details again.</string>
+    <string name="error_failed_charge">Cannot finish the transaction. Please check your card details again.</string>
+    <string name="error_network">There is problem with your internet connection.</string>
+    <string name="error_unknown">There is something wrong with the system.</string>
+    <string name="error_saving_card">Cannot save card token. Please check your card details again.</string>
+
+    <string name="payment_credit_card_validation_message_cvv">Please enter CVV</string>
+    <string name="payment_credit_card_validation_message_invalid_cvv">Please enter valid CVV</string>
+    <string name="payment_credit_card_validation_message_expiry_date">Please enter expiry date</string>
+    <string name="payment_credit_card_validation_message_invalid_expiry_date">Please enter valid expiry date</string>
+    <string name="payment_credit_card_validation_message_card_no">Please enter card number</string>
+    <string name="payment_credit_card_validation_message_invalid_card_no">Please enter valid card number</string>
+
+    <string name="payment_credit_card_expiry_month_format">%1$s/</string>
+    <string name="payment_credit_card_expiry_month_int_format">%1$d/</string>
+    <string name="payment_credit_card_expiry_month_single_digit_format">0%1$s/</string>
+    <string name="hint_input_cvv">Input CVV</string>
+    <string name="pay_with_new_card">Pay With New Card</string>
+    <string name="back_tolist">card list</string>
+    <string name="card_prefix">XXXX-XXXX-XXXX-</string>
+    <string name="cvv_empty">CVV is Empty</string>
+    <string name="save_card_hint_message">Save your card for faster checkout process.</string>
+
+</resources>

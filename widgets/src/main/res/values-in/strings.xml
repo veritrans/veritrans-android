@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hint_card_number">Nomor Kartu</string>
+    <string name="hint_cvv">Nomor CVVr</string>
+    <string name="hint_expiry">Kadaluarsa (MM/YY)</string>
+    <string name="button_what_is_cvv">Apa itu CVV?</string>
+    <string name="button_pay">Bayar Sekarang</string>
+    <string name="button_register">Simpan Kartu</string>
+    <string name="cvv_hint_title">Apa itu CVV?</string>
+    <string name="cvv_hint_message">CVV adalah 3 or 4 digit nomor yang tercetak di bagian belakang kartu.</string>
+    <string name="cvv_hint_got_it">Mengerti</string>
+    <string name="error_client_key_missing">Veritrans Client key dibutuhkan untuk membayar menggunakan Veritrans.</string>
+    <string name="error_merchant_url_missing">Merchant URL dibutuhkan untuk membayar menggunakan Veritrans.</string>
+    <string name="error_transaction_request_missing">Transaction Request dibutuhkan untuk membayar menggunakan Veritrans.</string>
+    <string name="error_failed_get_token">Gagal mengambil token kartu. Mohon cek kembali detil kartu anda.</string>
+    <string name="error_failed_charge">Gagal menyelesaikan transaksi. Mohon cek kembali detil kartu anda.</string>
+    <string name="error_network">Terjadi permasalahan pada koneksi internet anda.</string>
+    <string name="error_unknown">Terjadi kesalahan pada sistem.</string>
+    <string name="error_saving_card">Gagal menyimpan token kartu. Mohon cek kembali detil kartu anda.</string>
+
+    <string name="payment_credit_card_validation_message_cvv">Masukkan CVV</string>
+    <string name="payment_credit_card_validation_message_invalid_cvv">Masukkan CVV yang tepat</string>
+    <string name="payment_credit_card_validation_message_expiry_date">Masukkan tanggal kadaluarsa</string>
+    <string name="payment_credit_card_validation_message_invalid_expiry_date">Masukkan tanggal kadaluarsa yang tepat</string>
+    <string name="payment_credit_card_validation_message_card_no">Masukkan nomor kartu</string>
+    <string name="payment_credit_card_validation_message_invalid_card_no">Masukkan nomor kartu yang tepat</string>
+    <string name="hint_input_cvv">Masukkan CVV</string>
+    <string name="pay_with_new_card">Bayar Degan kartu Baru</string>
+    <string name="back_tolist">daftar kartu</string>
+    <string name="cvv_empty">CVV Masih Kosong</string>
+    <string name="save_card_hint_message">Simpan kartu anda untuk proses checkout lebih cepat.</string>
+
+</resources>
