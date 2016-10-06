@@ -60,4 +60,4 @@ deployment:
             - source environmentSetup.sh && setGit
             - bmp -c
             - git checkout master && git merge release
-            - git push origin release --tag
+            - git push origin master --tag
