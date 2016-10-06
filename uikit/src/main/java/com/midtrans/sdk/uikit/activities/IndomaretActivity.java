@@ -252,8 +252,8 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
-                IndomaretActivity.this.errorMessage = error.getMessage();
-                SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + error.getMessage());
+                IndomaretActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + errorMessage);
             }
         });
     }

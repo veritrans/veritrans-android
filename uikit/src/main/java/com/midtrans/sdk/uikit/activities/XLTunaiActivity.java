@@ -240,8 +240,8 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
-                errorMessage = error.getMessage();
-                SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + error.getMessage());
+                errorMessage = getString(R.string.message_payment_failed);
+                SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + errorMessage);
             }
         });
     }

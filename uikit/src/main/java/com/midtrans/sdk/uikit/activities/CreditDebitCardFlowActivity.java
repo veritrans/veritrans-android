@@ -199,7 +199,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     private void actionGetCardTokenError(Throwable error) {
-        SdkUIFlowUtil.showApiFailedMessage(CreditDebitCardFlowActivity.this, error.getMessage());
+        SdkUIFlowUtil.showApiFailedMessage(CreditDebitCardFlowActivity.this, getString(R.string.message_getcard_token_failed));
     }
 
     private void actionGetCardTokenSuccess(TokenDetailsResponse response) {
@@ -319,7 +319,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                             }
                         }, 200);
                         CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
-                        CreditDebitCardFlowActivity.this.errorMessage = reason;
+                        CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.message_payment_failed);
                         SdkUIFlowUtil.hideProgressDialog();
                         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
@@ -332,7 +332,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     @Override
                     public void onError(Throwable error) {
                         SdkUIFlowUtil.hideProgressDialog();
-                        showErrorMessage(error.getMessage());
+                        showErrorMessage(getString(R.string.message_payment_failed));
                     }
                 });
     }
@@ -627,7 +627,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     private void actionGetCardTokenFailure(TokenDetailsResponse response, String reason) {
         SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showApiFailedMessage(CreditDebitCardFlowActivity.this, reason);
+        SdkUIFlowUtil.showApiFailedMessage(CreditDebitCardFlowActivity.this, getString(R.string.message_getcard_token_failed));
     }
 
     public ArrayList<BankDetail> getBankDetails() {

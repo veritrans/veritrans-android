@@ -169,7 +169,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onError(Throwable error) {
-                BCAKlikPayActivity.this.errorMessage = error.getMessage();
+                BCAKlikPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.hideProgressDialog();
                 SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
             }

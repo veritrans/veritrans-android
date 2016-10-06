@@ -161,7 +161,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onError(Throwable error) {
-                CIMBClickPayActivity.this.errorMessage = error.getMessage();
+                CIMBClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.hideProgressDialog();
                 SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
             }
