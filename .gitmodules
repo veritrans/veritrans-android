@@ -1,6 +1,6 @@
-[submodule "wiki"]
-	path = wiki
-	url = https://github.com/veritrans/veritrans-android.wiki.git
 [submodule "veritrans-android.wiki"]
 	path = veritrans-android.wiki
+	url = https://github.com/veritrans/veritrans-android.wiki.git
+[submodule "wiki"]
+	path = wiki
 	url = https://github.com/veritrans/veritrans-android.wiki.git
