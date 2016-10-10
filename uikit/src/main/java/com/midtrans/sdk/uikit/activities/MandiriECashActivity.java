@@ -158,7 +158,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
-                MandiriECashActivity.this.errorMessage = error.getMessage();
+                MandiriECashActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
             }
         });

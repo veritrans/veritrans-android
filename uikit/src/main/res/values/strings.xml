@@ -568,5 +568,6 @@
     <string name="message_payment_failed">Payment failed! Please try again.</string>
     <string name="message_payment_denied">Transaction denied! Please try again or try another payment method.</string>
     <string name="validation_message_please_fillup_form">Please fill up information properly.</string>
+    <string name="message_getcard_token_failed">Authentication failed</string>
 
 </resources>

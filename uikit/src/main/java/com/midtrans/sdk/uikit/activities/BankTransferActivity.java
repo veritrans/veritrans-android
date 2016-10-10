@@ -494,7 +494,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
     private void actionPaymentError(Throwable error) {
         SdkUIFlowUtil.hideProgressDialog();
-        BankTransferActivity.this.errorMessage = error.getMessage();
+        BankTransferActivity.this.errorMessage = getString(R.string.message_payment_failed);
         SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
     }
 
