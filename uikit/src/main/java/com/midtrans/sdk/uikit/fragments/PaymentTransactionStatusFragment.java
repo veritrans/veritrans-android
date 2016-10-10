@@ -214,7 +214,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         } else {
             if (!TextUtils.isEmpty(transactionResponse.getStatusMessage())) {
                 paymentMessageTv.setVisibility(View.VISIBLE);
-                paymentMessageTv.setText(transactionResponse.getStatusMessage());
+                paymentMessageTv.setText(getString(R.string.message_payment_failed));
             } else {
                 paymentMessageTv.setVisibility(View.GONE);
             }

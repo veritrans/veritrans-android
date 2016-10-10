@@ -276,7 +276,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                     public void onFailure(TransactionResponse response, String reason) {
                         SdkUIFlowUtil.hideProgressDialog();
                         MandiriClickPayActivity.this.transactionResponse = response;
-                        MandiriClickPayActivity.this.errorMessage = reason;
+                        MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
 
                         if (transactionResponse != null
                                 && transactionResponse.getStatusCode().contains(DENY)) {
@@ -287,8 +287,8 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                     @Override
                     public void onError(Throwable error) {
                         SdkUIFlowUtil.hideProgressDialog();
-                        MandiriClickPayActivity.this.errorMessage = error.getMessage();
-                        Logger.e(TAG, "Error is" + errorMessage);
+                        MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                        Logger.e(TAG, "Error is" + error.getMessage());
                     }
                 });
     }

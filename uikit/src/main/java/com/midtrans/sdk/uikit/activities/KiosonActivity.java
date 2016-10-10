@@ -258,8 +258,8 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                 SdkUIFlowUtil.hideProgressDialog();
 
                 try {
-                    KiosonActivity.this.errorMessage = error.getMessage();
-                    SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + error.getMessage());
+                    KiosonActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                    SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + errorMessage);
                 } catch (NullPointerException ex) {
                     Logger.e(TAG, "transaction error is " + ex.getMessage());
                 }

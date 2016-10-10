@@ -151,8 +151,8 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
-                EpayBriActivity.this.errorMessage = error.getMessage();
-                SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, error.getMessage());
+                EpayBriActivity.this.errorMessage =  getString(R.string.message_payment_failed);
+                SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
             }
         });
     }
