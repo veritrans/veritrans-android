@@ -104,17 +104,6 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/secondary_text_size" />
                     </LinearLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="bottom">
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/gray_divider" />
-                    </RelativeLayout>
                 </LinearLayout>
 
                 <android.support.v7.widget.Toolbar
