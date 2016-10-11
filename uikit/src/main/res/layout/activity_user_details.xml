@@ -6,6 +6,7 @@
     android:background="@android:color/white"
     android:orientation="vertical"
     tools:context=".activities.UserDetailsActivity">
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/main_appbar"
         android:layout_width="match_parent"
