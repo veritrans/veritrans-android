@@ -29,7 +29,9 @@ public class BaseActivity extends AppCompatActivity {
             TextView name = (TextView) findViewById(R.id.merchant_name);
             if (logo != null) {
                 if (mMidtransSDK.getMerchantLogo() != null) {
-                    name.setVisibility(View.GONE);
+                    if(name != null) {
+                        name.setVisibility(View.GONE);
+                    }
                     Picasso.with(this)
                             .load(mMidtransSDK.getMerchantLogo())
                             .into(logo);
