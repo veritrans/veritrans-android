@@ -2,8 +2,8 @@ package id.co.veritrans.sdk.uiflow;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
+import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.ISdkFlow;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.uiflow.activities.SaveCreditCardActivity;
@@ -20,6 +20,15 @@ public class UIFlow implements ISdkFlow {
         if(sdk != null){
             context.startActivity(new Intent(context,
                     UserDetailsActivity.class));
+        }
+    }
+
+    @Override
+    public void runCreditCardPayment(Context context) {
+        if(VeritransSDK.getVeritransSDK() != null){
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(Constants.PARAM_PAYMENT_METHOD, context.getString(R.string.payment_method_credit_card));
+            context.startActivity(intent);
         }
     }
 

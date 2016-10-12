@@ -557,6 +557,34 @@ public class VeritransSDK {
 
 
     /**
+     * This will start credit card transaction. if you have enabled an ui then it will
+     * start activity according to it.
+     *
+     * @param context current activity.
+     */
+
+    public void startCreditCardPayment(Context context) {
+
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants
+                    .PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runCreditCardPayment(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
      * It will execute an transaction for epay bri .
      */
     public void paymentUsingEpayBri() {

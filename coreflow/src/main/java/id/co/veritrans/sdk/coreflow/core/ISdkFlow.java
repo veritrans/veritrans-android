@@ -9,5 +9,7 @@ public interface ISdkFlow {
 
     public void runUIFlow(Context context);
 
+    public void runCreditCardPayment(Context context);
+
     public void runRegisterCard(Context context);
 }
