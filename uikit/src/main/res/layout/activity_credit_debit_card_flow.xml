@@ -19,7 +19,7 @@
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/main_collapsing"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:background="?colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -29,6 +29,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="?actionBarSize"
                     android:orientation="vertical"
+                    android:paddingBottom="@dimen/sixteen_dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
                     android:paddingTop="@dimen/sixteen_dp"
