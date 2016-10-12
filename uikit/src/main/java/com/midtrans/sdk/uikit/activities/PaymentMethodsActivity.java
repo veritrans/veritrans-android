@@ -243,16 +243,16 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 showBackButton();
                 try {
                     progressContainer.setVisibility(View.GONE);
-                    String logoUrl = transaction.getMerchantData().getLogoUrl();
-                    String merchantName = transaction.getMerchantData().getDisplayName();
+                    String logoUrl = transaction.getMerchantData().getPreference().getLogoUrl();
+                    String merchantName = transaction.getMerchantData().getPreference().getDisplayName();
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
                     showLogo(logoUrl);
                     if (TextUtils.isEmpty(logoUrl)) {
                         showName(merchantName);
                     }
-
-                    List<String> paymentMethods = transaction.getTransactionData().getEnabledPayments();
+                    Logger.d("Payment methods size: " + transaction != null ? "0" : String.valueOf(transaction.getEnabledPayments().size()));
+                    List<String> paymentMethods = transaction.getEnabledPayments();
                     initialiseAdapterData(paymentMethods);
                     paymentMethodsAdapter.setData(data);
                 } catch (NullPointerException e) {

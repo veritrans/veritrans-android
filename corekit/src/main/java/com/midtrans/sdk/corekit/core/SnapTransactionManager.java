@@ -111,7 +111,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 long end = System.currentTimeMillis();
 
                 if (transaction != null) {
-                    if (response.getStatus() == 200 && !transaction.getTransactionData().getTransactionId().equals("")) {
+                    if (response.getStatus() == 200 && !transaction.getTransactionDetails().getOrderId().equals("")) {
                         callback.onSuccess(transaction);
                         // Track Mixpanel event
                         analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_SUCCESS, PAYMENT_TYPE_SNAP, end - start);

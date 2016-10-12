@@ -94,14 +94,14 @@ public class CoreFlowActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }
                 paymentMethodList.clear();
-                for(String method : transaction.getTransactionData().getEnabledPayments()){
-                    if(method.equalsIgnoreCase(getString(R.string.label_bank_transfer))){
-                        for(String bank : transaction.getTransactionData().getBankTransfer().getBanks()){
-                            //mandiri bank tranfer & other bank transfer unsupported yet
-                            CoreViewModel viewModel = generateBankViewModels(bank);
-                            if(viewModel != null){
-                                paymentMethodList.add(viewModel);
-                            }
+                for (String method : transaction.getEnabledPayments()) {
+                    if (method.equalsIgnoreCase(getString(R.string.label_bank_transfer_bca)) ||
+                            method.equalsIgnoreCase(getString(R.string.label_bank_transfer_permata)) ||
+                            method.equalsIgnoreCase(getString(R.string.label_bank_transfer_other)) ||
+                            method.equalsIgnoreCase(getString(R.string.label_bank_transfer_mandiri))) {
+                        CoreViewModel viewModel = generateBankViewModels(method);
+                        if (viewModel != null) {
+                            paymentMethodList.add(viewModel);
                         }
                     }else{
                         CoreViewModel viewModel = generateCoreViewModels(method);

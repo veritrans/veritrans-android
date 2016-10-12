@@ -59,10 +59,10 @@
     <string name="name_payment_method_mandiri_ecash">Mandiri E Cash</string>
     <string name="name_mandiri_bill_payment">Mandiri Bill Pay</string>
     <string name="name_indosat_dompetku">Indosat Dompetku</string>
-    <string name="label_bank_transfer_bca">bca</string>
+    <string name="label_bank_transfer_bca">bca_va</string>
     <string name="name_bank_transfer_bca">Bank Transfer BCA</string>
-    <string name="label_bank_transfer_permata">permata</string>
-    <string name="label_bank_transfer_mandiri">mandiri</string>
+    <string name="label_bank_transfer_permata">permata_va</string>
+    <string name="label_bank_transfer_mandiri">echannel</string>
     <string name="name_bank_transfer_permata">Bank Transfer Permata</string>
     <string name="name_bank_transfer_mandiri">Bank Transfer Mandiri</string>
     <string name="name_bank_transfer_others">Bank Tranfer Lainnya</string>
