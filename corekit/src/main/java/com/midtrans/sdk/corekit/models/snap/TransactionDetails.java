@@ -1,10 +1,14 @@
 package com.midtrans.sdk.corekit.models.snap;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * @author rakawm
  */
 public class TransactionDetails {
+    @SerializedName("order_id")
     private String orderId;
+    @SerializedName("gross_amount")
     private int amount;
 
     public TransactionDetails() {
