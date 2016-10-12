@@ -18,7 +18,7 @@ import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
-import com.midtrans.sdk.corekit.models.snap.TransactionData;
+import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
@@ -114,8 +114,6 @@ public class SnapTransactionManagerTest {
     private ArgumentCaptor<TokenRequestModel> snapTokenRequestModelCaptor;
     @Mock
     private TokenRequestModel snapTokenRequestModelMock;
-    @Mock
-    private TransactionData transactionDataMock;
     private String transactionId = "trans_id";
     @Mock
     private CreditCardPaymentRequest creditcardRequestMock;
@@ -211,6 +209,8 @@ public class SnapTransactionManagerTest {
     private ArgumentCaptor<String> callbackArgumentCaptorCar;
     @Captor
     private ArgumentCaptor<String> calbackArgumentCatorClientKey;
+    @Mock
+    private TransactionDetails transactionDetailsMock;
     private String mAuthToken = "VT-1dqwd34dwed23e2dw";
     private Response retrofitResponseError = new Response("URL", 300, "success", Collections.EMPTY_LIST,
             new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
@@ -332,8 +332,8 @@ public class SnapTransactionManagerTest {
 
     @Test
     public void getTransactionOptionSuccess() {
-        Mockito.when(transactionMock.getTransactionData()).thenReturn(transactionDataMock);
-        Mockito.when(transactionDataMock.getTransactionId()).thenReturn(transactionId);
+        Mockito.when(transactionMock.getTransactionDetails()).thenReturn(transactionDetailsMock);
+        Mockito.when(transactionDetailsMock.getOrderId()).thenReturn(transactionId);
 
         callbackImplement.getPaymentOption(tokenId);
         Mockito.verify(snapAPI).getPaymentOption(tokenIdCaptor.capture(), transactionCaptorMock.capture());
@@ -343,8 +343,8 @@ public class SnapTransactionManagerTest {
 
     @Test
     public void getTransactionOptionError_whenTransIdEmpty() {
-        Mockito.when(transactionMock.getTransactionData()).thenReturn(transactionDataMock);
-        Mockito.when(transactionDataMock.getTransactionId()).thenReturn("");
+        Mockito.when(transactionMock.getTransactionDetails()).thenReturn(transactionDetailsMock);
+        Mockito.when(transactionDetailsMock.getOrderId()).thenReturn("");
 
         callbackImplement.getPaymentOption(tokenId);
         Mockito.verify(snapAPI).getPaymentOption(tokenIdCaptor.capture(), transactionCaptorMock.capture());
