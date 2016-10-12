@@ -48,20 +48,20 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:cardview-v7:23.4.0'
 
-    developmentCompile project(path: ':uikit', configuration: 'developmentDebug')
-    productionCompile project(path: ':uikit', configuration: 'productionDebug')
-    developmentCompile(project(path: ':scancard', configuration: 'developmentDebug')) {
+    developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
+    productionCompile project(path: ':uikit', configuration: 'productionRelease')
+    developmentCompile(project(path: ':scancard', configuration: 'developmentRelease')) {
         exclude module: 'uikit'
         exclude module: 'corekit'
     }
-    productionCompile(project(path: ':scancard', configuration: 'productionDebug')) {
+    productionCompile(project(path: ':scancard', configuration: 'productionRelease')) {
         exclude module: 'uikit'
         exclude module: 'corekit'
     }
-    developmentCompile(project(path: ':widgets', configuration: 'developmentDebug')) {
+    developmentCompile(project(path: ':widgets', configuration: 'developmentRelease')) {
         exclude module: 'corekit'
     }
-    productionCompile(project(path: ':widgets', configuration: 'productionDebug')) {
+    productionCompile(project(path: ':widgets', configuration: 'productionRelease')) {
         exclude module: 'corekit'
     }
 
