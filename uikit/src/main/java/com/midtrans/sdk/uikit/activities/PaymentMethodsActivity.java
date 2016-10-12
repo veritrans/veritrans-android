@@ -462,11 +462,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 Intent startIndomaret = new Intent(this, IndomaretActivity.class);
                 startActivityForResult(startIndomaret, Constants.RESULT_CODE_PAYMENT_TRANSFER);
 
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bbm_money))) {
-
-                Intent startBBMMoney = new Intent(this, BBMMoneyActivity.class);
-                startActivityForResult(startBBMMoney, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
             } else if (name.equalsIgnoreCase(getString(R.string.payment_method_offers))) {
 
                 Intent startOffersActivity = new Intent(this, OffersActivity.class);

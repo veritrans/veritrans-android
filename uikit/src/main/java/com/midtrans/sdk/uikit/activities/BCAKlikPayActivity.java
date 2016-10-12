@@ -112,7 +112,6 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
     }
 
 

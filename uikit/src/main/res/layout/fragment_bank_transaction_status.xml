@@ -35,7 +35,6 @@
             android:textSize="@dimen/primary_text_size"
             android:textStyle="bold"/>
 
-
         <com.midtrans.sdk.uikit.widgets.SemiBoldTextView
             android:id="@+id/text_payment_error_message"
             android:layout_width="wrap_content"
@@ -59,7 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/eight_dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="0dp"
@@ -83,7 +83,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:id="@+id/text_amount"

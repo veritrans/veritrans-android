@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.utilities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
@@ -19,7 +20,6 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
 import com.midtrans.sdk.corekit.models.BBMUrlEncodeJson;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.widgets.MidtransLoadingDialog;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  */
 public class SdkUIFlowUtil {
 
-    private static MidtransLoadingDialog progressDialog;
+    private static ProgressDialog progressDialog;
 
     /**
      * it will validate an given email-id.
@@ -143,8 +143,8 @@ public class SdkUIFlowUtil {
 
         if (activity != null) {
             try {
-                progressDialog = new MidtransLoadingDialog(activity);
-                progressDialog.setCanceledOnTouchOutside(true);
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setMessage(activity.getString(R.string.loading));
                 progressDialog.setCancelable(isCancelable);
                 progressDialog.show();
             } catch (WindowManager.BadTokenException ex) {
@@ -170,8 +170,8 @@ public class SdkUIFlowUtil {
 
         if (activity != null) {
             try {
-                progressDialog = new MidtransLoadingDialog(activity, message);
-                progressDialog.setCanceledOnTouchOutside(true);
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setMessage(message);
                 progressDialog.setCancelable(isCancelable);
                 progressDialog.show();
             } catch (WindowManager.BadTokenException ex) {
@@ -186,7 +186,7 @@ public class SdkUIFlowUtil {
     /**
      * @return an instance of progress dialog if visible any else returns null.
      */
-    public static MidtransLoadingDialog getProgressDialog() {
+    public static ProgressDialog getProgressDialog() {
         return progressDialog;
     }
 

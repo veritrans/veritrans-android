@@ -21,7 +21,6 @@ import com.midtrans.sdk.uikit.activities.CIMBClickPayActivity;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.activities.EpayBriActivity;
 import com.midtrans.sdk.uikit.activities.MandiriECashActivity;
-import com.midtrans.sdk.uikit.activities.NotificationActivity;
 import com.midtrans.sdk.uikit.activities.OffersActivity;
 
 import java.util.regex.Pattern;
@@ -78,11 +77,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initializeViews(view);
-        if (getActivity().getClass().getName().equalsIgnoreCase(NotificationActivity.class.getName())) {
-            bindDataForNotificationData();
-        } else {
-            bindDataToView();
-        }
+        bindDataToView();
     }
 
     private void initializeViews(View view) {
@@ -95,13 +90,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
         paymentStatusTv = (TextView) view.findViewById(R.id.text_payment_status);
         paymentMessageTv = (TextView) view.findViewById(R.id.text_payment_message);
         detailsTable = (LinearLayout) view.findViewById(R.id.transaction_info_layout);
-    }
-
-    private void bindDataForNotificationData() {
-        actionBt.setVisibility(View.GONE);
-        setPaymentType();
-        setPaymentStatusValues();
-
     }
 
     private void setPaymentStatusValues() {
