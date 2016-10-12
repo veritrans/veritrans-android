@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
     private int mysdkFlow = UI_FLOW;
     private TextView authToken;
     private Button coreBtn, uiBtn;
-    private Button coreCardRegistration, uiCardRegistration,
+    private Button coreCardRegistration, uiCardRegistration, btnCreditCard,
             getAuthenticationToken, refresh_token;
     private RadioButton normal, twoClick, oneClick;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods;
@@ -170,6 +170,15 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
             public void onClick(View v) {
                 VeritransSDK.getVeritransSDK().setTransactionRequest(initializePurchaseRequest());
                 VeritransSDK.getVeritransSDK().startPaymentUiFlow(MainActivity.this);
+            }
+        });
+
+        btnCreditCard = (Button) findViewById(R.id.btn_payment_creditcard);
+        btnCreditCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VeritransSDK.getVeritransSDK().setTransactionRequest(initializePurchaseRequest());
+                VeritransSDK.getVeritransSDK().startCreditCardPayment(MainActivity.this);
             }
         });
 

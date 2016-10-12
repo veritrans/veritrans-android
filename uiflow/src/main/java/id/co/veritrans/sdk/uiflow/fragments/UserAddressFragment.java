@@ -208,9 +208,7 @@ public class UserAddressFragment extends Fragment {
             }
             userDetail.setUserAddresses(userAddresses);
             LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
-            Intent selectPaymentIntent = new Intent(getActivity(), PaymentMethodsActivity.class);
-            startActivity(selectPaymentIntent);
-            getActivity().finish();
+            ((UserDetailsActivity)getActivity()).runPaymentActivity();
         } catch (Exception e) {
             e.printStackTrace();
         }

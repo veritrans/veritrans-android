@@ -83,4 +83,6 @@ public class Constants {
     public static final long FADE_IN_FORM_TIME = 300;
 
     public static final String AUTH_TOKEN = "authentication.token";
+    
+    public static final String PARAM_PAYMENT_METHOD = "param_payment_method";
 }

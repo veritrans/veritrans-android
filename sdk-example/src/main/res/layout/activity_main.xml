@@ -259,7 +259,13 @@
                     android:text="@string/btn_show_ui_flow"
                     android:textColor="@color/white" />
             </LinearLayout>
-
+<Button
+    android:id="@+id/btn_payment_creditcard"
+    android:layout_gravity="center_horizontal"
+    android:textColor="@color/white"
+    android:layout_width="wrap_content"
+    android:text="only creditcard payment"
+    android:layout_height="wrap_content" />
             <TextView
                 style="@style/TextAppearance.AppCompat.Body2"
                 android:layout_width="match_parent"
