@@ -5,6 +5,7 @@ import android.content.Context;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,20 +129,20 @@ public class PaymentMethods {
         }
     }
 
-    public static List<String> getDefaultPaymentList(Context context) {
-        List<String> paymentNameList = new ArrayList<>();
-        paymentNameList.add(context.getString(R.string.payment_credit_debit));
-        paymentNameList.add(context.getString(R.string.payment_bank_transfer));
-        paymentNameList.add(context.getString(R.string.payment_klik_bca));
-        paymentNameList.add(context.getString(R.string.payment_bca_click));
-        paymentNameList.add(context.getString(R.string.payment_mandiri_clickpay));
-        paymentNameList.add(context.getString(R.string.payment_mandiri_ecash));
-        paymentNameList.add(context.getString(R.string.payment_epay_bri));
-        paymentNameList.add(context.getString(R.string.payment_cimb_clicks));
-        paymentNameList.add(context.getString(R.string.payment_indosat_dompetku));
-        paymentNameList.add(context.getString(R.string.payment_indomaret));
-        paymentNameList.add(context.getString(R.string.payment_telkomsel_cash));
-        paymentNameList.add(context.getString(R.string.payment_xl_tunai));
+    public static List<EnabledPayment> getDefaultPaymentList(Context context) {
+        List<EnabledPayment> paymentNameList = new ArrayList<>();
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_credit_debit), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_bank_transfer), context.getString(R.string.enabled_payment_category_banktransfer)));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_klik_bca), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_bca_click), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_mandiri_clickpay), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_mandiri_ecash), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_epay_bri), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_cimb_clicks), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_indosat_dompetku), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_indomaret), context.getString(R.string.enabled_payment_category_cstore)));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_telkomsel_cash), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_xl_tunai), null));
         return paymentNameList;
     }
 }

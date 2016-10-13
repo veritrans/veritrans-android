@@ -493,4 +493,8 @@
     <string name="callback_unimplemented">Callback Unimplemented</string>
     <string name="transaction_finished_callback_unimplemented">callback not yet implemented</string>
 
+    <!-- enabled payment -->
+    <string name="enabled_payment_category_banktransfer">bank_transfer</string>
+    <string name="enabled_payment_category_cstore">cstore</string>
+
 </resources>

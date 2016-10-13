@@ -31,6 +31,7 @@ import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
@@ -251,8 +252,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     if (TextUtils.isEmpty(logoUrl)) {
                         showName(merchantName);
                     }
-                    Logger.d("Payment methods size: " + transaction != null ? "0" : String.valueOf(transaction.getEnabledPayments().size()));
-                    List<String> paymentMethods = transaction.getEnabledPayments();
+                    Logger.d(TAG, "Payment methods size: " + transaction != null ? "0" : String.valueOf(transaction.getEnabledPayments().size()));
+                    List<EnabledPayment> paymentMethods = transaction.getEnabledPayments();
                     initialiseAdapterData(paymentMethods);
                     paymentMethodsAdapter.setData(data);
                 } catch (NullPointerException e) {
@@ -279,21 +280,21 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     /**
      * initialize adapter data model by dummy values.
      */
-    private void initialiseAdapterData(List<String> enabledPayments) {
+    private void initialiseAdapterData(List<EnabledPayment> enabledPayments) {
         data.clear();
         bankTrasfers.clear();
-        for (String paymentType : enabledPayments) {
-            PaymentMethodsModel model = PaymentMethods.getMethods(this, paymentType);
-            if (model != null) {
-                data.add(model);
-            }
-            if(paymentType.equals(getString(R.string.payment_permata_va)) ||
-                    paymentType.equals(getString(R.string.payment_bca_va)) ||
-                    paymentType.equals(getString(R.string.payment_mandiri_bill_payment)) ||
-                    paymentType.equals(getString(R.string.payment_all_va))){
-                bankTrasfers.add(paymentType);
+
+        for (EnabledPayment enabledPayment : enabledPayments) {
+            if(enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer))){
+                bankTrasfers.add(enabledPayment.getType());
+            } else{
+                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType());
+                if (model != null) {
+                    data.add(model);
+                }
             }
         }
+
         if(!bankTrasfers.isEmpty()){
             data.add(PaymentMethods.getMethods(this,getString(R.string.payment_bank_transfer)));
         }
@@ -368,7 +369,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void showDefaultPaymentMethods() {
         progressContainer.setVisibility(View.GONE);
-        List<String> paymentMethods = PaymentMethods.getDefaultPaymentList(this);
+        List<EnabledPayment> paymentMethods = PaymentMethods.getDefaultPaymentList(this);
         initialiseAdapterData(paymentMethods);
         paymentMethodsAdapter.setData(data);
     }

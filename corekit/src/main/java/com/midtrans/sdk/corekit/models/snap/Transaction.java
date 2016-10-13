@@ -13,7 +13,7 @@ public class Transaction {
     private TransactionDetails transactionDetails;
     private Callbacks callbacks;
     @SerializedName("enabled_payments")
-    private List<String> enabledPayments;
+    private List<EnabledPayment> enabledPayments;
     @SerializedName("merchant")
     private MerchantData merchantData;
     @SerializedName("credit_card")
@@ -54,11 +54,11 @@ public class Transaction {
         this.token = token;
     }
 
-    public List<String> getEnabledPayments() {
+    public List<EnabledPayment> getEnabledPayments() {
         return enabledPayments;
     }
 
-    public void setEnabledPayments(List<String> enabledPayments) {
+    public void setEnabledPayments(List<EnabledPayment> enabledPayments) {
         this.enabledPayments = enabledPayments;
     }
 
