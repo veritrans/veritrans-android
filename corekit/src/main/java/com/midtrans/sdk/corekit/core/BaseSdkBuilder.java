@@ -15,6 +15,7 @@ public abstract class BaseSdkBuilder<T> {
     protected String clientKey = null;
     protected Context context = null;
     protected boolean enableLog = false;
+    protected boolean enableBuiltInTokenStorage = true;
     protected String merchantServerUrl = null;
     protected String colorTheme = null;
     protected int colorThemeResourceId = 0;
@@ -26,13 +27,6 @@ public abstract class BaseSdkBuilder<T> {
     protected ArrayList<PaymentMethodsModel> selectedPaymentMethods;
     protected IScanner externalScanner;
     protected TransactionFinishedCallback transactionFinishedCallback;
-
-
-    public abstract T setDefaultText(String defaultText);
-
-    public abstract T setBoldText(String boldText);
-
-    public abstract T setSemiBoldText(String semiBoldText);
 
     public abstract T setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods);
 
