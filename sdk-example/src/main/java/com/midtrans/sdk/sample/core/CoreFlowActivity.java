@@ -16,6 +16,7 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.sample.BCAKlikPayActivity;
@@ -94,17 +95,15 @@ public class CoreFlowActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }
                 paymentMethodList.clear();
-                for (String method : transaction.getEnabledPayments()) {
-                    if (method.equalsIgnoreCase(getString(R.string.label_bank_transfer_bca)) ||
-                            method.equalsIgnoreCase(getString(R.string.label_bank_transfer_permata)) ||
-                            method.equalsIgnoreCase(getString(R.string.label_bank_transfer_other)) ||
-                            method.equalsIgnoreCase(getString(R.string.label_bank_transfer_mandiri))) {
-                        CoreViewModel viewModel = generateBankViewModels(method);
+                for (EnabledPayment method : transaction.getEnabledPayments()) {
+                    if (method.getCategory() != null && method.getType().equals(R.string.enabled_payment_category_banktransfer)) {
+
+                        CoreViewModel viewModel = generateBankViewModels(method.getType());
                         if (viewModel != null) {
                             paymentMethodList.add(viewModel);
                         }
                     }else{
-                        CoreViewModel viewModel = generateCoreViewModels(method);
+                        CoreViewModel viewModel = generateCoreViewModels(method.getType());
                         if(viewModel != null){
                             paymentMethodList.add(viewModel);
                         }
