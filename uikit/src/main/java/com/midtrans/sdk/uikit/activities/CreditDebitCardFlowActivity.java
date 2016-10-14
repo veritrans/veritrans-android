@@ -530,14 +530,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void fetchCreditCards() {
-        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
         try {
             UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
             if (userDetail != null) {
                 if (midtransSDK.isEnableBuiltInTokenStorage()) {
                     List<SavedToken> tokens = midtransSDK.getSavedTokens();
-                    bindSavedCards(convertSavedToken(tokens));
+                    bindSavedCards(tokens != null ? convertSavedToken(tokens) : new ArrayList<SaveCardRequest>());
                 } else {
+                    SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
                     midtransSDK.getCards(userDetail.getUserId(), new GetCardCallback() {
                         @Override
                         public void onSuccess(ArrayList<SaveCardRequest> response) {

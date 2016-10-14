@@ -376,6 +376,33 @@ public class MidtransSDK {
     /**
      * It will run background task to  checkout on merchant server to get authentication token
      *
+     * @param userId user identifier
+     * @param callback checkout callback
+     */
+    public void checkout(@NonNull String userId, @NonNull CheckoutCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                TokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
+                model.setUserId(userId);
+                mSnapTransactionManager.checkout(model, callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            }
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    /**
+     * It will run background task to  checkout on merchant server to get authentication token
+     *
      * @param callback checkout callback
      */
     public void checkout(@NonNull CheckoutCallback callback) {

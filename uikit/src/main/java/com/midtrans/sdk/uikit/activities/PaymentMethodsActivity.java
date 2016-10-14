@@ -212,7 +212,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void getPaymentPages() {
         progressContainer.setVisibility(View.VISIBLE);
         enableButtonBack(false);
-        midtransSDK.checkout(new CheckoutCallback() {
+        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
             @Override
             public void onSuccess(Token token) {
                 LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());

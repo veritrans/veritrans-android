@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * @author rakawm
  */
 public class Token {
-    @SerializedName("token_id")
+    @SerializedName("token")
     private String tokenId;
 
     public String getTokenId() {
