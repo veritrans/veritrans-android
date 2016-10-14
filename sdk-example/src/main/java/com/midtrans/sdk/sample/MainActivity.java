@@ -107,9 +107,14 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             cardClickType = getString(R.string.card_click_type_two_click);
             CreditCard creditCard = new CreditCard();
             creditCard.setSaveCard(true);
+            creditCard.setSecure(true);
             transactionRequestNew.setCreditCard(creditCard);
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
+            CreditCard creditCard = new CreditCard();
+            creditCard.setSaveCard(true);
+            creditCard.setSecure(true);
+            transactionRequestNew.setCreditCard(creditCard);
         }
         transactionRequestNew.setCardPaymentInfo(cardClickType, true);
 
