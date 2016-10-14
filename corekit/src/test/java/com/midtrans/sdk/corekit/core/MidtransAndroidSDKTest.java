@@ -215,9 +215,6 @@ public class MidtransAndroidSDKTest {
 
         MidtransSDK midtransSDK = SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .enableLog(true)
-                .setDefaultText("open_sans_regular.ttf")
-                .setSemiBoldText("open_sans_semibold.ttf")
-                .setBoldText("open_sans_bold.ttf")
                 .buildSDK();
         Mockito.when(midtransSDK.readAuthenticationToken()).thenReturn(sdkTokenMock);
         midtransSDK.setTransactionManager(transactionManager);

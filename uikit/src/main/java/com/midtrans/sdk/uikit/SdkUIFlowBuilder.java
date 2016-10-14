@@ -39,19 +39,16 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
         return this;
     }
 
-    @Override
     public SdkUIFlowBuilder setBoldText(String boldText) {
         this.boldText = boldText;
         return this;
     }
 
-    @Override
     public SdkUIFlowBuilder setSemiBoldText(String semiBoldText) {
         this.semiBoldText = semiBoldText;
         return this;
     }
 
-    @Override
     public SdkUIFlowBuilder setDefaultText(String defaultText) {
         this.defaultText = defaultText;
         return this;
@@ -65,6 +62,11 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
 
     public SdkUIFlowBuilder setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
         this.selectedPaymentMethods = selectedPaymentMethods;
+        return this;
+    }
+
+    public SdkUIFlowBuilder useBuiltInTokenStorage(boolean enableBuiltInTokenStorage) {
+        this.enableBuiltInTokenStorage = enableBuiltInTokenStorage;
         return this;
     }
 

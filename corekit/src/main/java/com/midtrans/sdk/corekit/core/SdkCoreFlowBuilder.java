@@ -42,22 +42,6 @@ public class SdkCoreFlowBuilder extends BaseSdkBuilder<SdkCoreFlowBuilder> {
         return this;
     }
 
-
-    public SdkCoreFlowBuilder setDefaultText(String defaultText) {
-        this.defaultText = defaultText;
-        return this;
-    }
-
-    public SdkCoreFlowBuilder setBoldText(String boldText) {
-        this.boldText = boldText;
-        return this;
-    }
-
-    public SdkCoreFlowBuilder setSemiBoldText(String semiBoldText) {
-        this.semiBoldText = semiBoldText;
-        return this;
-    }
-
     public SdkCoreFlowBuilder setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
         this.selectedPaymentMethods = selectedPaymentMethods;
         return this;

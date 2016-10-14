@@ -24,6 +24,9 @@ public class TokenRequestModel {
     @SerializedName("credit_card")
     private CreditCard creditCard;
 
+    @SerializedName("user_id")
+    private String userId;
+
     public TokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails,
                              CustomerDetails customerDetails) {
         this.transactionDetails = transactionDetails;
@@ -77,4 +80,11 @@ public class TokenRequestModel {
         return json;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

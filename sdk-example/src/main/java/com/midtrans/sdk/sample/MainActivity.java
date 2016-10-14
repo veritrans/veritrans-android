@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
                     .enableLog(true)
+                    .useBuiltInTokenStorage(true) // enable built in token storage
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
@@ -106,9 +107,14 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             cardClickType = getString(R.string.card_click_type_two_click);
             CreditCard creditCard = new CreditCard();
             creditCard.setSaveCard(true);
+            creditCard.setSecure(true);
             transactionRequestNew.setCreditCard(creditCard);
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
+            CreditCard creditCard = new CreditCard();
+            creditCard.setSaveCard(true);
+            creditCard.setSecure(true);
+            transactionRequestNew.setCreditCard(creditCard);
         }
         transactionRequestNew.setCardPaymentInfo(cardClickType, true);
 

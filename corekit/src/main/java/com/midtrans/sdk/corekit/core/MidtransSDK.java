@@ -21,15 +21,17 @@ import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
-import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
-import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.params.TelkomselCashPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shivam on 10/19/15.
@@ -61,6 +63,8 @@ public class MidtransSDK {
     private String merchantLogo = null;
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
+    private List<SavedToken> savedTokens = new ArrayList<>();
+    private boolean enableBuiltInTokenStorage;
     private BBMCallBackUrl mBBMCallBackUrl = null;
     private String sdkBaseUrl = "";
     private int requestTimeOut = 10;
@@ -78,6 +82,7 @@ public class MidtransSDK {
         this.externalScanner = sdkBuilder.externalScanner;
         themeColor = sdkBuilder.colorThemeResourceId;
         this.isLogEnabled = sdkBuilder.enableLog;
+        this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
 
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(MidtransRestAdapter.getMixpanelApi(requestTimeOut));
 
@@ -358,6 +363,33 @@ public class MidtransSDK {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
                 mSnapTransactionManager.getTransactionOptions(authenticationToken, callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            }
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    /**
+     * It will run background task to  checkout on merchant server to get authentication token
+     *
+     * @param userId user identifier
+     * @param callback checkout callback
+     */
+    public void checkout(@NonNull String userId, @NonNull CheckoutCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                TokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
+                model.setUserId(userId);
+                mSnapTransactionManager.checkout(model, callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -975,4 +1007,15 @@ public class MidtransSDK {
         return requestTimeOut;
     }
 
+    public List<SavedToken> getSavedTokens() {
+        return savedTokens;
+    }
+
+    public void setSavedTokens(List<SavedToken> savedTokens) {
+        this.savedTokens = savedTokens;
+    }
+
+    public boolean isEnableBuiltInTokenStorage() {
+        return enableBuiltInTokenStorage;
+    }
 }

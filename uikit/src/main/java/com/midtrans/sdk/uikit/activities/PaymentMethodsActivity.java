@@ -32,6 +32,7 @@ import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
+import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
@@ -211,7 +212,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void getPaymentPages() {
         progressContainer.setVisibility(View.VISIBLE);
         enableButtonBack(false);
-        midtransSDK.checkout(new CheckoutCallback() {
+        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
             @Override
             public void onSuccess(Token token) {
                 LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
@@ -246,8 +248,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     progressContainer.setVisibility(View.GONE);
                     String logoUrl = transaction.getMerchantData().getPreference().getLogoUrl();
                     String merchantName = transaction.getMerchantData().getPreference().getDisplayName();
+                    List<SavedToken> savedTokens = transaction.getCreditCard().getSavedTokens();
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
+                    midtransSDK.setSavedTokens(savedTokens);
                     showLogo(logoUrl);
                     if (TextUtils.isEmpty(logoUrl)) {
                         showName(merchantName);

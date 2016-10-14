@@ -229,10 +229,8 @@ public class SnapTransactionManagerTest {
         Mockito.when(contextMock.getString(R.string.success_code_201)).thenReturn("201");
         Mockito.when(contextMock.getString(R.string.success)).thenReturn("success");
 
-        midtransSDK = SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
-                .setDefaultText("open_sans_regular.ttf")
-                .setSemiBoldText("open_sans_semibold.ttf")
-                .setBoldText("open_sans_bold.ttf")
+        midtransSDK = SdkCoreFlowBuilder
+                .init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .buildSDK();
 
         mixpanelAnalyticsManagerMock.setMixpanelApi(mixpanelApiMock);

@@ -161,6 +161,11 @@ public class CardDetailFragment extends Fragment {
             payNowFrontBt.setVisibility(View.GONE);
         }
         deleteIv = (ImageButton) view.findViewById(R.id.image_delete_card);
+        if (midtransSDK.isEnableBuiltInTokenStorage()) {
+            deleteIv.setVisibility(View.GONE);
+        } else {
+            deleteIv.setVisibility(View.VISIBLE);
+        }
         deleteIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
