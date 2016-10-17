@@ -48,6 +48,7 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.widgets.adapter.CardPagerAdapter;
@@ -734,8 +735,9 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     private void payUsingCreditCard(Token token) {
-        getMidtransSDK().paymentUsingCard(token.getTokenId(), CreditCardForm.this.cardToken,
-                checkboxStoreCard.isChecked(), new TransactionCallback() {
+        CreditCardPaymentModel paymentModel = new CreditCardPaymentModel(CreditCardForm.this.cardToken,
+                checkboxStoreCard.isChecked());
+        getMidtransSDK().paymentUsingCard(token.getTokenId(), paymentModel, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         if (widgetTransactionCallback != null) {

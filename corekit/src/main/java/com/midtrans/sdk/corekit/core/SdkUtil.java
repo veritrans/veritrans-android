@@ -34,6 +34,7 @@ import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
@@ -539,10 +540,14 @@ public class SdkUtil {
 
         SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), (int) transactionRequest.getAmount());
 
-        return new TokenRequestModel(
-                details,
-                transactionRequest.getItemDetails(),
+        TokenRequestModel requestModel = new TokenRequestModel(details, transactionRequest.getItemDetails(),
                 transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());
+
+        if(!TextUtils.isEmpty(transactionRequest.getUserId())){
+            requestModel.setUserId(transactionRequest.getUserId());
+        }
+
+        return requestModel;
     }
 
     public static CustomerDetailRequest initializePaymentDetails(TransactionRequest transactionRequest) {
@@ -553,14 +558,14 @@ public class SdkUtil {
         return customerDetailRequest;
     }
 
-    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String cardToken, boolean saveCard, TransactionRequest transactionRequest) {
+    public static CreditCardPaymentRequest getCreditCardPaymentRequest(CreditCardPaymentModel model, TransactionRequest transactionRequest) {
         if (transactionRequest.isUiEnabled()) {
             // get user details only if using default ui
             transactionRequest = initializeUserInfo(transactionRequest);
         }
 
         CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transactionRequest);
-        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(cardToken, saveCard);
+        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(), model.isSavecard(), model.getMaskedCardNumber());
         CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
 
         return paymentRequest;

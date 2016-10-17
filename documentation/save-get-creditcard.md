@@ -7,7 +7,7 @@ If you want to save credit card to your merchant server, you have to to set `SAV
     String saveCardToken = response.getSavedTokenId();
 
     //get card number
-    String maskedCardNumber = response.getCardNumber();
+    String maskedCard = response.getCardNumber();
 }
 ```
 We provide interface `SaveCardCallback` to  save creditcard to marchant server. You  need to implement SaveCardCallback when invoke a saveCard method.

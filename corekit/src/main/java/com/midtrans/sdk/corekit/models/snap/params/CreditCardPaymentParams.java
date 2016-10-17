@@ -7,18 +7,21 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class CreditCardPaymentParams {
+    @SerializedName("masked_card")
+    private String maskedCard;
     @SerializedName("card_token")
     private String cardToken;
-
     private String bank;
     @SerializedName("installment_term")
     private String  installmentTerm;
     @SerializedName("save_card")
     private boolean saveCard;
 
-    public CreditCardPaymentParams(String cardToken, Boolean saveCard) {
+
+    public CreditCardPaymentParams(String cardToken, Boolean saveCard, String maskedCardNumber) {
         this.cardToken = cardToken;
         this.saveCard = saveCard;
+        this.maskedCard = maskedCardNumber;
     }
 
     public void setCardToken(String cardToken) {

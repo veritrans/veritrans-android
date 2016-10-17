@@ -77,6 +77,10 @@ public class TransactionRequest {
     private boolean useUi = true;
     private CreditCard creditCard;
 
+    /**
+     * Unique id for every single user that will be used to credit card (one click & two click) payment
+     */
+    private String userId;
 
     /**
      * @param orderId       order id of transaction.
@@ -206,5 +210,9 @@ public class TransactionRequest {
 
     public void setCreditCard(CreditCard creditCard) {
         this.creditCard = creditCard;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 }

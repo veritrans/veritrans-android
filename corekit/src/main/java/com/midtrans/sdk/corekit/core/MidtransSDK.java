@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
@@ -429,11 +430,10 @@ public class MidtransSDK {
      * It will run backgrond task to charge payment using Credit Card
      *
      * @param authenticationToken authentication token
-     * @param cardToken           card token form PAPI backend
-     * @param saveCard            is saving credit card
+     * @param creditCardPaymentModel model for creditcard payment
      * @param callback            transaction callback
      */
-    public void paymentUsingCard(@NonNull String authenticationToken, @NonNull String cardToken, boolean saveCard, @NonNull TransactionCallback callback) {
+    public void paymentUsingCard(@NonNull String authenticationToken, CreditCardPaymentModel creditCardPaymentModel, @NonNull TransactionCallback callback) {
         if (callback == null) {
             Logger.e(TAG, context.getString(R.string.callback_unimplemented));
             return;
@@ -441,8 +441,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingCreditCard(authenticationToken, SdkUtil.getCreditCardPaymentRequest(cardToken,
-                        saveCard, transactionRequest), callback);
+                mSnapTransactionManager.paymentUsingCreditCard(authenticationToken,
+                        SdkUtil.getCreditCardPaymentRequest(creditCardPaymentModel, transactionRequest), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));

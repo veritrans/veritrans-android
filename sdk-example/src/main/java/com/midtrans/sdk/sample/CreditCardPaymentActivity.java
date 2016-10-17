@@ -24,6 +24,7 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 
 import java.util.ArrayList;
 
@@ -117,7 +118,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
     }
 
     private void payWithCreditCard(String authenticationToken, String cardToken) {
-        MidtransSDK.getInstance().paymentUsingCard(authenticationToken, cardToken, saveCard, new TransactionCallback() {
+        MidtransSDK.getInstance().paymentUsingCard(authenticationToken, new CreditCardPaymentModel(cardToken, saveCard), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 // Handle success transaction

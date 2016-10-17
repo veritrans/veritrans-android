@@ -44,6 +44,7 @@ import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.CardPagerAdapter;
@@ -311,8 +312,9 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                     itemDetailsArrayList, billingAddresses, shippingAddresses, customerDetails);
 
         }
+        CreditCardPaymentModel model = new CreditCardPaymentModel(cardTokenRequest.getSavedTokenId(), false);
         midtransSDK.paymentUsingCard(cardTokenRequest.getSavedTokenId(),
-                midtransSDK.readAuthenticationToken(), false, new TransactionCallback() {
+                model, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         actionPaymentSuccess(response);

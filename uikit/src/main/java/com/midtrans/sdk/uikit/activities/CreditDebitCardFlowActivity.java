@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +46,7 @@ import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
@@ -100,6 +102,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private boolean saveCard = false;
     private String cardType;
     private boolean removeExistCard = false;
+    private String maskedCardNumber;
 
     public MorphingButton getBtnMorph() {
         return btnMorph;
@@ -232,79 +235,91 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         processingLayout.setVisibility(View.VISIBLE);
         //getSupportActionBar().setTitle(getString(R.string.processing_payment));
         titleHeaderTextView.setText(getString(R.string.processing_payment));
-        CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "", userDetail.getEmail(), userDetail.getPhoneNumber());
 
-        ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-        TransactionDetails transactionDetails = new TransactionDetails("" + midtransSDK.
-                getTransactionRequest().getAmount(),
-                midtransSDK.getTransactionRequest().getOrderId());
-        ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-        if (midtransSDK.getTransactionRequest().getItemDetails() != null && midtransSDK.getTransactionRequest().getItemDetails().size() > 0) {
-            itemDetailsArrayList = midtransSDK.getTransactionRequest().getItemDetails();
-        }
-        if (userAddresses != null && !userAddresses.isEmpty()) {
-            ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
-            ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
+//        CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "", userDetail.getEmail(), userDetail.getPhoneNumber());
+//
+//        ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
+//        TransactionDetails transactionDetails = new TransactionDetails("" + midtransSDK.
+//                getTransactionRequest().getAmount(),
+//                midtransSDK.getTransactionRequest().getOrderId());
+//        ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
+//        if (midtransSDK.getTransactionRequest().getItemDetails() != null && midtransSDK.getTransactionRequest().getItemDetails().size() > 0) {
+//            itemDetailsArrayList = midtransSDK.getTransactionRequest().getItemDetails();
+//        }
+//        if (userAddresses != null && !userAddresses.isEmpty()) {
+//            ArrayList<BillingAddress> billingAddresses = new ArrayList<>();
+//            ArrayList<ShippingAddress> shippingAddresses = new ArrayList<>();
+//
+//            for (int i = 0; i < userAddresses.size(); i++) {
+//                UserAddress userAddress = userAddresses.get(i);
+//                if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_BILLING ||
+//                        userAddress.getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
+//                    BillingAddress billingAddress;
+//                    billingAddress = new BillingAddress();
+//                    billingAddress.setCity(userAddress.getCity());
+//                    billingAddress.setFirstName(userDetail.getUserFullName());
+//                    billingAddress.setLastName("");
+//                    billingAddress.setPhone(userDetail.getPhoneNumber());
+//                    billingAddress.setCountryCode(userAddress.getCountry());
+//                    billingAddress.setPostalCode(userAddress.getZipcode());
+//                    billingAddresses.add(billingAddress);
+//                }
+//                if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING ||
+//                        userAddress.getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
+//                    ShippingAddress shippingAddress;
+//                    shippingAddress = new ShippingAddress();
+//                    shippingAddress.setCity(userAddress.getCity());
+//                    shippingAddress.setFirstName(userDetail.getUserFullName());
+//                    shippingAddress.setLastName("");
+//                    shippingAddress.setPhone(userDetail.getPhoneNumber());
+//                    shippingAddress.setCountryCode(userAddress.getCountry());
+//                    shippingAddress.setPostalCode(userAddress.getZipcode());
+//                    shippingAddresses.add(shippingAddress);
+//                }
+//            }
+//
+//            CardPaymentDetails cardPaymentDetails = null;
+//            try {
+//                Logger.i("savetokenid:" + cardTokenRequest.getSavedTokenId());
+//            } catch (NullPointerException e) {
+//                e.printStackTrace();
+//            }
+//            //for one click
+//            if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
+//                    (getString(R.string.card_click_type_one_click)) &&
+//                    !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
+//                cardPaymentDetails = new CardPaymentDetails("",
+//                        cardTokenRequest.getSavedTokenId(), true);
+//                if (cardPaymentDetails.getBank().equals("")) {
+//                    cardPaymentDetails.setBank(null);
+//                }
+//                cardPaymentDetails.setRecurring(true);
+//            } else if (tokenDetailsResponse != null) {
+//                Logger.i("tokenDetailsResponse.getTokenId():" + tokenDetailsResponse.getTokenId());
+//                cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
+//                        tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved());
+//            } else {
+//                SdkUIFlowUtil.hideProgressDialog();
+//                processingLayout.setVisibility(View.GONE);
+//                return;
+//            }
+//            cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails,
+//                    itemDetailsArrayList, billingAddresses, shippingAddresses, customerDetails);
+//        }
 
-            for (int i = 0; i < userAddresses.size(); i++) {
-                UserAddress userAddress = userAddresses.get(i);
-                if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_BILLING ||
-                        userAddress.getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
-                    BillingAddress billingAddress;
-                    billingAddress = new BillingAddress();
-                    billingAddress.setCity(userAddress.getCity());
-                    billingAddress.setFirstName(userDetail.getUserFullName());
-                    billingAddress.setLastName("");
-                    billingAddress.setPhone(userDetail.getPhoneNumber());
-                    billingAddress.setCountryCode(userAddress.getCountry());
-                    billingAddress.setPostalCode(userAddress.getZipcode());
-                    billingAddresses.add(billingAddress);
-                }
-                if (userAddress.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING ||
-                        userAddress.getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
-                    ShippingAddress shippingAddress;
-                    shippingAddress = new ShippingAddress();
-                    shippingAddress.setCity(userAddress.getCity());
-                    shippingAddress.setFirstName(userDetail.getUserFullName());
-                    shippingAddress.setLastName("");
-                    shippingAddress.setPhone(userDetail.getPhoneNumber());
-                    shippingAddress.setCountryCode(userAddress.getCountry());
-                    shippingAddress.setPostalCode(userAddress.getZipcode());
-                    shippingAddresses.add(shippingAddress);
-                }
-            }
+        CreditCardPaymentModel paymentModel;
 
-            CardPaymentDetails cardPaymentDetails = null;
-            try {
-                Logger.i("savetokenid:" + cardTokenRequest.getSavedTokenId());
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-            //for one click
-            if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
-                    (getString(R.string.card_click_type_one_click)) &&
-                    !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
-                cardPaymentDetails = new CardPaymentDetails("",
-                        cardTokenRequest.getSavedTokenId(), true);
-                if (cardPaymentDetails.getBank().equals("")) {
-                    cardPaymentDetails.setBank(null);
-                }
-                cardPaymentDetails.setRecurring(true);
-            } else if (tokenDetailsResponse != null) {
-                Logger.i("tokenDetailsResponse.getTokenId():" + tokenDetailsResponse.getTokenId());
-                cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
-                        tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved());
-            } else {
-                SdkUIFlowUtil.hideProgressDialog();
-                processingLayout.setVisibility(View.GONE);
-                return;
-            }
-            cardTransfer = new CardTransfer(cardPaymentDetails, transactionDetails,
-                    itemDetailsArrayList, billingAddresses, shippingAddresses, customerDetails);
+        if(midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
+                && this.maskedCardNumber != null){
+
+            paymentModel = new CreditCardPaymentModel(this.maskedCardNumber);
+
+        } else {
+            paymentModel = new CreditCardPaymentModel(tokenDetailsResponse.getTokenId(), saveCard);
         }
 
         midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(),
-                tokenDetailsResponse.getTokenId(), saveCard, new TransactionCallback() {
+                paymentModel, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         actionPaymentSuccess(response);
@@ -364,7 +379,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             titleHeaderTextView.setText(getString(R.string.title_payment_status));
 
-            if (cardTokenRequest.isSaved()) {
+            if (cardTokenRequest != null && cardTokenRequest.isSaved()) {
                 if (!midtransSDK.isEnableBuiltInTokenStorage()) {
                     if (!creditCards.isEmpty()) {
                         int position = -1;
@@ -576,12 +591,15 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
     }
 
-    public void oneClickPayment(CardTokenRequest cardDetail) {
-        this.cardTokenRequest = cardDetail;
+    public void oneClickPayment(String maskedCardNumber) {
+        Log.i(TAG, "builtin>masked>twoclick:" + maskedCardNumber);
+
+        this.maskedCardNumber = maskedCardNumber;
         payUsingCard();
     }
 
     public void twoClickPayment(CardTokenRequest cardDetail) {
+        Log.i(TAG, "builtin>token>pay:" + cardDetail.getSavedTokenId());
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = new CardTokenRequest();
         this.cardTokenRequest.setSavedTokenId(cardDetail.getSavedTokenId());
@@ -749,7 +767,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private void bindSavedCards(ArrayList<SaveCardRequest> cards) {
         if (cards != null && !cards.isEmpty()) {
             creditCards.clear();
-            creditCards.addAll(cards);
+            ArrayList<SaveCardRequest> filteredCards = filterCardsByClickType(cards);
+            creditCards.addAll(filteredCards);
             if (cardPagerAdapter != null && circlePageIndicator != null) {
                 cardPagerAdapter.notifyDataSetChanged();
                 circlePageIndicator.notifyDataSetChanged();
@@ -772,5 +791,26 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
             titleHeaderTextView.setText(getString(R.string.card_details));
         }
+    }
+
+    private ArrayList<SaveCardRequest> filterCardsByClickType(ArrayList<SaveCardRequest> cards) {
+        Log.i(TAG, "builtin>twoclick:filter>type:" + midtransSDK.getTransactionRequest().getCardClickType());
+
+        ArrayList<SaveCardRequest> filteredCards = new ArrayList<>();
+        for(SaveCardRequest card :cards){
+            if(midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_one_click))
+                    && card.getType().equals(getString(R.string.saved_card_one_click))){
+                filteredCards.add(card);
+                Log.i(TAG, "builtin>oneclick:filter");
+            } else if(midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_two_click))
+                    && card.getType().equals(getString(R.string.saved_card_two_click))){
+                filteredCards.add(card);
+                Log.i(TAG, "builtin>twoclick:filter");
+            }
+            Log.i(TAG, "builtin>hascode:" + card.getMaskedCard());
+            Log.i(TAG, "builtin>token:" + card.getSavedTokenId());
+
+        }
+        return filteredCards;
     }
 }

@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             cardClickType = getString(R.string.card_click_type_two_click);
             CreditCard creditCard = new CreditCard();
             creditCard.setSaveCard(true);
-            creditCard.setSecure(true);
             transactionRequestNew.setCreditCard(creditCard);
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
@@ -154,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         normal = (RadioButton) findViewById(R.id.radio_card_normal);
         twoClick = (RadioButton) findViewById(R.id.radio_card_two_click);
         oneClick = (RadioButton) findViewById(R.id.radio_card_one_click);
-        oneClick.setVisibility(View.GONE);
 
         //
         coreBtn = (Button) findViewById(R.id.show_core_example);
