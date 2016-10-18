@@ -24,6 +24,7 @@ import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
 
@@ -490,8 +491,8 @@ public class SDKUtilsTest {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
 
-        Assert.assertEquals(cardToken, SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequestMock).getPaymentParams().getCardToken());
-        Assert.assertEquals(saveCard, SdkUtil.getCreditCardPaymentRequest(cardToken, saveCard, transactionRequestMock).getPaymentParams().isSaveCard());
+        Assert.assertEquals(cardToken, SdkUtil.getCreditCardPaymentRequest(new CreditCardPaymentModel(cardToken, saveCard), transactionRequestMock).getPaymentParams().getCardToken());
+        Assert.assertEquals(saveCard, SdkUtil.getCreditCardPaymentRequest(new CreditCardPaymentModel(cardToken, saveCard), transactionRequestMock).getPaymentParams().isSaveCard());
     }
 
     @Test
