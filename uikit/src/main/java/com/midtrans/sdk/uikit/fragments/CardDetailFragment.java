@@ -229,9 +229,9 @@ public class CardDetailFragment extends Fragment {
 
             if (activity != null) {
                 CardTokenRequest request = new CardTokenRequest();
-                request.setSavedTokenId(cardDetail.getSavedTokenId());
+                request.setCardNumber(cardDetail.getMaskedCard());
                 if (activity instanceof CreditDebitCardFlowActivity) {
-                    ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(request);
+                    ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(cardDetail.getMaskedCard());
                 } else if (activity instanceof OffersActivity) {
                     ((OffersActivity) getActivity()).oneClickPayment(request);
                 }

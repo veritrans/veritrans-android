@@ -28,7 +28,7 @@ import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback{
+public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback {
     private static final int CORE_FLOW = 1;
     private static final int UI_FLOW = 2;
     public static String userId = "user214";
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private Button coreCardRegistration, uiCardRegistration;
     private RadioButton normal, twoClick, oneClick;
     private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
      */
     private void initSDK() {
         // SDK initiation for coreflow
-        if(mysdkFlow == CORE_FLOW){
+        if (mysdkFlow == CORE_FLOW) {
             SdkCoreFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
                     .enableLog(true)
                     .buildSDK();
@@ -107,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             cardClickType = getString(R.string.card_click_type_two_click);
             CreditCard creditCard = new CreditCard();
             creditCard.setSaveCard(true);
-            creditCard.setSecure(true);
             transactionRequestNew.setCreditCard(creditCard);
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
      * Initialize the view.
      */
     private void initView() {
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //Initialize progress dialog
         dialog = new ProgressDialog(this);
@@ -154,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         normal = (RadioButton) findViewById(R.id.radio_card_normal);
         twoClick = (RadioButton) findViewById(R.id.radio_card_two_click);
         oneClick = (RadioButton) findViewById(R.id.radio_card_one_click);
-        oneClick.setVisibility(View.GONE);
 
         //
         coreBtn = (Button) findViewById(R.id.show_core_example);
@@ -181,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         });
 
         // Handle Card registration using core flow
-        coreCardRegistration = (Button)findViewById(R.id.btn_card_registration_core);
+        coreCardRegistration = (Button) findViewById(R.id.btn_card_registration_core);
         coreCardRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         });
 
         // Handle Card registration using UI flow
-        uiCardRegistration = (Button)findViewById(R.id.btn_card_registration_ui);
+        uiCardRegistration = (Button) findViewById(R.id.btn_card_registration_ui);
         uiCardRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -48,6 +48,7 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.widgets.adapter.CardPagerAdapter;
@@ -113,12 +114,12 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
 
     @Override
     protected void onDetachedFromWindow() {
-        if(cardPagerAdapter != null){
+        if (cardPagerAdapter != null) {
             cardPagerAdapter.clearAll(savedCardPager);
             cardPagerAdapter = null;
         }
         savedCardPager = null;
-        if(webView != null){
+        if (webView != null) {
             webView.removeAllViews();
             webView.destroyDrawingCache();
             webView.clearHistory();
@@ -734,32 +735,33 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     private void payUsingCreditCard(Token token) {
-        getMidtransSDK().paymentUsingCard(token.getTokenId(), CreditCardForm.this.cardToken,
-                checkboxStoreCard.isChecked(), new TransactionCallback() {
-                    @Override
-                    public void onSuccess(TransactionResponse response) {
-                        if (widgetTransactionCallback != null) {
-                            widgetTransactionCallback.onSucceed(response);
-                        }
-                        if (enableTwoClick && checkboxStoreCard.isChecked()) {
-                            saveCards(response);
-                        }
-                    }
+        CreditCardPaymentModel paymentModel = new CreditCardPaymentModel(CreditCardForm.this.cardToken,
+                checkboxStoreCard.isChecked());
+        getMidtransSDK().paymentUsingCard(token.getTokenId(), paymentModel, new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                if (widgetTransactionCallback != null) {
+                    widgetTransactionCallback.onSucceed(response);
+                }
+                if (enableTwoClick && checkboxStoreCard.isChecked()) {
+                    saveCards(response);
+                }
+            }
 
-                    @Override
-                    public void onFailure(TransactionResponse response, String reason) {
-                        if (widgetTransactionCallback != null) {
-                            widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_charge)));
-                        }
-                    }
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                if (widgetTransactionCallback != null) {
+                    widgetTransactionCallback.onFailed(new WidgetException(getResources().getString(R.string.error_failed_charge)));
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable error) {
-                        if (widgetTransactionCallback != null) {
-                            widgetTransactionCallback.onFailed(new WidgetException(error.getMessage()));
-                        }
-                    }
-                });
+            @Override
+            public void onError(Throwable error) {
+                if (widgetTransactionCallback != null) {
+                    widgetTransactionCallback.onFailed(new WidgetException(error.getMessage()));
+                }
+            }
+        });
 
     }
 
@@ -910,7 +912,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
 
     @Override
     public void onDelete(SaveCardRequest card) {
-        if(creditCardList != null && !creditCardList.isEmpty()){
+        if (creditCardList != null && !creditCardList.isEmpty()) {
             ArrayList<SaveCardRequest> newCards = getNewCards(card);
             layoutProgress.setVerticalGravity(View.VISIBLE);
             updateCardOnMerchantServer(newCards, card);
@@ -969,14 +971,13 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         cardPagerAdapter.addViews(savedCardPager, this.creditCardList);
     }
 
-    private void addView (SaveCardRequest card)
-    {
-        int pageIndex = cardPagerAdapter.addView (card);
-        savedCardPager.setCurrentItem (pageIndex, true);
+    private void addView(SaveCardRequest card) {
+        int pageIndex = cardPagerAdapter.addView(card);
+        savedCardPager.setCurrentItem(pageIndex, true);
     }
 
-    private void initUserIdIfNotExist(){
-        if(TextUtils.isEmpty(this.userId)){
+    private void initUserIdIfNotExist() {
+        if (TextUtils.isEmpty(this.userId)) {
             this.userId = UUID.randomUUID().toString();
         }
     }
@@ -986,7 +987,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         ArrayList<SaveCardRequest> newCards = new ArrayList<>();
         newCards.addAll(creditCardList);
         SaveCardRequest newItemDelete = findCardByNumber(deletedItem.getMaskedCard());
-        if(newItemDelete != null){
+        if (newItemDelete != null) {
             newCards.remove(newItemDelete);
         }
         return newCards;
@@ -1002,18 +1003,18 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         getMidtransSDK().saveCards(this.userId, newCards, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
-                if(cardRemoved(card)){
-                    int pageIndex = cardPagerAdapter.removeView (savedCardPager, card);
+                if (cardRemoved(card)) {
+                    int pageIndex = cardPagerAdapter.removeView(savedCardPager, card);
                     cardPagerAdapter.notifyDataSetChanged();
                     if (pageIndex == cardPagerAdapter.getCount())
                         pageIndex--;
-                    savedCardPager.setCurrentItem (pageIndex);
+                    savedCardPager.setCurrentItem(pageIndex);
                 }
-                if(creditCardList.isEmpty()){
+                if (creditCardList.isEmpty()) {
                     showCreditCardLayout(true);
                     backButton.setVisibility(GONE);
                 }
-                if(layoutProgress.getVisibility() == VISIBLE){
+                if (layoutProgress.getVisibility() == VISIBLE) {
                     layoutProgress.setVisibility(GONE);
                 }
                 layoutProgress.setVisibility(GONE);
@@ -1021,7 +1022,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
 
             @Override
             public void onFailure(String reason) {
-                if(layoutProgress.getVisibility() == VISIBLE){
+                if (layoutProgress.getVisibility() == VISIBLE) {
                     layoutProgress.setVisibility(GONE);
                 }
                 Toast.makeText(getContext(), reason, Toast.LENGTH_SHORT).show();
@@ -1029,7 +1030,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
 
             @Override
             public void onError(Throwable error) {
-                if(layoutProgress.getVisibility() == VISIBLE){
+                if (layoutProgress.getVisibility() == VISIBLE) {
                     layoutProgress.setVisibility(GONE);
                 }
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -1038,8 +1039,8 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     private boolean cardRemoved(SaveCardRequest cardDetail) {
-        for(SaveCardRequest request : creditCardList){
-            if(request.getMaskedCard().equalsIgnoreCase(cardDetail.getMaskedCard())){
+        for (SaveCardRequest request : creditCardList) {
+            if (request.getMaskedCard().equalsIgnoreCase(cardDetail.getMaskedCard())) {
                 creditCardList.remove(request);
                 return true;
             }
@@ -1048,15 +1049,15 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     private SaveCardRequest findCardByNumber(String maskedCard) {
-        for(SaveCardRequest request : this.creditCardList){
-            if(request.getMaskedCard().equalsIgnoreCase(maskedCard)){
+        for (SaveCardRequest request : this.creditCardList) {
+            if (request.getMaskedCard().equalsIgnoreCase(maskedCard)) {
                 return request;
             }
         }
         return null;
     }
 
-    private void fadeInAnimation(final RelativeLayout layout){
+    private void fadeInAnimation(final RelativeLayout layout) {
         layoutAnimation = AnimationUtils.loadAnimation(getContext().getApplicationContext(), R.anim.fade_in);
 
         layoutAnimation.setAnimationListener(new Animation.AnimationListener() {

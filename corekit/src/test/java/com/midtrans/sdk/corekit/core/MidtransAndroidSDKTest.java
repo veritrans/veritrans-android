@@ -41,6 +41,7 @@ import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.PermataBankTransfer;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.utilities.Utils;
 
 import org.junit.Assert;
@@ -430,14 +431,14 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentUsingCard() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, token, false, transactionCallbackMock);
+        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
         Assert.assertEquals(true, midtransSDKSSpy.isRunning);
     }
 
     @Test
     public void snapPaymentUsingCard_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, token, false, transactionCallbackMock);
+        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
         Assert.assertEquals(false, midtransSDKSSpy.isRunning());
         Mockito.verify(callbackCollaborator).onError();
     }
@@ -446,7 +447,7 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentUsingCard_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingCard(cardToken, token, false, transactionCallbackMock);
+        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
         Assert.assertEquals(false, midtransSDKSSpy.isRunning());
         Mockito.verify(callbackCollaborator).onError();
     }

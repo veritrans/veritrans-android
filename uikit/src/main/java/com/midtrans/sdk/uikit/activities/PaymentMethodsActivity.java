@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -216,6 +217,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
             @Override
             public void onSuccess(Token token) {
+                Log.i(TAG, "checkout token:" + token.getTokenId());
                 LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
                 getPaymentOptions(token.getTokenId());
             }

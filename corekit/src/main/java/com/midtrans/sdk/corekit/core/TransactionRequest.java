@@ -77,7 +77,6 @@ public class TransactionRequest {
     private boolean useUi = true;
     private CreditCard creditCard;
 
-
     /**
      * @param orderId       order id of transaction.
      * @param amount        amount to charge.
@@ -207,4 +206,5 @@ public class TransactionRequest {
     public void setCreditCard(CreditCard creditCard) {
         this.creditCard = creditCard;
     }
+
 }

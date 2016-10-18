@@ -60,4 +60,8 @@ public class SaveCardRequest implements Serializable {
     public void setCode(String code) {
         this.code = code;
     }
+
+    public String getType() {
+        return type;
+    }
 }
