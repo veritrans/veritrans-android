@@ -25,6 +25,8 @@ public class CreditCardPaymentModel {
 
     /**
      * init credit card model for oneclick payment
+     *
+     * @param maskedCardNumber masked credit card number
      */
     public CreditCardPaymentModel(String maskedCardNumber) {
         this.maskedCardNumber = maskedCardNumber;

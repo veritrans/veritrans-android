@@ -543,10 +543,6 @@ public class SdkUtil {
         TokenRequestModel requestModel = new TokenRequestModel(details, transactionRequest.getItemDetails(),
                 transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());
 
-        if(!TextUtils.isEmpty(transactionRequest.getUserId())){
-            requestModel.setUserId(transactionRequest.getUserId());
-        }
-
         return requestModel;
     }
 
@@ -578,7 +574,7 @@ public class SdkUtil {
         return paymentRequest;
     }
 
-    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId,  String paymentType) {
+    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId, String paymentType) {
 
         KlikBCAPaymentRequest klikBCAPaymentRequest = new KlikBCAPaymentRequest(
                 paymentType, new KlikBcaPaymentParams(userId));

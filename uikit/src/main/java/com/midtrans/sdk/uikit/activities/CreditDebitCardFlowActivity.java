@@ -226,23 +226,17 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     public void payUsingCard() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
-        //getSupportActionBar().setTitle(getString(R.string.processing_payment));
         titleHeaderTextView.setText(getString(R.string.processing_payment));
 
         CreditCardPaymentModel paymentModel;
 
-        if(midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
-                && this.maskedCardNumber != null){
-
+        if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
+                && this.maskedCardNumber != null) {
             paymentModel = new CreditCardPaymentModel(this.maskedCardNumber);
-
-        } else if(midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_two_click))
-                && this.tokenDetailsResponse != null){
-
+        } else if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_two_click))
+                && this.tokenDetailsResponse != null) {
             paymentModel = new CreditCardPaymentModel(tokenDetailsResponse.getTokenId(), saveCard);
-
-        }else{
-
+        } else {
             SdkUIFlowUtil.showSnackbar(this, getString(R.string.message_payment_not_completed));
             processingLayout.setVisibility(View.GONE);
             SdkUIFlowUtil.hideProgressDialog();
@@ -727,18 +721,18 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private ArrayList<SaveCardRequest> filterCardsByClickType(ArrayList<SaveCardRequest> cards) {
 
         ArrayList<SaveCardRequest> filteredCards = new ArrayList<>();
-        if(cards != null && !cards.isEmpty()){
-            if(midtransSDK.isEnableBuiltInTokenStorage()){
-                for(SaveCardRequest card :cards){
-                    if(midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_one_click))
-                            && card.getType().equals(getString(R.string.saved_card_one_click))){
+        if (cards != null && !cards.isEmpty()) {
+            if (midtransSDK.isEnableBuiltInTokenStorage()) {
+                for (SaveCardRequest card : cards) {
+                    if (midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_one_click))
+                            && card.getType().equals(getString(R.string.saved_card_one_click))) {
                         filteredCards.add(card);
-                    } else if(midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_two_click))
-                            && card.getType().equals(getString(R.string.saved_card_two_click))){
+                    } else if (midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_two_click))
+                            && card.getType().equals(getString(R.string.saved_card_two_click))) {
                         filteredCards.add(card);
                     }
                 }
-            }else{
+            } else {
                 filteredCards.addAll(cards);
             }
         }

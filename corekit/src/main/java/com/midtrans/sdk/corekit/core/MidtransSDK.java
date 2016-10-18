@@ -377,7 +377,7 @@ public class MidtransSDK {
     /**
      * It will run background task to  checkout on merchant server to get authentication token
      *
-     * @param userId user identifier
+     * @param userId   user identifier
      * @param callback checkout callback
      */
     public void checkout(@NonNull String userId, @NonNull CheckoutCallback callback) {
@@ -429,9 +429,9 @@ public class MidtransSDK {
     /**
      * It will run backgrond task to charge payment using Credit Card
      *
-     * @param authenticationToken authentication token
+     * @param authenticationToken    authentication token
      * @param creditCardPaymentModel model for creditcard payment
-     * @param callback            transaction callback
+     * @param callback               transaction callback
      */
     public void paymentUsingCard(@NonNull String authenticationToken, CreditCardPaymentModel creditCardPaymentModel, @NonNull TransactionCallback callback) {
         if (callback == null) {
@@ -470,7 +470,7 @@ public class MidtransSDK {
                 isRunning = true;
                 mSnapTransactionManager.paymentUsingBankTransferBCA(authenticationToken,
                         SdkUtil.getBankTransferPaymentRequest(email,
-                        PaymentType.BCA_VA), callback);
+                                PaymentType.BCA_VA), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -567,7 +567,7 @@ public class MidtransSDK {
      * It will run backround task to charge payment using Mandiri Bill Pay
      *
      * @param authenticationToken authentication token
-     * @param callback               transactionCallback
+     * @param callback            transactionCallback
      */
     public void paymentUsingMandiriBillPay(@NonNull String authenticationToken, @NonNull String email, @NonNull TransactionCallback callback) {
         if (callback == null) {
@@ -600,7 +600,7 @@ public class MidtransSDK {
      * @param callback            transaction callback
      */
     public void paymentUsingMandiriClickPay(@NonNull String authenticationToken, @NonNull String mandiriCardNumber,
-            @NonNull String tokenResponse, @NonNull String input3, TransactionCallback callback) {
+                                            @NonNull String tokenResponse, @NonNull String input3, TransactionCallback callback) {
         if (callback == null) {
             Logger.e(TAG, context.getString(R.string.callback_unimplemented));
             return;

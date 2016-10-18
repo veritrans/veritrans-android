@@ -78,11 +78,6 @@ public class TransactionRequest {
     private CreditCard creditCard;
 
     /**
-     * Unique id for every single user that will be used to credit card (one click & two click) payment
-     */
-    private String userId;
-
-    /**
      * @param orderId       order id of transaction.
      * @param amount        amount to charge.
      * @param paymentMethod payment method.
@@ -212,7 +207,4 @@ public class TransactionRequest {
         this.creditCard = creditCard;
     }
 
-    public String getUserId() {
-        return userId;
-    }
 }

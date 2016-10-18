@@ -28,7 +28,7 @@ import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 
 import java.util.ArrayList;
 
-public class CreditCardPaymentActivity extends AppCompatActivity{
+public class CreditCardPaymentActivity extends AppCompatActivity {
     TextInputLayout cardNumberContainer, cvvContainer, expiredDateContainer;
     EditText cardNumber, cvv, expiredDate;
     Button payBtn;
@@ -41,8 +41,8 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_card_payment);
         initView();
-        if(!MidtransSDK.getInstance().getTransactionRequest()
-                .getCardClickType().equals(getString(R.string.card_click_normal))){
+        if (!MidtransSDK.getInstance().getTransactionRequest()
+                .getCardClickType().equals(getString(R.string.card_click_normal))) {
             checkSaveCard.setVisibility(View.VISIBLE);
         }
     }
@@ -63,16 +63,16 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
         dialog.setIndeterminate(true);
         dialog.setMessage("Loading");
         //Initialize EditText
-        cardNumber = (EditText)findViewById(R.id.card_number);
-        cvv = (EditText)findViewById(R.id.cvv_number);
-        expiredDate = (EditText)findViewById(R.id.exp_date);
+        cardNumber = (EditText) findViewById(R.id.card_number);
+        cvv = (EditText) findViewById(R.id.cvv_number);
+        expiredDate = (EditText) findViewById(R.id.exp_date);
         checkSaveCard.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 saveCard = checked;
             }
         });
-        payBtn = (Button)findViewById(R.id.btn_payment);
+        payBtn = (Button) findViewById(R.id.btn_payment);
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +113,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
                         }
                     });
                 }
-                }
+            }
         });
     }
 
@@ -123,7 +123,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity{
             public void onSuccess(TransactionResponse response) {
                 // Handle success transaction
                 dialog.dismiss();
-                if(!TextUtils.isEmpty(response.getSavedTokenId()) && saveCard){
+                if (!TextUtils.isEmpty(response.getSavedTokenId()) && saveCard) {
                     ArrayList<SaveCardRequest> requests = new ArrayList<>();
                     requests.add(new SaveCardRequest(response.getSavedTokenId(),
                             response.getMaskedCard(), "visa"));
