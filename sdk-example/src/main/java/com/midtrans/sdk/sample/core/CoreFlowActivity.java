@@ -27,6 +27,7 @@ import com.midtrans.sdk.sample.EpayBRIPaymentActivity;
 import com.midtrans.sdk.sample.IndomaretPaymentActivity;
 import com.midtrans.sdk.sample.IndosatDompetkuPaymentActivity;
 import com.midtrans.sdk.sample.KlikBcaPaymentActivity;
+import com.midtrans.sdk.sample.MainActivity;
 import com.midtrans.sdk.sample.MandiriBillPaymentActivity;
 import com.midtrans.sdk.sample.MandiriClickPaymentActivity;
 import com.midtrans.sdk.sample.MandiriECashActivity;
@@ -60,7 +61,7 @@ public class CoreFlowActivity extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setMessage("Loading");
         dialog.show();
-        MidtransSDK.getInstance().checkout(new CheckoutCallback() {
+        MidtransSDK.getInstance().checkout(MainActivity.SAMPLE_USER_ID, new CheckoutCallback() {
             @Override
             public void onSuccess(Token token) {
                 Logger.i("snaptoken>success");
@@ -82,7 +83,10 @@ public class CoreFlowActivity extends AppCompatActivity {
             @Override
             public void onError(Throwable error) {
                 Logger.i("snaptoken>error");
-
+                if(dialog.isShowing()){
+                    dialog.dismiss();
+                }
+                showAlertDialog(error.getMessage());
             }
         });
     }
@@ -94,6 +98,7 @@ public class CoreFlowActivity extends AppCompatActivity {
                 if(dialog.isShowing()){
                     dialog.dismiss();
                 }
+                MidtransSDK.getInstance().setSavedTokens(transaction.getCreditCard().getSavedTokens());
                 paymentMethodList.clear();
                 for (EnabledPayment method : transaction.getEnabledPayments()) {
                     if (method.getCategory() != null && method.getType().equals(R.string.enabled_payment_category_banktransfer)) {
@@ -111,6 +116,7 @@ public class CoreFlowActivity extends AppCompatActivity {
                 }
                 adapter.setData(paymentMethodList);
                 adapter.notifyDataSetChanged();
+
             }
 
             @Override

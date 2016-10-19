@@ -205,7 +205,7 @@ public class AddCardDetailsFragment extends Fragment {
                     //make payment
                     SdkUIFlowUtil.showProgressDialog(getActivity(), false);
                     ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(cbStoreCard.isChecked(), cardType);
-                    ((CreditDebitCardFlowActivity) getActivity()).getToken(cardTokenRequest);
+                    ((CreditDebitCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
                 }
             }
         });

@@ -18,6 +18,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
@@ -31,7 +32,7 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback {
     private static final int CORE_FLOW = 1;
     private static final int UI_FLOW = 2;
-    public static String userId = "user214";
+    public static String SAMPLE_USER_ID = UUID.randomUUID().toString();
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn;
@@ -74,15 +75,26 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         }
     }
 
+
+
+
     /**
      * Initialize transaction data.
      *
      * @return the transaction request.
      */
-    private TransactionRequest initializePurchaseRequest() {
+    private TransactionRequest initializePurchaseRequest(int sampleSDKType) {
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
                 TransactionRequest(UUID.randomUUID().toString(), 360000);
+
+        //define customer detail (mandatory for coreflow)
+        CustomerDetails mCustomerDetails = new CustomerDetails();
+        mCustomerDetails.setPhone("24234234234");
+        mCustomerDetails.setFirstName("samle full name");
+        mCustomerDetails.setEmail("mail@mail.com");
+        transactionRequestNew.setCustomerDetails(mCustomerDetails);
+
 
         // Define item details
         ItemDetails itemDetails = new ItemDetails("1", 120000, 1, "Trekking Shoes");
@@ -116,7 +128,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             creditCard.setSecure(true);
             transactionRequestNew.setCreditCard(creditCard);
         }
-        transactionRequestNew.setCardPaymentInfo(cardClickType, true);
+        if(sampleSDKType == CORE_FLOW){
+            transactionRequestNew.setCardPaymentInfo(cardClickType, false);
+        }else{
+            transactionRequestNew.setCardPaymentInfo(cardClickType, true);
+        }
 
         return transactionRequestNew;
     }
@@ -160,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         coreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest());
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(CORE_FLOW));
                 Intent intent = new Intent(MainActivity.this, CoreFlowActivity.class);
                 startActivity(intent);
             }
@@ -174,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                 Logger.i("config>merchantUrl:" + MidtransSDK.getInstance().getMerchantServerUrl());
                 Logger.i("config>sdkurl:" + MidtransSDK.getInstance().getSdkBaseUrl());
                 Logger.i("config>timeout:" + MidtransSDK.getInstance().getRequestTimeOut());
-                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest());
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
                 MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this);
             }
         });
