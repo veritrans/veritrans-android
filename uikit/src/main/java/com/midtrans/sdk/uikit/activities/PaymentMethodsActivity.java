@@ -189,10 +189,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         if (midtransSDK != null) {
             String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount()));
-
             amountText.setText(amount);
         }
-
     }
 
     /**

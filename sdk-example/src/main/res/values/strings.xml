@@ -89,4 +89,6 @@
     <string name="activity_sdk_config_title">SETTING SDK ENDPOINT</string>
     <string name="hint_sdkconfig_timeout">Request Time Out in Second</string>
     <string name="error_sdkconfig_digitonly">Digit Only</string>
+    <string name="activity_save_credit_card_add_new">New Card</string>
+    <string name="cardlist_empty"> There are no saved cards</string>
 </resources>

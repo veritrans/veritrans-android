@@ -96,6 +96,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private String cardType;
     private boolean removeExistCard = false;
     private String maskedCardNumber;
+    private boolean isNewCard = true;
 
     public MorphingButton getBtnMorph() {
         return btnMorph;
@@ -174,6 +175,15 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
     }
 
+    /**
+     *
+     * @param cardTokenRequest
+     */
+    public void normalPayment(CardTokenRequest cardTokenRequest) {
+        this.isNewCard = true;
+        getToken(cardTokenRequest);
+    }
+
     public void getToken(CardTokenRequest cardTokenRequest) {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.cardTokenRequest = cardTokenRequest;
@@ -229,14 +239,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         titleHeaderTextView.setText(getString(R.string.processing_payment));
 
         CreditCardPaymentModel paymentModel;
-
         if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
-                && this.maskedCardNumber != null) {
+                && !isNewCard && this.maskedCardNumber != null) {
+            //using one click
             paymentModel = new CreditCardPaymentModel(this.maskedCardNumber);
-        } else if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_two_click))
-                && this.tokenDetailsResponse != null) {
+        } else if(tokenDetailsResponse != null && !TextUtils.isEmpty(tokenDetailsResponse.getTokenId())){
+            //using normal payment & twoclick & oneclick first payment
             paymentModel = new CreditCardPaymentModel(tokenDetailsResponse.getTokenId(), saveCard);
-        } else {
+        }else{
             SdkUIFlowUtil.showSnackbar(this, getString(R.string.message_payment_not_completed));
             processingLayout.setVisibility(View.GONE);
             SdkUIFlowUtil.hideProgressDialog();
@@ -518,12 +528,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void oneClickPayment(String maskedCardNumber) {
+        this.isNewCard = false;
         this.maskedCardNumber = maskedCardNumber;
         payUsingCard();
     }
 
     public void twoClickPayment(CardTokenRequest cardDetail) {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        this.isNewCard = false;
         this.cardTokenRequest = new CardTokenRequest();
         this.cardTokenRequest.setSavedTokenId(cardDetail.getSavedTokenId());
         this.cardTokenRequest.setCardCVV(cardDetail.getCardCVV());
@@ -733,10 +745,15 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     }
                 }
             } else {
-                filteredCards.addAll(cards);
+                //if token storage on merchantserver then saved cards can be used just for two click
+                if(MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(R.string.card_click_type_two_click)){
+                    filteredCards.addAll(cards);
+                }
             }
         }
 
         return filteredCards;
     }
+
+
 }
