@@ -40,7 +40,7 @@ If you're got conflict when merging manifest, please add this line into your def
 
 ## How to Initialize UI Flow SDK
 
-Initialise SDK using `SDKUiFlowBuilder`.
+Initialize SDK using `SDKUiFlowBuilder`.
 ```Java
 VeritransSDK veritransSDK = new SdkUIFlowBuilder(CONTEXT, CLIENT_KEY, BASE_URL)
                     .setUIFlow(new UIFlow())// initialization uiflow mode
@@ -49,6 +49,26 @@ VeritransSDK veritransSDK = new SdkUIFlowBuilder(CONTEXT, CLIENT_KEY, BASE_URL)
                     .setMerchantLogoResourceId(R.drawable.MERCHANT_LOGO_ID)
                     .buildSDK();
 ```
+
+## Initialize Transaction Request and Select Payment Type
+
+In this flow you must set transaction request information to SDK.
+
+```Java
+TransactionRequest transactionRequest = new TransactionRequest(TRANSACTION_ID, TRANSACTION_AMOUNT);
+transactionRequest.setCardPaymentInfo(CARD_CLICK_TYPE, IS_SECURE);
+veritransSDK.setTransactionRequest(transactionRequest);
+```
+
+Note: 
+
+- `CARD_CLICK_TYPE`: Type of payment. Please select between these values:
+     - `normal` : Normal transaction. Save card options was disabled in this mode.
+     - `two_click` : Two click transaction. Save card options was enabled in this mode.
+     - `one_click` : One click transaction. Save card options was enabled in this mode.
+- `IS_SECURE`
+     - true : Enable 3D Secure authorization
+     - false : Disable 3D Secure authorization
 
 ## Setup Event Bus to Capture Transaction Finished
 
