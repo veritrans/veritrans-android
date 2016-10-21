@@ -46,6 +46,7 @@ VeritransSDK veritransSDK = new SdkUIFlowBuilder(CONTEXT, CLIENT_KEY, BASE_URL)
                     .setUIFlow(new UIFlow())// initialization uiflow mode
                     .setExternalScanner(new ScanCard()) // Optional. Initialization for using external scancard
                     .enableLog(true)
+                    .setMerchantName(MERCHANT_NAME)
                     .setMerchantLogoResourceId(R.drawable.MERCHANT_LOGO_ID)
                     .buildSDK();
 ```
