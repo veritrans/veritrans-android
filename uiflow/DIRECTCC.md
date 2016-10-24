@@ -73,6 +73,22 @@ Note:
 
 ## Setup Event Bus to Capture Transaction Finished
 
+Register your activity or calling class to `VeritransBus` by using `VeritransBusProvider`.
+
+```Java
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        VeritransBusProvider.getInstance().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        VeritransBusProvider.getInstance().unregister(this);
+    }
+```
+
 Implement `TransactionFinishedCallback` in your activity or calling class. 
 It require you to implement one method. 
 Please add `@Subscribe` in the method.
