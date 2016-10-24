@@ -94,10 +94,10 @@ public class IndomaretPaymentFragment extends Fragment {
      * Copy payment code into clipboard.
      */
     private void copyPaymentCode() {
-        ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(LABEL_PAYMENT_CODE, mTextViewPaymentCode.getText().toString());
         clipboard.setPrimaryClip(clip);
         // Show toast
-        Toast.makeText(getContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
     }
 }

@@ -12,13 +12,13 @@ import android.widget.EditText;
 
 import java.io.IOException;
 
-import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
-import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
+import id.co.veritrans.sdk.uiflow.R;
+import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
+import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
 public class UserDetailFragment extends Fragment {
 
@@ -59,7 +59,7 @@ public class UserDetailFragment extends Fragment {
         emailEt = (EditText) view.findViewById(R.id.et_email);
         nextBtn = (Button) view.findViewById(R.id.btn_next);
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
-            nextBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
+            nextBtn.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), veritransSDK.getSemiBoldText()));
         }
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override

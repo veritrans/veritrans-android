@@ -100,7 +100,7 @@ public class OffersListFragment extends Fragment implements AnyOfferClickedListe
             recyclerViewOffers.setHasFixedSize(true);
             recyclerViewOffers.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             recyclerViewOffers.setAdapter(offersAdapter);
-            recyclerViewOffers.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+            recyclerViewOffers.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, final int position) {
                     Handler handler = new Handler();

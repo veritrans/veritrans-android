@@ -127,10 +127,10 @@ public class BankTransferPaymentFragment extends Fragment {
      * Copy generated Virtual Account Number to clipboard.
      */
     private void copyVANumber() {
-        ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(LABEL_VA_NUMBER, mTextViewVirtualAccountNumber.getText().toString());
         clipboard.setPrimaryClip(clip);
         // Show toast
-        Toast.makeText(getContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
     }
 }

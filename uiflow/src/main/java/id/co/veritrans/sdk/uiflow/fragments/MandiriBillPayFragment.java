@@ -134,21 +134,21 @@ public class MandiriBillPayFragment extends Fragment {
      * Copy generated Bill Code Number to clipboard.
      */
     private void copyBillCode() {
-        ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(LABEL_BILL_CODE, mTextViewBillpayCode.getText().toString());
         clipboard.setPrimaryClip(clip);
         // Show toast
-        Toast.makeText(getContext(), R.string.copied_bill_code, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.copied_bill_code, Toast.LENGTH_SHORT).show();
     }
 
     /**
      * Copy generated Company Code Number to clipboard.
      */
     private void copyCompanyCode() {
-        ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(LABEL_COMPANY_CODE, mTextViewCompanyCode.getText().toString());
         clipboard.setPrimaryClip(clip);
         // Show toast
-        Toast.makeText(getContext(), R.string.copied_company_code, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.copied_company_code, Toast.LENGTH_SHORT).show();
     }
 }

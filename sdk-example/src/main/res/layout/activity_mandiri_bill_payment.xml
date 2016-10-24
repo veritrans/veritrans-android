@@ -13,8 +13,7 @@
         android:layout_height="?actionBarSize"
         android:background="?colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/activity_title_mandiri_bill"
-        app:titleTextColor="@android:color/white" />
+        app:title="@string/activity_title_mandiri_bill" />
 
     <LinearLayout
         android:layout_width="match_parent"

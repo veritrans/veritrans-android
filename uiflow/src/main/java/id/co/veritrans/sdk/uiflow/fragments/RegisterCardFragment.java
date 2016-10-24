@@ -137,8 +137,8 @@ public class RegisterCardFragment extends Fragment {
             }
         });
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
-            saveBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
-            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), VeritransSDK.getDefaultText()));
+            saveBtn.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), veritransSDK.getSemiBoldText()));
+            scanCardBtn.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), VeritransSDK.getDefaultText()));
 
             if (veritransSDK.getExternalScanner() != null) {
                 scanCardBtn.setVisibility(View.VISIBLE);

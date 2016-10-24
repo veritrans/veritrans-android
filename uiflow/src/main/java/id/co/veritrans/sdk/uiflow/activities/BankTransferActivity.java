@@ -269,7 +269,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
-        mAppBarLayout.setExpanded(false, false);
+        //mAppBarLayout.setExpanded(false, false);
 
         Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
@@ -445,7 +445,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         SdkUIFlowUtil.hideProgressDialog();
         if (event.getResponse() != null) {
             transactionResponse = event.getResponse();
-            mAppBarLayout.setExpanded(true);
+            //mAppBarLayout.setExpanded(true);
             setUpTransactionFragment(event.getResponse());
         } else {
             onBackPressed();

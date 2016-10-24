@@ -13,8 +13,7 @@
         android:layout_height="?actionBarSize"
         android:background="?colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/activity_title_credit_card"
-        app:titleTextColor="@android:color/white"/>
+        app:title="@string/activity_title_credit_card" />
 
     <LinearLayout
         android:layout_width="match_parent"

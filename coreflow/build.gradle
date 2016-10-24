@@ -3,7 +3,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 group = 'id.co.veritrans'
-version = '0.11.3'
+version = '0.11.4'
 
 buildscript {
     repositories {
@@ -20,16 +20,16 @@ repositories {
 
 android {
     def DEFAULT_PUBLISH
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     lintOptions {
         abortOnError false
     }
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion 9
+        targetSdkVersion 22
         versionCode 2
         versionName version
         buildConfigField "String", "MIXPANEL_URL", "\"https://api.mixpanel.com/\""
@@ -73,8 +73,8 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.10' //version required
 }
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:design:22.2.1'
 
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.squareup.okhttp:okhttp:2.3.0'

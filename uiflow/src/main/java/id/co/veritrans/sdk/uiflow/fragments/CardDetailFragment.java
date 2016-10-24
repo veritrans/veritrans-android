@@ -183,7 +183,7 @@ public class CardDetailFragment extends Fragment {
         String type = Utils.getCardType(cardDetail.getMaskedCard().replace("-", "XXXXXX"));
         switch (type) {
             case Utils.CARD_TYPE_VISA:
-                logo.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_visa));
+                logo.setImageResource(R.drawable.ic_visa);
                 break;
             case Utils.CARD_TYPE_MASTERCARD:
                 logo.setImageResource(R.drawable.ic_mastercard);

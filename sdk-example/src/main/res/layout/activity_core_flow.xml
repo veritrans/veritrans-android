@@ -11,8 +11,7 @@
         android:layout_height="?actionBarSize"
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/activity_title_core_flow"
-        app:titleTextColor="@android:color/white" />
+        app:title="@string/activity_title_core_flow" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/core_flow_list"

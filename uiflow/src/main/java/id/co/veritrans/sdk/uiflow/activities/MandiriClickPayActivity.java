@@ -281,7 +281,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         mToolbar.setNavigationIcon(closeIcon);
-        appBar.setExpanded(false, false);
+        //appBar.setExpanded(false, false);
         setSupportActionBar(mToolbar);
 
         BankTransactionStatusFragment bankTransactionStatusFragment =

@@ -11,8 +11,7 @@
         android:layout_height="?actionBarSize"
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/app_name"
-        app:titleTextColor="@android:color/white"/>
+        app:title="@string/app_name" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="fill_parent">
@@ -261,11 +260,11 @@
             </LinearLayout>
 <Button
     android:id="@+id/btn_payment_creditcard"
-    android:layout_gravity="center_horizontal"
-    android:textColor="@color/white"
     android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
     android:text="only creditcard payment"
-    android:layout_height="wrap_content" />
+    android:textColor="@color/white" />
             <TextView
                 style="@style/TextAppearance.AppCompat.Body2"
                 android:layout_width="match_parent"

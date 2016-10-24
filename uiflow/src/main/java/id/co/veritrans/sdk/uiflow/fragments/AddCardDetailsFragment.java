@@ -146,8 +146,8 @@ public class AddCardDetailsFragment extends Fragment {
             }
         });
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
-            payNowBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
-            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), VeritransSDK.getDefaultText()));
+            payNowBtn.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), veritransSDK.getSemiBoldText()));
+            scanCardBtn.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), VeritransSDK.getDefaultText()));
             if (veritransSDK.getExternalScanner() != null) {
                 scanCardBtn.setVisibility(View.VISIBLE);
                 scanCardBtn.setOnClickListener(new View.OnClickListener() {

@@ -172,7 +172,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
 
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
 
-                appBarLayout.setExpanded(true);
+                //appBarLayout.setExpanded(true);
 
                 if (transactionResponse != null) {
                     setUpTransactionStatusFragment(transactionResponse);
@@ -197,7 +197,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         currentFragment = STATUS_FRAGMENT;
         buttonConfirmPayment.setText(R.string.done);
 
-        appBarLayout.setExpanded(false, false);
+        //appBarLayout.setExpanded(false, false);
 
         Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
@@ -280,7 +280,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
 
         if (event.getResponse() != null) {
             IndomaretActivity.this.transactionResponse = event.getResponse();
-            appBarLayout.setExpanded(true);
+            //appBarLayout.setExpanded(true);
             setUpTransactionFragment(event.getResponse());
         } else {
             onBackPressed();

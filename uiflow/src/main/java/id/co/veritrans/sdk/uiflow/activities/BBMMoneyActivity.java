@@ -175,7 +175,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
 
                 } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
 
-                    appBarLayout.setExpanded(true);
+                    //appBarLayout.setExpanded(true);
 
                     if (transactionResponse == null) {
                         RESULT_CODE = RESULT_OK;
@@ -293,7 +293,7 @@ public class BBMMoneyActivity extends BaseActivity implements View.OnClickListen
 
         if (transactionResponse != null) {
             BBMMoneyActivity.this.transactionResponse = event.getResponse();
-            appBarLayout.setExpanded(true);
+            //appBarLayout.setExpanded(true);
             setUpTransactionFragment(transactionResponse);
         } else {
             onBackPressed();

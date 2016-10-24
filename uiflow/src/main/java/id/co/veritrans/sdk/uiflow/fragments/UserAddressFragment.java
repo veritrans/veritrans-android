@@ -1,6 +1,5 @@
 package id.co.veritrans.sdk.uiflow.fragments;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,7 +22,6 @@ import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.models.UserAddress;
 import id.co.veritrans.sdk.coreflow.models.UserDetail;
 import id.co.veritrans.sdk.uiflow.R;
-import id.co.veritrans.sdk.uiflow.activities.PaymentMethodsActivity;
 import id.co.veritrans.sdk.uiflow.activities.UserDetailsActivity;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
@@ -89,7 +87,7 @@ public class UserAddressFragment extends Fragment {
         etShippingCountry = (EditText) view.findViewById(R.id.et_shipping_country);
         btnNext = (Button) view.findViewById(R.id.btn_next);
         if (veritransSDK != null && veritransSDK.getSemiBoldText() != null) {
-            btnNext.setTypeface(Typeface.createFromAsset(getContext().getAssets(), veritransSDK.getSemiBoldText()));
+            btnNext.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), veritransSDK.getSemiBoldText()));
         }
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
