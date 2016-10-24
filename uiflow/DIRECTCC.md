@@ -75,7 +75,7 @@ itemDetailsArrayList.add(itemDetails2);
 transactionRequest.setItemDetails(itemDetailsArrayList);
 
 // Set transaction request object into VeritransSDK instance
-veritransSDK.setTransactionRequest(transactionRequest);
+VeritransSDK.getVeritransSDK().setTransactionRequest(transactionRequest);
 ```
 
 Note: 
