@@ -70,6 +70,56 @@ Note:
 - `IS_SECURE`
      - true : Enable 3D Secure authorization
      - false : Disable 3D Secure authorization
+     
+## Initialize User Details
+
+To skip user details screen, you must set `UserDetails` using this codes
+
+```Java
+// Set user details
+UserDetail userDetail = new UserDetail();
+userDetail.setUserFullName(FULL_NAME);
+userDetail.setEmail(EMAIL);
+userDetail.setPhoneNumber(PHONE_NUMBER);
+
+// Initiate address list
+ArrayList<UserAddress> userAddresses = new ArrayList<>();
+
+// Initiate and add shipping address
+UserAddress shippingUserAddress = new UserAddress();
+shippingUserAddress.setAddress(shippingAddress);
+shippingUserAddress.setCity(shippingCity);
+shippingUserAddress.setCountry(shippingCountry);
+shippingUserAddress.setZipcode(shippingZipcode);
+shippingUserAddress.setAddressType(Constants.ADDRESS_TYPE_SHIPPING);
+userAddresses.add(shippingUserAddress);
+
+// Initiate and add billing address
+UserAddress billingUserAddress = new UserAddress();
+billingUserAddress.setAddress(billingAddress);
+billingUserAddress.setCity(billingCity);
+billingUserAddress.setCountry(country);
+billingUserAddress.setZipcode(zipcode);
+billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BILLING);
+userAddresses.add(billingUserAddress);
+
+// Or you can user type Constants.ADDRESS_TYPE_BOTH 
+// if shipping address is same billing address
+// if you use this, skip initiate shipping and billing address above
+UserAddress userAddress = new UserAddress();
+userAddress.setAddress(billingAddress);
+userAddress.setCity(billingCity);
+userAddress.setCountry(country);
+userAddress.setZipcode(zipcode);
+userAddress.setAddressType(Constants.ADDRESS_TYPE_BOTH);
+userAddresses.add(userAddress);
+
+// Set user address to user detail object
+userDetail.setUserAddresses(userAddresses);
+
+// Save the user detail. It will skip the user detail screen
+LocalDataHandler.saveObject("user_details", userDetail);
+```
 
 ## Setup Event Bus to Capture Transaction Finished
 
