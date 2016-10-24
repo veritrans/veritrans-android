@@ -56,8 +56,25 @@ VeritransSDK veritransSDK = new SdkUIFlowBuilder(CONTEXT, CLIENT_KEY, BASE_URL)
 In this flow you must set transaction request information to SDK.
 
 ```Java
+// Create transaction request object
 TransactionRequest transactionRequest = new TransactionRequest(TRANSACTION_ID, TRANSACTION_AMOUNT);
 transactionRequest.setCardPaymentInfo(CARD_CLICK_TYPE, IS_SECURE);
+
+// Define item details
+ItemDetails itemDetails = new ItemDetails(ITEM_ID, ITEM_PRICE, ITEM_QUANTITY, ITEM_NAME);
+ItemDetails itemDetails1 = new ItemDetails(ITEM_ID, ITEM_PRICE, ITEM_QUANTITY, ITEM_NAME);
+ItemDetails itemDetails2 = new ItemDetails(ITEM_ID, ITEM_PRICE, ITEM_QUANTITY, ITEM_NAME);
+
+// Add item details into item detail list.
+ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
+itemDetailsArrayList.add(itemDetails);
+itemDetailsArrayList.add(itemDetails1);
+itemDetailsArrayList.add(itemDetails2);
+
+// Set item details into transaction request object
+transactionRequest.setItemDetails(itemDetailsArrayList);
+
+// Set transaction request object into VeritransSDK instance
 veritransSDK.setTransactionRequest(transactionRequest);
 ```
 
@@ -70,6 +87,7 @@ Note:
 - `IS_SECURE`
      - true : Enable 3D Secure authorization
      - false : Disable 3D Secure authorization
+- Total amount from all item details must be same as `TRANSACTION_AMOUNT` provided in `TransactionRequest`
      
 ## Initialize User Details
 
@@ -103,9 +121,9 @@ billingUserAddress.setZipcode(zipcode);
 billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BILLING);
 userAddresses.add(billingUserAddress);
 
-// Or you can user type Constants.ADDRESS_TYPE_BOTH 
 // if shipping address is same billing address
-// if you use this, skip initiate shipping and billing address above
+// you can user type Constants.ADDRESS_TYPE_BOTH 
+// NOTE: if you use this, skip initiate shipping and billing address above
 UserAddress userAddress = new UserAddress();
 userAddress.setAddress(billingAddress);
 userAddress.setCity(billingCity);
