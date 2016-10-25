@@ -9,13 +9,13 @@ repositories {
     maven { url "http://dl.bintray.com/pt-midtrans/maven" }
 }
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         applicationId "com.midtrans.sdk.example"
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion 9
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -23,8 +23,8 @@ android {
     productFlavors {
         development {
             applicationId "com.midtrans.sdk.sample.development"
-            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
-            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
+            buildConfigField "String", "BASE_URL", "\"https://rakawm-snap.herokuapp.com/\""
+            buildConfigField "String", "CLIENT_KEY", "\"VT-client-E4f1bsi1LpL1p5cF\""
         }
         production {
             applicationId "com.midtrans.sdk.sample.production"

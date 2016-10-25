@@ -23,19 +23,20 @@ buildscript {
 }
 repositories {
     jcenter()
+    maven { url "http://dl.bintray.com/pt-midtrans/maven" }
 }
 android {
     def DEFAULT_PUBLISH
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     lintOptions {
         abortOnError false
     }
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion 9
+        targetSdkVersion 25
         versionCode 2
         versionName version
 
@@ -74,11 +75,11 @@ task wrapper(type: Wrapper) {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile "com.android.support:support-v4:23.4.0"
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile "com.android.support:support-v4:25.0.0"
+    compile 'com.android.support:recyclerview-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:cardview-v7:25.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     developmentCompile project(path: ':corekit', configuration: 'developmentRelease')
     productionCompile project(path: ':corekit', configuration: 'productionRelease')
