@@ -2,6 +2,7 @@ package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 

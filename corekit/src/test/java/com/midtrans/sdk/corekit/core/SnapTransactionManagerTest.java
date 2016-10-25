@@ -83,7 +83,7 @@ public class SnapTransactionManagerTest {
     private Resources resourcesMock;
     private MidtransSDK midtransSDK;
     @Mock
-    private MixpanelAnalyticsManager mixpanelAnalyticsManagerMock;
+    private MixpanelAnalyticsManager1 mixpanelAnalyticsManagerMock;
     @Mock
     private MixpanelApi mixpanelApiMock;
     private SnapTransactionManager transactionManager;

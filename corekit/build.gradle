@@ -11,7 +11,6 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
-
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.3'
@@ -21,24 +20,24 @@ buildscript {
 }
 repositories {
     jcenter()
+    maven { url "http://dl.bintray.com/pt-midtrans/maven" }
 }
 
 
 android {
     def DEFAULT_PUBLISH
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     lintOptions {
         abortOnError false
     }
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion 9
+        targetSdkVersion 25
         versionCode 2
         versionName version
-        buildConfigField "String", "MIXPANEL_URL", "\"https://api.mixpanel.com/\""
         buildConfigField "String", "CALLBACK_STRING", "\"/token/callback/\""
         buildConfigField "String", "CALLBACK_URL", "\"https://hangout.betas.in/veritrans/api/paymentstatus\""
         buildConfigField "String", "BBM_MONEY_PACKAGE", "\"com.monitise.client.android.bbmmoney\""
@@ -66,14 +65,12 @@ android {
             DEFAULT_PUBLISH = "developmentRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.sandbox.veritrans.co.id/v2/\""
             buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.veritrans.co.id/snap\""
-            buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_SANDBOX
         }
 
         production {
             DEFAULT_PUBLISH = "productionRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.midtrans.com/v2/\""
             buildConfigField "String", "SNAP_BASE_URL", "\"https://app.midtrans.com/snap\""
-            buildConfigField "String", "MIXPANEL_TOKEN", MIXPANEL_TOKEN_PRODUCTION
         }
     }
 
@@ -86,16 +83,20 @@ task sourceJar(type: Jar) {
     classifier "source"
 }
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.10' //version required
+    gradleVersion = '2.14.1' //version required
 }
 
 tasks.withType(Test) {
     jvmArgs '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
 }
+
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
+    // Analytics Manager
+    developmentCompile 'com.midtrans:analytics:1.0.2-SANDBOX'
+    productionCompile 'com.midtrans:analytics:1.0.2'
 
     /*
      * test dependencies
