@@ -68,7 +68,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LocalDataHandler.class, SdkUtil.class, Looper.class, Utils.class, Log.class, TextUtils.class, Logger.class})
+@PrepareForTest({LocalDataHandler.class, SdkUtil.class, Looper.class, Utils.class, Log.class, TextUtils.class, Logger.class, MixpanelAnalyticsManager.class})
 
 public class MidtransAndroidSDKTest {
 
@@ -200,6 +200,7 @@ public class MidtransAndroidSDKTest {
         PowerMockito.mockStatic(Looper.class);
         PowerMockito.mockStatic(Utils.class);
         PowerMockito.mockStatic(SdkUtil.class);
+        PowerMockito.mockStatic(MixpanelAnalyticsManager.class);
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(contextMock.getString(R.string.error_unable_to_connect)).thenReturn("not connected");
         Mockito.when(contextMock.getResources()).thenReturn(resourceMock);
