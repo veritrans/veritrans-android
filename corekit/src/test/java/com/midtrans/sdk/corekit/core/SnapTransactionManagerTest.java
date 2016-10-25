@@ -7,9 +7,9 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.SDKConfigTest;
-import com.midtrans.sdk.corekit.analytics.MixpanelApi;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
@@ -60,7 +60,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * Created by ziahaqi on 7/18/16.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class})
+@PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class, MixpanelAnalyticsManager.class})
 @PowerMockIgnore("javax.net.ssl.*")
 public class SnapTransactionManagerTest {
 
@@ -84,8 +84,6 @@ public class SnapTransactionManagerTest {
     private MidtransSDK midtransSDK;
     @Mock
     private MixpanelAnalyticsManager mixpanelAnalyticsManagerMock;
-    @Mock
-    private MixpanelApi mixpanelApiMock;
     private SnapTransactionManager transactionManager;
     @Captor
     private ArgumentCaptor<Callback<Token>> callbackSnapTokenResponseCaptor;
@@ -222,6 +220,7 @@ public class SnapTransactionManagerTest {
         PowerMockito.mockStatic(Looper.class);
         PowerMockito.mockStatic(Base64.class);
         PowerMockito.mockStatic(Logger.class);
+        PowerMockito.mockStatic(MixpanelAnalyticsManager.class);
 
         Mockito.when(contextMock.getResources()).thenReturn(resourcesMock);
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
@@ -233,7 +232,6 @@ public class SnapTransactionManagerTest {
                 .init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .buildSDK();
 
-        mixpanelAnalyticsManagerMock.setMixpanelApi(mixpanelApiMock);
         transactionManager = midtransSDK.getmSnapTransactionManager();
         transactionManager.setAnalyticsManager(mixpanelAnalyticsManagerMock);
         transactionManager.setSDKLogEnabled(false);

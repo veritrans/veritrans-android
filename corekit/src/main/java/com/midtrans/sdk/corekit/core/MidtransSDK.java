@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
@@ -85,12 +86,10 @@ public class MidtransSDK {
         this.isLogEnabled = sdkBuilder.enableLog;
         this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
 
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(MidtransRestAdapter.getMixpanelApi(requestTimeOut));
-
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
-        this.mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
+
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
 
         initializeTheme();
@@ -166,6 +165,8 @@ public class MidtransSDK {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName);
+        this.mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
     }
 
     public String getMerchantLogo() {
@@ -960,9 +961,7 @@ public class MidtransSDK {
         mSnapTransactionManager = new SnapTransactionManager(context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeout),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeout),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeout));
-
-        mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(MidtransRestAdapter.getMixpanelApi(requestTimeout));
-        mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
+        mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
         mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
 
