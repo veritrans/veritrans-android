@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <com.midtrans.sdk.widgets.CreditCardForm
+
         android:id="@+id/credit_card_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

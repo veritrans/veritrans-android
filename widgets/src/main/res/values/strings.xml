@@ -36,5 +36,7 @@
     <string name="card_prefix">XXXX-XXXX-XXXX-</string>
     <string name="cvv_empty">CVV is Empty</string>
     <string name="save_card_hint_message">Save your card for faster checkout process.</string>
+    <string name="message_payment_not_completed">Payment information is not completed!</string>
+    <string name="text_saved_card_expiry">xx/xx</string>
 
 </resources>

@@ -26,10 +26,13 @@ import java.util.UUID;
  */
 public class WidgetExampleActivity extends AppCompatActivity {
     public static final String CARD_PAYMENT_TYPE = "card_payment_type";
+    private static final int ONECLICK = 1;
+    private static final int TWOCLICK = 2;
     private CreditCardForm creditCardForm;
     private Button getToken;
     private ProgressDialog dialog;
     private String userId = "random-userid-example";
+    private int clickType = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,28 +43,27 @@ public class WidgetExampleActivity extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
 
-        boolean isTwoclik = getIntent().getBooleanExtra(CARD_PAYMENT_TYPE, false);
+        clickType = getIntent().getIntExtra(CARD_PAYMENT_TYPE, 0);
 
         creditCardForm = (CreditCardForm) findViewById(R.id.credit_card_form);
         creditCardForm.setMidtransClientKey(BuildConfig.CLIENT_KEY);
         creditCardForm.setMerchantUrl(BuildConfig.BASE_URL);
-        creditCardForm.setUserId(this.userId);
-
+        creditCardForm.setCardPaymentEnabled(clickType);
+        creditCardForm.checkout(this.userId, initializePurchaseRequest());
         //enable twoclick on card widget
-        if(isTwoclik){
-            creditCardForm.setEnableTwoClick(true);
-        }
+
         getToken = (Button) findViewById(R.id.btn_get_token);
         getToken.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (creditCardForm.checkCardValidity()) {
                     dialog.show();
-                    creditCardForm.pay(initializePurchaseRequest(), new CreditCardForm.WidgetTransactionCallback() {
+                    creditCardForm.pay(new CreditCardForm.WidgetTransactionCallback() {
                         @Override
                         public void onSucceed(TransactionResponse response) {
                             dialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Response message: " + response.getStatusMessage(), Toast.LENGTH_SHORT).show();
+                            finish();
                         }
 
                         @Override
@@ -126,10 +128,25 @@ public class WidgetExampleActivity extends AppCompatActivity {
         BillInfoModel billInfoModel = new BillInfoModel("demo_label", "demo_value");
         transactionRequestNew.setBillInfoModel(billInfoModel);
 
-        CreditCard creditCard = new CreditCard();
-        creditCard.setSecure(true);
-        creditCard.setSaveCard(true);
-        transactionRequestNew.setCreditCard(creditCard);
+
+        String cardClickType;
+        if(clickType == ONECLICK){
+            cardClickType = getString(R.string.card_click_type_one_click);
+            CreditCard creditCard = new CreditCard();
+            creditCard.setSaveCard(true);
+            creditCard.setSecure(true);
+            transactionRequestNew.setCreditCard(creditCard);
+
+        }else if(clickType == TWOCLICK){
+            cardClickType = getString(R.string.card_click_type_two_click);
+            CreditCard creditCard = new CreditCard();
+            creditCard.setSaveCard(true);
+            transactionRequestNew.setCreditCard(creditCard);
+        } else{
+            cardClickType = getString(R.string.card_click_type_none);
+        }
+
+        transactionRequestNew.setCardPaymentInfo(cardClickType, true);
 
         return transactionRequestNew;
     }

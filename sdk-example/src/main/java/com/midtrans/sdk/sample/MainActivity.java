@@ -153,7 +153,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, WidgetExampleActivity.class);
-                i.putExtra(WidgetExampleActivity.CARD_PAYMENT_TYPE, twoClick.isChecked());
+                if(oneClick.isChecked()){
+                    i.putExtra(WidgetExampleActivity.CARD_PAYMENT_TYPE, 1);
+                } else if(twoClick.isChecked()){
+                    i.putExtra(WidgetExampleActivity.CARD_PAYMENT_TYPE, 2);
+                }
                 startActivity(i);
             }
         });
