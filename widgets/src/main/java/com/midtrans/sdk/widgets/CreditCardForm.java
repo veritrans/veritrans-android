@@ -243,11 +243,6 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         }
     }
 
-    private void initClickPaymentModeExp() {
-        checkboxStoreCardContainer.setVisibility(VISIBLE);
-        getCardList();
-    }
-
     private void showCreditCardLayout(boolean normalMode) {
         if (normalMode) {
             if (layoutCardForm.getVisibility() == View.GONE) {
@@ -352,9 +347,9 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     public void showHidePayButton(boolean show) {
+        Log.i("showHidePaybutton:", "show" + show);
         if (show) {
             payBtn.setVisibility(VISIBLE);
-            initTransactionCallback();
         } else {
             payBtn.setVisibility(GONE);
         }
@@ -955,43 +950,6 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     public void onAddNew() {
         iSClickPayment = false;
         initNormalMode();
-    }
-
-    public void getCardList() {
-        layoutProgress.setVisibility(VISIBLE);
-        initUserIdIfNotExist();
-        getMidtransSDK().getCards(this.userId, new GetCardCallback() {
-            @Override
-            public void onSuccess(ArrayList<SaveCardRequest> response) {
-                showCreditCardLayout(false);
-
-                if (response != null && !response.isEmpty()) {
-                    creditCardList.clear();
-                    creditCardList.addAll(response);
-                    setCardsListToCardAdapter();
-                    iSClickPayment = true;
-                }
-                showBackButton();
-                if (layoutProgress.getVisibility() == VISIBLE) {
-                    layoutProgress.setVisibility(GONE);
-                }
-            }
-
-            @Override
-            public void onFailure(String reason) {
-                showCreditCardLayout(true);
-                if (layoutProgress.getVisibility() == VISIBLE) {
-                    layoutProgress.setVisibility(GONE);
-                }
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                if (layoutProgress.getVisibility() == VISIBLE) {
-                    layoutProgress.setVisibility(GONE);
-                }
-            }
-        });
     }
 
     /*
