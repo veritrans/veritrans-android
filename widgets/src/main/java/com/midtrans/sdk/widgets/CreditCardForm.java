@@ -222,7 +222,6 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         merchantUrl = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_merchant_url);
         userId = typedArray.getString(R.styleable.CreditCardFormStyle_mtcc_user_id);
         boolean isPayBtnShown = typedArray.getBoolean(R.styleable.CreditCardFormStyle_mtcc_show_pay, false);
-        Log.d("buttonVisible", ":" + isPayBtnShown);
 
         // Update charge button visibility
         showHidePayButton(isPayBtnShown);
