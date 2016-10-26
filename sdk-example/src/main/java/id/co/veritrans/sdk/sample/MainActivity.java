@@ -257,8 +257,12 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
     @Override
     public void onEvent(TransactionFinishedEvent transactionFinishedEvent) {
         if (transactionFinishedEvent.getResponse() != null) {
-            Toast.makeText(this, "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
-            Log.i(MainActivity.class.getSimpleName(), "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId());
+            if (transactionFinishedEvent.getStatus() == TransactionFinishedEvent.STATUS_FINISHED) {
+                Toast.makeText(this, "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
+                Log.i(MainActivity.class.getSimpleName(), "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId());
+            } else {
+                Toast.makeText(this, "Transaction Pending. ID: " + transactionFinishedEvent.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
+            }
         } else {
             Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
         }
