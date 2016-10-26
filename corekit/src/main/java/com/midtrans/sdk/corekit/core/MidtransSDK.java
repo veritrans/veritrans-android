@@ -85,7 +85,8 @@ public class MidtransSDK {
         themeColor = sdkBuilder.colorThemeResourceId;
         this.isLogEnabled = sdkBuilder.enableLog;
         this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
-
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey);
+        this.mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
