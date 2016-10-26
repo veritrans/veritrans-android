@@ -15,10 +15,6 @@ import android.widget.ImageView;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
-
 import id.co.veritrans.sdk.coreflow.core.Constants;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
@@ -31,7 +27,6 @@ import id.co.veritrans.sdk.coreflow.eventbus.events.TransactionSuccessEvent;
 import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
 import id.co.veritrans.sdk.uiflow.R;
 import id.co.veritrans.sdk.uiflow.fragments.InstructionEpayBriFragment;
-import id.co.veritrans.sdk.uiflow.fragments.PaymentTransactionStatusFragment;
 import id.co.veritrans.sdk.uiflow.fragments.WebviewFragment;
 import id.co.veritrans.sdk.uiflow.utilities.SdkUIFlowUtil;
 
@@ -139,20 +134,14 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         if (resultCode == RESULT_OK) {
             currentFragmentName = STATUS_FRAGMENT;
-            toolbar.setNavigationIcon(closeIcon);
-            setSupportActionBar(toolbar);
-            transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
-                    VeritransSDK.getVeritransSDK().getTransactionRequest().getOrderId(), String.valueOf(VeritransSDK.getVeritransSDK().getTransactionRequest().getAmount()), getString(R.string.payment_epay_bri), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.bri_container_layout, false, false);
-            btConfirmPayment.setVisibility(View.GONE);
+            transactionResponseFromMerchant = transactionResponse;
+            RESULT_CODE = RESULT_OK;
+            setResultAndFinish();
         } else if (resultCode == RESULT_CANCELED) {
             currentFragmentName = STATUS_FRAGMENT;
-            toolbar.setNavigationIcon(closeIcon);
-            setSupportActionBar(toolbar);
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.bri_container_layout, false, false);
-            btConfirmPayment.setVisibility(View.GONE);
+            transactionResponseFromMerchant = transactionResponse;
+            RESULT_CODE = RESULT_OK;
+            setResultAndFinish();
         }
     }
 
