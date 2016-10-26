@@ -51,6 +51,59 @@ VeritransSDK veritransSDK = new SdkUIFlowBuilder(CONTEXT, CLIENT_KEY, BASE_URL)
                     .buildSDK();
 ```
 
+## Authentication Token to Use Two Clicks or One Click 
+
+This is only required when using two clicks or one click type payment.
+
+### Setup event bus
+
+Register your activity or calling class to `VeritransBus` by using `VeritransBusProvider`.
+
+```Java
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        VeritransBusProvider.getInstance().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        VeritransBusProvider.getInstance().unregister(this);
+    }
+```
+
+Implement `GetAuthenticationBusCallback`. Add `@Subscribe` to each implemented methods.
+
+```Java
+    @Subscribe
+    @Override
+    public void onEvent(AuthenticationEvent authenticationEvent) {
+        // Save auth token to differentiate each user saved token
+        String auth = authenticationEvent.getResponse().getxAuth();
+        LocalDataHandler.saveString(Constants.AUTH_TOKEN, auth);
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(NetworkUnavailableEvent networkUnavailableEvent) {
+        // Handle network not available condition
+    }
+
+    @Subscribe
+    @Override
+    public void onEvent(GeneralErrorEvent generalErrorEvent) {
+        // Handle generic error condition
+    }
+```
+
+### Start Getting Authentication Token
+
+```
+VeritransSDK.getVeritransSDK().getAuthenticationToken();
+```
+
+
 ## Initialize Transaction Request and Select Payment Type
 
 In this flow you must set transaction request information to SDK.
