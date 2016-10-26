@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.models.BCAKlikPayDescriptionModel;
@@ -53,7 +54,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * Created by ziahaqi on 7/13/16.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Settings.class, Settings.Secure.class, LocalDataHandler.class, Utils.class, Log.class, TextUtils.class, Logger.class})
+@PrepareForTest({Settings.class, Settings.Secure.class, LocalDataHandler.class, Utils.class, Log.class, TextUtils.class, Logger.class, MixpanelAnalyticsManager.class})
 
 public class SDKUtilsTest {
 
@@ -138,6 +139,7 @@ public class SDKUtilsTest {
         PowerMockito.mockStatic(LocalDataHandler.class);
         PowerMockito.mockStatic(Settings.class);
         PowerMockito.mockStatic(Settings.Secure.class);
+        PowerMockito.mockStatic(MixpanelAnalyticsManager.class);
 
         Mockito.when(transactionRequestMock.getBillInfoModel()).thenReturn(billingInfoModelMock);
         Mockito.when(transactionRequestMock.getItemDetails()).thenReturn(itemDetailMock);
