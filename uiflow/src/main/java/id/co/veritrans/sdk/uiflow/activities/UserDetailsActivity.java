@@ -118,6 +118,9 @@ public class UserDetailsActivity extends BaseActivity {
                 } else {
                     VeritransBusProvider.getInstance().post(new TransactionFinishedEvent());
                 }
+            } else if(resultCode == RESULT_CANCELED){
+                Logger.d(TAG, "sending result transaction canceled " + requestCode);
+                VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(true));
             }
             finish();
 
