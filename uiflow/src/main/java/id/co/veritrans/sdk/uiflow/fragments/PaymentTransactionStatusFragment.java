@@ -202,7 +202,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
 
     private void setUiForFailure() {
         isSuccessful = false;
-        actionBt.setText(getString(R.string.retry));
         paymentIv.setImageResource(R.drawable.ic_failure);
         paymentStatusTv.setText(getString(R.string.payment_unsuccessful));
 
