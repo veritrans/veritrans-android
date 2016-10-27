@@ -259,7 +259,10 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         if (transactionFinishedEvent.getResponse() != null) {
             Toast.makeText(this, "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
             Log.i(MainActivity.class.getSimpleName(), "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId());
-        } else {
+        } else if(transactionFinishedEvent.isTransactionCanceled()){
+            Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_SHORT).show();
+            Log.i(MainActivity.class.getSimpleName(), "Transaction Canceled");
+        } else{
             Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
         }
     }

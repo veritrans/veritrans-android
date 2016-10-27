@@ -7,6 +7,7 @@ import id.co.veritrans.sdk.coreflow.models.TransactionResponse;
  */
 public class TransactionFinishedEvent {
 
+    private boolean transactionCanceled = false;
     private TransactionResponse response;
     private String source;
 
@@ -23,6 +24,10 @@ public class TransactionFinishedEvent {
         setSource(source);
     }
 
+    public TransactionFinishedEvent(boolean transactionCanceled) {
+        this.transactionCanceled = transactionCanceled;
+    }
+
     public TransactionResponse getResponse() {
         return response;
     }
@@ -37,5 +42,9 @@ public class TransactionFinishedEvent {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public boolean isTransactionCanceled() {
+        return transactionCanceled;
     }
 }
