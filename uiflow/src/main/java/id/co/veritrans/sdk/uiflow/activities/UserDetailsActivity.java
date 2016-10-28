@@ -68,6 +68,7 @@ public class UserDetailsActivity extends BaseActivity {
         String paymentMethod = getIntent().getStringExtra(Constants.PARAM_PAYMENT_METHOD);
         if(!TextUtils.isEmpty(paymentMethod) && paymentMethod.equals(getString(R.string.payment_method_credit_card))){
             Intent intent = new Intent(this, CreditDebitCardFlowActivity.class);
+            intent.putExtra(Constants.PARAM_CREDIT_CARD, true);
             startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         }else{
             Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
