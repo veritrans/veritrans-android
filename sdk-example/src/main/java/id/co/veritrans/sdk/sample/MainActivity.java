@@ -64,13 +64,14 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         VeritransBusProvider.getInstance().unregister(this);
         super.onDestroy();
     }
+
     /**
      * Initialize Veritrans SDK using SdkCoreFlowBuilder.
      */
     private void initSDK() {
 
         // SDK initiation for coreflow
-        if(mysdkFlow == CORE_FLOW){
+        if (mysdkFlow == CORE_FLOW) {
             VeritransSDK veritransSDK = new SdkCoreFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
                     .enableLog(true)
                     .setDefaultText("open_sans_regular.ttf")
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
                     .buildSDK();
             veritransSDK.setSelectedPaymentMethods(PaymentMethods.getAllPaymentMethods(this));
 
-        }else{
+        } else {
             // SDK initiation for UIflow
             VeritransSDK veritransSDK = new SdkUIFlowBuilder(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
                     .setUIFlow(new UIFlow())// initialization uiflow mode
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         });
 
         // Handle Card registration using core flow
-        coreCardRegistration = (Button)findViewById(R.id.btn_card_registration_core);
+        coreCardRegistration = (Button) findViewById(R.id.btn_card_registration_core);
         coreCardRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         });
 
         // Handle Card registration using UI flow
-        uiCardRegistration = (Button)findViewById(R.id.btn_card_registration_ui);
+        uiCardRegistration = (Button) findViewById(R.id.btn_card_registration_ui);
         uiCardRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -213,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
     }
 
     private void refreshAuthenticationContainer() {
-        if(VeritransSDK.getVeritransSDK().readAuthenticationToken()!=null
+        if (VeritransSDK.getVeritransSDK().readAuthenticationToken() != null
                 && !VeritransSDK.getVeritransSDK().readAuthenticationToken().equals("")) {
             getAuthenticationToken.setText(R.string.btn_refresh_token);
             authToken.setText(VeritransSDK.getVeritransSDK().readAuthenticationToken());
@@ -248,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         // Handle generic error condition
         dialog.dismiss();
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Unknown error: " + generalErrorEvent.getMessage() )
+                .setMessage("Unknown error: " + generalErrorEvent.getMessage())
                 .create();
         dialog.show();
     }
@@ -259,10 +260,10 @@ public class MainActivity extends AppCompatActivity implements GetAuthentication
         if (transactionFinishedEvent.getResponse() != null) {
             Toast.makeText(this, "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
             Log.i(MainActivity.class.getSimpleName(), "Transaction Finished. ID: " + transactionFinishedEvent.getResponse().getTransactionId());
-        } else if(transactionFinishedEvent.isTransactionCanceled()){
+        } else if (transactionFinishedEvent.isTransactionCanceled()) {
             Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_SHORT).show();
             Log.i(MainActivity.class.getSimpleName(), "Transaction Canceled");
-        } else{
+        } else {
             Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
         }
     }

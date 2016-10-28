@@ -66,11 +66,11 @@ public class UserDetailsActivity extends BaseActivity {
 
     public void runPaymentActivity() {
         String paymentMethod = getIntent().getStringExtra(Constants.PARAM_PAYMENT_METHOD);
-        if(!TextUtils.isEmpty(paymentMethod) && paymentMethod.equals(getString(R.string.payment_method_credit_card))){
+        if (!TextUtils.isEmpty(paymentMethod) && paymentMethod.equals(getString(R.string.payment_method_credit_card))) {
             Intent intent = new Intent(this, CreditDebitCardFlowActivity.class);
             intent.putExtra(Constants.PARAM_CREDIT_CARD, true);
             startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-        }else{
+        } else {
             Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
             startActivity(paymentOptionIntent);
             finish();
@@ -98,7 +98,7 @@ public class UserDetailsActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() ==  android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
@@ -119,7 +119,7 @@ public class UserDetailsActivity extends BaseActivity {
                 } else {
                     VeritransBusProvider.getInstance().post(new TransactionFinishedEvent());
                 }
-            } else if(resultCode == RESULT_CANCELED){
+            } else if (resultCode == RESULT_CANCELED) {
                 Logger.d(TAG, "sending result transaction canceled " + requestCode);
                 VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(true));
             }

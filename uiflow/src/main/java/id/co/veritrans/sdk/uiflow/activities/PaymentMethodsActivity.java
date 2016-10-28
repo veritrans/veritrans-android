@@ -331,13 +331,13 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
                 } else {
                     VeritransBusProvider.getInstance().post(new TransactionFinishedEvent());
                 }
-            } else if(resultCode == RESULT_CANCELED){
+            } else if (resultCode == RESULT_CANCELED) {
                 TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
 
                 Logger.d(TAG, "sending result transaction canceled " + requestCode);
-                if(response != null){
+                if (response != null) {
                     VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(response));
-                }else{
+                } else {
                     VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(true));
                 }
             }

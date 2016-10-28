@@ -75,7 +75,7 @@ import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
 import static id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask.ReadBankDetailCallback;
 
 
-public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBankDetailCallback,TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
+public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBankDetailCallback, TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
 
     public static final int SCAN_REQUEST_CODE = 101;
     private static final int PAYMENT_WEB_INTENT = 100;
@@ -349,11 +349,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
     }
 
-    private void initPaymentStatus(TransactionResponse transactionResponse){
-        if(getIntent().getBooleanExtra(Constants.PARAM_CREDIT_CARD, false)){
+    private void initPaymentStatus(TransactionResponse transactionResponse) {
+        if (getIntent().getBooleanExtra(Constants.PARAM_CREDIT_CARD, false)) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
-        }else{
+        } else {
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponse);
             replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
@@ -411,7 +411,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Override
     protected void onStop() {
         super.onStop();
-        if(readBankDetailTask != null && readBankDetailTask.getStatus().equals(AsyncTask.Status.RUNNING)){
+        if (readBankDetailTask != null && readBankDetailTask.getStatus().equals(AsyncTask.Status.RUNNING)) {
             readBankDetailTask.cancel(true);
         }
     }
@@ -422,12 +422,13 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             readBankDetailTask.execute();
         }
     }
+
     @Override
     public void onReadBankDetailsFinish(ArrayList<BankDetail> bankDetails, UserDetail userDetail) {
-        if(userDetail != null){
+        if (userDetail != null) {
             this.userDetail = userDetail;
         }
-        if(this.bankDetails != null){
+        if (this.bankDetails != null) {
             this.bankDetails = bankDetails;
             Logger.i("bankdetail getter onnext" + bankDetails.size());
         }
