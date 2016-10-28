@@ -85,4 +85,5 @@ public class Constants {
     public static final String AUTH_TOKEN = "authentication.token";
     
     public static final String PARAM_PAYMENT_METHOD = "param_payment_method";
+    public static final String PARAM_CREDIT_CARD = "param_credit_card";
 }

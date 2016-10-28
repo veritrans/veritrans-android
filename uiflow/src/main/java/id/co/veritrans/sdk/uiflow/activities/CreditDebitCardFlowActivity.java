@@ -75,7 +75,7 @@ import id.co.veritrans.sdk.uiflow.widgets.MorphingButton;
 import static id.co.veritrans.sdk.uiflow.utilities.ReadBankDetailTask.ReadBankDetailCallback;
 
 
-public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBankDetailCallback,TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
+public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBankDetailCallback, TransactionBusCallback, TokenBusCallback, SaveCardBusCallback, GetCardBusCallback {
 
     public static final int SCAN_REQUEST_CODE = 101;
     private static final int PAYMENT_WEB_INTENT = 100;
@@ -341,13 +341,22 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 }, 200);
                 CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.payment_canceled);
                 SdkUIFlowUtil.hideProgressDialog();
-                PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                        PaymentTransactionStatusFragment.newInstance(transactionResponse);
-                replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
+                initPaymentStatus(transactionResponse);
                 if (getSupportActionBar() != null)
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
             }
+        }
+    }
+
+    private void initPaymentStatus(TransactionResponse transactionResponse) {
+        if (getIntent().getBooleanExtra(Constants.PARAM_CREDIT_CARD, false)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+        } else {
+            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
+                    PaymentTransactionStatusFragment.newInstance(transactionResponse);
+            replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
         }
     }
 
@@ -402,7 +411,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Override
     protected void onStop() {
         super.onStop();
-        if(readBankDetailTask != null && readBankDetailTask.getStatus().equals(AsyncTask.Status.RUNNING)){
+        if (readBankDetailTask != null && readBankDetailTask.getStatus().equals(AsyncTask.Status.RUNNING)) {
             readBankDetailTask.cancel(true);
         }
     }
@@ -413,12 +422,13 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             readBankDetailTask.execute();
         }
     }
+
     @Override
     public void onReadBankDetailsFinish(ArrayList<BankDetail> bankDetails, UserDetail userDetail) {
-        if(userDetail != null){
+        if (userDetail != null) {
             this.userDetail = userDetail;
         }
-        if(this.bankDetails != null){
+        if (this.bankDetails != null) {
             this.bankDetails = bankDetails;
             Logger.i("bankdetail getter onnext" + bankDetails.size());
         }
@@ -563,10 +573,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 cardPaymentResponse.getStatusCode().equalsIgnoreCase(veritransSDK.getContext().getString(R.string.success_code_201))) {
 
             transactionResponse = cardPaymentResponse;
-
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
-            replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
+            initPaymentStatus(transactionResponse);
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
@@ -624,9 +631,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
         CreditDebitCardFlowActivity.this.errorMessage = event.getMessage();
         SdkUIFlowUtil.hideProgressDialog();
-        PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                PaymentTransactionStatusFragment.newInstance(transactionResponse);
-        replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
+        initPaymentStatus(transactionResponse);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
         titleHeaderTextView.setText(getString(R.string.title_payment_status));
