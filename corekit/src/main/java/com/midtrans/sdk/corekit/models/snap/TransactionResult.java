@@ -9,8 +9,8 @@ public class TransactionResult {
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_PENDING = "pending";
     public static final String STATUS_FAILED = "failed";
-    private  boolean transactionCanceled;
 
+    private  boolean transactionCanceled;
     private TransactionResponse response;
     private String source;
     private String status;

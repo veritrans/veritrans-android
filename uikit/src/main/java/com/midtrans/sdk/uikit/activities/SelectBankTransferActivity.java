@@ -78,10 +78,9 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         ArrayList<String> banks = getIntent().getStringArrayListExtra(EXTRA_BANK);
         if (banks != null && banks.size() > 0) {
             initialiseBankTransfersModel(banks);
-            Log.i("bankst", "size:" + data.size());
-            if(data.size() == 1){
+            if (data.size() == 1) {
                 startBankTransferPayment(data.get(0));
-            }else{
+            } else {
                 adapter.setData(this.data);
             }
         } else {

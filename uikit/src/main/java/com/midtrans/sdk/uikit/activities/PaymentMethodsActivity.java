@@ -255,8 +255,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     if (TextUtils.isEmpty(logoUrl)) {
                         showName(merchantName);
                     }
-                    initPaymentMethods(transaction.getEnabledPayments());
                     progressContainer.setVisibility(View.GONE);
+                    initPaymentMethods(transaction.getEnabledPayments());
                 } catch (NullPointerException e) {
                     Logger.e(TAG, e.getMessage());
                 }
@@ -280,13 +280,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void initPaymentMethods(List<EnabledPayment> enabledPayments) {
         initialiseAdapterData(enabledPayments);
-        data.clear();
-        data.add(PaymentMethods.getMethodCreditCards(this, 1));
-        if(data.isEmpty()){
+        if (data.isEmpty()) {
             showErrorAlertDialog(getString(R.string.message_payment_method_empty));
-        }else if (data.size() == 1){
+        } else if (data.size() == 1) {
             startPaymentMethod(data.get(0));
-        }else{
+        } else {
             paymentMethodsAdapter.setData(data);
         }
     }
@@ -379,9 +377,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         bankTrasfers.clear();
 
         for (EnabledPayment enabledPayment : enabledPayments) {
-            if(enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer))){
+            if (enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer))) {
                 bankTrasfers.add(enabledPayment.getType());
-            } else{
+            } else {
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType());
                 if (model != null) {
                     data.add(model);
@@ -389,8 +387,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         }
 
-        if(!bankTrasfers.isEmpty()){
-            data.add(PaymentMethods.getMethods(this,getString(R.string.payment_bank_transfer)));
+        if (!bankTrasfers.isEmpty()) {
+            data.add(PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer)));
         }
         SdkUtil.sortPaymentMethodsByPriority(data);
     }
@@ -431,8 +429,18 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 } else {
                     midtransSDK.notifyTransactionFinished(new TransactionResult());
                 }
-            }else if(resultCode == RESULT_CANCELED){
-                midtransSDK.notifyTransactionFinished(new TransactionResult(true));
+            } else if (resultCode == RESULT_CANCELED) {
+                if (response != null) {
+                    if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
+                    } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
+                    } else {
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
+                    }
+                } else {
+                    midtransSDK.notifyTransactionFinished(new TransactionResult(true));
+                }
             }
             finish();
 
