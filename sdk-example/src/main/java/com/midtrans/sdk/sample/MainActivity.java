@@ -251,7 +251,10 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     Toast.makeText(this, "Transaction Failed. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
                     break;
             }
-        } else {
+        } else if(result.isTransactionCanceled()){
+            Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show();
+        }
+         else {
             Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
         }
     }

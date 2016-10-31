@@ -570,5 +570,6 @@
     <string name="validation_message_please_fillup_form">Please fill up information properly.</string>
     <string name="message_getcard_token_failed">Authentication failed</string>
     <string name="message_payment_not_completed">Payment information is not completed!</string>
+    <string name="message_payment_method_empty">There are no enabled payment methods</string>
 
 </resources>

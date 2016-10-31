@@ -245,7 +245,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 enableButtonBack(true);
                 showBackButton();
                 try {
-                    progressContainer.setVisibility(View.GONE);
                     String logoUrl = transaction.getMerchantData().getPreference().getLogoUrl();
                     String merchantName = transaction.getMerchantData().getPreference().getDisplayName();
                     List<SavedToken> savedTokens = transaction.getCreditCard().getSavedTokens();
@@ -256,10 +255,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     if (TextUtils.isEmpty(logoUrl)) {
                         showName(merchantName);
                     }
-                    Logger.d(TAG, "Payment methods size: " + transaction != null ? "0" : String.valueOf(transaction.getEnabledPayments().size()));
-                    List<EnabledPayment> paymentMethods = transaction.getEnabledPayments();
-                    initialiseAdapterData(paymentMethods);
-                    paymentMethodsAdapter.setData(data);
+                    initPaymentMethods(transaction.getEnabledPayments());
+                    progressContainer.setVisibility(View.GONE);
                 } catch (NullPointerException e) {
                     Logger.e(TAG, e.getMessage());
                 }
@@ -279,6 +276,99 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 showDefaultPaymentMethods();
             }
         });
+    }
+
+    private void initPaymentMethods(List<EnabledPayment> enabledPayments) {
+        initialiseAdapterData(enabledPayments);
+        data.clear();
+        data.add(PaymentMethods.getMethodCreditCards(this, 1));
+        if(data.isEmpty()){
+            showErrorAlertDialog(getString(R.string.message_payment_method_empty));
+        }else if (data.size() == 1){
+            startPaymentMethod(data.get(0));
+        }else{
+            paymentMethodsAdapter.setData(data);
+        }
+    }
+
+    private void startPaymentMethod(PaymentMethodsModel paymentMethod) {
+        String name = paymentMethod.getName();
+
+        if (name.equalsIgnoreCase(getString(R.string.payment_method_credit_card))) {
+
+            Intent intent = new Intent(this, CreditDebitCardFlowActivity.class);
+            startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bank_transfer))) {
+
+            Intent startBankPayment = new Intent(this, SelectBankTransferActivity.class);
+            startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTrasfers());
+            startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_clickpay))) {
+
+            Intent startMandiriClickpay = new Intent(this, MandiriClickPayActivity.class);
+            startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bri_epay))) {
+
+            Intent startMandiriClickpay = new Intent(this, EpayBriActivity.class);
+            startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_cimb_clicks))) {
+
+            Intent startCIMBClickpay = new Intent(this, CIMBClickPayActivity.class);
+            startActivityForResult(startCIMBClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_ecash))) {
+            Intent startMandiriECash = new Intent(this, MandiriECashActivity.class);
+            startActivityForResult(startMandiriECash, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_indosat_dompetku))) {
+
+            Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
+            startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_indomaret))) {
+
+            Intent startIndomaret = new Intent(this, IndomaretActivity.class);
+            startActivityForResult(startIndomaret, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_offers))) {
+
+            Intent startOffersActivity = new Intent(this, OffersActivity.class);
+            startActivityForResult(startOffersActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bca_klikpay))) {
+
+            Intent startBCAKlikPayActivity = new Intent(this, BCAKlikPayActivity.class);
+            startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_klik_bca))) {
+
+            Intent startKlikBcaActivity = new Intent(this, KlikBCAActivity.class);
+            startKlikBcaActivity.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
+            startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_telkomsel_cash))) {
+
+            Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
+            startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_xl_tunai))) {
+
+            Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
+            startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_kioson))) {
+
+            Intent kiosanActvity = new Intent(this, KiosonActivity.class);
+            startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+
+        } else {
+
+            Toast.makeText(this.getApplicationContext(),
+                    "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -328,8 +418,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {
             Logger.d(TAG, "sending result back with code " + requestCode);
 
+            TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
             if (resultCode == RESULT_OK) {
-                TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
                 if (response != null) {
                     if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
@@ -341,8 +431,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 } else {
                     midtransSDK.notifyTransactionFinished(new TransactionResult());
                 }
-                finish();
+            }else if(resultCode == RESULT_CANCELED){
+                midtransSDK.notifyTransactionFinished(new TransactionResult(true));
             }
+            finish();
 
         } else {
             Logger.d(TAG, "failed to send result back " + requestCode);
@@ -426,83 +518,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     public void onItemClick(int position) {
         if (paymentMethodsAdapter != null) {
             PaymentMethodsModel item = paymentMethodsAdapter.getItem(position);
-            String name = item.getName();
-
-            if (name.equalsIgnoreCase(getString(R.string.payment_method_credit_card))) {
-
-                Intent intent = new Intent(this, CreditDebitCardFlowActivity.class);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bank_transfer))) {
-
-                Intent startBankPayment = new Intent(this, SelectBankTransferActivity.class);
-                startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTrasfers());
-                startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_clickpay))) {
-
-                Intent startMandiriClickpay = new Intent(this, MandiriClickPayActivity.class);
-                startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bri_epay))) {
-
-                Intent startMandiriClickpay = new Intent(this, EpayBriActivity.class);
-                startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_cimb_clicks))) {
-
-                Intent startCIMBClickpay = new Intent(this, CIMBClickPayActivity.class);
-                startActivityForResult(startCIMBClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_ecash))) {
-                Intent startMandiriECash = new Intent(this, MandiriECashActivity.class);
-                startActivityForResult(startMandiriECash, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_indosat_dompetku))) {
-
-                Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
-                startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_indomaret))) {
-
-                Intent startIndomaret = new Intent(this, IndomaretActivity.class);
-                startActivityForResult(startIndomaret, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_offers))) {
-
-                Intent startOffersActivity = new Intent(this, OffersActivity.class);
-                startActivityForResult(startOffersActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bca_klikpay))) {
-
-                Intent startBCAKlikPayActivity = new Intent(this, BCAKlikPayActivity.class);
-                startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_klik_bca))) {
-
-                Intent startKlikBcaActivity = new Intent(this, KlikBCAActivity.class);
-                startKlikBcaActivity.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
-                startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_telkomsel_cash))) {
-
-                Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
-                startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_xl_tunai))) {
-
-                Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
-                startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else if (name.equalsIgnoreCase(getString(R.string.payment_method_kioson))) {
-
-                Intent kiosanActvity = new Intent(this, KiosonActivity.class);
-                startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
-            } else {
-
-                Toast.makeText(this.getApplicationContext(),
-                        "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
-            }
+            startPaymentMethod(item);
         }
     }
 
