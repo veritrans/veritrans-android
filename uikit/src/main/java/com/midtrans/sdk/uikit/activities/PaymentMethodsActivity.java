@@ -416,8 +416,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {
             Logger.d(TAG, "sending result back with code " + requestCode);
 
-            TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
             if (resultCode == RESULT_OK) {
+                TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
                 if (response != null) {
                     if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
@@ -430,16 +430,22 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     midtransSDK.notifyTransactionFinished(new TransactionResult());
                 }
             } else if (resultCode == RESULT_CANCELED) {
-                if (response != null) {
-                    if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
-                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
-                    } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
-                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
-                    } else {
-                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
-                    }
-                } else {
+                if(data == null){
                     midtransSDK.notifyTransactionFinished(new TransactionResult(true));
+                }else{
+                    TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
+
+                    if (response != null) {
+                        if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
+                            midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
+                        } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
+                            midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
+                        } else {
+                            midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
+                        }
+                    } else {
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(true));
+                    }
                 }
             }
             finish();
