@@ -10,6 +10,7 @@ public class TransactionResult {
     public static final String STATUS_PENDING = "pending";
     public static final String STATUS_FAILED = "failed";
 
+    private  boolean transactionCanceled;
     private TransactionResponse response;
     private String source;
     private String status;
@@ -26,6 +27,10 @@ public class TransactionResult {
         setResponse(response);
         setSource(source);
         setStatus(status);
+    }
+
+    public TransactionResult(boolean transactionCanceled) {
+        this.transactionCanceled = transactionCanceled;
     }
 
     public TransactionResponse getResponse() {
@@ -50,5 +55,9 @@ public class TransactionResult {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public boolean isTransactionCanceled() {
+        return transactionCanceled;
     }
 }

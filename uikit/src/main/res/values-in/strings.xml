@@ -411,4 +411,5 @@
     <string name="validation_message_please_fillup_form">Silakan isi dengan informasi yang tepat.</string>
     <string name="message_getcard_token_failed">Gagal autentikasi</string>
     <string name="message_payment_not_completed">Informasi pembayaran tidak lengkap!</string>
+    <string name="message_payment_method_empty">Tidak ada metode pembayaran yang diaktifkan!</string>
 </resources>

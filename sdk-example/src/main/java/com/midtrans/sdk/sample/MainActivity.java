@@ -76,8 +76,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     }
 
 
-
-
     /**
      * Initialize transaction data.
      *
@@ -128,9 +126,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             creditCard.setSecure(true);
             transactionRequestNew.setCreditCard(creditCard);
         }
-        if(sampleSDKType == CORE_FLOW){
+        if (sampleSDKType == CORE_FLOW) {
             transactionRequestNew.setCardPaymentInfo(cardClickType, false);
-        }else{
+        } else {
             transactionRequestNew.setCardPaymentInfo(cardClickType, true);
         }
 
@@ -153,9 +151,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, WidgetExampleActivity.class);
-                if(oneClick.isChecked()){
+                if (oneClick.isChecked()) {
                     i.putExtra(WidgetExampleActivity.CARD_PAYMENT_TYPE, 1);
-                } else if(twoClick.isChecked()){
+                } else if (twoClick.isChecked()) {
                     i.putExtra(WidgetExampleActivity.CARD_PAYMENT_TYPE, 2);
                 }
                 startActivity(i);
@@ -251,6 +249,8 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     Toast.makeText(this, "Transaction Failed. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
                     break;
             }
+        } else if (result.isTransactionCanceled()) {
+            Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
         }
