@@ -115,6 +115,8 @@
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
     <string name="payment_pending">Menunggu Pembayaran!</string>
+    <string name="payment_challenged">Pembayaran sedang diproses</string>
+    <string name="what_is_cvv">Apa itu CVV?</string>
     <string name="transactionTime">Waktu Transaksi</string>
     <string name="paymentType">Tipe Pembayaran</string>
     <string name="tab_mandiri">Mandiri/ATM Bersama</string>

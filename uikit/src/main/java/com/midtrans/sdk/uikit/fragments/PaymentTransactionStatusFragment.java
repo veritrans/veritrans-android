@@ -102,8 +102,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
         } else if (transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_201)) ||
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.pending))) {
             if (transactionResponse.getFraudStatus().equalsIgnoreCase(getString(R.string.challenge))) {
-                paymentIv.setImageResource(R.drawable.ic_successful);
-                paymentStatusTv.setText(getString(R.string.payment_successful));
+                paymentIv.setImageResource(R.drawable.ic_pending);
+                paymentStatusTv.setText(getString(R.string.payment_challenged));
                 paymentMessageTv.setVisibility(View.GONE);
             } else {
                 paymentIv.setImageResource(R.drawable.ic_pending);
