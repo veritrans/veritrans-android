@@ -172,6 +172,7 @@
     <string name="done">Done</string>
     <string name="virtual_account_number">Virtual Account Number</string>
     <string name="payment_pending">Payment Pending !</string>
+    <string name="payment_challenged">Payment is being processed</string>
     <string name="transactionTime">Transaction Time</string>
     <string name="paymentType">Payment Type</string>
     <string name="tab_mandiri">Mandiri/ATM Bersana</string>
