@@ -81,24 +81,26 @@
                         android:singleLine="true" />
 
                 </android.support.design.widget.TextInputLayout>
-
-                <ImageView
-                    android:id="@+id/image_question"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:contentDescription="@string/description_help_icon"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_cvvinfo" />
             </RelativeLayout>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/cvv_help_button"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/expiry_date_layout"
+            android:padding="8dp"
+            android:text="@string/what_is_cvv"
+            android:textColor="?colorAccent" />
 
         <CheckBox
             android:id="@+id/cb_store_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/expiry_date_layout"
+            android:layout_below="@id/cvv_help_button"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/save_card_message" />
