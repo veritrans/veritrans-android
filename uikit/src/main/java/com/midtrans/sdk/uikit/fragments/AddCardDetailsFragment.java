@@ -44,7 +44,7 @@ public class AddCardDetailsFragment extends Fragment {
     private EditText etCvv;
     private EditText etExpiryDate;
     private CheckBox cbStoreCard;
-    private ImageView questionImg;
+    private Button cvvHelpButton;
     private ImageView questionSaveCardImg;
     private Button payNowBtn;
     private Button scanCardBtn;
@@ -120,7 +120,7 @@ public class AddCardDetailsFragment extends Fragment {
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
         cbStoreCard = (CheckBox) view.findViewById(R.id.cb_store_card);
-        questionImg = (ImageView) view.findViewById(R.id.image_question);
+        cvvHelpButton = (Button) view.findViewById(R.id.cvv_help_button);
         questionSaveCardImg = (ImageView) view.findViewById(R.id.image_question_save_card);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
@@ -157,6 +157,7 @@ public class AddCardDetailsFragment extends Fragment {
         });
 
         if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
+            cvvHelpButton.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
             payNowBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
             scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getDefaultText()));
             if (midtransSDK.getExternalScanner() != null) {
@@ -209,7 +210,7 @@ public class AddCardDetailsFragment extends Fragment {
                 }
             }
         });
-        questionImg.setOnClickListener(new View.OnClickListener() {
+        cvvHelpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MidtransDialog midtransDialog = new MidtransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
