@@ -175,16 +175,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Override
     public void onBackPressed() {
         SdkUIFlowUtil.hideKeyboard(this);
-        if (fragmentManager.getBackStackEntryCount() == 1) {
+        Logger.d("Current Fragment: " + currentFragmentName);
+        Logger.d("Payment Status Fragment Name: " + PaymentTransactionStatusFragment.class.getName());
+        if (!TextUtils.isEmpty(currentFragmentName)
+                && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class.getName())) {
+            setResultCode(RESULT_OK);
             setResultAndFinish();
         } else {
-            if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class
-                    .getName())) {
-                setResultAndFinish();
-            } else {
-
-                super.onBackPressed();
-            }
+            super.onBackPressed();
         }
     }
 
@@ -567,9 +565,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
             replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
-            if (getSupportActionBar() != null)
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            //getSupportActionBar().setTitle(getString(R.string.title_payment_successful));
             titleHeaderTextView.setText(getString(R.string.title_payment_status));
 
             if (cardTokenRequest.isSaved()) {
@@ -627,7 +622,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
         replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //getSupportActionBar().setTitle(getString(R.string.title_payment_failed));
         titleHeaderTextView.setText(getString(R.string.title_payment_status));
     }
