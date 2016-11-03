@@ -135,11 +135,16 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.equalsIgnoreCase(STATUS_FRAGMENT)) {
-            RESULT_CODE = RESULT_OK;
+        if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
+            super.onBackPressed();
+        } else {
+            if (currentFragment.equalsIgnoreCase(STATUS_FRAGMENT)) {
+                RESULT_CODE = RESULT_OK;
+            }
+            setResultAndFinish();
         }
-        setResultAndFinish();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -237,7 +242,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                 RESULT_CODE = RESULT_OK;
                 onBackPressed();
             }
-
         }
     }
 
@@ -317,7 +321,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     /**
      * Performs the validation and if satisfies the required condition then it will either start
      * mandiri bill pay flow or bank transfer flow depending on selected payment method.
-     *
+     * <p>
      * {@see }
      */
     private void performTransaction() {

@@ -144,9 +144,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     }
 
     private void setAlfaAttribute(TextView view, float value) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             view.setAlpha(value);
-        }else{
+        } else {
             AlphaAnimation alpha = new AlphaAnimation(0f, value);
             alpha.setFillAfter(true);
             view.startAnimation(alpha);
@@ -408,7 +408,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         if (item.getItemId() == android.R.id.home) {
             SdkUIFlowUtil.hideKeyboard(this);
-            finish();
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);
@@ -443,12 +443,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 finish();
 
             } else if (resultCode == RESULT_CANCELED) {
-                if(data == null){
-                    if(this.data.size() == 1){
+                if (data == null) {
+                    if (this.data.size() == 1) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(true));
                         finish();
                     }
-                }else{
+                } else {
                     TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
 
                     if (response != null) {
@@ -461,7 +461,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         }
                         finish();
                     } else {
-                        if (this.data.size() == 1){
+                        if (this.data.size() == 1) {
                             midtransSDK.notifyTransactionFinished(new TransactionResult(true));
                             finish();
                         }
@@ -568,6 +568,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (!backButtonEnabled) {
             return;
         }
+        midtransSDK.notifyTransactionFinished(new TransactionResult(true));
         super.onBackPressed();
     }
 
