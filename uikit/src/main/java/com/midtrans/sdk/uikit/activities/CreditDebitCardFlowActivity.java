@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -163,15 +162,12 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Override
     public void onBackPressed() {
         SdkUIFlowUtil.hideKeyboard(this);
-        if (fragmentManager.getBackStackEntryCount() == 1) {
+        if (!TextUtils.isEmpty(currentFragmentName)
+                && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class.getName())) {
+            setResultCode(RESULT_OK);
             setResultAndFinish();
         } else {
-            if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class
-                    .getName())) {
-                setResultAndFinish();
-            } else {
-                super.onBackPressed();
-            }
+            super.onBackPressed();
         }
     }
 
@@ -243,10 +239,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 && !isNewCard && this.maskedCardNumber != null) {
             //using one click
             paymentModel = new CreditCardPaymentModel(this.maskedCardNumber);
-        } else if(tokenDetailsResponse != null && !TextUtils.isEmpty(tokenDetailsResponse.getTokenId())){
+        } else if (tokenDetailsResponse != null && !TextUtils.isEmpty(tokenDetailsResponse.getTokenId())) {
             //using normal payment & twoclick & oneclick first payment
             paymentModel = new CreditCardPaymentModel(tokenDetailsResponse.getTokenId(), saveCard);
-        }else{
+        } else {
             SdkUIFlowUtil.showSnackbar(this, getString(R.string.message_payment_not_completed));
             processingLayout.setVisibility(View.GONE);
             SdkUIFlowUtil.hideProgressDialog();
@@ -277,8 +273,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                         PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                                 PaymentTransactionStatusFragment.newInstance(transactionResponse);
                         replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
-                        if (getSupportActionBar() != null)
-                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                         titleHeaderTextView.setText(getString(R.string.title_payment_status));
                     }
 
@@ -311,8 +305,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
             replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
-            if (getSupportActionBar() != null)
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             titleHeaderTextView.setText(getString(R.string.title_payment_status));
 
             if (cardTokenRequest != null && cardTokenRequest.isSaved()) {
@@ -454,8 +446,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                         PaymentTransactionStatusFragment.newInstance(transactionResponse);
                 replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
-                if (getSupportActionBar() != null)
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
             }
         }
@@ -746,7 +736,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 }
             } else {
                 //if token storage on merchantserver then saved cards can be used just for two click
-                if(MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(R.string.card_click_type_two_click)){
+                if (MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(R.string.card_click_type_two_click)) {
                     filteredCards.addAll(cards);
                 }
             }
