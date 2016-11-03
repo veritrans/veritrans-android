@@ -2,6 +2,7 @@ package com.midtrans.sdk.uikit.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -119,15 +121,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
      * if recycler view fits within screen then it will disable the scrolling of it.
      */
     private void handleScrollingOfRecyclerView() {
-        headerTextView.setAlpha(1);
+        setAlfaAttribute(headerTextView, 1);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView
-                        .getLayoutManager();
-
                 int hiddenTextViewHeight = textViewMeasureHeight.getHeight();
                 int recyclerViewHieght = mRecyclerView.getMeasuredHeight();
                 int appBarHeight = mAppBarLayout.getHeight();
@@ -138,10 +137,20 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
                 if (totalHeight < exactHeightForCompare) {
                     disableScrolling();
-                    headerTextView.setAlpha(1);
+                    setAlfaAttribute(headerTextView, 1);
                 }
             }
         }, 200);
+    }
+
+    private void setAlfaAttribute(TextView view, float value) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            view.setAlpha(value);
+        } else {
+            AlphaAnimation alpha = new AlphaAnimation(0f, value);
+            alpha.setFillAfter(true);
+            view.startAnimation(alpha);
+        }
     }
 
     /**
@@ -399,7 +408,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         if (item.getItemId() == android.R.id.home) {
             SdkUIFlowUtil.hideKeyboard(this);
-            finish();
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);
@@ -412,12 +421,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         Logger.d(TAG, "in onActivity result : request code is " + requestCode + "," + resultCode);
+        Logger.d(TAG, "in onActivity result : data:" + data);
 
         if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
                 TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
+
                 if (response != null) {
                     if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
@@ -429,10 +440,15 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 } else {
                     midtransSDK.notifyTransactionFinished(new TransactionResult());
                 }
+                finish();
+
             } else if (resultCode == RESULT_CANCELED) {
-                if(data == null){
-                    midtransSDK.notifyTransactionFinished(new TransactionResult(true));
-                }else{
+                if (data == null) {
+                    if (this.data.size() == 1) {
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(true));
+                        finish();
+                    }
+                } else {
                     TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
 
                     if (response != null) {
@@ -443,12 +459,15 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         } else {
                             midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
                         }
+                        finish();
                     } else {
-                        midtransSDK.notifyTransactionFinished(new TransactionResult(true));
+                        if (this.data.size() == 1) {
+                            midtransSDK.notifyTransactionFinished(new TransactionResult(true));
+                            finish();
+                        }
                     }
                 }
             }
-            finish();
 
         } else {
             Logger.d(TAG, "failed to send result back " + requestCode);
@@ -549,6 +568,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (!backButtonEnabled) {
             return;
         }
+        midtransSDK.notifyTransactionFinished(new TransactionResult(true));
         super.onBackPressed();
     }
 

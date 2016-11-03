@@ -16,7 +16,7 @@ public class PaymentType {
     public static final String CREDIT_CARD = "credit_card";
     public static final String PERMATA_VA = "permata_va";
     public static final String BCA_VA = "bca_va";
-    public static final String ALL_VA = "all_va";
+    public static final String ALL_VA = "other_va";
     public static final String KLIK_BCA = "bca_klikbca";
     public static final String BCA_KLIKPAY = "bca_klikpay";
     public static final String CIMB_CLICKS = "cimb_clicks";

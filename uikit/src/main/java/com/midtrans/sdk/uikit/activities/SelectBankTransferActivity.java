@@ -6,7 +6,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -156,6 +155,15 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
             if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK, data);
                 finish();
+            } else if (resultCode == RESULT_CANCELED) {
+                if (data == null) {
+                    if (this.data.size() == 1) {
+                        finish();
+                    }
+                } else {
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
             }
 
         } else {
