@@ -27,6 +27,9 @@ public class TokenRequestModel {
     @SerializedName("user_id")
     private String userId;
 
+    private ExpiryModel expiry;
+    private Object custom;
+
     public TokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails,
                              CustomerDetails customerDetails) {
         this.transactionDetails = transactionDetails;
@@ -86,5 +89,21 @@ public class TokenRequestModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public ExpiryModel getExpiry() {
+        return expiry;
+    }
+
+    public void setExpiry(ExpiryModel expiry) {
+        this.expiry = expiry;
+    }
+
+    public Object getCustom() {
+        return custom;
+    }
+
+    public void setCustom(Object custom) {
+        this.custom = custom;
     }
 }

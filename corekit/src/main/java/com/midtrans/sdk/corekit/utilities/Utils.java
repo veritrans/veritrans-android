@@ -4,6 +4,8 @@ package com.midtrans.sdk.corekit.utilities;
  * Created by shivam on 10/26/15.
  */
 
+import com.google.gson.JsonObject;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -13,11 +15,16 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.models.TokenRequestModel;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Created by chetan on 14/05/15.
@@ -28,6 +35,11 @@ public class Utils {
     public static final String CARD_TYPE_MASTERCARD = "MASTERCARD";
     public static final String CARD_TYPE_AMEX = "AMEX";
     public static final String CARD_TYPE_JCB = "JCB";
+
+    private static final long SECOND = 1000;
+    private static final long MINUTE = 60 * SECOND;
+    private static final long HOUR = 60 * MINUTE;
+    private static final long DAY = 24 * HOUR;
 
     public static boolean isNetworkAvailable(Context context) {
         try {
@@ -204,5 +216,22 @@ public class Utils {
 
             }
         }
+    }
+
+    public static String getFormattedTime(long time) {
+        // Quoted "Z" to indicate UTC, no timezone offset
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Jakarta"));
+        String nowAsISO = df.format(new Date(time));
+        return nowAsISO;
+    }
+
+    public static TokenRequestModel addCustomMapObjectIntoTransaction(TokenRequestModel tokenRequestModel, Map<String, String> map) {
+        JsonObject object = new JsonObject();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            object.addProperty(entry.getKey(), entry.getValue());
+        }
+        tokenRequestModel.setCustom(object);
+        return tokenRequestModel;
     }
 }
