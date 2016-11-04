@@ -23,10 +23,8 @@ android {
     productFlavors {
         development {
             applicationId "com.midtrans.sdk.sample.development"
-            //buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
-            //buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
-            buildConfigField "String", "BASE_URL", "\"https://rakawm-snap.herokuapp.com/\""
-            buildConfigField "String", "CLIENT_KEY", "\"VT-client-E4f1bsi1LpL1p5cF\""
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
+            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
         }
         production {
             applicationId "com.midtrans.sdk.sample.production"
