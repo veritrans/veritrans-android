@@ -386,6 +386,7 @@
     <string name="success_code_200">200</string>
     <string name="success_code_201">201</string>
     <string name="success_code_202">202</string>
+    <string name="failed_code_400">400</string>
 
     <string name="card_click_type_none">normal</string>
     <string name="card_click_type_one_click">one_click</string>

@@ -542,6 +542,7 @@ public class SdkUtil {
 
         TokenRequestModel requestModel = new TokenRequestModel(details, transactionRequest.getItemDetails(),
                 transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());
+        requestModel.setExpiry(transactionRequest.getExpiry());
 
         // Set expiry if it's available
         if (transactionRequest.getExpiry() != null) {
