@@ -116,11 +116,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
             paymentMessageTv.setVisibility(View.GONE);
         } else if (transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_201)) ||
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.pending))) {
-            /*if(transactionResponse.getFraudStatus().equalsIgnoreCase(Constants.CHALLENGE)){
-                paymentIv.setImageResource(R.drawable.ic_successful);
-                paymentStatusTv.setText(getString(R.string.payment_successful));
-                paymentMessageTv.setVisibility(View.GONE);
-            } else {*/
             if (transactionResponse.getFraudStatus().equalsIgnoreCase(getString(R.string.challenge))) {
                 paymentIv.setImageResource(R.drawable.ic_successful);
                 paymentStatusTv.setText(getString(R.string.payment_successful));
@@ -150,7 +145,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
     }
 
     private void bindDataToView() {
-
         if (transactionResponse != null) {
             try {
                 Logger.i("transactionstatus:" + transactionResponse.getString());
@@ -202,7 +196,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
 
     private void setUiForFailure() {
         isSuccessful = false;
-        actionBt.setText(getString(R.string.retry));
         paymentIv.setImageResource(R.drawable.ic_failure);
         paymentStatusTv.setText(getString(R.string.payment_unsuccessful));
 

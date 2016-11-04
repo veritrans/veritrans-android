@@ -39,6 +39,7 @@ public class BaseActivity extends AppCompatActivity {
             Logger.i("replace freagment");
             boolean fragmentPopped = false;
             String backStateName = fragment.getClass().getName();
+            Logger.d("Fragment Name: " + backStateName);
 
             if (clearBackStack) {
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
