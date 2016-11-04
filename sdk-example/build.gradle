@@ -23,8 +23,8 @@ android {
     productFlavors {
         development {
             applicationId "id.co.veritrans.sdk.sample.development"
-            buildConfigField "String", "BASE_URL", "\"https://vt-merchant.coralshop.top/api/\""
-            buildConfigField "String", "CLIENT_KEY", "\"VT-client-wRhLUazn8LGHLP6Q\""
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
+            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
         }
         production {
             applicationId "id.co.veritrans.sdk.sample.production"
