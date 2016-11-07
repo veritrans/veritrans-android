@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -27,6 +26,7 @@ import com.midtrans.sdk.corekit.models.BankDetail;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -45,6 +45,7 @@ public class AddCardDetailsFragment extends Fragment {
     private EditText etExpiryDate;
     private CheckBox cbStoreCard;
     private Button cvvHelpButton;
+    private ImageView logo;
     private ImageView questionSaveCardImg;
     private Button payNowBtn;
     private Button scanCardBtn;
@@ -124,7 +125,7 @@ public class AddCardDetailsFragment extends Fragment {
         questionSaveCardImg = (ImageView) view.findViewById(R.id.image_question_save_card);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
-        //formLayout.setAlpha(0);
+        logo = (ImageView) view.findViewById(R.id.payment_card_logo);
         cbStoreCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -441,30 +442,28 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     private void setCardType() {
-        String cardNo = etCardNo.getText().toString().trim();
-        if (cardNo.isEmpty() || cardNo.length() < 2) {
-            etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        // Don't set card type when card number is empty
+        String cardNumberText = etCardNo.getText().toString().trim();
+        if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 2) {
+            logo.setImageResource(0);
             return;
         }
-        if (cardNo.charAt(0) == '4') {
-            Drawable visa = getResources().getDrawable(R.drawable.ic_visa_dark);
-            etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, visa, null);
-            cardType = getString(R.string.visa);
-        } else if ((cardNo.charAt(0) == '5') && ((cardNo.charAt(1) == '1') || (cardNo.charAt(1) == '2')
-                || (cardNo.charAt(1) == '3') || (cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '5'))) {
-            Drawable masterCard = getResources().getDrawable(R.drawable.ic_mastercard);
-            etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, masterCard, null);
-            cardType = getString(R.string.mastercard);
-        } else if ((cardNo.charAt(0) == '3') && ((cardNo.charAt(1) == '4') || (cardNo.charAt(1) == '7'))) {
-            Drawable amex = getResources().getDrawable(R.drawable.ic_amex_dark);
-            etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, amex, null);
-            cardType = getString(R.string.amex);
-        } else if (cardNo.startsWith("35") || cardNo.startsWith("2131") || cardNo.startsWith("1800")) {
-            Drawable jcb = getResources().getDrawable(R.drawable.ic_jcb);
-            etCardNo.setCompoundDrawablesWithIntrinsicBounds(null, null, jcb, null);
-            cardType = getString(R.string.jcb);
-        } else {
-            cardType = "";
+
+        // Check card type before setting logo
+        String cardType = Utils.getCardType(cardNumberText);
+        switch (cardType) {
+            case Utils.CARD_TYPE_VISA:
+                logo.setImageResource(R.drawable.ic_visa);
+                break;
+            case Utils.CARD_TYPE_MASTERCARD:
+                logo.setImageResource(R.drawable.ic_mastercard);
+                break;
+            case Utils.CARD_TYPE_JCB:
+                logo.setImageResource(R.drawable.ic_jcb);
+                break;
+            case Utils.CARD_TYPE_AMEX:
+                logo.setImageResource(R.drawable.ic_amex);
+                break;
         }
     }
 

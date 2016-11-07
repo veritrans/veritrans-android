@@ -35,18 +35,18 @@ import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
-import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
-import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.MandiriClickPayPaymentParams;
-import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
+import com.midtrans.sdk.corekit.utilities.Utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -542,6 +542,16 @@ public class SdkUtil {
 
         TokenRequestModel requestModel = new TokenRequestModel(details, transactionRequest.getItemDetails(),
                 transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());
+
+        // Set expiry if it's available
+        if (transactionRequest.getExpiry() != null) {
+            requestModel.setExpiry(transactionRequest.getExpiry());
+        }
+
+        // Set custom object if it's available
+        if (transactionRequest.getCustomObject() != null && !transactionRequest.getCustomObject().isEmpty()) {
+            requestModel = Utils.addCustomMapObjectIntoTransaction(requestModel, transactionRequest.getCustomObject());
+        }
 
         return requestModel;
     }

@@ -19,14 +19,18 @@ import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.sample.core.CoreFlowActivity;
 import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback {
@@ -131,6 +135,19 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         } else {
             transactionRequestNew.setCardPaymentInfo(cardClickType, true);
         }
+
+        Map<String, String> customMap = new HashMap<>();
+        customMap.put("flight_id", "JT-214");
+        customMap.put("airplane_type", "Boeing");
+        transactionRequestNew.setCustomObject(customMap);
+
+        ExpiryModel expiryModel = new ExpiryModel();
+        long currentTime = System.currentTimeMillis();
+        expiryModel.setStartTime(Utils.getFormattedTime(currentTime));
+        expiryModel.setUnit("MINUTES");
+        expiryModel.setDuration(1);
+
+        transactionRequestNew.setExpiry(expiryModel);
 
         return transactionRequestNew;
     }
