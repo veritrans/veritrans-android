@@ -115,6 +115,7 @@
 -keep class com.midtrans.sdk.corekit.core.BaseSdkBuilder {*;}
 -keep class com.midtrans.sdk.corekit.core.ISdkFlow {*;}
 -keep class com.midtrans.sdk.corekit.core.IScanner {*;}
+-keep class com.midtrans.sdk.corekit.core.UIkitCustomSetting {*;}
 -keep class com.midtrans.sdk.corekit.utilities.** {*;}
 -keep class com.midtrans.sdk.uikit.utilities.SdkuikitUtil {*;}
 -keep class com.midtrans.sdk.uikit.SdkuikitBuilder {*;}

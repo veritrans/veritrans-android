@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,13 +111,18 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 paymentStatusTv.setText(getString(R.string.payment_pending));
             }
             //}
+        } else if (transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.failed_code_400))) {
+
         } else {
             setUiForFailure();
         }
         try {
             transactionTimeTextView.setText(transactionResponse.getTransactionTime());
             String amount = transactionResponse.getGrossAmount();
+            Log.d("amountx", "gross:" + transactionResponse.getGrossAmount());
             String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
+            Log.d("amountx", "gross:formatted:" + formattedAmount);
+
             amountTextView.setText(formattedAmount);
             orderIdTextView.setText(transactionResponse.getOrderId());
         } catch (NullPointerException e) {
@@ -199,6 +205,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
         if (transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.deny))) {
             paymentMessageTv.setVisibility(View.VISIBLE);
             paymentMessageTv.setText(getString(R.string.payment_deny));
+        } else if(transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.failed_code_400))){
+            paymentMessageTv.setVisibility(View.VISIBLE);
+            paymentMessageTv.setText(getString(R.string.message_payment_expired));
         } else {
             if (!TextUtils.isEmpty(transactionResponse.getStatusMessage())) {
                 paymentMessageTv.setVisibility(View.VISIBLE);
