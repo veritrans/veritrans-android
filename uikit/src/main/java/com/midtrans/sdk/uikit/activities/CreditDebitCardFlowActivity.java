@@ -66,7 +66,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private static final int PAYMENT_WEB_INTENT = 100;
     private static final int PAY_USING_CARD = 51;
     private static final String TAG = "CreditCardActivity";
-    private int RESULT_CODE = RESULT_CANCELED;
     private Toolbar toolbar;
     private FragmentManager fragmentManager;
     private MidtransSDK midtransSDK;
@@ -162,17 +161,21 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Override
     public void onBackPressed() {
         SdkUIFlowUtil.hideKeyboard(this);
-        if (!TextUtils.isEmpty(currentFragmentName)
-                && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class.getName())) {
-            setResultCode(RESULT_OK);
+        if (fragmentManager.getBackStackEntryCount() == 1) {
+            setResultCode(RESULT_CANCELED);
             setResultAndFinish();
         } else {
-            super.onBackPressed();
+            if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class
+                    .getName())) {
+                setResultCode(RESULT_OK);
+                setResultAndFinish();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
     /**
-     *
      * @param cardTokenRequest
      */
     public void normalPayment(CardTokenRequest cardTokenRequest) {
@@ -270,9 +273,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                         CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
                         CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.message_payment_failed);
                         SdkUIFlowUtil.hideProgressDialog();
-                        PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                                PaymentTransactionStatusFragment.newInstance(transactionResponse);
-                        replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
+                        initPaymentStatus(transactionResponse, errorMessage, true);
                         titleHeaderTextView.setText(getString(R.string.title_payment_status));
                     }
 
@@ -294,17 +295,12 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             }
         }, 200);
 
-        SdkUIFlowUtil.hideProgressDialog();
         Logger.i(TAG, "paymentResponse:" + cardPaymentResponse.getStatusCode());
 
         if (cardPaymentResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200)) ||
                 cardPaymentResponse.getStatusCode().equalsIgnoreCase(midtransSDK.getContext().getString(R.string.success_code_201))) {
 
             transactionResponse = cardPaymentResponse;
-
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(cardPaymentResponse);
-            replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
             titleHeaderTextView.setText(getString(R.string.title_payment_status));
 
             if (cardTokenRequest != null && cardTokenRequest.isSaved()) {
@@ -343,6 +339,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 }
             }
         }
+        SdkUIFlowUtil.hideProgressDialog();
+        initPaymentStatus(transactionResponse, null, true);
     }
 
     public MidtransSDK getMidtransSDK() {
@@ -443,9 +441,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 }, 200);
                 CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.payment_canceled);
                 SdkUIFlowUtil.hideProgressDialog();
-                PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                        PaymentTransactionStatusFragment.newInstance(transactionResponse);
-                replaceFragment(paymentTransactionStatusFragment, R.id.card_container, true, false);
+                initPaymentStatus(transactionResponse, errorMessage, true);
                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
             }
         }
@@ -592,17 +588,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void setResultAndFinish() {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), transactionResponse);
-        data.putExtra(getString(R.string.error_transaction), errorMessage);
-        setResult(RESULT_CODE, data);
-        finish();
+        setResultAndFinish(transactionResponse, errorMessage);
     }
-
-    public void setResultCode(int resultCode) {
-        this.RESULT_CODE = resultCode;
-    }
-
 
     public void setAdapterViews(CardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, TextView emptyCardsTextView) {
         this.cardPagerAdapter = cardPagerAdapter;
@@ -728,6 +715,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 for (SaveCardRequest card : cards) {
                     if (midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_one_click))
                             && card.getType().equals(getString(R.string.saved_card_one_click))) {
+                        filteredCards.add(card);
                         filteredCards.add(card);
                     } else if (midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_two_click))
                             && card.getType().equals(getString(R.string.saved_card_two_click))) {

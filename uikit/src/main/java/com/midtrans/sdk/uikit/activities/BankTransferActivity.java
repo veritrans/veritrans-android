@@ -74,7 +74,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     private ImageView logo = null;
 
     private int position = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
-    private int RESULT_CODE = RESULT_CANCELED;
 
 
     @Override
@@ -139,7 +138,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             super.onBackPressed();
         } else {
             if (currentFragment.equalsIgnoreCase(STATUS_FRAGMENT)) {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
             }
             setResultAndFinish();
         }
@@ -234,12 +233,12 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                 if (transactionResponse != null) {
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
-                    RESULT_CODE = RESULT_OK;
+                    setResultCode(RESULT_OK);
                     SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
                     onBackPressed();
                 }
             } else {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 onBackPressed();
             }
         }
@@ -252,6 +251,11 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
+        if (!mMidtransSDK.getUIkitCustomSetting().isShowPaymentStatus()) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 

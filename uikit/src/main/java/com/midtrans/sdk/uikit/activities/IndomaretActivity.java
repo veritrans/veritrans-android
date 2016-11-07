@@ -56,7 +56,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
     private int position = Constants.PAYMENT_METHOD_INDOMARET;
-    private int RESULT_CODE = RESULT_CANCELED;
 
 
     @Override
@@ -107,7 +106,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
 
         if (item.getItemId() == android.R.id.home) {
             if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 setResultAndFinish();
             } else {
                 onBackPressed();
@@ -162,12 +161,12 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                 if (transactionResponse != null) {
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
-                    RESULT_CODE = RESULT_OK;
+                    setResultCode(RESULT_OK);
                     SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, SOMETHING_WENT_WRONG);
                     setResultAndFinish();
                 }
             } else {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 setResultAndFinish();
             }
         }
@@ -176,6 +175,11 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
 
+        if(!midtransSDK.getUIkitCustomSetting().isShowPaymentStatus()){
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -276,10 +280,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
      * send result back to  {@link PaymentMethodsActivity} and finish current activity.
      */
     private void setResultAndFinish() {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), transactionResponse);
-        data.putExtra(getString(R.string.error_transaction), errorMessage);
-        setResult(RESULT_CODE, data);
-        finish();
+        setResultAndFinish(transactionResponse, errorMessage);
     }
 }

@@ -413,4 +413,6 @@
     <string name="message_payment_not_completed">Informasi pembayaran tidak lengkap!</string>
     <string name="message_payment_method_empty">Tidak ada metode pembayaran yang diaktifkan!</string>
     <string name="message_payment_expired">Halaman pembayaran kadaluarsa</string>
+    <string name="status_denied">Ditolak</string>
+    <string name="status_expired">Kadaluarsa</string>
 </resources>

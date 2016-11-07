@@ -7,8 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +21,6 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.BankTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.KlikBCAFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
@@ -156,8 +153,6 @@ public class KlikBCAActivity extends BaseActivity {
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
@@ -167,17 +162,9 @@ public class KlikBCAActivity extends BaseActivity {
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
-
-        BankTransactionStatusFragment bankTransactionStatusFragment =
-                BankTransactionStatusFragment.newInstance(transactionResponse, Constants.PAYMENT_METHOD_KLIKBCA);
-
-        // setup transaction status fragment
-        fragmentTransaction.replace(R.id.instruction_container,
-                bankTransactionStatusFragment, STATUS_FRAGMENT);
-        fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
-        fragmentTransaction.commit();
-
         mButtonConfirmPayment.setText(R.string.complete_payment_at_klik_bca);
+
+        initBankTransferPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_KLIKBCA, STATUS_FRAGMENT);
     }
 
     @Override

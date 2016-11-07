@@ -47,8 +47,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
     private InstructionTelkomselCashFragment telkomselCashFragment = null;
     private TransactionResponse mTransactionResponse = null;
     private String errorMessage = null;
-    private int RESULT_CODE = RESULT_CANCELED;
-
     private String telkomselToken = null;
 
     @Override
@@ -90,7 +88,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
         if (item.getItemId() == android.R.id.home) {
             if (currentFragment.equals(STATUS_FRAGMENT)) {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 setResultAndFinish();
             } else {
                 onBackPressed();
@@ -147,7 +145,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                 performTransaction();
 
             } else {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 setResultAndFinish();
             }
 
@@ -235,15 +233,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
 
-        BankTransactionStatusFragment bankTransactionStatusFragment =
-                BankTransactionStatusFragment.newInstance(transactionResponse,
-                        Constants.PAYMENT_METHOD_TELKOMSEL_CASH);
-
-        // setup transaction status fragment
-        fragmentTransaction.replace(R.id.instruction_container,
-                bankTransactionStatusFragment, STATUS_FRAGMENT);
-        fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
-        fragmentTransaction.commit();
+        initBankTransferPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_TELKOMSEL_CASH, STATUS_FRAGMENT);
     }
 
     /**
@@ -260,10 +250,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
      * send result back to  {@link PaymentMethodsActivity} and finish current activity.
      */
     private void setResultAndFinish() {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), mTransactionResponse);
-        data.putExtra(getString(R.string.error_transaction), errorMessage);
-        setResult(RESULT_CODE, data);
-        finish();
+        setResultAndFinish(this.mTransactionResponse, this.errorMessage);
     }
 }

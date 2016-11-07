@@ -56,8 +56,6 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     // for result
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private int RESULT_CODE = RESULT_CANCELED;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +128,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         mMandiriClickPayFragment = new MandiriClickPayFragment();
 
-        fragmentTransaction.add(R.id.mandiri_clickpay_container,
+        fragmentTransaction.add(R.id.instruction_container,
                 mMandiriClickPayFragment);
         fragmentTransaction.commit();
 
@@ -147,7 +145,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                     Logger.i("on retry pressed");
                     setResultAndFinish();
                 } else {
-                    RESULT_CODE = RESULT_OK;
+                    setResultCode(RESULT_OK);
                     setResultAndFinish();
                 }
             } else {
@@ -197,7 +195,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                     Logger.i("on retry pressed");
                     setResultAndFinish();
                 } else {
-                    RESULT_CODE = RESULT_OK;
+                    setResultCode(RESULT_OK);
                     setResultAndFinish();
                 }
             }
@@ -278,8 +276,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                         MandiriClickPayActivity.this.transactionResponse = response;
                         MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
 
-                        if (transactionResponse != null
-                                && transactionResponse.getStatusCode().contains(DENY)) {
+                        if (transactionResponse != null && (transactionResponse.getStatusCode().contains(DENY)
+                                || transactionResponse.getStatusCode().equals(getString(R.string.failed_code_400))
+                        )) {
                             setUpTransactionStatusFragment(transactionResponse);
                         }
                     }
@@ -301,10 +300,6 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
@@ -314,15 +309,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         appBar.setExpanded(false, false);
         setSupportActionBar(mToolbar);
 
-        BankTransactionStatusFragment bankTransactionStatusFragment =
-                BankTransactionStatusFragment.newInstance(transactionResponse,
-                        Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY);
-
-        // setup transaction status fragment
-        fragmentTransaction.replace(R.id.mandiri_clickpay_container,
-                bankTransactionStatusFragment, STATUS_FRAGMENT);
-        fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
-        fragmentTransaction.commit();
+        initBankTransferPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY, STATUS_FRAGMENT);
     }
 
 
@@ -330,11 +317,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
      * send result back to  {@link PaymentMethodsActivity} and finish current activity.
      */
     private void setResultAndFinish() {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), transactionResponse);
-        data.putExtra(getString(R.string.error_transaction), errorMessage);
-        setResult(RESULT_OK, data);
-        finish();
+        setResultAndFinish(transactionResponse, errorMessage);
     }
 
 

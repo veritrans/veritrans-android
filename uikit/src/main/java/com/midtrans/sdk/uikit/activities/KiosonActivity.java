@@ -109,7 +109,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
         if (item.getItemId() == android.R.id.home) {
             if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 setResultAndFinish();
             } else {
                 onBackPressed();
@@ -164,12 +164,12 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                 if (transactionResponse != null) {
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
-                    RESULT_CODE = RESULT_OK;
+                    setResultCode(RESULT_OK);
                     SdkUIFlowUtil.showSnackbar(KiosonActivity.this, SOMETHING_WENT_WRONG);
                     setResultAndFinish();
                 }
             } else {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 setResultAndFinish();
             }
         }
@@ -177,6 +177,12 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
+
+        if(!midtransSDK.getUIkitCustomSetting().isShowPaymentStatus()){
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -285,10 +291,6 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
      * send result back to  {@link PaymentMethodsActivity} and finish current activity.
      */
     private void setResultAndFinish() {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), transactionResponse);
-        data.putExtra(getString(R.string.error_transaction), errorMessage);
-        setResult(RESULT_CODE, data);
-        finish();
+        setResultAndFinish(transactionResponse, errorMessage);
     }
 }

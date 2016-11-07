@@ -13,11 +13,11 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.core.UIkitCustomSetting;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
-import com.midtrans.sdk.corekit.core.UIkitCustomSetting;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ExpiryModel;
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         } else {
 //            init custom setting if needed
             UIkitCustomSetting uisetting = new UIkitCustomSetting();
-            uisetting.setShowPaymentStatus(true);
+            uisetting.setShowPaymentStatus(false);
 
             // SDK initiation for UIflow
             SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                 case TransactionResult.STATUS_PENDING:
                     Toast.makeText(this, "Transaction Pending. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
                     break;
-                case TransactionResult.STATUS_INVALID:
+                case TransactionResult.STATUS_EXPIRED:
                     Toast.makeText(this, "Transaction invalid. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
                     if(result.getResponse().getValidationMessages() != null && !result.getResponse().getValidationMessages().isEmpty()){
 

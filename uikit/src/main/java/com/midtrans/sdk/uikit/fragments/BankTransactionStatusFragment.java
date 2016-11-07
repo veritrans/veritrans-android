@@ -178,22 +178,27 @@ public class BankTransactionStatusFragment extends Fragment {
                 setUiForFailure();
 
                 if (getActivity() != null) {
-
-                    // change name of button to 'RETRY'
-                    if (mPaymentType == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
-                        ((IndosatDompetkuActivity) getActivity()).activateRetry();
-                    } else if (mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY) {
-                        ((MandiriClickPayActivity) getActivity()).activateRetry();
-
-                        if (mTransactionResponse != null &&
-                                mTransactionResponse.getTransactionStatus().equalsIgnoreCase("deny")) {
-                            mTextViewTransactionStatus.setText("Payment Denied.");
+                    changeRetryButton();
+                    if(mTransactionResponse != null){
+                        if(mTransactionResponse.getTransactionStatus().equalsIgnoreCase("deny")){
+                            mTextViewTransactionStatus.setText(getString(R.string.status_denied));
                         }
-                    } else {
-                        ((BankTransferActivity) getActivity()).activateRetry();
+                        else if( mTransactionResponse.getStatusCode().equals(getString(R.string.failed_code_400))){
+                            mTextViewTransactionStatus.setText(getString(R.string.status_expired));
+                        }
                     }
                 }
             }
+        }
+    }
+
+    private void changeRetryButton() {
+        if (mPaymentType == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
+            ((IndosatDompetkuActivity) getActivity()).activateRetry();
+        } else if (mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY) {
+            ((MandiriClickPayActivity) getActivity()).activateRetry();
+        } else {
+            ((BankTransferActivity) getActivity()).activateRetry();
         }
     }
 
