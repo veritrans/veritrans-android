@@ -573,5 +573,10 @@
     <string name="message_getcard_token_failed">Authentication failed</string>
     <string name="message_payment_not_completed">Payment information is not completed!</string>
     <string name="message_payment_method_empty">There are no enabled payment methods</string>
+    <string name="message_payment_expired">Payment page is expired</string>
+    <string name="status_denied">Denied</string>
+    <string name="status_expired">Expired</string>
+    <string name="label_expired">expired</string>
+    <string name="message_cannot_proccessed">Transaction cannot be proccessed.</string>
 
 </resources>

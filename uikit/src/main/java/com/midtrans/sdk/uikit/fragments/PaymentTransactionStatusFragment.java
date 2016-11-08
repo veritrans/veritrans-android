@@ -96,6 +96,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         if (transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200)) ||
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.capital_success)) ||
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.settlement))) {
+
             paymentIv.setImageResource(R.drawable.ic_successful);
             paymentStatusTv.setText(getString(R.string.payment_successful));
             paymentMessageTv.setVisibility(View.GONE);
@@ -109,16 +110,18 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 paymentIv.setImageResource(R.drawable.ic_pending);
                 paymentStatusTv.setText(getString(R.string.payment_pending));
             }
-            //}
         } else {
             setUiForFailure();
         }
         try {
             transactionTimeTextView.setText(transactionResponse.getTransactionTime());
             String amount = transactionResponse.getGrossAmount();
-            String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
-            amountTextView.setText(formattedAmount);
-            orderIdTextView.setText(transactionResponse.getOrderId());
+            if (!TextUtils.isEmpty(amount)) {
+                String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
+                amountTextView.setText(formattedAmount);
+                orderIdTextView.setText(transactionResponse.getOrderId());
+            }
+
         } catch (NullPointerException e) {
             e.printStackTrace();
 
@@ -175,7 +178,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
                     ((BCAKlikPayActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     ((BCAKlikPayActivity) getActivity()).setResultAndFinish();
                 }
-
             }
         });
     }
@@ -199,6 +201,18 @@ public class PaymentTransactionStatusFragment extends Fragment {
         if (transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.deny))) {
             paymentMessageTv.setVisibility(View.VISIBLE);
             paymentMessageTv.setText(getString(R.string.payment_deny));
+        } else if (transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.failed_code_400))) {
+            paymentMessageTv.setVisibility(View.VISIBLE);
+            String message = "";
+            if (transactionResponse.getValidationMessages() != null && !transactionResponse.getValidationMessages().isEmpty()) {
+                message = transactionResponse.getValidationMessages().get(0);
+            }
+
+            if (!TextUtils.isEmpty(message) && message.toLowerCase().contains(getString(R.string.label_expired))) {
+                paymentMessageTv.setText(getString(R.string.message_payment_expired));
+            } else {
+                paymentMessageTv.setText(getString(R.string.message_cannot_proccessed));
+            }
         } else {
             if (!TextUtils.isEmpty(transactionResponse.getStatusMessage())) {
                 paymentMessageTv.setVisibility(View.VISIBLE);

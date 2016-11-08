@@ -1,6 +1,5 @@
 package com.midtrans.sdk.uikit.activities;
 
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -25,7 +24,6 @@ import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.BankTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.MandiriClickPayFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -56,8 +54,6 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     // for result
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private int RESULT_CODE = RESULT_CANCELED;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +126,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         mMandiriClickPayFragment = new MandiriClickPayFragment();
 
-        fragmentTransaction.add(R.id.mandiri_clickpay_container,
+        fragmentTransaction.add(R.id.instruction_container,
                 mMandiriClickPayFragment);
         fragmentTransaction.commit();
 
@@ -141,18 +137,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            if (currentFragment.equals(STATUS_FRAGMENT)) {
-                if (mButtonConfirmPayment.getText().toString().equalsIgnoreCase(getString(R.string.retry))) {
-                    //finish();
-                    Logger.i("on retry pressed");
-                    setResultAndFinish();
-                } else {
-                    RESULT_CODE = RESULT_OK;
-                    setResultAndFinish();
-                }
-            } else {
-                onBackPressed();
-            }
+            onBackPressed();
         }
         return true;
     }
@@ -197,7 +182,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                     Logger.i("on retry pressed");
                     setResultAndFinish();
                 } else {
-                    RESULT_CODE = RESULT_OK;
+                    setResultCode(RESULT_OK);
                     setResultAndFinish();
                 }
             }
@@ -278,8 +263,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                         MandiriClickPayActivity.this.transactionResponse = response;
                         MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
 
-                        if (transactionResponse != null
-                                && transactionResponse.getStatusCode().contains(DENY)) {
+                        if (transactionResponse != null && (transactionResponse.getStatusCode().contains(DENY)
+                                || transactionResponse.getStatusCode().equals(getString(R.string.failed_code_400))
+                        )) {
                             setUpTransactionStatusFragment(transactionResponse);
                         }
                     }
@@ -301,10 +287,6 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
@@ -314,15 +296,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         appBar.setExpanded(false, false);
         setSupportActionBar(mToolbar);
 
-        BankTransactionStatusFragment bankTransactionStatusFragment =
-                BankTransactionStatusFragment.newInstance(transactionResponse,
-                        Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY);
-
-        // setup transaction status fragment
-        fragmentTransaction.replace(R.id.mandiri_clickpay_container,
-                bankTransactionStatusFragment, STATUS_FRAGMENT);
-        fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
-        fragmentTransaction.commit();
+        initBankTransferPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY, STATUS_FRAGMENT);
     }
 
 
@@ -330,11 +304,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
      * send result back to  {@link PaymentMethodsActivity} and finish current activity.
      */
     private void setResultAndFinish() {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), transactionResponse);
-        data.putExtra(getString(R.string.error_transaction), errorMessage);
-        setResult(RESULT_OK, data);
-        finish();
+        setResultAndFinish(transactionResponse, errorMessage);
     }
 
 
@@ -345,6 +315,21 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
         if (mButtonConfirmPayment != null) {
             mButtonConfirmPayment.setText(getResources().getString(R.string.retry));
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment.equals(STATUS_FRAGMENT)) {
+            if (mButtonConfirmPayment.getText().toString().equalsIgnoreCase(getString(R.string.retry))) {
+                Logger.i("on retry pressed");
+                setResultAndFinish();
+            } else {
+                setResultCode(RESULT_OK);
+                setResultAndFinish();
+            }
+        } else {
+            super.onBackPressed();
         }
     }
 }

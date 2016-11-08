@@ -21,7 +21,6 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriECashFragment;
-import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -47,7 +46,6 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private int RESULT_CODE = RESULT_CANCELED;
     private int position = Constants.PAYMENT_METHOD_MANDIRI_ECASH;
 
     private FragmentManager fragmentManager;
@@ -109,12 +107,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            if (currentFragmentName.equals(STATUS_FRAGMENT)) {
-                setResultCode(RESULT_OK);
-                setResultAndFinish();
-            } else {
-                onBackPressed();
-            }
+            onBackPressed();
         }
         return false;
     }
@@ -152,7 +145,12 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
                 SdkUIFlowUtil.hideProgressDialog();
                 MandiriECashActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 MandiriECashActivity.this.transactionResponse = response;
-                SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+
+                if (response != null && response.equals(getString(R.string.failed_code_400))) {
+                    initPaymentStatus(transactionResponse, errorMessage, false);
+                } else {
+                    SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+                }
             }
 
             @Override
@@ -176,16 +174,13 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             setSupportActionBar(mToolbar);
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
                     mMidtransSDK.getTransactionRequest().getOrderId(), String.valueOf(mMidtransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_mandiri_ecash), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment = PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.instruction_container, false, false);
+            initPaymentStatus(transactionResponse, errorMessage, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         } else if (resultCode == RESULT_CANCELED) {
             currentFragmentName = STATUS_FRAGMENT;
             mToolbar.setNavigationIcon(closeIcon);
             setSupportActionBar(mToolbar);
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.instruction_container, false, false);
+            initPaymentStatus(transactionResponse, errorMessage, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         }
     }
@@ -200,9 +195,14 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         finish();
     }
 
-    public void setResultCode(int resultCode) {
-        this.RESULT_CODE = resultCode;
+    @Override
+    public void onBackPressed() {
+        if (currentFragmentName.equals(STATUS_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
+        super.onBackPressed();
     }
-
 }
 

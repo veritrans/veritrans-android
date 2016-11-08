@@ -13,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
@@ -67,6 +68,10 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     .enableLog(true)
                     .buildSDK();
         } else {
+//            init custom setting if needed
+            UIKitCustomSetting uisetting = new UIKitCustomSetting();
+            uisetting.setShowPaymentStatus(true);
+
             // SDK initiation for UIflow
             SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
@@ -75,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
+                    .setUIkitCustomSetting(uisetting) //optional
                     .buildSDK();
         }
     }
@@ -261,6 +267,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     break;
                 case TransactionResult.STATUS_PENDING:
                     Toast.makeText(this, "Transaction Pending. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
+                    break;
+                case TransactionResult.STATUS_INVALID:
+                    Toast.makeText(this, "Transaction Invalid. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getValidationMessages().get(0), Toast.LENGTH_LONG).show();
                     break;
                 case TransactionResult.STATUS_FAILED:
                     Toast.makeText(this, "Transaction Failed. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
