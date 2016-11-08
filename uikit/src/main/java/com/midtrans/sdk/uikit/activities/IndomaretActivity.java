@@ -105,12 +105,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
-                setResultCode(RESULT_OK);
-                setResultAndFinish();
-            } else {
-                onBackPressed();
-            }
+            onBackPressed();
         }
 
         return false;
@@ -175,7 +170,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
 
-        if(!midtransSDK.getUIkitCustomSetting().isShowPaymentStatus()){
+        if (!midtransSDK.getUICustomSetting().isShowPaymentStatus()) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;
@@ -251,6 +246,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                 IndomaretActivity.this.transactionResponse = response;
                 SdkUIFlowUtil.hideProgressDialog();
                 SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + errorMessage);
+                setUpTransactionStatusFragment(response);
             }
 
             @Override
@@ -281,5 +277,15 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
      */
     private void setResultAndFinish() {
         setResultAndFinish(transactionResponse, errorMessage);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

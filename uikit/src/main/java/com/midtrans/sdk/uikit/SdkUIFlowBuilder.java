@@ -5,7 +5,7 @@ import android.content.Context;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.BaseSdkBuilder;
 import com.midtrans.sdk.corekit.core.IScanner;
-import com.midtrans.sdk.corekit.core.UIkitCustomSetting;
+import com.midtrans.sdk.corekit.core.UICustomSetting;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 
 import java.util.ArrayList;
@@ -71,8 +71,8 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
         return this;
     }
 
-    public SdkUIFlowBuilder setUIkitCustomSetting(UIkitCustomSetting setting) {
-        this.UIkitCustomSetting = setting;
+    public SdkUIFlowBuilder setUIkitCustomSetting(UICustomSetting setting) {
+        this.UICustomSetting = setting;
         return this;
     }
 }

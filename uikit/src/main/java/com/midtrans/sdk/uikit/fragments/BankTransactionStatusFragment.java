@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferActivity;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 import com.midtrans.sdk.uikit.activities.IndosatDompetkuActivity;
+import com.midtrans.sdk.uikit.activities.KlikBCAActivity;
 import com.midtrans.sdk.uikit.activities.MandiriClickPayActivity;
+import com.midtrans.sdk.uikit.activities.TelkomselCashActivity;
 
 import java.util.regex.Pattern;
 
@@ -142,12 +146,22 @@ public class BankTransactionStatusFragment extends Fragment {
                     mTextViewBankName.setText(getString(R.string.payment_method_klik_bca));
                 }
             }
+            String transactionTime = mTransactionResponse.getTransactionTime() == null ? "" : mTransactionResponse.getTransactionTime();
+            String orderId = mTransactionResponse.getOrderId() == null ?
+                    MidtransSDK.getInstance().getTransactionRequest().getOrderId() : mTransactionResponse.getOrderId();
 
-            mTextViewTransactionTime.setText(mTransactionResponse.getTransactionTime());
-            mTextViewOrderId.setText(mTransactionResponse.getOrderId());
-            String amount = mTransactionResponse.getGrossAmount();
-            String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
-            mTextViewAmount.setText(formattedAmount);
+            mTextViewTransactionTime.setText(transactionTime);
+            mTextViewOrderId.setText(orderId);
+            try {
+                String amount = mTransactionResponse.getGrossAmount();
+                if (!TextUtils.isEmpty(amount)) {
+                    String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
+                    mTextViewAmount.setText(formattedAmount);
+                }
+            } catch (NullPointerException e) {
+                Log.e("BankTransactionStatus", e.getMessage());
+            }
+
 
             //noinspection StatementWithEmptyBody
             if (mTransactionResponse.getTransactionStatus().contains(PENDING)
@@ -179,12 +193,22 @@ public class BankTransactionStatusFragment extends Fragment {
 
                 if (getActivity() != null) {
                     changeRetryButton();
-                    if(mTransactionResponse != null){
-                        if(mTransactionResponse.getTransactionStatus().equalsIgnoreCase("deny")){
+                    if (mTransactionResponse != null) {
+                        if (mTransactionResponse.getTransactionStatus().equalsIgnoreCase("deny")) {
                             mTextViewTransactionStatus.setText(getString(R.string.status_denied));
-                        }
-                        else if( mTransactionResponse.getStatusCode().equals(getString(R.string.failed_code_400))){
-                            mTextViewTransactionStatus.setText(getString(R.string.status_expired));
+                        } else if (mTransactionResponse.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                            String message = "";
+                            if (mTransactionResponse.getValidationMessages() != null && !mTransactionResponse.getValidationMessages().isEmpty()) {
+                                message = mTransactionResponse.getValidationMessages().get(0);
+                            }
+
+                            if (!TextUtils.isEmpty(message) && message.toLowerCase().contains(getString(R.string.label_expired))) {
+                                mTextViewPaymentErrorMessage.setText(getString(R.string.message_payment_expired));
+                                mTextViewTransactionStatus.setText(getString(R.string.status_expired));
+                            } else {
+                                mTextViewTransactionStatus.setText(getString(R.string.payment_unsuccessful));
+                                mTextViewPaymentErrorMessage.setText(getString(R.string.message_cannot_proccessed));
+                            }
                         }
                     }
                 }
@@ -197,6 +221,10 @@ public class BankTransactionStatusFragment extends Fragment {
             ((IndosatDompetkuActivity) getActivity()).activateRetry();
         } else if (mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY) {
             ((MandiriClickPayActivity) getActivity()).activateRetry();
+        } else if (mPaymentType == Constants.PAYMENT_METHOD_TELKOMSEL_CASH) {
+            ((TelkomselCashActivity) getActivity()).activateRetry();
+        } else if (mPaymentType == Constants.PAYMENT_METHOD_KLIKBCA) {
+            ((KlikBCAActivity) getActivity()).activateRetry();
         } else {
             ((BankTransferActivity) getActivity()).activateRetry();
         }

@@ -1,6 +1,5 @@
 package com.midtrans.sdk.uikit.activities;
 
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -21,7 +20,6 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.BankTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionTelkomselCashFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -87,12 +85,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            if (currentFragment.equals(STATUS_FRAGMENT)) {
-                setResultCode(RESULT_OK);
-                setResultAndFinish();
-            } else {
-                onBackPressed();
-            }
+            onBackPressed();
         }
 
         return false;
@@ -202,7 +195,12 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                         SdkUIFlowUtil.hideProgressDialog();
                         mTransactionResponse = response;
                         errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
-                        SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_message_invalid_input_telkomsel));
+
+                        if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                            setUpTransactionStatusFragment(response);
+                        } else {
+                            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_message_invalid_input_telkomsel));
+                        }
                     }
 
                     @Override
@@ -251,5 +249,15 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
      */
     private void setResultAndFinish() {
         setResultAndFinish(this.mTransactionResponse, this.errorMessage);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment.equals(STATUS_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

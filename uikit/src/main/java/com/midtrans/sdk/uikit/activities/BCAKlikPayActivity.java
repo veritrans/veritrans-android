@@ -40,7 +40,6 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private int RESULT_CODE = RESULT_CANCELED;
 
     private FragmentManager fragmentManager;
     private String currentFragmentName = "";
@@ -106,6 +105,11 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
+        if (currentFragmentName.equals(STATUS_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
         super.onBackPressed();
     }
 
@@ -151,9 +155,15 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                 try {
                     BCAKlikPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                     BCAKlikPayActivity.this.transactionResponse = response;
-
                     SdkUIFlowUtil.hideProgressDialog();
-                    SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
+
+                    if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                        transactionResponseFromMerchant = response;
+                        setResultCode(RESULT_OK);
+                        setResultAndFinish();
+                    } else {
+                        SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
+                    }
                 } catch (NullPointerException ex) {
                     SdkUIFlowUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string.empty_transaction_response));
                 }

@@ -8,7 +8,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 public class TransactionResult {
     public static final String STATUS_SUCCESS = "success";
     public static final String STATUS_PENDING = "pending";
-    public static final String STATUS_EXPIRED = "expired";
+    public static final String STATUS_INVALID = "invalid";
     public static final String STATUS_FAILED = "failed";
 
     private  boolean transactionCanceled;

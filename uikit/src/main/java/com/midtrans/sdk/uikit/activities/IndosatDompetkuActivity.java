@@ -241,9 +241,14 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                     public void onFailure(TransactionResponse response, String reason) {
                         mTransactionResponse = response;
                         IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_denied);
+                        SdkUIFlowUtil.hideProgressDialog();
+
                         try {
-                            SdkUIFlowUtil.hideProgressDialog();
-                            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+                            if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                                setUpTransactionStatusFragment(mTransactionResponse);
+                            } else {
+                                SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+                            }
                         } catch (NullPointerException ex) {
                             Logger.e("transaction error is " + errorMessage);
                         }
@@ -271,7 +276,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
-
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
@@ -298,5 +302,15 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      */
     private void setResultAndFinish() {
         setResultAndFinish(this.mTransactionResponse, errorMessage);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment.equals(STATUS_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
+        super.onBackPressed();
     }
 }

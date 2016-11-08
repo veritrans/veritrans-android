@@ -178,7 +178,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
 
-        if(!midtransSDK.getUIkitCustomSetting().isShowPaymentStatus()){
+        if (!midtransSDK.getUICustomSetting().isShowPaymentStatus()) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;
@@ -209,6 +209,13 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
     private void setUpTransactionFragment(final TransactionResponse
                                                   transactionResponse) {
+
+        if (!midtransSDK.getUICustomSetting().isShowPaymentStatus()) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
+
         if (transactionResponse != null) {
             // setup transaction fragment
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -248,12 +255,16 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onFailure(TransactionResponse response, String reason) {
+                KiosonActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                KiosonActivity.this.transactionResponse = response;
                 SdkUIFlowUtil.hideProgressDialog();
 
                 try {
-                    KiosonActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                    KiosonActivity.this.transactionResponse = response;
-                    SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + errorMessage);
+                    if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                        setUpTransactionStatusFragment(response);
+                    } else {
+                        SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + errorMessage);
+                    }
                 } catch (NullPointerException ex) {
                     Logger.e(TAG, "transaction error is " + ex.getMessage());
                 }
@@ -292,5 +303,15 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
      */
     private void setResultAndFinish() {
         setResultAndFinish(transactionResponse, errorMessage);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment.equals(STATUS_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
+        super.onBackPressed();
     }
 }

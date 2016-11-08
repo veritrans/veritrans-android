@@ -251,7 +251,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
-        if (!mMidtransSDK.getUIkitCustomSetting().isShowPaymentStatus()) {
+        if (!mMidtransSDK.getUICustomSetting().isShowPaymentStatus()) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;
@@ -518,12 +518,15 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void actionPaymentFailure(TransactionResponse response, String reason) {
+        SdkUIFlowUtil.hideProgressDialog();
         try {
             BankTransferActivity.this.errorMessage = getString(R.string.message_payment_failed);
             BankTransferActivity.this.transactionResponse = response;
-
-            SdkUIFlowUtil.hideProgressDialog();
-            SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+            if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                setUpTransactionStatusFragment(response);
+            } else {
+                SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+            }
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);
         }

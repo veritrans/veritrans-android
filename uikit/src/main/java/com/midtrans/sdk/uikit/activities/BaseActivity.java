@@ -86,7 +86,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void initPaymentStatus(TransactionResponse transactionResponse, String errorMessage, boolean addToBackStack) {
-        if (MidtransSDK.getInstance().getUIkitCustomSetting().isShowPaymentStatus()) {
+        if (MidtransSDK.getInstance().getUICustomSetting().isShowPaymentStatus()) {
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponse);
             replaceFragment(paymentTransactionStatusFragment, R.id.card_container, addToBackStack, false);
@@ -109,7 +109,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void initBankTransferPaymentStatus(TransactionResponse transactionResponse, String errorMessage, int paymentMethod, String statusFragment) {
-        if (MidtransSDK.getInstance().getUIkitCustomSetting().isShowPaymentStatus()) {
+        if (MidtransSDK.getInstance().getUICustomSetting().isShowPaymentStatus()) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             BankTransactionStatusFragment bankTransactionStatusFragment =

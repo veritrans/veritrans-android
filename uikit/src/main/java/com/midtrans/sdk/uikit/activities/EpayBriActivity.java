@@ -30,7 +30,6 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     private static final int PAYMENT_WEB_INTENT = 150;
     private static final String STATUS_FRAGMENT = "status";
     private static final String HOME_FRAGMENT = "home";
-    private static int RESULT_CODE = RESULT_CANCELED;
     private Button btConfirmPayment = null;
     private Toolbar toolbar = null;
     private MidtransSDK midtransSDK = null;
@@ -145,13 +144,18 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
             public void onFailure(TransactionResponse response, String reason) {
                 SdkUIFlowUtil.hideProgressDialog();
                 EpayBriActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
+                if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                    setResultCode(RESULT_OK);
+                    setResultAndFinish();
+                } else {
+                    SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
+                }
             }
 
             @Override
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
-                EpayBriActivity.this.errorMessage =  getString(R.string.message_payment_failed);
+                EpayBriActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
             }
         });
@@ -186,9 +190,4 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         setResult(RESULT_CODE, data);
         finish();
     }
-
-    public void setResultCode(int resultCode) {
-        RESULT_CODE = resultCode;
-    }
-
 }

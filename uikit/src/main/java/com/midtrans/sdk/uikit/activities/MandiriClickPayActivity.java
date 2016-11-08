@@ -1,6 +1,5 @@
 package com.midtrans.sdk.uikit.activities;
 
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -25,7 +24,6 @@ import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.BankTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.MandiriClickPayFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -139,18 +137,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            if (currentFragment.equals(STATUS_FRAGMENT)) {
-                if (mButtonConfirmPayment.getText().toString().equalsIgnoreCase(getString(R.string.retry))) {
-                    //finish();
-                    Logger.i("on retry pressed");
-                    setResultAndFinish();
-                } else {
-                    setResultCode(RESULT_OK);
-                    setResultAndFinish();
-                }
-            } else {
-                onBackPressed();
-            }
+            onBackPressed();
         }
         return true;
     }
@@ -328,6 +315,21 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
         if (mButtonConfirmPayment != null) {
             mButtonConfirmPayment.setText(getResources().getString(R.string.retry));
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment.equals(STATUS_FRAGMENT)) {
+            if (mButtonConfirmPayment.getText().toString().equalsIgnoreCase(getString(R.string.retry))) {
+                Logger.i("on retry pressed");
+                setResultAndFinish();
+            } else {
+                setResultCode(RESULT_OK);
+                setResultAndFinish();
+            }
+        } else {
+            super.onBackPressed();
         }
     }
 }

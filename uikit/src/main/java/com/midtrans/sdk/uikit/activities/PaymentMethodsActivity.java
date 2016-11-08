@@ -435,7 +435,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
                     } else if (response.getStatusCode().equals(getString(R.string.failed_code_400))){
-                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_EXPIRED));
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_INVALID));
                     }
                     else {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));

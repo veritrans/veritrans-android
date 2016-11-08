@@ -107,12 +107,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            if (currentFragmentName.equals(STATUS_FRAGMENT)) {
-                setResultCode(RESULT_OK);
-                setResultAndFinish();
-            } else {
-                onBackPressed();
-            }
+            onBackPressed();
         }
         return false;
     }
@@ -150,7 +145,12 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
                 SdkUIFlowUtil.hideProgressDialog();
                 MandiriECashActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 MandiriECashActivity.this.transactionResponse = response;
-                SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+
+                if (response != null && response.equals(getString(R.string.failed_code_400))) {
+                    initPaymentStatus(transactionResponse, errorMessage, false);
+                } else {
+                    SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+                }
             }
 
             @Override
@@ -195,5 +195,14 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (currentFragmentName.equals(STATUS_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
+        super.onBackPressed();
+    }
 }
 

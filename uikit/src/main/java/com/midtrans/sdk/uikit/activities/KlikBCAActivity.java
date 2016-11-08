@@ -124,8 +124,14 @@ public class KlikBCAActivity extends BaseActivity {
                                     @Override
                                     public void onFailure(TransactionResponse response, String reason) {
                                         errorMessage = getString(R.string.message_payment_cannot_proccessed);
+                                        transactionResponse = response;
                                         SdkUIFlowUtil.hideProgressDialog();
-                                        SdkUIFlowUtil.showSnackbar(KlikBCAActivity.this, errorMessage);
+
+                                        if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                                            setUpTransactionStatusFragment(response);
+                                        } else {
+                                            SdkUIFlowUtil.showSnackbar(KlikBCAActivity.this, errorMessage);
+                                        }
                                     }
 
                                     @Override
@@ -187,5 +193,20 @@ public class KlikBCAActivity extends BaseActivity {
         }
 
         return false;
+    }
+
+    public void activateRetry() {
+        if (mButtonConfirmPayment != null) {
+            mButtonConfirmPayment.setText(getResources().getString(R.string.retry));
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment.equals(STATUS_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish(transactionResponse, errorMessage);
+        }
+        super.onBackPressed();
     }
 }

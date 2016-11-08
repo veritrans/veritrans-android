@@ -168,7 +168,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             callback.onSuccess(transactionResponse);
                             analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
                         } else {
-                            callback.onFailure(transactionResponse, transactionResponse.getStatusMessage());
+                            actionFailedTransaction(callback, transactionResponse);
                             analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, transactionResponse.getStatusMessage());
                         }
                     } else {

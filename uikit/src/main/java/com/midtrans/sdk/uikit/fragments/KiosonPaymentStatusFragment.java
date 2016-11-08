@@ -3,6 +3,8 @@ package com.midtrans.sdk.uikit.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.KiosonActivity;
@@ -105,11 +108,22 @@ public class KiosonPaymentStatusFragment extends Fragment {
                 }
             }
 
-            mTextViewTransactionTime.setText(transactionResponse.getTransactionTime());
-            mTextViewOrderId.setText(transactionResponse.getOrderId());
-            String amount = transactionResponse.getGrossAmount();
-            String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
-            mTextViewAmount.setText(formattedAmount);
+            String transactionTime = transactionResponse.getTransactionTime() == null ? "" : transactionResponse.getTransactionTime();
+            String orderId = transactionResponse.getOrderId() == null ?
+                    MidtransSDK.getInstance().getTransactionRequest().getOrderId() : transactionResponse.getOrderId();
+
+            mTextViewTransactionTime.setText(transactionTime);
+            mTextViewOrderId.setText(orderId);
+
+            try {
+                String amount = transactionResponse.getGrossAmount();
+                if (!TextUtils.isEmpty(amount)) {
+                    String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
+                    mTextViewAmount.setText(formattedAmount);
+                }
+            } catch (NullPointerException e) {
+                Log.e("BankTransactionStatus", e.getMessage());
+            }
 
             //noinspection StatementWithEmptyBody
             if (transactionResponse.getTransactionStatus().contains("Pending") ||
@@ -121,6 +135,23 @@ public class KiosonPaymentStatusFragment extends Fragment {
             } else {
 
                 setUiForFailure();
+
+                if (transactionResponse.getTransactionStatus().equalsIgnoreCase("deny")) {
+                    mTextViewTransactionStatus.setText(getString(R.string.status_denied));
+                } else if (transactionResponse.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                    String message = "";
+                    if (transactionResponse.getValidationMessages() != null && !transactionResponse.getValidationMessages().isEmpty()) {
+                        message = transactionResponse.getValidationMessages().get(0);
+                    }
+
+                    if (!TextUtils.isEmpty(message) && message.toLowerCase().contains(getString(R.string.label_expired))) {
+                        mTextViewPaymentErrorMessage.setText(getString(R.string.message_payment_expired));
+                        mTextViewTransactionStatus.setText(getString(R.string.status_expired));
+                    } else {
+                        mTextViewTransactionStatus.setText(getString(R.string.payment_unsuccessful));
+                        mTextViewPaymentErrorMessage.setText(getString(R.string.message_cannot_proccessed));
+                    }
+                }
 
                 if (getActivity() != null) {
 

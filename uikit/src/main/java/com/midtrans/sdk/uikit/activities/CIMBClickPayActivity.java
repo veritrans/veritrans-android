@@ -40,7 +40,6 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private int RESULT_CODE = RESULT_CANCELED;
     private int position = Constants.PAYMENT_METHOD_CIMB_CLICKS;
 
     private FragmentManager fragmentManager;
@@ -151,9 +150,14 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
                 try {
                     CIMBClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                     CIMBClickPayActivity.this.transactionResponse = response;
-
                     SdkUIFlowUtil.hideProgressDialog();
-                    SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
+
+                    if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                        setResultCode(RESULT_OK);
+                        setResultAndFinish();
+                    } else {
+                        SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
+                    }
                 } catch (NullPointerException ex) {
                     SdkUIFlowUtil.showApiFailedMessage(CIMBClickPayActivity.this, getString(R.string.message_payment_failed));
                 }
@@ -198,7 +202,9 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         finish();
     }
 
-    public void setResultCode(int resultCode) {
-        this.RESULT_CODE = resultCode;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
