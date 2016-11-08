@@ -4,9 +4,9 @@ package com.midtrans.sdk.corekit.core;
  * Created by ziahaqi on 11/4/16.
  */
 
-public class UIkitCustomSetting {
+public class UIKitCustomSetting {
 
-    private boolean showPaymentStatus;
+    private boolean showPaymentStatus = true;
 
     public boolean isShowPaymentStatus() {
         return showPaymentStatus;

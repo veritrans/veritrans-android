@@ -251,7 +251,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
-        if (!mMidtransSDK.getUICustomSetting().isShowPaymentStatus()) {
+        if (!mMidtransSDK.getUIKitCustomSetting().isShowPaymentStatus()) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;

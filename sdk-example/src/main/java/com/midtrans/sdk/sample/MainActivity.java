@@ -13,7 +13,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
-import com.midtrans.sdk.corekit.core.UICustomSetting;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     .buildSDK();
         } else {
 //            init custom setting if needed
-            UICustomSetting uisetting = new UICustomSetting();
+            UIKitCustomSetting uisetting = new UIKitCustomSetting();
             uisetting.setShowPaymentStatus(true);
 
             // SDK initiation for UIflow

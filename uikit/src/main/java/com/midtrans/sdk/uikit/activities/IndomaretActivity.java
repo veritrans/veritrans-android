@@ -170,7 +170,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
 
-        if (!midtransSDK.getUICustomSetting().isShowPaymentStatus()) {
+        if (!midtransSDK.getUIKitCustomSetting().isShowPaymentStatus()) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;

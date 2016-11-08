@@ -178,7 +178,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
 
-        if (!midtransSDK.getUICustomSetting().isShowPaymentStatus()) {
+        if (!midtransSDK.getUIKitCustomSetting().isShowPaymentStatus()) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;
@@ -210,7 +210,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
     private void setUpTransactionFragment(final TransactionResponse
                                                   transactionResponse) {
 
-        if (!midtransSDK.getUICustomSetting().isShowPaymentStatus()) {
+        if (!midtransSDK.getUIKitCustomSetting().isShowPaymentStatus()) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;
