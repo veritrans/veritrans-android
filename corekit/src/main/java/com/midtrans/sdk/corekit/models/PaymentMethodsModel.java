@@ -21,6 +21,13 @@ public class PaymentMethodsModel {
         this.priority = priority;
     }
 
+    public PaymentMethodsModel(String name) {
+        this.name = name;
+        this.imageId = -1;
+        this.paymentType = -1;
+        this.priority = -1;
+    }
+
     public String getName() {
         return name;
     }

@@ -19,12 +19,18 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
 import com.midtrans.sdk.corekit.models.BBMUrlEncodeJson;
+import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
+import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.models.SectionedPaymentMethod;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -366,4 +372,28 @@ public class SdkUIFlowUtil {
         return color;
     }
 
+
+    public static void sortSectionedPaymentMethod(ArrayList<SectionedPaymentMethod> data) {
+        Collections.sort(data, new Comparator<SectionedPaymentMethod>() {
+            @Override
+            public int compare(SectionedPaymentMethod lhs, SectionedPaymentMethod rhs) {
+                return lhs.getModel().getPriority().compareTo(rhs.getModel().getPriority());
+            }
+        });
+    }
+
+    public static void filterSectionedPaymentMethods(ArrayList<SectionedPaymentMethod> data) {
+
+        ArrayList<SectionedPaymentMethod> filteredPaymentMethod = new ArrayList<>();
+        for(SectionedPaymentMethod paymentMethod: data){
+            if(paymentMethod.getType() == PaymentMethods.TYPE_SECTION){
+                SectionedPaymentMethod itemFiltered = findPaymentMethodsBySection(data, paymentMethod.getType());
+            }
+        }
+    }
+
+    private static SectionedPaymentMethod findPaymentMethodsBySection(ArrayList<SectionedPaymentMethod> data, int type) {
+
+        return null;
+    }
 }

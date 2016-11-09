@@ -6,6 +6,7 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
+import com.midtrans.sdk.uikit.models.SectionedPaymentMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,16 @@ import java.util.List;
  * @author rakawm
  */
 public class PaymentMethods {
+
+    public static final int SECTION_TYPE_CARD = 1;
+    public static final int SECTION_TYPE_VA = 2;
+    public static final int SECTION_TYPE_DIRECT_DEBIT = 3;
+    public static final int SECTION_TYPE_EWALET = 4;
+    public static final int SECTION_TYPE_CSTORE = 5;
+
+    public static final int TYPE_SECTION = 1;
+    public static final int TYPE_ITEM = 2;
+
 
     public static PaymentMethodsModel getMethods(Context context, String name) {
         if (name.equals(context.getString(R.string.payment_credit_debit))) {
@@ -144,5 +155,47 @@ public class PaymentMethods {
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_telkomsel_cash), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_xl_tunai), null));
         return paymentNameList;
+    }
+
+    public static ArrayList<SectionedPaymentMethod> getSections(Context context) {
+        ArrayList<SectionedPaymentMethod> sections = new ArrayList<>();
+        sections.add(SectionedPaymentMethod.createSection(new PaymentMethodsModel(context.getString(R.string.section_card)), SECTION_TYPE_CARD));
+        sections.add(SectionedPaymentMethod.createSection(new PaymentMethodsModel(context.getString(R.string.section_va)), SECTION_TYPE_VA));
+        sections.add(SectionedPaymentMethod.createSection(new PaymentMethodsModel(context.getString(R.string.section_direct_debit)), SECTION_TYPE_DIRECT_DEBIT));
+        sections.add(SectionedPaymentMethod.createSection(new PaymentMethodsModel(context.getString(R.string.section_ewallet)), SECTION_TYPE_EWALET));
+        sections.add(SectionedPaymentMethod.createSection(new PaymentMethodsModel(context.getString(R.string.section_cstore)), SECTION_TYPE_CSTORE));
+        return  sections;
+    }
+
+    public static SectionedPaymentMethod getSectionedPaymentMethod(Context context, String name) {
+        if (name.equals(context.getString(R.string.payment_credit_debit))) {
+            return SectionedPaymentMethod.createItem(getMethodCreditCards(context, 1), SECTION_TYPE_CARD);
+        } else if (name.equals(context.getString(R.string.payment_bank_transfer))) {
+            return SectionedPaymentMethod.createItem(getMethodBankTransfer(context, 2), SECTION_TYPE_VA);
+        } else if (name.equals(context.getString(R.string.payment_bca_click))) {
+            return SectionedPaymentMethod.createItem(getMethodBCAKlikpay(context, 3), SECTION_TYPE_DIRECT_DEBIT);
+        } else if (name.equals(context.getString(R.string.payment_klik_bca))) {
+            return SectionedPaymentMethod.createItem(getMethodKlikBCA(context, 4), SECTION_TYPE_DIRECT_DEBIT);
+        } else if (name.equals(context.getString(R.string.payment_epay_bri))) {
+            return SectionedPaymentMethod.createItem(getMethodEpayBRI(context, 5), SECTION_TYPE_DIRECT_DEBIT);
+        } else if (name.equals(context.getString(R.string.payment_cimb_clicks))) {
+            return SectionedPaymentMethod.createItem(getMethodCIMBClicks(context, 6), SECTION_TYPE_DIRECT_DEBIT);
+        } else if (name.equals(context.getString(R.string.payment_mandiri_clickpay))) {
+            return SectionedPaymentMethod.createItem(getMethodMandiriClickpay(context, 7), SECTION_TYPE_DIRECT_DEBIT);
+        } else if (name.equals(context.getString(R.string.payment_indomaret))) {
+            return SectionedPaymentMethod.createItem(getMethodIndomaret(context, 8), SECTION_TYPE_CSTORE);
+        } else if (name.equals(context.getString(R.string.payment_kioson))) {
+            return SectionedPaymentMethod.createItem(getMethodKiosan(context, 9), SECTION_TYPE_CSTORE);
+        } else if (name.equals(context.getString(R.string.payment_telkomsel_cash))) {
+            return SectionedPaymentMethod.createItem(getMethodTelkomselCash(context, 10), SECTION_TYPE_EWALET);
+        } else if (name.equals(context.getString(R.string.payment_mandiri_ecash))) {
+            return SectionedPaymentMethod.createItem(getMethodMandiriECash(context, 11), SECTION_TYPE_EWALET);
+        } else if (name.equals(context.getString(R.string.payment_indosat_dompetku))) {
+            return SectionedPaymentMethod.createItem(getMethodIndosatDompetku(context, 12), SECTION_TYPE_EWALET);
+        } else if (name.equals(context.getString(R.string.payment_xl_tunai))) {
+            return SectionedPaymentMethod.createItem(getMethodXLTunai(context, 13), SECTION_TYPE_EWALET);
+        }  else {
+            return null;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -42,7 +43,9 @@ import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.UIFlow;
 import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
+import com.midtrans.sdk.uikit.models.SectionedPaymentMethod;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.squareup.picasso.Picasso;
 
@@ -62,7 +65,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private static final float ALPHA = 0.6f;
     private static final String TAG = PaymentMethodsActivity.class.getSimpleName();
     private static final float PERCENTAGE_TOTAL = 1f;
-    private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
+    private ArrayList<SectionedPaymentMethod> data = new ArrayList<>();
 
     private MidtransSDK midtransSDK = null;
     private boolean isHideToolbarView = false;
@@ -292,9 +295,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (data.isEmpty()) {
             showErrorAlertDialog(getString(R.string.message_payment_method_empty));
         } else if (data.size() == 1) {
-            startPaymentMethod(data.get(0));
+//            startPaymentMethod(data.get(0));
         } else {
-            paymentMethodsAdapter.setData(data);
+//            paymentMethodsAdapter.setData(data);
         }
     }
 
@@ -389,7 +392,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             if (enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer))) {
                 bankTrasfers.add(enabledPayment.getType());
             } else {
-                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType());
+                SectionedPaymentMethod model = PaymentMethods.getSectionedPaymentMethod(this, enabledPayment.getType());
                 if (model != null) {
                     data.add(model);
                 }
@@ -397,9 +400,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         }
 
         if (!bankTrasfers.isEmpty()) {
-            data.add(PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer)));
+            data.add(PaymentMethods.getSectionedPaymentMethod(this, getString(R.string.payment_bank_transfer)));
         }
-        SdkUtil.sortPaymentMethodsByPriority(data);
+
+        SdkUIFlowUtil.filterSectionedPaymentMethods(data);
+
     }
 
 
@@ -503,7 +508,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         progressContainer.setVisibility(View.GONE);
         List<EnabledPayment> paymentMethods = PaymentMethods.getDefaultPaymentList(this);
         initialiseAdapterData(paymentMethods);
-        paymentMethodsAdapter.setData(data);
+//        paymentMethodsAdapter.setData(data);
     }
 
     private void showErrorMessage() {
@@ -585,4 +590,5 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }, 50);
         }
     }
+
 }

@@ -19,7 +19,8 @@ import java.util.ArrayList;
  * Created by shivam on 10/19/15.
  */
 public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAdapter.PaymentViewHolder> {
-
+    public static final String LABEL_TYPE = "type";
+    public static final String LABEL_ITEM = "item";
     private static final String TAG = PaymentMethodsAdapter.class.getSimpleName();
 
     private ArrayList<PaymentMethodsModel> data = null;
