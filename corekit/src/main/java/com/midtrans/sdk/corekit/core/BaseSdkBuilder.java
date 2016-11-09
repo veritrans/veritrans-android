@@ -15,7 +15,7 @@ public abstract class BaseSdkBuilder<T> {
     protected String clientKey = null;
     protected Context context = null;
     protected boolean enableLog = false;
-    protected boolean enableBuiltInTokenStorage = true;
+    protected boolean enableBuiltInTokenStorage = false;
     protected String merchantServerUrl = null;
     protected String colorTheme = null;
     protected int colorThemeResourceId = 0;
