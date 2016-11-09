@@ -1,23 +1,27 @@
 package com.midtrans.sdk.corekit.models.snap;
 
+import com.google.gson.annotations.SerializedName;
+
+import com.midtrans.sdk.corekit.models.MerchantPreferences;
+
+import java.util.List;
+
 /**
  * @author rakawm
  */
 public class MerchantData {
-    private String displayName;
+    private MerchantPreferences preference;
+    @SerializedName("client_key")
     private String clientKey;
-    private String finishUrl;
-    private String errorUrl;
-    private String unFinishUrl;
-    private String logoUrl;
-    private String locale;
+    @SerializedName("enabled_principles")
+    private List<String> enabledPrinciples;
 
-    public String getDisplayName() {
-        return displayName;
+    public MerchantPreferences getPreference() {
+        return preference;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setPreference(MerchantPreferences preference) {
+        this.preference = preference;
     }
 
     public String getClientKey() {
@@ -28,43 +32,11 @@ public class MerchantData {
         this.clientKey = clientKey;
     }
 
-    public String getFinishUrl() {
-        return finishUrl;
+    public List<String> getEnabledPrinciples() {
+        return enabledPrinciples;
     }
 
-    public void setFinishUrl(String finishUrl) {
-        this.finishUrl = finishUrl;
-    }
-
-    public String getErrorUrl() {
-        return errorUrl;
-    }
-
-    public void setErrorUrl(String errorUrl) {
-        this.errorUrl = errorUrl;
-    }
-
-    public String getUnFinishUrl() {
-        return unFinishUrl;
-    }
-
-    public void setUnFinishUrl(String unFinishUrl) {
-        this.unFinishUrl = unFinishUrl;
-    }
-
-    public String getLogoUrl() {
-        return logoUrl;
-    }
-
-    public void setLogoUrl(String logoUrl) {
-        this.logoUrl = logoUrl;
-    }
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
+    public void setEnabledPrinciples(List<String> enabledPrinciples) {
+        this.enabledPrinciples = enabledPrinciples;
     }
 }

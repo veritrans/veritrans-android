@@ -161,6 +161,11 @@ public class CardDetailFragment extends Fragment {
             payNowFrontBt.setVisibility(View.GONE);
         }
         deleteIv = (ImageButton) view.findViewById(R.id.image_delete_card);
+        if (midtransSDK.isEnableBuiltInTokenStorage()) {
+            deleteIv.setVisibility(View.GONE);
+        } else {
+            deleteIv.setVisibility(View.VISIBLE);
+        }
         deleteIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,9 +229,9 @@ public class CardDetailFragment extends Fragment {
 
             if (activity != null) {
                 CardTokenRequest request = new CardTokenRequest();
-                request.setSavedTokenId(cardDetail.getSavedTokenId());
+                request.setCardNumber(cardDetail.getMaskedCard());
                 if (activity instanceof CreditDebitCardFlowActivity) {
-                    ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(request);
+                    ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(cardDetail.getMaskedCard());
                 } else if (activity instanceof OffersActivity) {
                     ((OffersActivity) getActivity()).oneClickPayment(request);
                 }

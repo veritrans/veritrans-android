@@ -21,14 +21,9 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.BCAKlikPayInstructionFragment;
-import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author rakawm
@@ -45,7 +40,6 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private int RESULT_CODE = RESULT_CANCELED;
 
     private FragmentManager fragmentManager;
     private String currentFragmentName = "";
@@ -105,14 +99,18 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
         // setup  fragment
         bcaKlikPayInstructionFragment = new BCAKlikPayInstructionFragment();
-        replaceFragment(bcaKlikPayInstructionFragment, R.id.instruction_container, true, false);
+        replaceFragment(bcaKlikPayInstructionFragment, R.id.instruction_container, false, false);
     }
 
 
     @Override
     public void onBackPressed() {
+        if (currentFragmentName.equals(STATUS_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
         super.onBackPressed();
-        finish();
     }
 
 
@@ -120,8 +118,6 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            setResultCode(RESULT_OK);
-            setResultAndFinish();
             onBackPressed();
         }
         return false;
@@ -159,9 +155,15 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                 try {
                     BCAKlikPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                     BCAKlikPayActivity.this.transactionResponse = response;
-
                     SdkUIFlowUtil.hideProgressDialog();
-                    SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
+
+                    if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                        transactionResponseFromMerchant = response;
+                        setResultCode(RESULT_OK);
+                        setResultAndFinish();
+                    } else {
+                        SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
+                    }
                 } catch (NullPointerException ex) {
                     SdkUIFlowUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string.empty_transaction_response));
                 }
@@ -185,15 +187,11 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         if (resultCode == RESULT_OK) {
             currentFragmentName = STATUS_FRAGMENT;
-            mToolbar.setNavigationIcon(closeIcon);
-            setSupportActionBar(mToolbar);
-            transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
-                    mMidtransSDK.getTransactionRequest().getOrderId(), String.valueOf(mMidtransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_bca_click), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponseFromMerchant);
-            replaceFragment(paymentTransactionStatusFragment, R.id.instruction_container, true, false);
-            buttonConfirmPayment.setVisibility(View.GONE);
+            transactionResponseFromMerchant = transactionResponse;
+            RESULT_CODE = RESULT_OK;
+            setResultAndFinish();
         } else if (resultCode == RESULT_CANCELED) {
+            currentFragmentName = STATUS_FRAGMENT;
             RESULT_CODE = RESULT_OK;
             transactionResponseFromMerchant = transactionResponse;
             setResultAndFinish();

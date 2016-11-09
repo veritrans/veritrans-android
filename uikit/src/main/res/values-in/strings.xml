@@ -115,6 +115,8 @@
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
     <string name="payment_pending">Menunggu Pembayaran!</string>
+    <string name="payment_challenged">Pembayaran sedang diproses</string>
+    <string name="what_is_cvv">Apa itu CVV?</string>
     <string name="transactionTime">Waktu Transaksi</string>
     <string name="paymentType">Tipe Pembayaran</string>
     <string name="tab_mandiri">Mandiri/ATM Bersama</string>
@@ -408,4 +410,10 @@
     <string name="message_payment_denied">Transaksi anda ditolak! Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
     <string name="validation_message_please_fillup_form">Silakan isi dengan informasi yang tepat.</string>
     <string name="message_getcard_token_failed">Gagal autentikasi</string>
+    <string name="message_payment_not_completed">Informasi pembayaran tidak lengkap!</string>
+    <string name="message_payment_method_empty">Tidak ada metode pembayaran yang diaktifkan!</string>
+    <string name="message_payment_expired">Halaman pembayaran kadaluarsa</string>
+    <string name="status_denied">Ditolak</string>
+    <string name="status_expired">Kadaluarsa</string>
+    <string name="message_cannot_proccessed">Transaksi anda tidak dapat diproses.</string>
 </resources>

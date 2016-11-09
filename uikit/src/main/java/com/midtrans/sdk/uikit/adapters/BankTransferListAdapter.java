@@ -22,10 +22,14 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
     private ArrayList<BankTransferModel> mData = new ArrayList<>();
     private BankTransferAdapterListener listener;
 
-    public BankTransferListAdapter(BankTransferAdapterListener listener, ArrayList<BankTransferModel> data) {
+    public BankTransferListAdapter(BankTransferAdapterListener listener) {
         this.listener = listener;
+    }
+
+    public void setData(ArrayList<BankTransferModel> banktransfers){
         this.mData.clear();
-        this.mData.addAll(data);
+        this.mData.addAll(banktransfers);
+        this.notifyDataSetChanged();
     }
 
     public BankTransferModel getItem(int position) {

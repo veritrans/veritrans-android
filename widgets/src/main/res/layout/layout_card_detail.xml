@@ -30,7 +30,7 @@
                 android:clickable="true"
                 android:contentDescription="@string/description_delete_card"
                 android:src="@drawable/delete"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/image_new_card"
@@ -83,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:gravity="start"
-                        android:text="@string/text_sample_card_expiry"
+                        android:text="@string/text_saved_card_expiry"
                         android:textColor="@android:color/white"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -138,7 +138,7 @@
                     android:id="@+id/edit_cvv"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.7"
+                    android:layout_weight="0.4"
                     android:background="@color/white"
                     android:hint="@string/hint_input_cvv"
                     android:inputType="numberPassword"

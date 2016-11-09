@@ -76,15 +76,16 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         // setUp recyclerView
         ArrayList<String> banks = getIntent().getStringArrayListExtra(EXTRA_BANK);
         if (banks != null && banks.size() > 0) {
-            initialiseAdapterData(banks);
+            initialiseBankTransfersModel(banks);
+            if (data.size() == 1) {
+                startBankTransferPayment(data.get(0));
+            } else {
+                adapter.setData(this.data);
+            }
         } else {
-            initialiseAdapterData();
+            initialiseBankTransfersModel();
+            adapter.setData(this.data);
         }
-        adapter = new BankTransferListAdapter(this, data);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setAdapter(adapter);
     }
 
     /**
@@ -94,15 +95,20 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_bank_list);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        adapter = new BankTransferListAdapter(this);
+        mRecyclerView.setAdapter(adapter);
     }
 
     /**
      * initialize adapter data model by dummy values.
      */
-    private void initialiseAdapterData(List<String> banks) {
+    private void initialiseBankTransfersModel(List<String> banks) {
         data.clear();
         if (banks.size() > 0) {
-
             for (String bank : banks) {
                 BankTransferModel model = PaymentMethods.getBankTransferModel(this, bank);
                 if (model != null) {
@@ -115,7 +121,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
     /**
      * initialize adapter data model by dummy values.
      */
-    private void initialiseAdapterData() {
+    private void initialiseBankTransfersModel() {
         data.clear();
         for (BankTransferModel model : PaymentMethods.getBankTransferList(this)) {
             if (model != null) {
@@ -149,6 +155,15 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
             if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK, data);
                 finish();
+            } else if (resultCode == RESULT_CANCELED) {
+                if (data == null) {
+                    if (this.data.size() == 1) {
+                        finish();
+                    }
+                } else {
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
             }
 
         } else {
@@ -163,8 +178,11 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
     @Override
     public void onItemClick(int position) {
         BankTransferModel item = adapter.getItem(position);
-        String name = item.getBankName();
+        startBankTransferPayment(item);
+    }
 
+    private void startBankTransferPayment(BankTransferModel item) {
+        String name = item.getBankName();
         if (name.equals(getString(R.string.bca_bank_transfer))) {
 
             Intent startBankPayment = new Intent(this, BankTransferActivity.class);

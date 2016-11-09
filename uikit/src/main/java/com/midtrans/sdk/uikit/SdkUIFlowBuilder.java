@@ -5,6 +5,7 @@ import android.content.Context;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.BaseSdkBuilder;
 import com.midtrans.sdk.corekit.core.IScanner;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 
 import java.util.ArrayList;
@@ -39,19 +40,16 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
         return this;
     }
 
-    @Override
     public SdkUIFlowBuilder setBoldText(String boldText) {
         this.boldText = boldText;
         return this;
     }
 
-    @Override
     public SdkUIFlowBuilder setSemiBoldText(String semiBoldText) {
         this.semiBoldText = semiBoldText;
         return this;
     }
 
-    @Override
     public SdkUIFlowBuilder setDefaultText(String defaultText) {
         this.defaultText = defaultText;
         return this;
@@ -68,4 +66,13 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
         return this;
     }
 
+    public SdkUIFlowBuilder useBuiltInTokenStorage(boolean enableBuiltInTokenStorage) {
+        this.enableBuiltInTokenStorage = enableBuiltInTokenStorage;
+        return this;
+    }
+
+    public SdkUIFlowBuilder setUIkitCustomSetting(UIKitCustomSetting setting) {
+        this.UIKitCustomSetting = setting;
+        return this;
+    }
 }

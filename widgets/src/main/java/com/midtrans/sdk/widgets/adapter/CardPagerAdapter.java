@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.widgets.R;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 /**
  * Created by ziahaqi on 9/13/16.
  */
-public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>{
+public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder> {
     private ArrayList<SaveCardRequest> cardDetails = new ArrayList<>();
     private CardPagerListner listner;
     private String cardCVV = "";
@@ -34,10 +34,6 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
 
     public CardPagerAdapter(CardPagerListner listner) {
         this.listner = listner;
-    }
-
-    public boolean checkCardValidity() {
-        return !TextUtils.isEmpty(this.cardCVV);
     }
 
     public String getCardCVV() {
@@ -54,7 +50,7 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
 
     @Override
     public int getItemPosition(Object object) {
-        int index = cardDetails.indexOf (object);
+        int index = cardDetails.indexOf(object);
         if (index == -1)
             return POSITION_NONE;
         else
@@ -77,25 +73,32 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         cardCVV = "";
-        holder.show(cardDetails.get(position));
+        SaveCardRequest card = cardDetails.get(position);
+        holder.textCardNumber.setText(card.getMaskedCard().replace("-", "XXXXXX"));
         holder.editCardDetailcvv.setText("");
         holder.layoutImageCardFront.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                flipCard(holder.layoutImageCardFront.getContext(), holder);
+                SaveCardRequest card = cardDetails.get(position);
+                if (card.getType().equals(view.getContext().getString(R.string.saved_card_two_click))) {
+                    flipCard(view.getContext(), holder);
+                }
             }
         });
         holder.layoutImageCardBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                flipCard(holder.layoutImageCardBack.getContext(), holder);
+                SaveCardRequest card = cardDetails.get(position);
+                if (card.getType().equals(view.getContext().getString(R.string.saved_card_two_click))) {
+                    flipCard(view.getContext(), holder);
+                }
             }
         });
 
         holder.imageNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listner != null){
+                if (listner != null) {
                     listner.onAddNew();
                 }
             }
@@ -103,7 +106,7 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
         holder.imageDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listner != null){
+                if (listner != null) {
                     listner.onDelete(cardDetails.get(position));
                 }
             }
@@ -138,7 +141,7 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
         super.setPrimaryItem(container, position, object);
     }
 
-    public int addViews(ViewPager pager, ArrayList<SaveCardRequest> items){
+    public int addViews(ViewPager pager, ArrayList<SaveCardRequest> items) {
         pager.setAdapter(null);
         cardDetails.clear();
         cardDetails.addAll(items);
@@ -147,31 +150,29 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
         return (cardDetails.size() - 1);
     }
 
-    public int addView(SaveCardRequest item){
+    public int addView(SaveCardRequest item) {
         return addView(item, cardDetails.size());
     }
 
-    private int addView(SaveCardRequest item, int position){
+    private int addView(SaveCardRequest item, int position) {
         cardDetails.add(position, item);
         return position;
     }
 
-    public int removeView(ViewPager pager, SaveCardRequest card){
+    public int removeView(ViewPager pager, SaveCardRequest card) {
         return removeView(pager, cardDetails.indexOf(card));
     }
 
-    private int removeView (ViewPager pager, int position)
-    {
-        pager.setAdapter (null);
-        cardDetails.remove (position);
-        pager.setAdapter (this);
+    private int removeView(ViewPager pager, int position) {
+        pager.setAdapter(null);
+        cardDetails.remove(position);
+        pager.setAdapter(this);
         this.notifyDataSetChanged();
         return position;
     }
 
-    public SaveCardRequest getCurrentItem(ViewPager pager)
-    {
-        return cardDetails.get (pager.getCurrentItem());
+    public SaveCardRequest getCurrentItem(ViewPager pager) {
+        return cardDetails.get(pager.getCurrentItem());
     }
 
     private void flipCard(final Context context, final MyViewHolder holder) {
@@ -239,9 +240,11 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
         ImageView imageDelete, imageNew;
         RelativeLayout layoutImageCardFront, layoutImageCardBack, layoutCardList;
         EditText editCardDetailcvv;
+        TextView textCardNumber;
 
         public MyViewHolder(View convertView) {
             super(convertView);
+            textCardNumber = (TextView) convertView.findViewById(R.id.text_card_number);
             layoutImageCardBack = (RelativeLayout) convertView.findViewById(R.id.card_container_back_side);
             layoutImageCardFront = (RelativeLayout) convertView.findViewById(R.id.card_container_front_side);
             layoutCardList = (RelativeLayout) convertView.findViewById(R.id.layout_card_list);
@@ -250,8 +253,5 @@ public class CardPagerAdapter extends BaseAdapter<CardPagerAdapter.MyViewHolder>
             editCardDetailcvv = (EditText) convertView.findViewById(R.id.edit_cvv);
         }
 
-        public void show(SaveCardRequest card) {
-            // TODO: update views with foo
-        }
     }
 }

@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/instruction_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.AppBarLayout
@@ -19,18 +19,20 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/main_collapsing"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:background="?colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <LinearLayout
                 android:id="@+id/container_collapsing"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/sixtyfour_dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="?actionBarSize"
                 android:orientation="vertical"
+                android:paddingBottom="@dimen/sixteen_dp"
                 android:paddingLeft="@dimen/sixteen_dp"
                 android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/sixteen_dp"
                 app:layout_collapseMode="parallax">
 
                 <LinearLayout
@@ -104,13 +106,6 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/secondary_text_size" />
                 </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="bottom">
-
-                </RelativeLayout>
             </LinearLayout>
 
             <android.support.v7.widget.Toolbar

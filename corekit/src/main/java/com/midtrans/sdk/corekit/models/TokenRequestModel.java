@@ -24,6 +24,12 @@ public class TokenRequestModel {
     @SerializedName("credit_card")
     private CreditCard creditCard;
 
+    @SerializedName("user_id")
+    private String userId;
+
+    private ExpiryModel expiry;
+    private Object custom;
+
     public TokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails,
                              CustomerDetails customerDetails) {
         this.transactionDetails = transactionDetails;
@@ -77,4 +83,27 @@ public class TokenRequestModel {
         return json;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public ExpiryModel getExpiry() {
+        return expiry;
+    }
+
+    public void setExpiry(ExpiryModel expiry) {
+        this.expiry = expiry;
+    }
+
+    public Object getCustom() {
+        return custom;
+    }
+
+    public void setCustom(Object custom) {
+        this.custom = custom;
+    }
 }

@@ -43,13 +43,6 @@
         <activity
             android:name="com.midtrans.sdk.uikit.activities.IndomaretActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.NotificationActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.BBMMoneyActivity"
-            android:screenOrientation="portrait" />
-
 
         <activity
             android:name="com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity"
