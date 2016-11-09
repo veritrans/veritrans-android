@@ -34,18 +34,19 @@ import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
-import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
-import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.MandiriClickPayPaymentParams;
-import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
+import com.midtrans.sdk.corekit.utilities.Utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -539,10 +540,21 @@ public class SdkUtil {
 
         SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), (int) transactionRequest.getAmount());
 
-        return new TokenRequestModel(
-                details,
-                transactionRequest.getItemDetails(),
+        TokenRequestModel requestModel = new TokenRequestModel(details, transactionRequest.getItemDetails(),
                 transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());
+        requestModel.setExpiry(transactionRequest.getExpiry());
+
+        // Set expiry if it's available
+        if (transactionRequest.getExpiry() != null) {
+            requestModel.setExpiry(transactionRequest.getExpiry());
+        }
+
+        // Set custom object if it's available
+        if (transactionRequest.getCustomObject() != null && !transactionRequest.getCustomObject().isEmpty()) {
+            requestModel = Utils.addCustomMapObjectIntoTransaction(requestModel, transactionRequest.getCustomObject());
+        }
+
+        return requestModel;
     }
 
     public static CustomerDetailRequest initializePaymentDetails(TransactionRequest transactionRequest) {
@@ -553,14 +565,14 @@ public class SdkUtil {
         return customerDetailRequest;
     }
 
-    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String cardToken, boolean saveCard, TransactionRequest transactionRequest) {
+    public static CreditCardPaymentRequest getCreditCardPaymentRequest(CreditCardPaymentModel model, TransactionRequest transactionRequest) {
         if (transactionRequest.isUiEnabled()) {
             // get user details only if using default ui
             transactionRequest = initializeUserInfo(transactionRequest);
         }
 
         CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transactionRequest);
-        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(cardToken, saveCard);
+        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(), model.isSavecard(), model.getMaskedCardNumber());
         CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
 
         return paymentRequest;
@@ -573,7 +585,7 @@ public class SdkUtil {
         return paymentRequest;
     }
 
-    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId,  String paymentType) {
+    public static KlikBCAPaymentRequest getKlikBCAPaymentRequest(String userId, String paymentType) {
 
         KlikBCAPaymentRequest klikBCAPaymentRequest = new KlikBCAPaymentRequest(
                 paymentType, new KlikBcaPaymentParams(userId));

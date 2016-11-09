@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.BillingAddress;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * It contains information about transaction like {@literal orderId}, {@literal amount},
@@ -76,7 +78,8 @@ public class TransactionRequest {
      */
     private boolean useUi = true;
     private CreditCard creditCard;
-
+    private Map<String, String> customObject;
+    private ExpiryModel expiry;
 
     /**
      * @param orderId       order id of transaction.
@@ -206,5 +209,21 @@ public class TransactionRequest {
 
     public void setCreditCard(CreditCard creditCard) {
         this.creditCard = creditCard;
+    }
+
+    public Map<String, String> getCustomObject() {
+        return customObject;
+    }
+
+    public void setCustomObject(Map<String, String> customObject) {
+        this.customObject = customObject;
+    }
+
+    public ExpiryModel getExpiry() {
+        return expiry;
+    }
+
+    public void setExpiry(ExpiryModel expiry) {
+        this.expiry = expiry;
     }
 }

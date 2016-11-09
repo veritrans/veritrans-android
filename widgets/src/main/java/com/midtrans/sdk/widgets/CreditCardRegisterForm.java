@@ -382,7 +382,7 @@ public class CreditCardRegisterForm extends LinearLayout {
         // Don't set card type when card number is empty
         String cardNumberText = cardNumber.getText().toString().trim();
         if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 2) {
-            cardNumber.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            logo.setImageResource(0);
             return;
         }
 

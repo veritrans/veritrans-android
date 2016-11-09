@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -41,6 +42,7 @@ import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.PermataBankTransfer;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.utilities.Utils;
 
 import org.junit.Assert;
@@ -66,7 +68,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LocalDataHandler.class, SdkUtil.class, Looper.class, Utils.class, Log.class, TextUtils.class, Logger.class})
+@PrepareForTest({LocalDataHandler.class, SdkUtil.class, Looper.class, Utils.class, Log.class, TextUtils.class, Logger.class, MixpanelAnalyticsManager.class})
 
 public class MidtransAndroidSDKTest {
 
@@ -198,6 +200,7 @@ public class MidtransAndroidSDKTest {
         PowerMockito.mockStatic(Looper.class);
         PowerMockito.mockStatic(Utils.class);
         PowerMockito.mockStatic(SdkUtil.class);
+        PowerMockito.mockStatic(MixpanelAnalyticsManager.class);
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(contextMock.getString(R.string.error_unable_to_connect)).thenReturn("not connected");
         Mockito.when(contextMock.getResources()).thenReturn(resourceMock);
@@ -215,9 +218,6 @@ public class MidtransAndroidSDKTest {
 
         MidtransSDK midtransSDK = SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .enableLog(true)
-                .setDefaultText("open_sans_regular.ttf")
-                .setSemiBoldText("open_sans_semibold.ttf")
-                .setBoldText("open_sans_bold.ttf")
                 .buildSDK();
         Mockito.when(midtransSDK.readAuthenticationToken()).thenReturn(sdkTokenMock);
         midtransSDK.setTransactionManager(transactionManager);
@@ -433,14 +433,14 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentUsingCard() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, token, false, transactionCallbackMock);
+        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
         Assert.assertEquals(true, midtransSDKSSpy.isRunning);
     }
 
     @Test
     public void snapPaymentUsingCard_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, token, false, transactionCallbackMock);
+        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
         Assert.assertEquals(false, midtransSDKSSpy.isRunning());
         Mockito.verify(callbackCollaborator).onError();
     }
@@ -449,7 +449,7 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentUsingCard_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingCard(cardToken, token, false, transactionCallbackMock);
+        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
         Assert.assertEquals(false, midtransSDKSSpy.isRunning());
         Mockito.verify(callbackCollaborator).onError();
     }

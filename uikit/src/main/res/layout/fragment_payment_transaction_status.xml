@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
     <android.support.v4.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -17,8 +18,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="@dimen/sixteen_dp">
-
-
             <ImageView
                 android:id="@+id/image_payment"
                 android:layout_width="wrap_content"
@@ -65,7 +64,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/eight_dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <com.midtrans.sdk.uikit.widgets.DefaultTextView
                         android:layout_width="0dp"
@@ -89,7 +89,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <com.midtrans.sdk.uikit.widgets.DefaultTextView
                         android:id="@+id/text_amount"
@@ -170,20 +171,13 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <RelativeLayout
+    <Button
+        android:id="@+id/btn_action"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:padding="@dimen/sixteen_dp"
-
-        >
-
-        <Button
-            android:id="@+id/btn_action"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/btn_height"
-            android:text="@string/done"
-            android:textColor="@android:color/white" />
-    </RelativeLayout>
-</RelativeLayout>
+        android:layout_height="@dimen/btn_height"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_margin="@dimen/sixteen_dp"
+        android:text="@string/done"
+        android:textColor="@android:color/white" />
+</FrameLayout>

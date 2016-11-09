@@ -109,7 +109,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
         if (item.getItemId() == android.R.id.home) {
             if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 setResultAndFinish();
             } else {
                 onBackPressed();
@@ -164,12 +164,12 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                 if (transactionResponse != null) {
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
-                    RESULT_CODE = RESULT_OK;
+                    setResultCode(RESULT_OK);
                     SdkUIFlowUtil.showSnackbar(KiosonActivity.this, SOMETHING_WENT_WRONG);
                     setResultAndFinish();
                 }
             } else {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 setResultAndFinish();
             }
         }
@@ -177,6 +177,12 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
+
+        if (!midtransSDK.getUIKitCustomSetting().isShowPaymentStatus()) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -203,6 +209,13 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
     private void setUpTransactionFragment(final TransactionResponse
                                                   transactionResponse) {
+
+        if (!midtransSDK.getUIKitCustomSetting().isShowPaymentStatus()) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
+
         if (transactionResponse != null) {
             // setup transaction fragment
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -242,12 +255,16 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onFailure(TransactionResponse response, String reason) {
+                KiosonActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                KiosonActivity.this.transactionResponse = response;
                 SdkUIFlowUtil.hideProgressDialog();
 
                 try {
-                    KiosonActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                    KiosonActivity.this.transactionResponse = response;
-                    SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + errorMessage);
+                    if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                        setUpTransactionStatusFragment(response);
+                    } else {
+                        SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + errorMessage);
+                    }
                 } catch (NullPointerException ex) {
                     Logger.e(TAG, "transaction error is " + ex.getMessage());
                 }
@@ -285,10 +302,16 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
      * send result back to  {@link PaymentMethodsActivity} and finish current activity.
      */
     private void setResultAndFinish() {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), transactionResponse);
-        data.putExtra(getString(R.string.error_transaction), errorMessage);
-        setResult(RESULT_CODE, data);
-        finish();
+        setResultAndFinish(transactionResponse, errorMessage);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment.equals(STATUS_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
+        super.onBackPressed();
     }
 }
