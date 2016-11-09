@@ -21,7 +21,6 @@ import com.midtrans.sdk.uikit.activities.CIMBClickPayActivity;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.activities.EpayBriActivity;
 import com.midtrans.sdk.uikit.activities.MandiriECashActivity;
-import com.midtrans.sdk.uikit.activities.NotificationActivity;
 import com.midtrans.sdk.uikit.activities.OffersActivity;
 
 import java.util.regex.Pattern;
@@ -78,11 +77,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initializeViews(view);
-        if (getActivity().getClass().getName().equalsIgnoreCase(NotificationActivity.class.getName())) {
-            bindDataForNotificationData();
-        } else {
-            bindDataToView();
-        }
+        bindDataToView();
     }
 
     private void initializeViews(View view) {
@@ -97,40 +92,36 @@ public class PaymentTransactionStatusFragment extends Fragment {
         detailsTable = (LinearLayout) view.findViewById(R.id.transaction_info_layout);
     }
 
-    private void bindDataForNotificationData() {
-        actionBt.setVisibility(View.GONE);
-        setPaymentType();
-        setPaymentStatusValues();
-
-    }
-
     private void setPaymentStatusValues() {
         if (transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200)) ||
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.capital_success)) ||
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.settlement))) {
+
             paymentIv.setImageResource(R.drawable.ic_successful);
             paymentStatusTv.setText(getString(R.string.payment_successful));
             paymentMessageTv.setVisibility(View.GONE);
         } else if (transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_201)) ||
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.pending))) {
             if (transactionResponse.getFraudStatus().equalsIgnoreCase(getString(R.string.challenge))) {
-                paymentIv.setImageResource(R.drawable.ic_successful);
-                paymentStatusTv.setText(getString(R.string.payment_successful));
+                paymentIv.setImageResource(R.drawable.ic_pending);
+                paymentStatusTv.setText(getString(R.string.payment_challenged));
                 paymentMessageTv.setVisibility(View.GONE);
             } else {
                 paymentIv.setImageResource(R.drawable.ic_pending);
                 paymentStatusTv.setText(getString(R.string.payment_pending));
             }
-            //}
         } else {
             setUiForFailure();
         }
         try {
             transactionTimeTextView.setText(transactionResponse.getTransactionTime());
             String amount = transactionResponse.getGrossAmount();
-            String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
-            amountTextView.setText(formattedAmount);
-            orderIdTextView.setText(transactionResponse.getOrderId());
+            if (!TextUtils.isEmpty(amount)) {
+                String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
+                amountTextView.setText(formattedAmount);
+                orderIdTextView.setText(transactionResponse.getOrderId());
+            }
+
         } catch (NullPointerException e) {
             e.printStackTrace();
 
@@ -187,7 +178,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
                     ((BCAKlikPayActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     ((BCAKlikPayActivity) getActivity()).setResultAndFinish();
                 }
-
             }
         });
     }
@@ -211,6 +201,18 @@ public class PaymentTransactionStatusFragment extends Fragment {
         if (transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.deny))) {
             paymentMessageTv.setVisibility(View.VISIBLE);
             paymentMessageTv.setText(getString(R.string.payment_deny));
+        } else if (transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.failed_code_400))) {
+            paymentMessageTv.setVisibility(View.VISIBLE);
+            String message = "";
+            if (transactionResponse.getValidationMessages() != null && !transactionResponse.getValidationMessages().isEmpty()) {
+                message = transactionResponse.getValidationMessages().get(0);
+            }
+
+            if (!TextUtils.isEmpty(message) && message.toLowerCase().contains(getString(R.string.label_expired))) {
+                paymentMessageTv.setText(getString(R.string.message_payment_expired));
+            } else {
+                paymentMessageTv.setText(getString(R.string.message_cannot_proccessed));
+            }
         } else {
             if (!TextUtils.isEmpty(transactionResponse.getStatusMessage())) {
                 paymentMessageTv.setVisibility(View.VISIBLE);

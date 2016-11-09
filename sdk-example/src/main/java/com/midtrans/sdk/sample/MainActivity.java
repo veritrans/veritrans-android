@@ -17,27 +17,34 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.sample.core.CoreFlowActivity;
 import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback{
+public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback {
     private static final int CORE_FLOW = 1;
     private static final int UI_FLOW = 2;
-    public static String userId = "user214";
+    public static String SAMPLE_USER_ID = UUID.randomUUID().toString();
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn;
     private Button coreCardRegistration, uiCardRegistration;
     private RadioButton normal, twoClick, oneClick;
     private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,36 +63,51 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
      */
     private void initSDK() {
         // SDK initiation for coreflow
-        if(mysdkFlow == CORE_FLOW){
+        if (mysdkFlow == CORE_FLOW) {
             SdkCoreFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL)
                     .enableLog(true)
                     .buildSDK();
         } else {
+//            init custom setting if needed
+            UIKitCustomSetting uisetting = new UIKitCustomSetting();
+            uisetting.setShowPaymentStatus(true);
+
             // SDK initiation for UIflow
             SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
                     .enableLog(true)
+                    .useBuiltInTokenStorage(true) // enable built in token storage
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
+                    .setUIkitCustomSetting(uisetting) //optional
                     .buildSDK();
         }
     }
+
 
     /**
      * Initialize transaction data.
      *
      * @return the transaction request.
      */
-    private TransactionRequest initializePurchaseRequest() {
+    private TransactionRequest initializePurchaseRequest(int sampleSDKType) {
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(UUID.randomUUID().toString(), 360000);
+                TransactionRequest(UUID.randomUUID().toString(), 3000);
+
+        //define customer detail (mandatory for coreflow)
+        CustomerDetails mCustomerDetails = new CustomerDetails();
+        mCustomerDetails.setPhone("624234234234");
+        mCustomerDetails.setFirstName("sample full name");
+        mCustomerDetails.setEmail("mail@mail.com");
+        transactionRequestNew.setCustomerDetails(mCustomerDetails);
+
 
         // Define item details
-        ItemDetails itemDetails = new ItemDetails("1", 120000, 1, "Trekking Shoes");
-        ItemDetails itemDetails1 = new ItemDetails("2", 100000, 1, "Casual Shoes");
-        ItemDetails itemDetails2 = new ItemDetails("3", 140000, 1, "Formal Shoes");
+        ItemDetails itemDetails = new ItemDetails("1", 1000, 1, "Trekking Shoes");
+        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 1, "Casual Shoes");
+        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 1, "Formal Shoes");
 
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
@@ -109,8 +131,29 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             transactionRequestNew.setCreditCard(creditCard);
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
+            CreditCard creditCard = new CreditCard();
+            creditCard.setSaveCard(true);
+            creditCard.setSecure(true);
+            transactionRequestNew.setCreditCard(creditCard);
         }
-        transactionRequestNew.setCardPaymentInfo(cardClickType, true);
+        if (sampleSDKType == CORE_FLOW) {
+            transactionRequestNew.setCardPaymentInfo(cardClickType, false);
+        } else {
+            transactionRequestNew.setCardPaymentInfo(cardClickType, true);
+        }
+
+        Map<String, String> customMap = new HashMap<>();
+        customMap.put("flight_id", "JT-214");
+        customMap.put("airplane_type", "Boeing");
+        transactionRequestNew.setCustomObject(customMap);
+
+        ExpiryModel expiryModel = new ExpiryModel();
+        long currentTime = System.currentTimeMillis();
+        expiryModel.setStartTime(Utils.getFormattedTime(currentTime));
+        expiryModel.setUnit("MINUTES");
+        expiryModel.setDuration(1);
+
+        transactionRequestNew.setExpiry(expiryModel);
 
         return transactionRequestNew;
     }
@@ -119,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
      * Initialize the view.
      */
     private void initView() {
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //Initialize progress dialog
         dialog = new ProgressDialog(this);
@@ -131,7 +174,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, WidgetExampleActivity.class);
-                i.putExtra(WidgetExampleActivity.CARD_PAYMENT_TYPE, twoClick.isChecked());
+                if (oneClick.isChecked()) {
+                    i.putExtra(WidgetExampleActivity.CARD_PAYMENT_TYPE, 1);
+                } else if (twoClick.isChecked()) {
+                    i.putExtra(WidgetExampleActivity.CARD_PAYMENT_TYPE, 2);
+                }
                 startActivity(i);
             }
         });
@@ -148,14 +195,13 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         normal = (RadioButton) findViewById(R.id.radio_card_normal);
         twoClick = (RadioButton) findViewById(R.id.radio_card_two_click);
         oneClick = (RadioButton) findViewById(R.id.radio_card_one_click);
-        oneClick.setVisibility(View.GONE);
 
         //
         coreBtn = (Button) findViewById(R.id.show_core_example);
         coreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest());
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(CORE_FLOW));
                 Intent intent = new Intent(MainActivity.this, CoreFlowActivity.class);
                 startActivity(intent);
             }
@@ -169,13 +215,13 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                 Logger.i("config>merchantUrl:" + MidtransSDK.getInstance().getMerchantServerUrl());
                 Logger.i("config>sdkurl:" + MidtransSDK.getInstance().getSdkBaseUrl());
                 Logger.i("config>timeout:" + MidtransSDK.getInstance().getRequestTimeOut());
-                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest());
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
                 MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this);
             }
         });
 
         // Handle Card registration using core flow
-        coreCardRegistration = (Button)findViewById(R.id.btn_card_registration_core);
+        coreCardRegistration = (Button) findViewById(R.id.btn_card_registration_core);
         coreCardRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         });
 
         // Handle Card registration using UI flow
-        uiCardRegistration = (Button)findViewById(R.id.btn_card_registration_ui);
+        uiCardRegistration = (Button) findViewById(R.id.btn_card_registration_ui);
         uiCardRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,10 +268,15 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                 case TransactionResult.STATUS_PENDING:
                     Toast.makeText(this, "Transaction Pending. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
                     break;
+                case TransactionResult.STATUS_INVALID:
+                    Toast.makeText(this, "Transaction Invalid. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getValidationMessages().get(0), Toast.LENGTH_LONG).show();
+                    break;
                 case TransactionResult.STATUS_FAILED:
                     Toast.makeText(this, "Transaction Failed. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
                     break;
             }
+        } else if (result.isTransactionCanceled()) {
+            Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
         }

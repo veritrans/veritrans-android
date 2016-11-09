@@ -54,8 +54,6 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
     private int position = Constants.PAYMENT_METHOD_XL_TUNAI;
-
-    private int RESULT_CODE = RESULT_CANCELED;
     private FragmentManager fragmentManager;
 
     @Override
@@ -101,12 +99,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
-                RESULT_CODE = RESULT_OK;
-                setResultAndFinish();
-            } else {
-                onBackPressed();
-            }
+            onBackPressed();
         }
 
         return false;
@@ -156,12 +149,12 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
                 if (transactionResponse != null) {
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
-                    RESULT_CODE = RESULT_OK;
+                    setResultCode(RESULT_OK);
                     SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, SOMETHING_WENT_WRONG);
                     setResultAndFinish();
                 }
             } else {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 setResultAndFinish();
             }
         }
@@ -169,6 +162,12 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
 
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
+
+        if (!midtransSDK.getUIKitCustomSetting().isShowPaymentStatus()) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -234,7 +233,11 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
                 SdkUIFlowUtil.hideProgressDialog();
                 errorMessage = getString(R.string.message_payment_failed);
                 transactionResponse = response;
-                SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + errorMessage);
+                if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                    setUpTransactionStatusFragment(response);
+                } else {
+                    SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + errorMessage);
+                }
             }
 
             @Override
@@ -258,10 +261,16 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void setResultAndFinish() {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), transactionResponse);
-        data.putExtra(getString(R.string.error_transaction), errorMessage);
-        setResult(RESULT_CODE, data);
-        finish();
+        setResultAndFinish(transactionResponse, errorMessage);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+        } else {
+            onBackPressed();
+        }
     }
 }

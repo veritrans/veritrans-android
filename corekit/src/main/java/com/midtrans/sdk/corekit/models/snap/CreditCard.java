@@ -2,6 +2,8 @@ package com.midtrans.sdk.corekit.models.snap;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by ziahaqi on 8/5/16.
  */
@@ -15,6 +17,8 @@ public class CreditCard {
     private String channel;
     private String bank;
     private Installment installment;
+    @SerializedName("saved_tokens")
+    private List<SavedToken> savedTokens;
 
     public String getChannel() {
         return channel;
@@ -62,5 +66,13 @@ public class CreditCard {
 
     public void setTokenId(String tokenId) {
         this.tokenId = tokenId;
+    }
+
+    public List<SavedToken> getSavedTokens() {
+        return savedTokens;
+    }
+
+    public void setSavedTokens(List<SavedToken> savedTokens) {
+        this.savedTokens = savedTokens;
     }
 }

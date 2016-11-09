@@ -16,6 +16,7 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.sample.BCAKlikPayActivity;
@@ -26,6 +27,7 @@ import com.midtrans.sdk.sample.EpayBRIPaymentActivity;
 import com.midtrans.sdk.sample.IndomaretPaymentActivity;
 import com.midtrans.sdk.sample.IndosatDompetkuPaymentActivity;
 import com.midtrans.sdk.sample.KlikBcaPaymentActivity;
+import com.midtrans.sdk.sample.MainActivity;
 import com.midtrans.sdk.sample.MandiriBillPaymentActivity;
 import com.midtrans.sdk.sample.MandiriClickPaymentActivity;
 import com.midtrans.sdk.sample.MandiriECashActivity;
@@ -59,7 +61,7 @@ public class CoreFlowActivity extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setMessage("Loading");
         dialog.show();
-        MidtransSDK.getInstance().checkout(new CheckoutCallback() {
+        MidtransSDK.getInstance().checkout(MainActivity.SAMPLE_USER_ID, new CheckoutCallback() {
             @Override
             public void onSuccess(Token token) {
                 Logger.i("snaptoken>success");
@@ -81,7 +83,10 @@ public class CoreFlowActivity extends AppCompatActivity {
             @Override
             public void onError(Throwable error) {
                 Logger.i("snaptoken>error");
-
+                if(dialog.isShowing()){
+                    dialog.dismiss();
+                }
+                showAlertDialog(error.getMessage());
             }
         });
     }
@@ -93,18 +98,17 @@ public class CoreFlowActivity extends AppCompatActivity {
                 if(dialog.isShowing()){
                     dialog.dismiss();
                 }
+                MidtransSDK.getInstance().setSavedTokens(transaction.getCreditCard().getSavedTokens());
                 paymentMethodList.clear();
-                for(String method : transaction.getTransactionData().getEnabledPayments()){
-                    if(method.equalsIgnoreCase(getString(R.string.label_bank_transfer))){
-                        for(String bank : transaction.getTransactionData().getBankTransfer().getBanks()){
-                            //mandiri bank tranfer & other bank transfer unsupported yet
-                            CoreViewModel viewModel = generateBankViewModels(bank);
-                            if(viewModel != null){
-                                paymentMethodList.add(viewModel);
-                            }
+                for (EnabledPayment method : transaction.getEnabledPayments()) {
+                    if (method.getCategory() != null && method.getType().equals(R.string.enabled_payment_category_banktransfer)) {
+
+                        CoreViewModel viewModel = generateBankViewModels(method.getType());
+                        if (viewModel != null) {
+                            paymentMethodList.add(viewModel);
                         }
                     }else{
-                        CoreViewModel viewModel = generateCoreViewModels(method);
+                        CoreViewModel viewModel = generateCoreViewModels(method.getType());
                         if(viewModel != null){
                             paymentMethodList.add(viewModel);
                         }
@@ -112,6 +116,7 @@ public class CoreFlowActivity extends AppCompatActivity {
                 }
                 adapter.setData(paymentMethodList);
                 adapter.notifyDataSetChanged();
+
             }
 
             @Override

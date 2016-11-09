@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
@@ -21,15 +22,18 @@ import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
-import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
-import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.params.TelkomselCashPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shivam on 10/19/15.
@@ -43,6 +47,7 @@ public class MidtransSDK {
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static SharedPreferences mPreferences = null;
     private static MidtransSDK midtransSDK;
+    private UIKitCustomSetting UIKitCustomSetting;
     protected boolean isRunning = false;
     ISdkFlow uiflow;
     private boolean isLogEnabled = false;
@@ -61,6 +66,8 @@ public class MidtransSDK {
     private String merchantLogo = null;
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
+    private List<SavedToken> savedTokens = new ArrayList<>();
+    private boolean enableBuiltInTokenStorage;
     private BBMCallBackUrl mBBMCallBackUrl = null;
     private String sdkBaseUrl = "";
     private int requestTimeOut = 10;
@@ -78,15 +85,17 @@ public class MidtransSDK {
         this.externalScanner = sdkBuilder.externalScanner;
         themeColor = sdkBuilder.colorThemeResourceId;
         this.isLogEnabled = sdkBuilder.enableLog;
-
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(MidtransRestAdapter.getMixpanelApi(requestTimeOut));
+        this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
+        this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.UIKitCustomSetting;
 
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
-        this.mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey);
+        this.mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
 
+        this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting;
         initializeTheme();
         initializeSharedPreferences();
     }
@@ -160,6 +169,8 @@ public class MidtransSDK {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName);
+        this.mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
     }
 
     public String getMerchantLogo() {
@@ -371,6 +382,33 @@ public class MidtransSDK {
     /**
      * It will run background task to  checkout on merchant server to get authentication token
      *
+     * @param userId   user identifier
+     * @param callback checkout callback
+     */
+    public void checkout(@NonNull String userId, @NonNull CheckoutCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                TokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
+                model.setUserId(userId);
+                mSnapTransactionManager.checkout(model, callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            }
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    /**
+     * It will run background task to  checkout on merchant server to get authentication token
+     *
      * @param callback checkout callback
      */
     public void checkout(@NonNull CheckoutCallback callback) {
@@ -396,12 +434,11 @@ public class MidtransSDK {
     /**
      * It will run backgrond task to charge payment using Credit Card
      *
-     * @param authenticationToken authentication token
-     * @param cardToken           card token form PAPI backend
-     * @param saveCard            is saving credit card
-     * @param callback            transaction callback
+     * @param authenticationToken    authentication token
+     * @param creditCardPaymentModel model for creditcard payment
+     * @param callback               transaction callback
      */
-    public void paymentUsingCard(@NonNull String authenticationToken, @NonNull String cardToken, boolean saveCard, @NonNull TransactionCallback callback) {
+    public void paymentUsingCard(@NonNull String authenticationToken, CreditCardPaymentModel creditCardPaymentModel, @NonNull TransactionCallback callback) {
         if (callback == null) {
             Logger.e(TAG, context.getString(R.string.callback_unimplemented));
             return;
@@ -409,8 +446,8 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.paymentUsingCreditCard(authenticationToken, SdkUtil.getCreditCardPaymentRequest(cardToken,
-                        saveCard, transactionRequest), callback);
+                mSnapTransactionManager.paymentUsingCreditCard(authenticationToken,
+                        SdkUtil.getCreditCardPaymentRequest(creditCardPaymentModel, transactionRequest), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -438,7 +475,7 @@ public class MidtransSDK {
                 isRunning = true;
                 mSnapTransactionManager.paymentUsingBankTransferBCA(authenticationToken,
                         SdkUtil.getBankTransferPaymentRequest(email,
-                        PaymentType.BCA_VA), callback);
+                                PaymentType.BCA_VA), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -535,7 +572,7 @@ public class MidtransSDK {
      * It will run backround task to charge payment using Mandiri Bill Pay
      *
      * @param authenticationToken authentication token
-     * @param callback               transactionCallback
+     * @param callback            transactionCallback
      */
     public void paymentUsingMandiriBillPay(@NonNull String authenticationToken, @NonNull String email, @NonNull TransactionCallback callback) {
         if (callback == null) {
@@ -568,7 +605,7 @@ public class MidtransSDK {
      * @param callback            transaction callback
      */
     public void paymentUsingMandiriClickPay(@NonNull String authenticationToken, @NonNull String mandiriCardNumber,
-            @NonNull String tokenResponse, @NonNull String input3, TransactionCallback callback) {
+                                            @NonNull String tokenResponse, @NonNull String input3, TransactionCallback callback) {
         if (callback == null) {
             Logger.e(TAG, context.getString(R.string.callback_unimplemented));
             return;
@@ -928,9 +965,7 @@ public class MidtransSDK {
         mSnapTransactionManager = new SnapTransactionManager(context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeout),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeout),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeout));
-
-        mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(MidtransRestAdapter.getMixpanelApi(requestTimeout));
-        mSnapTransactionManager.setAnalyticsManager(this.mMixpanelAnalyticsManager);
+        mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
         mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
 
@@ -975,4 +1010,19 @@ public class MidtransSDK {
         return requestTimeOut;
     }
 
+    public List<SavedToken> getSavedTokens() {
+        return savedTokens;
+    }
+
+    public void setSavedTokens(List<SavedToken> savedTokens) {
+        this.savedTokens = savedTokens;
+    }
+
+    public boolean isEnableBuiltInTokenStorage() {
+        return enableBuiltInTokenStorage;
+    }
+
+    public UIKitCustomSetting getUIKitCustomSetting() {
+        return UIKitCustomSetting;
+    }
 }

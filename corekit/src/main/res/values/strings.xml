@@ -386,6 +386,7 @@
     <string name="success_code_200">200</string>
     <string name="success_code_201">201</string>
     <string name="success_code_202">202</string>
+    <string name="failed_code_400">400</string>
 
     <string name="card_click_type_none">normal</string>
     <string name="card_click_type_one_click">one_click</string>
@@ -442,7 +443,7 @@
     <string name="payment_kioson">kioson</string>
     <string name="payment_permata_va">permata_va</string>
     <string name="payment_bca_va">bca_va</string>
-    <string name="payment_all_va">all_va</string>
+    <string name="payment_all_va">other_va</string>
 
     <!--Error Response-->
     <string name="error_empty_response">failed to retrieve response from server.</string>
@@ -492,5 +493,11 @@
     <string name="kioson_instruction_step9">9.\tYour transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
     <string name="callback_unimplemented">Callback Unimplemented</string>
     <string name="transaction_finished_callback_unimplemented">callback not yet implemented</string>
+
+    <!-- enabled payment -->
+    <string name="enabled_payment_category_banktransfer">bank_transfer</string>
+    <string name="enabled_payment_category_cstore">cstore</string>
+    <string name="saved_card_one_click">one_click</string>
+    <string name="saved_card_two_click">two_clicks</string>
 
 </resources>

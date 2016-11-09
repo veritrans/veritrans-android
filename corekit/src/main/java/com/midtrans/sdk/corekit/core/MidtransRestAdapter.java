@@ -6,7 +6,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 
 import com.midtrans.sdk.corekit.BuildConfig;
-import com.midtrans.sdk.corekit.analytics.MixpanelApi;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
@@ -73,25 +72,6 @@ public class MidtransRestAdapter {
         RestAdapter restAdapter = builder.build();
         return restAdapter.create(MerchantRestAPI.class);
 
-    }
-
-
-    /**
-     * Create Mixpanel API
-     *
-     * @return mixpanel Api implementation
-     */
-    public static MixpanelApi getMixpanelApi(int timeout) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(timeout, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(timeout, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(timeout, TimeUnit.SECONDS);
-        RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setLogLevel(LOG_LEVEL)
-                .setClient(new OkClient(okHttpClient))
-                .setEndpoint(BuildConfig.MIXPANEL_URL);
-        RestAdapter restAdapter = builder.build();
-        return restAdapter.create(MixpanelApi.class);
     }
 
     /**

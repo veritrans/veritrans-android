@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import android.text.TextUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,6 +99,9 @@ public class TransactionResponse implements Serializable {
 
     @SerializedName("kioson_expire_time")
     private String kiosonExpireTime;
+
+    @SerializedName("validation_messages")
+    private ArrayList<String> validationMessages;
 
     public TransactionResponse(String statusCode, String statusMessage, String transactionId,
                                String orderId, String grossAmount, String paymentType,
@@ -343,5 +347,9 @@ public class TransactionResponse implements Serializable {
 
     public void setKiosonExpireTime(String kiosonExpireTime) {
         this.kiosonExpireTime = kiosonExpireTime;
+    }
+
+    public ArrayList<String> getValidationMessages() {
+        return validationMessages;
     }
 }

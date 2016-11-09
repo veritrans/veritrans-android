@@ -28,7 +28,7 @@ public interface SnapRestAPI {
      * @param snapToken           snap token
      * @param transactionCallback response get transaction request
      */
-    @GET("/v1/payment_pages/{snap_token}")
+    @GET("/v1/transactions/{snap_token}")
     void getPaymentOption(@Path("snap_token") String snapToken, Callback<Transaction> transactionCallback);
 
     /**

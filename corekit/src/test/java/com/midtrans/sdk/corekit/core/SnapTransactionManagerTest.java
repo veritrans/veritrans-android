@@ -7,9 +7,9 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.SDKConfigTest;
-import com.midtrans.sdk.corekit.analytics.MixpanelApi;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
@@ -18,7 +18,7 @@ import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
-import com.midtrans.sdk.corekit.models.snap.TransactionData;
+import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
@@ -60,7 +60,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * Created by ziahaqi on 7/18/16.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class})
+@PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class, MixpanelAnalyticsManager.class})
 @PowerMockIgnore("javax.net.ssl.*")
 public class SnapTransactionManagerTest {
 
@@ -84,8 +84,6 @@ public class SnapTransactionManagerTest {
     private MidtransSDK midtransSDK;
     @Mock
     private MixpanelAnalyticsManager mixpanelAnalyticsManagerMock;
-    @Mock
-    private MixpanelApi mixpanelApiMock;
     private SnapTransactionManager transactionManager;
     @Captor
     private ArgumentCaptor<Callback<Token>> callbackSnapTokenResponseCaptor;
@@ -114,8 +112,6 @@ public class SnapTransactionManagerTest {
     private ArgumentCaptor<TokenRequestModel> snapTokenRequestModelCaptor;
     @Mock
     private TokenRequestModel snapTokenRequestModelMock;
-    @Mock
-    private TransactionData transactionDataMock;
     private String transactionId = "trans_id";
     @Mock
     private CreditCardPaymentRequest creditcardRequestMock;
@@ -211,6 +207,8 @@ public class SnapTransactionManagerTest {
     private ArgumentCaptor<String> callbackArgumentCaptorCar;
     @Captor
     private ArgumentCaptor<String> calbackArgumentCatorClientKey;
+    @Mock
+    private TransactionDetails transactionDetailsMock;
     private String mAuthToken = "VT-1dqwd34dwed23e2dw";
     private Response retrofitResponseError = new Response("URL", 300, "success", Collections.EMPTY_LIST,
             new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
@@ -222,6 +220,7 @@ public class SnapTransactionManagerTest {
         PowerMockito.mockStatic(Looper.class);
         PowerMockito.mockStatic(Base64.class);
         PowerMockito.mockStatic(Logger.class);
+        PowerMockito.mockStatic(MixpanelAnalyticsManager.class);
 
         Mockito.when(contextMock.getResources()).thenReturn(resourcesMock);
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
@@ -229,13 +228,10 @@ public class SnapTransactionManagerTest {
         Mockito.when(contextMock.getString(R.string.success_code_201)).thenReturn("201");
         Mockito.when(contextMock.getString(R.string.success)).thenReturn("success");
 
-        midtransSDK = SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
-                .setDefaultText("open_sans_regular.ttf")
-                .setSemiBoldText("open_sans_semibold.ttf")
-                .setBoldText("open_sans_bold.ttf")
+        midtransSDK = SdkCoreFlowBuilder
+                .init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .buildSDK();
 
-        mixpanelAnalyticsManagerMock.setMixpanelApi(mixpanelApiMock);
         transactionManager = midtransSDK.getmSnapTransactionManager();
         transactionManager.setAnalyticsManager(mixpanelAnalyticsManagerMock);
         transactionManager.setSDKLogEnabled(false);
@@ -332,8 +328,8 @@ public class SnapTransactionManagerTest {
 
     @Test
     public void getTransactionOptionSuccess() {
-        Mockito.when(transactionMock.getTransactionData()).thenReturn(transactionDataMock);
-        Mockito.when(transactionDataMock.getTransactionId()).thenReturn(transactionId);
+        Mockito.when(transactionMock.getTransactionDetails()).thenReturn(transactionDetailsMock);
+        Mockito.when(transactionDetailsMock.getOrderId()).thenReturn(transactionId);
 
         callbackImplement.getPaymentOption(tokenId);
         Mockito.verify(snapAPI).getPaymentOption(tokenIdCaptor.capture(), transactionCaptorMock.capture());
@@ -343,8 +339,8 @@ public class SnapTransactionManagerTest {
 
     @Test
     public void getTransactionOptionError_whenTransIdEmpty() {
-        Mockito.when(transactionMock.getTransactionData()).thenReturn(transactionDataMock);
-        Mockito.when(transactionDataMock.getTransactionId()).thenReturn("");
+        Mockito.when(transactionMock.getTransactionDetails()).thenReturn(transactionDetailsMock);
+        Mockito.when(transactionDetailsMock.getOrderId()).thenReturn("");
 
         callbackImplement.getPaymentOption(tokenId);
         Mockito.verify(snapAPI).getPaymentOption(tokenIdCaptor.capture(), transactionCaptorMock.capture());

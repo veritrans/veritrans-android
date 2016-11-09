@@ -1,6 +1,5 @@
 package com.midtrans.sdk.uikit.activities;
 
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -60,7 +59,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     private InstructionIndosatFragment mIndosatFragment = null;
     private TransactionResponse mTransactionResponse = null;
     private String errorMessage = null;
-    private int RESULT_CODE = RESULT_CANCELED;
 
     private String phoneNumber = null;
 
@@ -105,7 +103,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
         if (item.getItemId() == android.R.id.home) {
             if (currentFragment.equals(STATUS_FRAGMENT)) {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 setResultAndFinish();
             } else {
                 onBackPressed();
@@ -175,7 +173,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                 performTransaction();
 
             } else {
-                RESULT_CODE = RESULT_OK;
+                setResultCode(RESULT_OK);
                 setResultAndFinish();
             }
 
@@ -243,9 +241,14 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                     public void onFailure(TransactionResponse response, String reason) {
                         mTransactionResponse = response;
                         IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_denied);
+                        SdkUIFlowUtil.hideProgressDialog();
+
                         try {
-                            SdkUIFlowUtil.hideProgressDialog();
-                            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+                            if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                                setUpTransactionStatusFragment(mTransactionResponse);
+                            } else {
+                                SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+                            }
                         } catch (NullPointerException ex) {
                             Logger.e("transaction error is " + errorMessage);
                         }
@@ -273,10 +276,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      */
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
@@ -285,15 +284,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
 
-        BankTransactionStatusFragment bankTransactionStatusFragment =
-                BankTransactionStatusFragment.newInstance(transactionResponse,
-                        Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU);
-
-        // setup transaction status fragment
-        fragmentTransaction.replace(R.id.instruction_container,
-                bankTransactionStatusFragment, STATUS_FRAGMENT);
-        fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
-        fragmentTransaction.commit();
+        initBankTransferPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU, STATUS_FRAGMENT);
     }
 
     /**
@@ -310,10 +301,16 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * send result back to  {@link PaymentMethodsActivity} and finish current activity.
      */
     private void setResultAndFinish() {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), mTransactionResponse);
-        data.putExtra(getString(R.string.error_transaction), errorMessage);
-        setResult(RESULT_CODE, data);
-        finish();
+        setResultAndFinish(this.mTransactionResponse, errorMessage);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment.equals(STATUS_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+            return;
+        }
+        super.onBackPressed();
     }
 }

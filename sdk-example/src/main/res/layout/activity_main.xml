@@ -104,7 +104,7 @@
                     <TextView android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Rp.120.000"
+                        android:text="Rp.1.000"
                         android:textSize="20sp"
                         android:textStyle="bold"/>
 
@@ -144,7 +144,7 @@
                     <TextView android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Rp.100.000"
+                        android:text="Rp.1.000"
                         android:textSize="20sp"
                         android:textStyle="bold"/>
 
@@ -179,12 +179,15 @@
                         android:layout_height="wrap_content"
                         android:text="Formal shoes"
                         android:textSize="18sp"/>
-                    <TextView android:layout_width="match_parent"
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Rp.140.000"
+                        android:text="Rp.1.000"
                         android:textSize="20sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
 
                     <TextView android:layout_width="wrap_content"
