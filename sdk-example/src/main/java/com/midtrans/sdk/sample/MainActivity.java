@@ -13,11 +13,11 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
-import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ExpiryModel;
@@ -94,20 +94,20 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private TransactionRequest initializePurchaseRequest(int sampleSDKType) {
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(UUID.randomUUID().toString(), 360000);
+                TransactionRequest(UUID.randomUUID().toString(), 3000);
 
         //define customer detail (mandatory for coreflow)
         CustomerDetails mCustomerDetails = new CustomerDetails();
-        mCustomerDetails.setPhone("24234234234");
-        mCustomerDetails.setFirstName("samle full name");
+        mCustomerDetails.setPhone("624234234234");
+        mCustomerDetails.setFirstName("sample full name");
         mCustomerDetails.setEmail("mail@mail.com");
         transactionRequestNew.setCustomerDetails(mCustomerDetails);
 
 
         // Define item details
-        ItemDetails itemDetails = new ItemDetails("1", 120000, 1, "Trekking Shoes");
-        ItemDetails itemDetails1 = new ItemDetails("2", 100000, 1, "Casual Shoes");
-        ItemDetails itemDetails2 = new ItemDetails("3", 140000, 1, "Formal Shoes");
+        ItemDetails itemDetails = new ItemDetails("1", 1000, 1, "Trekking Shoes");
+        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 1, "Casual Shoes");
+        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 1, "Formal Shoes");
 
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
