@@ -27,7 +27,7 @@ public abstract class BaseSdkBuilder<T> {
     protected ArrayList<PaymentMethodsModel> selectedPaymentMethods;
     protected IScanner externalScanner;
     protected TransactionFinishedCallback transactionFinishedCallback;
-    protected UIKitCustomSetting UIKitCustomSetting;
+    protected UIKitCustomSetting uiKitCustomSetting;
 
     public abstract T setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods);
 
