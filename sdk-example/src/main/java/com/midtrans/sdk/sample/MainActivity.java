@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
-                    .setUIkitCustomSetting(null) //optional
+                    .setUIkitCustomSetting(uisetting) //optional
                     .buildSDK();
         }
     }
