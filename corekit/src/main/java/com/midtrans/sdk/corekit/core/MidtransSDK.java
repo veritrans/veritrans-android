@@ -47,7 +47,7 @@ public class MidtransSDK {
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static SharedPreferences mPreferences = null;
     private static MidtransSDK midtransSDK;
-    private UIKitCustomSetting UIKitCustomSetting;
+    private UIKitCustomSetting uiKitCustomSetting;
     protected boolean isRunning = false;
     ISdkFlow uiflow;
     private boolean isLogEnabled = false;
@@ -86,7 +86,7 @@ public class MidtransSDK {
         themeColor = sdkBuilder.colorThemeResourceId;
         this.isLogEnabled = sdkBuilder.enableLog;
         this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
-        this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.UIKitCustomSetting;
+        this.uiKitCustomSetting = sdkBuilder.uiKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.uiKitCustomSetting;
 
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
@@ -95,7 +95,6 @@ public class MidtransSDK {
         this.mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
 
-        this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting;
         initializeTheme();
         initializeSharedPreferences();
     }
@@ -1023,6 +1022,6 @@ public class MidtransSDK {
     }
 
     public UIKitCustomSetting getUIKitCustomSetting() {
-        return UIKitCustomSetting;
+        return uiKitCustomSetting;
     }
 }
