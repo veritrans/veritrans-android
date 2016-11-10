@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,7 +20,6 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
 import com.midtrans.sdk.corekit.models.BBMUrlEncodeJson;
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.models.SectionedPaymentMethod;
@@ -373,7 +373,7 @@ public class SdkUIFlowUtil {
     }
 
 
-    public static void sortSectionedPaymentMethod(ArrayList<SectionedPaymentMethod> data) {
+    private static void sortSectionedPaymentMethod(ArrayList<SectionedPaymentMethod> data) {
         Collections.sort(data, new Comparator<SectionedPaymentMethod>() {
             @Override
             public int compare(SectionedPaymentMethod lhs, SectionedPaymentMethod rhs) {
@@ -382,18 +382,29 @@ public class SdkUIFlowUtil {
         });
     }
 
-    public static void filterSectionedPaymentMethods(ArrayList<SectionedPaymentMethod> data) {
+    public static ArrayList<SectionedPaymentMethod> filterSectionedPaymentMethods(ArrayList<SectionedPaymentMethod> sections, ArrayList<SectionedPaymentMethod> paymentMethods) {
+        ArrayList<SectionedPaymentMethod> sectionedPaymentMethods = new ArrayList<>();
 
-        ArrayList<SectionedPaymentMethod> filteredPaymentMethod = new ArrayList<>();
-        for(SectionedPaymentMethod paymentMethod: data){
-            if(paymentMethod.getType() == PaymentMethods.TYPE_SECTION){
-                SectionedPaymentMethod itemFiltered = findPaymentMethodsBySection(data, paymentMethod.getType());
+        sortSectionedPaymentMethod(paymentMethods);
+        for(SectionedPaymentMethod section : sections){
+
+            ArrayList<SectionedPaymentMethod> filteredPaymentMethods = findPaymentMethodsBySection(paymentMethods, section.getSectionType());
+            if(!filteredPaymentMethods.isEmpty()){
+                sectionedPaymentMethods.add(section);
+                sectionedPaymentMethods.addAll(filteredPaymentMethods);
             }
         }
+        return sectionedPaymentMethods;
     }
 
-    private static SectionedPaymentMethod findPaymentMethodsBySection(ArrayList<SectionedPaymentMethod> data, int type) {
+    private static ArrayList<SectionedPaymentMethod> findPaymentMethodsBySection(ArrayList<SectionedPaymentMethod> data, int sectionType) {
+        ArrayList<SectionedPaymentMethod> filteredPaymentMethods = new ArrayList<>();
 
-        return null;
+        for(SectionedPaymentMethod method : data){
+            if(method.getSectionParent() == sectionType){
+                filteredPaymentMethods.add(method);
+            }
+        }
+        return filteredPaymentMethods;
     }
 }

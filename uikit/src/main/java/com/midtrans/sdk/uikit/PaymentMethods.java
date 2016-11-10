@@ -24,8 +24,8 @@ public class PaymentMethods {
     public static final int SECTION_TYPE_EWALET = 4;
     public static final int SECTION_TYPE_CSTORE = 5;
 
-    public static final int TYPE_SECTION = 1;
-    public static final int TYPE_ITEM = 2;
+    public static final int SECTION = 1;
+    public static final int ITEM = 2;
 
 
     public static PaymentMethodsModel getMethods(Context context, String name) {

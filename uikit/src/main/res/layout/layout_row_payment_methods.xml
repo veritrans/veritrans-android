@@ -25,14 +25,11 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/sixteen_dp"
-            android:layout_marginStart="@dimen/sixteen_dp"
-            android:layout_toEndOf="@id/img_payment_method_icon"
-            android:layout_toRightOf="@id/img_payment_method_icon"
-            >
+            android:layout_height="match_parent">
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:textSize="18dp"
+                android:alpha="0.7"
                 android:id="@+id/text_payment_method_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -51,18 +48,20 @@
 
     </FrameLayout>
     <RelativeLayout
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageButton
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:alpha="0.3"
             android:id="@+id/image_arrow_next"
             android:src="@drawable/ic_arrow_right"
-            android:layout_width="@dimen/forty_dp"
-            android:layout_height="@dimen/forty_dp" />
-        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <ImageView
+            android:visibility="gone"
+            android:layout_centerVertical="true"
             android:id="@+id/image_offer"
-            android:src="@drawable/ic_arrow_right"
             android:layout_marginRight="@dimen/eight_dp"
             android:layout_toLeftOf="@+id/image_arrow_next"
             android:layout_width="@dimen/forty_dp"

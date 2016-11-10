@@ -13,7 +13,7 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/main_toolbar"
-                style="@style/ThemeOverlay.AppCompat.ActionBar"
+                style="@style/ToolBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/white">
@@ -73,12 +73,43 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_payment_methods"
+    <RelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView
+            android:layout_above="@+id/layout_offer"
+            android:id="@+id/rv_payment_methods"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:id="@+id/layout_offer"
+            android:background="?colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_launcher"
+                android:layout_width="@dimen/forty_dp"
+                android:layout_height="@dimen/forty_dp" />
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:textSize="20dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:text="offer"
+                android:textColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:src="@drawable/ic_launcher"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
         android:id="@+id/progress_container"
         android:layout_width="match_parent"

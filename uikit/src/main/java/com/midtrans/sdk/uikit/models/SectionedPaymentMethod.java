@@ -10,34 +10,38 @@ import com.midtrans.sdk.uikit.PaymentMethods;
 public class SectionedPaymentMethod {
 
     private PaymentMethodsModel model;
-    private int sectionPriority;
+    private int sectionType;
     private int type;
-    private int parentType;
+    private int sectionParent;
 
-    private SectionedPaymentMethod(PaymentMethodsModel model, int sectionPriority, int type, int parentType) {
+    private SectionedPaymentMethod(PaymentMethodsModel model, int type, int sectionType, int sectionParent) {
         this.model = model;
-        this.sectionPriority = sectionPriority;
+        this.sectionType = sectionType;
         this.type = type;
-        this.parentType = parentType;
+        this.sectionParent = sectionParent;
     }
 
     public PaymentMethodsModel getModel() {
         return model;
     }
 
-    public int getSectionPriority() {
-        return sectionPriority;
+    public int getSectionType() {
+        return sectionType;
     }
 
     public int getType() {
         return type;
     }
 
-    public static SectionedPaymentMethod createSection(PaymentMethodsModel model, int sectionPriority){
-        return new SectionedPaymentMethod(model, sectionPriority, PaymentMethods.TYPE_SECTION, -1);
+    public int getSectionParent() {
+        return sectionParent;
+    }
+
+    public static SectionedPaymentMethod createSection(PaymentMethodsModel model, int sectionType){
+        return new SectionedPaymentMethod(model,  PaymentMethods.SECTION, sectionType, -1);
     }
 
     public static SectionedPaymentMethod createItem(PaymentMethodsModel model, int parentType){
-        return new SectionedPaymentMethod(model, -1, PaymentMethods.TYPE_ITEM, parentType);
+        return new SectionedPaymentMethod(model, PaymentMethods.ITEM, -1, parentType);
     }
 }

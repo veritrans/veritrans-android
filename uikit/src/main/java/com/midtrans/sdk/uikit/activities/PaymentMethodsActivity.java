@@ -1,6 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
-import android.content.Context;
+import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -8,13 +8,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -29,10 +32,8 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
@@ -43,7 +44,6 @@ import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.UIFlow;
 import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.models.SectionedPaymentMethod;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -295,14 +295,17 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (data.isEmpty()) {
             showErrorAlertDialog(getString(R.string.message_payment_method_empty));
         } else if (data.size() == 1) {
-//            startPaymentMethod(data.get(0));
+            startPaymentMethod(data.get(0));
         } else {
-//            paymentMethodsAdapter.setData(data);
+            paymentMethodsAdapter.setData(data);
         }
     }
 
-    private void startPaymentMethod(PaymentMethodsModel paymentMethod) {
-        String name = paymentMethod.getName();
+    private void startPaymentMethod(SectionedPaymentMethod paymentMethod) {
+        if (paymentMethod.getType() == PaymentMethods.SECTION) {
+            return;
+        }
+        String name = paymentMethod.getModel().getName();
 
         if (name.equalsIgnoreCase(getString(R.string.payment_method_credit_card))) {
 
@@ -388,25 +391,71 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         data.clear();
         bankTrasfers.clear();
 
+        ArrayList<SectionedPaymentMethod> paymentMethods = new ArrayList<>();
+
         for (EnabledPayment enabledPayment : enabledPayments) {
             if (enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer))) {
                 bankTrasfers.add(enabledPayment.getType());
             } else {
                 SectionedPaymentMethod model = PaymentMethods.getSectionedPaymentMethod(this, enabledPayment.getType());
                 if (model != null) {
-                    data.add(model);
+                    paymentMethods.add(model);
                 }
             }
         }
 
         if (!bankTrasfers.isEmpty()) {
-            data.add(PaymentMethods.getSectionedPaymentMethod(this, getString(R.string.payment_bank_transfer)));
+            paymentMethods.add(PaymentMethods.getSectionedPaymentMethod(this, getString(R.string.payment_bank_transfer)));
         }
-
-        SdkUIFlowUtil.filterSectionedPaymentMethods(data);
-
+        ArrayList<SectionedPaymentMethod> sections = PaymentMethods.getSections(this);
+        data.addAll(SdkUIFlowUtil.filterSectionedPaymentMethods(sections, paymentMethods));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        MenuItem searchMenu = menu.findItem(R.id.action_search);
+
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenu);
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String keyword) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String keyword) {
+                searchPaymentMethods(keyword);
+
+                return true;
+            }
+        });
+        return true;
+    }
+
+    private void searchPaymentMethods(String keyword) {
+        if (TextUtils.isEmpty(keyword)) {
+            paymentMethodsAdapter.setData(data);
+        } else {
+            ArrayList<SectionedPaymentMethod> filteredPaymentMethods = new ArrayList<>();
+            for (SectionedPaymentMethod paymentMethod : data) {
+
+                if (paymentMethod.getType() == PaymentMethods.ITEM
+                        && paymentMethod.getModel().getName().toLowerCase().contains(keyword.toLowerCase())) {
+
+                    filteredPaymentMethods.add(paymentMethod);
+                }
+            }
+
+            ArrayList<SectionedPaymentMethod> sections = PaymentMethods.getSections(this);
+            ArrayList<SectionedPaymentMethod> newPaymentMethods = SdkUIFlowUtil.filterSectionedPaymentMethods(sections, filteredPaymentMethods);
+            paymentMethodsAdapter.setData(newPaymentMethods);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -439,10 +488,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
                     } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
-                    } else if (response.getStatusCode().equals(getString(R.string.failed_code_400))){
+                    } else if (response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_INVALID));
-                    }
-                    else {
+                    } else {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
                     }
                 } else {
@@ -508,7 +556,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         progressContainer.setVisibility(View.GONE);
         List<EnabledPayment> paymentMethods = PaymentMethods.getDefaultPaymentList(this);
         initialiseAdapterData(paymentMethods);
-//        paymentMethodsAdapter.setData(data);
+        paymentMethodsAdapter.setData(data);
     }
 
     private void showErrorMessage() {
@@ -558,7 +606,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     @Override
     public void onItemClick(int position) {
         if (paymentMethodsAdapter != null) {
-            PaymentMethodsModel item = paymentMethodsAdapter.getItem(position);
+            SectionedPaymentMethod item = paymentMethodsAdapter.getItem(position);
             startPaymentMethod(item);
         }
     }

@@ -12,7 +12,7 @@
         android:icon="@drawable/ic_veritrans"
         android:type="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Indigo"
+        android:theme="@style/MidtransAppTheme"
         tools:replace="android:theme">
         <activity android:name=".MainActivity">
             <intent-filter>
