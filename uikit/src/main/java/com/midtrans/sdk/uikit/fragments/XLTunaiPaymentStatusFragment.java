@@ -3,12 +3,14 @@ package com.midtrans.sdk.uikit.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Constants;
@@ -33,8 +35,12 @@ public class XLTunaiPaymentStatusFragment extends Fragment {
     private TextView mTextViewTransactionTime = null;
     private TextView mTextViewBankName = null;
     private TextView mTextViewTransactionStatus = null;
+    private TextView mTextViewTitleTransactionStatus = null;
     private TextView mTextViewPaymentErrorMessage = null;
     private ImageView mImageViewTransactionStatus = null;
+    private NestedScrollView layoutMain;
+    private RelativeLayout layoutPaymentType;
+    private RelativeLayout layoutTransactionTime;
     private boolean isFromXLTunai = false;
 
     public static XLTunaiPaymentStatusFragment newInstance(TransactionResponse transactionResponse, boolean isFromXLTunai) {
@@ -82,9 +88,15 @@ public class XLTunaiPaymentStatusFragment extends Fragment {
         mImageViewTransactionStatus = (ImageView) view.findViewById(R.id.img_transaction_status);
         mTextViewTransactionStatus = (TextView) view.findViewById(R.id
                 .text_transaction_status);
+        mTextViewTransactionStatus = (TextView) view.findViewById(R.id
+                .text_transaction_status);
         mTextViewPaymentErrorMessage = (TextView) view.findViewById(R.id
                 .text_payment_error_message);
 
+        mTextViewTitleTransactionStatus = (TextView) view.findViewById(R.id.text_title_payment_status);
+        layoutMain = (NestedScrollView) view.findViewById(R.id.layout_indomaret_status);
+        layoutPaymentType = (RelativeLayout) view.findViewById(R.id.layout_trans_payment_type);
+        layoutTransactionTime = (RelativeLayout) view.findViewById(R.id.layout_trans_payment_time);
     }
 
 
@@ -107,15 +119,19 @@ public class XLTunaiPaymentStatusFragment extends Fragment {
                 }
             }
 
-            String transactionTime = transactionResponse.getTransactionTime() == null ? "" : transactionResponse.getTransactionTime();
+            if (TextUtils.isEmpty(transactionResponse.getTransactionTime())) {
+                layoutTransactionTime.setVisibility(View.GONE);
+            } else {
+                mTextViewTransactionTime.setText(transactionResponse.getTransactionTime());
+            }
+
             String orderId = transactionResponse.getOrderId() == null ?
                     MidtransSDK.getInstance().getTransactionRequest().getOrderId() : transactionResponse.getOrderId();
-
-            mTextViewTransactionTime.setText(transactionTime);
             mTextViewOrderId.setText(orderId);
 
             try {
-                String amount = transactionResponse.getGrossAmount();
+                String amount = TextUtils.isEmpty(transactionResponse.getGrossAmount()) ?
+                        MidtransSDK.getInstance().getTransactionRequest().getAmount() + "" : transactionResponse.getGrossAmount();
                 if (!TextUtils.isEmpty(amount)) {
                     String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
                     mTextViewAmount.setText(formattedAmount);
@@ -169,8 +185,10 @@ public class XLTunaiPaymentStatusFragment extends Fragment {
      * enables ui related to failure of payment transaction.
      */
     private void setUiForFailure() {
-        mImageViewTransactionStatus.setImageResource(R.drawable.ic_failure);
-        mTextViewTransactionStatus.setText(getString(R.string.payment_unsuccessful));
+        mImageViewTransactionStatus.setImageResource(R.drawable.ic_status_failed);
+        mTextViewTransactionStatus.setText(getString(R.string.sorry));
+        mTextViewTitleTransactionStatus.setText(getString(R.string.unsuccessful));
+        layoutMain.setBackgroundColor(getResources().getColor(R.color.payment_status_failed));
         mTextViewPaymentErrorMessage.setVisibility(View.VISIBLE);
     }
 
@@ -179,8 +197,10 @@ public class XLTunaiPaymentStatusFragment extends Fragment {
      * enables ui related to success of payment transaction.
      */
     private void setUiForSuccess() {
-        mImageViewTransactionStatus.setImageResource(R.drawable.ic_successful);
-        mTextViewTransactionStatus.setText(getString(R.string.payment_successful));
+        mImageViewTransactionStatus.setImageResource(R.drawable.ic_status_success);
+        mTextViewTransactionStatus.setText(getString(R.string.thank_you));
+        mTextViewTitleTransactionStatus.setText(getString(R.string.payment_successful));
+        layoutMain.setBackgroundColor(getResources().getColor(R.color.payment_status_success));
         mTextViewPaymentErrorMessage.setVisibility(View.GONE);
     }
 }

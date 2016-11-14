@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +17,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.BankTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
+import com.midtrans.sdk.uikit.utilities.PicassoColorTransform;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -39,6 +41,7 @@ public class BaseActivity extends AppCompatActivity {
                     }
                     Picasso.with(this)
                             .load(mMidtransSDK.getMerchantLogo())
+                            .transform(new PicassoColorTransform(Color.WHITE))
                             .into(logo);
                 } else if (name != null && !TextUtils.isEmpty(mMidtransSDK.getMerchantName())) {
                     name.setVisibility(View.VISIBLE);

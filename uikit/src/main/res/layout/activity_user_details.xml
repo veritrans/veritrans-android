@@ -15,10 +15,9 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            style="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:theme="@style/ToolBarStyle"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -35,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="@string/title_user_details"
-                android:textColor="@color/dark_gray"
+                android:textColor="@color/white"
                 android:textSize="@dimen/tool_bar_title_size"
                 android:visibility="visible" />
 

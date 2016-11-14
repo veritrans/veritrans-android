@@ -13,11 +13,11 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
-import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ExpiryModel;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     .enableLog(true)
                     .buildSDK();
         } else {
-//            init custom setting if needed
+            // Init custom setting if needed
             UIKitCustomSetting uisetting = new UIKitCustomSetting();
             uisetting.setShowPaymentStatus(true);
 
@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
                 TransactionRequest(UUID.randomUUID().toString(), 3000);
-
         //define customer detail (mandatory for coreflow)
         CustomerDetails mCustomerDetails = new CustomerDetails();
         mCustomerDetails.setPhone("624234234234");

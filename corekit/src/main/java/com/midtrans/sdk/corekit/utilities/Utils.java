@@ -17,6 +17,8 @@ import android.view.inputmethod.InputMethodManager;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -24,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+import java.util.Random;
 import java.util.TimeZone;
 
 /**
@@ -233,5 +236,24 @@ public class Utils {
         }
         tokenRequestModel.setCustom(object);
         return tokenRequestModel;
+    }
+
+    public static String generateOrderId() {
+        int number;
+        int high = 999999999;
+        int low = 100000000;
+        byte[] randomBytes = new byte[128];
+
+        try {
+            SecureRandom secureRandomGenerator = SecureRandom.getInstance("SHA1PRNG");
+            secureRandomGenerator.nextBytes(randomBytes);
+            number = secureRandomGenerator.nextInt(high - low) + low;
+        } catch (NoSuchAlgorithmException e) {
+            Logger.e("random number : " + e.getMessage());
+            Random random = new Random();
+            number = random.nextInt(high - low) + low;
+        }
+        String result = String.valueOf(number + "" + (number + System.currentTimeMillis()));
+        return result;
     }
 }

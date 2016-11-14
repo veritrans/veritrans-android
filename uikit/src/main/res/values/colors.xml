@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2196F3</color>
-    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorPrimary">#1f8fe9</color>
+    <color name="colorPrimaryDark">#0378d6</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorAccentLight">#e1e1e1</color>
     <color name="white">#ffffff</color>
+    <color name="material_grey">#fafafa</color>
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>
     <color name="card_background_color">#1768a9</color>
@@ -27,6 +28,11 @@
     <color name="bg_offer_failure">#FFDDDE</color>
 
     <color name="blue_button_disabled_state">#D2D2D2</color>
+
+    <color name="payment_status_success">#8BC53F</color>
+    <color name="payment_status_failed">#D4385C</color>
+    <color name="payment_status_pending">#FAAF3F</color>
+    <color name="payment_status_offer">#2F80C2</color>
 
 
 </resources>
