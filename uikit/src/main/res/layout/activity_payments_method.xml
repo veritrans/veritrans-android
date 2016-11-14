@@ -33,10 +33,14 @@
                         tools:text="Name" />
 
                     <ImageView
+                        android:paddingLeft="@dimen/five_dp"
+                        android:paddingRight="@dimen/five_dp"
+                        android:paddingTop="@dimen/two_dp"
+                        android:paddingBottom="@dimen/two_dp"
                         android:layout_gravity="center"
                         android:id="@+id/merchant_logo"
-                        android:layout_width="@dimen/logo_width"
-                        android:layout_height="@dimen/logo_height"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:scaleType="centerInside"
                         tools:src="@drawable/ic_veritrans" />
 
