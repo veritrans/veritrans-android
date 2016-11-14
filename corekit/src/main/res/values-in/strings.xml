@@ -15,7 +15,7 @@
     <string name="my_credit_card">Kartu Kredit Saya</string>
 
     <!-- User Address -->
-    <string name="title_user_details">Detil Pengguna</string>
+    <string name="title_user_details">Informasi pengguna</string>
     <string name="hint_address">Alamat</string>
     <string name="hint_city">Kota</string>
     <string name="hint_zip_code">Kode Pos</string>
@@ -107,7 +107,7 @@
     <string name="complete_payment_at_atm">Selesaikan Pembayaran di ATM</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
-    <string name="payment_pending">Menunggu Pembayaran!</string>
+    <string name="payment_pending">Menunggu Pembayaran</string>
     <string name="transactionTime">Waktu Transaksi</string>
     <string name="paymentType">Tipe Pembayaran</string>
     <string name="tab_mandiri">Mandiri/ATM Bersama</string>
@@ -229,9 +229,9 @@
     <string name="coming_soon">Segera Muncul!!</string>
     <string name="successful">Berhasil</string>
     <string name="unsuccessful">Tidak Berhasil</string>
-    <string name="payment_successful">Pembayaran Berhasil :)</string>
+    <string name="payment_successful">Pembayaran Berhasil</string>
     <string name="payment_unsuccessful_msg">Payment gateway <i>error</i></string>
-    <string name="payment_unsuccessful">Pembayaran Tidak Berhasil :(</string>
+    <string name="payment_unsuccessful">Pembayaran Tidak Berhasil</string>
     <string name="validation_message_invalid_expiry_date">Masukkan tanggal kadaluarsa yang benar</string>
     <string name="api_fail_message">Terjadi kesalahan. Silakan coba lagi.</string>
     <string name="title_payment_failed">Pembayaran Gagal</string>

@@ -7,13 +7,13 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -41,7 +41,7 @@ public class UserAddressFragment extends Fragment {
     private EditText etCity;
     private EditText etZipcode;
     private AutoCompleteTextView etCountry;
-    private CheckBox cbShippingAddress;
+    private SwitchCompat switchShippingAddress;
     private RelativeLayout shippingAddressContainer;
     private EditText etShippingAddress;
     private EditText etShippingCity;
@@ -125,7 +125,7 @@ public class UserAddressFragment extends Fragment {
         etCity = (EditText) view.findViewById(R.id.et_city);
         etZipcode = (EditText) view.findViewById(R.id.et_zipcode);
         etCountry = (AutoCompleteTextView) view.findViewById(R.id.et_country);
-        cbShippingAddress = (CheckBox) view.findViewById(R.id.cb_shipping_address);
+        switchShippingAddress = (SwitchCompat) view.findViewById(R.id.cb_shipping_address);
         shippingAddressContainer = (RelativeLayout) view.findViewById(R.id
                 .shipping_address_container);
         etShippingAddress = (EditText) view.findViewById(R.id.et_shipping_address);
@@ -145,7 +145,7 @@ public class UserAddressFragment extends Fragment {
             }
         });
 
-        cbShippingAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        switchShippingAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -201,7 +201,7 @@ public class UserAddressFragment extends Fragment {
                     .validation_billingcountry_notexist));
             etCountry.requestFocus();
             return;
-        } else if (!cbShippingAddress.isChecked()) {
+        } else if (!switchShippingAddress.isChecked()) {
             if (TextUtils.isEmpty(shippingAddress)) {
                 SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
                         .validation_shippingaddress_empty));
@@ -246,7 +246,7 @@ public class UserAddressFragment extends Fragment {
         billingUserAddress.setCity(billingCity);
         billingUserAddress.setCountry(billingCountryCodeSelected);
         billingUserAddress.setZipcode(zipcode);
-        if (cbShippingAddress.isChecked()) {
+        if (switchShippingAddress.isChecked()) {
             billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BOTH);
         } else {
             billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BILLING);

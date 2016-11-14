@@ -3,6 +3,7 @@ package com.midtrans.sdk.uikit.activities;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +47,7 @@ import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.models.SectionedPaymentMethod;
+import com.midtrans.sdk.uikit.utilities.PicassoColorTransform;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.squareup.picasso.Picasso;
 
@@ -394,6 +396,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         ArrayList<SectionedPaymentMethod> paymentMethods = new ArrayList<>();
 
         for (EnabledPayment enabledPayment : enabledPayments) {
+            Log.d("enabledPyment", "type:" + enabledPayment.getType());
             if (enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer))) {
                 bankTrasfers.add(enabledPayment.getType());
             } else {
@@ -538,6 +541,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (!TextUtils.isEmpty(url)) {
             Picasso.with(this)
                     .load(url)
+                    .transform(new PicassoColorTransform(Color.WHITE))
                     .into(logo);
             merchantName.setVisibility(View.GONE);
         } else {

@@ -22,6 +22,7 @@
     <dimen name="fiftyfour_dp">54dp</dimen>
     <dimen name="fortytwo_dp">54dp</dimen>
     <dimen name="tool_bar_height">56dp</dimen>
+    <dimen name="thirtytwo_dp">32dp</dimen>
 
 
     <!-- text size-->
@@ -31,10 +32,8 @@
     <dimen name="primary_text_size">16sp</dimen>
     <dimen name="seventeen_sp">17sp</dimen>
     <dimen name="tool_bar_title_size">18sp</dimen>
-
     <dimen name="secondary_text_size">14sp</dimen>
     <dimen name="tertiary_text_size">12sp</dimen>
-    <dimen name="thirtytwo_dp">32dp</dimen>
 
 
     <!-- tool bar side view margin-->
@@ -51,4 +50,6 @@
     <dimen name="logo_width">50dp</dimen>
     <dimen name="logo_height">50dp</dimen>
     <dimen name="eightteen_dp">18dp</dimen>
+    <dimen name="ten_dp">10dp</dimen>
+    <dimen name="twenty_two_sp">22sp</dimen>
 </resources>

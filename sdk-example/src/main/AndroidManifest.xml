@@ -9,8 +9,8 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_veritrans"
-        android:type="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/MidtransAppTheme"
         tools:replace="android:theme">
