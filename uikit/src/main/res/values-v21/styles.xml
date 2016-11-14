@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="VeritransAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="MidtransAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item> 
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item> 
         <item name="colorAccent">@color/colorAccent</item>
-        
+        <item name="android:colorButtonNormal">@color/colorPrimaryDark</item>
     </style>
 
-    <!-- ToolBar --><!--
-    <style name="ToolBarStyle" parent="Theme.AppCompat">
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:textColor">@android:color/white</item>
-    </style>-->
 
+    <!--<style name="ToolBarStyle" parent="Theme.AppCompat.">-->
+        <!--<item name="android:textColorPrimary">@android:color/white</item>-->
+        <!--<item name="android:textColorSecondary">@android:color/white</item>-->
+        <!--<item name="actionMenuTextColor">@android:color/white</item>-->
+        <!--<item name="colorControlNormal">@color/white</item>-->
+        <!--<item name="selectableItemBackground">?android:selectableItemBackground</item>-->
+        <!--<item name="selectableItemBackgroundBorderless">?android:selectableItemBackground</item>-->
+        <!--<item name="colorControlHighlight">@color/colorSecondary</item>-->
+    <!--</style>-->
 
-    <style name="ToolBarStyle" parent="Theme.AppCompat">
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="actionMenuTextColor">@android:color/white</item>
-    </style>
-
-    <style name="TransperentTheme" parent="VeritransAppTheme">
+    <style name="TransperentTheme" parent="MidtransAppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
@@ -32,4 +29,5 @@
     <style name="ScrollTheme">
         <item name="android:colorEdgeEffect">?colorPrimary</item>
     </style>
+
 </resources>

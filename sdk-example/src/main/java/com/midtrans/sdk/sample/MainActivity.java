@@ -13,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private TransactionRequest initializePurchaseRequest(int sampleSDKType) {
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(UUID.randomUUID().toString(), 360000);
+                TransactionRequest(Utils.generateOrderId(), 360000);
 
         //define customer detail (mandatory for coreflow)
         CustomerDetails mCustomerDetails = new CustomerDetails();

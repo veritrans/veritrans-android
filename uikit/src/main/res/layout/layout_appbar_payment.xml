@@ -32,6 +32,7 @@
                 android:paddingBottom="@dimen/sixteen_dp"
                 android:paddingLeft="@dimen/sixteen_dp"
                 android:paddingRight="@dimen/sixteen_dp"
+                android:background="?attr/colorPrimaryDark"
                 android:paddingTop="@dimen/sixteen_dp"
                 app:layout_collapseMode="parallax">
 
@@ -110,11 +111,10 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/main_toolbar"
-                style="@style/ThemeOverlay.AppCompat.ActionBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/white"
                 android:paddingEnd="@dimen/activity_horizontal_margin"
+                app:theme="@style/ToolBarStyle"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 app:layout_collapseMode="pin"
                 app:title="">
@@ -123,7 +123,7 @@
                     android:id="@+id/merchant_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_gray"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/tool_bar_title_size"
                     android:visibility="gone"
                     tools:text="Name" />
@@ -140,7 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:textColor="@color/dark_gray"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/tool_bar_title_size" />
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>

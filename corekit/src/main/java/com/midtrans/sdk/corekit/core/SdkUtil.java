@@ -607,6 +607,8 @@ public class SdkUtil {
 
     /**
      * Sorting payment method by priority (Ascending)
+     *
+     * @param paymentMethodsModels
      */
     public static void sortPaymentMethodsByPriority(ArrayList<PaymentMethodsModel> paymentMethodsModels) {
         Collections.sort(paymentMethodsModels, new Comparator<PaymentMethodsModel>() {
@@ -616,4 +618,5 @@ public class SdkUtil {
             }
         });
     }
+
 }

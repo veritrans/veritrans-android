@@ -26,7 +26,7 @@
     <string name="description_arrow">Arrow</string>
     <string name="description_bank_icon">Bank icon</string>
     <string name="description_payment_method_icon">Payment method icon</string>
-    <string name="text_payment_type_here">Payment Type here</string>
+    <string name="text_payment_type_here">Payment Method here</string>
     <string name="text_transaction_time_here">Transaction Time Here</string>
     <string name="text_sample_card_expiry">XX/XX</string>
     <string name="text_billpay_code_here">billpay code here</string>
@@ -55,7 +55,7 @@
     <string name="activity_bank_transfer_permata">Permata Bank Transfer</string>
     <string name="activity_save_credit_card">Registered Credit Card</string>
     <!-- User Address -->
-    <string name="title_user_details">User Details</string>
+    <string name="title_user_details">User Information</string>
     <string name="hint_address">Address</string>
     <string name="hint_city">City</string>
     <string name="hint_zip_code">Zipcode</string>
@@ -171,7 +171,7 @@
     <string name="complete_payment_at_klik_bca">Finish</string>
     <string name="done">Done</string>
     <string name="virtual_account_number">Virtual Account Number</string>
-    <string name="payment_pending">Payment Pending !</string>
+    <string name="payment_pending">Payment Pending</string>
     <string name="payment_challenged">Payment is being processed</string>
     <string name="what_is_cvv">What is CVV?</string>
     <string name="transactionTime">Transaction Time</string>
@@ -294,9 +294,9 @@
     <string name="coming_soon">Coming soon!!</string>
     <string name="successful">Successful</string>
     <string name="unsuccessful">Unsuccessful</string>
-    <string name="payment_successful">Payment Successful :)</string>
+    <string name="payment_successful">Payment Successful</string>
     <string name="payment_unsuccessful_msg">Payment gateway error</string>
-    <string name="payment_unsuccessful">Payment unsuccessful :(</string>
+    <string name="payment_unsuccessful">Payment unsuccessful</string>
     <string name="validation_message_invalid_expiry_date">Please enter valid expiry date</string>
     <string name="api_fail_message">Something went wrong. Please try later.</string>
     <string name="title_payment_failed">Payment Failed</string>
@@ -578,5 +578,17 @@
     <string name="status_expired">Expired</string>
     <string name="label_expired">expired</string>
     <string name="message_cannot_proccessed">Transaction cannot be proccessed.</string>
+
+    <!-- payment sections -->
+    <string name="section_card">CARD PAYMENT</string>
+    <string name="section_va">VIRTUAL ACCOUNT</string>
+    <string name="section_direct_debit">DIRECT DEBIT</string>
+    <string name="section_ewallet">E - WALLET</string>
+    <string name="section_cstore">CONVENIENCE STORE</string>
+    <string name="text_payment_method">Payment Method</string>
+    <string name="text_payment_time">Payment Time</string>
+    <string name="text_payment_time_here">Payment time here</string>
+    <string name="thank_you">Thank you !</string>
+    <string name="sorry">Sorry !</string>
 
 </resources>

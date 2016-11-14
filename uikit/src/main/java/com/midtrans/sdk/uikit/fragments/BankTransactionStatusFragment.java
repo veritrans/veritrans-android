@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Constants;
@@ -37,13 +39,18 @@ public class BankTransactionStatusFragment extends Fragment {
     private static final String DATA = "data";
     private static final String PAYMENT_TYPE = "payment_type";
     private TransactionResponse mTransactionResponse = null;
-    // Views
+
+    private RelativeLayout layoutPaymentMethod;
+    private RelativeLayout layoutTransactionTime;
+    private NestedScrollView layoutMain;
+
     private TextView mTextViewAmount = null;
     private TextView mTextViewOrderId = null;
     private TextView mTextViewTransactionTime = null;
     private TextView mTextViewBankName = null;
     private TextView mTextViewTransactionStatus = null;
     private TextView mTextViewPaymentErrorMessage = null;
+    private TextView mtextTitleTransactionStatus = null;
     private ImageView mImageViewTransactionStatus = null;
     private Button mSeeInstructions = null;
     private int mPaymentType = -1;
@@ -114,8 +121,16 @@ public class BankTransactionStatusFragment extends Fragment {
         mImageViewTransactionStatus = (ImageView) view.findViewById(R.id.img_transaction_status);
         mTextViewTransactionStatus = (TextView) view.findViewById(R.id
                 .text_transaction_status);
+
+        mtextTitleTransactionStatus = (TextView) view.findViewById(R.id
+                .text_title_payment_status);
+
         mTextViewPaymentErrorMessage = (TextView) view.findViewById(R.id
                 .text_payment_error_message);
+
+        layoutPaymentMethod = (RelativeLayout) view.findViewById(R.id.layout_trans_payment_type);
+        layoutTransactionTime = (RelativeLayout) view.findViewById(R.id.layout_trans_payment_time);
+        layoutMain = (NestedScrollView) view.findViewById(R.id.layout_banktransfer_status);
 
     }
 
@@ -146,14 +161,20 @@ public class BankTransactionStatusFragment extends Fragment {
                     mTextViewBankName.setText(getString(R.string.payment_method_klik_bca));
                 }
             }
-            String transactionTime = mTransactionResponse.getTransactionTime() == null ? "" : mTransactionResponse.getTransactionTime();
+
+            if (!TextUtils.isEmpty(mTransactionResponse.getTransactionTime())) {
+                mTextViewTransactionTime.setText(mTransactionResponse.getTransactionTime());
+            } else {
+                layoutTransactionTime.setVisibility(View.GONE);
+            }
+
             String orderId = mTransactionResponse.getOrderId() == null ?
                     MidtransSDK.getInstance().getTransactionRequest().getOrderId() : mTransactionResponse.getOrderId();
-
-            mTextViewTransactionTime.setText(transactionTime);
             mTextViewOrderId.setText(orderId);
+
             try {
-                String amount = mTransactionResponse.getGrossAmount();
+                String amount = TextUtils.isEmpty(mTransactionResponse.getGrossAmount()) ?
+                        MidtransSDK.getInstance().getTransactionRequest().getAmount() + "" : mTransactionResponse.getGrossAmount();
                 if (!TextUtils.isEmpty(amount)) {
                     String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
                     mTextViewAmount.setText(formattedAmount);
@@ -167,6 +188,10 @@ public class BankTransactionStatusFragment extends Fragment {
             if (mTransactionResponse.getTransactionStatus().contains(PENDING)
                     || mTransactionResponse.getTransactionStatus().contains("pending")) {
                 mSeeInstructions.setVisibility(View.VISIBLE);
+                mtextTitleTransactionStatus.setText(getString(R.string.payment_pending));
+                mTextViewTransactionStatus.setText(getString(R.string.thank_you));
+                mImageViewTransactionStatus.setImageResource(R.drawable.ic_status_pending);
+                layoutMain.setBackgroundColor(getResources().getColor(R.color.payment_status_pending));
                 // Show instruction
                 if (!TextUtils.isEmpty(getArguments().getString(BankTransferInstructionActivity.DOWNLOAD_URL))) {
                     mSeeInstructions.setOnClickListener(new View.OnClickListener() {
@@ -235,9 +260,11 @@ public class BankTransactionStatusFragment extends Fragment {
      * enables ui related to failure of payment transaction.
      */
     private void setUiForFailure() {
-        mImageViewTransactionStatus.setImageResource(R.drawable.ic_failure);
-        mTextViewTransactionStatus.setText(getString(R.string.payment_unsuccessful));
+        mImageViewTransactionStatus.setImageResource(R.drawable.ic_status_failed);
+        mtextTitleTransactionStatus.setText(getString(R.string.unsuccessful));
+        mTextViewTransactionStatus.setText(getString(R.string.sorry));
         mTextViewPaymentErrorMessage.setVisibility(View.VISIBLE);
+        layoutMain.setBackgroundColor(getResources().getColor(R.color.payment_status_failed));
     }
 
 
@@ -245,9 +272,11 @@ public class BankTransactionStatusFragment extends Fragment {
      * enables ui related to success of payment transaction.
      */
     private void setUiForSuccess() {
-        mImageViewTransactionStatus.setImageResource(R.drawable.ic_successful);
-        mTextViewTransactionStatus.setText(getString(R.string.payment_successful));
+        mImageViewTransactionStatus.setImageResource(R.drawable.ic_status_success);
+        mtextTitleTransactionStatus.setText(getString(R.string.payment_successful));
+        mTextViewTransactionStatus.setText(getString(R.string.thank_you));
         mTextViewPaymentErrorMessage.setVisibility(View.GONE);
+        layoutMain.setBackgroundColor(getResources().getColor(R.color.payment_status_success));
     }
 
     private void showInstruction() {

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:background="?android:selectableItemBackground">
+    android:layout_height="60dp" >
 
 
     <ImageView
@@ -16,29 +15,57 @@
         android:src="@drawable/ic_launcher"/>
 
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginStart="@dimen/sixteen_dp"
         android:layout_toEndOf="@id/img_payment_method_icon"
-        android:layout_toRightOf="@id/img_payment_method_icon"
-        >
+        android:layout_toRightOf="@id/img_payment_method_icon">
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/text_payment_method_name"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|start"
-            android:text="@string/text_demo"
-            android:textColor="@color/black" />
+            android:layout_height="match_parent">
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/gray_divider"
-            />
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:textSize="18dp"
+                android:alpha="0.7"
+                android:id="@+id/text_payment_method_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|start"
+                android:text="@string/text_demo"
+                android:textColor="@color/black" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/gray_divider"
+                />
+        </RelativeLayout>
+
+    </FrameLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:alpha="0.3"
+            android:id="@+id/image_arrow_next"
+            android:src="@drawable/ic_arrow_right"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <ImageView
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:id="@+id/image_offer"
+            android:layout_marginRight="@dimen/eight_dp"
+            android:layout_toLeftOf="@+id/image_arrow_next"
+            android:layout_width="@dimen/forty_dp"
+            android:layout_height="@dimen/forty_dp" />
+
     </RelativeLayout>
 </RelativeLayout>

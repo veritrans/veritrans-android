@@ -3,7 +3,7 @@
 
     <application
         android:allowBackup="true"
-        android:theme="@style/VeritransAppTheme">
+        android:theme="@style/MidtransAppTheme">
         <activity
             android:name="com.midtrans.sdk.uikit.activities.UserDetailsActivity"
             android:screenOrientation="portrait"

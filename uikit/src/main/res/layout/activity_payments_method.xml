@@ -13,15 +13,14 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/main_toolbar"
-                style="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:theme="@style/ToolBarStyle"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@android:color/white">
+                android:layout_height="?attr/actionBarSize" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -34,9 +33,14 @@
                         tools:text="Name" />
 
                     <ImageView
+                        android:paddingLeft="@dimen/five_dp"
+                        android:paddingRight="@dimen/five_dp"
+                        android:paddingTop="@dimen/two_dp"
+                        android:paddingBottom="@dimen/two_dp"
+                        android:layout_gravity="center"
                         android:id="@+id/merchant_logo"
-                        android:layout_width="@dimen/logo_width"
-                        android:layout_height="@dimen/logo_height"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:scaleType="centerInside"
                         tools:src="@drawable/ic_veritrans" />
 
@@ -53,7 +57,7 @@
                         android:text="@string/select_payment_method"
                         android:textColor="@color/dark_gray"
                         android:textSize="@dimen/tool_bar_title_size"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </android.support.v7.widget.Toolbar>
@@ -61,9 +65,7 @@
         <include
             layout="@layout/layout_tool_bar_titles"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_height="?attr/actionBarSize"
             android:visibility="visible" />
     </android.support.design.widget.AppBarLayout>
 
@@ -72,11 +74,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
-
     <android.support.v7.widget.RecyclerView
+        android:layout_above="@+id/layout_offer"
         android:id="@+id/rv_payment_methods"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <LinearLayout
