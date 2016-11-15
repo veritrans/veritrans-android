@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import id.co.veritrans.sdk.coreflow.core.Constants;
+import id.co.veritrans.sdk.coreflow.core.LocalDataHandler;
 import id.co.veritrans.sdk.coreflow.core.Logger;
 import id.co.veritrans.sdk.coreflow.core.VeritransSDK;
 import id.co.veritrans.sdk.coreflow.eventbus.bus.VeritransBusProvider;
@@ -136,6 +137,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
+        initUserDetails();
         if (veritransSDK != null) {
 
             if (!veritransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
@@ -147,6 +149,19 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             }
         }
         readBankDetails();
+    }
+
+    private void initUserDetails() {
+        if(userDetail == null){
+            try {
+                UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+                if(userDetail != null){
+                    this.userDetail = userDetail;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -316,6 +331,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
+        initUserDetails();
         if (resultCode == RESULT_OK) {
             if (requestCode == PAYMENT_WEB_INTENT) {
                 payUsingCard();
@@ -708,6 +724,5 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         Logger.i("card fetching failed :" + event.getMessage());
         processingLayout.setVisibility(View.GONE);
     }
-
 
 }
