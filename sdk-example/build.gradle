@@ -23,8 +23,8 @@ android {
     productFlavors {
         development {
             applicationId "com.midtrans.sdk.sample.development"
-            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
-            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
+            buildConfigField "String", "BASE_URL", "\"https://snap.rakawm.id/\""
+            buildConfigField "String", "CLIENT_KEY", "\"VT-client-E4f1bsi1LpL1p5cF\""
         }
         production {
             applicationId "com.midtrans.sdk.sample.production"
@@ -34,7 +34,7 @@ android {
     }
     buildTypes {
         debug {
-            minifyEnabled false
+            minifyEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

@@ -14,7 +14,6 @@ import java.util.ArrayList;
  * Created by ziahaqi on 15/06/2016.
  */
 public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
-
     /**
      * It  will initialize an data required to sdk.
      *
@@ -27,6 +26,7 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
         this.clientKey = clientKey;
         this.merchantServerUrl = merchantServerUrl;
         this.transactionFinishedCallback = callback;
+        this.flow = UI_FLOW;
         this.sdkFlow = new UIFlow();
     }
 

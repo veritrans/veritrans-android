@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
@@ -31,7 +30,6 @@ public class SavedCardFragment extends Fragment {
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
     private FloatingActionButton addCardBt;
-    private MidtransSDK midtransSDK;
     private ArrayList<SaveCardRequest> creditCards;
     private CardPagerAdapter cardPagerAdapter;
 
@@ -49,12 +47,6 @@ public class SavedCardFragment extends Fragment {
     public static SavedCardFragment newInstance() {
         SavedCardFragment fragment = new SavedCardFragment();
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        midtransSDK = MidtransSDK.getInstance();
     }
 
     @Override
@@ -317,16 +309,7 @@ public class SavedCardFragment extends Fragment {
                 }
             }
 
-            //notifydataset change not worked properly for viewpager so setting it again
             Logger.i("setting view pager value");
-            // setViewPagerValues(creditCardsNew);
-                        /*if(creditCards.size()>1) {
-                            try {
-                                savedCardPager.setCurrentItem(position);
-                            } catch (ArrayIndexOutOfBoundsException e) {
-                                savedCardPager.setCurrentItem(creditCards.size() - 1);
-                            }
-                        }*/
             if (cardPagerAdapter != null && circlePageIndicator != null) {
                 Logger.i("notifying data");
                 cardPagerAdapter.notifyChangeInPosition(1);

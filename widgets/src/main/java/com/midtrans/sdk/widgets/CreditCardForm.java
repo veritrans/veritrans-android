@@ -35,12 +35,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
-import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
+import com.midtrans.sdk.corekit.core.BaseSdkBuilder;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -79,11 +80,16 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     private static final int MONTH_COUNT = 12;
     private static final float CARD_ASPECT_RATIO = 0.64222f;
 
+    private static final String KEY_PAY_BUTTON_EVENT = "Pay";
+    private static final String KEY_CHECKBOX_SAVE_CARD_EVENT = "Save Card";
+    private static final String KEY_SAVED_CARD_EVENT = "Use Saved Card";
+    private static final String PAYMENT_CREDIT_CARD = "cc";
+    private final int ONE_CLICK = 1;
+    private final int TWO_CLICK = 2;
     private ImageView logo, cvvHelpImage, saveCardImage;
     private Button payBtn;
     private EditText cardNumber, cardCvvNumber, cardExpiry;
     private TextInputLayout cardNumberContainer, cardCvvNumberContainer, cardExpiryContainer;
-
     private AlertDialog webViewDialog;
     private WidgetTransactionCallback widgetTransactionCallback;
     private String midtransClientKey;
@@ -111,8 +117,6 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     private WebView webView;
     private Animation layoutAnimation;
     private int cardPaymentEnabled;
-    private final int ONE_CLICK = 1;
-    private final int TWO_CLICK = 2;
     private boolean alreadyCheckout = false;
 
 
@@ -340,9 +344,11 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
                 throw new WidgetException(getResources().getString(R.string.error_merchant_url_missing));
             }
 
-            return SdkCoreFlowBuilder.init(getContext().getApplicationContext(), midtransClientKey, merchantUrl)
+            MidtransSDK midtransSDK = SdkCoreFlowBuilder.init(getContext().getApplicationContext(), midtransClientKey, merchantUrl)
                     .enableLog(true)
                     .buildSDK();
+            midtransSDK.setFlow(BaseSdkBuilder.WIDGET);
+            return midtransSDK;
         }
     }
 
@@ -668,6 +674,13 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
 
         } else {
             if (checkCardValidity()) {
+                // track mixpanel event for pay
+                getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, PAYMENT_CREDIT_CARD, null);
+                // track mixpanel event for save card
+                if (checkboxStoreCard.isChecked()) {
+                    getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_CHECKBOX_SAVE_CARD_EVENT, PAYMENT_CREDIT_CARD, null);
+                }
+
                 setTransactionRequest(transactionRequest);
                 setWidgetTransactionCallback(widgetTransactionCallback);
                 final CardTokenRequest cardTokenRequest = new CardTokenRequest(
@@ -716,6 +729,10 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     private void oneClickPayment(String maskedCard) {
+        // track one click
+        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_SAVED_CARD_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
+        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
+
         CreditCardPaymentModel cardPaymentModel = new CreditCardPaymentModel(maskedCard);
         payUsingCreditCard(getMidtransSDK().readAuthenticationToken(), cardPaymentModel);
     }
@@ -746,6 +763,10 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     private void twoClickPayment(SaveCardRequest selectedCard, String cardCVV) {
+        // track two click payment
+        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_SAVED_CARD_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
+        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
+
         CardTokenRequest request = new CardTokenRequest();
         request.setSavedTokenId(selectedCard.getSavedTokenId());
         request.setCardCVV(cardCVV);
@@ -929,12 +950,12 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         }
     }
 
-    public void setUserId(@NonNull String userId) {
-        this.userId = userId;
-    }
-
     public String getUserId() {
         return this.userId;
+    }
+
+    public void setUserId(@NonNull String userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -1069,16 +1090,6 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         layout.startAnimation(layoutAnimation);
     }
 
-
-    /**
-     * Will be used to get response callback after charging in this view.
-     */
-    public interface WidgetTransactionCallback {
-        void onSucceed(TransactionResponse transactionResponse);
-
-        void onFailed(Throwable throwable);
-    }
-
     /**
      *
      * @param cardPaymentEnabled Enabled credit card payment type
@@ -1184,5 +1195,14 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         } else {
             layoutProgress.setVisibility(GONE);
         }
+    }
+
+    /**
+     * Will be used to get response callback after charging in this view.
+     */
+    public interface WidgetTransactionCallback {
+        void onSucceed(TransactionResponse transactionResponse);
+
+        void onFailed(Throwable throwable);
     }
 }
