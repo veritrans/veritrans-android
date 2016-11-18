@@ -48,11 +48,6 @@ deployment:
             - ./gradlew :clean :uikit:assembleRelease :uikit:bintrayUpload -PdisablePreDex
             - ./gradlew :clean :scancard:assembleRelease :scancard:bintrayUpload -PdisablePreDex
             - ./gradlew :clean :widgets:assembleRelease :widgets:bintrayUpload -PdisablePreDex
-            # using ghr to release latest version to github
-            - ./gradlew :clean :sdk-example:assembleDevelopmentDebug -PdisablePredex
-            - go get github.com/tcnksm/ghr
-            - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace --prerelease `git describe --tags` sdk-example/build/outputs/apk/
-
 
     bump:
       branch: release

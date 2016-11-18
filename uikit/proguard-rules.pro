@@ -109,6 +109,7 @@
 -keep class com.midtrans.sdk.corekit.core.TransactionRequest {*;}
 -keep class com.midtrans.sdk.corekit.core.LocalDataHandler {*;}
 -keep class com.midtrans.sdk.corekit.core.Logger {*;}
+-keep class com.midtrans.sdk.corekit.core.UIKitCustomSetting {*;}
 -keep class com.midtrans.sdk.corekit.core.Constants {*;}
 -keep class com.midtrans.sdk.corekit.core.SdkUtil {*;}
 -keep class com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder {*;}
