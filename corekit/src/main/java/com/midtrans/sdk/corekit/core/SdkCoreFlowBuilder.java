@@ -14,7 +14,6 @@ import java.util.ArrayList;
  * client_key and sever_key. </p> You can also enable or disable using {@link #enableLog(boolean)}
  */
 public class SdkCoreFlowBuilder extends BaseSdkBuilder<SdkCoreFlowBuilder> {
-
     /**
      * It  will initialize an data required to sdk.
      *
@@ -24,6 +23,7 @@ public class SdkCoreFlowBuilder extends BaseSdkBuilder<SdkCoreFlowBuilder> {
         this.context = context.getApplicationContext();
         this.clientKey = clientKey;
         this.merchantServerUrl = merchantServerUrl;
+        this.flow = CORE_FLOW;
     }
 
     public static SdkCoreFlowBuilder init(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl) {

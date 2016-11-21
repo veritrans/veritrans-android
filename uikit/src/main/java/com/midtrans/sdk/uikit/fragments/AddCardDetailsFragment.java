@@ -38,6 +38,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AddCardDetailsFragment extends Fragment {
+
+    private static final String KEY_PAY_BUTTON_EVENT = "Pay";
+    private static final String KEY_SCAN_BUTTON_EVENT = "Scan Card";
+    private static final String KEY_CHECKBOX_SAVE_CARD_EVENT = "Save Card";
+
     TextInputLayout tilCardNo, tilCvv, tilExpiry;
     private String lastExpDate = "";
     private EditText etCardNo;
@@ -166,6 +171,9 @@ public class AddCardDetailsFragment extends Fragment {
                 scanCardBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        // Track event scan
+                        midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SCAN_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
+                        // Start scanning
                         midtransSDK.getExternalScanner().startScan(getActivity(), CreditDebitCardFlowActivity.SCAN_REQUEST_CODE);
                     }
                 });
@@ -183,6 +191,13 @@ public class AddCardDetailsFragment extends Fragment {
         payNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Track event pay now
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
+                // Track event checkbox save card
+                if (cbStoreCard.isChecked()) {
+                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CHECKBOX_SAVE_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
+                }
+
                 if (checkCardValidity()) {
                     String date = etExpiryDate.getText().toString();
                     String month = date.split("/")[0];

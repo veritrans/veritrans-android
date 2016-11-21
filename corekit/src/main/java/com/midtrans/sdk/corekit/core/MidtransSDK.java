@@ -50,6 +50,7 @@ public class MidtransSDK {
     private UIKitCustomSetting uiKitCustomSetting;
     protected boolean isRunning = false;
     ISdkFlow uiflow;
+    private UIKitCustomSetting UIKitCustomSetting;
     private boolean isLogEnabled = false;
     private TransactionFinishedCallback transactionFinishedCallback;
     private MixpanelAnalyticsManager mMixpanelAnalyticsManager;
@@ -71,6 +72,7 @@ public class MidtransSDK {
     private BBMCallBackUrl mBBMCallBackUrl = null;
     private String sdkBaseUrl = "";
     private int requestTimeOut = 10;
+    private String flow = null;
 
     private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
@@ -86,12 +88,13 @@ public class MidtransSDK {
         themeColor = sdkBuilder.colorThemeResourceId;
         this.isLogEnabled = sdkBuilder.enableLog;
         this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
-        this.uiKitCustomSetting = sdkBuilder.uiKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.uiKitCustomSetting;
+        this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.UIKitCustomSetting;
+        this.flow = sdkBuilder.flow;
 
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey);
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
         this.mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
 
@@ -138,6 +141,16 @@ public class MidtransSDK {
         mPreferences = preferences;
     }
 
+    private String getFlow(String flow) {
+        if (flow.equalsIgnoreCase(BaseSdkBuilder.CORE_FLOW)) {
+            return MixpanelAnalyticsManager.CORE_FLOW;
+        } else if (flow.equalsIgnoreCase(BaseSdkBuilder.UI_FLOW)) {
+            return MixpanelAnalyticsManager.UI_FLOW;
+        } else {
+            return MixpanelAnalyticsManager.WIDGET;
+        }
+    }
+
     private void initializeSharedPreferences() {
         mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
     }
@@ -168,7 +181,7 @@ public class MidtransSDK {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName);
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow));
         this.mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
     }
 
@@ -208,8 +221,20 @@ public class MidtransSDK {
         return isLogEnabled;
     }
 
+    public String getFlow() {
+        return flow;
+    }
+
+    public void setFlow(String flow) {
+        this.flow = flow;
+    }
+
     public Context getContext() {
         return context;
+    }
+
+    public MixpanelAnalyticsManager getmMixpanelAnalyticsManager() {
+        return mMixpanelAnalyticsManager;
     }
 
     public String getMerchantToken() {
