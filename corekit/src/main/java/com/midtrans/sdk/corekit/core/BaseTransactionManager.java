@@ -36,10 +36,10 @@ public abstract class BaseTransactionManager {
     protected static final String PAYMENT_TYPE_KIOSAN = "kiosan";
 
     // Bank transfer type
-    protected static final String BANK_PERMATA = "permata";
-    protected static final String BANK_BCA = "bca";
-    protected static final String BANK_MANDIRI = "mandiri";
-    protected static final String ALL_BANK = "other";
+    protected static final String BANK_PERMATA = "Permata";
+    protected static final String BANK_BCA = "BCA";
+    protected static final String BANK_MANDIRI = "Mandiri";
+    protected static final String ALL_BANK = "Other";
 
     protected Context context;
     protected MixpanelAnalyticsManager analyticsManager;
