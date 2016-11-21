@@ -270,14 +270,19 @@ public class AddCardDetailsFragment extends Fragment {
                     @Override
                     public void afterTextChanged(Editable s) {
                         String input = s.toString();
+
                         if (s.length() == 2 && !lastExpDate.endsWith("/")) {
-                            int month = Integer.parseInt(input);
-                            if (month <= 12) {
-                                etExpiryDate.setText(etExpiryDate.getText().toString() + "/");
-                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                            } else {
-                                etExpiryDate.setText(Constants.MONTH_COUNT + "/");
-                                etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                            try {
+                                int month = Integer.parseInt(input);
+                                if (month <= 12) {
+                                    etExpiryDate.setText(etExpiryDate.getText().toString() + "/");
+                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                } else {
+                                    etExpiryDate.setText(Constants.MONTH_COUNT + "/");
+                                    etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                }
+                            } catch (Exception e) {
+                                Logger.e(e.toString());
                             }
                         } else if (s.length() == 2 && lastExpDate.endsWith("/")) {
                             try {
