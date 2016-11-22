@@ -35,10 +35,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
     private static final String KEY_SELECT_PAYMENT = "Payment Select";
     private static final String PAYMENT_TYPE_BANK_TRANSFER = "bank_transfer";
     // Bank transfer type
-    private static final String BANK_PERMATA = "permata";
-    private static final String BANK_BCA = "bca";
-    private static final String BANK_MANDIRI = "mandiri";
-    private static final String ALL_BANK = "other";
+    private static final String BANK_PERMATA = "Permata";
+    private static final String BANK_BCA = "BCA";
+    private static final String BANK_MANDIRI = "Mandiri";
+    private static final String ALL_BANK = "Other";
     private static final String TAG = SelectBankTransferActivity.class.getSimpleName();
     MidtransSDK mMidtransSDK;
 
