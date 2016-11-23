@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private TransactionRequest initializePurchaseRequest(int sampleSDKType) {
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(UUID.randomUUID().toString(), 3000);
+                TransactionRequest(Utils.generateOrderId(), 3000);
         //define customer detail (mandatory for coreflow)
         CustomerDetails mCustomerDetails = new CustomerDetails();
         mCustomerDetails.setPhone("624234234234");

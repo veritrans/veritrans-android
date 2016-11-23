@@ -59,7 +59,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public String currentFragment = "home";
 
-    private TextView mTextViewOrderId = null;
     private TextView mTextViewAmount = null;
     private Button mButtonConfirmPayment = null;
     private AppBarLayout mAppBarLayout = null;
@@ -70,7 +69,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     private BankTransferFragment bankTransferFragment = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
     private ImageView logo = null;
 
     private int position = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
@@ -160,13 +158,11 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      */
     private void initializeView() {
 
-        mTextViewOrderId = (TextView) findViewById(R.id.text_order_id);
-        mTextViewAmount = (TextView) findViewById(R.id.text_amount);
+        mTextViewAmount = (TextView) findViewById(R.id.header_view_sub_title);
         mTextViewTitle = (TextView) findViewById(R.id.text_title);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
         logo = (ImageView) findViewById(R.id.merchant_logo);
 
         initializeTheme();
@@ -185,7 +181,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         if (mMidtransSDK != null) {
 
             mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
-            mTextViewOrderId.setText("" + mMidtransSDK.getTransactionRequest().getOrderId());
             if (mMidtransSDK.getSemiBoldText() != null) {
                 mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
@@ -262,13 +257,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
-        mAppBarLayout.setExpanded(false, false);
-
-        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
-        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        mToolbar.setNavigationIcon(closeIcon);
-        setSupportActionBar(mToolbar);
-
         BankTransactionStatusFragment bankTransactionStatusFragment = !TextUtils.isEmpty(transactionResponse.getPdfUrl()) ?
                 BankTransactionStatusFragment.newInstance(transactionResponse, position, transactionResponse.getPdfUrl()) :
                 BankTransactionStatusFragment.newInstance(transactionResponse, position);
@@ -278,6 +266,8 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                 bankTransactionStatusFragment, STATUS_FRAGMENT);
         fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
         fragmentTransaction.commit();
+        mAppBarLayout.setVisibility(View.GONE);
+
     }
 
 

@@ -35,6 +35,7 @@
                     tools:text="Name" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/merchant_logo"
                     android:layout_width="@dimen/logo_width"
                     android:layout_height="@dimen/logo_height"
@@ -45,7 +46,7 @@
                     android:id="@+id/title_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
+                    android:gravity="center"
                     android:text="@string/activity_select_bank"
                     android:textColor="@color/white"
                     android:textSize="@dimen/tool_bar_title_size"
@@ -55,6 +56,11 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
+    <include
+        layout="@layout/layout_tool_bar_titles"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:visibility="visible" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_bank_list"

@@ -420,4 +420,5 @@
     <string name="text_payment_time">Waktu Pembayaran</string>
     <string name="thank_you">Terima kasih !</string>
     <string name="sorry">Maaf !</string>
+    <string name="copy">Salin</string>
 </resources>

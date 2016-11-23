@@ -19,27 +19,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center_horizontal"
+            android:gravity="left"
             android:paddingTop="@dimen/four_dp"
             android:text="@string/virtual_account_number"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/secondary_text_size"
             />
 
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/text_virtual_account_number"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:padding="@dimen/eight_dp"
-            android:text="@string/virtual_account_number"
-            android:textColor="@color/black"
-            android:textSize="@dimen/header_text_size"
-            />
+            android:layout_height="wrap_content">
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:background="@color/material_grey"
+                android:visibility="visible"
+                android:id="@+id/text_virtual_account_number"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:padding="@dimen/eight_dp"
+                android:text="@string/virtual_account_number"
+                android:textColor="@color/black"
+                android:textSize="@dimen/header_text_size"
+                />
 
+            <Button
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/four_dp"
+                android:id="@+id/btn_copy_va"
+                android:background="@drawable/style_button_bordered"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:clickable="true"
+                android:text="@string/copy"
+                android:textColor="?colorPrimary"
+                android:visibility="visible" />
 
+        </LinearLayout>
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/text_validaty"
             android:layout_width="match_parent"
@@ -70,25 +87,17 @@
             />
 
         <Button
-            android:id="@+id/btn_copy_va"
-            style="?borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:paddingTop="@dimen/eight_dp"
-            android:text="@string/copy_va_number"
-            android:textColor="?colorPrimary"
-            android:visibility="visible" />
-
-        <Button
+            android:layout_marginTop="@dimen/ten_dp"
+            android:layout_gravity="center"
             android:id="@+id/btn_see_instruction"
-            style="?borderlessButtonStyle"
+            android:background="@drawable/style_button_bordered"
             android:layout_width="wrap_content"
+            android:paddingLeft="@dimen/eight_dp"
+            android:paddingRight="@dimen/eight_dp"
             android:layout_height="wrap_content"
             android:text="@string/see_instruction"
             android:textColor="?colorPrimary"
             android:visibility="visible" />
-
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -49,7 +49,7 @@
     <string name="btn_retry">Retry</string>
     <string name="btn_accept">Accept</string>
     <!--Activities-->
-    <string name="activity_select_bank">Select Bank</string>
+    <string name="activity_select_bank">Choose Bank</string>
     <string name="activity_bank_transfer_bca">BCA Bank Transfer</string>
     <string name="activity_bank_transfer_mandiri">Mandiri Bank Transfer</string>
     <string name="activity_bank_transfer_permata">Permata Bank Transfer</string>
@@ -590,5 +590,6 @@
     <string name="text_payment_time_here">Payment time here</string>
     <string name="thank_you">Thank you !</string>
     <string name="sorry">Sorry !</string>
+    <string name="copy">Copy</string>
 
 </resources>

@@ -19,10 +19,12 @@ import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.BankTransferListAdapter;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
     private ImageView logo = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
     private BankTransferListAdapter adapter;
+    private DefaultTextView textTotalAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         //initialize views
         initializeTheme();
         bindActivity();
+        initValues();
         mMidtransSDK = MidtransSDK.getInstance();
         TransactionRequest transactionRequest = null;
         if (mMidtransSDK != null) {
@@ -62,6 +66,13 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         }
 
         setUpBankList();
+    }
+
+    private void initValues() {
+        if(mMidtransSDK != null){
+            String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount()));
+            textTotalAmount.setText(amount);
+        }
     }
 
     /**
@@ -95,6 +106,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_bank_list);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+        textTotalAmount = (DefaultTextView)  findViewById(R.id.header_view_sub_title);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(

@@ -111,6 +111,7 @@
 
 
         <Button
+            android:layout_gravity="center_horizontal"
             android:id="@+id/btn_see_instruction"
             style="?borderlessButtonStyle"
             android:layout_width="wrap_content"

@@ -33,6 +33,8 @@
     <color name="payment_status_failed">#D4385C</color>
     <color name="payment_status_pending">#FAAF3F</color>
     <color name="payment_status_offer">#2F80C2</color>
+    <color name="grey_min">#ededed</color>
+
 
 
 </resources>
