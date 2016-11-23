@@ -240,7 +240,8 @@
     <string name="no_saved_cards">Belum ada kartu yang disimpan.</string>
 
     <string name="text_bank_name">Nama Bank</string>
-    <string name="text_sample_valid_date">Valid Sampai : 10 September 2015, 16:00</string>
+    <string name="text_sample_valid_date">Valid Sampai :</string>
+    <string name="text_sample_valid_date_val">10 September 2015, 16:00</string>
     <string name="enter_cvv">Masukkan CVV</string>
 
     <string name="appli">APPLI</string>

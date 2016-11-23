@@ -96,7 +96,7 @@ public class MandiriBillPayFragment extends Fragment {
 
             mTextViewBillpayCode.setText(mTransactionResponse.getPaymentCode());
 
-            mTextViewValidity.setText(getString(R.string.text_format_valid_until, Utils.getValidityTime(mTransactionResponse.getTransactionTime())));
+            mTextViewValidity.setText(Utils.getValidityTime(mTransactionResponse.getTransactionTime()));
         }
 
         btnSeeInstruction.setOnClickListener(new View.OnClickListener() {

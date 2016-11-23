@@ -86,6 +86,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
 
         // setUp recyclerView
         ArrayList<String> banks = getIntent().getStringArrayListExtra(EXTRA_BANK);
+        banks.add("echannel");
         if (banks != null && banks.size() > 0) {
             initialiseBankTransfersModel(banks);
             if (data.size() == 1) {
