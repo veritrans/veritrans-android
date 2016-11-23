@@ -72,7 +72,7 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
     }
 
     public SdkUIFlowBuilder setUIkitCustomSetting(UIKitCustomSetting setting) {
-        this.uiKitCustomSetting = setting;
+        this.UIKitCustomSetting = setting;
         return this;
     }
 }

@@ -47,7 +47,6 @@ public class MidtransSDK {
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static SharedPreferences mPreferences = null;
     private static MidtransSDK midtransSDK;
-    private UIKitCustomSetting uiKitCustomSetting;
     protected boolean isRunning = false;
     ISdkFlow uiflow;
     private UIKitCustomSetting UIKitCustomSetting;
@@ -1047,6 +1046,6 @@ public class MidtransSDK {
     }
 
     public UIKitCustomSetting getUIKitCustomSetting() {
-        return uiKitCustomSetting;
+        return UIKitCustomSetting;
     }
 }
