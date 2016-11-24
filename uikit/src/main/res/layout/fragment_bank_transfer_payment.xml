@@ -27,16 +27,17 @@
             />
 
         <LinearLayout
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:background="@color/material_grey"
+                android:background="@color/grey_min"
                 android:visibility="visible"
                 android:id="@+id/text_virtual_account_number"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="left"
                 android:padding="@dimen/eight_dp"
                 android:text="@string/virtual_account_number"

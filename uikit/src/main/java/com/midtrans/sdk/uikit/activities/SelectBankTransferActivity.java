@@ -55,7 +55,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         //initialize views
         initializeTheme();
         bindActivity();
-        initValues();
         mMidtransSDK = MidtransSDK.getInstance();
         TransactionRequest transactionRequest = null;
         if (mMidtransSDK != null) {
@@ -64,7 +63,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
             CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "", userDetail.getEmail(), userDetail.getPhoneNumber());
             transactionRequest.setCustomerDetails(customerDetails);
         }
-
+        initValues();
         setUpBankList();
     }
 
