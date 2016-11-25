@@ -209,16 +209,12 @@ public class AddCardDetailsFragment extends Fragment {
                     cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
                     cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
                     cardTokenRequest.setCardType(cardType);
-                    if (bankDetails != null && !bankDetails.isEmpty()) {
-                        String firstSix = cardNumber.substring(0, 6);
-                        for (BankDetail bankDetail : bankDetails) {
-                            if (bankDetail.getBin().equalsIgnoreCase(firstSix)) {
-                                cardTokenRequest.setBank(bankDetail.getIssuing_bank());
-                                cardTokenRequest.setCardType(bankDetail.getCard_association());
-                                break;
-                            }
-                        }
+                    // Set acquiring bank if available
+                    if (midtransSDK.getTransactionRequest().getCreditCard() != null) {
+                        String bank = midtransSDK.getTransactionRequest().getCreditCard().getBank();
+                        cardTokenRequest.setBank(bank);
                     }
+                    
                     //make payment
                     SdkUIFlowUtil.showProgressDialog(getActivity(), false);
                     ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(cbStoreCard.isChecked(), cardType);
