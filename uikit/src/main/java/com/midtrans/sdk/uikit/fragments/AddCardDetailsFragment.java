@@ -214,7 +214,7 @@ public class AddCardDetailsFragment extends Fragment {
                         String bank = midtransSDK.getTransactionRequest().getCreditCard().getBank();
                         cardTokenRequest.setBank(bank);
                     }
-                    
+
                     //make payment
                     SdkUIFlowUtil.showProgressDialog(getActivity(), false);
                     ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(cbStoreCard.isChecked(), cardType);
