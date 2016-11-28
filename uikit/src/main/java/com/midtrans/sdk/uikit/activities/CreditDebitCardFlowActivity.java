@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -210,6 +211,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     private void actionGetCardTokenError(Throwable error) {
+        SdkUIFlowUtil.hideProgressDialog();
         SdkUIFlowUtil.showApiFailedMessage(CreditDebitCardFlowActivity.this, getString(R.string.message_getcard_token_failed));
     }
 
@@ -376,6 +378,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     public void prepareSaveCard(SaveCardRequest creditCard) {
         ArrayList<SaveCardRequest> requests = new ArrayList<>();
         requests.addAll(getCreditCardList());
+        String cardType = midtransSDK.getTransactionRequest().getCardClickType();
         requests.add(new SaveCardRequest(creditCard.getSavedTokenId(), creditCard.getMaskedCard(), cardType));
         saveCreditCards(requests, false);
     }
@@ -390,6 +393,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     removeExistCard = false;
                     Fragment currentFragment = getCurrentFagment(SavedCardFragment.class);
                     if (currentFragment != null) {
+                        Logger.d("Delete card success");
                         ((SavedCardFragment) currentFragment).onDeleteCardSuccess();
                     }
                 }
@@ -408,9 +412,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             public void onError(Throwable error) {
                 if (removeExistCard) {
                     SdkUIFlowUtil.hideProgressDialog();
-                    SdkUIFlowUtil.showSnackbar(CreditDebitCardFlowActivity.this, error.getMessage());
-                    removeExistCard = false;
                 }
+                Log.e(TAG, error.getMessage(), error);
             }
         });
     }
@@ -541,7 +544,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         this.cardTokenRequest.setTwoClick(true);
         this.cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
         this.cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
-        this.cardTokenRequest.setBank("");
+        this.cardTokenRequest.setBank(midtransSDK.getTransactionRequest().getCreditCard().getBank());
         this.cardTokenRequest.setClientKey(midtransSDK.getClientKey());
         midtransSDK.getCardToken(cardTokenRequest, new CardTokenCallback() {
             @Override
@@ -737,9 +740,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 }
             } else {
                 //if token storage on merchantserver then saved cards can be used just for two click
-                if (MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(R.string.card_click_type_two_click)) {
-                    filteredCards.addAll(cards);
-                }
+                filteredCards.addAll(cards);
             }
         }
 

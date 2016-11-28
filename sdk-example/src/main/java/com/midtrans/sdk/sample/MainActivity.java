@@ -18,13 +18,12 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
-import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.sample.core.CoreFlowActivity;
 import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
                     .enableLog(true)
-                    .useBuiltInTokenStorage(true) // enable built in token storage
+                    .useBuiltInTokenStorage(false) // enable built in token storage
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
@@ -120,18 +119,21 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         transactionRequestNew.setBillInfoModel(billInfoModel);
 
         // Create transaction request
+        CreditCard creditCard = new CreditCard();
+        // Set bank to BNI
+        creditCard.setBank(BankType.BNI);
+
         String cardClickType = "";
 
         if (normal.isChecked()) {
             cardClickType = getString(R.string.card_click_type_none);
+            transactionRequestNew.setCreditCard(creditCard);
         } else if (twoClick.isChecked()) {
             cardClickType = getString(R.string.card_click_type_two_click);
-            CreditCard creditCard = new CreditCard();
             creditCard.setSaveCard(true);
             transactionRequestNew.setCreditCard(creditCard);
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
-            CreditCard creditCard = new CreditCard();
             creditCard.setSaveCard(true);
             creditCard.setSecure(true);
             transactionRequestNew.setCreditCard(creditCard);
@@ -146,14 +148,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         customMap.put("flight_id", "JT-214");
         customMap.put("airplane_type", "Boeing");
         transactionRequestNew.setCustomObject(customMap);
-
-        ExpiryModel expiryModel = new ExpiryModel();
-        long currentTime = System.currentTimeMillis();
-        expiryModel.setStartTime(Utils.getFormattedTime(currentTime));
-        expiryModel.setUnit("MINUTES");
-        expiryModel.setDuration(1);
-
-        transactionRequestNew.setExpiry(expiryModel);
 
         return transactionRequestNew;
     }
