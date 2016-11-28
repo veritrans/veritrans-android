@@ -417,7 +417,9 @@ public class MidtransSDK {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
                 TokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
-                model.setUserId(userId);
+                if (isEnableBuiltInTokenStorage()) {
+                    model.setUserId(userId);
+                }
                 mSnapTransactionManager.checkout(model, callback);
             } else {
                 isRunning = false;
