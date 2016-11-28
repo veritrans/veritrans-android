@@ -318,7 +318,7 @@ public class SavedCardFragment extends Fragment {
                 if (creditCards.isEmpty()) {
                     //emptyCardsTextView.setVisibility(View.VISIBLE);
                     AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
-                    ((CreditDebitCardFlowActivity) getActivity()).replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
+                    ((CreditDebitCardFlowActivity) getActivity()).replaceFragment(addCardDetailsFragment, R.id.card_container, false, false);
                     ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.card_details));
                 } else {
                     emptyCardsTextView.setVisibility(View.GONE);
