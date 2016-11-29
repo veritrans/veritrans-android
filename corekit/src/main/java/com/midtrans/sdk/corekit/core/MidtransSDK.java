@@ -333,6 +333,31 @@ public class MidtransSDK {
     }
 
     /**
+     * This will start actual execution of credit card UI flow.
+     *
+     * @param context activity context.
+     */
+    public void startCreditCardUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants
+                    .PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runCreditCard(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
      * This will start actual execution of transaction. if you have enabled an ui then it will start
      * activity according to it.
      *
@@ -358,11 +383,6 @@ public class MidtransSDK {
             }
         }
     }
-
-    public BBMCallBackUrl getBBMCallBackUrl() {
-        return mBBMCallBackUrl;
-    }
-
 
     /**
      * It will fetch the Offers from merchant server.

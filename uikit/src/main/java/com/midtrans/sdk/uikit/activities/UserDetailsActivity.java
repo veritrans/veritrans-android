@@ -19,6 +19,8 @@ import com.midtrans.sdk.uikit.fragments.UserDetailFragment;
 import java.util.ArrayList;
 
 public class UserDetailsActivity extends BaseActivity {
+    public static final String CREDIT_CARD_ONLY = "cconly";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +37,10 @@ public class UserDetailsActivity extends BaseActivity {
 
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
                 if (userAddresses != null && !userAddresses.isEmpty()) {
-
                     Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
+                    if (getIntent().getBooleanExtra(CREDIT_CARD_ONLY, false)) {
+                        paymentOptionIntent.putExtra(CREDIT_CARD_ONLY, true);
+                    }
                     startActivity(paymentOptionIntent);
                     finish();
                 } else {
