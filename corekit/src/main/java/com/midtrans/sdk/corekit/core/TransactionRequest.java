@@ -21,9 +21,6 @@ import java.util.Map;
  */
 public class TransactionRequest {
 
-    public static final String ERROR_MESSAGE = "can/'t change values at this moment , transaction" +
-            " is " +
-            "already initialized.";
     /**
      * payment method using which user wants to perform transaction. use payment methods from {@link
      * Constants}
