@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn;
     private Button coreCardRegistration, uiCardRegistration;
-    private RadioButton normal, twoClick, oneClick;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri;
     private Toolbar toolbar;
 
     @Override
@@ -120,10 +120,15 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         // Create transaction request
         CreditCard creditCard = new CreditCard();
-        // Set bank to BNI
-        creditCard.setBank(BankType.BNI);
+        if (bankMandiri.isChecked()) {
+            // Set bank to Mandiri
+            creditCard.setBank(BankType.MANDIRI);
+        } else if (bankBni.isChecked()) {
+            // Set bank to BNI
+            creditCard.setBank(BankType.BNI);
+        }
 
-        String cardClickType = "";
+        String cardClickType;
 
         if (normal.isChecked()) {
             cardClickType = getString(R.string.card_click_type_none);
@@ -162,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
         dialog.setMessage("Loading");
+
+        bankBni = (RadioButton) findViewById(R.id.radio_bni);
+        bankMandiri = (RadioButton) findViewById(R.id.radio_mandiri);
 
         widgetBtn = (Button) findViewById(R.id.show_card_widget);
         widgetBtn.setOnClickListener(new View.OnClickListener() {
