@@ -16,6 +16,7 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
@@ -166,6 +167,9 @@ public class SnapTransactionManagerTest {
     @Mock
     private ArrayList<SaveCardRequest> getCardResponseMock;
     @Mock
+    private ArrayList<BankBinsResponse> getBankBinsResponseMock;
+
+    @Mock
     private MidtransRestAPI midtransAPI;
     @Captor
     private ArgumentCaptor<Callback<TokenDetailsResponse>> callbackgetTokenArgumentCaptor;
@@ -207,11 +211,15 @@ public class SnapTransactionManagerTest {
     private ArgumentCaptor<String> callbackArgumentCaptorCar;
     @Captor
     private ArgumentCaptor<String> calbackArgumentCatorClientKey;
+    @Captor
+    private ArgumentCaptor<Callback<ArrayList<BankBinsResponse>>> getBankBinCallbackCaptor;
+
     @Mock
     private TransactionDetails transactionDetailsMock;
     private String mAuthToken = "VT-1dqwd34dwed23e2dw";
     private Response retrofitResponseError = new Response("URL", 300, "success", Collections.EMPTY_LIST,
             new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
+
 
     @Before
     public void setup() {
@@ -2280,4 +2288,67 @@ public class SnapTransactionManagerTest {
         PowerMockito.verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
+
+    /**
+     * get bank bins from snap
+     */
+
+
+    @Test
+    public void getBankBinsSuccess_whenCode200or201() {
+        Mockito.when(getBankBinsResponseMock.size()).thenReturn(1);
+        callbackImplement.getBankBins();
+        Mockito.verify(snapAPI).getBankBins(getBankBinCallbackCaptor.capture());
+        getBankBinCallbackCaptor.getValue().success(getBankBinsResponseMock, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onGetBankBinSuccess();
+    }
+
+
+    @Test
+    public void getBankBinsSuccess_whenCodeNot200orNot201() {
+        retrofitResponse = new Response("URL", 210, "success", Collections.EMPTY_LIST,
+                new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
+        Mockito.when(getBankBinsResponseMock.size()).thenReturn(1);
+        callbackImplement.getBankBins();
+        Mockito.verify(snapAPI).getBankBins(getBankBinCallbackCaptor.capture());
+        getBankBinCallbackCaptor.getValue().success(getBankBinsResponseMock, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onGetBankBinFailure();
+    }
+
+    @Test
+    public void getBankBinsSuccess_whenResponseNull() {
+        callbackImplement.getBankBins();
+        Mockito.verify(snapAPI).getBankBins(getBankBinCallbackCaptor.capture());
+        getBankBinCallbackCaptor.getValue().success(null, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onGetBankBinError();
+    }
+
+    @Test
+    public void getBankBinsError_whenGeneralError() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorGeneralMock);
+        callbackImplement.getBankBins();
+        Mockito.verify(snapAPI).getBankBins(getBankBinCallbackCaptor.capture());
+        getBankBinCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(callbackCollaborator).onGetBankBinError();
+    }
+
+    @Test
+    public void getBankBinsError_whenInvalidSSL() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidSSLException);
+        callbackImplement.getBankBins();
+        Mockito.verify(snapAPI).getBankBins(getBankBinCallbackCaptor.capture());
+        getBankBinCallbackCaptor.getValue().failure(retrofitError);
+        PowerMockito.verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void getBankBinsError_whenInvalidCertPath() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidCertPatMock);
+        callbackImplement.getBankBins();
+        Mockito.verify(snapAPI).getBankBins(getBankBinCallbackCaptor.capture());
+        getBankBinCallbackCaptor.getValue().failure(retrofitError);
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
 }

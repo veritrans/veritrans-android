@@ -13,6 +13,7 @@ import android.util.Log;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.SDKConfigTest;
+import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -105,6 +106,8 @@ public class MidtransAndroidSDKTest {
     private CheckoutCallback checkoutCallbackMock;
     private TransactionOptionsCallback transactionOptionCallbackMock;
     private TransactionCallback transactionCallbackMock;
+    private BankBinsCallback getBankBinCallbackMock;
+
     @Mock
     private String sdkTokenMock;
     @Mock
@@ -214,6 +217,7 @@ public class MidtransAndroidSDKTest {
         this.checkoutCallbackMock = callbackSample.getCheckoutCallback();
         this.transactionOptionCallbackMock = callbackSample.getTransactionOptionCallback();
         this.transactionCallbackMock = callbackSample.getTransactionCallback();
+        this.getBankBinCallbackMock = callbackSample.getBankBinCallback();
         this.cardTokenCallbackMock = callbackSample.getCardTokenCallback();
 
         MidtransSDK midtransSDK = SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
@@ -577,4 +581,20 @@ public class MidtransAndroidSDKTest {
         Assert.assertFalse(midtransSDKSSpy.isRunning());
         Mockito.verify(callbackCollaborator).onError();
     }
+
+    @Test
+    public void getBankBins_whenCallbackNull(){
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.getBankBins(null);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void getBankBins_whenInternetNotConnected(){
+        midtransSDKSSpy.getBankBins(getBankBinCallbackMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        Mockito.verify(callbackCollaborator).onGetBankBinError();
+    }
+
 }
