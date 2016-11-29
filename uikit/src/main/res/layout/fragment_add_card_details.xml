@@ -145,7 +145,7 @@
             android:visibility="gone" />
 
         <LinearLayout
-
+            android:visibility="gone"
             android:id="@+id/layout_installment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -158,8 +158,7 @@
                 android:id="@+id/button_installment_decrease"
                 android:layout_width="@dimen/forty_dp"
                 android:layout_height="@dimen/forty_dp"
-                android:background="@drawable/ic_dec"
-                android:fontFamily="sans-serif"
+                android:background="@drawable/style_button_dec"
                 android:textSize="30sp" />
 
             <TextView
@@ -171,7 +170,6 @@
                 android:layout_marginRight="@dimen/eight_dp"
                 android:layout_weight="1"
                 android:background="@color/colorSecondary_min"
-                android:fontFamily="sans-serif"
                 android:gravity="center"
                 android:text="@string/installment_term"
                 android:textStyle="bold" />
@@ -180,8 +178,7 @@
                 android:id="@+id/button_installment_increase"
                 android:layout_width="@dimen/forty_dp"
                 android:layout_height="@dimen/forty_dp"
-                android:background="@drawable/ic_inc"
-                android:fontFamily="sans-serif"
+                android:background="@drawable/style_button_inc"
                 android:textSize="30sp" />
 
         </LinearLayout>

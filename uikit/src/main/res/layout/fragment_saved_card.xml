@@ -44,6 +44,46 @@
             />
 
     </LinearLayout>
+    <LinearLayout
+        android:visibility="visible"
+        android:id="@+id/layout_installment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scan_card"
+        android:layout_marginTop="@dimen/four_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_installment_decrease"
+            android:layout_width="@dimen/forty_dp"
+            android:layout_height="@dimen/forty_dp"
+            android:background="@drawable/style_button_dec"
+            android:textSize="30sp" />
+
+        <TextView
+
+            android:id="@+id/text_installment_term"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/eight_dp"
+            android:layout_marginRight="@dimen/eight_dp"
+            android:layout_weight="1"
+            android:background="@color/colorSecondary_min"
+            android:gravity="center"
+            android:text="@string/installment_term"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button_installment_increase"
+            android:layout_width="@dimen/forty_dp"
+            android:layout_height="@dimen/forty_dp"
+            android:background="@drawable/style_button_inc"
+            android:textSize="30sp" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/new_card_button_layout"

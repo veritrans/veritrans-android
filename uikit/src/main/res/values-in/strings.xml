@@ -416,4 +416,5 @@
     <string name="status_denied">Ditolak</string>
     <string name="status_expired">Kadaluarsa</string>
     <string name="message_cannot_proccessed">Transaksi anda tidak dapat diproses.</string>
+    <string name="formatted_installment_month">cicilan %1$s bulan</string>
 </resources>

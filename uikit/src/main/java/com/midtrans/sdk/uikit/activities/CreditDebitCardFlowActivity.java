@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
@@ -34,7 +32,6 @@ import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BankDetail;
-import com.midtrans.sdk.corekit.models.BankDetailArray;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CardTransfer;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
@@ -54,7 +51,6 @@ import com.midtrans.sdk.uikit.fragments.AddCardDetailsFragment;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.SavedCardFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
-import com.midtrans.sdk.uikit.models.CountryCodeModel;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
 import com.midtrans.sdk.uikit.utilities.ReadBankDetailTask;
@@ -63,7 +59,6 @@ import com.midtrans.sdk.uikit.widgets.CirclePageIndicator;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.MorphingButton;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +107,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private ArrayList<BankBinsResponse> bankBins = new ArrayList<>();
     private String installmentBank;
     private ArrayList<Integer> installmentTerms = new ArrayList<>();
+    private boolean paymentWithInstallment;
+    private int installmentTermSelected;
 
     public MorphingButton getBtnMorph() {
         return btnMorph;
@@ -251,6 +248,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
     }
 
+    /**
+     * start credit card payment
+     */
     public void payUsingCard() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
@@ -270,6 +270,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             SdkUIFlowUtil.hideProgressDialog();
 
             return;
+        }
+
+        if (paymentWithInstallment) {
+            paymentModel.setInstallment(installmentBank + "_" + installmentTermSelected);
         }
 
         midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(),
@@ -843,5 +847,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     public Integer getInstallmentTerm(int currentPosition) {
         return this.installmentTerms.get(currentPosition);
+    }
+
+    public void setInstallment(int termPosition, boolean paymentWithInstallment) {
+        this.installmentTermSelected = this.installmentTerms.get(termPosition);
+        this.paymentWithInstallment = paymentWithInstallment;
     }
 }

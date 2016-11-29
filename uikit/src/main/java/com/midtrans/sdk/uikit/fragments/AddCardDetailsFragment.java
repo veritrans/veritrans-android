@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -242,6 +241,7 @@ public class AddCardDetailsFragment extends Fragment {
 
                     //make payment
                     SdkUIFlowUtil.showProgressDialog(getActivity(), false);
+                    setPaymentInstallment();
                     ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(cbStoreCard.isChecked(), cardType);
                     ((CreditDebitCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
                 }
@@ -376,26 +376,38 @@ public class AddCardDetailsFragment extends Fragment {
         );
     }
 
+    private void setPaymentInstallment() {
+        if(layoutInstallment.getVisibility() == View.VISIBLE){
+            ((CreditDebitCardFlowActivity) getActivity()).setInstallment(currentPosition, true);
+        }
+    }
+
     private void initCardInstallment(String cardNumber) {
         if (cardNumber.length() < 7) {
-            showInstallmentLayout(false);
+            showInstallmentLayout(false, 0);
         } else if (cardNumber.length() == 7) {
             String cleanCardNumber = etCardNo.getText().toString().trim().replace(" ", "");
             ArrayList<Integer> installmentTerms = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerms(cleanCardNumber);
             if (installmentTerms != null && !installmentTerms.isEmpty()) {
-                Log.d("installterm", "installment :" + installmentTerms.size());
-                textInstallmentTerm.setText(getString(R.string.formatted_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
-                showInstallmentLayout(true);
+
+                textInstallmentTerm.setText(getString(R.string.formatted_installment_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
+                showInstallmentLayout(true, installmentTerms.size());
                 currentPosition = 0;
                 totalPositions = installmentTerms.size() - 1;
             }
         }
     }
 
-    private void showInstallmentLayout(boolean show) {
+    private void showInstallmentLayout(boolean show, int termsize) {
         if (show) {
             if (layoutInstallment.getVisibility() == View.GONE) {
                 layoutInstallment.setVisibility(View.VISIBLE);
+            }
+            if (termsize == 1) {
+                buttonIncrease.setEnabled(false);
+                buttonDecrease.setEnabled(false);
+            } else {
+                buttonDecrease.setEnabled(false);
             }
         } else {
             if (layoutInstallment.getVisibility() == View.VISIBLE) {
@@ -567,7 +579,7 @@ public class AddCardDetailsFragment extends Fragment {
         etExpiryDate.setText(creditCardFromScanner.getExpired());
     }
 
-    private void disableEnableMinusPlus() {
+    private void disableEnableInstallmentButton() {
 
         if (currentPosition == 0 && totalPositions == 0) {
             buttonDecrease.setEnabled(false);
@@ -587,16 +599,16 @@ public class AddCardDetailsFragment extends Fragment {
     private void onDecreaseTerm() {
         if (currentPosition > 0 && currentPosition <= totalPositions) {
             currentPosition -= 1;
-            textInstallmentTerm.setText(getString(R.string.formatted_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
+            textInstallmentTerm.setText(getString(R.string.formatted_installment_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
         }
-        disableEnableMinusPlus();
+        disableEnableInstallmentButton();
     }
 
     private void onIncraseTerm() {
         if (currentPosition >= 0 && currentPosition < totalPositions) {
             currentPosition += 1;
-            textInstallmentTerm.setText(getString(R.string.formatted_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
+            textInstallmentTerm.setText(getString(R.string.formatted_installment_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
         }
-        disableEnableMinusPlus();
+        disableEnableInstallmentButton();
     }
 }
