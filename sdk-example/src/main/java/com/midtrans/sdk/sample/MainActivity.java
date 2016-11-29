@@ -18,13 +18,12 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
-import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.sample.core.CoreFlowActivity;
 import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn;
     private Button coreCardRegistration, uiCardRegistration;
-    private RadioButton normal, twoClick, oneClick;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri;
     private Toolbar toolbar;
 
     @Override
@@ -120,18 +119,26 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         transactionRequestNew.setBillInfoModel(billInfoModel);
 
         // Create transaction request
-        String cardClickType = "";
+        CreditCard creditCard = new CreditCard();
+        if (bankMandiri.isChecked()) {
+            // Set bank to Mandiri
+            creditCard.setBank(BankType.MANDIRI);
+        } else if (bankBni.isChecked()) {
+            // Set bank to BNI
+            creditCard.setBank(BankType.BNI);
+        }
+
+        String cardClickType;
 
         if (normal.isChecked()) {
             cardClickType = getString(R.string.card_click_type_none);
+            transactionRequestNew.setCreditCard(creditCard);
         } else if (twoClick.isChecked()) {
             cardClickType = getString(R.string.card_click_type_two_click);
-            CreditCard creditCard = new CreditCard();
             creditCard.setSaveCard(true);
             transactionRequestNew.setCreditCard(creditCard);
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
-            CreditCard creditCard = new CreditCard();
             creditCard.setSaveCard(true);
             creditCard.setSecure(true);
             transactionRequestNew.setCreditCard(creditCard);
@@ -147,14 +154,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         customMap.put("airplane_type", "Boeing");
         transactionRequestNew.setCustomObject(customMap);
 
-        ExpiryModel expiryModel = new ExpiryModel();
-        long currentTime = System.currentTimeMillis();
-        expiryModel.setStartTime(Utils.getFormattedTime(currentTime));
-        expiryModel.setUnit("MINUTES");
-        expiryModel.setDuration(1);
-
-        transactionRequestNew.setExpiry(expiryModel);
-
         return transactionRequestNew;
     }
 
@@ -168,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
         dialog.setMessage("Loading");
+
+        bankBni = (RadioButton) findViewById(R.id.radio_bni);
+        bankMandiri = (RadioButton) findViewById(R.id.radio_mandiri);
 
         widgetBtn = (Button) findViewById(R.id.show_card_widget);
         widgetBtn.setOnClickListener(new View.OnClickListener() {

@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
@@ -33,6 +34,8 @@ import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.MidtransDialog;
 
 public class CardDetailFragment extends Fragment {
+    private static final String KEY_SAVED_CARD_EVENT = "Use Saved Card";
+    private static final String KEY_PAY_BUTTON_EVENT = "Pay";
 
     private static final String ARG_PARAM = "card_detail";
     private SaveCardRequest cardDetail;
@@ -230,14 +233,19 @@ public class CardDetailFragment extends Fragment {
             if (activity != null) {
                 CardTokenRequest request = new CardTokenRequest();
                 request.setCardNumber(cardDetail.getMaskedCard());
+                // track saved card usage
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SAVED_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
                 if (activity instanceof CreditDebitCardFlowActivity) {
                     ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(cardDetail.getMaskedCard());
                 } else if (activity instanceof OffersActivity) {
                     ((OffersActivity) getActivity()).oneClickPayment(request);
                 }
             }
-        } else if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase
-                (getString(R.string.card_click_type_two_click))) {
+        } else if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_two_click))) {
+            // track saved card usage
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SAVED_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
 
             if (activity != null) {
                 CardTokenRequest request = new CardTokenRequest();
@@ -251,6 +259,9 @@ public class CardDetailFragment extends Fragment {
             }
         } else {
             if (activity != null) {
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SAVED_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
+
                 CardTokenRequest request = new CardTokenRequest();
                 request.setSavedTokenId(cardDetail.getSavedTokenId());
                 if (activity instanceof CreditDebitCardFlowActivity) {

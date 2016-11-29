@@ -37,6 +37,7 @@ import javax.net.ssl.SSLHandshakeException;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.converter.ConversionException;
 
 /**
  * Created by ziahaqi on 7/18/16.
@@ -978,7 +979,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    if (error.getCause() instanceof ConversionException) {
+                        SaveCardResponse saveCardResponse = new SaveCardResponse();
+                        saveCardResponse.setCode(200);
+                        saveCardResponse.setMessage(error.getMessage());
+                        callback.onSuccess(saveCardResponse);
+                    } else {
+                        callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    }
                 }
             });
         } else {

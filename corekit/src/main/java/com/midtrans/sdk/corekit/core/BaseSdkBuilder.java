@@ -11,6 +11,10 @@ import java.util.ArrayList;
  * Created by ziahaqi on 9/2/16.
  */
 public abstract class BaseSdkBuilder<T> {
+    public static final String CORE_FLOW = "core";
+    public static final String UI_FLOW = "ui";
+    public static final String WIDGET = "widget";
+
     private static final String TAG = "BaseSdkBuilder";
     protected String clientKey = null;
     protected Context context = null;
@@ -27,7 +31,8 @@ public abstract class BaseSdkBuilder<T> {
     protected ArrayList<PaymentMethodsModel> selectedPaymentMethods;
     protected IScanner externalScanner;
     protected TransactionFinishedCallback transactionFinishedCallback;
-    protected UIKitCustomSetting uiKitCustomSetting;
+    protected UIKitCustomSetting UIKitCustomSetting;
+    protected String flow;
 
     public abstract T setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods);
 

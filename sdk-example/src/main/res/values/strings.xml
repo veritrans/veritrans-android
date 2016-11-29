@@ -34,6 +34,9 @@
     <string name="activity_title_bca_klik">Pay with BCA KlikPay</string>
     <string name="activity_title_card_registration">Register Credit Card</string>
     <string name="activity_title_core_flow">Core Flow Examples</string>
+    <string name="bank_options">Bank Options</string>
+    <string name="bank_bni">BNI</string>
+    <string name="bank_mandiri">Mandiri</string>
     <string name="card_click_normal">Normal</string>
     <string name="card_click_two_click">Two Click</string>
     <string name="card_click_one_click">One Click</string>

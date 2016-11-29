@@ -63,6 +63,35 @@
                     android:layout_weight="0.3"
                     android:text="@string/card_click_one_click" />
             </RadioGroup>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:text="@string/bank_options"
+                android:visibility="visible" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <RadioButton
+                    android:id="@+id/radio_bni"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/bank_bni" />
+
+                <RadioButton
+                    android:id="@+id/radio_mandiri"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/bank_mandiri" />
+            </RadioGroup>
 <View
     android:layout_width="match_parent"
     android:layout_height="2dp"

@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,8 +63,12 @@ import static com.midtrans.sdk.uikit.utilities.ReadBankDetailTask.ReadBankDetail
 
 
 public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBankDetailCallback {
+    public static final String PAYMENT_CREDIT_CARD = "cc";
     public static final int SCAN_REQUEST_CODE = 101;
     private static final int PAYMENT_WEB_INTENT = 100;
+    private static final String KEY_SCAN_SUCCESS_EVENT = "Scan Card Success";
+    private static final String KEY_SCAN_FAILED_EVENT = "Scan Card Failed";
+    private static final String KEY_SCAN_CANCELLED_EVENT = "Scan Card Cancelled";
     private static final int PAY_USING_CARD = 51;
     private static final String TAG = "CreditCardActivity";
     private Toolbar toolbar;
@@ -206,6 +211,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     private void actionGetCardTokenError(Throwable error) {
+        SdkUIFlowUtil.hideProgressDialog();
         SdkUIFlowUtil.showApiFailedMessage(CreditDebitCardFlowActivity.this, getString(R.string.message_getcard_token_failed));
     }
 
@@ -372,6 +378,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     public void prepareSaveCard(SaveCardRequest creditCard) {
         ArrayList<SaveCardRequest> requests = new ArrayList<>();
         requests.addAll(getCreditCardList());
+        String cardType = midtransSDK.getTransactionRequest().getCardClickType();
         requests.add(new SaveCardRequest(creditCard.getSavedTokenId(), creditCard.getMaskedCard(), cardType));
         saveCreditCards(requests, false);
     }
@@ -386,6 +393,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     removeExistCard = false;
                     Fragment currentFragment = getCurrentFagment(SavedCardFragment.class);
                     if (currentFragment != null) {
+                        Logger.d("Delete card success");
                         ((SavedCardFragment) currentFragment).onDeleteCardSuccess();
                     }
                 }
@@ -404,9 +412,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             public void onError(Throwable error) {
                 if (removeExistCard) {
                     SdkUIFlowUtil.hideProgressDialog();
-                    SdkUIFlowUtil.showSnackbar(CreditDebitCardFlowActivity.this, error.getMessage());
-                    removeExistCard = false;
                 }
+                Log.e(TAG, error.getMessage(), error);
             }
         });
     }
@@ -421,10 +428,16 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 payUsingCard();
             } else if (requestCode == SCAN_REQUEST_CODE) {
                 if (data != null && data.hasExtra(ExternalScanner.EXTRA_SCAN_DATA)) {
+                    // track scan event success
+                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SCAN_SUCCESS_EVENT, PAYMENT_CREDIT_CARD, null);
+
                     ScannerModel scanData = (ScannerModel) data.getSerializableExtra(ExternalScanner.EXTRA_SCAN_DATA);
                     Logger.i(String.format("Card Number: %s, Card Expire: %s/%d", scanData.getCardNumber(), scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
                     updateCreditCardData(Utils.getFormattedCreditCardNumber(scanData.getCardNumber()), scanData.getCvv(), String.format("%s/%d", scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
                 } else {
+                    // track scan event failed
+                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SCAN_FAILED_EVENT, PAYMENT_CREDIT_CARD, null);
+
                     Logger.d("No result");
                 }
             } else {
@@ -443,6 +456,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 SdkUIFlowUtil.hideProgressDialog();
                 initPaymentStatus(transactionResponse, errorMessage, true);
                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
+            } else if (requestCode == SCAN_REQUEST_CODE) {
+                // track scan cancelled
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SCAN_CANCELLED_EVENT, PAYMENT_CREDIT_CARD, null);
             }
         }
     }
@@ -528,7 +544,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         this.cardTokenRequest.setTwoClick(true);
         this.cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
         this.cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
-        this.cardTokenRequest.setBank("");
+        this.cardTokenRequest.setBank(midtransSDK.getTransactionRequest().getCreditCard().getBank());
         this.cardTokenRequest.setClientKey(midtransSDK.getClientKey());
         midtransSDK.getCardToken(cardTokenRequest, new CardTokenCallback() {
             @Override
@@ -724,9 +740,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 }
             } else {
                 //if token storage on merchantserver then saved cards can be used just for two click
-                if (MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(R.string.card_click_type_two_click)) {
-                    filteredCards.addAll(cards);
-                }
+                filteredCards.addAll(cards);
             }
         }
 
