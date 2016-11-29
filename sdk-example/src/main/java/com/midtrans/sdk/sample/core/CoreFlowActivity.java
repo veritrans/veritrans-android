@@ -98,7 +98,7 @@ public class CoreFlowActivity extends AppCompatActivity {
                 if(dialog.isShowing()){
                     dialog.dismiss();
                 }
-                MidtransSDK.getInstance().setSavedTokens(transaction.getCreditCard().getSavedTokens());
+                MidtransSDK.getInstance().setCreditCard(transaction.getCreditCard());
                 paymentMethodList.clear();
                 for (EnabledPayment method : transaction.getEnabledPayments()) {
                     if (method.getCategory() != null && method.getType().equals(R.string.enabled_payment_category_banktransfer)) {

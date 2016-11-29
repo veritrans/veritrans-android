@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
+import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
@@ -22,6 +23,7 @@ import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
@@ -72,6 +74,7 @@ public class MidtransSDK {
     private String sdkBaseUrl = "";
     private int requestTimeOut = 10;
     private String flow = null;
+    private CreditCard creditCard = new CreditCard();
 
     private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
@@ -974,6 +977,22 @@ public class MidtransSDK {
     }
 
     /**
+     * @param callback of bank bins;
+     */
+    public void getBankBins(@NonNull BankBinsCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (Utils.isNetworkAvailable(context)) {
+            mSnapTransactionManager.getBankBins(callback);
+        } else {
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+    /**
      * it will change SDK configuration
      *
      * @param baseUrl           SDK api base url
@@ -1035,9 +1054,6 @@ public class MidtransSDK {
         return requestTimeOut;
     }
 
-    public List<SavedToken> getSavedTokens() {
-        return savedTokens;
-    }
 
     public void setSavedTokens(List<SavedToken> savedTokens) {
         this.savedTokens = savedTokens;
@@ -1049,5 +1065,15 @@ public class MidtransSDK {
 
     public UIKitCustomSetting getUIKitCustomSetting() {
         return UIKitCustomSetting;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        if(creditCard != null){
+            this.creditCard = creditCard;
+        }
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
     }
 }

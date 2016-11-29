@@ -40,7 +40,7 @@ public interface MerchantRestAPI {
      * @param requestModel SnapToken RequestModel
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("/charge")
+    @POST("/installment/charge")
     void checkout(@Body TokenRequestModel requestModel, Callback<Token> callback);
 
     /**

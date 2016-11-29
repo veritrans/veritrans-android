@@ -3,6 +3,7 @@ package com.midtrans.sdk.corekit.core;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionCancelResponse;
+import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -149,4 +150,11 @@ public interface MidtransRestAPI {
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey, Callback<CardRegistrationResponse> callback
     );
+
+    /**
+     *
+     * @param callback callbak of bank bins
+     */
+    @GET("/bank_bins")
+    void getBankBins(Callback<BankBinsResponse> callback);
 }

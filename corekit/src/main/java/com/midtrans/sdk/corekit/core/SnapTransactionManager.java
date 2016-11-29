@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.R;
+import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
@@ -1258,4 +1259,10 @@ public class SnapTransactionManager extends BaseTransactionManager {
             callback.onFailure(transactionResponse, transactionResponse.getStatusMessage());
         }
     }
+
+    public void getBankBins(BankBinsCallback callback) {
+
+    }
+
+
 }

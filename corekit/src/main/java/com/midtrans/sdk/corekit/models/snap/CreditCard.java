@@ -2,6 +2,7 @@ package com.midtrans.sdk.corekit.models.snap;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,9 +17,12 @@ public class CreditCard {
     private boolean secure;
     private String channel;
     private String bank;
-    private Installment installment;
     @SerializedName("saved_tokens")
     private List<SavedToken> savedTokens;
+    @SerializedName("whitelist_bins")
+    private ArrayList<String> whitelistBins;
+    @SerializedName("installment")
+    private Installment installment;
 
     public String getChannel() {
         return channel;
@@ -34,14 +38,6 @@ public class CreditCard {
 
     public void setBank(String bank) {
         this.bank = bank;
-    }
-
-    public Installment getInstallment() {
-        return installment;
-    }
-
-    public void setInstallment(Installment installment) {
-        this.installment = installment;
     }
 
     public boolean isSaveCard() {
@@ -74,5 +70,13 @@ public class CreditCard {
 
     public void setSavedTokens(List<SavedToken> savedTokens) {
         this.savedTokens = savedTokens;
+    }
+
+    public ArrayList<String> getWhitelistBins() {
+        return whitelistBins;
+    }
+
+    public Installment getInstallment() {
+        return installment;
     }
 }

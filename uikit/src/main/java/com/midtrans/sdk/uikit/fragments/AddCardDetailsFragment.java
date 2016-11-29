@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -44,12 +47,13 @@ public class AddCardDetailsFragment extends Fragment {
     private static final String KEY_CHECKBOX_SAVE_CARD_EVENT = "Save Card";
 
     TextInputLayout tilCardNo, tilCvv, tilExpiry;
+    TextView textInstallmentTerm;
     private String lastExpDate = "";
     private EditText etCardNo;
     private EditText etCvv;
     private EditText etExpiryDate;
     private CheckBox cbStoreCard;
-    private Button cvvHelpButton;
+    private Button cvvHelpButton, buttonIncrease, buttonDecrease;
     private ImageView logo;
     private ImageView questionSaveCardImg;
     private Button payNowBtn;
@@ -65,6 +69,8 @@ public class AddCardDetailsFragment extends Fragment {
     private ArrayList<BankDetail> bankDetails;
     private String cardType = "";
     private RelativeLayout formLayout;
+    private LinearLayout layoutInstallment;
+    int currentPosition, totalPositions;
 
 
     public static AddCardDetailsFragment newInstance() {
@@ -131,6 +137,25 @@ public class AddCardDetailsFragment extends Fragment {
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
         logo = (ImageView) view.findViewById(R.id.payment_card_logo);
+        layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installment);
+        buttonIncrease = (Button) view.findViewById(R.id.button_installment_increase);
+        buttonDecrease = (Button) view.findViewById(R.id.button_installment_decrease);
+        textInstallmentTerm = (TextView) view.findViewById(R.id.text_installment_term);
+
+        buttonIncrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onIncraseTerm();
+            }
+        });
+
+        buttonDecrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDecreaseTerm();
+            }
+        });
+
         cbStoreCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -272,6 +297,7 @@ public class AddCardDetailsFragment extends Fragment {
                     }
                 }
                 setCardType();
+                initCardInstallment(s.toString().trim());
 
                 // Move to next input
                 if (s.length() >= 18 && cardType.equals(getString(R.string.amex))) {
@@ -348,6 +374,34 @@ public class AddCardDetailsFragment extends Fragment {
                     }
                 }
         );
+    }
+
+    private void initCardInstallment(String cardNumber) {
+        if (cardNumber.length() < 7) {
+            showInstallmentLayout(false);
+        } else if (cardNumber.length() == 7) {
+            String cleanCardNumber = etCardNo.getText().toString().trim().replace(" ", "");
+            ArrayList<Integer> installmentTerms = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerms(cleanCardNumber);
+            if (installmentTerms != null && !installmentTerms.isEmpty()) {
+                Log.d("installterm", "installment :" + installmentTerms.size());
+                textInstallmentTerm.setText(getString(R.string.formatted_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
+                showInstallmentLayout(true);
+                currentPosition = 0;
+                totalPositions = installmentTerms.size() - 1;
+            }
+        }
+    }
+
+    private void showInstallmentLayout(boolean show) {
+        if (show) {
+            if (layoutInstallment.getVisibility() == View.GONE) {
+                layoutInstallment.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (layoutInstallment.getVisibility() == View.VISIBLE) {
+                layoutInstallment.setVisibility(View.GONE);
+            }
+        }
     }
 
     private boolean checkCardNumberValidity() {
@@ -511,5 +565,38 @@ public class AddCardDetailsFragment extends Fragment {
         etCardNo.setText(creditCardFromScanner.getCardNumber());
         etCvv.setText(creditCardFromScanner.getCvv());
         etExpiryDate.setText(creditCardFromScanner.getExpired());
+    }
+
+    private void disableEnableMinusPlus() {
+
+        if (currentPosition == 0 && totalPositions == 0) {
+            buttonDecrease.setEnabled(false);
+            buttonIncrease.setEnabled(false);
+        } else if (currentPosition > 0 && currentPosition < totalPositions) {
+            buttonDecrease.setEnabled(true);
+            buttonIncrease.setEnabled(true);
+        } else if (currentPosition > 0 && currentPosition == totalPositions) {
+            buttonDecrease.setEnabled(true);
+            buttonIncrease.setEnabled(false);
+        } else if (currentPosition == 0 && currentPosition < totalPositions) {
+            buttonDecrease.setEnabled(false);
+            buttonIncrease.setEnabled(true);
+        }
+    }
+
+    private void onDecreaseTerm() {
+        if (currentPosition > 0 && currentPosition <= totalPositions) {
+            currentPosition -= 1;
+            textInstallmentTerm.setText(getString(R.string.formatted_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
+        }
+        disableEnableMinusPlus();
+    }
+
+    private void onIncraseTerm() {
+        if (currentPosition >= 0 && currentPosition < totalPositions) {
+            currentPosition += 1;
+            textInstallmentTerm.setText(getString(R.string.formatted_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
+        }
+        disableEnableMinusPlus();
     }
 }
