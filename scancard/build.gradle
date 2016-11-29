@@ -34,6 +34,10 @@ android {
         production {
             DEFAULT_PUBLISH = "productionRelease"
         }
+
+        staging {
+            DEFAULT_PUBLISH = "stagingRelease"
+        }
     }
 
     defaultPublishConfig = DEFAULT_PUBLISH
@@ -52,6 +56,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'io.card:android-sdk:5.3.4'
     developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
+    stagingCompile project(path: ':uikit', configuration: 'stagingRelease')
     productionCompile project(path: ':uikit', configuration: 'productionRelease')
 }
 
@@ -110,6 +115,34 @@ publishing {
             }
         }
 
+        BintrayStagingPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/scancard-staging-release.aar")
+            groupId group
+            artifactId project.name
+            version version + "-STAGING"
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+
+                configurations.stagingCompile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version + '-STAGING')
+                }
+            }
+        }
+
         BintrayPublication(MavenPublication) {
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/scancard-development-release.aar")
@@ -135,6 +168,16 @@ publishing {
                     dependencyNode.appendNode('artifactId', it.name)
                     dependencyNode.appendNode('version', it.version + '-SANDBOX')
                 }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url "https://mymavenrepo.com/repo/F2AUC7BptbPotor3a7pT/"
+            credentials {
+                username 'myMavenRepo'
+                password 'taKQ8Qnr4I'
             }
         }
     }

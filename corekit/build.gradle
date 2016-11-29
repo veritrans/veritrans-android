@@ -63,8 +63,14 @@ android {
     productFlavors {
         development {
             DEFAULT_PUBLISH = "developmentRelease"
-            buildConfigField "String", "BASE_URL", "\"https://api.sandbox.veritrans.co.id/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.veritrans.co.id/snap\""
+            buildConfigField "String", "BASE_URL", "\"https://api.sandbox.midtrans.com/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.midtrans.com/snap\""
+        }
+
+        staging {
+            DEFAULT_PUBLISH = "stagingRelease"
+            buildConfigField "String", "BASE_URL", "\"https://api.staging.midtrans.com/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.staging.midtrans.com/snap\""
         }
 
         production {
@@ -96,6 +102,7 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     // Analytics Manager
     developmentCompile 'com.midtrans:analytics:1.0.2-SANDBOX'
+    stagingCompile 'com.midtrans:analytics:1.0.2-SANDBOX'
     productionCompile 'com.midtrans:analytics:1.0.2'
 
     /*
@@ -198,6 +205,44 @@ publishing {
                 }
             }
         }
+
+        BintrayStagingPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/corekit-staging-release.aar")
+            groupId group
+            artifactId 'corekit'
+            version version + "-STAGING"
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+
+                configurations.stagingCompile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url "https://mymavenrepo.com/repo/F2AUC7BptbPotor3a7pT/"
+            credentials {
+                username 'myMavenRepo'
+                password 'taKQ8Qnr4I'
+            }
+        }
     }
 }
 
@@ -219,4 +264,3 @@ bintray {
     publications = ['BintrayProductionPublication', 'BintrayPublication']
 
 }
-
