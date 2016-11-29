@@ -1068,7 +1068,7 @@ public class MidtransSDK {
     }
 
     public void setCreditCard(CreditCard creditCard) {
-        if(creditCard != null){
+        if (creditCard != null) {
             this.creditCard = creditCard;
         }
     }

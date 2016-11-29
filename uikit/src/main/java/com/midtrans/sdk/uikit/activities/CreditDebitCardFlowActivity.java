@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,7 +108,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private ArrayList<BankBinsResponse> bankBins = new ArrayList<>();
     private String installmentBank;
     private ArrayList<Integer> installmentTerms = new ArrayList<>();
-    private boolean paymentWithInstallment;
     private int installmentTermSelected;
 
     public MorphingButton getBtnMorph() {
@@ -272,7 +272,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             return;
         }
 
-        if (paymentWithInstallment) {
+        if (installmentTermSelected > 0) {
             paymentModel.setInstallment(installmentBank + "_" + installmentTermSelected);
         }
 
@@ -802,6 +802,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     for (String key : installment.getTerms().keySet()) {
                         if (key.equals(bank)) {
                             this.installmentTerms.clear();
+                            this.installmentTerms.add(0, 0);
                             this.installmentTerms.addAll(installment.getTerms().get(key));
 
                             return this.installmentTerms;
@@ -838,7 +839,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private boolean isInWhiteList(String cardBin) {
         ArrayList<String> whiteListBins = midtransSDK.getCreditCard().getWhitelistBins();
         if (whiteListBins != null && !whiteListBins.isEmpty()) {
-            if (whiteListBins.contains(cardBin) || cardBin.equals("403547")) {
+            if (whiteListBins.contains(cardBin)) {
                 return true;
             }
         }
@@ -849,8 +850,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         return this.installmentTerms.get(currentPosition);
     }
 
-    public void setInstallment(int termPosition, boolean paymentWithInstallment) {
+    public void setInstallment(int termPosition) {
         this.installmentTermSelected = this.installmentTerms.get(termPosition);
-        this.paymentWithInstallment = paymentWithInstallment;
     }
 }

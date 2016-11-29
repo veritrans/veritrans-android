@@ -572,7 +572,8 @@ public class SdkUtil {
         }
 
         CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transactionRequest);
-        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(), model.isSavecard(), model.getMaskedCardNumber());
+        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(),
+                model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
         CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
 
         return paymentRequest;

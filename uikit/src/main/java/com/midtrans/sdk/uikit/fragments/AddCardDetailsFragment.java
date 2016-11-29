@@ -69,7 +69,7 @@ public class AddCardDetailsFragment extends Fragment {
     private String cardType = "";
     private RelativeLayout formLayout;
     private LinearLayout layoutInstallment;
-    int currentPosition, totalPositions;
+    int installmentCurrentPosition, installmentTotalPositions;
 
 
     public static AddCardDetailsFragment newInstance() {
@@ -166,6 +166,7 @@ public class AddCardDetailsFragment extends Fragment {
             public void onFocusChange(View view, boolean hasfocus) {
                 if (!hasfocus) {
                     checkCardNumberValidity();
+                    initCardInstallment();
                 }
             }
         });
@@ -297,7 +298,6 @@ public class AddCardDetailsFragment extends Fragment {
                     }
                 }
                 setCardType();
-                initCardInstallment(s.toString().trim());
 
                 // Move to next input
                 if (s.length() >= 18 && cardType.equals(getString(R.string.amex))) {
@@ -377,38 +377,48 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     private void setPaymentInstallment() {
-        if(layoutInstallment.getVisibility() == View.VISIBLE){
-            ((CreditDebitCardFlowActivity) getActivity()).setInstallment(currentPosition, true);
+        if (layoutInstallment.getVisibility() == View.VISIBLE) {
+            ((CreditDebitCardFlowActivity) getActivity()).setInstallment(installmentCurrentPosition);
         }
     }
 
-    private void initCardInstallment(String cardNumber) {
-        if (cardNumber.length() < 7) {
-            showInstallmentLayout(false, 0);
-        } else if (cardNumber.length() == 7) {
-            String cleanCardNumber = etCardNo.getText().toString().trim().replace(" ", "");
+    private void initCardInstallment() {
+        String cardNumber = etCardNo.getText().toString();
+        if (TextUtils.isEmpty(cardNumber)) {
+            showInstallmentLayout(false);
+        } else if (cardNumber.length() < 7) {
+            showInstallmentLayout(false);
+        } else {
+            String cleanCardNumber = etCardNo.getText().toString().trim().replace(" ", "").substring(0, 6);
             ArrayList<Integer> installmentTerms = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerms(cleanCardNumber);
-            if (installmentTerms != null && !installmentTerms.isEmpty()) {
 
-                textInstallmentTerm.setText(getString(R.string.formatted_installment_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
-                showInstallmentLayout(true, installmentTerms.size());
-                currentPosition = 0;
-                totalPositions = installmentTerms.size() - 1;
+            if (installmentTerms != null && installmentTerms.size() > 1) {
+                installmentCurrentPosition = 0;
+                installmentTotalPositions = installmentTerms.size() - 1;
+                setInstallmentTerm();
+                showInstallmentLayout(true);
             }
         }
     }
 
-    private void showInstallmentLayout(boolean show, int termsize) {
+    private void setInstallmentTerm() {
+        String installmentTerm;
+        int term = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(installmentCurrentPosition);
+        if (term < 1) {
+            installmentTerm = getString(R.string.no_installment);
+        } else {
+            installmentTerm = getString(R.string.formatted_installment_month, term + "");
+        }
+        textInstallmentTerm.setText(installmentTerm);
+    }
+
+    private void showInstallmentLayout(boolean show) {
         if (show) {
             if (layoutInstallment.getVisibility() == View.GONE) {
                 layoutInstallment.setVisibility(View.VISIBLE);
             }
-            if (termsize == 1) {
-                buttonIncrease.setEnabled(false);
-                buttonDecrease.setEnabled(false);
-            } else {
-                buttonDecrease.setEnabled(false);
-            }
+            buttonDecrease.setEnabled(false);
+            buttonIncrease.setEnabled(true);
         } else {
             if (layoutInstallment.getVisibility() == View.VISIBLE) {
                 layoutInstallment.setVisibility(View.GONE);
@@ -581,33 +591,33 @@ public class AddCardDetailsFragment extends Fragment {
 
     private void disableEnableInstallmentButton() {
 
-        if (currentPosition == 0 && totalPositions == 0) {
+        if (installmentCurrentPosition == 0 && installmentTotalPositions == 0) {
             buttonDecrease.setEnabled(false);
             buttonIncrease.setEnabled(false);
-        } else if (currentPosition > 0 && currentPosition < totalPositions) {
+        } else if (installmentCurrentPosition > 0 && installmentCurrentPosition < installmentTotalPositions) {
             buttonDecrease.setEnabled(true);
             buttonIncrease.setEnabled(true);
-        } else if (currentPosition > 0 && currentPosition == totalPositions) {
+        } else if (installmentCurrentPosition > 0 && installmentCurrentPosition == installmentTotalPositions) {
             buttonDecrease.setEnabled(true);
             buttonIncrease.setEnabled(false);
-        } else if (currentPosition == 0 && currentPosition < totalPositions) {
+        } else if (installmentCurrentPosition == 0 && installmentCurrentPosition < installmentTotalPositions) {
             buttonDecrease.setEnabled(false);
             buttonIncrease.setEnabled(true);
         }
     }
 
     private void onDecreaseTerm() {
-        if (currentPosition > 0 && currentPosition <= totalPositions) {
-            currentPosition -= 1;
-            textInstallmentTerm.setText(getString(R.string.formatted_installment_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
+        if (installmentCurrentPosition > 0 && installmentCurrentPosition <= installmentTotalPositions) {
+            installmentCurrentPosition -= 1;
+            setInstallmentTerm();
         }
         disableEnableInstallmentButton();
     }
 
     private void onIncraseTerm() {
-        if (currentPosition >= 0 && currentPosition < totalPositions) {
-            currentPosition += 1;
-            textInstallmentTerm.setText(getString(R.string.formatted_installment_month, ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(currentPosition) + ""));
+        if (installmentCurrentPosition >= 0 && installmentCurrentPosition < installmentTotalPositions) {
+            installmentCurrentPosition += 1;
+            setInstallmentTerm();
         }
         disableEnableInstallmentButton();
     }

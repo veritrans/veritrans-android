@@ -581,5 +581,6 @@
     <string name="installment_term">instalment term</string>
     <string name="bank_bins">bank_bins</string>
     <string name="formatted_installment_month">%1$s months installment</string>
+    <string name="no_installment">No installment</string>
 
 </resources>
