@@ -490,8 +490,7 @@ public class SdkUtil {
     }
 
     @NonNull
-    private static BillingAddress getBillingAddress(UserDetail userDetail, UserAddress
-            userAddress) {
+    private static BillingAddress getBillingAddress(UserDetail userDetail, UserAddress userAddress) {
         BillingAddress billingAddress = new BillingAddress();
         billingAddress.setCity(userAddress.getCity());
         billingAddress.setFirstName(userDetail.getUserFullName());
@@ -499,13 +498,13 @@ public class SdkUtil {
         billingAddress.setPhone(userDetail.getPhoneNumber());
         billingAddress.setCountryCode(userAddress.getCountry());
         billingAddress.setPostalCode(userAddress.getZipcode());
+        billingAddress.setAddress(userAddress.getAddress());
         return billingAddress;
     }
 
 
     @NonNull
-    private static ShippingAddress getShippingAddress(UserDetail userDetail, UserAddress
-            userAddress) {
+    private static ShippingAddress getShippingAddress(UserDetail userDetail, UserAddress userAddress) {
         ShippingAddress shippingAddress = new ShippingAddress();
         shippingAddress.setCity(userAddress.getCity());
         shippingAddress.setFirstName(userDetail.getUserFullName());
@@ -513,6 +512,7 @@ public class SdkUtil {
         shippingAddress.setPhone(userDetail.getPhoneNumber());
         shippingAddress.setCountryCode(userAddress.getCountry());
         shippingAddress.setPostalCode(userAddress.getZipcode());
+        shippingAddress.setAddress(userAddress.getAddress());
         return shippingAddress;
     }
 
