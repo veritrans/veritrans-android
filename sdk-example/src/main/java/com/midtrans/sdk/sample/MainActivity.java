@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     public static String SAMPLE_USER_ID = UUID.randomUUID().toString();
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
-    private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn;
+    private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn;
     private Button coreCardRegistration, uiCardRegistration;
     private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri;
     private Toolbar toolbar;
@@ -238,6 +238,16 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View v) {
                 MidtransSDK.getInstance().startRegisterCardUIFlow(MainActivity.this);
+            }
+        });
+
+        // Handle credit card payment flow
+        creditCardBtn = (Button) findViewById(R.id.show_credit_card_payment);
+        creditCardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startCreditCardUIFlow(MainActivity.this);
             }
         });
     }
