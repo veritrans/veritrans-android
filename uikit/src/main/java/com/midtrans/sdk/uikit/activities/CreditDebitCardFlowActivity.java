@@ -830,6 +830,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void setInstallment(int termPosition) {
-        this.installmentTermSelected = this.installmentTerms.get(termPosition);
+        this.installmentTermSelected = this.installmentTerms.size() == 0 ? 0 : this.installmentTerms.get(termPosition);
     }
 }

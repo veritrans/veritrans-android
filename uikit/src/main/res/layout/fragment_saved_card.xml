@@ -45,7 +45,7 @@
 
     </LinearLayout>
     <LinearLayout
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/layout_installment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -128,7 +128,6 @@
             android:textSize="@dimen/primary_text_size"
             android:textStyle="bold"
             />
-
 
     </RelativeLayout>
 </LinearLayout>
