@@ -22,8 +22,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
@@ -60,7 +58,6 @@ import com.midtrans.sdk.uikit.widgets.CirclePageIndicator;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.MorphingButton;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,7 +135,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
         if (midtransSDK != null) {
-            getBankBins();
+            initBankBins();
             if (!midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
                 getCreditCards();
             } else {
@@ -765,29 +762,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
 
-    public void getBankBins() {
-        if (bankBins.isEmpty()) {
-            ArrayList<BankBinsResponse> list;
-            String data;
-            try {
-                InputStream is = getAssets().open("bank_bins.json");
-                byte[] buffer = new byte[is.available()];
-                is.read(buffer);
-                is.close();
-                data = new String(buffer, "UTF-8");
-
-                Gson gson = new Gson();
-                list = gson.fromJson(data, new TypeToken<ArrayList<BankBinsResponse>>() {
-                }.getType());
-                if (list != null) {
-                    this.bankBins.clear();
-                    this.bankBins.addAll(list);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+    public void initBankBins() {
+        ArrayList<BankBinsResponse> loadedBankBins = SdkUIFlowUtil.getBankBins(this);
+        if (loadedBankBins != null && !loadedBankBins.isEmpty()) {
+            bankBins.clear();
+            bankBins.addAll(loadedBankBins);
         }
     }
 

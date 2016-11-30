@@ -278,8 +278,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 enableButtonBack(true);
                 showBackButton();
                 try {
-                    Log.d("card", "install:" + transaction.getCreditCard().getInstallment().getTerms());
-
                     String logoUrl = transaction.getMerchantData().getPreference().getLogoUrl();
                     String merchantName = transaction.getMerchantData().getPreference().getDisplayName();
                     midtransSDK.setCreditCard(transaction.getCreditCard());

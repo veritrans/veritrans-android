@@ -150,11 +150,4 @@ public interface MidtransRestAPI {
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey, Callback<CardRegistrationResponse> callback
     );
-
-    /**
-     *
-     * @param callback callbak of bank bins
-     */
-    @GET("/bank_bins")
-    void getBankBins(Callback<BankBinsResponse> callback);
 }

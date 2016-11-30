@@ -15,7 +15,7 @@ import com.midtrans.sdk.uikit.R;
  */
 
 public class RoundedImageView extends ImageButton {
-    public static float radius = 18.0f;
+    public static final float radius = 18.0f;
     public RoundedImageView(Context context) {
         super(context);
     }
