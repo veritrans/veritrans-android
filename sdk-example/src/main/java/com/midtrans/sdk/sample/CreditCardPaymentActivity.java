@@ -59,7 +59,7 @@ public class CreditCardPaymentActivity extends AppCompatActivity {
 
             //when using builtin token storage (token storage on snap)
             if(MidtransSDK.getInstance().isEnableBuiltInTokenStorage()){
-                initSaveCards(convertSavedToken(MidtransSDK.getInstance().getSavedTokens()));
+                initSaveCards(convertSavedToken(MidtransSDK.getInstance().getCreditCard().getSavedTokens()));
                 initSavedCardLayout();
             } else{
                 fetchSaveCardsFromMerchantServer();

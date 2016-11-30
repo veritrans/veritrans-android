@@ -18,24 +18,25 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_card_no"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:id="@+id/til_card_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_card_no"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:digits="0123456789 "
-                android:hint="@string/hint_card_number"
-                android:imeOptions="actionNext"
-                android:inputType="number"
-                android:maxLength="19"
-                android:nextFocusDown="@+id/et_exp_date"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+                    android:id="@+id/et_card_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789 "
+                    android:hint="@string/hint_card_number"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="19"
+                    android:nextFocusDown="@+id/et_exp_date"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
             <ImageView
+                android:layout_marginBottom="@dimen/four_dp"
                 android:id="@+id/payment_card_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -116,8 +117,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/cvv_help_button"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginBottom="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/eight_dp"
             android:text="@string/save_card_message" />
 
         <ImageView
@@ -125,8 +126,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/cvv_help_button"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginBottom="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/eight_dp"
             android:layout_toEndOf="@id/cb_store_card"
             android:layout_toRightOf="@id/cb_store_card"
             android:contentDescription="@string/description_help_icon"
@@ -144,11 +145,51 @@
             android:textColor="?colorPrimary"
             android:visibility="gone" />
 
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layout_installment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scan_card"
+            android:layout_marginTop="@dimen/four_dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_installment_decrease"
+                android:layout_width="@dimen/forty_dp"
+                android:layout_height="@dimen/forty_dp"
+                android:background="@drawable/style_button_dec"
+                android:textSize="30sp" />
+
+            <TextView
+
+                android:id="@+id/text_installment_term"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/eight_dp"
+                android:layout_marginRight="@dimen/eight_dp"
+                android:layout_weight="1"
+                android:background="@color/colorSecondary_min"
+                android:gravity="center"
+                android:text="@string/installment_term"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_installment_increase"
+                android:layout_width="@dimen/forty_dp"
+                android:layout_height="@dimen/forty_dp"
+                android:background="@drawable/style_button_inc"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@id/cb_store_card">
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
             <com.midtrans.sdk.uikit.widgets.MorphingButton
                 android:id="@+id/btnMorph1"

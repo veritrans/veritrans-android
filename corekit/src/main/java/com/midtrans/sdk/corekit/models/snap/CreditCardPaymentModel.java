@@ -11,6 +11,7 @@ public class CreditCardPaymentModel {
     private String cardToken;
     private boolean savecard;
     private String maskedCardNumber;
+    private String installment;
 
     /**
      * init credit card model for normal and twoclick payment
@@ -42,5 +43,13 @@ public class CreditCardPaymentModel {
 
     public String getMaskedCardNumber() {
         return maskedCardNumber;
+    }
+
+    public String getInstallment() {
+        return installment;
+    }
+
+    public void setInstallment(String installment) {
+        this.installment = installment;
     }
 }

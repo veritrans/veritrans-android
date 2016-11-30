@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.R;
+import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
@@ -19,6 +20,7 @@ import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
@@ -250,8 +252,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * This method is used for Payment Using Bank Transfer Permata
      *
      * @param authenticationToken authentication token
-     * @param paymentRequest payment Details
-     * @param callback       transaction callback
+     * @param paymentRequest      payment Details
+     * @param callback            transaction callback
      */
     public void paymentUsingBankTransferPermata(String authenticationToken, final BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
@@ -405,8 +407,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * This method is used for payment using Mandiri Bill Pay.
      *
      * @param authenticationToken
-     * @param paymentRequest payment request for Mandiri Bill pay
-     * @param callback       transaction callback
+     * @param paymentRequest      payment request for Mandiri Bill pay
+     * @param callback            transaction callback
      */
     public void paymentUsingMandiriBillPay(String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
@@ -455,8 +457,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * This method is used for payment using Mandiri Click Pay.
      *
      * @param authenticationToken
-     * @param paymentRequest payment request for Mandiri Click Pay
-     * @param callback       transaction callback
+     * @param paymentRequest      payment request for Mandiri Click Pay
+     * @param callback            transaction callback
      */
     public void paymentUsingMandiriClickPay(String authenticationToken, MandiriClickPayPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
@@ -505,8 +507,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * This method is used for payment using CIMB Click.
      *
      * @param authenticationToken
-     * @param paymentRequest payment request for CIMB Click
-     * @param callback       transaction callback
+     * @param paymentRequest      payment request for CIMB Click
+     * @param callback            transaction callback
      */
     public void paymentUsingCIMBClick(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
@@ -555,8 +557,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * This method is used for payment using BRI Epay.
      *
      * @param authenticationToken
-     * @param paymentRequest payment request for BRI Epay.
-     * @param callback       transaction callback
+     * @param paymentRequest      payment request for BRI Epay.
+     * @param callback            transaction callback
      */
     public void paymentUsingBRIEpay(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
@@ -605,8 +607,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * This method is used for payment using Mandiri E-Cash
      *
      * @param authenticationToken
-     * @param paymentRequest payment request for Mandiri E-Cash
-     * @param callback       transaction callbaack
+     * @param paymentRequest      payment request for Mandiri E-Cash
+     * @param callback            transaction callbaack
      */
     public void paymentUsingMandiriEcash(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
@@ -704,8 +706,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * This method is used for payment using XL Tunai
      *
      * @param authenticationToken
-     * @param paymentRequest payment request for XL Tunai
-     * @param callback       transaction callback
+     * @param paymentRequest      payment request for XL Tunai
+     * @param callback            transaction callback
      */
     public void paymentUsingXLTunai(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
@@ -754,8 +756,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * This method is used for payment using Indomaret
      *
      * @param authenticationToken
-     * @param paymentRequest payment request for Indomaret
-     * @param callback       Transaction callback
+     * @param paymentRequest      payment request for Indomaret
+     * @param callback            Transaction callback
      */
     public void paymentUsingIndomaret(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
@@ -804,8 +806,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * This method is used for payment using Indosat Dompetku
      *
      * @param authenticationToken
-     * @param paymentRequest payment request for Indosat Dompetku
-     * @param callback       transaction callback
+     * @param paymentRequest      payment request for Indosat Dompetku
+     * @param callback            transaction callback
      */
     public void paymentUsingIndosatDompetku(String authenticationToken, IndosatDompetkuPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
@@ -854,8 +856,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * This method is used for payment using Kiosan
      *
      * @param authenticationToken
-     * @param paymentRequest payment request for Kiosan
-     * @param callback       transaction callback
+     * @param paymentRequest      payment request for Kiosan
+     * @param callback            transaction callback
      */
     public void paymentUsingKiosan(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
@@ -904,8 +906,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * This method is used for payment using Bank Transfer
      *
      * @param authenticationToken
-     * @param paymentRequest payment request for Bank Transfer
-     * @param callback       transaction callback
+     * @param paymentRequest      payment request for Bank Transfer
+     * @param callback            transaction callback
      */
     public void paymentUsingBankTransferAllBank(String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
@@ -1246,16 +1248,51 @@ public class SnapTransactionManager extends BaseTransactionManager {
 
 
     private void actionFailedTransaction(TransactionCallback callback, TransactionResponse transactionResponse) {
-        if(transactionResponse.getStatusCode().equals(context.getString(R.string.failed_code_400))){
+        if (transactionResponse.getStatusCode().equals(context.getString(R.string.failed_code_400))) {
             String message;
-            if(transactionResponse.getValidationMessages() != null && !transactionResponse.getValidationMessages().isEmpty()){
+            if (transactionResponse.getValidationMessages() != null && !transactionResponse.getValidationMessages().isEmpty()) {
                 message = transactionResponse.getValidationMessages().get(0);
-            }else{
+            } else {
                 message = transactionResponse.getStatusMessage();
             }
             callback.onFailure(transactionResponse, message);
-        }else{
+        } else {
             callback.onFailure(transactionResponse, transactionResponse.getStatusMessage());
         }
     }
+
+
+    /**
+     * it will be used to get bank bins on the snap API
+     *
+     * @param callback BankbinsCallback instance
+     */
+    public void getBankBins(final BankBinsCallback callback) {
+        snapRestAPI.getBankBins(new Callback<ArrayList<BankBinsResponse>>() {
+            @Override
+            public void success(ArrayList<BankBinsResponse> bankBinsResponses, Response response) {
+                releaseResources();
+
+                if (bankBinsResponses != null && !bankBinsResponses.isEmpty()) {
+                    if (response.getStatus() == 200 || response.getStatus() == 201) {
+                        callback.onSuccess(bankBinsResponses);
+                    } else {
+                        callback.onFailure(response.getReason());
+                    }
+                } else {
+                    callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                releaseResources();
+                if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                    Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                }
+                callback.onError(new Throwable(error.getMessage(), error.getCause()));
+            }
+        });
+    }
+
 }

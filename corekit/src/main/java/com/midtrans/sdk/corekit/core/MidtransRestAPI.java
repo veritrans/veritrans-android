@@ -3,6 +3,7 @@ package com.midtrans.sdk.corekit.core;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionCancelResponse;
+import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 
 import retrofit.Callback;
 import retrofit.http.GET;

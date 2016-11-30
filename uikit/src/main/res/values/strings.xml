@@ -579,5 +579,9 @@
     <string name="status_expired">Expired</string>
     <string name="label_expired">expired</string>
     <string name="message_cannot_proccessed">Transaction cannot be proccessed.</string>
+    <string name="installment_term">instalment term</string>
+    <string name="bank_bins">bank_bins</string>
+    <string name="formatted_installment_month">%1$s months installment</string>
+    <string name="no_installment">No installment</string>
 
 </resources>

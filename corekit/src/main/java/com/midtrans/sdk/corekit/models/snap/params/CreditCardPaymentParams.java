@@ -25,6 +25,13 @@ public class CreditCardPaymentParams {
         this.maskedCard = maskedCardNumber;
     }
 
+    public CreditCardPaymentParams(String cardToken, Boolean saveCard, String maskedCardNumber, String installmentTerm) {
+        this.cardToken = cardToken;
+        this.saveCard = saveCard;
+        this.maskedCard = maskedCardNumber;
+        this.installmentTerm = installmentTerm;
+    }
+
     public void setCardToken(String cardToken) {
         this.cardToken = cardToken;
     }

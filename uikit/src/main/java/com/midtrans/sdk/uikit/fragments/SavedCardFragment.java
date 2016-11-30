@@ -8,9 +8,11 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,11 +36,16 @@ public class SavedCardFragment extends Fragment {
     private CardPagerAdapter cardPagerAdapter;
 
     private TextView emptyCardsTextView;
+    private TextView textInstallmentTerm;
     //private MorphingButton btnMorph;
     private LinearLayout creditCardLayout;
     private RelativeLayout newCardButtonLayout;
     private int creditCardLayoutHeight;
     private String cardNumber;
+    private Button buttonIncrease;
+    private Button buttonDecrease;
+    private LinearLayout layoutInstallment;
+    int installmentCurrentPosition, installmentTotalPositions;
 
     public SavedCardFragment() {
 
@@ -80,17 +87,23 @@ public class SavedCardFragment extends Fragment {
         savedCardPager = (ViewPager) view.findViewById(R.id.saved_card_pager);
         creditCardLayout = (LinearLayout) view.findViewById(R.id.credit_card_holder);
         newCardButtonLayout = (RelativeLayout) view.findViewById(R.id.new_card_button_layout);
-       /* ViewTreeObserver vto = creditCardLayout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        textInstallmentTerm = (TextView) view.findViewById(R.id.text_installment_term);
+        buttonDecrease = (Button) view.findViewById(R.id.button_installment_decrease);
+        buttonIncrease = (Button) view.findViewById(R.id.button_installment_increase);
+        layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installment);
+        buttonIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onGlobalLayout() {
-                SavedCardFragment.this.creditCardLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                //width = SavedCardFragment.this.addCardBt.getMeasuredWidth();
-
-
+            public void onClick(View view) {
+                onIncraseTerm();
             }
-        });*/
+        });
 
+        buttonDecrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDecreaseTerm();
+            }
+        });
         addCardBt = (FloatingActionButton) view.findViewById(R.id.btn_add_card);
         addCardBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +152,7 @@ public class SavedCardFragment extends Fragment {
                     @Override
                     public void onPageSelected(int position) {
                     /*SdkUIFlowUtil.hideKeyboard(getActivity());*/
+                        setupCardInstallment();
                     }
 
                     @Override
@@ -149,6 +163,47 @@ public class SavedCardFragment extends Fragment {
                 circlePageIndicator.setViewPager(savedCardPager);
                 ((CreditDebitCardFlowActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyCardsTextView);
                 showHideNoCardMessage();
+                Log.d("inst", "called");
+
+                setupCardInstallment();
+            }
+
+        }
+    }
+
+    private void setupCardInstallment() {
+        SaveCardRequest currentCard = cardPagerAdapter.getCurrentItem(savedCardPager.getCurrentItem());
+        ArrayList<Integer> installmentTerms = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerms(currentCard.getMaskedCard().substring(0, 6));
+        if (installmentTerms != null && installmentTerms.size() > 1) {
+            installmentCurrentPosition = 0;
+            installmentTotalPositions = installmentTerms.size() - 1;
+            setInstallmentTerm();
+            showInstallmentLayout(true);
+            setPaymentInstallment();
+        }
+    }
+
+    private void setInstallmentTerm() {
+        String installmentTerm;
+        int term = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(installmentCurrentPosition);
+        if (term < 1) {
+            installmentTerm = getString(R.string.no_installment);
+        } else {
+            installmentTerm = getString(R.string.formatted_installment_month, term + "");
+        }
+        textInstallmentTerm.setText(installmentTerm);
+    }
+
+    private void showInstallmentLayout(boolean show) {
+        if (show) {
+            if (layoutInstallment.getVisibility() == View.GONE) {
+                layoutInstallment.setVisibility(View.VISIBLE);
+            }
+            buttonDecrease.setEnabled(false);
+            buttonIncrease.setEnabled(true);
+        } else {
+            if (layoutInstallment.getVisibility() == View.VISIBLE) {
+                layoutInstallment.setVisibility(View.GONE);
             }
         }
     }
@@ -156,10 +211,8 @@ public class SavedCardFragment extends Fragment {
     private void showHideNoCardMessage() {
         if (creditCards.isEmpty()) {
             emptyCardsTextView.setVisibility(View.VISIBLE);
-            //savedCardPager.setVisibility(View.GONE);
         } else {
             emptyCardsTextView.setVisibility(View.GONE);
-            //savedCardPager.setVisibility(View.VISIBLE);
         }
     }
 
@@ -324,6 +377,48 @@ public class SavedCardFragment extends Fragment {
                     emptyCardsTextView.setVisibility(View.GONE);
                 }
             }
+        }
+    }
+
+    private void onDecreaseTerm() {
+        if (installmentCurrentPosition > 0 && installmentCurrentPosition <= installmentTotalPositions) {
+            installmentCurrentPosition -= 1;
+            setPaymentInstallment();
+            setInstallmentTerm();
+        }
+        disableEnableInstallmentButton();
+    }
+
+    private void onIncraseTerm() {
+        if (installmentCurrentPosition >= 0 && installmentCurrentPosition < installmentTotalPositions) {
+            installmentCurrentPosition += 1;
+            setInstallmentTerm();
+            setPaymentInstallment();
+        }
+        disableEnableInstallmentButton();
+    }
+
+    private void disableEnableInstallmentButton() {
+
+        if (installmentCurrentPosition == 0 && installmentTotalPositions == 0) {
+            buttonDecrease.setEnabled(false);
+            buttonIncrease.setEnabled(false);
+        } else if (installmentCurrentPosition > 0 && installmentCurrentPosition < installmentTotalPositions) {
+            buttonDecrease.setEnabled(true);
+            buttonIncrease.setEnabled(true);
+        } else if (installmentCurrentPosition > 0 && installmentCurrentPosition == installmentTotalPositions) {
+            buttonDecrease.setEnabled(true);
+            buttonIncrease.setEnabled(false);
+        } else if (installmentCurrentPosition == 0 && installmentCurrentPosition < installmentTotalPositions) {
+            buttonDecrease.setEnabled(false);
+            buttonIncrease.setEnabled(true);
+        }
+    }
+
+
+    private void setPaymentInstallment() {
+        if (layoutInstallment.getVisibility() == View.VISIBLE) {
+            ((CreditDebitCardFlowActivity) getActivity()).setInstallment(installmentCurrentPosition);
         }
     }
 }
