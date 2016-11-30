@@ -10,4 +10,6 @@ public interface ISdkFlow {
     void runUIFlow(Context context);
 
     void runRegisterCard(Context context);
+
+    void runCreditCard(Context context);
 }
