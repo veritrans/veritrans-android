@@ -241,6 +241,15 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/title_show_example" />
 
+            <Button
+                android:id="@+id/show_credit_card_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/eight_dp"
+                android:text="@string/btn_start_credit_card"
+                android:textColor="@color/white"
+                android:visibility="visible" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

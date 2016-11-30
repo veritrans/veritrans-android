@@ -227,6 +227,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         logo = (ImageView) findViewById(R.id.merchant_logo);
         merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
+        if (getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false)) {
+            TextView loadingText = (TextView) findViewById(R.id.loading_text);
+            loadingText.setText(R.string.txt_checkout);
+        }
     }
 
     private void getPaymentPages() {
@@ -238,7 +242,15 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             public void onSuccess(Token token) {
                 Log.i(TAG, "checkout token:" + token.getTokenId());
                 LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
-                getPaymentOptions(token.getTokenId());
+                // Directly start credit card payment if using credit card mode only
+                if (getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false)) {
+                    // track payment select credit card
+                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
+                    Intent intent = new Intent(PaymentMethodsActivity.this, CreditDebitCardFlowActivity.class);
+                    startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                } else {
+                    getPaymentOptions(token.getTokenId());
+                }
             }
 
             @Override

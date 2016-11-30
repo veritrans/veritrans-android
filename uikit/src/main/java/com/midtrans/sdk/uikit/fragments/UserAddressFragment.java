@@ -260,6 +260,9 @@ public class UserAddressFragment extends Fragment {
             userDetail.setUserAddresses(userAddresses);
             LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
             Intent selectPaymentIntent = new Intent(getActivity(), PaymentMethodsActivity.class);
+            if (getActivity().getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false)) {
+                selectPaymentIntent.putExtra(UserDetailsActivity.CREDIT_CARD_ONLY, true);
+            }
             startActivity(selectPaymentIntent);
             getActivity().finish();
         } catch (Exception e) {

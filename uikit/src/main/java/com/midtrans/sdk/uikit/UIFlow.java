@@ -28,4 +28,14 @@ public class UIFlow implements ISdkFlow {
                 SaveCreditCardActivity.class);
         context.startActivity(cardRegister);
     }
+
+    @Override
+    public void runCreditCard(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.CREDIT_CARD_ONLY, true);
+            context.startActivity(intent);
+        }
+    }
 }
