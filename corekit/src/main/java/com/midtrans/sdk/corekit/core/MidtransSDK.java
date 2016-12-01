@@ -361,6 +361,126 @@ public class MidtransSDK {
     }
 
     /**
+     * This will start actual execution of Bank Transfer UI flow.
+     *
+     * @param context activity context.
+     */
+    public void startBankTransferUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runBankTransfer(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of Bank Transfer UI flow using Permata.
+     *
+     * @param context activity context.
+     */
+    public void startPermataBankTransferUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runPermataBankTransfer(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of Bank Transfer UI flow using Mandiri.
+     *
+     * @param context activity context.
+     */
+    public void startMandiriBankTransferUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runMandiriBankTransfer(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of Bank Transfer UI flow using BCA.
+     *
+     * @param context activity context.
+     */
+    public void startBCABankTransferUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runBCABankTransfer(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of Bank Transfer UI flow using Other banks.
+     *
+     * @param context activity context.
+     */
+    public void startOtherBankTransferUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runOtherBankTransfer(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
      * This will start actual execution of transaction. if you have enabled an ui then it will start
      * activity according to it.
      *
@@ -1087,13 +1207,13 @@ public class MidtransSDK {
         return UIKitCustomSetting;
     }
 
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
     public void setCreditCard(CreditCard creditCard) {
         if (creditCard != null) {
             this.creditCard = creditCard;
         }
-    }
-
-    public CreditCard getCreditCard() {
-        return creditCard;
     }
 }

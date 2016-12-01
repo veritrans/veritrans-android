@@ -35,7 +35,6 @@ import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
-import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
@@ -63,19 +62,20 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     protected static final String PAYMENT_TYPE_BANK_TRANSFER = "bank_transfer";
     protected static final String PAYMENT_TYPE_CREDIT_CARD = "cc";
     protected static final String PAYMENT_TYPE_BRI_EPAY = "bri_epay";
-    protected static final String PAYMENT_TYPE_BBM_MONEY = "bbm_money";
     protected static final String PAYMENT_TYPE_INDOSAT_DOMPETKU = "indosat_dompetku";
     protected static final String PAYMENT_TYPE_INDOMARET = "indomaret";
     protected static final String PAYMENT_TYPE_KLIK_BCA = "bca_klikbca";
-    protected static final String PAYMENT_TYPE_MANDIRI_BILL_PAY = "mandiri_bill_pay";
     protected static final String PAYMENT_TYPE_TELKOMSEL_ECASH = "telkomsel_ecash";
     protected static final String PAYMENT_TYPE_XL_TUNAI = "xl_tunai";
     protected static final String PAYMENT_TYPE_KIOSON = "kiosan";
+
     private static final String KEY_SELECT_PAYMENT = "Payment Select";
     private static final String KEY_CANCEL_TRANSACTION_EVENT = "Cancel Transaction";
     private static final String PAYMENT_SNAP = "snap";
     private static final String TAG = PaymentMethodsActivity.class.getSimpleName();
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
+    private boolean isCreditCardOnly = false;
+    private boolean isBankTransferOnly = false;
 
     private MidtransSDK midtransSDK = null;
 
@@ -98,6 +98,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments_method);
+        isCreditCardOnly = getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false);
+        isBankTransferOnly = getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, false);
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
         UserDetail userDetail = null;
@@ -133,14 +135,13 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
      * if recycler view fits within screen then it will disable the scrolling of it.
      */
     private void handleScrollingOfRecyclerView() {
-        setAlfaAttribute(headerTextView, 1);
+        setAlphaAttribute(headerTextView, 1);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 int hiddenTextViewHeight = textViewMeasureHeight.getHeight();
-                int recyclerViewHieght = mRecyclerView.getMeasuredHeight();
                 int appBarHeight = mAppBarLayout.getHeight();
                 int exactHeightForCompare = hiddenTextViewHeight - appBarHeight;
 
@@ -149,13 +150,13 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
                 if (totalHeight < exactHeightForCompare) {
                     disableScrolling();
-                    setAlfaAttribute(headerTextView, 1);
+                    setAlphaAttribute(headerTextView, 1);
                 }
             }
         }, 200);
     }
 
-    private void setAlfaAttribute(TextView view, float value) {
+    private void setAlphaAttribute(TextView view, float value) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             view.setAlpha(value);
         } else {
@@ -227,8 +228,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         logo = (ImageView) findViewById(R.id.merchant_logo);
         merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
-        if (getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false)) {
+        if (isCreditCardOnly || isBankTransferOnly) {
+            TextView titleText = (TextView) findViewById(R.id.header_view_title);
             TextView loadingText = (TextView) findViewById(R.id.loading_text);
+            titleText.setText(getString(R.string.txt_checkout));
             loadingText.setText(R.string.txt_checkout);
         }
     }
@@ -242,15 +245,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             public void onSuccess(Token token) {
                 Log.i(TAG, "checkout token:" + token.getTokenId());
                 LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
-                // Directly start credit card payment if using credit card mode only
-                if (getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false)) {
-                    // track payment select credit card
-                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
-                    Intent intent = new Intent(PaymentMethodsActivity.this, CreditDebitCardFlowActivity.class);
-                    startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-                } else {
-                    getPaymentOptions(token.getTokenId());
-                }
+                getPaymentOptions(token.getTokenId());
             }
 
             @Override
@@ -287,7 +282,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     if (TextUtils.isEmpty(logoUrl)) {
                         showName(merchantName);
                     }
-                    progressContainer.setVisibility(View.GONE);
+                    // Directly start credit card payment if using credit card mode only
                     initPaymentMethods(transaction.getEnabledPayments());
                 } catch (NullPointerException e) {
                     Logger.e(TAG, e.getMessage());
@@ -312,12 +307,35 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void initPaymentMethods(List<EnabledPayment> enabledPayments) {
         initialiseAdapterData(enabledPayments);
-        if (data.isEmpty()) {
-            showErrorAlertDialog(getString(R.string.message_payment_method_empty));
-        } else if (data.size() == 1) {
-            startPaymentMethod(data.get(0));
+        if (isCreditCardOnly) {
+            // track payment select credit card
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
+            Intent intent = new Intent(PaymentMethodsActivity.this, CreditDebitCardFlowActivity.class);
+            startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (isBankTransferOnly) {
+            // track payment select bank transfer
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, null);
+            Intent startBankPayment = new Intent(PaymentMethodsActivity.this, SelectBankTransferActivity.class);
+            if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
+                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, true);
+            } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
+                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, true);
+            } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
+                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_BCA, true);
+            } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
+                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, true);
+            }
+            startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
+            startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else {
-            paymentMethodsAdapter.setData(data);
+            if (data.isEmpty()) {
+                showErrorAlertDialog(getString(R.string.message_payment_method_empty));
+            } else if (data.size() == 1) {
+                startPaymentMethod(data.get(0));
+            } else {
+                progressContainer.setVisibility(View.GONE);
+                paymentMethodsAdapter.setData(data);
+            }
         }
     }
 
@@ -482,7 +500,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             } else if (resultCode == RESULT_CANCELED) {
                 if (data == null) {
-                    if (this.data.size() == 1) {
+                    if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly) {
                         // track cancel transaction
                         midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 
@@ -502,7 +520,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         }
                         finish();
                     } else {
-                        if (this.data.size() == 1) {
+                        if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly) {
                             // track cancel transaction
                             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 

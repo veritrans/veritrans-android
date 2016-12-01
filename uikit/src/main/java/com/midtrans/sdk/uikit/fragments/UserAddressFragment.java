@@ -262,6 +262,8 @@ public class UserAddressFragment extends Fragment {
             Intent selectPaymentIntent = new Intent(getActivity(), PaymentMethodsActivity.class);
             if (getActivity().getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false)) {
                 selectPaymentIntent.putExtra(UserDetailsActivity.CREDIT_CARD_ONLY, true);
+            } else if (getActivity().getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, false)) {
+                selectPaymentIntent.putExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, true);
             }
             startActivity(selectPaymentIntent);
             getActivity().finish();

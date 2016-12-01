@@ -173,17 +173,13 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Override
     public void onBackPressed() {
         SdkUIFlowUtil.hideKeyboard(this);
-        if (fragmentManager.getBackStackEntryCount() == 1) {
-            setResultCode(RESULT_CANCELED);
+        if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class
+                .getName())) {
+            setResultCode(RESULT_OK);
             setResultAndFinish();
         } else {
-            if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class
-                    .getName())) {
-                setResultCode(RESULT_OK);
-                setResultAndFinish();
-            } else {
-                super.onBackPressed();
-            }
+            setResultCode(RESULT_CANCELED);
+            setResultAndFinish();
         }
     }
 

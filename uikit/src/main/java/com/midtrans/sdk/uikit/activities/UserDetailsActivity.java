@@ -20,6 +20,11 @@ import java.util.ArrayList;
 
 public class UserDetailsActivity extends BaseActivity {
     public static final String CREDIT_CARD_ONLY = "cconly";
+    public static final String BANK_TRANSFER_ONLY = "btonly";
+    public static final String BANK_TRANSFER_MANDIRI = "bt_mandiri";
+    public static final String BANK_TRANSFER_BCA = "bt_bca";
+    public static final String BANK_TRANSFER_PERMATA = "bt_permata";
+    public static final String BANK_TRANSFER_OTHER = "bt_other";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,17 @@ public class UserDetailsActivity extends BaseActivity {
                     Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
                     if (getIntent().getBooleanExtra(CREDIT_CARD_ONLY, false)) {
                         paymentOptionIntent.putExtra(CREDIT_CARD_ONLY, true);
+                    } else if (getIntent().getBooleanExtra(BANK_TRANSFER_ONLY, false)) {
+                        paymentOptionIntent.putExtra(BANK_TRANSFER_ONLY, true);
+                        if (getIntent().getBooleanExtra(BANK_TRANSFER_PERMATA, false)) {
+                            paymentOptionIntent.putExtra(BANK_TRANSFER_PERMATA, true);
+                        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_MANDIRI, false)) {
+                            paymentOptionIntent.putExtra(BANK_TRANSFER_MANDIRI, true);
+                        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_BCA, false)) {
+                            paymentOptionIntent.putExtra(BANK_TRANSFER_BCA, true);
+                        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_OTHER, false)) {
+                            paymentOptionIntent.putExtra(BANK_TRANSFER_OTHER, true);
+                        }
                     }
                     startActivity(paymentOptionIntent);
                     finish();

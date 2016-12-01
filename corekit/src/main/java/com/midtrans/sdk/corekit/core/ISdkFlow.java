@@ -12,4 +12,14 @@ public interface ISdkFlow {
     void runRegisterCard(Context context);
 
     void runCreditCard(Context context);
+
+    void runBankTransfer(Context context);
+
+    void runPermataBankTransfer(Context context);
+
+    void runMandiriBankTransfer(Context context);
+
+    void runBCABankTransfer(Context context);
+
+    void runOtherBankTransfer(Context context);
 }
