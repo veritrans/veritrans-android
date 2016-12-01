@@ -12,4 +12,6 @@ public interface ISdkFlow {
     void runRegisterCard(Context context);
 
     void runCreditCard(Context context);
+
+    void runBankTransfer(Context context);
 }

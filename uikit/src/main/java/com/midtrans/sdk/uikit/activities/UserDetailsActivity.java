@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 public class UserDetailsActivity extends BaseActivity {
     public static final String CREDIT_CARD_ONLY = "cconly";
+    public static final String BANK_TRANSFER_ONLY = "btonly";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,8 @@ public class UserDetailsActivity extends BaseActivity {
                     Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
                     if (getIntent().getBooleanExtra(CREDIT_CARD_ONLY, false)) {
                         paymentOptionIntent.putExtra(CREDIT_CARD_ONLY, true);
+                    } else if (getIntent().getBooleanExtra(BANK_TRANSFER_ONLY, false)) {
+                        paymentOptionIntent.putExtra(BANK_TRANSFER_ONLY, true);
                     }
                     startActivity(paymentOptionIntent);
                     finish();

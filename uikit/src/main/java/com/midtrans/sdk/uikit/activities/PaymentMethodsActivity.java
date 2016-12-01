@@ -62,20 +62,20 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     protected static final String PAYMENT_TYPE_BANK_TRANSFER = "bank_transfer";
     protected static final String PAYMENT_TYPE_CREDIT_CARD = "cc";
     protected static final String PAYMENT_TYPE_BRI_EPAY = "bri_epay";
-    protected static final String PAYMENT_TYPE_BBM_MONEY = "bbm_money";
     protected static final String PAYMENT_TYPE_INDOSAT_DOMPETKU = "indosat_dompetku";
     protected static final String PAYMENT_TYPE_INDOMARET = "indomaret";
     protected static final String PAYMENT_TYPE_KLIK_BCA = "bca_klikbca";
-    protected static final String PAYMENT_TYPE_MANDIRI_BILL_PAY = "mandiri_bill_pay";
     protected static final String PAYMENT_TYPE_TELKOMSEL_ECASH = "telkomsel_ecash";
     protected static final String PAYMENT_TYPE_XL_TUNAI = "xl_tunai";
     protected static final String PAYMENT_TYPE_KIOSON = "kiosan";
+
     private static final String KEY_SELECT_PAYMENT = "Payment Select";
     private static final String KEY_CANCEL_TRANSACTION_EVENT = "Cancel Transaction";
     private static final String PAYMENT_SNAP = "snap";
     private static final String TAG = PaymentMethodsActivity.class.getSimpleName();
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
     private boolean isCreditCardOnly = false;
+    private boolean isBankTransferOnly = false;
 
     private MidtransSDK midtransSDK = null;
 
@@ -99,6 +99,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments_method);
         isCreditCardOnly = getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false);
+        isBankTransferOnly = getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, false);
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
         UserDetail userDetail = null;
@@ -228,7 +229,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         logo = (ImageView) findViewById(R.id.merchant_logo);
         merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
-        if (isCreditCardOnly) {
+        if (isCreditCardOnly || isBankTransferOnly) {
             TextView titleText = (TextView) findViewById(R.id.header_view_title);
             TextView loadingText = (TextView) findViewById(R.id.loading_text);
             titleText.setText(getString(R.string.txt_checkout));
@@ -283,15 +284,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         showName(merchantName);
                     }
                     // Directly start credit card payment if using credit card mode only
-                    if (isCreditCardOnly) {
-                        // track payment select credit card
-                        midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
-                        Intent intent = new Intent(PaymentMethodsActivity.this, CreditDebitCardFlowActivity.class);
-                        startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-                    } else {
-                        progressContainer.setVisibility(View.GONE);
-                        initPaymentMethods(transaction.getEnabledPayments());
-                    }
+                    initPaymentMethods(transaction.getEnabledPayments());
                 } catch (NullPointerException e) {
                     Logger.e(TAG, e.getMessage());
                 }
@@ -315,12 +308,26 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void initPaymentMethods(List<EnabledPayment> enabledPayments) {
         initialiseAdapterData(enabledPayments);
-        if (data.isEmpty()) {
-            showErrorAlertDialog(getString(R.string.message_payment_method_empty));
-        } else if (data.size() == 1) {
-            startPaymentMethod(data.get(0));
+        if (isCreditCardOnly) {
+            // track payment select credit card
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
+            Intent intent = new Intent(PaymentMethodsActivity.this, CreditDebitCardFlowActivity.class);
+            startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (isBankTransferOnly) {
+            // track payment select bank transfer
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, null);
+            Intent startBankPayment = new Intent(PaymentMethodsActivity.this, SelectBankTransferActivity.class);
+            startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
+            startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else {
-            paymentMethodsAdapter.setData(data);
+            if (data.isEmpty()) {
+                showErrorAlertDialog(getString(R.string.message_payment_method_empty));
+            } else if (data.size() == 1) {
+                startPaymentMethod(data.get(0));
+            } else {
+                progressContainer.setVisibility(View.GONE);
+                paymentMethodsAdapter.setData(data);
+            }
         }
     }
 
