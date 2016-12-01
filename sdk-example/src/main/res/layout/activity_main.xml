@@ -239,7 +239,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/title_show_example" />
+                android:text="@string/title_show_credit_card_example" />
 
             <Button
                 android:id="@+id/show_credit_card_payment"
@@ -250,14 +250,73 @@
                 android:textColor="@color/white"
                 android:visibility="visible" />
 
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/btn_start_bank_transfer" />
             <Button
                 android:id="@+id/show_bank_transfer_payment"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/eight_dp"
-                android:text="@string/btn_start_bank_transfer"
+                android:text="@string/btn_general"
                 android:textColor="@color/white"
                 android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/show_bank_transfer_permata_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.25"
+                    android:text="@string/btn_permata"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_bank_transfer_mandiri_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.25"
+                    android:text="@string/btn_mandiri"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_bank_transfer_bca_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.25"
+                    android:text="@string/btn_bca"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_bank_transfer_other_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.25"
+                    android:text="@string/btn_other"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/title_show_example" />
 
             <LinearLayout
                 android:layout_width="match_parent"
