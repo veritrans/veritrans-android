@@ -65,6 +65,8 @@ public class TransactionResponse implements Serializable {
     private String xlTunaiMerchantId;
     @SerializedName("xl_expiration")
     private String xlTunaiExpiration;
+    @SerializedName("installment_term")
+    private String installmentTerm;
 
     @SerializedName("redirect_url")
     private String redirectUrl;
@@ -351,5 +353,9 @@ public class TransactionResponse implements Serializable {
 
     public ArrayList<String> getValidationMessages() {
         return validationMessages;
+    }
+
+    public String getInstallmentTerm() {
+        return installmentTerm;
     }
 }

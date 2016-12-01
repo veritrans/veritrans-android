@@ -338,7 +338,7 @@ public class OffersAddCardDetailsFragment extends Fragment {
                         } catch (NumberFormatException ne) {
                             ne.printStackTrace();
                         }
-                        cardTokenRequest.setInstalment(isInstalment);
+                        cardTokenRequest.setInstallment(isInstalment);
                         cardTokenRequest.setInstalmentTerm(instalmentTerm);
                     }
 

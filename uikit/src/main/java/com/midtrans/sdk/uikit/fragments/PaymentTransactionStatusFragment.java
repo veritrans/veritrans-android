@@ -43,8 +43,10 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private TextView orderIdTextView = null;
     private TextView transactionTimeTextView = null;
     private TextView paymentTypeTextView = null;
+    private TextView textInstallmentBank;
+    private TextView textInstallmentTerm;
     private int count = 1;
-    private LinearLayout detailsTable;
+    private LinearLayout detailsTable, layoutInstallment;
 
     public PaymentTransactionStatusFragment() {
         // Required empty public constructor
@@ -90,6 +92,10 @@ public class PaymentTransactionStatusFragment extends Fragment {
         paymentStatusTv = (TextView) view.findViewById(R.id.text_payment_status);
         paymentMessageTv = (TextView) view.findViewById(R.id.text_payment_message);
         detailsTable = (LinearLayout) view.findViewById(R.id.transaction_info_layout);
+        layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installmet_status);
+        textInstallmentBank = (TextView) view.findViewById(R.id.text_transaction_installment_bank);
+        textInstallmentTerm = (TextView) view.findViewById(R.id.text_transaction_installment_term);
+
     }
 
     private void setPaymentStatusValues() {
@@ -100,6 +106,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
             paymentIv.setImageResource(R.drawable.ic_successful);
             paymentStatusTv.setText(getString(R.string.payment_successful));
             paymentMessageTv.setVisibility(View.GONE);
+            setInstallmentStatus();
         } else if (transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_201)) ||
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.pending))) {
             if (transactionResponse.getFraudStatus().equalsIgnoreCase(getString(R.string.challenge))) {
@@ -129,6 +136,14 @@ public class PaymentTransactionStatusFragment extends Fragment {
         if (transactionResponse != null && TextUtils.isEmpty(transactionResponse.getTransactionTime()) &&
                 TextUtils.isEmpty(transactionResponse.getGrossAmount()) && TextUtils.isEmpty(transactionResponse.getOrderId())) {
             detailsTable.setVisibility(View.GONE);
+        }
+    }
+
+    private void setInstallmentStatus() {
+        if (!TextUtils.isEmpty(transactionResponse.getInstallmentTerm())) {
+            textInstallmentBank.setText(transactionResponse.getBank());
+            textInstallmentTerm.setText(getString(R.string.installment_months, transactionResponse.getInstallmentTerm()));
+            layoutInstallment.setVisibility(View.VISIBLE);
         }
     }
 

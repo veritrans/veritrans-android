@@ -1924,7 +1924,7 @@ public class SnapTransactionManagerTest {
         TokenDetailsResponse tokenDetailsResponse = new TokenDetailsResponse();
         tokenDetailsResponse.setStatusCode("200");
 
-        cardTokenRequest.setInstalment(true);
+        cardTokenRequest.setInstallment(true);
 
         callbackImplement.getToken(cardTokenRequest);
 
@@ -1946,7 +1946,7 @@ public class SnapTransactionManagerTest {
         TokenDetailsResponse tokenDetailsResponse = new TokenDetailsResponse();
         tokenDetailsResponse.setStatusCode("200");
 
-        cardTokenRequest.setInstalment(true);
+        cardTokenRequest.setInstallment(true);
 
         callbackImplement.getToken(cardTokenRequest);
 
@@ -1979,7 +1979,7 @@ public class SnapTransactionManagerTest {
         Response response = new Response("URL", 200, "success", Collections.EMPTY_LIST,
                 new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
 
-        cardTokenRequest.setInstalment(true);
+        cardTokenRequest.setInstallment(true);
         callbackImplement.getToken(cardTokenRequest);
 
         Mockito.verify(midtransAPI, Mockito.times(1)).get3DSTokenInstalmentOffers(cardNumberCaptor.capture(),
@@ -1999,7 +1999,7 @@ public class SnapTransactionManagerTest {
 
     @Test
     public void testGetTokenError_get3DSTokenInstalmentOffers() {
-        cardTokenRequest.setInstalment(true);
+        cardTokenRequest.setInstallment(true);
         callbackImplement.getToken(cardTokenRequest);
 
         Mockito.verify(midtransAPI, Mockito.times(1)).get3DSTokenInstalmentOffers(cardNumberCaptor.capture(),
@@ -2040,7 +2040,7 @@ public class SnapTransactionManagerTest {
         Response response = new Response("URL", 200, "success", Collections.EMPTY_LIST,
                 new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
 
-        cardTokenRequest.setInstalment(false);
+        cardTokenRequest.setInstallment(false);
         cardTokenRequest.setTwoClick(true);
 
         callbackImplement.getToken(cardTokenRequest);
@@ -2068,7 +2068,7 @@ public class SnapTransactionManagerTest {
         Response response = new Response("URL", 200, "success", Collections.EMPTY_LIST,
                 new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
 
-        cardTokenRequest.setInstalment(false);
+        cardTokenRequest.setInstallment(false);
         cardTokenRequest.setTwoClick(true);
 
         callbackImplement.getToken(cardTokenRequest);
@@ -2100,7 +2100,7 @@ public class SnapTransactionManagerTest {
         Response response = new Response("URL", 200, "success", Collections.EMPTY_LIST,
                 new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
 
-        cardTokenRequest.setInstalment(false);
+        cardTokenRequest.setInstallment(false);
         cardTokenRequest.setTwoClick(true);
 
         callbackImplement.getToken(cardTokenRequest);
@@ -2124,7 +2124,7 @@ public class SnapTransactionManagerTest {
 
     @Test
     public void testGetTokenError_getTokenTwoClick() {
-        cardTokenRequest.setInstalment(false);
+        cardTokenRequest.setInstallment(false);
         cardTokenRequest.setTwoClick(true);
         callbackImplement.getToken(cardTokenRequest);
 
@@ -2168,7 +2168,7 @@ public class SnapTransactionManagerTest {
         Response response = new Response("URL", 200, "success", Collections.EMPTY_LIST,
                 new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
 
-        cardTokenRequest.setInstalment(true);
+        cardTokenRequest.setInstallment(true);
         cardTokenRequest.setTwoClick(true);
 
         callbackImplement.getToken(cardTokenRequest);
@@ -2198,7 +2198,7 @@ public class SnapTransactionManagerTest {
         Response response = new Response("URL", 200, "success", Collections.EMPTY_LIST,
                 new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
 
-        cardTokenRequest.setInstalment(true);
+        cardTokenRequest.setInstallment(true);
         cardTokenRequest.setTwoClick(true);
         callbackImplement.getToken(cardTokenRequest);
 
@@ -2229,7 +2229,7 @@ public class SnapTransactionManagerTest {
         Response response = new Response("URL", 200, "success", Collections.EMPTY_LIST,
                 new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
 
-        cardTokenRequest.setInstalment(true);
+        cardTokenRequest.setInstallment(true);
         cardTokenRequest.setTwoClick(true);
         callbackImplement.getToken(cardTokenRequest);
 
@@ -2253,7 +2253,7 @@ public class SnapTransactionManagerTest {
 
     @Test
     public void testGetTokenError_getTokenInstalmentOfferTwoClick() {
-        cardTokenRequest.setInstalment(true);
+        cardTokenRequest.setInstallment(true);
         cardTokenRequest.setTwoClick(true);
 
         callbackImplement.getToken(cardTokenRequest);

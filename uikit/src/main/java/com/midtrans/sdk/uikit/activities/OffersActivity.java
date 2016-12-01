@@ -275,7 +275,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
             //for one click
             if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
                     && !TextUtils.isEmpty(cardTokenRequest.getSavedTokenId())) {
-                if (cardTokenRequest.isInstalment()) {
+                if (cardTokenRequest.isInstallment()) {
                     cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
                             cardTokenRequest.getSavedTokenId(), cardTokenRequest.isSaved(),
                             cardTokenRequest.getFormattedInstalmentTerm(), cardTokenRequest.getBins());
@@ -290,7 +290,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                 cardPaymentDetails.setRecurring(true);
             } else if (tokenDetailsResponse != null) {
 
-                if (cardTokenRequest.isInstalment()) {
+                if (cardTokenRequest.isInstallment()) {
                     Logger.i("tokenDetailsResponse.getTokenId():" + tokenDetailsResponse.getTokenId());
                     cardPaymentDetails = new CardPaymentDetails(cardTokenRequest.getBank(),
                             tokenDetailsResponse.getTokenId(), cardTokenRequest.isSaved(),

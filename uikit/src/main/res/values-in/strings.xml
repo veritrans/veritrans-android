@@ -419,4 +419,7 @@
     <string name="message_cannot_proccessed">Transaksi anda tidak dapat diproses.</string>
     <string name="formatted_installment_month">Cicilan %1$s bulan</string>
     <string name="no_installment">Tanpa cicilan</string>
+    <string name="status_installment_bank">Bank Cicilan</string>
+    <string name="status_installment_term">Jangka waktu cicilan</string>
+    <string name="installment_months">Bulan %1$s</string>
 </resources>
