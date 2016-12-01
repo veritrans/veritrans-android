@@ -48,4 +48,48 @@ public class UIFlow implements ISdkFlow {
             context.startActivity(intent);
         }
     }
+
+    @Override
+    public void runPermataBankTransfer(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, true);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, true);
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void runMandiriBankTransfer(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, true);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, true);
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void runBCABankTransfer(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, true);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_BCA, true);
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void runOtherBankTransfer(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, true);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, true);
+            context.startActivity(intent);
+        }
+    }
 }

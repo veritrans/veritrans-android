@@ -6,7 +6,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -81,16 +80,65 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
 
         // setUp recyclerView
         ArrayList<String> banks = getIntent().getStringArrayListExtra(EXTRA_BANK);
-        if (banks != null && banks.size() > 0) {
-            initialiseBankTransfersModel(banks);
-            if (data.size() == 1) {
-                startBankTransferPayment(data.get(0));
+        if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
+            // track bank transfer payment
+            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, 0);
+            Intent startBankPayment = new Intent(this, BankTransferActivity.class);
+            startBankPayment.putExtra(
+                    getString(R.string.position),
+                    Constants.BANK_TRANSFER_PERMATA);
+
+            startActivityForResult(
+                    startBankPayment,
+                    Constants.RESULT_CODE_PAYMENT_TRANSFER
+            );
+        } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
+            // track bank transfer payment
+            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, 0);
+            Intent startMandiriBankPayment = new Intent(this, BankTransferActivity.class);
+            startMandiriBankPayment.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
+            startActivityForResult(
+                    startMandiriBankPayment,
+                    Constants.RESULT_CODE_PAYMENT_TRANSFER
+            );
+        } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
+            // track bank transfer payment
+            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, 0);
+            Intent startBankPayment = new Intent(this, BankTransferActivity.class);
+            startBankPayment.putExtra(
+                    this.getString(R.string.position),
+                    Constants.BANK_TRANSFER_BCA
+            );
+
+            startActivityForResult(
+                    startBankPayment,
+                    Constants.RESULT_CODE_PAYMENT_TRANSFER
+            );
+        } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
+            // track bank transfer payment
+            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, ALL_BANK, 0);
+
+            Intent startOtherBankPayment = new Intent(this, BankTransferActivity.class);
+            startOtherBankPayment.putExtra(
+                    getString(R.string.position),
+                    Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK
+            );
+            startActivityForResult(
+                    startOtherBankPayment,
+                    Constants.RESULT_CODE_PAYMENT_TRANSFER
+            );
+        } else {
+            if (banks != null && banks.size() > 0) {
+                initialiseBankTransfersModel(banks);
+                if (data.size() == 1) {
+                    startBankTransferPayment(data.get(0));
+                } else {
+                    adapter.setData(this.data);
+                }
             } else {
+                initialiseBankTransfersModel();
                 adapter.setData(this.data);
             }
-        } else {
-            initialiseBankTransfersModel();
-            adapter.setData(this.data);
         }
     }
 
@@ -166,6 +214,13 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     if (this.data.size() == 1) {
                         finish();
                     }
+
+                    if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)
+                            || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)
+                            || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)
+                            || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
+                        finish();
+                    }
                 } else {
                     setResult(RESULT_OK, data);
                     finish();
@@ -175,10 +230,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         } else {
             Logger.d(TAG, "failed to send result back " + requestCode);
         }
-    }
-
-    private int dp2px(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
     @Override

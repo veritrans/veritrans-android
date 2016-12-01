@@ -135,14 +135,13 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
      * if recycler view fits within screen then it will disable the scrolling of it.
      */
     private void handleScrollingOfRecyclerView() {
-        setAlfaAttribute(headerTextView, 1);
+        setAlphaAttribute(headerTextView, 1);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 int hiddenTextViewHeight = textViewMeasureHeight.getHeight();
-                int recyclerViewHieght = mRecyclerView.getMeasuredHeight();
                 int appBarHeight = mAppBarLayout.getHeight();
                 int exactHeightForCompare = hiddenTextViewHeight - appBarHeight;
 
@@ -151,13 +150,13 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
                 if (totalHeight < exactHeightForCompare) {
                     disableScrolling();
-                    setAlfaAttribute(headerTextView, 1);
+                    setAlphaAttribute(headerTextView, 1);
                 }
             }
         }, 200);
     }
 
-    private void setAlfaAttribute(TextView view, float value) {
+    private void setAlphaAttribute(TextView view, float value) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             view.setAlpha(value);
         } else {
@@ -317,6 +316,15 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             // track payment select bank transfer
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, null);
             Intent startBankPayment = new Intent(PaymentMethodsActivity.this, SelectBankTransferActivity.class);
+            if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
+                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, true);
+            } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
+                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, true);
+            } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
+                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_BCA, true);
+            } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
+                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, true);
+            }
             startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
             startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else {
@@ -492,7 +500,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             } else if (resultCode == RESULT_CANCELED) {
                 if (data == null) {
-                    if (this.data.size() == 1 || isCreditCardOnly) {
+                    if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly) {
                         // track cancel transaction
                         midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 
@@ -512,7 +520,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         }
                         finish();
                     } else {
-                        if (this.data.size() == 1 || isCreditCardOnly) {
+                        if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly) {
                             // track cancel transaction
                             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 
