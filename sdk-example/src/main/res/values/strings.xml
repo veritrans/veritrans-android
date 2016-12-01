@@ -8,6 +8,7 @@
     <string name="title_card_widget">Widget Example</string>
     <string name="title_credit_card_options">Credit Card Options</string>
     <string name="btn_start_credit_card">Start Credit Card Payment</string>
+    <string name="btn_start_bank_transfer">Start Bank Transfer Payment</string>
     <string name="btn_show_core">Core Flow</string>
     <string name="btn_show_ui_flow">UI Flow</string>
     <string name="register">Register</string>
