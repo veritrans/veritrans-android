@@ -67,7 +67,7 @@ dependencies {
         exclude module: 'uikit'
         exclude module: 'corekit'
     }
-    stagingCompile('com.midtrans:scancard:1.1.3-STAGING') {
+    stagingCompile('com.midtrans:scancard:1.1.4-STAGING') {
         exclude module: 'uikit'
         exclude module: 'corekit'
     }
