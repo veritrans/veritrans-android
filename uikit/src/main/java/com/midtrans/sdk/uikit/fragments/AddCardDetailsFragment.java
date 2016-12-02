@@ -47,6 +47,7 @@ public class AddCardDetailsFragment extends Fragment {
 
     TextInputLayout tilCardNo, tilCvv, tilExpiry;
     TextView textInstallmentTerm;
+    int installmentCurrentPosition, installmentTotalPositions;
     private String lastExpDate = "";
     private EditText etCardNo;
     private EditText etCvv;
@@ -69,8 +70,6 @@ public class AddCardDetailsFragment extends Fragment {
     private String cardType = "";
     private RelativeLayout formLayout;
     private LinearLayout layoutInstallment;
-    int installmentCurrentPosition, installmentTotalPositions;
-
 
     public static AddCardDetailsFragment newInstance() {
         AddCardDetailsFragment fragment = new AddCardDetailsFragment();
@@ -234,10 +233,12 @@ public class AddCardDetailsFragment extends Fragment {
                     cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
                     cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
                     cardTokenRequest.setCardType(cardType);
-                    // Set acquiring bank if available
+                    // Set acquiring bank and channel if available
                     if (midtransSDK.getTransactionRequest().getCreditCard() != null) {
                         String bank = midtransSDK.getTransactionRequest().getCreditCard().getBank();
                         cardTokenRequest.setBank(bank);
+                        String channel = midtransSDK.getTransactionRequest().getCreditCard().getChannel();
+                        cardTokenRequest.setChannel(channel);
                     }
 
                     //make payment

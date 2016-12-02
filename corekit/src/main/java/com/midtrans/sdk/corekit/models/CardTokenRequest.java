@@ -42,6 +42,7 @@ public class CardTokenRequest implements Serializable {
     @SerializedName("installment_term")
     private int instalmentTerm;
     private ArrayList<String> bins;
+    private String channel;
     //private String cardHolderName;
 
     public CardTokenRequest() {
@@ -241,4 +242,11 @@ public class CardTokenRequest implements Serializable {
         this.bins = bins;
     }
 
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
 }

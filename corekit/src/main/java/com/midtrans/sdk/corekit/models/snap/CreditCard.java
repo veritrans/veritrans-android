@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class CreditCard {
 
+    public static final String MIGS = "migs";
+
     @SerializedName("save_card")
     private boolean saveCard;
     @SerializedName("token_id")
