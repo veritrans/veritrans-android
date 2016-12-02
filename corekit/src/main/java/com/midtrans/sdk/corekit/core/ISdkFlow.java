@@ -26,4 +26,8 @@ public interface ISdkFlow {
     void runBCAKlikPay(Context context);
 
     void runKlikBCA(Context context);
+
+    void runMandiriClickpay(Context context);
+
+    void runMandiriECash(Context context);
 }

@@ -78,6 +78,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isBankTransferOnly = false;
     private boolean isBCAKlikpay = false;
     private boolean isKlikBCA = false;
+    private boolean isMandiriClickPay = false;
+    private boolean isMandiriECash = false;
 
     private MidtransSDK midtransSDK = null;
 
@@ -104,6 +106,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         isBankTransferOnly = getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, false);
         isBCAKlikpay = getIntent().getBooleanExtra(UserDetailsActivity.BCA_KLIKPAY, false);
         isKlikBCA = getIntent().getBooleanExtra(UserDetailsActivity.KLIK_BCA, false);
+        isMandiriClickPay = getIntent().getBooleanExtra(UserDetailsActivity.MANDIRI_CLICKPAY, false);
+        isMandiriECash = getIntent().getBooleanExtra(UserDetailsActivity.MANDIRI_ECASH, false);
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
         UserDetail userDetail = null;
@@ -232,7 +236,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         logo = (ImageView) findViewById(R.id.merchant_logo);
         merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
-        if (isCreditCardOnly || isBankTransferOnly || isKlikBCA || isBCAKlikpay) {
+        if (isCreditCardOnly || isBankTransferOnly || isKlikBCA || isBCAKlikpay || isMandiriClickPay
+                || isMandiriECash) {
             TextView titleText = (TextView) findViewById(R.id.header_view_title);
             TextView loadingText = (TextView) findViewById(R.id.loading_text);
             titleText.setText(getString(R.string.txt_checkout));
@@ -342,6 +347,16 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             Intent startKlikBcaActivity = new Intent(this, KlikBCAActivity.class);
             startKlikBcaActivity.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
             startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (isMandiriClickPay) {
+            // track payment select mandiri clickpay
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_CLICKPAY, null);
+            Intent startMandiriClickpay = new Intent(this, MandiriClickPayActivity.class);
+            startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (isMandiriECash) {
+            // track payment select bank transfer
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_ECASH, null);
+            Intent startMandiriECash = new Intent(this, MandiriECashActivity.class);
+            startActivityForResult(startMandiriECash, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else {
             if (data.isEmpty()) {
                 showErrorAlertDialog(getString(R.string.message_payment_method_empty));
@@ -513,7 +528,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             } else if (resultCode == RESULT_CANCELED) {
                 if (data == null) {
-                    if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA) {
+                    if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
+                            || isMandiriClickPay || isMandiriECash) {
                         // track cancel transaction
                         midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 
@@ -533,7 +549,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         }
                         finish();
                     } else {
-                        if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA) {
+                        if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
+                                || isMandiriClickPay || isMandiriECash) {
                             // track cancel transaction
                             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 
