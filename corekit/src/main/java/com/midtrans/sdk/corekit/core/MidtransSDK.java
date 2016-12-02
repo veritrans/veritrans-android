@@ -481,6 +481,150 @@ public class MidtransSDK {
     }
 
     /**
+     * This will start actual execution of BCA KlikPay UI Flow.
+     *
+     * @param context activity context.
+     */
+    public void startBCAKlikPayUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runBCAKlikPay(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of Klik BCA UI flow.
+     *
+     * @param context activity context.
+     */
+    public void startKlikBCAUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runKlikBCA(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of Mandiri Clickpay UI flow.
+     *
+     * @param context activity context.
+     */
+    public void startMandiriClickpayUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runMandiriClickpay(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of Mandiri E-Cash UI flow.
+     *
+     * @param context activity context.
+     */
+    public void startMandiriECashUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runMandiriECash(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of CIMB Clicks UI flow.
+     *
+     * @param context activity context.
+     */
+    public void startCIMBClicksUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runCIMBClicks(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of BRI Epay UI flow.
+     *
+     * @param context activity context.
+     */
+    public void startBRIEpayUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runBRIEpay(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
      * This will start actual execution of transaction. if you have enabled an ui then it will start
      * activity according to it.
      *

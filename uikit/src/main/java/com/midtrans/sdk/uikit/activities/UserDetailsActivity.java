@@ -25,6 +25,12 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String BANK_TRANSFER_BCA = "bt_bca";
     public static final String BANK_TRANSFER_PERMATA = "bt_permata";
     public static final String BANK_TRANSFER_OTHER = "bt_other";
+    public static final String BCA_KLIKPAY = "bcaklikpay";
+    public static final String KLIK_BCA = "klikbca";
+    public static final String MANDIRI_CLICKPAY = "mandiriclickpay";
+    public static final String MANDIRI_ECASH = "mandiriecash";
+    public static final String CIMB_CLICKS = "cimbclicks";
+    public static final String BRI_EPAY = "briepay";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,18 @@ public class UserDetailsActivity extends BaseActivity {
                         } else if (getIntent().getBooleanExtra(BANK_TRANSFER_OTHER, false)) {
                             paymentOptionIntent.putExtra(BANK_TRANSFER_OTHER, true);
                         }
+                    } else if (getIntent().getBooleanExtra(BCA_KLIKPAY, false)) {
+                        paymentOptionIntent.putExtra(BCA_KLIKPAY, true);
+                    } else if (getIntent().getBooleanExtra(KLIK_BCA, false)) {
+                        paymentOptionIntent.putExtra(KLIK_BCA, true);
+                    } else if (getIntent().getBooleanExtra(MANDIRI_CLICKPAY, false)) {
+                        paymentOptionIntent.putExtra(MANDIRI_CLICKPAY, true);
+                    } else if (getIntent().getBooleanExtra(MANDIRI_ECASH, false)) {
+                        paymentOptionIntent.putExtra(MANDIRI_ECASH, true);
+                    } else if (getIntent().getBooleanExtra(CIMB_CLICKS, false)) {
+                        paymentOptionIntent.putExtra(CIMB_CLICKS, true);
+                    } else if (getIntent().getBooleanExtra(BRI_EPAY, false)) {
+                        paymentOptionIntent.putExtra(BRI_EPAY, true);
                     }
                     startActivity(paymentOptionIntent);
                     finish();

@@ -22,4 +22,16 @@ public interface ISdkFlow {
     void runBCABankTransfer(Context context);
 
     void runOtherBankTransfer(Context context);
+
+    void runBCAKlikPay(Context context);
+
+    void runKlikBCA(Context context);
+
+    void runMandiriClickpay(Context context);
+
+    void runMandiriECash(Context context);
+
+    void runCIMBClicks(Context context);
+
+    void runBRIEpay(Context context);
 }

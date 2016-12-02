@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn;
-    private Button coreCardRegistration, uiCardRegistration;
+    private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn;
     private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri;
     private Toolbar toolbar;
 
@@ -294,6 +294,60 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
                 MidtransSDK.getInstance().startOtherBankTransferUIFlow(MainActivity.this);
+            }
+        });
+
+        klikBCABtn = (Button) findViewById(R.id.show_klik_bca_payment);
+        klikBCABtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startKlikBCAUIFlow(MainActivity.this);
+            }
+        });
+
+        BCAKlikpayBtn = (Button) findViewById(R.id.show_bca_klikpay_payment);
+        BCAKlikpayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startBCAKlikPayUIFlow(MainActivity.this);
+            }
+        });
+
+        mandiriClickpayBtn = (Button) findViewById(R.id.show_mandiri_clickpay_payment);
+        mandiriClickpayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startMandiriClickpayUIFlow(MainActivity.this);
+            }
+        });
+
+        mandiriEcashBtn = (Button) findViewById(R.id.show_mandiri_ecash_payment);
+        mandiriEcashBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startMandiriECashUIFlow(MainActivity.this);
+            }
+        });
+
+        cimbClicksBtn = (Button) findViewById(R.id.show_cimb_clicks_payment);
+        cimbClicksBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startCIMBClicksUIFlow(MainActivity.this);
+            }
+        });
+
+        briEpayBtn = (Button) findViewById(R.id.show_bri_epay_payment);
+        briEpayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startBRIEpayUIFlow(MainActivity.this);
             }
         });
     }
