@@ -25,6 +25,8 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String BANK_TRANSFER_BCA = "bt_bca";
     public static final String BANK_TRANSFER_PERMATA = "bt_permata";
     public static final String BANK_TRANSFER_OTHER = "bt_other";
+    public static final String BCA_KLIKPAY = "bcaklikpay";
+    public static final String KLIK_BCA = "klikbca";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,10 @@ public class UserDetailsActivity extends BaseActivity {
                         } else if (getIntent().getBooleanExtra(BANK_TRANSFER_OTHER, false)) {
                             paymentOptionIntent.putExtra(BANK_TRANSFER_OTHER, true);
                         }
+                    } else if (getIntent().getBooleanExtra(BCA_KLIKPAY, false)) {
+                        paymentOptionIntent.putExtra(BCA_KLIKPAY, true);
+                    } else if (getIntent().getBooleanExtra(KLIK_BCA, false)) {
+                        paymentOptionIntent.putExtra(KLIK_BCA, true);
                     }
                     startActivity(paymentOptionIntent);
                     finish();

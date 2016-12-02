@@ -22,4 +22,8 @@ public interface ISdkFlow {
     void runBCABankTransfer(Context context);
 
     void runOtherBankTransfer(Context context);
+
+    void runBCAKlikPay(Context context);
+
+    void runKlikBCA(Context context);
 }

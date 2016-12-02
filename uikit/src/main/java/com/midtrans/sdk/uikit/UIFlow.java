@@ -92,4 +92,24 @@ public class UIFlow implements ISdkFlow {
             context.startActivity(intent);
         }
     }
+
+    @Override
+    public void runBCAKlikPay(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.BCA_KLIKPAY, true);
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void runKlikBCA(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.KLIK_BCA, true);
+            context.startActivity(intent);
+        }
+    }
 }
