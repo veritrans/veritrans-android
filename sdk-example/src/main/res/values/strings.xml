@@ -50,7 +50,7 @@
     <string name="label_mandiri_bill">echannel</string>
     <string name="label_indosat_dompetku">indosat_dompetku</string>
     <string name="name_credit_card">Credit Card</string>
-    <string name="name_klik_bca">Klik BCA</string>
+    <string name="name_klik_bca">KlikBCA</string>
     <string name="name_mandiri_click_pay">Mandiri Click Pay</string>
     <string name="name_bca_klikpay">BCA Klik Pay</string>
     <string name="name_cimb_clicks">CIMB Click</string>
@@ -66,7 +66,7 @@
     <string name="name_bank_transfer_permata">Bank Transfer Permata</string>
     <string name="name_bank_transfer_mandiri">Bank Transfer Mandiri</string>
     <string name="name_bank_transfer_others">Bank Tranfer Lainnya</string>
-    <string name="title_activity_klik_bca_payment">Payment With Klik BCA</string>
+    <string name="title_activity_klik_bca_payment">Payment With KlikBCA</string>
     <string name="title_activity_epay_bri">Epay BRI Payment</string>
     <string name="title_activity_cimb_payment">CIMB Click Payment</string>
     <string name="label_bank_transfer_other">other_bank</string>
