@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,10 +71,10 @@ public class WebviewFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-        webView.setWebViewClient(new VeritransWebViewClient());
+        webView.setWebViewClient(new VeritransWebViewClient(getActivity()));
         webView.setWebChromeClient(new WebChromeClient());
-        webView.addJavascriptInterface(new JsInterface(), getString(R.string.veritrans_response));
-       // webView.addJavascriptInterface(new WebAppInterface(getActivity()), "Android");
+        webView.addJavascriptInterface(new JsInterface(getActivity()), getString(R.string.veritrans_response));
+        // webView.addJavascriptInterface(new WebAppInterface(getActivity()), "Android");
     }
 
     public void webviewBackPressed() {
@@ -82,7 +83,13 @@ public class WebviewFragment extends Fragment {
         }
     }
 
-    private class VeritransWebViewClient extends WebViewClient {
+    private static class VeritransWebViewClient extends WebViewClient {
+        private FragmentActivity activity;
+
+        public VeritransWebViewClient(FragmentActivity activity) {
+            this.activity = activity;
+        }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
@@ -93,52 +100,58 @@ public class WebviewFragment extends Fragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             SdkUtil.hideProgressDialog();
-            if (url.contains(BuildConfig.CALLBACK_STRING)) {
-                Intent returnIntent = new Intent();
-                getActivity().setResult(getActivity().RESULT_OK, returnIntent);
-                getActivity().finish();
-            } /*else if (url.contains(Constants.CALLBACK_URL)) {
-                Intent returnIntent = new Intent();
-                getActivity().setResult(getActivity().RESULT_OK, returnIntent);
-                getActivity().finish();
-            }*/
+            if (this.activity != null) {
+                if (url != null && url.contains(BuildConfig.CALLBACK_STRING)) {
+                    Intent returnIntent = new Intent();
+                    activity.setResult(activity.RESULT_OK, returnIntent);
+                    activity.finish();
+                }
+            }
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             Logger.i("Url:" + url);
             super.onPageStarted(view, url, favicon);
-            SdkUtil.showProgressDialog(getActivity(), false);
+            if (activity != null) {
+                SdkUtil.showProgressDialog(activity, false);
+            }
         }
     }
 
 
+    public static class JsInterface {
+        private FragmentActivity activity;
 
-    public class JsInterface {
-
+        public JsInterface(FragmentActivity activity) {
+            this.activity = activity;
+        }
 
         /**
          * code is written on merchant server (redirect url)
          * doctype html
-         html
-         head
-         title= title
-         script(type='text/javascript').
-         function paymentStatus(data) {
-         Android.paymentResponse(data);
-         }
-
-         body(onload="paymentStatus('" + paymentStatus + "')")
-         h1 Success.
-         * @param data  JS data
+         * html
+         * head
+         * title= title
+         * script(type='text/javascript').
+         * function paymentStatus(data) {
+         * Android.paymentResponse(data);
+         * }
+         * <p>
+         * body(onload="paymentStatus('" + paymentStatus + "')")
+         * h1 Success.
+         *
+         * @param data JS data
          */
         @JavascriptInterface
         public void paymentResponse(String data) {
-            Logger.i("paymentStatus:"+data);
-            Intent intent = new Intent();
-            intent.putExtra(getString(R.string.payment_response), data);
-            getActivity().setResult(getActivity().RESULT_OK, intent);
-            getActivity().finish();
+            Logger.i("paymentStatus:" + data);
+            if(activity != null){
+                Intent intent = new Intent();
+                intent.putExtra(activity.getString(R.string.payment_response), data);
+                activity.setResult(activity.RESULT_OK, intent);
+                activity.finish();
+            }
         }
 
     }
