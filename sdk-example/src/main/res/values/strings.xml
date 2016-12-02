@@ -13,6 +13,9 @@
     <string name="btn_start_klik_bca">KlikBCA</string>
     <string name="btn_start_bank_transfer">Bank Transfer</string>
     <string name="bca_payment">BCA</string>
+    <string name="mandiri_payment">Mandiri</string>
+    <string name="btn_start_mandiri_clickpay">Mandiri Clickpay</string>
+    <string name="btn_start_mandiri_ecash">Mandiri E-Cash</string>
     <string name="btn_general">General</string>
     <string name="btn_permata">Permata</string>
     <string name="btn_mandiri">Mandiri</string>
