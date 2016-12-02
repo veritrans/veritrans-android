@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn;
-    private Button coreCardRegistration, uiCardRegistration;
+    private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn;
     private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri;
     private Toolbar toolbar;
 
@@ -294,6 +294,24 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
                 MidtransSDK.getInstance().startOtherBankTransferUIFlow(MainActivity.this);
+            }
+        });
+
+        klikBCABtn = (Button) findViewById(R.id.show_klik_bca_payment);
+        klikBCABtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startKlikBCAUIFlow(MainActivity.this);
+            }
+        });
+
+        BCAKlikpayBtn = (Button) findViewById(R.id.show_bca_klikpay_payment);
+        BCAKlikpayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startBCAKlikPayUIFlow(MainActivity.this);
             }
         });
     }
