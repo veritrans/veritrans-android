@@ -29,6 +29,8 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String KLIK_BCA = "klikbca";
     public static final String MANDIRI_CLICKPAY = "mandiriclickpay";
     public static final String MANDIRI_ECASH = "mandiriecash";
+    public static final String CIMB_CLICKS = "cimbclicks";
+    public static final String BRI_EPAY = "briepay";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,10 @@ public class UserDetailsActivity extends BaseActivity {
                         paymentOptionIntent.putExtra(MANDIRI_CLICKPAY, true);
                     } else if (getIntent().getBooleanExtra(MANDIRI_ECASH, false)) {
                         paymentOptionIntent.putExtra(MANDIRI_ECASH, true);
+                    } else if (getIntent().getBooleanExtra(CIMB_CLICKS, false)) {
+                        paymentOptionIntent.putExtra(CIMB_CLICKS, true);
+                    } else if (getIntent().getBooleanExtra(BRI_EPAY, false)) {
+                        paymentOptionIntent.putExtra(BRI_EPAY, true);
                     }
                     startActivity(paymentOptionIntent);
                     finish();

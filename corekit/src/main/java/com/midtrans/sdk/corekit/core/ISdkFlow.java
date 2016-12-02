@@ -30,4 +30,8 @@ public interface ISdkFlow {
     void runMandiriClickpay(Context context);
 
     void runMandiriECash(Context context);
+
+    void runCIMBClicks(Context context);
+
+    void runBRIEpay(Context context);
 }
