@@ -331,7 +331,7 @@
     <string name="telkomsel_cash">Telkomsel Cash</string>
     <string name="xl_tunai">XL Tunai</string>
     <string name="mandiri_e_cash">Mandiri e-Cash</string>
-    <string name="klik_bca">Klik BCA</string>
+    <string name="klik_bca">KlikBCA</string>
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Offers</string>
@@ -475,7 +475,7 @@
 
     <!--TAB TITLE-->
     <string name="tab_bca_atm">ATM BCA</string>
-    <string name="tab_bca_klik">Klik BCA</string>
+    <string name="tab_bca_klik">KlikBCA</string>
     <string name="tab_bca_mobile">m-BCA</string>
     <string name="tab_mandiri_atm">ATM Mandiri</string>
     <string name="tab_mandiri_internet">Internet Banking</string>
