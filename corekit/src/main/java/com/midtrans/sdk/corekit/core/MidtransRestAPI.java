@@ -3,7 +3,6 @@ package com.midtrans.sdk.corekit.core;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionCancelResponse;
-import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -45,7 +44,9 @@ public interface MidtransRestAPI {
             @Query("secure") boolean secure,
             @Query("gross_amount") double grossAmount,
             @Query("bank") String bank,
-            @Query("client_key") String clientKey, Callback<TokenDetailsResponse> callback);
+            @Query("client_key") String clientKey,
+            @Query("channel") String channel,
+            Callback<TokenDetailsResponse> callback);
 
     @GET("/token/")
     void get3DSToken(@Query("card_number") String cardNumber,
@@ -57,6 +58,7 @@ public interface MidtransRestAPI {
                      @Query("secure") boolean secure,
                      @Query("two_click") boolean twoClick,
                      @Query("gross_amount") double grossAmount,
+                     @Query("channel") String channel,
                      Callback<TokenDetailsResponse> callback
     );
 
@@ -67,6 +69,7 @@ public interface MidtransRestAPI {
             @Query("card_exp_month") String cardExpiryMonth,
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey,
+            @Query("channel") String channel,
             Callback<TokenDetailsResponse> callback
     );
 
@@ -96,6 +99,7 @@ public interface MidtransRestAPI {
             @Query("client_key") String clientKey,
             @Query("installment") boolean instalment,
             @Query("installment_term") String instalmentTerm,
+            @Query("channel") String channel,
             Callback<TokenDetailsResponse> callback
     );
 
