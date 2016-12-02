@@ -1084,7 +1084,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
     public void getToken(@NonNull CardTokenRequest cardTokenRequest, @NonNull final CardTokenCallback callback) {
         final long start = System.currentTimeMillis();
         if (cardTokenRequest.isTwoClick()) {
-            if (cardTokenRequest.isInstalment()) {
+            if (cardTokenRequest.isInstallment()) {
                 midtransPaymentAPI.getTokenInstalmentOfferTwoClick(
                         cardTokenRequest.getCardCVV(),
                         cardTokenRequest.getSavedTokenId(),
@@ -1093,7 +1093,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.getGrossAmount(),
                         cardTokenRequest.getBank(),
                         cardTokenRequest.getClientKey(),
-                        cardTokenRequest.isInstalment(),
+                        cardTokenRequest.isInstallment(),
                         cardTokenRequest.getFormattedInstalmentTerm(), new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1127,7 +1127,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
             }
 
         } else {
-            if (cardTokenRequest.isInstalment()) {
+            if (cardTokenRequest.isInstallment()) {
                 midtransPaymentAPI.get3DSTokenInstalmentOffers(cardTokenRequest.getCardNumber(),
                         cardTokenRequest.getCardCVV(),
                         cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
@@ -1137,7 +1137,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.isSecure(),
                         cardTokenRequest.isTwoClick(),
                         cardTokenRequest.getGrossAmount(),
-                        cardTokenRequest.isInstalment(),
+                        cardTokenRequest.isInstallment(),
                         cardTokenRequest.getFormattedInstalmentTerm(), new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {

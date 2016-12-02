@@ -581,7 +581,11 @@
     <string name="message_cannot_proccessed">Transaction cannot be proccessed.</string>
     <string name="installment_term">instalment term</string>
     <string name="bank_bins">bank_bins</string>
-    <string name="formatted_installment_month">%1$s months installment</string>
+    <string name="formatted_installment_month">%1$s Months installment</string>
     <string name="no_installment">No installment</string>
+    <string name="bank_installment_offline">offline</string>
+    <string name="status_installment_bank">Installment Bank</string>
+    <string name="status_installment_term">Installment Term</string>
+    <string name="installment_months">%1$s Months</string>
 
 </resources>

@@ -263,9 +263,11 @@ public class CardDetailFragment extends Fragment {
                 midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
 
                 CardTokenRequest request = new CardTokenRequest();
+                request.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
+                request.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
                 request.setSavedTokenId(cardDetail.getSavedTokenId());
                 if (activity instanceof CreditDebitCardFlowActivity) {
-                    ((CreditDebitCardFlowActivity) getActivity()).getToken(request);
+                    ((CreditDebitCardFlowActivity) getActivity()).normalPayment(request);
                 } else if (activity instanceof OffersActivity) {
                     ((OffersActivity) getActivity()).getToken(request);
                 }
