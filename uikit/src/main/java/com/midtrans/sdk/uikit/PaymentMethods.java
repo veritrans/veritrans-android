@@ -63,7 +63,7 @@ public class PaymentMethods {
     }
 
     public static PaymentMethodsModel getMethodBCAKlikpay(Context context, int priority) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_bca_klikpay), R.drawable.ic_bca, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_bca_klikpay), R.drawable.ic_klikpay, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
     }
 
     public static PaymentMethodsModel getMethodKlikBCA(Context context, int priority) {
