@@ -332,13 +332,15 @@ public class PaymentMethodsActivity extends BaseActivity implements AppBarLayout
                     VeritransBusProvider.getInstance().post(new TransactionFinishedEvent());
                 }
             } else if (resultCode == RESULT_CANCELED) {
-                TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
+                if(data != null){
+                    TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
 
-                Logger.d(TAG, "sending result transaction canceled " + requestCode);
-                if (response != null) {
-                    VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(response));
-                } else {
-                    VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(true));
+                    Logger.d(TAG, "sending result transaction canceled " + requestCode);
+                    if (response != null) {
+                        VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(response));
+                    } else {
+                        VeritransBusProvider.getInstance().post(new TransactionFinishedEvent(true));
+                    }
                 }
             }
             finish();
