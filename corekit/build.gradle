@@ -69,8 +69,8 @@ android {
 
         staging {
             DEFAULT_PUBLISH = "stagingRelease"
-            buildConfigField "String", "BASE_URL", "\"https://api.staging.midtrans.com/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.staging.midtrans.com/snap\""
+            buildConfigField "String", "BASE_URL", "\"https://api.stg.midtrans.com/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.stg.midtrans.com/snap\""
         }
 
         production {
