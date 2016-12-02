@@ -271,13 +271,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/title_show_credit_card_example" />
-
-            <TextView
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:text="@string/title_show_example" />
 
             <LinearLayout
@@ -304,6 +297,13 @@
                     android:text="@string/btn_show_ui_flow"
                     android:textColor="@color/white" />
             </LinearLayout>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/title_show_credit_card_example" />
 
             <Button
                 android:id="@+id/show_credit_card_payment"

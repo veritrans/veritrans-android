@@ -11,7 +11,7 @@
     <string name="btn_start_credit_card">Start Credit Card Payment</string>
     <string name="btn_start_bca_klikpay">BCA KlikPay</string>
     <string name="btn_start_klik_bca">KlikBCA</string>
-    <string name="btn_start_bank_transfer">Start Bank Transfer Payment</string>
+    <string name="btn_start_bank_transfer">Bank Transfer</string>
     <string name="bca_payment">BCA</string>
     <string name="btn_general">General</string>
     <string name="btn_permata">Permata</string>
