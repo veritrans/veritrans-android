@@ -94,6 +94,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:text="@string/bank_mandiri" />
+
+                <RadioButton
+                    android:id="@+id/radio_bca"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/bank_bca" />
             </RadioGroup>
 
             <View

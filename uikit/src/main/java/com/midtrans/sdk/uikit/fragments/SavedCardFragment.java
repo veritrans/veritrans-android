@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,8 +162,6 @@ public class SavedCardFragment extends Fragment {
                 circlePageIndicator.setViewPager(savedCardPager);
                 ((CreditDebitCardFlowActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyCardsTextView);
                 showHideNoCardMessage();
-                Log.d("inst", "called");
-
                 setupCardInstallment();
             }
 
@@ -180,6 +177,8 @@ public class SavedCardFragment extends Fragment {
             setInstallmentTerm();
             showInstallmentLayout(true);
             setPaymentInstallment();
+        } else {
+            showInstallmentLayout(false);
         }
     }
 
@@ -205,6 +204,7 @@ public class SavedCardFragment extends Fragment {
             if (layoutInstallment.getVisibility() == View.VISIBLE) {
                 layoutInstallment.setVisibility(View.GONE);
             }
+            ((CreditDebitCardFlowActivity) getActivity()).setInstallment(0);
         }
     }
 

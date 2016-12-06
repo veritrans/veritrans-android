@@ -189,8 +189,19 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     public void normalPayment(CardTokenRequest cardTokenRequest) {
         this.isNewCard = true;
         initInstallmentProperties(cardTokenRequest);
+        initAcquiringBank(cardTokenRequest);
         this.cardTokenRequest = cardTokenRequest;
         getCardToken(cardTokenRequest);
+    }
+
+    private void initAcquiringBank(CardTokenRequest cardTokenRequest) {
+        // Set acquiring bank and channel if available
+        if (midtransSDK.getTransactionRequest().getCreditCard() != null) {
+            String bank = midtransSDK.getTransactionRequest().getCreditCard().getBank();
+            cardTokenRequest.setBank(bank);
+            String channel = midtransSDK.getTransactionRequest().getCreditCard().getChannel();
+            cardTokenRequest.setChannel(channel);
+        }
     }
 
     public void getCardToken(CardTokenRequest cardTokenRequest) {
@@ -556,12 +567,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         cardTokenRequest.setBank(midtransSDK.getTransactionRequest().getCreditCard().getBank());
         cardTokenRequest.setClientKey(midtransSDK.getClientKey());
         initInstallmentProperties(cardTokenRequest);
+        initAcquiringBank(cardTokenRequest);
         this.cardTokenRequest = cardTokenRequest;
         getCardToken(cardTokenRequest);
     }
 
     private void initInstallmentProperties(CardTokenRequest cardTokenRequest) {
-        if(installmentTermSelected > 0){
+        Log.d("installment:selected", "term:" + installmentTermSelected);
+        if (installmentTermSelected > 0) {
             cardTokenRequest.setInstallment(true);
             cardTokenRequest.setInstalmentTerm(installmentTermSelected);
         }

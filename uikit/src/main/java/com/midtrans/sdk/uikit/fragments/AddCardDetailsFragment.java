@@ -233,13 +233,7 @@ public class AddCardDetailsFragment extends Fragment {
                     cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
                     cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
                     cardTokenRequest.setCardType(cardType);
-                    // Set acquiring bank and channel if available
-                    if (midtransSDK.getTransactionRequest().getCreditCard() != null) {
-                        String bank = midtransSDK.getTransactionRequest().getCreditCard().getBank();
-                        cardTokenRequest.setBank(bank);
-                        String channel = midtransSDK.getTransactionRequest().getCreditCard().getChannel();
-                        cardTokenRequest.setChannel(channel);
-                    }
+
 
                     //make payment
                     SdkUIFlowUtil.showProgressDialog(getActivity(), false);
@@ -398,6 +392,8 @@ public class AddCardDetailsFragment extends Fragment {
                 installmentTotalPositions = installmentTerms.size() - 1;
                 setInstallmentTerm();
                 showInstallmentLayout(true);
+            } else {
+                showInstallmentLayout(false);
             }
         }
     }
@@ -424,6 +420,7 @@ public class AddCardDetailsFragment extends Fragment {
             if (layoutInstallment.getVisibility() == View.VISIBLE) {
                 layoutInstallment.setVisibility(View.GONE);
             }
+            ((CreditDebitCardFlowActivity) getActivity()).setInstallment(0);
         }
     }
 
