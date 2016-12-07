@@ -25,6 +25,7 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BankDetail;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
 import com.midtrans.sdk.corekit.models.UserDetail;
@@ -382,6 +383,10 @@ public class AddCardDetailsFragment extends Fragment {
         if (TextUtils.isEmpty(cardNumber)) {
             showInstallmentLayout(false);
         } else if (cardNumber.length() < 7) {
+            showInstallmentLayout(false);
+        } else if (midtransSDK.getCreditCard() != null
+                && midtransSDK.getCreditCard().getBank() != null
+                && midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)) {
             showInstallmentLayout(false);
         } else {
             String cleanCardNumber = etCardNo.getText().toString().trim().replace(" ", "").substring(0, 6);
