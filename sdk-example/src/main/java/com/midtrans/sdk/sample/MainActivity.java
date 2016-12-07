@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn;
-    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA;
     private Toolbar toolbar;
 
     @Override
@@ -118,7 +118,8 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         BillInfoModel billInfoModel = new BillInfoModel("demo_label", "demo_value");
         transactionRequestNew.setBillInfoModel(billInfoModel);
 
-        // Create transaction request
+        // Create creditcard options for payment
+        // noted : channel migs is needed if bank type is BCA, BRI or MyBank
         CreditCard creditCard = new CreditCard();
         if (bankMandiri.isChecked()) {
             // Set bank to Mandiri
@@ -126,6 +127,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         } else if (bankBni.isChecked()) {
             // Set bank to BNI
             creditCard.setBank(BankType.BNI);
+        } else if (bankBCA.isChecked()) {
+            //Set bank to BCA
+            creditCard.setBank(BankType.BCA);
+            // credit card payment using bank BCA need migs channel
+            creditCard.setChannel(CreditCard.MIGS);
         }
 
         String cardClickType;
@@ -170,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         bankBni = (RadioButton) findViewById(R.id.radio_bni);
         bankMandiri = (RadioButton) findViewById(R.id.radio_mandiri);
+        bankBCA = (RadioButton) findViewById(R.id.radio_bca);
 
         widgetBtn = (Button) findViewById(R.id.show_card_widget);
         widgetBtn.setOnClickListener(new View.OnClickListener() {

@@ -54,6 +54,7 @@
     <string name="bank_options">Bank Options</string>
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
+    <string name="bank_bca">BCA</string>
     <string name="card_click_normal">Normal</string>
     <string name="card_click_two_click">Two Click</string>
     <string name="card_click_one_click">One Click</string>
