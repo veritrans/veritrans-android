@@ -85,21 +85,21 @@
                     android:id="@+id/radio_bni"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.3"
                     android:text="@string/bank_bni" />
 
                 <RadioButton
                     android:id="@+id/radio_mandiri"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.3"
                     android:text="@string/bank_mandiri" />
 
                 <RadioButton
                     android:id="@+id/radio_bca"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.3"
                     android:text="@string/bank_bca" />
             </RadioGroup>
 
