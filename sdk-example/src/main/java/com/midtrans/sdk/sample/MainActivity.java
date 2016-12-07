@@ -22,9 +22,11 @@ import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.sample.core.CoreFlowActivity;
 import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn;
-    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, secure, notSecure;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour;
     private Toolbar toolbar;
 
     @Override
@@ -170,6 +172,17 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             }
         }
 
+        ExpiryModel expiryModel = new ExpiryModel();
+        expiryModel.setStartTime(Utils.getFormattedTime(System.currentTimeMillis()));
+        expiryModel.setDuration(1);
+        if (expiryOneMinute.isChecked()) {
+            expiryModel.setUnit(ExpiryModel.UNIT_MINUTE);
+            transactionRequestNew.setExpiry(expiryModel);
+        } else if (expiryOneHour.isChecked()) {
+            expiryModel.setUnit(ExpiryModel.UNIT_HOUR);
+            transactionRequestNew.setExpiry(expiryModel);
+        }
+
         Map<String, String> customMap = new HashMap<>();
         customMap.put("flight_id", "JT-214");
         customMap.put("airplane_type", "Boeing");
@@ -189,6 +202,10 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         dialog.setIndeterminate(true);
         dialog.setMessage("Loading");
 
+        expiryNone = (RadioButton) findViewById(R.id.radio_none);
+        expiryOneMinute = (RadioButton) findViewById(R.id.radio_1_minute);
+        expiryOneHour = (RadioButton) findViewById(R.id.radio_1_hour);
+
         bankBni = (RadioButton) findViewById(R.id.radio_bni);
         bankMandiri = (RadioButton) findViewById(R.id.radio_mandiri);
         bankBCA = (RadioButton) findViewById(R.id.radio_bca);
@@ -200,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                 secure.setChecked(true);
             }
         });
+
         notSecure = (RadioButton) findViewById(R.id.radio_not_secure);
         secure = (RadioButton) findViewById(R.id.radio_secure);
 
