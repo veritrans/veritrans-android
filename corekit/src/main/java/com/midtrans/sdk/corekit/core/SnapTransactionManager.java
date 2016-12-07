@@ -1142,6 +1142,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.isTwoClick(),
                         cardTokenRequest.getGrossAmount(),
                         cardTokenRequest.isInstallment(),
+                        cardTokenRequest.getChannel(),
                         cardTokenRequest.getFormattedInstalmentTerm(), new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {

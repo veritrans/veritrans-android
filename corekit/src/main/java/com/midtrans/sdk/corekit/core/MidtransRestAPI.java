@@ -129,6 +129,7 @@ public interface MidtransRestAPI {
                                      @Query("two_click") boolean twoClick,
                                      @Query("gross_amount") double grossAmount,
                                      @Query("installment") boolean instalment,
+                                     @Query("channel") String channel,
                                      @Query("installment_term") String
                                              instalmentTerm,
                                      Callback<TokenDetailsResponse> callback
