@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn;
-    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank;
     private Toolbar toolbar;
 
     @Override
@@ -132,6 +132,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             creditCard.setBank(BankType.BCA);
             // credit card payment using bank BCA need migs channel
             creditCard.setChannel(CreditCard.MIGS);
+        } else if (bankMaybank.isChecked()) {
+            //Set bank to Maybank
+            creditCard.setBank(BankType.MAYBANK);
+            // credit card payment using bank Maybank need migs channel
+            creditCard.setChannel(CreditCard.MIGS);
         }
 
         String cardClickType;
@@ -177,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         bankBni = (RadioButton) findViewById(R.id.radio_bni);
         bankMandiri = (RadioButton) findViewById(R.id.radio_mandiri);
         bankBCA = (RadioButton) findViewById(R.id.radio_bca);
+        bankMaybank = (RadioButton) findViewById(R.id.radio_maybank);
 
         widgetBtn = (Button) findViewById(R.id.show_card_widget);
         widgetBtn.setOnClickListener(new View.OnClickListener() {
