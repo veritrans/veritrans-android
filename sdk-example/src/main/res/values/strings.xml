@@ -56,6 +56,10 @@
     <string name="bank_mandiri">Mandiri</string>
     <string name="bank_bca">BCA</string>
     <string name="bank_maybank">Maybank</string>
+    <string name="expiry_options">Custom Expiry Options</string>
+    <string name="expiry_none">None</string>
+    <string name="expiry_one_minute">1 Minute</string>
+    <string name="expiry_one_hour">1 Hour</string>
     <string name="card_secure_options">3D Secure Options</string>
     <string name="card_secure">Secure</string>
     <string name="card_not_secure">Not Secure</string>

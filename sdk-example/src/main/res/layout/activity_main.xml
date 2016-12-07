@@ -140,6 +140,42 @@
                     android:text="@string/bank_maybank" />
             </RadioGroup>
 
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:text="@string/expiry_options"
+                android:visibility="visible" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_none"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:checked="true"
+                    android:text="@string/expiry_none" />
+
+                <RadioButton
+                    android:id="@+id/radio_1_minute"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:text="@string/expiry_one_minute" />
+
+                <RadioButton
+                    android:id="@+id/radio_1_hour"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:text="@string/expiry_one_hour" />
+            </RadioGroup>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
