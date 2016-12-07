@@ -188,6 +188,8 @@ public class SnapTransactionManagerTest {
     @Captor
     private ArgumentCaptor<Boolean> instalmentCaptor;
     @Captor
+    private ArgumentCaptor<String> channelCator;
+    @Captor
     private ArgumentCaptor<String> channelCaptor;
 
     //card registration properties
@@ -1941,6 +1943,7 @@ public class SnapTransactionManagerTest {
                 scureCaptor.capture(), twoClickCaptor.capture(),
                 grossAmountCaptor.capture(),
                 instalmentCaptor.capture(),
+                channelCaptor.capture(),
                 instalmentTermCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
@@ -1963,6 +1966,7 @@ public class SnapTransactionManagerTest {
                 scureCaptor.capture(), twoClickCaptor.capture(),
                 grossAmountCaptor.capture(),
                 instalmentCaptor.capture(),
+                channelCaptor.capture(),
                 instalmentTermCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
@@ -1995,6 +1999,7 @@ public class SnapTransactionManagerTest {
                 scureCaptor.capture(), twoClickCaptor.capture(),
                 grossAmountCaptor.capture(),
                 instalmentCaptor.capture(),
+                channelCaptor.capture(),
                 instalmentTermCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
@@ -2015,6 +2020,7 @@ public class SnapTransactionManagerTest {
                 scureCaptor.capture(), twoClickCaptor.capture(),
                 grossAmountCaptor.capture(),
                 instalmentCaptor.capture(),
+                channelCaptor.capture(),
                 instalmentTermCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
