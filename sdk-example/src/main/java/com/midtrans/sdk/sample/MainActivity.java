@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn;
-    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, secure, notSecure;
     private Toolbar toolbar;
 
     @Override
@@ -143,6 +144,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         if (normal.isChecked()) {
             cardClickType = getString(R.string.card_click_type_none);
+            if (secure.isChecked()) {
+                creditCard.setSecure(true);
+            } else {
+                creditCard.setSecure(false);
+            }
             transactionRequestNew.setCreditCard(creditCard);
         } else if (twoClick.isChecked()) {
             cardClickType = getString(R.string.card_click_type_two_click);
@@ -157,7 +163,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         if (sampleSDKType == CORE_FLOW) {
             transactionRequestNew.setCardPaymentInfo(cardClickType, false);
         } else {
-            transactionRequestNew.setCardPaymentInfo(cardClickType, true);
+            if (secure.isChecked()) {
+                transactionRequestNew.setCardPaymentInfo(cardClickType, true);
+            } else {
+                transactionRequestNew.setCardPaymentInfo(cardClickType, false);
+            }
         }
 
         Map<String, String> customMap = new HashMap<>();
@@ -183,6 +193,15 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         bankMandiri = (RadioButton) findViewById(R.id.radio_mandiri);
         bankBCA = (RadioButton) findViewById(R.id.radio_bca);
         bankMaybank = (RadioButton) findViewById(R.id.radio_maybank);
+
+        bankMaybank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                secure.setChecked(true);
+            }
+        });
+        notSecure = (RadioButton) findViewById(R.id.radio_not_secure);
+        secure = (RadioButton) findViewById(R.id.radio_secure);
 
         widgetBtn = (Button) findViewById(R.id.show_card_widget);
         widgetBtn.setOnClickListener(new View.OnClickListener() {
@@ -210,6 +229,24 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         normal = (RadioButton) findViewById(R.id.radio_card_normal);
         twoClick = (RadioButton) findViewById(R.id.radio_card_two_click);
         oneClick = (RadioButton) findViewById(R.id.radio_card_one_click);
+
+        oneClick.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (compoundButton.isChecked()) {
+                    secure.setChecked(true);
+                }
+            }
+        });
+
+        twoClick.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (compoundButton.isChecked()) {
+                    notSecure.setChecked(true);
+                }
+            }
+        });
 
         //
         coreBtn = (Button) findViewById(R.id.show_core_example);
