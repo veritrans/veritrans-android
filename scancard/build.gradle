@@ -3,7 +3,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 group = 'com.midtrans'
-version = '1.1.5'
+version = '1.1.6'
 
 android {
     def DEFAULT_PUBLISH
@@ -119,7 +119,7 @@ publishing {
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/scancard-staging-release.aar")
             groupId group
-            artifactId project.name
+            artifactId 'scancard'
             version version + "-STAGING"
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
@@ -147,7 +147,7 @@ publishing {
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/scancard-development-release.aar")
             groupId group
-            artifactId project.name
+            artifactId 'scancard'
             version version + "-SANDBOX"
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
