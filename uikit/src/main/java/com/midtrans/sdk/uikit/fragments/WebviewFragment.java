@@ -128,11 +128,6 @@ public class WebviewFragment extends Fragment {
         }
 
         @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            handler.proceed();
-        }
-
-        @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             Logger.i("Url:" + url);
             super.onPageStarted(view, url, favicon);

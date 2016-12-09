@@ -35,7 +35,7 @@ android {
         }
         staging {
             applicationId "com.midtrans.sdk.sample.staging"
-            buildConfigField "String", "BASE_URL", MERCHANT_CLIENT_KEY_STAGING
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_STAGING
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_STAGING
         }
         production {
