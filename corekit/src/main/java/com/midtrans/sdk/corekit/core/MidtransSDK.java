@@ -625,6 +625,78 @@ public class MidtransSDK {
     }
 
     /**
+     * This will start actual execution of Telkomsel Cash UI flow.
+     *
+     * @param context activity context.
+     */
+    public void startTelkomselCashUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runTelkomselCash(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of Indosat Dompetku UI flow.
+     *
+     * @param context activity context.
+     */
+    public void startIndosatDompetkuUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runIndosatDompetku(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of XL Tunai UI flow.
+     *
+     * @param context activity context.
+     */
+    public void startXlTunaiUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runXlTunai(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
      * This will start actual execution of transaction. if you have enabled an ui then it will start
      * activity according to it.
      *

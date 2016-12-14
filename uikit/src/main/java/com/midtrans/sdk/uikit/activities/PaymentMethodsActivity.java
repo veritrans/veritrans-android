@@ -82,6 +82,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isMandiriECash = false;
     private boolean isCIMBClicks = false;
     private boolean isBRIEpay = false;
+    private boolean isTelkomselCash = false;
+    private boolean isIndosatDompetku = false;
+    private boolean isXlTunai = false;
 
     private MidtransSDK midtransSDK = null;
 
@@ -112,6 +115,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         isMandiriECash = getIntent().getBooleanExtra(UserDetailsActivity.MANDIRI_ECASH, false);
         isCIMBClicks = getIntent().getBooleanExtra(UserDetailsActivity.CIMB_CLICKS, false);
         isBRIEpay = getIntent().getBooleanExtra(UserDetailsActivity.BRI_EPAY, false);
+        isTelkomselCash = getIntent().getBooleanExtra(UserDetailsActivity.TELKOMSEL_CASH, false);
+        isIndosatDompetku = getIntent().getBooleanExtra(UserDetailsActivity.INDOSAT_DOMPETKU, false);
+        isXlTunai = getIntent().getBooleanExtra(UserDetailsActivity.XL_TUNAI, false);
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
         UserDetail userDetail = null;
@@ -241,7 +247,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
         if (isCreditCardOnly || isBankTransferOnly || isKlikBCA || isBCAKlikpay
-                || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay) {
+                || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
+                || isTelkomselCash || isIndosatDompetku || isXlTunai) {
             TextView titleText = (TextView) findViewById(R.id.header_view_title);
             TextView loadingText = (TextView) findViewById(R.id.loading_text);
             titleText.setText(getString(R.string.txt_checkout));
@@ -371,6 +378,21 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BRI_EPAY, null);
             Intent startMandiriClickpay = new Intent(this, EpayBriActivity.class);
             startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (isTelkomselCash) {
+            // track payment select bank transfer
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_TELKOMSEL_ECASH, null);
+            Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
+            startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (isIndosatDompetku) {
+            // track payment select bank transfer
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOSAT_DOMPETKU, null);
+            Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
+            startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (isXlTunai) {
+            // track payment select bank transfer
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_XL_TUNAI, null);
+            Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
+            startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else {
             if (data.isEmpty()) {
                 showErrorAlertDialog(getString(R.string.message_payment_method_empty));
@@ -430,38 +452,32 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_offers))) {
             Intent startOffersActivity = new Intent(this, OffersActivity.class);
             startActivityForResult(startOffersActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bca_klikpay))) {
             // track payment select bank transfer
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BCA_KLIKPAY, null);
             Intent startBCAKlikPayActivity = new Intent(this, BCAKlikPayActivity.class);
             startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_klik_bca))) {
             // track payment select bank transfer
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_KLIK_BCA, null);
             Intent startKlikBcaActivity = new Intent(this, KlikBCAActivity.class);
             startKlikBcaActivity.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
             startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_telkomsel_cash))) {
             // track payment select bank transfer
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_TELKOMSEL_ECASH, null);
             Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
             startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_xl_tunai))) {
             // track payment select bank transfer
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_XL_TUNAI, null);
             Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
             startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_kioson))) {
             // track payment select bank transfer
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_KIOSON, null);
             Intent kiosanActvity = new Intent(this, KiosonActivity.class);
             startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-
         } else {
             Toast.makeText(this.getApplicationContext(),
                     "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
@@ -538,7 +554,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else if (resultCode == RESULT_CANCELED) {
                 if (data == null) {
                     if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
-                            || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay) {
+                            || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
+                            || isTelkomselCash || isIndosatDompetku || isXlTunai) {
                         // track cancel transaction
                         midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 
@@ -559,7 +576,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         finish();
                     } else {
                         if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
-                                || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay) {
+                                || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
+                                || isTelkomselCash || isIndosatDompetku || isXlTunai) {
                             // track cancel transaction
                             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 

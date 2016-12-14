@@ -34,4 +34,10 @@ public interface ISdkFlow {
     void runCIMBClicks(Context context);
 
     void runBRIEpay(Context context);
+
+    void runTelkomselCash(Context context);
+
+    void runIndosatDompetku(Context context);
+
+    void runXlTunai(Context context);
 }

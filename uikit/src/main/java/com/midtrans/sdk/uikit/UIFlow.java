@@ -152,4 +152,34 @@ public class UIFlow implements ISdkFlow {
             context.startActivity(intent);
         }
     }
+
+    @Override
+    public void runTelkomselCash(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.TELKOMSEL_CASH, true);
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void runIndosatDompetku(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.INDOSAT_DOMPETKU, true);
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void runXlTunai(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.XL_TUNAI, true);
+            context.startActivity(intent);
+        }
+    }
 }

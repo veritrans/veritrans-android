@@ -31,6 +31,9 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String MANDIRI_ECASH = "mandiriecash";
     public static final String CIMB_CLICKS = "cimbclicks";
     public static final String BRI_EPAY = "briepay";
+    public static final String TELKOMSEL_CASH = "tcash";
+    public static final String INDOSAT_DOMPETKU = "indosatdompetku";
+    public static final String XL_TUNAI = "xltunai";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,12 @@ public class UserDetailsActivity extends BaseActivity {
                         paymentOptionIntent.putExtra(CIMB_CLICKS, true);
                     } else if (getIntent().getBooleanExtra(BRI_EPAY, false)) {
                         paymentOptionIntent.putExtra(BRI_EPAY, true);
+                    } else if (getIntent().getBooleanExtra(TELKOMSEL_CASH, false)) {
+                        paymentOptionIntent.putExtra(TELKOMSEL_CASH, true);
+                    } else if (getIntent().getBooleanExtra(INDOSAT_DOMPETKU, false)) {
+                        paymentOptionIntent.putExtra(INDOSAT_DOMPETKU, true);
+                    } else if (getIntent().getBooleanExtra(XL_TUNAI, false)) {
+                        paymentOptionIntent.putExtra(XL_TUNAI, true);
                     }
                     startActivity(paymentOptionIntent);
                     finish();

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn;
-    private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn;
+    private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn, tcashBtn, indosatBtn, xlTunaiBtn;
     private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour;
     private Toolbar toolbar;
 
@@ -416,6 +416,33 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
                 MidtransSDK.getInstance().startBRIEpayUIFlow(MainActivity.this);
+            }
+        });
+
+        tcashBtn = (Button) findViewById(R.id.show_telkomsel_cash);
+        tcashBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startTelkomselCashUIFlow(MainActivity.this);
+            }
+        });
+
+        indosatBtn = (Button) findViewById(R.id.show_indosat_dompetku);
+        indosatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startIndosatDompetkuUIFlow(MainActivity.this);
+            }
+        });
+
+        xlTunaiBtn = (Button) findViewById(R.id.show_xl_tunai);
+        xlTunaiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startXlTunaiUIFlow(MainActivity.this);
             }
         });
     }
