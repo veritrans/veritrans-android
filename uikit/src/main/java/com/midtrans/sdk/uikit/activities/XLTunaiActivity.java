@@ -99,7 +99,12 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
+                setResultCode(RESULT_OK);
+                setResultAndFinish();
+            } else {
+                onBackPressed();
+            }
         }
 
         return false;
@@ -269,8 +274,8 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
         if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
-        } else {
-            onBackPressed();
+            return;
         }
+        super.onBackPressed();
     }
 }

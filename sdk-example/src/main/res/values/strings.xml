@@ -22,6 +22,10 @@
     <string name="btn_general">General</string>
     <string name="btn_permata">Permata</string>
     <string name="btn_mandiri">Mandiri</string>
+    <string name="mobile_credit_payment">Mobile Payment</string>
+    <string name="btn_telkomsel_cash">T-Cash</string>
+    <string name="btn_indosat_dompetku">Indosat Dompetku</string>
+    <string name="btn_xl_tunai">XL Tunai</string>
     <string name="btn_bca">BCA</string>
     <string name="btn_other">Other Bank</string>
     <string name="btn_show_core">Core Flow</string>
