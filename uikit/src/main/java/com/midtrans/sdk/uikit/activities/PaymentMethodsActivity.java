@@ -85,6 +85,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isTelkomselCash = false;
     private boolean isIndosatDompetku = false;
     private boolean isXlTunai = false;
+    private boolean isIndomaret = false;
+    private boolean isKioson = false;
 
     private MidtransSDK midtransSDK = null;
 
@@ -118,6 +120,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         isTelkomselCash = getIntent().getBooleanExtra(UserDetailsActivity.TELKOMSEL_CASH, false);
         isIndosatDompetku = getIntent().getBooleanExtra(UserDetailsActivity.INDOSAT_DOMPETKU, false);
         isXlTunai = getIntent().getBooleanExtra(UserDetailsActivity.XL_TUNAI, false);
+        isIndomaret = getIntent().getBooleanExtra(UserDetailsActivity.INDOMARET, false);
+        isKioson = getIntent().getBooleanExtra(UserDetailsActivity.KIOSON, false);
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
         UserDetail userDetail = null;
@@ -248,7 +252,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
         if (isCreditCardOnly || isBankTransferOnly || isKlikBCA || isBCAKlikpay
                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
-                || isTelkomselCash || isIndosatDompetku || isXlTunai) {
+                || isTelkomselCash || isIndosatDompetku || isXlTunai
+                || isIndomaret || isKioson) {
             TextView titleText = (TextView) findViewById(R.id.header_view_title);
             TextView loadingText = (TextView) findViewById(R.id.loading_text);
             titleText.setText(getString(R.string.txt_checkout));
@@ -393,6 +398,16 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_XL_TUNAI, null);
             Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
             startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (isIndomaret) {
+            // track payment select bank transfer
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOMARET, null);
+            Intent startIndomaret = new Intent(this, IndomaretActivity.class);
+            startActivityForResult(startIndomaret, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (isKioson) {
+            // track payment select bank transfer
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_KIOSON, null);
+            Intent kiosanActvity = new Intent(this, KiosonActivity.class);
+            startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else {
             if (data.isEmpty()) {
                 showErrorAlertDialog(getString(R.string.message_payment_method_empty));
@@ -555,7 +570,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 if (data == null) {
                     if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
                             || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
-                            || isTelkomselCash || isIndosatDompetku || isXlTunai) {
+                            || isTelkomselCash || isIndosatDompetku || isXlTunai
+                            || isIndomaret || isKioson) {
                         // track cancel transaction
                         midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 
@@ -577,7 +593,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     } else {
                         if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
                                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
-                                || isTelkomselCash || isIndosatDompetku || isXlTunai) {
+                                || isTelkomselCash || isIndosatDompetku || isXlTunai
+                                || isIndomaret || isKioson) {
                             // track cancel transaction
                             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 

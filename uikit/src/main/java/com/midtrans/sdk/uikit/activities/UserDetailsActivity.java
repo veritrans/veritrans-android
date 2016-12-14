@@ -34,6 +34,8 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String TELKOMSEL_CASH = "tcash";
     public static final String INDOSAT_DOMPETKU = "indosatdompetku";
     public static final String XL_TUNAI = "xltunai";
+    public static final String INDOMARET = "indomaret";
+    public static final String KIOSON = "kioson";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,10 @@ public class UserDetailsActivity extends BaseActivity {
                         paymentOptionIntent.putExtra(INDOSAT_DOMPETKU, true);
                     } else if (getIntent().getBooleanExtra(XL_TUNAI, false)) {
                         paymentOptionIntent.putExtra(XL_TUNAI, true);
+                    } else if (getIntent().getBooleanExtra(INDOMARET, false)) {
+                        paymentOptionIntent.putExtra(INDOMARET, true);
+                    } else if (getIntent().getBooleanExtra(KIOSON, false)) {
+                        paymentOptionIntent.putExtra(KIOSON, true);
                     }
                     startActivity(paymentOptionIntent);
                     finish();

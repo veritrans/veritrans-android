@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     public static String SAMPLE_USER_ID = UUID.randomUUID().toString();
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
-    private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn;
+    private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn, indomaretBtn, kiosonBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn, tcashBtn, indosatBtn, xlTunaiBtn;
     private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour;
     private Toolbar toolbar;
@@ -443,6 +443,24 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
                 MidtransSDK.getInstance().startXlTunaiUIFlow(MainActivity.this);
+            }
+        });
+
+        indomaretBtn = (Button) findViewById(R.id.show_indomaret);
+        indomaretBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startIndomaretUIFlow(MainActivity.this);
+            }
+        });
+
+        kiosonBtn = (Button) findViewById(R.id.show_kioson);
+        kiosonBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
+                MidtransSDK.getInstance().startKiosonUIFlow(MainActivity.this);
             }
         });
     }

@@ -40,4 +40,8 @@ public interface ISdkFlow {
     void runIndosatDompetku(Context context);
 
     void runXlTunai(Context context);
+
+    void runIndomaret(Context context);
+
+    void runKioson(Context context);
 }

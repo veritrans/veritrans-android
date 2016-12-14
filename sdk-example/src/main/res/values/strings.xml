@@ -124,4 +124,7 @@
     <string name="error_sdkconfig_digitonly">Digit Only</string>
     <string name="activity_save_credit_card_add_new">New Card</string>
     <string name="cardlist_empty"> There are no saved cards</string>
+    <string name="convenience_store">Convenience Store</string>
+    <string name="indomaret_cs">Indomaret</string>
+    <string name="kioson_cs">Kioson</string>
 </resources>
