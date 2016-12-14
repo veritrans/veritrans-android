@@ -182,4 +182,24 @@ public class UIFlow implements ISdkFlow {
             context.startActivity(intent);
         }
     }
+
+    @Override
+    public void runIndomaret(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.INDOMARET, true);
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void runKioson(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.KIOSON, true);
+            context.startActivity(intent);
+        }
+    }
 }
