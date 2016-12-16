@@ -279,6 +279,9 @@ public class BankTransactionStatusFragment extends Fragment {
             case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
                 intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
                 break;
+            case Constants.BANK_TRANSFER_PERMATA:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
+                break;
             case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
                 intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
                 break;
@@ -287,6 +290,10 @@ public class BankTransactionStatusFragment extends Fragment {
                 break;
             case Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK:
                 intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
+                break;
+            case Constants.PAYMENT_METHOD_KLIKBCA:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+                intent.putExtra(BankTransferInstructionActivity.PAGE, BankTransferInstructionActivity.KLIKBCA_PAGE);
                 break;
         }
         intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, downloadUrl);

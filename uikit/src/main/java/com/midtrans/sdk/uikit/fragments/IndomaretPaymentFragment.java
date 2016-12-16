@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 
 /**
@@ -76,7 +75,7 @@ public class IndomaretPaymentFragment extends Fragment {
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
                     || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
-                mTextViewValidity.setText(VALID_UNTIL + Utils.getValidityTime(transactionResponse.getTransactionTime()));
+                mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getIndomaretExpireTime()));
             }
             if (transactionResponse.getPaymentCodeResponse() != null)
                 mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeResponse());
