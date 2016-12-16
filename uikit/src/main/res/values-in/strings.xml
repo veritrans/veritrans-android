@@ -404,7 +404,7 @@
     <string name="error_message_invalid_input_telkomsel">Transaksi Anda tidak dapat diproses. Pastikan informasi pembayaran Anda benar.</string>
     <string name="no_network_msg">Koneksi tidak tersedia! Coba lagi lain waktu.</string>
     <string name="kioson">Kioson</string>
-    <string name="kioson_valid">Konfirmasi pembayaran anda di outlet Kioson Sebelum : </string>
+    <string name="kioson_valid">Konfirmasi pembayaran anda di outlet Kioson Sebelum : %1$s </string>
     <string name="kioson_payment_instrution">Instruksi Pembayaran Kioson</string>
     <string name="message_payment_cannot_proccessed">Transaksi anda tidak dapat diproses. Pastikan info pembayaran anda benar</string>
     <string name="message_payment_failed">Pembayaran Gagal! Silakan coba lagi.</string>

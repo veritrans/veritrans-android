@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 
@@ -25,7 +24,6 @@ import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
  */
 public class MandiriBillPayFragment extends Fragment {
 
-    public static final String VALID_UNTIL = "Valid Until : ";
     private static final String DATA = "data";
     private static final String LABEL_BILL_CODE = "Bill Code Number";
     private static final String LABEL_COMPANY_CODE = "Company Code Number";
@@ -96,7 +94,7 @@ public class MandiriBillPayFragment extends Fragment {
 
             mTextViewBillpayCode.setText(mTransactionResponse.getPaymentCode());
 
-            mTextViewValidity.setText(getString(R.string.text_format_valid_until, Utils.getValidityTime(mTransactionResponse.getTransactionTime())));
+            mTextViewValidity.setText(getString(R.string.text_format_valid_until, mTransactionResponse.getMandiriBillExpiration()));
         }
 
         btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
