@@ -103,6 +103,8 @@ public class MidtransAndroidSDKTest {
     private String sampleToken = "token";
     private String sampleText = "text";
     private String sampleMerchantLogoStr = "merchantLogo";
+    private String giftCardNumber = "4811111111111114";
+    private String giftCardPassword = "123";
     private CheckoutCallback checkoutCallbackMock;
     private TransactionOptionsCallback transactionOptionCallbackMock;
     private TransactionCallback transactionCallbackMock;
@@ -595,6 +597,31 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.getBankBins(getBankBinCallbackMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         Mockito.verify(callbackCollaborator).onGetBankBinError();
+    }
+
+    /**
+     * test gci payment
+     */
+    public void snapPaymentUsingGCI() {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingGCI(token, giftCardNumber, giftCardPassword, transactionCallbackMock);
+        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+    }
+
+    @Test
+    public void snapPaymentUsingGCI_whenNetworkUnavailable() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSDKSSpy.paymentUsingGCI(token, giftCardNumber, giftCardPassword, transactionCallbackMock);
+        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
+        Mockito.verify(callbackCollaborator).onError();
+    }
+
+    @Test
+    public void snapPaymentUsingGCI_whenCallbackNull() {
+        midtransSDKSSpy.paymentUsingGCI(token, giftCardNumber, giftCardPassword, null);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
 }

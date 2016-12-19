@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
@@ -196,6 +197,10 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
 
     public void paymentUsingSnapBankTransferAllBank(String token, BankTransferPaymentRequest request) {
         snapTransactionManager.paymentUsingBankTransferAllBank(token, request, this);
+    }
+
+    public void paymentUsingGCI(String token, GCIPaymentRequest request) {
+        snapTransactionManager.paymentUsingGCI(token, request, this);
     }
 
     public void saveCards(String userId, ArrayList<SaveCardRequest> requests) {
