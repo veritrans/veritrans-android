@@ -68,6 +68,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     protected static final String PAYMENT_TYPE_TELKOMSEL_ECASH = "telkomsel_ecash";
     protected static final String PAYMENT_TYPE_XL_TUNAI = "xl_tunai";
     protected static final String PAYMENT_TYPE_KIOSON = "kiosan";
+    protected static final String PAYMENT_TYPE_GCI = "gci";
 
     private static final String KEY_SELECT_PAYMENT = "Payment Select";
     private static final String KEY_CANCEL_TRANSACTION_EVENT = "Cancel Transaction";
@@ -493,6 +494,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_KIOSON, null);
             Intent kiosanActvity = new Intent(this, KiosonActivity.class);
             startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_gci))) {
+            // track payment select Gift Card Indonesia
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_GCI, null);
+            Intent gciActivity = new Intent(this, GCIActivity.class);
+            startActivityForResult(gciActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else {
             Toast.makeText(this.getApplicationContext(),
                     "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();

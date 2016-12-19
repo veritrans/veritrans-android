@@ -422,4 +422,9 @@
     <string name="status_installment_bank">Bank Cicilan</string>
     <string name="status_installment_term">Jangka waktu cicilan</string>
     <string name="installment_months">Bulan %1$s</string>
+    <string name="hint_giftcard_number">Nomor Gift Card Anda</string>
+    <string name="info_gci_payment">PENTING! Setelah konfirmasi pembayaran, anda tidak bisa merubah metode pembayarannya</string>
+    <string name="error_password_empty">PIN harus diisi</string>
+    <string name="error_password_invalid">Masukkan PIN yang benar</string>
+
 </resources>
