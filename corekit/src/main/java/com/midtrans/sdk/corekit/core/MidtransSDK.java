@@ -1305,6 +1305,31 @@ public class MidtransSDK {
     }
 
     /**
+     * @param authenticationToken Snap token
+     * @param cardNumber          Gift Card Number
+     * @param password            Gift Card Password / PIN
+     * @param callback            transaction callback
+     */
+    public void paymentUsingGCI(@NonNull String authenticationToken, @NonNull String cardNumber, @NonNull String password,
+                                @NonNull TransactionCallback callback) {
+
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (Utils.isNetworkAvailable(context)) {
+            isRunning = true;
+            mSnapTransactionManager.paymentUsingGCI(authenticationToken,
+                    SdkUtil.getGCIPaymentRequest(cardNumber, password),
+                    callback);
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+    /**
      * It will run backround task to register card PAPI(Payment API) Backend
      *
      * @param cardNumber   credit card number

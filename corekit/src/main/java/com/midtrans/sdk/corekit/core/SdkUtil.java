@@ -36,11 +36,13 @@ import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.MandiriClickPayPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
@@ -595,6 +597,13 @@ public class SdkUtil {
 
     public static String getEmailAddress(TransactionRequest transactionRequest) {
         return transactionRequest.getCustomerDetails().getEmail();
+    }
+
+
+    public static GCIPaymentRequest getGCIPaymentRequest(String cardNumber, String password) {
+        GCIPaymentParams paymentParams = new GCIPaymentParams(cardNumber, password);
+        GCIPaymentRequest request = new GCIPaymentRequest(paymentParams, PaymentType.GCI);
+        return request;
     }
 
     public static MandiriClickPayPaymentRequest getMandiriClickPaymentRequest(String mandiriCardNumber, String tokenResponse,
