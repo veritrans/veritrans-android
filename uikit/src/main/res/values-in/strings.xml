@@ -159,8 +159,8 @@
     <string name="bca_klik_instruction_step6">6.\tTransaksi Anda selesai.</string>
 
     <!--KLIK BCA PAYMENT-->
-    <string name="bca_klik_pay_instruction_step1">1.\tAnda akan dialihkan ke halaman BCA KlikPay setelah menekan tombol \'Confirm Payment\' .</string>
-    <string name="bca_klik_pay_instruction_step2">2.\tUntuk pembayaran, Anda dapat memilih Rekening KlikBCA Individu atau kartu BCA.</string>
+    <string name="bca_klik_pay_instruction_step1">1.\tAnda akan dialihkan ke halaman BCA KlikPay setelah menekan tombol \'Konfirmasi Pembayaran\' .</string>
+    <string name="bca_klik_pay_instruction_step2">2.\tUntuk pembayaran, Anda dapat memilih akun KlikBCA Individu atau kartu BCA.</string>
     <string name="bca_klik_pay_instruction_step3">3.\tUntuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 500888 atau kunjungi www.bca.co.id.</string>
 
      <!--m-BCA-->
@@ -322,7 +322,7 @@
     <!--KlikBCA Payment Instructions-->
     <string name="klikbca_instruction_1">1.\tPastikan bahwa UserID sudah aktif dan terdaftar di BCA.</string>
     <string name="klikbca_instruction_2">2.\tSilakan lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com pada browser anda, menggunakan User ID yang sama dengan yang anda masukkan di atas.</string>
-    <string name="klikbca_instruction_3">3.\Transaksi akan dibatalkan bila pembayaran tidak dilakukan dalam 2 jam.</string>
+    <string name="klikbca_instruction_3">3.\tTransaksi akan dibatalkan bila pembayaran tidak dilakukan dalam 2 jam.</string>
 
     <string name="payment_method_bri_epay">Epay BRI</string>
     <string name="payment_method_offers">Penawaran</string>
