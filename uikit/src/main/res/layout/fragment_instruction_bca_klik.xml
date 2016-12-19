@@ -44,7 +44,8 @@
             android:paddingRight="@dimen/sixteen_dp"
             android:text="@string/bca_klik_pay_instruction_step2"
             android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"/>
+            android:textSize="@dimen/secondary_text_size"
+            android:id="@+id/defaultTextView" />
 
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
