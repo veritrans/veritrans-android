@@ -161,7 +161,8 @@ public class SavedCardFragment extends Fragment {
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK.getCreditCard() != null
                 && midtransSDK.getCreditCard().getBank() != null
-                && midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)) {
+                && (midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)
+                || midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.BRI))) {
             showInstallmentLayout(false);
         } else {
             SaveCardRequest currentCard = cardPagerAdapter.getCurrentItem(savedCardPager.getCurrentItem());
