@@ -26,6 +26,7 @@ public class Constants {
     public static final int PAYMENT_METHOD_XL_TUNAI = 13;
     public static final int PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK = 14;
     public static final int PAYMENT_METHOD_KIOSON = 15;
+    public static final int PAYMENT_METHOD_GCI = 16;
 
     public static final int BANK_TRANSFER_BCA = 1001;
     public static final int BANK_TRANSFER_PERMATA = 1003;

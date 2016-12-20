@@ -6,6 +6,7 @@ import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
@@ -187,6 +188,18 @@ public interface SnapRestAPI {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("/v1/transactions/{token}/pay")
     void paymentUsingKiosan(@Path("token") String authenticationToken, @Body BasePaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+
+    /**
+     * Charge payment using GCI (Gift Card Indonesia)
+     *
+     * @param authenticationToken
+     * @param paymentRequest
+     * @param callback
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingGCI(@Path("token") String authenticationToken, @Body GCIPaymentRequest paymentRequest, Callback<TransactionResponse> callback);
+
 
     /**
      *

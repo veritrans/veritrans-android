@@ -34,6 +34,7 @@ public abstract class BaseTransactionManager {
     protected static final String PAYMENT_TYPE_TELKOMSEL_ECASH = "telkomsel_ecash";
     protected static final String PAYMENT_TYPE_XL_TUNAI = "xl_tunai";
     protected static final String PAYMENT_TYPE_KIOSAN = "kiosan";
+    protected static final String PAYMENT_TYPE_GCI = "gci";
 
     // Bank transfer type
     protected static final String BANK_PERMATA = "Permata";

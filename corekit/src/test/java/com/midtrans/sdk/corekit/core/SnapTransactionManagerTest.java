@@ -23,6 +23,7 @@ import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
@@ -217,6 +218,11 @@ public class SnapTransactionManagerTest {
     private ArgumentCaptor<String> calbackArgumentCatorClientKey;
     @Captor
     private ArgumentCaptor<Callback<ArrayList<BankBinsResponse>>> getBankBinCallbackCaptor;
+
+    @Mock
+    private GCIPaymentRequest gciPaymentRequestMock;
+    @Captor
+    private ArgumentCaptor<GCIPaymentRequest> gciCaptor;
 
     @Mock
     private TransactionDetails transactionDetailsMock;
@@ -2372,4 +2378,72 @@ public class SnapTransactionManagerTest {
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
+
+    /**
+     * Test Payment Using GCI
+     */
+    @Test
+    public void paymentUsingGCI_whenRequestNull() {
+        callbackImplement.paymentUsingGCI(tokenId, null);
+        Mockito.verify(callbackCollaborator).onError();
+    }
+
+
+    @Test
+    public void paymentUsingGCI_whenResponseNull() {
+        callbackImplement.paymentUsingGCI(tokenId, gciPaymentRequestMock);
+        Mockito.verify(snapAPI).paymentUsingGCI(tokenIdCaptor.capture(), gciCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().success(null, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onError();
+    }
+
+    @Test
+    public void paymentUsingGCISuccess() {
+        transactionManager.setSDKLogEnabled(true);
+        Mockito.when(transactionResponseMock.getStatusCode()).thenReturn("200");
+        callbackImplement.paymentUsingGCI(tokenId, gciPaymentRequestMock);
+        Mockito.verify(snapAPI).paymentUsingGCI(tokenIdCaptor.capture(), gciCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().success(transactionResponseMock, retrofitResponse);
+        PowerMockito.verifyStatic(Mockito.times(5));
+        Logger.d(Matchers.anyString(), Matchers.anyString());
+        Mockito.verify(callbackCollaborator).onTransactionSuccess();
+    }
+
+    @Test
+    public void paymentUsingGCI_whenCodeNot200() {
+        Mockito.when(transactionResponseMock.getStatusCode()).thenReturn("300");
+        callbackImplement.paymentUsingGCI(tokenId, gciPaymentRequestMock);
+        Mockito.verify(snapAPI).paymentUsingGCI(tokenIdCaptor.capture(), gciCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().success(transactionResponseMock, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingGCI_whenGeneralError() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorGeneralMock);
+        callbackImplement.paymentUsingGCI(tokenId, gciPaymentRequestMock);
+        Mockito.verify(snapAPI).paymentUsingGCI(tokenIdCaptor.capture(), gciCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().failure(retrofitError);
+        Mockito.verify(callbackCollaborator).onError();
+    }
+
+    @Test
+    public void paymentUsingGCI_whenInvalidSSL() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidSSLException);
+        callbackImplement.paymentUsingGCI(tokenId, gciPaymentRequestMock);
+        Mockito.verify(snapAPI).paymentUsingGCI(tokenIdCaptor.capture(), gciCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().failure(retrofitError);
+        PowerMockito.verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void paymentUsingGCI_whenInvalidCertPath() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidCertPatMock);
+        callbackImplement.paymentUsingGCI(tokenId, gciPaymentRequestMock);
+        Mockito.verify(snapAPI).paymentUsingGCI(tokenIdCaptor.capture(), gciCaptor.capture(), transactionResponseCallbackCaptor.capture());
+        transactionResponseCallbackCaptor.getValue().failure(retrofitError);
+        PowerMockito.verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
 }

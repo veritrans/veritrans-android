@@ -26,6 +26,7 @@ import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
@@ -894,6 +895,50 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
                     analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KIOSAN, end - start, error.getMessage());
+                }
+            });
+        } else {
+            releaseResources();
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+
+    public void paymentUsingGCI(String authenticationToken, GCIPaymentRequest paymentRequest, final TransactionCallback callback) {
+        final long start = System.currentTimeMillis();
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingGCI(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (isSDKLogEnabled) {
+                        displayResponse(transactionResponse);
+                    }
+                    if (transactionResponse != null) {
+                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                            callback.onSuccess(transactionResponse);
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_GCI, end - start, Events.SNAP_PAYMENT);
+                        } else {
+                            actionFailedTransaction(callback, transactionResponse);
+                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_GCI, end - start, Events.SNAP_PAYMENT);
+                        }
+                    } else {
+                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
+                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_GCI, end - start, context.getString(R.string.error_empty_response));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    releaseResources();
+                    long end = System.currentTimeMillis();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                    }
+                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_GCI, end - start, error.getMessage());
                 }
             });
         } else {
