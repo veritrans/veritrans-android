@@ -745,6 +745,30 @@ public class MidtransSDK {
     }
 
     /**
+     * This will start actual execution of Gift Card UI flow.
+     *
+     * @param context activity context.
+     */
+    public void startGiftCardUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runGci(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
      * This will start actual execution of transaction. if you have enabled an ui then it will start
      * activity according to it.
      *

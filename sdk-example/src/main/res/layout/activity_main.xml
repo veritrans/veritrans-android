@@ -637,6 +637,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:text="@string/other_payment" />
+
+            <Button
+                android:id="@+id/show_gci"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/giftcard"
+                android:textColor="@color/white"
+                android:visibility="visible" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:text="@string/title_card_widget" />
 
             <LinearLayout

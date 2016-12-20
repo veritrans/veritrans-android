@@ -44,4 +44,6 @@ public interface ISdkFlow {
     void runIndomaret(Context context);
 
     void runKioson(Context context);
+
+    void runGci(Context context);
 }

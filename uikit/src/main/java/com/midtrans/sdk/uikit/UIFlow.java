@@ -202,4 +202,14 @@ public class UIFlow implements ISdkFlow {
             context.startActivity(intent);
         }
     }
+
+    @Override
+    public void runGci(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.GIFT_CARD, true);
+            context.startActivity(intent);
+        }
+    }
 }
