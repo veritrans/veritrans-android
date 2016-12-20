@@ -19,6 +19,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferActivity;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
+import com.midtrans.sdk.uikit.activities.GCIActivity;
 import com.midtrans.sdk.uikit.activities.IndosatDompetkuActivity;
 import com.midtrans.sdk.uikit.activities.KlikBCAActivity;
 import com.midtrans.sdk.uikit.activities.MandiriClickPayActivity;
@@ -144,6 +145,8 @@ public class BankTransactionStatusFragment extends Fragment {
                             .mandiri_click_pay));
                 } else if (mPaymentType == Constants.PAYMENT_METHOD_KLIKBCA) {
                     mTextViewBankName.setText(getString(R.string.payment_method_klik_bca));
+                } else if (mPaymentType == Constants.PAYMENT_METHOD_GCI) {
+                    mTextViewBankName.setText(getString(R.string.payment_method_gci));
                 }
             }
             String transactionTime = mTransactionResponse.getTransactionTime() == null ? "" : mTransactionResponse.getTransactionTime();
@@ -196,6 +199,7 @@ public class BankTransactionStatusFragment extends Fragment {
                     if (mTransactionResponse != null) {
                         if (mTransactionResponse.getTransactionStatus().equalsIgnoreCase("deny")) {
                             mTextViewTransactionStatus.setText(getString(R.string.status_denied));
+                            mTextViewPaymentErrorMessage.setText(getString(R.string.message_payment_denied));
                         } else if (mTransactionResponse.getStatusCode().equals(getString(R.string.failed_code_400))) {
                             String message = "";
                             if (mTransactionResponse.getValidationMessages() != null && !mTransactionResponse.getValidationMessages().isEmpty()) {
@@ -225,6 +229,8 @@ public class BankTransactionStatusFragment extends Fragment {
             ((TelkomselCashActivity) getActivity()).activateRetry();
         } else if (mPaymentType == Constants.PAYMENT_METHOD_KLIKBCA) {
             ((KlikBCAActivity) getActivity()).activateRetry();
+        } else if (mPaymentType == Constants.PAYMENT_METHOD_GCI) {
+            ((GCIActivity) getActivity()).activateRetry();
         } else {
             ((BankTransferActivity) getActivity()).activateRetry();
         }
@@ -279,6 +285,9 @@ public class BankTransactionStatusFragment extends Fragment {
             case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
                 intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
                 break;
+            case Constants.BANK_TRANSFER_PERMATA:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
+                break;
             case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
                 intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
                 break;
@@ -287,6 +296,10 @@ public class BankTransactionStatusFragment extends Fragment {
                 break;
             case Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK:
                 intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
+                break;
+            case Constants.PAYMENT_METHOD_KLIKBCA:
+                intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+                intent.putExtra(BankTransferInstructionActivity.PAGE, BankTransferInstructionActivity.KLIKBCA_PAGE);
                 break;
         }
         intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, downloadUrl);

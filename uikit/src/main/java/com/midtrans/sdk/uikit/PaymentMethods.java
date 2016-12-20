@@ -44,7 +44,9 @@ public class PaymentMethods {
             return getMethodIndosatDompetku(context, 12);
         } else if (name.equals(context.getString(R.string.payment_xl_tunai))) {
             return getMethodXLTunai(context, 13);
-        }  else {
+        } else if (name.equals(context.getString(R.string.payment_gci))) {
+            return getMethodGCI(context, 14);
+        } else {
             return null;
         }
     }
@@ -55,15 +57,15 @@ public class PaymentMethods {
     }
 
     public static PaymentMethodsModel getMethodCreditCards(Context context, int priority) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_credit_card), R.drawable.ic_credit, Constants.PAYMENT_METHOD_NOT_SELECTED , priority);
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_credit_card), R.drawable.ic_credit, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
     }
 
     public static PaymentMethodsModel getMethodBankTransfer(Context context, int priority) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_bank_transfer), R.drawable.ic_atm, Constants.PAYMENT_METHOD_NOT_SELECTED , priority);
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_bank_transfer), R.drawable.ic_atm, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
     }
 
     public static PaymentMethodsModel getMethodBCAKlikpay(Context context, int priority) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_bca_klikpay), R.drawable.ic_bca, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_bca_klikpay), R.drawable.ic_klikpay, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
     }
 
     public static PaymentMethodsModel getMethodKlikBCA(Context context, int priority) {
@@ -99,11 +101,15 @@ public class PaymentMethods {
     }
 
     public static PaymentMethodsModel getMethodIndosatDompetku(Context context, int priority) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_indosat_dompetku), R.drawable.ic_indosat, Constants.PAYMENT_METHOD_NOT_SELECTED , priority);
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_indosat_dompetku), R.drawable.ic_indosat, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
     }
 
     public static PaymentMethodsModel getMethodXLTunai(Context context, int priority) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_xl_tunai), R.drawable.ic_xl, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
+    }
+
+    public static PaymentMethodsModel getMethodGCI(Context context, int priority) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_gci), R.drawable.ic_gci, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
     }
 
     public static ArrayList<BankTransferModel> getBankTransferList(Context context) {

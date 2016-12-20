@@ -60,4 +60,16 @@ public class CallbackCollaborator {
     public void onGetCardTokenFailed() {
 
     }
+
+    public void onGetBankBinSuccess(){
+
+    }
+
+    public void onGetBankBinFailure() {
+
+    }
+
+    public void onGetBankBinError() {
+
+    }
 }

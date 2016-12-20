@@ -1,5 +1,6 @@
 package com.midtrans.sdk.corekit.core;
 
+import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
@@ -14,11 +15,13 @@ import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
@@ -30,7 +33,7 @@ import java.util.ArrayList;
  * Created by ziahaqi on 9/5/16.
  */
 public class CallbackImplementSample implements TransactionCallback, CheckoutCallback, TransactionOptionsCallback,
-        SaveCardCallback, GetCardCallback, CardRegistrationCallback, CardTokenCallback {
+        SaveCardCallback, GetCardCallback, CardRegistrationCallback, CardTokenCallback{
 
     /**
      * Created by ziahaqi on 25/06/2016.
@@ -196,6 +199,10 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
         snapTransactionManager.paymentUsingBankTransferAllBank(token, request, this);
     }
 
+    public void paymentUsingGCI(String token, GCIPaymentRequest request) {
+        snapTransactionManager.paymentUsingGCI(token, request, this);
+    }
+
     public void saveCards(String userId, ArrayList<SaveCardRequest> requests) {
         snapTransactionManager.saveCards(userId, requests, this);
     }
@@ -227,4 +234,30 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
     public CardTokenCallback getCardTokenCallback() {
         return this;
     }
+
+    public BankBinsCallback getBankBinCallback() {
+        return bankBinsCallback;
+    }
+
+    public void getBankBins() {
+        snapTransactionManager.getBankBins(bankBinsCallback);
+    }
+
+
+    private BankBinsCallback bankBinsCallback = new BankBinsCallback() {
+        @Override
+        public void onSuccess(ArrayList<BankBinsResponse> response) {
+            callbackCollaborator.onGetBankBinSuccess();
+        }
+
+        @Override
+        public void onFailure(String reason) {
+            callbackCollaborator.onGetBankBinFailure();
+        }
+
+        @Override
+        public void onError(Throwable error) {
+            callbackCollaborator.onGetBankBinError();
+        }
+    };
 }

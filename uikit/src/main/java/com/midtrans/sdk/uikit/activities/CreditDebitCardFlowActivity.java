@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
@@ -39,7 +40,9 @@ import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.Installment;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
@@ -100,6 +103,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private boolean removeExistCard = false;
     private String maskedCardNumber;
     private boolean isNewCard = true;
+    private ArrayList<BankBinsResponse> bankBins = new ArrayList<>();
+    private String installmentBank;
+    private ArrayList<Integer> installmentTerms = new ArrayList<>();
+    private int installmentTermSelected;
 
     public MorphingButton getBtnMorph() {
         return btnMorph;
@@ -129,6 +136,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
         if (midtransSDK != null) {
+            initBankBins();
             if (!midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
                 getCreditCards();
             } else {
@@ -166,17 +174,13 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     @Override
     public void onBackPressed() {
         SdkUIFlowUtil.hideKeyboard(this);
-        if (fragmentManager.getBackStackEntryCount() == 1) {
-            setResultCode(RESULT_CANCELED);
+        if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class
+                .getName())) {
+            setResultCode(RESULT_OK);
             setResultAndFinish();
         } else {
-            if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class
-                    .getName())) {
-                setResultCode(RESULT_OK);
-                setResultAndFinish();
-            } else {
-                super.onBackPressed();
-            }
+            setResultCode(RESULT_CANCELED);
+            setResultAndFinish();
         }
     }
 
@@ -185,13 +189,24 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
      */
     public void normalPayment(CardTokenRequest cardTokenRequest) {
         this.isNewCard = true;
-        getToken(cardTokenRequest);
+        initInstallmentProperties(cardTokenRequest);
+        initAcquiringBank(cardTokenRequest);
+        this.cardTokenRequest = cardTokenRequest;
+        getCardToken(cardTokenRequest);
     }
 
-    public void getToken(CardTokenRequest cardTokenRequest) {
+    private void initAcquiringBank(CardTokenRequest cardTokenRequest) {
+        // Set acquiring bank and channel if available
+        if (midtransSDK.getTransactionRequest().getCreditCard() != null) {
+            String bank = midtransSDK.getTransactionRequest().getCreditCard().getBank();
+            cardTokenRequest.setBank(bank);
+            String channel = midtransSDK.getTransactionRequest().getCreditCard().getChannel();
+            cardTokenRequest.setChannel(channel);
+        }
+    }
+
+    public void getCardToken(CardTokenRequest cardTokenRequest) {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        this.cardTokenRequest = cardTokenRequest;
-        Logger.i("isSecure:" + this.cardTokenRequest.isSecure());
         midtransSDK.getCardToken(cardTokenRequest, new CardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
@@ -238,6 +253,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
     }
 
+    /**
+     * start credit card payment
+     */
     public void payUsingCard() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         processingLayout.setVisibility(View.VISIBLE);
@@ -257,6 +275,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             SdkUIFlowUtil.hideProgressDialog();
 
             return;
+        }
+
+        if (installmentTermSelected > 0) {
+            paymentModel.setInstallment(installmentBank + "_" + installmentTermSelected);
         }
 
         midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(),
@@ -487,7 +509,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
             if (userDetail != null) {
                 if (midtransSDK.isEnableBuiltInTokenStorage()) {
-                    List<SavedToken> tokens = midtransSDK.getSavedTokens();
+                    List<SavedToken> tokens = midtransSDK.getCreditCard().getSavedTokens();
                     bindSavedCards(tokens != null ? convertSavedToken(tokens) : new ArrayList<SaveCardRequest>());
                 } else {
                     SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
@@ -536,32 +558,27 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void twoClickPayment(CardTokenRequest cardDetail) {
-        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         this.isNewCard = false;
-        this.cardTokenRequest = new CardTokenRequest();
-        this.cardTokenRequest.setSavedTokenId(cardDetail.getSavedTokenId());
-        this.cardTokenRequest.setCardCVV(cardDetail.getCardCVV());
-        this.cardTokenRequest.setTwoClick(true);
-        this.cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
-        this.cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
-        this.cardTokenRequest.setBank(midtransSDK.getTransactionRequest().getCreditCard().getBank());
-        this.cardTokenRequest.setClientKey(midtransSDK.getClientKey());
-        midtransSDK.getCardToken(cardTokenRequest, new CardTokenCallback() {
-            @Override
-            public void onSuccess(TokenDetailsResponse response) {
-                actionGetCardTokenSuccess(response);
-            }
+        CardTokenRequest cardTokenRequest = new CardTokenRequest();
+        cardTokenRequest.setSavedTokenId(cardDetail.getSavedTokenId());
+        cardTokenRequest.setCardCVV(cardDetail.getCardCVV());
+        cardTokenRequest.setTwoClick(true);
+        cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
+        cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
+        cardTokenRequest.setBank(midtransSDK.getTransactionRequest().getCreditCard().getBank());
+        cardTokenRequest.setClientKey(midtransSDK.getClientKey());
+        initInstallmentProperties(cardTokenRequest);
+        initAcquiringBank(cardTokenRequest);
+        this.cardTokenRequest = cardTokenRequest;
+        getCardToken(cardTokenRequest);
+    }
 
-            @Override
-            public void onFailure(TokenDetailsResponse response, String reason) {
-                actionGetCardTokenFailure(response, reason);
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                actionGetCardTokenError(error);
-            }
-        });
+    private void initInstallmentProperties(CardTokenRequest cardTokenRequest) {
+        Log.d("installment:selected", "term:" + installmentTermSelected);
+        if (installmentTermSelected > 0) {
+            cardTokenRequest.setInstallment(true);
+            cardTokenRequest.setInstalmentTerm(installmentTermSelected);
+        }
     }
 
     private void actionGetCardTokenFailure(TokenDetailsResponse response, String reason) {
@@ -748,4 +765,98 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
 
+    public void initBankBins() {
+        readDefaultBankBins();
+        MidtransSDK.getInstance().getBankBins(new BankBinsCallback() {
+            @Override
+            public void onSuccess(ArrayList<BankBinsResponse> response) {
+                bankBins.clear();
+                bankBins.addAll(response);
+            }
+
+            @Override
+            public void onFailure(String reason) {
+                Log.i(TAG, "bankbins>failure:" + reason);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                Log.i(TAG, "bankbins>error:" + error.getMessage());
+
+            }
+        });
+    }
+
+    private void readDefaultBankBins() {
+        ArrayList<BankBinsResponse> loadedBankBins = SdkUIFlowUtil.getBankBins(this);
+        if (loadedBankBins != null && !loadedBankBins.isEmpty()) {
+            bankBins.clear();
+            bankBins.addAll(loadedBankBins);
+        }
+    }
+
+
+    public ArrayList<Integer> getInstallmentTerms(String cardBin) {
+        if (isInWhiteList(cardBin)) {
+            String bank = getBankByBin(cardBin);
+            if (TextUtils.isEmpty(bank)) {
+                bank = getString(R.string.bank_installment_offline);
+            }
+
+            Installment installment = midtransSDK.getCreditCard().getInstallment();
+            if (installment != null && installment.getTerms() != null && !installment.getTerms().isEmpty()) {
+                for (String key : installment.getTerms().keySet()) {
+                    if (key.equals(bank)) {
+                        this.installmentBank = bank;
+                        this.installmentTerms.clear();
+                        this.installmentTerms.add(0, 0);
+                        this.installmentTerms.addAll(installment.getTerms().get(key));
+
+                        return this.installmentTerms;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private String getBankByBin(String cardBin) {
+        for (BankBinsResponse savedBankBin : bankBins) {
+            if (savedBankBin.getBins() != null && !savedBankBin.getBins().isEmpty()) {
+                String bankBin = findBankByCardBin(savedBankBin, cardBin);
+                if (bankBin != null) {
+                    return bankBin;
+                }
+            }
+        }
+        return null;
+    }
+
+    private String findBankByCardBin(BankBinsResponse savedBankBin, String cardBin) {
+        for (String savedBin : savedBankBin.getBins()) {
+            if (savedBin.equals(cardBin)) {
+                return savedBankBin.getBank();
+            }
+        }
+        return null;
+    }
+
+    private boolean isInWhiteList(String cardBin) {
+        ArrayList<String> whiteListBins = midtransSDK.getCreditCard().getWhitelistBins();
+        if (whiteListBins != null && !whiteListBins.isEmpty()) {
+            if (whiteListBins.contains(cardBin)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Integer getInstallmentTerm(int currentPosition) {
+        return this.installmentTerms.get(currentPosition);
+    }
+
+    public void setInstallment(int termPosition) {
+        this.installmentTermSelected = this.installmentTerms.size() == 0 ? 0 : this.installmentTerms.get(termPosition);
+    }
 }

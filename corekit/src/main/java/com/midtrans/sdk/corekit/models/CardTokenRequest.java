@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.models;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import android.text.TextUtils;
 
@@ -37,9 +38,11 @@ public class CardTokenRequest implements Serializable {
     private double grossAmount;
     private boolean isSaved;
     private String clientKey;
-    private boolean instalment;
+    private boolean installment;
+    @SerializedName("installment_term")
     private int instalmentTerm;
     private ArrayList<String> bins;
+    private String channel;
     //private String cardHolderName;
 
     public CardTokenRequest() {
@@ -210,12 +213,12 @@ public class CardTokenRequest implements Serializable {
         }
     }
 
-    public boolean isInstalment() {
-        return instalment;
+    public boolean isInstallment() {
+        return installment;
     }
 
-    public void setInstalment(boolean instalment) {
-        this.instalment = instalment;
+    public void setInstallment(boolean installment) {
+        this.installment = installment;
     }
 
 
@@ -228,7 +231,7 @@ public class CardTokenRequest implements Serializable {
     }
 
     public String getFormattedInstalmentTerm() {
-        return instalmentTerm + "";
+        return ""+ instalmentTerm ;
     }
 
     public ArrayList<String> getBins() {
@@ -237,5 +240,13 @@ public class CardTokenRequest implements Serializable {
 
     public void setBins(ArrayList<String> bins) {
         this.bins = bins;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }

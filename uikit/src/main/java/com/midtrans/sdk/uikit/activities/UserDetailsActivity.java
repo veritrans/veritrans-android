@@ -19,6 +19,25 @@ import com.midtrans.sdk.uikit.fragments.UserDetailFragment;
 import java.util.ArrayList;
 
 public class UserDetailsActivity extends BaseActivity {
+    public static final String CREDIT_CARD_ONLY = "cconly";
+    public static final String BANK_TRANSFER_ONLY = "btonly";
+    public static final String BANK_TRANSFER_MANDIRI = "bt_mandiri";
+    public static final String BANK_TRANSFER_BCA = "bt_bca";
+    public static final String BANK_TRANSFER_PERMATA = "bt_permata";
+    public static final String BANK_TRANSFER_OTHER = "bt_other";
+    public static final String BCA_KLIKPAY = "bcaklikpay";
+    public static final String KLIK_BCA = "klikbca";
+    public static final String MANDIRI_CLICKPAY = "mandiriclickpay";
+    public static final String MANDIRI_ECASH = "mandiriecash";
+    public static final String CIMB_CLICKS = "cimbclicks";
+    public static final String BRI_EPAY = "briepay";
+    public static final String TELKOMSEL_CASH = "tcash";
+    public static final String INDOSAT_DOMPETKU = "indosatdompetku";
+    public static final String XL_TUNAI = "xltunai";
+    public static final String INDOMARET = "indomaret";
+    public static final String KIOSON = "kioson";
+    public static final String GIFT_CARD = "gci";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +54,45 @@ public class UserDetailsActivity extends BaseActivity {
 
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
                 if (userAddresses != null && !userAddresses.isEmpty()) {
-
                     Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
+                    if (getIntent().getBooleanExtra(CREDIT_CARD_ONLY, false)) {
+                        paymentOptionIntent.putExtra(CREDIT_CARD_ONLY, true);
+                    } else if (getIntent().getBooleanExtra(BANK_TRANSFER_ONLY, false)) {
+                        paymentOptionIntent.putExtra(BANK_TRANSFER_ONLY, true);
+                        if (getIntent().getBooleanExtra(BANK_TRANSFER_PERMATA, false)) {
+                            paymentOptionIntent.putExtra(BANK_TRANSFER_PERMATA, true);
+                        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_MANDIRI, false)) {
+                            paymentOptionIntent.putExtra(BANK_TRANSFER_MANDIRI, true);
+                        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_BCA, false)) {
+                            paymentOptionIntent.putExtra(BANK_TRANSFER_BCA, true);
+                        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_OTHER, false)) {
+                            paymentOptionIntent.putExtra(BANK_TRANSFER_OTHER, true);
+                        }
+                    } else if (getIntent().getBooleanExtra(BCA_KLIKPAY, false)) {
+                        paymentOptionIntent.putExtra(BCA_KLIKPAY, true);
+                    } else if (getIntent().getBooleanExtra(KLIK_BCA, false)) {
+                        paymentOptionIntent.putExtra(KLIK_BCA, true);
+                    } else if (getIntent().getBooleanExtra(MANDIRI_CLICKPAY, false)) {
+                        paymentOptionIntent.putExtra(MANDIRI_CLICKPAY, true);
+                    } else if (getIntent().getBooleanExtra(MANDIRI_ECASH, false)) {
+                        paymentOptionIntent.putExtra(MANDIRI_ECASH, true);
+                    } else if (getIntent().getBooleanExtra(CIMB_CLICKS, false)) {
+                        paymentOptionIntent.putExtra(CIMB_CLICKS, true);
+                    } else if (getIntent().getBooleanExtra(BRI_EPAY, false)) {
+                        paymentOptionIntent.putExtra(BRI_EPAY, true);
+                    } else if (getIntent().getBooleanExtra(TELKOMSEL_CASH, false)) {
+                        paymentOptionIntent.putExtra(TELKOMSEL_CASH, true);
+                    } else if (getIntent().getBooleanExtra(INDOSAT_DOMPETKU, false)) {
+                        paymentOptionIntent.putExtra(INDOSAT_DOMPETKU, true);
+                    } else if (getIntent().getBooleanExtra(XL_TUNAI, false)) {
+                        paymentOptionIntent.putExtra(XL_TUNAI, true);
+                    } else if (getIntent().getBooleanExtra(INDOMARET, false)) {
+                        paymentOptionIntent.putExtra(INDOMARET, true);
+                    } else if (getIntent().getBooleanExtra(KIOSON, false)) {
+                        paymentOptionIntent.putExtra(KIOSON, true);
+                    } else if (getIntent().getBooleanExtra(GIFT_CARD, false)) {
+                        paymentOptionIntent.putExtra(GIFT_CARD, true);
+                    }
                     startActivity(paymentOptionIntent);
                     finish();
                 } else {

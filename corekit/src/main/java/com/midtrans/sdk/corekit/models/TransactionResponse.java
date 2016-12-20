@@ -57,14 +57,25 @@ public class TransactionResponse implements Serializable {
     private boolean secureToken;
     @SerializedName("permata_va_number")
     private String permataVANumber;
+    @SerializedName("permata_expiration")
+    private String permataExpiration;
     @SerializedName("va_numbers")
     private List<BCAVANumber> accountNumbers;
+    @SerializedName("bca_expiration")
+    private String bcaExpiration;
+    @SerializedName("billpayment_expiration")
+    private String mandiriBillExpiration;
     @SerializedName("xl_tunai_order_id")
     private String xlTunaiOrderId;
     @SerializedName("xl_tunai_merchant_id")
     private String xlTunaiMerchantId;
     @SerializedName("xl_expiration")
     private String xlTunaiExpiration;
+    @SerializedName("installment_term")
+    private String installmentTerm;
+
+    @SerializedName("indomaret_expire_time")
+    private String indomaretExpireTime;
 
     @SerializedName("redirect_url")
     private String redirectUrl;
@@ -351,5 +362,41 @@ public class TransactionResponse implements Serializable {
 
     public ArrayList<String> getValidationMessages() {
         return validationMessages;
+    }
+
+    public String getInstallmentTerm() {
+        return installmentTerm;
+    }
+
+    public String getPermataExpiration() {
+        return permataExpiration;
+    }
+
+    public void setPermataExpiration(String permataExpiration) {
+        this.permataExpiration = permataExpiration;
+    }
+
+    public String getBcaExpiration() {
+        return bcaExpiration;
+    }
+
+    public void setBcaExpiration(String bcaExpiration) {
+        this.bcaExpiration = bcaExpiration;
+    }
+
+    public String getMandiriBillExpiration() {
+        return mandiriBillExpiration;
+    }
+
+    public void setMandiriBillExpiration(String mandiriBillExpiration) {
+        this.mandiriBillExpiration = mandiriBillExpiration;
+    }
+
+    public String getIndomaretExpireTime() {
+        return indomaretExpireTime;
+    }
+
+    public void setIndomaretExpireTime(String indomaretExpireTime) {
+        this.indomaretExpireTime = indomaretExpireTime;
     }
 }

@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 
@@ -28,7 +27,6 @@ import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 public class BankTransferPaymentFragment extends Fragment {
 
     public static final String KEY_ARG = "args";
-    public static final String VALID_UNTIL = "Valid Until : ";
     private static final String LABEL_VA_NUMBER = "Virtual Account Number";
     private TransactionResponse transactionResponse;
 
@@ -89,15 +87,18 @@ public class BankTransferPaymentFragment extends Fragment {
                 if (getArguments() != null && getArguments().getString(BankTransferInstructionActivity.BANK) != null && getArguments().getString(BankTransferInstructionActivity.BANK).equals(BankTransferInstructionActivity.TYPE_BCA)) {
                     if (transactionResponse.getAccountNumbers() != null && transactionResponse.getAccountNumbers().size() > 0) {
                         mTextViewVirtualAccountNumber.setText(transactionResponse.getAccountNumbers().get(0).getAccountNumber());
+                        mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getBcaExpiration()));
                     }
                 } else {
                     mTextViewVirtualAccountNumber.setText(transactionResponse.getPermataVANumber());
+                    mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getPermataExpiration()));
                 }
             } else {
                 mTextViewVirtualAccountNumber.setText(transactionResponse.getStatusMessage());
+                mTextViewValidity.setText(transactionResponse.getStatusMessage());
             }
 
-            mTextViewValidity.setText(VALID_UNTIL + Utils.getValidityTime(transactionResponse.getTransactionTime()));
+
         }
         btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override

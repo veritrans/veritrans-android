@@ -120,14 +120,6 @@ public class BankTransferInstructionActivity extends BaseActivity {
 
     private void setUpTabLayout() {
 
-        // on need to set names to tab just attach viewpager and then using
-        // adapters page title method it will take name for tab.
-
-        /* mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_mandiri));
-        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_bca_prima));
-        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.tab_permata_alto));
-        */
-
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

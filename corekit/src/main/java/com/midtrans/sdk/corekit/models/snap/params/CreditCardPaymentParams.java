@@ -13,16 +13,22 @@ public class CreditCardPaymentParams {
     @SerializedName("card_token")
     private String cardToken;
     private String bank;
-    @SerializedName("installment_term")
+    @SerializedName("installment")
     private String installmentTerm;
     @SerializedName("save_card")
     private boolean saveCard;
-
 
     public CreditCardPaymentParams(String cardToken, Boolean saveCard, String maskedCardNumber) {
         this.cardToken = cardToken;
         this.saveCard = saveCard;
         this.maskedCard = maskedCardNumber;
+    }
+
+    public CreditCardPaymentParams(String cardToken, Boolean saveCard, String maskedCardNumber, String installmentTerm) {
+        this.cardToken = cardToken;
+        this.saveCard = saveCard;
+        this.maskedCard = maskedCardNumber;
+        this.installmentTerm = installmentTerm;
     }
 
     public void setCardToken(String cardToken) {

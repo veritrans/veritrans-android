@@ -331,7 +331,7 @@
     <string name="telkomsel_cash">Telkomsel Cash</string>
     <string name="xl_tunai">XL Tunai</string>
     <string name="mandiri_e_cash">Mandiri e-Cash</string>
-    <string name="klik_bca">Klik BCA</string>
+    <string name="klik_bca">KlikBCA</string>
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Offers</string>
@@ -432,7 +432,7 @@
     <string name="payment_method_mandiri_bill">Mandiri Bill</string>
     <string name="payment_method_mandiri_clickpay">Mandiri Clickpay</string>
     <string name="payment_method_cimb_clicks">CIMB Clicks</string>
-    <string name="payment_method_bca_klikpay">BCA Klikpay</string>
+    <string name="payment_method_bca_klikpay">BCA KlikPay</string>
     <string name="payment_method_bbm_money">BBM Money</string>
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
     <string name="payment_method_telkomsel_cash">Telkomsel Cash</string>
@@ -441,6 +441,7 @@
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_klik_bca">KlikBCA</string>
     <string name="payment_method_kioson">Kioson</string>
+    <string name="payment_method_gci"> Gift Card Indonesia </string>
 
     <!--Payment List-->
     <string name="payment_epay_bri">bri_epay</string>
@@ -460,6 +461,9 @@
     <string name="payment_bca">bca</string>
     <string name="payment_klik_bca">bca_klikbca</string>
     <string name="payment_kioson">kioson</string>
+    <string name="payment_gci">gci</string>
+
+
     <!--Error Response-->
     <string name="error_empty_response">failed to retrieve response from server.</string>
     <string name="error_sdk_not_initialized">sdk is not initialized.</string>
@@ -475,7 +479,7 @@
 
     <!--TAB TITLE-->
     <string name="tab_bca_atm">ATM BCA</string>
-    <string name="tab_bca_klik">Klik BCA</string>
+    <string name="tab_bca_klik">KlikBCA</string>
     <string name="tab_bca_mobile">m-BCA</string>
     <string name="tab_mandiri_atm">ATM Mandiri</string>
     <string name="tab_mandiri_internet">Internet Banking</string>
@@ -498,6 +502,7 @@
     <string name="payment_confirmation_title">Payment Confirmation</string>
     <string name="payment_confirmation_description">Card Number:\n%1$s\n\nGross Amount: %2$s</string>
     <string name="txt_loading_payment">Retrieving payment methods</string>
+    <string name="txt_checkout">Checkout Transaction</string>
     <string name="txt_error_snap_token">Failed to registering transaction.</string>
 
     <string name="bank_transfer_bca">bca</string>
@@ -564,7 +569,7 @@
 
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
-    <string name="kioson_valid">Please complete your payment at Kioson Outlet Before : </string>
+    <string name="kioson_valid">Please complete your payment at Kioson Outlet Before : %1$s</string>
     <string name="kioson_payment_instrution">Kioson Payment Instruction</string>
     <string name="message_payment_cannot_proccessed">Transaction cannot be proccessed. Make sure your payment informations is correct</string>
     <string name="message_payment_failed">Payment failed! Please try again.</string>
@@ -578,5 +583,20 @@
     <string name="status_expired">Expired</string>
     <string name="label_expired">expired</string>
     <string name="message_cannot_proccessed">Transaction cannot be proccessed.</string>
+    <string name="installment_term">instalment term</string>
+    <string name="bank_bins">bank_bins</string>
+    <string name="formatted_installment_month">%1$s Months installment</string>
+    <string name="no_installment">No installment</string>
+    <string name="bank_installment_offline">offline</string>
+    <string name="status_installment_bank">Installment Bank</string>
+    <string name="status_installment_term">Installment Term</string>
+    <string name="installment_months">%1$s Months</string>
+    <string name="title_gci">Gift Card Indonesia</string>
+    <string name="hint_giftcard_number">Your Gift Card Number</string>
+    <string name="hint_giftcard_password">PIN</string>
+    <string name="info_gci_payment"><b>IMPORTANT!</b> After confirming your payment, you won’t be able to change payment method</string>
+    <string name="error_password_empty">Please fill PIN</string>
+    <string name="error_password_invalid">Please enter valid PIN</string>
+
 
 </resources>

@@ -36,11 +36,13 @@ import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.MandiriClickPayPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
@@ -572,7 +574,8 @@ public class SdkUtil {
         }
 
         CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transactionRequest);
-        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(), model.isSavecard(), model.getMaskedCardNumber());
+        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(),
+                model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
         CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
 
         return paymentRequest;
@@ -594,6 +597,13 @@ public class SdkUtil {
 
     public static String getEmailAddress(TransactionRequest transactionRequest) {
         return transactionRequest.getCustomerDetails().getEmail();
+    }
+
+
+    public static GCIPaymentRequest getGCIPaymentRequest(String cardNumber, String password) {
+        GCIPaymentParams paymentParams = new GCIPaymentParams(cardNumber, password);
+        GCIPaymentRequest request = new GCIPaymentRequest(paymentParams, PaymentType.GCI);
+        return request;
     }
 
     public static MandiriClickPayPaymentRequest getMandiriClickPaymentRequest(String mandiriCardNumber, String tokenResponse,

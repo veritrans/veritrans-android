@@ -76,7 +76,7 @@ public class KiosonPaymentFragment extends Fragment {
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
                     || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
-                mTextViewValidity.setText(getString(R.string.kioson_valid) + transactionResponse.getKiosonExpireTime());
+                mTextViewValidity.setText(getString(R.string.kioson_valid, transactionResponse.getKiosonExpireTime()));
             }
             if (transactionResponse.getPaymentCodeResponse() != null)
                 mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeResponse());

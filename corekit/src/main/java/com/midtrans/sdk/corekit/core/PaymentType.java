@@ -8,7 +8,7 @@ public class PaymentType {
 
     /**
      * Payment types for charging to Snap API
-     *
+     * <p>
      * VA(Virtual Account) equeals to bank transfer
      * E_CHANNEL equals to Mandiri Bill
      */
@@ -30,4 +30,5 @@ public class PaymentType {
     public static final String INDOMARET = "indomaret";
     public static final String INDOSAT_DOMPETKU = "indosat_dompetku";
     public static final String KIOSON = "kioson";
+    public static final String GCI = "gci";
 }

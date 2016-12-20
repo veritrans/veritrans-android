@@ -13,18 +13,23 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
 import com.midtrans.sdk.corekit.models.BBMUrlEncodeJson;
+import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.uikit.R;
 
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -366,4 +371,25 @@ public class SdkUIFlowUtil {
         return color;
     }
 
+
+    public static ArrayList<BankBinsResponse> getBankBins(Context context){
+        ArrayList<BankBinsResponse> list = null;
+        String data;
+        try {
+            InputStream is = context.getAssets().open("bank_bins.json");
+            byte[] buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+            data = new String(buffer, "UTF-8");
+
+            Gson gson = new Gson();
+            list = gson.fromJson(data, new TypeToken<ArrayList<BankBinsResponse>>() {
+            }.getType());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 }

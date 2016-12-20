@@ -5,7 +5,7 @@ apply from: '../jacoco.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.1.4'
+version = '1.2.0'
 
 buildscript {
     repositories {
@@ -63,8 +63,8 @@ android {
     productFlavors {
         development {
             DEFAULT_PUBLISH = "developmentRelease"
-            buildConfigField "String", "BASE_URL", "\"https://api.sandbox.veritrans.co.id/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.veritrans.co.id/snap\""
+            buildConfigField "String", "BASE_URL", "\"https://api.sandbox.midtrans.com/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.midtrans.com/snap\""
         }
 
         production {

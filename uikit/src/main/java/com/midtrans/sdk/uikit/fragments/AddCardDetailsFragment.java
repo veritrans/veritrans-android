@@ -17,12 +17,15 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BankDetail;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
 import com.midtrans.sdk.corekit.models.UserDetail;
@@ -44,12 +47,14 @@ public class AddCardDetailsFragment extends Fragment {
     private static final String KEY_CHECKBOX_SAVE_CARD_EVENT = "Save Card";
 
     TextInputLayout tilCardNo, tilCvv, tilExpiry;
+    TextView textInstallmentTerm;
+    int installmentCurrentPosition, installmentTotalPositions;
     private String lastExpDate = "";
     private EditText etCardNo;
     private EditText etCvv;
     private EditText etExpiryDate;
     private CheckBox cbStoreCard;
-    private Button cvvHelpButton;
+    private Button cvvHelpButton, buttonIncrease, buttonDecrease;
     private ImageView logo;
     private ImageView questionSaveCardImg;
     private Button payNowBtn;
@@ -65,7 +70,7 @@ public class AddCardDetailsFragment extends Fragment {
     private ArrayList<BankDetail> bankDetails;
     private String cardType = "";
     private RelativeLayout formLayout;
-
+    private LinearLayout layoutInstallment;
 
     public static AddCardDetailsFragment newInstance() {
         AddCardDetailsFragment fragment = new AddCardDetailsFragment();
@@ -131,6 +136,25 @@ public class AddCardDetailsFragment extends Fragment {
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
         logo = (ImageView) view.findViewById(R.id.payment_card_logo);
+        layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installment);
+        buttonIncrease = (Button) view.findViewById(R.id.button_installment_increase);
+        buttonDecrease = (Button) view.findViewById(R.id.button_installment_decrease);
+        textInstallmentTerm = (TextView) view.findViewById(R.id.text_installment_term);
+
+        buttonIncrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onIncraseTerm();
+            }
+        });
+
+        buttonDecrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDecreaseTerm();
+            }
+        });
+
         cbStoreCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -142,6 +166,7 @@ public class AddCardDetailsFragment extends Fragment {
             public void onFocusChange(View view, boolean hasfocus) {
                 if (!hasfocus) {
                     checkCardNumberValidity();
+                    initCardInstallment();
                 }
             }
         });
@@ -209,14 +234,11 @@ public class AddCardDetailsFragment extends Fragment {
                     cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
                     cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
                     cardTokenRequest.setCardType(cardType);
-                    // Set acquiring bank if available
-                    if (midtransSDK.getTransactionRequest().getCreditCard() != null) {
-                        String bank = midtransSDK.getTransactionRequest().getCreditCard().getBank();
-                        cardTokenRequest.setBank(bank);
-                    }
+
 
                     //make payment
                     SdkUIFlowUtil.showProgressDialog(getActivity(), false);
+                    setPaymentInstallment();
                     ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(cbStoreCard.isChecked(), cardType);
                     ((CreditDebitCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
                 }
@@ -348,6 +370,63 @@ public class AddCardDetailsFragment extends Fragment {
                     }
                 }
         );
+    }
+
+    private void setPaymentInstallment() {
+        if (layoutInstallment.getVisibility() == View.VISIBLE) {
+            ((CreditDebitCardFlowActivity) getActivity()).setInstallment(installmentCurrentPosition);
+        }
+    }
+
+    private void initCardInstallment() {
+        String cardNumber = etCardNo.getText().toString();
+        if (TextUtils.isEmpty(cardNumber)) {
+            showInstallmentLayout(false);
+        } else if (cardNumber.length() < 7) {
+            showInstallmentLayout(false);
+        } else if (midtransSDK.getCreditCard() != null
+                && midtransSDK.getCreditCard().getBank() != null
+                && midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)) {
+            showInstallmentLayout(false);
+        } else {
+            String cleanCardNumber = etCardNo.getText().toString().trim().replace(" ", "").substring(0, 6);
+            ArrayList<Integer> installmentTerms = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerms(cleanCardNumber);
+
+            if (installmentTerms != null && installmentTerms.size() > 1) {
+                installmentCurrentPosition = 0;
+                installmentTotalPositions = installmentTerms.size() - 1;
+                setInstallmentTerm();
+                showInstallmentLayout(true);
+            } else {
+                showInstallmentLayout(false);
+            }
+        }
+    }
+
+    private void setInstallmentTerm() {
+        String installmentTerm;
+        int term = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(installmentCurrentPosition);
+        if (term < 1) {
+            installmentTerm = getString(R.string.no_installment);
+        } else {
+            installmentTerm = getString(R.string.formatted_installment_month, term + "");
+        }
+        textInstallmentTerm.setText(installmentTerm);
+    }
+
+    private void showInstallmentLayout(boolean show) {
+        if (show) {
+            if (layoutInstallment.getVisibility() == View.GONE) {
+                layoutInstallment.setVisibility(View.VISIBLE);
+            }
+            buttonDecrease.setEnabled(false);
+            buttonIncrease.setEnabled(true);
+        } else {
+            if (layoutInstallment.getVisibility() == View.VISIBLE) {
+                layoutInstallment.setVisibility(View.GONE);
+            }
+            ((CreditDebitCardFlowActivity) getActivity()).setInstallment(0);
+        }
     }
 
     private boolean checkCardNumberValidity() {
@@ -511,5 +590,38 @@ public class AddCardDetailsFragment extends Fragment {
         etCardNo.setText(creditCardFromScanner.getCardNumber());
         etCvv.setText(creditCardFromScanner.getCvv());
         etExpiryDate.setText(creditCardFromScanner.getExpired());
+    }
+
+    private void disableEnableInstallmentButton() {
+
+        if (installmentCurrentPosition == 0 && installmentTotalPositions == 0) {
+            buttonDecrease.setEnabled(false);
+            buttonIncrease.setEnabled(false);
+        } else if (installmentCurrentPosition > 0 && installmentCurrentPosition < installmentTotalPositions) {
+            buttonDecrease.setEnabled(true);
+            buttonIncrease.setEnabled(true);
+        } else if (installmentCurrentPosition > 0 && installmentCurrentPosition == installmentTotalPositions) {
+            buttonDecrease.setEnabled(true);
+            buttonIncrease.setEnabled(false);
+        } else if (installmentCurrentPosition == 0 && installmentCurrentPosition < installmentTotalPositions) {
+            buttonDecrease.setEnabled(false);
+            buttonIncrease.setEnabled(true);
+        }
+    }
+
+    private void onDecreaseTerm() {
+        if (installmentCurrentPosition > 0 && installmentCurrentPosition <= installmentTotalPositions) {
+            installmentCurrentPosition -= 1;
+            setInstallmentTerm();
+        }
+        disableEnableInstallmentButton();
+    }
+
+    private void onIncraseTerm() {
+        if (installmentCurrentPosition >= 0 && installmentCurrentPosition < installmentTotalPositions) {
+            installmentCurrentPosition += 1;
+            setInstallmentTerm();
+        }
+        disableEnableInstallmentButton();
     }
 }

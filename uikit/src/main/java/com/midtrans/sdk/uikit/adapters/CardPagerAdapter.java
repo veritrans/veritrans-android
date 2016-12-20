@@ -66,4 +66,8 @@ public class CardPagerAdapter extends FragmentPagerAdapter {
         // shift the ID returned by getItemId outside the range of all previous fragments
         baseId += getCount() + n;
     }
+
+    public SaveCardRequest getCurrentItem(int position) {
+        return cardDetails.get(position);
+    }
 }

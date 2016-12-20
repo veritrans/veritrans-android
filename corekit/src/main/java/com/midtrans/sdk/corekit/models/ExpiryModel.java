@@ -6,6 +6,10 @@ import com.google.gson.annotations.SerializedName;
  * Created by ziahaqi on 7/19/16.
  */
 public class ExpiryModel {
+    public static final String UNIT_HOUR = "hours";
+    public static final String UNIT_MINUTE = "minutes";
+    public static final String UNIT_DAY = "days";
+
     @SerializedName("start_time")
     private String startTime;
     @SerializedName("unit")

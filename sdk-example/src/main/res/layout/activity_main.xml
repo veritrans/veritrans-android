@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -13,10 +14,12 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/app_name"
-        app:titleTextColor="@android:color/white"/>
+        app:titleTextColor="@android:color/white" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="fill_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -69,6 +72,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/eight_dp"
+                android:text="@string/card_secure_options"
+                android:visibility="visible" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <RadioButton
+                    android:id="@+id/radio_not_secure"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:checked="true"
+                    android:text="@string/card_not_secure" />
+
+                <RadioButton
+                    android:id="@+id/radio_secure"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/card_secure" />
+            </RadioGroup>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
                 android:text="@string/bank_options"
                 android:visibility="visible" />
 
@@ -82,20 +115,72 @@
                     android:id="@+id/radio_bni"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.25"
                     android:text="@string/bank_bni" />
 
                 <RadioButton
                     android:id="@+id/radio_mandiri"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.25"
                     android:text="@string/bank_mandiri" />
+
+                <RadioButton
+                    android:id="@+id/radio_bca"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:text="@string/bank_bca" />
+
+                <RadioButton
+                    android:id="@+id/radio_maybank"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:text="@string/bank_maybank" />
             </RadioGroup>
-<View
-    android:layout_width="match_parent"
-    android:layout_height="2dp"
-    android:background="@color/gray_divider" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:text="@string/expiry_options"
+                android:visibility="visible" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_none"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:checked="true"
+                    android:text="@string/expiry_none" />
+
+                <RadioButton
+                    android:id="@+id/radio_1_minute"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:text="@string/expiry_one_minute" />
+
+                <RadioButton
+                    android:id="@+id/radio_1_hour"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:text="@string/expiry_one_hour" />
+            </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray_divider" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,10 +188,12 @@
                 android:text="Order Items"
                 android:textSize="25sp"
                 android:textStyle="bold" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/gray_divider" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,16 +216,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Trekking shoes"
-                        android:textSize="18sp"/>
-                    <TextView android:layout_width="match_parent"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="Rp.1.000"
                         android:textSize="20sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
 
-                    <TextView android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="5dp"
@@ -149,65 +239,84 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <View android:layout_width="match_parent"
+            <View
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#dfdfdf" />
 
-            <LinearLayout android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp">
 
-                <ImageView android:layout_width="80dp"
+                <ImageView
+                    android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/shoes_two"/>
-                <LinearLayout android:layout_width="match_parent"
+                    android:src="@drawable/shoes_two" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingLeft="24dp">
-                    <TextView android:layout_width="match_parent"
+
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Casual shoes"
-                        android:textSize="18sp"/>
-                    <TextView android:layout_width="match_parent"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="Rp.1.000"
                         android:textSize="20sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
-                    <TextView android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="5dp"
                         android:paddingRight="16dp"
                         android:text="Quantity : 1"
-                        android:textSize="18sp"
-                        />
+                        android:textSize="18sp" />
 
 
                 </LinearLayout>
             </LinearLayout>
-            <View android:layout_width="match_parent"
+
+            <View
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#dfdfdf"/>
-            <LinearLayout android:layout_width="match_parent"
+                android:background="#dfdfdf" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp">
-                <ImageView android:layout_width="80dp"
+
+                <ImageView
+                    android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/shoes_three" />
-                <LinearLayout android:layout_width="match_parent"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingLeft="24dp">
-                    <TextView android:layout_width="match_parent"
+
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Formal shoes"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/textView"
@@ -219,18 +328,21 @@
                         android:textStyle="bold" />
 
 
-                    <TextView android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="5dp"
                         android:paddingRight="16dp"
                         android:text="Quantity :1"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
 
                 </LinearLayout>
             </LinearLayout>
-            <View android:layout_width="match_parent"
+
+            <View
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#dfdfdf" />
 
@@ -245,6 +357,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/show_core_example"
                     android:layout_width="0dp"
@@ -264,6 +377,275 @@
                     android:text="@string/btn_show_ui_flow"
                     android:textColor="@color/white" />
             </LinearLayout>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/title_show_credit_card_example" />
+
+            <Button
+                android:id="@+id/show_credit_card_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/eight_dp"
+                android:text="@string/btn_start_credit_card"
+                android:textColor="@color/white"
+                android:visibility="visible" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/btn_start_bank_transfer" />
+
+            <Button
+                android:id="@+id/show_bank_transfer_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/eight_dp"
+                android:text="@string/btn_general"
+                android:textColor="@color/white"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/show_bank_transfer_permata_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.25"
+                    android:text="@string/btn_permata"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_bank_transfer_mandiri_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.25"
+                    android:text="@string/btn_mandiri"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_bank_transfer_bca_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.25"
+                    android:text="@string/btn_bca"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_bank_transfer_other_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.25"
+                    android:text="@string/btn_other"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/bca_payment" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/show_bca_klikpay_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/btn_start_bca_klikpay"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_klik_bca_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/btn_start_klik_bca"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/mandiri_payment" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/show_mandiri_clickpay_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/btn_start_mandiri_clickpay"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_mandiri_ecash_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/btn_start_mandiri_ecash"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/other_internet_banking_payment" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/show_cimb_clicks_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/btn_start_cimb_clicks"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_bri_epay_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/btn_start_bri_epay"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/mobile_credit_payment" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/show_telkomsel_cash"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/btn_telkomsel_cash"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_indosat_dompetku"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/btn_indosat_dompetku"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_xl_tunai"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/btn_xl_tunai"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/convenience_store" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/show_indomaret"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/indomaret_cs"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/show_kioson"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/kioson_cs"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/other_payment" />
+
+            <Button
+                android:id="@+id/show_gci"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/giftcard"
+                android:textColor="@color/white"
+                android:visibility="visible" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Title"
