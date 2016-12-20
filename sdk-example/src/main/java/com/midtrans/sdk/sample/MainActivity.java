@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn, indomaretBtn, kiosonBtn, gciBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn, tcashBtn, indosatBtn, xlTunaiBtn;
-    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour;
     private Toolbar toolbar;
 
     @Override
@@ -140,6 +140,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             creditCard.setBank(BankType.MAYBANK);
             // credit card payment using bank Maybank need migs channel
             creditCard.setChannel(CreditCard.MIGS);
+        } else if (bankBri.isChecked()) {
+            // Set bank to BRI
+            creditCard.setBank(BankType.BRI);
+            // credit card payment using bank BRI need migs channel
+            creditCard.setChannel(CreditCard.MIGS);
         }
 
         String cardClickType;
@@ -210,8 +215,16 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         bankMandiri = (RadioButton) findViewById(R.id.radio_mandiri);
         bankBCA = (RadioButton) findViewById(R.id.radio_bca);
         bankMaybank = (RadioButton) findViewById(R.id.radio_maybank);
+        bankBri = (RadioButton) findViewById(R.id.radio_bri);
 
         bankMaybank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                secure.setChecked(true);
+            }
+        });
+
+        bankBri.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 secure.setChecked(true);
