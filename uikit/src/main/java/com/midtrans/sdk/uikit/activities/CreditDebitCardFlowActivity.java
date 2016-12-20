@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
@@ -765,6 +766,28 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
 
     public void initBankBins() {
+        readDefaultBankBins();
+        MidtransSDK.getInstance().getBankBins(new BankBinsCallback() {
+            @Override
+            public void onSuccess(ArrayList<BankBinsResponse> response) {
+                bankBins.clear();
+                bankBins.addAll(response);
+            }
+
+            @Override
+            public void onFailure(String reason) {
+                Log.i(TAG, "bankbins>failure:" + reason);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                Log.i(TAG, "bankbins>error:" + error.getMessage());
+
+            }
+        });
+    }
+
+    private void readDefaultBankBins() {
         ArrayList<BankBinsResponse> loadedBankBins = SdkUIFlowUtil.getBankBins(this);
         if (loadedBankBins != null && !loadedBankBins.isEmpty()) {
             bankBins.clear();
