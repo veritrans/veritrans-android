@@ -126,7 +126,7 @@ public class GCIPaymentFragment extends Fragment {
             cardNumberContainer.setError(null);
         }
 
-        if (cardNumber.length() < 13 ) {
+        if (cardNumber.length() < 16 ) {
             cardNumberContainer.setError(getString(R.string.validation_message_invalid_card_no));
             isValid = false;
         } else {

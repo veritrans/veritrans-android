@@ -63,9 +63,9 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
         Intent data = getIntent();
         if (data != null) {
             position = data.getIntExtra(getString(R.string.position), Constants
-                    .PAYMENT_METHOD_INDOMARET);
+                    .PAYMENT_METHOD_GCI);
         } else {
-            SdkUIFlowUtil.showSnackbar(GCIActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showSnackbar(this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -168,7 +168,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
     private void performTransaction() {
 
         if (paymentFragment.checkFormValidity()) {
-            SdkUIFlowUtil.showProgressDialog(GCIActivity.this, getString(R.string.processing_payment),
+            SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment),
                     false);
 
             String cardNumber = paymentFragment.getCardNumber();
@@ -180,7 +180,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
                 public void onSuccess(TransactionResponse response) {
                     SdkUIFlowUtil.hideProgressDialog();
                     if (response != null) {
-                        GCIActivity.this.transactionResponse = response;
+                        transactionResponse = response;
                         appBarLayout.setExpanded(true);
                         setUpTransactionStatusFragment(response);
                     } else {
@@ -190,8 +190,8 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
                 @Override
                 public void onFailure(TransactionResponse response, String reason) {
-                    GCIActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                    GCIActivity.this.transactionResponse = response;
+                    errorMessage = getString(R.string.message_payment_failed);
+                    transactionResponse = response;
                     SdkUIFlowUtil.hideProgressDialog();
                     if (retryNumber > 0) {
                         buttonConfirmPayment.setText(getString(R.string.retry));
@@ -205,7 +205,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
                 @Override
                 public void onError(Throwable error) {
                     SdkUIFlowUtil.hideProgressDialog();
-                    GCIActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                    errorMessage = getString(R.string.message_payment_failed);
                     SdkUIFlowUtil.showSnackbar(GCIActivity.this, "" + errorMessage);
                 }
             });
