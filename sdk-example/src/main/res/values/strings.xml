@@ -127,4 +127,6 @@
     <string name="convenience_store">Convenience Store</string>
     <string name="indomaret_cs">Indomaret</string>
     <string name="kioson_cs">Kioson</string>
+    <string name="other_payment">Other Payment</string>
+    <string name="giftcard">Gift Card</string>
 </resources>

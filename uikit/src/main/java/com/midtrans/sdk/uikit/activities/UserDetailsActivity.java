@@ -36,6 +36,7 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String XL_TUNAI = "xltunai";
     public static final String INDOMARET = "indomaret";
     public static final String KIOSON = "kioson";
+    public static final String GIFT_CARD = "gci";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,8 @@ public class UserDetailsActivity extends BaseActivity {
                         paymentOptionIntent.putExtra(INDOMARET, true);
                     } else if (getIntent().getBooleanExtra(KIOSON, false)) {
                         paymentOptionIntent.putExtra(KIOSON, true);
+                    } else if (getIntent().getBooleanExtra(GIFT_CARD, false)) {
+                        paymentOptionIntent.putExtra(GIFT_CARD, true);
                     }
                     startActivity(paymentOptionIntent);
                     finish();
