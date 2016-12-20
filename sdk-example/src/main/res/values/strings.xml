@@ -59,6 +59,7 @@
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
     <string name="bank_bca">BCA</string>
+    <string name="bank_bri">BRI</string>
     <string name="bank_maybank">Maybank</string>
     <string name="expiry_options">Custom Expiry Options</string>
     <string name="expiry_none">None</string>
