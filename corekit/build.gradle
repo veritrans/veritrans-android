@@ -67,6 +67,12 @@ android {
             buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.midtrans.com/snap\""
         }
 
+        staging {
+            DEFAULT_PUBLISH = "stagingRelease"
+            buildConfigField "String", "BASE_URL", "\"https://api.stg.midtrans.com/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.stg.midtrans.com/snap\""
+        }
+
         production {
             DEFAULT_PUBLISH = "productionRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.midtrans.com/v2/\""
@@ -163,6 +169,38 @@ publishing {
                 }
 
                 configurations.developmentCompile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+            }
+        }
+
+        BintrayStagingPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/corekit-staging-release.aar")
+            groupId group
+            artifactId 'corekit'
+            version version + "-STAGING"
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    if (it.group == 'com.midtrans') {
+                        dependencyNode.appendNode('version', it.version + '-STAGING')
+                    } else {
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+
+                configurations.stagingCompile.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
