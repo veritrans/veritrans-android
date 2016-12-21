@@ -115,29 +115,41 @@
                     android:id="@+id/radio_bni"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:text="@string/bank_bni" />
+                    android:layout_weight="0.2"
+                    android:text="@string/bank_bni"
+                    android:textSize="@dimen/small_text_size" />
 
                 <RadioButton
                     android:id="@+id/radio_mandiri"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:text="@string/bank_mandiri" />
+                    android:layout_weight="0.2"
+                    android:text="@string/bank_mandiri"
+                    android:textSize="@dimen/small_text_size" />
 
                 <RadioButton
                     android:id="@+id/radio_bca"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:text="@string/bank_bca" />
+                    android:layout_weight="0.2"
+                    android:text="@string/bank_bca"
+                    android:textSize="@dimen/small_text_size" />
 
                 <RadioButton
                     android:id="@+id/radio_maybank"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:text="@string/bank_maybank" />
+                    android:layout_weight="0.2"
+                    android:text="@string/bank_maybank"
+                    android:textSize="@dimen/small_text_size" />
+
+                <RadioButton
+                    android:id="@+id/radio_bri"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:text="@string/bank_bri"
+                    android:textSize="@dimen/small_text_size" />
             </RadioGroup>
 
             <TextView

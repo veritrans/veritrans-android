@@ -387,8 +387,6 @@ public class SDKUtilsTest {
         SdkUtil.getUserDetails(transactionRequestMock);
 
         verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString());
-
     }
 
 
