@@ -42,6 +42,7 @@ public class MidtransRestAdapter {
                 .setEndpoint(baseUrl)
                 .setConverter(new GsonConverter(gson))
                 .setLogLevel(LOG_LEVEL)
+                .setRequestInterceptor(buildMidtransRequestInterceptor())
                 .setClient(new OkClient(okHttpClient));
         RestAdapter restAdapter = builder.build();
         return restAdapter.create(MidtransRestAPI.class);
@@ -98,6 +99,18 @@ public class MidtransRestAdapter {
             @Override
             public void intercept(RequestFacade request) {
                 request.addHeader("X-Source", "mobile");
+                request.addHeader("Accept", "application/json");
+                request.addHeader("Content-Type", "application/json");
+            }
+        };
+    }
+
+    private static RequestInterceptor buildMidtransRequestInterceptor() {
+        return new RequestInterceptor() {
+            @Override
+            public void intercept(RequestFacade request) {
+                request.addHeader("Accept", "application/json");
+                request.addHeader("Content-Type", "application/json");
             }
         };
     }
