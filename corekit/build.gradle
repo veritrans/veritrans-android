@@ -102,6 +102,7 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     // Analytics Manager
     developmentCompile 'com.midtrans:analytics:1.1.1-SANDBOX'
+    stagingCompile 'com.midtrans:analytics:1.1.1-SANDBOX'
     productionCompile 'com.midtrans:analytics:1.1.1'
 
     /*
