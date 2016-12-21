@@ -555,7 +555,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         Logger.d(TAG, "in onActivity result : request code is " + requestCode + "," + resultCode);
         Logger.d(TAG, "in onActivity result : data:" + data);
 
