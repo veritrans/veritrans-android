@@ -426,5 +426,7 @@
     <string name="info_gci_payment">PENTING! Setelah konfirmasi pembayaran, anda tidak bisa merubah metode pembayarannya</string>
     <string name="error_password_empty">PIN harus diisi</string>
     <string name="error_password_invalid">Masukkan PIN yang benar</string>
-
+    <string name="text_items">Barang</string>
+    <string name="text_order_details">Detil Pesanan</string>
+    <string name="text_price">Harga</string>
 </resources>

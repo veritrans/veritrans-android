@@ -38,8 +38,8 @@ public class BoldTextView extends TextView {
     private void init() {
         MidtransSDK paymentSdk = MidtransSDK.getInstance();
         if (paymentSdk != null) {
-            if (paymentSdk.getDefaultText() != null) {
-                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getDefaultText());
+            if (paymentSdk.getBoldText() != null) {
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getBoldText());
                 if (typeface != null) {
                     setTypeface(typeface);
                 }

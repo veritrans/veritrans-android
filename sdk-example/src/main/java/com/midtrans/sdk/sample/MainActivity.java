@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private TransactionRequest initializePurchaseRequest(int sampleSDKType) {
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(UUID.randomUUID().toString(), 3000);
+                TransactionRequest(UUID.randomUUID().toString(), 6000);
 
         //define customer detail (mandatory for coreflow)
         CustomerDetails mCustomerDetails = new CustomerDetails();
@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         // Define item details
         ItemDetails itemDetails = new ItemDetails("1", 1000, 1, "Trekking Shoes");
-        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 1, "Casual Shoes");
-        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 1, "Formal Shoes");
+        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 2, "Casual Shoes");
+        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 3, "Formal Shoes");
 
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();

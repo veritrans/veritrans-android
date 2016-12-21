@@ -2,11 +2,8 @@ package com.midtrans.sdk.uikit.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +13,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,6 +27,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
@@ -41,7 +38,9 @@ import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
+import com.midtrans.sdk.uikit.models.ItemViewDetails;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.squareup.picasso.Picasso;
 
@@ -94,11 +93,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     //Views
     private Toolbar toolbar = null;
-    private AppBarLayout mAppBarLayout = null;
-    private RecyclerView mRecyclerView = null;
-    private TextView headerTextView = null;
-    private TextView textViewMeasureHeight = null;
-    private TextView amountText = null;
+    private RecyclerView paymentMethodsView = null;
+    private RecyclerView itemDetailsView = null;
     private TextView merchantName = null;
     private LinearLayout progressContainer = null;
     private ImageView logo = null;
@@ -158,52 +154,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     }
 
     /**
-     * if recycler view fits within screen then it will disable the scrolling of it.
-     */
-    private void handleScrollingOfRecyclerView() {
-        setAlphaAttribute(headerTextView, 1);
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                int hiddenTextViewHeight = textViewMeasureHeight.getHeight();
-                int appBarHeight = mAppBarLayout.getHeight();
-                int exactHeightForCompare = hiddenTextViewHeight - appBarHeight;
-
-                int oneRowHeight = dp2px(60);
-                int totalHeight = (mRecyclerView.getAdapter().getItemCount() - 1) * oneRowHeight;
-
-                if (totalHeight < exactHeightForCompare) {
-                    disableScrolling();
-                    setAlphaAttribute(headerTextView, 1);
-                }
-            }
-        }, 200);
-    }
-
-    private void setAlphaAttribute(TextView view, float value) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            view.setAlpha(value);
-        } else {
-            AlphaAnimation alpha = new AlphaAnimation(0f, value);
-            alpha.setFillAfter(true);
-            view.startAnimation(alpha);
-        }
-    }
-
-    /**
-     * Disable scrolling of recycler view.
-     */
-    private void disableScrolling() {
-        //turn off scrolling
-        CoordinatorLayout.LayoutParams appBarLayoutParams = (CoordinatorLayout.LayoutParams)
-                mAppBarLayout.getLayoutParams();
-        appBarLayoutParams.setBehavior(null);
-        mAppBarLayout.setLayoutParams(appBarLayoutParams);
-    }
-
-    /**
      * bind views , initializes adapter and set it to recycler view.
      */
     private void setUpPaymentMethods() {
@@ -220,12 +170,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void setupRecyclerView() {
         paymentMethodsAdapter = new PaymentMethodsAdapter(this);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(
+        paymentMethodsView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setAdapter(paymentMethodsAdapter);
-        // disable scrolling of recycler view if there is no need of it.
-        handleScrollingOfRecyclerView();
+        paymentMethodsView.setAdapter(paymentMethodsAdapter);
     }
 
     /**
@@ -236,8 +183,28 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
 
         if (midtransSDK != null) {
+            List<ItemViewDetails> itemViewDetails = new ArrayList<>();
+            // Add amount
             String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount()));
-            amountText.setText(amount);
+            // Add header
+            itemViewDetails.add(new ItemViewDetails(
+                    null,
+                    amount,
+                    ItemViewDetails.TYPE_ITEM_HEADER,
+                    midtransSDK.getTransactionRequest().getItemDetails().size() > 0));
+            // Add item
+            for (ItemDetails itemDetails : midtransSDK.getTransactionRequest().getItemDetails()) {
+                String price = getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.getPrice()));
+                String itemName = itemDetails.getName();
+                if (itemDetails.getQuantity() > 1) {
+                    itemName = getString(R.string.text_item_name_format, itemDetails.getName(), itemDetails.getQuantity());
+                }
+                itemViewDetails.add(new ItemViewDetails(itemName, price, ItemViewDetails.TYPE_ITEM, true));
+            }
+
+            ItemDetailsAdapter adapter = new ItemDetailsAdapter(itemViewDetails);
+            itemDetailsView.setLayoutManager(new LinearLayoutManager(this));
+            itemDetailsView.setAdapter(adapter);
         }
     }
 
@@ -245,12 +212,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
      * initialize views.
      */
     private void bindActivity() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_payment_methods);
+        paymentMethodsView = (RecyclerView) findViewById(R.id.rv_payment_methods);
+        itemDetailsView = (RecyclerView) findViewById(R.id.rv_item_list);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
-        headerTextView = (TextView) findViewById(R.id.title_header);
-        amountText = (TextView) findViewById(R.id.header_view_sub_title);
-        textViewMeasureHeight = (TextView) findViewById(R.id.textview_to_compare);
         logo = (ImageView) findViewById(R.id.merchant_logo);
         merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
