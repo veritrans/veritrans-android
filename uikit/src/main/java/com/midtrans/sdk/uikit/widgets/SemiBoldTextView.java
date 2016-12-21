@@ -38,8 +38,8 @@ public class SemiBoldTextView extends TextView {
     private void init() {
         MidtransSDK paymentSdk = MidtransSDK.getInstance();
         if (paymentSdk != null) {
-            if (paymentSdk.getDefaultText() != null) {
-                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getDefaultText());
+            if (paymentSdk.getSemiBoldText() != null) {
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getSemiBoldText());
                 if (typeface != null) {
                     setTypeface(typeface);
                 }
