@@ -502,9 +502,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                 case TransactionResult.STATUS_PENDING:
                     Toast.makeText(this, "Transaction Pending. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
                     break;
-                case TransactionResult.STATUS_INVALID:
-                    Toast.makeText(this, "Transaction Invalid. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getValidationMessages().get(0), Toast.LENGTH_LONG).show();
-                    break;
                 case TransactionResult.STATUS_FAILED:
                     Toast.makeText(this, "Transaction Failed. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
                     break;
@@ -512,7 +509,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         } else if (result.isTransactionCanceled()) {
             Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
+            if (result.getStatus().equalsIgnoreCase(TransactionResult.STATUS_INVALID)) {
+                Toast.makeText(this, "Transaction Invalid", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
