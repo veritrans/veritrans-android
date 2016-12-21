@@ -51,11 +51,7 @@ public abstract class BaseSdkBuilder<T> {
      * @return it returns fully initialized object of midtrans sdk.
      */
     public MidtransSDK buildSDK() {
-        if (MidtransSDK.getInstance() != null) {
-            return MidtransSDK.getInstance();
-        }
-
-        if (MidtransSDK.getInstance() == null && isValidData()) {
+        if (isValidData()) {
             MidtransSDK midtransSDK = MidtransSDK.delegateInstance(this);
             return midtransSDK;
 
