@@ -56,6 +56,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'io.card:android-sdk:5.3.4'
     developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
+    stagingCompile project(path: ':uikit', configuration: 'stagingRelease')
     productionCompile project(path: ':uikit', configuration: 'productionRelease')
 }
 
