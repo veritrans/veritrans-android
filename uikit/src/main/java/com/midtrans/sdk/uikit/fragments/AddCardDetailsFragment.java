@@ -386,8 +386,8 @@ public class AddCardDetailsFragment extends Fragment {
             showInstallmentLayout(false);
         } else if (midtransSDK.getCreditCard() != null
                 && midtransSDK.getCreditCard().getBank() != null
-                && (midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK))
-                || midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.BRI)) {
+                && (midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)
+                || midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.BRI))) {
             showInstallmentLayout(false);
         } else {
             String cleanCardNumber = etCardNo.getText().toString().trim().replace(" ", "").substring(0, 6);
