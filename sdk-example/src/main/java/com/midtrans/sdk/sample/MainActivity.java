@@ -177,6 +177,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             }
         }
 
+        // apply promo transaction
+        transactionRequestNew.setPaymentWithPromo(true);
+
         ExpiryModel expiryModel = new ExpiryModel();
         expiryModel.setStartTime(Utils.getFormattedTime(System.currentTimeMillis()));
         expiryModel.setDuration(1);

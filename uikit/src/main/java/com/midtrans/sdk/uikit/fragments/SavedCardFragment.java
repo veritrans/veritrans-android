@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +27,12 @@ import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.adapters.CardPagerAdapter;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.CirclePageIndicator;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 import java.util.ArrayList;
 
 public class SavedCardFragment extends Fragment {
+    private static final String PARAM_CARD_BINS = "param_card_bins";
     int installmentCurrentPosition, installmentTotalPositions;
     private ViewPager savedCardPager;
     private CirclePageIndicator circlePageIndicator;
@@ -46,6 +49,7 @@ public class SavedCardFragment extends Fragment {
     private Button buttonIncrease;
     private Button buttonDecrease;
     private LinearLayout layoutInstallment;
+    private DefaultTextView textInvalidPromoStatus;
 
     public SavedCardFragment() {
 
@@ -91,6 +95,7 @@ public class SavedCardFragment extends Fragment {
         buttonDecrease = (Button) view.findViewById(R.id.button_installment_decrease);
         buttonIncrease = (Button) view.findViewById(R.id.button_installment_increase);
         layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installment);
+        textInvalidPromoStatus = (DefaultTextView) view.findViewById(R.id.text_offer_status_not_applied);
         buttonIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,6 +146,7 @@ public class SavedCardFragment extends Fragment {
                     @Override
                     public void onPageSelected(int position) {
                         setupCardInstallment();
+                        setupPromoValidation();
                     }
 
                     @Override
@@ -152,8 +158,48 @@ public class SavedCardFragment extends Fragment {
                 ((CreditDebitCardFlowActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyCardsTextView);
                 showHideNoCardMessage();
                 setupCardInstallment();
+                setupPromoValidation();
             }
 
+        }
+    }
+
+    private void setupPromoValidation() {
+        if (((CreditDebitCardFlowActivity) getActivity()).isPaymentWithPromo()) {
+            if (checkPromoValidity()) {
+                ((CreditDebitCardFlowActivity) getActivity()).setPromoValidationStatus(true);
+            } else {
+                ((CreditDebitCardFlowActivity) getActivity()).setPromoValidationStatus(false);
+            }
+        }
+    }
+
+
+    private boolean checkPromoValidity() {
+        boolean valid = true;
+        SaveCardRequest currentCard = cardPagerAdapter.getCurrentItem(savedCardPager.getCurrentItem());
+        if (!TextUtils.isEmpty(currentCard.getMaskedCard())) {
+            String cardBin = currentCard.getMaskedCard().substring(0, 6);
+
+            if (((CreditDebitCardFlowActivity) getActivity()).isCardBinValid(cardBin)) {
+                showInvalidPromoStatus(false);
+            } else {
+                showInvalidPromoStatus(true);
+                valid = false;
+            }
+        } else {
+            showInvalidPromoStatus(true);
+            valid = false;
+        }
+
+        return valid;
+    }
+
+    private void showInvalidPromoStatus(boolean show) {
+        if (show) {
+            textInvalidPromoStatus.setVisibility(View.VISIBLE);
+        } else {
+            textInvalidPromoStatus.setVisibility(View.GONE);
         }
     }
 
