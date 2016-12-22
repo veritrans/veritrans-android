@@ -107,6 +107,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private String installmentBank;
     private ArrayList<Integer> installmentTerms = new ArrayList<>();
     private int installmentTermSelected;
+    private boolean whiteListBinsAvailable = false;
+    private boolean cardBinValid = false;
 
     public MorphingButton getBtnMorph() {
         return btnMorph;
@@ -137,6 +139,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         calculateScreenWidth();
         if (midtransSDK != null) {
             initBankBins();
+            initWhiteListBinStatus();
             if (!midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
                 getCreditCards();
             } else {
@@ -552,12 +555,22 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void oneClickPayment(String maskedCardNumber) {
+        if (isPaymentWithPromo() && !isCardBinValid()) {
+            SdkUIFlowUtil.showSnackbar(this, getString(R.string.message_payment_cannot_proccessed));
+            return;
+        }
+
         this.isNewCard = false;
         this.maskedCardNumber = maskedCardNumber;
         payUsingCard();
     }
 
     public void twoClickPayment(CardTokenRequest cardDetail) {
+        if (isPaymentWithPromo() && !isCardBinValid()) {
+            SdkUIFlowUtil.showSnackbar(this, getString(R.string.message_payment_cannot_proccessed));
+            return;
+        }
+
         this.isNewCard = false;
         CardTokenRequest cardTokenRequest = new CardTokenRequest();
         cardTokenRequest.setSavedTokenId(cardDetail.getSavedTokenId());
@@ -749,7 +762,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     if (midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_one_click))
                             && card.getType().equals(getString(R.string.saved_card_one_click))) {
                         filteredCards.add(card);
-                        filteredCards.add(card);
                     } else if (midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_two_click))
                             && card.getType().equals(getString(R.string.saved_card_two_click))) {
                         filteredCards.add(card);
@@ -795,6 +807,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
     }
 
+    public boolean isCardBinValid(String cardBin) {
+        return isInWhiteList(cardBin);
+    }
 
     public ArrayList<Integer> getInstallmentTerms(String cardBin) {
         if (isInWhiteList(cardBin)) {
@@ -858,5 +873,29 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     public void setInstallment(int termPosition) {
         this.installmentTermSelected = this.installmentTerms.size() == 0 ? 0 : this.installmentTerms.get(termPosition);
+    }
+
+    private void initWhiteListBinStatus() {
+        ArrayList<String> whiteListBin = MidtransSDK.getInstance().getCreditCard().getWhitelistBins();
+        if (whiteListBin != null && !whiteListBin.isEmpty()) {
+            whiteListBinsAvailable = true;
+        }
+    }
+
+    public boolean isWhiteListBinsAvailable() {
+        return whiteListBinsAvailable;
+    }
+
+    private boolean isCardBinValid() {
+        return cardBinValid;
+    }
+
+    public void setPromoValidationStatus(boolean cardBinValid) {
+        this.cardBinValid = cardBinValid;
+    }
+
+    public boolean isPaymentWithPromo() {
+        boolean isPaymentWithPromo = MidtransSDK.getInstance().getTransactionRequest().isPaymentWithPromo();
+        return isPaymentWithPromo && isWhiteListBinsAvailable();
     }
 }

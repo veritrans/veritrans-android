@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.MidtransDialog;
 
 import java.text.SimpleDateFormat;
@@ -71,6 +73,7 @@ public class AddCardDetailsFragment extends Fragment {
     private String cardType = "";
     private RelativeLayout formLayout;
     private LinearLayout layoutInstallment;
+    private DefaultTextView textInvalidPromoStatus;
 
     public static AddCardDetailsFragment newInstance() {
         AddCardDetailsFragment fragment = new AddCardDetailsFragment();
@@ -140,6 +143,7 @@ public class AddCardDetailsFragment extends Fragment {
         buttonIncrease = (Button) view.findViewById(R.id.button_installment_increase);
         buttonDecrease = (Button) view.findViewById(R.id.button_installment_decrease);
         textInstallmentTerm = (TextView) view.findViewById(R.id.text_installment_term);
+        textInvalidPromoStatus = (DefaultTextView) view.findViewById(R.id.text_offer_status_not_applied);
 
         buttonIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +170,7 @@ public class AddCardDetailsFragment extends Fragment {
             public void onFocusChange(View view, boolean hasfocus) {
                 if (!hasfocus) {
                     checkCardNumberValidity();
+                    checkPromoValidity();
                     initCardInstallment();
                 }
             }
@@ -213,14 +218,21 @@ public class AddCardDetailsFragment extends Fragment {
                 questionSaveCardImg.setVisibility(View.VISIBLE);
             }
         }
+
         payNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 // Track event pay now
                 midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
                 // Track event checkbox save card
                 if (cbStoreCard.isChecked()) {
                     midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CHECKBOX_SAVE_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
+                }
+
+                if (!checkPromoValidity()) {
+                    SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.message_payment_cannot_proccessed));
+                    return;
                 }
 
                 if (checkCardValidity()) {
@@ -370,6 +382,46 @@ public class AddCardDetailsFragment extends Fragment {
                     }
                 }
         );
+    }
+
+
+    private boolean isCarBinValid() {
+        boolean valid = false;
+        String cardNumber = etCardNo.getText().toString().trim();
+        if (TextUtils.isEmpty(cardNumber)) {
+            showInvalidPromoStatus(true);
+
+        } else if (cardNumber.length() < 7) {
+            showInvalidPromoStatus(true);
+        } else {
+            String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+            if (((CreditDebitCardFlowActivity) getActivity()).isCardBinValid(cardBin)) {
+                showInvalidPromoStatus(false);
+                valid = true;
+            } else {
+                showInvalidPromoStatus(true);
+            }
+        }
+
+
+        return valid;
+    }
+
+    private boolean checkPromoValidity() {
+        if (((CreditDebitCardFlowActivity) getActivity()).isPaymentWithPromo()) {
+            if (!isCarBinValid()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void showInvalidPromoStatus(boolean show) {
+        if (show) {
+            textInvalidPromoStatus.setVisibility(View.VISIBLE);
+        } else {
+            textInvalidPromoStatus.setVisibility(View.GONE);
+        }
     }
 
     private void setPaymentInstallment() {
