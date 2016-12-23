@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn, indomaretBtn, kiosonBtn, gciBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn, tcashBtn, indosatBtn, xlTunaiBtn;
-    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour, promoActive, promoInactive;
     private Toolbar toolbar;
 
     @Override
@@ -178,7 +178,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         }
 
         // apply promo transaction
-        transactionRequestNew.setPaymentWithPromo(true);
+        if (promoActive.isChecked()) {
+            transactionRequestNew.setPaymentWithPromo(true);
+        }
 
         ExpiryModel expiryModel = new ExpiryModel();
         expiryModel.setStartTime(Utils.getFormattedTime(System.currentTimeMillis()));
@@ -219,6 +221,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         bankBCA = (RadioButton) findViewById(R.id.radio_bca);
         bankMaybank = (RadioButton) findViewById(R.id.radio_maybank);
         bankBri = (RadioButton) findViewById(R.id.radio_bri);
+
+        promoActive = (RadioButton) findViewById(R.id.radio_promo_active);
+        promoInactive = (RadioButton) findViewById(R.id.radio_promo_inactive);
 
         bankMaybank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
