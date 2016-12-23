@@ -11,13 +11,57 @@
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
+
         <RelativeLayout
             android:id="@+id/form_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/sixteen_dp">
+            <LinearLayout
+                android:layout_marginBottom="@dimen/sixteen_dp"
+                android:id="@+id/layout_offer_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:visibility="gone"
+                    android:id="@+id/text_offer_status_applied"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bg_offer_success"
+                    android:drawableLeft="@drawable/ic_offer_success"
+                    android:drawablePadding="@dimen/eight_dp"
+                    android:drawableStart="@drawable/ic_offer_success"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/four_dp"
+                    android:paddingLeft="@dimen/eight_dp"
+                    android:paddingRight="@dimen/eight_dp"
+                    android:paddingTop="@dimen/four_dp"
+                    android:text="@string/offer_applied"
+                    android:textColor="@color/text_offer_success"
+                    android:textSize="@dimen/eleven_sp"/>
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:visibility="gone"
+                    android:id="@+id/text_offer_status_not_applied"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bg_offer_failure"
+                    android:drawableLeft="@drawable/ic_offer_fail"
+                    android:drawablePadding="@dimen/eight_dp"
+                    android:drawableStart="@drawable/ic_offer_fail"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/four_dp"
+                    android:paddingLeft="@dimen/eight_dp"
+                    android:paddingRight="@dimen/eight_dp"
+                    android:paddingTop="@dimen/four_dp"
+                    android:text="@string/offer_not_applied"
+                    android:textColor="@color/text_offer_failure"
+                    android:textSize="@dimen/eleven_sp"/>
+            </LinearLayout>
             <RelativeLayout
+                android:layout_below="@id/layout_offer_status"
                 android:id="@+id/card_no_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -192,6 +236,7 @@
 
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
+
     <RelativeLayout
         android:padding="@dimen/sixteen_dp"
         android:layout_width="match_parent"
