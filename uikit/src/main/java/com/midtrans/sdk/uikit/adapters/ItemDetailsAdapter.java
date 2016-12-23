@@ -19,6 +19,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final int TYPE_HEADER = 1002;
     private static final int TYPE_ITEM = 1003;
+    private boolean itemShown = false;
 
     private List<ItemViewDetails> itemViewDetails;
 
@@ -30,7 +31,15 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_HEADER:
-                View headerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_item_header, parent, false);
+                final View headerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_item_header, parent, false);
+                headerView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        itemShown = !itemShown;
+                        notifyDataSetChanged();
+                    }
+                });
+
                 return new ItemHeaderViewHolder(headerView);
             case TYPE_ITEM:
                 View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_item_details, parent, false);
@@ -46,13 +55,11 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TYPE_HEADER:
                 ItemHeaderViewHolder headerViewHolder = (ItemHeaderViewHolder) holder;
                 headerViewHolder.amount.setText(itemViewDetails.get(position).getValue());
-                if (itemViewDetails.get(position).isItemAvailable()) {
+                if (itemViewDetails.get(position).isItemAvailable() && itemShown) {
                     headerViewHolder.containerItem.setVisibility(View.VISIBLE);
-                    headerViewHolder.orderTitle.setVisibility(View.VISIBLE);
                     headerViewHolder.divider.setVisibility(View.VISIBLE);
                 } else {
                     headerViewHolder.containerItem.setVisibility(View.GONE);
-                    headerViewHolder.orderTitle.setVisibility(View.GONE);
                     headerViewHolder.divider.setVisibility(View.GONE);
                 }
                 break;
@@ -68,7 +75,11 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return itemViewDetails.size();
+        if (itemShown) {
+            return itemViewDetails.size();
+        } else {
+            return 1;
+        }
     }
 
     @Override
@@ -96,14 +107,12 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView amount;
         View containerItem;
         View divider;
-        TextView orderTitle;
 
-        public ItemHeaderViewHolder(View itemView) {
+        public ItemHeaderViewHolder(final View itemView) {
             super(itemView);
             divider = itemView.findViewById(R.id.divider);
             amount = (TextView) itemView.findViewById(R.id.total_amount);
             containerItem = itemView.findViewById(R.id.item_details_container);
-            orderTitle = (TextView) itemView.findViewById(R.id.order_title);
         }
     }
 }
