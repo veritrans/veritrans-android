@@ -401,8 +401,20 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         ArrayList<SaveCardRequest> requests = new ArrayList<>();
         requests.addAll(getCreditCardList());
         String cardType = midtransSDK.getTransactionRequest().getCardClickType();
+        if(savedCardAlreadyExist(creditCard.getMaskedCard(), requests)){
+            return;
+        }
         requests.add(new SaveCardRequest(creditCard.getSavedTokenId(), creditCard.getMaskedCard(), cardType));
         saveCreditCards(requests, false);
+    }
+
+    private boolean savedCardAlreadyExist(String maskedCard, ArrayList<SaveCardRequest> savedCards) {
+        for(SaveCardRequest card : savedCards){
+            if(card.getMaskedCard().equals(maskedCard)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void saveCreditCards(ArrayList<SaveCardRequest> requests, boolean isRemoveCard) {
@@ -756,11 +768,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 }
             } else {
                 //if token storage on merchantserver then saved cards can be used just for two click
-                for (SaveCardRequest card : cards) {
-                    if (midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_two_click))
-                            && card.getType().equals(getString(R.string.card_click_type_two_click))) {
-                        filteredCards.add(card);
-                    }
+                String clickType = midtransSDK.getTransactionRequest().getCardClickType();
+                if (!TextUtils.isEmpty(clickType) && clickType.equals(getString(R.string.card_click_type_two_click))) {
+                    filteredCards.addAll(cards);
                 }
             }
         }
