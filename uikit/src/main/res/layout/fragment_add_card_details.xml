@@ -1,15 +1,15 @@
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <RelativeLayout
@@ -17,15 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/sixteen_dp">
+
             <LinearLayout
-                android:layout_marginBottom="@dimen/sixteen_dp"
                 android:id="@+id/layout_offer_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/sixteen_dp"
                 android:orientation="vertical">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:visibility="gone"
                     android:id="@+id/text_offer_status_applied"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -40,10 +40,10 @@
                     android:paddingTop="@dimen/four_dp"
                     android:text="@string/offer_applied"
                     android:textColor="@color/text_offer_success"
-                    android:textSize="@dimen/eleven_sp"/>
+                    android:textSize="@dimen/eleven_sp"
+                    android:visibility="gone" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:visibility="gone"
                     android:id="@+id/text_offer_status_not_applied"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -58,13 +58,15 @@
                     android:paddingTop="@dimen/four_dp"
                     android:text="@string/offer_not_applied"
                     android:textColor="@color/text_offer_failure"
-                    android:textSize="@dimen/eleven_sp"/>
+                    android:textSize="@dimen/eleven_sp"
+                    android:visibility="gone" />
             </LinearLayout>
+
             <RelativeLayout
-                android:layout_below="@id/layout_offer_status"
                 android:id="@+id/card_no_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_offer_status">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/til_card_no"
@@ -80,18 +82,18 @@
                         android:imeOptions="actionNext"
                         android:inputType="number"
                         android:maxLength="19"
-                        android:nextFocusDown="@+id/et_exp_date"
-                        android:singleLine="true" />
+                        android:maxLines="1"
+                        android:nextFocusDown="@+id/et_exp_date" />
                 </android.support.design.widget.TextInputLayout>
 
                 <ImageView
-                    android:layout_marginBottom="@dimen/four_dp"
                     android:id="@+id/payment_card_logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginBottom="@dimen/four_dp"
                     tools:src="@drawable/ic_visa" />
             </RelativeLayout>
 
@@ -108,9 +110,9 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/exp_til"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.6">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/et_exp_date"
@@ -121,14 +123,14 @@
                         android:imeOptions="actionNext"
                         android:inputType="date"
                         android:maxLength="5"
-                        android:nextFocusDown="@+id/et_cvv"
-                        android:singleLine="true" />
+                        android:maxLines="1"
+                        android:nextFocusDown="@+id/et_cvv" />
                 </android.support.design.widget.TextInputLayout>
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.4">
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/cvv_til"
@@ -143,7 +145,7 @@
                             android:imeOptions="actionDone"
                             android:inputType="numberPassword"
                             android:maxLength="6"
-                            android:singleLine="true" />
+                            android:maxLines="1" />
 
                     </android.support.design.widget.TextInputLayout>
                 </RelativeLayout>
@@ -195,15 +197,15 @@
                 android:visibility="gone" />
 
             <LinearLayout
-                android:paddingBottom="@dimen/sixtyfour_dp"
-                android:visibility="gone"
                 android:id="@+id/layout_installment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/scan_card"
                 android:layout_marginTop="@dimen/four_dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/sixtyfour_dp"
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/button_installment_decrease"
@@ -238,12 +240,13 @@
     </android.support.v4.widget.NestedScrollView>
 
     <RelativeLayout
-        android:padding="@dimen/sixteen_dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="185dp"
+        android:padding="@dimen/sixteen_dp">
 
         <com.midtrans.sdk.uikit.widgets.MorphingButton
             android:id="@+id/btnMorph1"
