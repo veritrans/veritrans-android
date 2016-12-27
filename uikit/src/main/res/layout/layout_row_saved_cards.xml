@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingTop="@dimen/eight_dp"
+    android:paddingBottom="@dimen/eight_dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_centerVertical="true"
+            android:id="@+id/image_arrow_right"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_arrow_right"
+            android:alpha="0.3"
+            android:layout_width="@dimen/thirtytwo_dp"
+            android:layout_height="@dimen/thirtytwo_dp" />
+        <ImageView
+            android:layout_marginRight="@dimen/four_dp"
+            android:layout_marginLeft="@dimen/four_dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/image_card_type"
+            android:layout_toLeftOf="@id/image_arrow_right"
+            android:src="@drawable/ic_mastercard"
+            android:layout_width="@dimen/fortytwo_dp"
+            android:layout_height="@dimen/fortytwo_dp" />
+        <ImageView
+            android:layout_centerVertical="true"
+            android:id="@+id/image_card_offer"
+            android:layout_toLeftOf="@id/image_card_type"
+            android:src="@drawable/ic_offers"
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="@dimen/twenty_four_dp" />
+        <TextView
+            android:id="@+id/text_saved_card_name"
+            android:layout_toLeftOf="@id/image_card_offer"
+            android:text="Visa-4811"
+            android:textSize="18sp"
+            android:maxLines="1"
+            android:layout_marginBottom="@dimen/four_dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/text_saved_card_number"
+            android:layout_below="@id/text_saved_card_name"
+            android:layout_toLeftOf="@id/image_cc_offer"
+            android:text="4811 **** **** **48"
+            android:layout_width="match_parent"
+            android:maxLines="1"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <View
+        android:layout_marginTop="8dp"
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_divider"
+        />
+</LinearLayout>

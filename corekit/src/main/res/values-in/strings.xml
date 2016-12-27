@@ -61,9 +61,9 @@
     <string name="hint_name_on_card">Nama pada kartu</string>
     <string name="hint_card_number">Nomor Kartu</string>
     <string name="hint_cvv">CVV</string>
-    <string name="save_card_message">Simpan kartu ini untuk transaksi selanjutnya</string>
+    <string name="save_card_message">Simpan detail kartu saya</string>
     <string name="pay_now">Bayar Sekarang</string>
-    <string name="pay_with_instalments">Bayar dengan cicilan</string>
+    <string name="pay_with_instalments">Bayar dengan cicilan ?</string>
     <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
     <string name="hint_expiry_date">Kadaluarsa(mm/yy)</string>
     <string name="validation_message_card_number">Masukkan nomor kartu</string>

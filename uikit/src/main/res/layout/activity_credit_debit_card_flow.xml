@@ -42,68 +42,23 @@
                         android:orientation="horizontal">
 
                         <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.35"
-                            android:text="@string/orderId"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/secondary_text_size" />
-
-                        <com.midtrans.sdk.uikit.widgets.BoldTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
-                            android:gravity="center"
-                            android:text="@string/text_colon"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/secondary_text_size"
-                            android:textStyle="bold" />
-
-                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                            android:id="@+id/text_order_id"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.7"
-                            android:gravity="right"
-                            android:text="@string/text_order_id_here"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/secondary_text_size" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.35"
                             android:text="@string/payable_amount"
+                            android:textStyle="bold"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/secondary_text_size" />
-
-                        <com.midtrans.sdk.uikit.widgets.BoldTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
-                            android:gravity="center"
-                            android:text="@string/text_colon"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/secondary_text_size"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/primary_text_size" />
 
                         <com.midtrans.sdk.uikit.widgets.DefaultTextView
                             android:id="@+id/text_amount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.7"
+                            android:layout_weight="1"
                             android:gravity="right"
+                            android:textStyle="bold"
                             android:text="@string/text_amount_here"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/secondary_text_size" />
+                            android:textSize="@dimen/primary_text_size" />
                     </LinearLayout>
                 </LinearLayout>
 

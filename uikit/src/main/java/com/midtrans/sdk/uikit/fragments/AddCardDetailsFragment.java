@@ -7,15 +7,14 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,11 +24,9 @@ import android.widget.TextView;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.models.BankDetail;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
@@ -55,10 +52,10 @@ public class AddCardDetailsFragment extends Fragment {
     private EditText etCardNo;
     private EditText etCvv;
     private EditText etExpiryDate;
-    private CheckBox cbStoreCard;
-    private Button cvvHelpButton, buttonIncrease, buttonDecrease;
+    private SwitchCompat switchSaveCard;
+    private Button buttonIncrease, buttonDecrease;
     private ImageView logo;
-    private ImageView questionSaveCardImg;
+    private ImageView imageCvvHelp;
     private Button payNowBtn;
     private Button scanCardBtn;
     private String cardNumber;
@@ -68,11 +65,9 @@ public class AddCardDetailsFragment extends Fragment {
     private int expMonth;
     private int expYear;
     private MidtransSDK midtransSDK;
-    private UserDetail userDetail;
-    private ArrayList<BankDetail> bankDetails;
     private String cardType = "";
     private RelativeLayout formLayout;
-    private LinearLayout layoutInstallment;
+    private LinearLayout layoutInstallment, layoutSaveCard;
     private DefaultTextView textInvalidPromoStatus;
 
     public static AddCardDetailsFragment newInstance() {
@@ -90,8 +85,6 @@ public class AddCardDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.card_details));
         midtransSDK = ((CreditDebitCardFlowActivity) getActivity()).getMidtransSDK();
-        userDetail = ((CreditDebitCardFlowActivity) getActivity()).getUserDetail();
-        bankDetails = ((CreditDebitCardFlowActivity) getActivity()).getBankDetails();
     }
 
     @Override
@@ -133,13 +126,13 @@ public class AddCardDetailsFragment extends Fragment {
         etCardNo = (EditText) view.findViewById(R.id.et_card_no);
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
-        cbStoreCard = (CheckBox) view.findViewById(R.id.cb_store_card);
-        cvvHelpButton = (Button) view.findViewById(R.id.cvv_help_button);
-        questionSaveCardImg = (ImageView) view.findViewById(R.id.image_question_save_card);
+        switchSaveCard = (SwitchCompat) view.findViewById(R.id.cb_store_card);
+        imageCvvHelp = (ImageView) view.findViewById(R.id.image_cvv_help);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
         logo = (ImageView) view.findViewById(R.id.payment_card_logo);
         layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installment);
+        layoutSaveCard = (LinearLayout) view.findViewById(R.id.layout_save_card_detail);
         buttonIncrease = (Button) view.findViewById(R.id.button_installment_increase);
         buttonDecrease = (Button) view.findViewById(R.id.button_installment_decrease);
         textInstallmentTerm = (TextView) view.findViewById(R.id.text_installment_term);
@@ -159,7 +152,7 @@ public class AddCardDetailsFragment extends Fragment {
             }
         });
 
-        cbStoreCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        switchSaveCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 checkCardValidity();
@@ -193,7 +186,6 @@ public class AddCardDetailsFragment extends Fragment {
         });
 
         if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
-            cvvHelpButton.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
             payNowBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
             scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getDefaultText()));
             if (midtransSDK.getExternalScanner() != null) {
@@ -211,11 +203,9 @@ public class AddCardDetailsFragment extends Fragment {
                 scanCardBtn.setVisibility(View.GONE);
             }
             if (midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
-                cbStoreCard.setVisibility(View.GONE);
-                questionSaveCardImg.setVisibility(View.GONE);
+                showSwitchSaveCardLayout(false);
             } else {
-                cbStoreCard.setVisibility(View.VISIBLE);
-                questionSaveCardImg.setVisibility(View.VISIBLE);
+                showSwitchSaveCardLayout(true);
             }
         }
 
@@ -226,7 +216,7 @@ public class AddCardDetailsFragment extends Fragment {
                 // Track event pay now
                 midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
                 // Track event checkbox save card
-                if (cbStoreCard.isChecked()) {
+                if (switchSaveCard.isChecked()) {
                     midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CHECKBOX_SAVE_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
                 }
 
@@ -242,7 +232,7 @@ public class AddCardDetailsFragment extends Fragment {
                     CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv,
                             month, year,
                             midtransSDK.getClientKey());
-                    cardTokenRequest.setIsSaved(cbStoreCard.isChecked());
+                    cardTokenRequest.setIsSaved(switchSaveCard.isChecked());
                     cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
                     cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
                     cardTokenRequest.setCardType(cardType);
@@ -251,24 +241,16 @@ public class AddCardDetailsFragment extends Fragment {
                     //make payment
                     SdkUIFlowUtil.showProgressDialog(getActivity(), false);
                     setPaymentInstallment();
-                    ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(cbStoreCard.isChecked(), cardType);
+                    ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(switchSaveCard.isChecked(), cardType);
                     ((CreditDebitCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
                 }
             }
         });
-        cvvHelpButton.setOnClickListener(new View.OnClickListener() {
+        imageCvvHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MidtransDialog midtransDialog = new MidtransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
-                midtransDialog.show();
-            }
-        });
-        questionSaveCardImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MidtransDialog midtransDialog = new MidtransDialog(getActivity(), getResources().getDrawable(R.drawable.cart_dialog),
-                        getString(R.string.message_save_card), getString(R.string.got_it), "");
                 midtransDialog.show();
             }
         });
@@ -407,6 +389,15 @@ public class AddCardDetailsFragment extends Fragment {
         return valid;
     }
 
+
+
+    private void showSwitchSaveCardLayout(boolean show) {
+        if(show){
+            layoutSaveCard.setVisibility(View.VISIBLE);
+        }else{
+            layoutSaveCard.setVisibility(View.GONE);
+        }
+    }
     private boolean checkPromoValidity() {
         if (((CreditDebitCardFlowActivity) getActivity()).isPaymentWithPromo()) {
             if (!isCarBinValid()) {

@@ -94,7 +94,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private CirclePageIndicator circlePageIndicator;
     private TextView emptyCardsTextView;
     private TextView titleHeaderTextView;
-    private DefaultTextView textOrderId, textTotalAmount;
+    private DefaultTextView textTotalAmount;
     private ImageView logo;
     private int fabHeight;
     private MorphingButton btnMorph;
@@ -129,7 +129,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         titleHeaderTextView = (TextView) findViewById(R.id.text_title);
         btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
         logo = (ImageView) findViewById(R.id.merchant_logo);
-        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
 
         initializeTheme();
@@ -147,7 +146,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
                 titleHeaderTextView.setText(getString(R.string.card_details));
             }
-            textOrderId.setText(midtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
         }
@@ -808,6 +806,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public boolean isCardBinValid(String cardBin) {
+        Log.d("binval", "isvalid:" + isInWhiteList(cardBin));
         return isInWhiteList(cardBin);
     }
 
