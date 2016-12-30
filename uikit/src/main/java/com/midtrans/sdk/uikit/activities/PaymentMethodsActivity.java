@@ -336,14 +336,15 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void initPaymentMethods(List<EnabledPayment> enabledPayments) {
         initialiseAdapterData(enabledPayments);
+        String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
         if (isCreditCardOnly) {
             // track payment select credit card
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
             Intent intent = new Intent(PaymentMethodsActivity.this, CreditDebitCardFlowActivity.class);
             startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isBankTransferOnly) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, null);
             Intent startBankPayment = new Intent(PaymentMethodsActivity.this, SelectBankTransferActivity.class);
             if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
                 startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, true);
@@ -358,63 +359,63 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isBCAKlikpay) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BCA_KLIKPAY, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BCA_KLIKPAY, null);
             Intent startBCAKlikPayActivity = new Intent(this, BCAKlikPayActivity.class);
             startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isKlikBCA) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_KLIK_BCA, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_KLIK_BCA, null);
             Intent startKlikBcaActivity = new Intent(this, KlikBCAActivity.class);
             startKlikBcaActivity.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
             startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isMandiriClickPay) {
             // track payment select mandiri clickpay
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_CLICKPAY, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_CLICKPAY, null);
             Intent startMandiriClickpay = new Intent(this, MandiriClickPayActivity.class);
             startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isMandiriECash) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_ECASH, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_ECASH, null);
             Intent startMandiriECash = new Intent(this, MandiriECashActivity.class);
             startActivityForResult(startMandiriECash, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isCIMBClicks) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_CIMB_CLICK, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_CIMB_CLICK, null);
             Intent startCIMBClickpay = new Intent(this, CIMBClickPayActivity.class);
             startActivityForResult(startCIMBClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isBRIEpay) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BRI_EPAY, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BRI_EPAY, null);
             Intent startMandiriClickpay = new Intent(this, EpayBriActivity.class);
             startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isTelkomselCash) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_TELKOMSEL_ECASH, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_TELKOMSEL_ECASH, null);
             Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
             startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isIndosatDompetku) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOSAT_DOMPETKU, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOSAT_DOMPETKU, null);
             Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
             startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isXlTunai) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_XL_TUNAI, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_XL_TUNAI, null);
             Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
             startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isIndomaret) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOMARET, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOMARET, null);
             Intent startIndomaret = new Intent(this, IndomaretActivity.class);
             startActivityForResult(startIndomaret, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isKioson) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_KIOSON, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_KIOSON, null);
             Intent kiosanActvity = new Intent(this, KiosonActivity.class);
             startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (isGci) {
             // track payment select Gift Card Indonesia
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_GCI, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_GCI, null);
             Intent gciActivity = new Intent(this, GCIActivity.class);
             startActivityForResult(gciActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else {
@@ -431,46 +432,46 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void startPaymentMethod(PaymentMethodsModel paymentMethod) {
         String name = paymentMethod.getName();
-
+        String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
         if (name.equalsIgnoreCase(getString(R.string.payment_method_credit_card))) {
             // track payment select credit card
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
             Intent intent = new Intent(this, CreditDebitCardFlowActivity.class);
             startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bank_transfer))) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, null);
             Intent startBankPayment = new Intent(this, SelectBankTransferActivity.class);
             startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
             startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_clickpay))) {
             // track payment select mandiri clickpay
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_CLICKPAY, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_CLICKPAY, null);
             Intent startMandiriClickpay = new Intent(this, MandiriClickPayActivity.class);
             startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bri_epay))) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BRI_EPAY, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BRI_EPAY, null);
             Intent startMandiriClickpay = new Intent(this, EpayBriActivity.class);
             startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_cimb_clicks))) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_CIMB_CLICK, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_CIMB_CLICK, null);
             Intent startCIMBClickpay = new Intent(this, CIMBClickPayActivity.class);
             startActivityForResult(startCIMBClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_ecash))) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_ECASH, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_ECASH, null);
             Intent startMandiriECash = new Intent(this, MandiriECashActivity.class);
             startActivityForResult(startMandiriECash, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_indosat_dompetku))) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOSAT_DOMPETKU, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOSAT_DOMPETKU, null);
             Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
             startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_indomaret))) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOMARET, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOMARET, null);
             Intent startIndomaret = new Intent(this, IndomaretActivity.class);
             startActivityForResult(startIndomaret, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_offers))) {
@@ -478,33 +479,33 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             startActivityForResult(startOffersActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bca_klikpay))) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BCA_KLIKPAY, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BCA_KLIKPAY, null);
             Intent startBCAKlikPayActivity = new Intent(this, BCAKlikPayActivity.class);
             startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_klik_bca))) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_KLIK_BCA, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_KLIK_BCA, null);
             Intent startKlikBcaActivity = new Intent(this, KlikBCAActivity.class);
             startKlikBcaActivity.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
             startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_telkomsel_cash))) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_TELKOMSEL_ECASH, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_TELKOMSEL_ECASH, null);
             Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
             startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_xl_tunai))) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_XL_TUNAI, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_XL_TUNAI, null);
             Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
             startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_kioson))) {
             // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_KIOSON, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_KIOSON, null);
             Intent kiosanActvity = new Intent(this, KiosonActivity.class);
             startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_gci))) {
             // track payment select Gift Card Indonesia
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_GCI, null);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_GCI, null);
             Intent gciActivity = new Intent(this, GCIActivity.class);
             startActivityForResult(gciActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else {
@@ -585,7 +586,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                             || isTelkomselCash || isIndosatDompetku || isXlTunai
                             || isIndomaret || isKioson || isGci) {
                         // track cancel transaction
-                        midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
+                        midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(MidtransSDK.getInstance().readAuthenticationToken(), KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 
                         midtransSDK.notifyTransactionFinished(new TransactionResult(true));
                         finish();
@@ -608,7 +609,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                                 || isTelkomselCash || isIndosatDompetku || isXlTunai
                                 || isIndomaret || isKioson || isGci) {
                             // track cancel transaction
-                            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
+                            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(MidtransSDK.getInstance().readAuthenticationToken(), KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 
                             midtransSDK.notifyTransactionFinished(new TransactionResult(true));
                             finish();
@@ -717,7 +718,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             return;
         }
         // track cancel transaction
-        midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
+        midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(MidtransSDK.getInstance().readAuthenticationToken(), KEY_CANCEL_TRANSACTION_EVENT, PAYMENT_SNAP, null);
 
         midtransSDK.notifyTransactionFinished(new TransactionResult(true));
         super.onBackPressed();

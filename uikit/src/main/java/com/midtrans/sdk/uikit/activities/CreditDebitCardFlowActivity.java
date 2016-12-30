@@ -469,14 +469,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             } else if (requestCode == SCAN_REQUEST_CODE) {
                 if (data != null && data.hasExtra(ExternalScanner.EXTRA_SCAN_DATA)) {
                     // track scan event success
-                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SCAN_SUCCESS_EVENT, PAYMENT_CREDIT_CARD, null);
+                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(MidtransSDK.getInstance().readAuthenticationToken(), KEY_SCAN_SUCCESS_EVENT, PAYMENT_CREDIT_CARD, null);
 
                     ScannerModel scanData = (ScannerModel) data.getSerializableExtra(ExternalScanner.EXTRA_SCAN_DATA);
                     Logger.i(String.format("Card Number: %s, Card Expire: %s/%d", scanData.getCardNumber(), scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
                     updateCreditCardData(Utils.getFormattedCreditCardNumber(scanData.getCardNumber()), scanData.getCvv(), String.format("%s/%d", scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
                 } else {
                     // track scan event failed
-                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SCAN_FAILED_EVENT, PAYMENT_CREDIT_CARD, null);
+                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(MidtransSDK.getInstance().readAuthenticationToken(), KEY_SCAN_FAILED_EVENT, PAYMENT_CREDIT_CARD, null);
 
                     Logger.d("No result");
                 }
@@ -498,7 +498,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
             } else if (requestCode == SCAN_REQUEST_CODE) {
                 // track scan cancelled
-                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SCAN_CANCELLED_EVENT, PAYMENT_CREDIT_CARD, null);
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(MidtransSDK.getInstance().readAuthenticationToken(), KEY_SCAN_CANCELLED_EVENT, PAYMENT_CREDIT_CARD, null);
             }
         }
     }

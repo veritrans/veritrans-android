@@ -674,11 +674,13 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
 
         } else {
             if (checkCardValidity()) {
+                String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
+
                 // track mixpanel event for pay
-                getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, PAYMENT_CREDIT_CARD, null);
+                getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_PAY_BUTTON_EVENT, PAYMENT_CREDIT_CARD, null);
                 // track mixpanel event for save card
                 if (checkboxStoreCard.isChecked()) {
-                    getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_CHECKBOX_SAVE_CARD_EVENT, PAYMENT_CREDIT_CARD, null);
+                    getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_CHECKBOX_SAVE_CARD_EVENT, PAYMENT_CREDIT_CARD, null);
                 }
 
                 setTransactionRequest(transactionRequest);
@@ -730,8 +732,9 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
 
     private void oneClickPayment(String maskedCard) {
         // track one click
-        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_SAVED_CARD_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
-        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
+        String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
+        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SAVED_CARD_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
+        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_PAY_BUTTON_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
 
         CreditCardPaymentModel cardPaymentModel = new CreditCardPaymentModel(maskedCard);
         payUsingCreditCard(getMidtransSDK().readAuthenticationToken(), cardPaymentModel);
@@ -763,9 +766,11 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     private void twoClickPayment(SaveCardRequest selectedCard, String cardCVV) {
+
         // track two click payment
-        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_SAVED_CARD_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
-        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
+        String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
+        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SAVED_CARD_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
+        getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_PAY_BUTTON_EVENT, PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
 
         CardTokenRequest request = new CardTokenRequest();
         request.setSavedTokenId(selectedCard.getSavedTokenId());
@@ -1091,7 +1096,6 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     /**
-     *
      * @param cardPaymentEnabled Enabled credit card payment type
      */
     public void setCardPaymentEnabled(int cardPaymentEnabled) {
@@ -1099,7 +1103,6 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     /**
-     *
      * @param userId
      * @param transactionRequest
      */
