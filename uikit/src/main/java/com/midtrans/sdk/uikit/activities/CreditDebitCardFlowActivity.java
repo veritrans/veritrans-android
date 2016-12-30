@@ -60,7 +60,11 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.MorphingButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import static com.midtrans.sdk.uikit.utilities.ReadBankDetailTask.ReadBankDetailCallback;
 
@@ -345,6 +349,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                                 break;
                             }
                         }
+
                         if (position >= 0) {
                             creditCards.remove(position);
                         }
@@ -404,8 +409,21 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         ArrayList<SaveCardRequest> requests = new ArrayList<>();
         requests.addAll(getCreditCardList());
         String cardType = midtransSDK.getTransactionRequest().getCardClickType();
+        SaveCardRequest savedCard = findCardByMaskedNumber(creditCard.getMaskedCard(), requests);
+        if (savedCard != null) {
+            requests.remove(savedCard);
+        }
         requests.add(new SaveCardRequest(creditCard.getSavedTokenId(), creditCard.getMaskedCard(), cardType));
         saveCreditCards(requests, false);
+    }
+
+    private SaveCardRequest findCardByMaskedNumber(String maskedCard, ArrayList<SaveCardRequest> savedCards) {
+        for (SaveCardRequest card : savedCards) {
+            if (card.getMaskedCard().equals(maskedCard)) {
+                return card;
+            }
+        }
+        return null;
     }
 
     public void saveCreditCards(ArrayList<SaveCardRequest> requests, boolean isRemoveCard) {
@@ -529,6 +547,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                                 }
                             }, 200);
                             Logger.i("cards api successful" + cardResponse);
+                            filterMultipleSavedCard(cardResponse);
                             bindSavedCards(cardResponse);
                         }
 
@@ -551,6 +570,16 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             }
         } catch (Exception e) {
             Logger.e(TAG, e.getMessage());
+        }
+    }
+
+    private void filterMultipleSavedCard(ArrayList<SaveCardRequest> savedCards) {
+        Collections.reverse(savedCards);
+        Set<String> maskedCardSet = new HashSet<>();
+        for (Iterator<SaveCardRequest> it = savedCards.iterator(); it.hasNext(); ) {
+            if (!maskedCardSet.add(it.next().getMaskedCard())) {
+                it.remove();
+            }
         }
     }
 
@@ -769,7 +798,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 }
             } else {
                 //if token storage on merchantserver then saved cards can be used just for two click
-                filteredCards.addAll(cards);
+                String clickType = midtransSDK.getTransactionRequest().getCardClickType();
+                if (!TextUtils.isEmpty(clickType) && clickType.equals(getString(R.string.card_click_type_two_click))) {
+                    filteredCards.addAll(cards);
+                }
             }
         }
 

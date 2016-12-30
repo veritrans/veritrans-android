@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn, indomaretBtn, kiosonBtn, gciBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn, tcashBtn, indosatBtn, xlTunaiBtn;
-    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour, promoActive, promoInactive;
     private Toolbar toolbar;
 
     @Override
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private TransactionRequest initializePurchaseRequest(int sampleSDKType) {
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(UUID.randomUUID().toString(), 3000);
+                TransactionRequest(UUID.randomUUID().toString(), 6000);
 
         //define customer detail (mandatory for coreflow)
         CustomerDetails mCustomerDetails = new CustomerDetails();
@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         // Define item details
         ItemDetails itemDetails = new ItemDetails("1", 1000, 1, "Trekking Shoes");
-        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 1, "Casual Shoes");
-        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 1, "Formal Shoes");
+        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 2, "Casual Shoes");
+        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 3, "Formal Shoes");
 
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
@@ -178,7 +178,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         }
 
         // apply promo transaction
-        transactionRequestNew.setPaymentWithPromo(true);
+        if (promoActive.isChecked()) {
+            transactionRequestNew.setPaymentWithPromo(true);
+        }
 
         ExpiryModel expiryModel = new ExpiryModel();
         expiryModel.setStartTime(Utils.getFormattedTime(System.currentTimeMillis()));
@@ -219,6 +221,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         bankBCA = (RadioButton) findViewById(R.id.radio_bca);
         bankMaybank = (RadioButton) findViewById(R.id.radio_maybank);
         bankBri = (RadioButton) findViewById(R.id.radio_bri);
+
+        promoActive = (RadioButton) findViewById(R.id.radio_promo_active);
+        promoInactive = (RadioButton) findViewById(R.id.radio_promo_inactive);
 
         bankMaybank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -518,9 +523,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                 case TransactionResult.STATUS_PENDING:
                     Toast.makeText(this, "Transaction Pending. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
                     break;
-                case TransactionResult.STATUS_INVALID:
-                    Toast.makeText(this, "Transaction Invalid. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getValidationMessages().get(0), Toast.LENGTH_LONG).show();
-                    break;
                 case TransactionResult.STATUS_FAILED:
                     Toast.makeText(this, "Transaction Failed. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
                     break;
@@ -528,7 +530,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         } else if (result.isTransactionCanceled()) {
             Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
+            if (result.getStatus().equalsIgnoreCase(TransactionResult.STATUS_INVALID)) {
+                Toast.makeText(this, "Transaction Invalid", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

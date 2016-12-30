@@ -3,30 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar_header_view"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
-    android:background="?colorPrimary"
-    android:padding="@dimen/eight_dp">
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/eight_dp"
+    android:paddingLeft="@dimen/sixteen_dp"
+    android:paddingRight="@dimen/sixteen_dp"
+    android:paddingTop="@dimen/eight_dp"
+    tools:background="?colorPrimary">
 
-    <!-- Title -->
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
-        android:id="@+id/header_view_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:text="@string/payable_amount"
-        android:textColor="@color/white"
-        android:textSize="@dimen/secondary_text_size" />
-
-    <!-- Subtitle -->
-    <com.midtrans.sdk.uikit.widgets.DefaultTextView
-        android:id="@+id/header_view_sub_title"
+        android:id="@+id/item_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:textColor="@color/white"
-        android:textSize="@dimen/header_text_size"
-        tools:text="Subtitle" />
+        android:textSize="@dimen/small_text_size"
+        tools:text="Rp 20.000" />
 
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/small_text_size"
+        tools:text="Mask of Madness" />
 </RelativeLayout>
