@@ -9,6 +9,8 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
@@ -44,6 +47,7 @@ public class AddCardDetailsFragment extends Fragment {
     private static final String KEY_PAY_BUTTON_EVENT = "Pay";
     private static final String KEY_SCAN_BUTTON_EVENT = "Scan Card";
     private static final String KEY_CHECKBOX_SAVE_CARD_EVENT = "Save Card";
+    private static final String ARGS_SAVED_CARD = "args_saved_card";
 
     TextInputLayout tilCardNo, tilCvv, tilExpiry;
     TextView textInstallmentTerm;
@@ -69,9 +73,13 @@ public class AddCardDetailsFragment extends Fragment {
     private RelativeLayout formLayout;
     private LinearLayout layoutInstallment, layoutSaveCard;
     private DefaultTextView textInvalidPromoStatus;
+    private SaveCardRequest savedCard;
 
-    public static AddCardDetailsFragment newInstance() {
+    public static AddCardDetailsFragment newInstance(SaveCardRequest card) {
         AddCardDetailsFragment fragment = new AddCardDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARGS_SAVED_CARD, card);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -85,6 +93,29 @@ public class AddCardDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.card_details));
         midtransSDK = ((CreditDebitCardFlowActivity) getActivity()).getMidtransSDK();
+    }
+
+    private void setupSavedCard() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            SaveCardRequest savedCard = (SaveCardRequest) bundle.getSerializable(ARGS_SAVED_CARD);
+            if (savedCard != null) {
+                this.savedCard = savedCard;
+
+                ((CreditDebitCardFlowActivity)getActivity()).showDeleteCardIcon(true);
+
+
+                etExpiryDate.setInputType(InputType.TYPE_CLASS_TEXT);
+                InputFilter[] FilterArray = new InputFilter[1];
+                FilterArray[0] = new InputFilter.LengthFilter(20);
+                etExpiryDate.setFilters(FilterArray);
+                etCardNo.setEnabled(false);
+                etExpiryDate.setEnabled(false);
+                etCvv.requestFocus();
+                etCardNo.setText(SdkUIFlowUtil.getMaskedCardNumber(savedCard.getMaskedCard()));
+                etExpiryDate.setText(SdkUIFlowUtil.getMaskedExpDate());
+            }
+        }
     }
 
     @Override
@@ -102,16 +133,16 @@ public class AddCardDetailsFragment extends Fragment {
             CreditDebitCardFlowActivity creditDebitCardFlowActivity = (CreditDebitCardFlowActivity) getActivity();
             if (creditDebitCardFlowActivity != null && creditDebitCardFlowActivity.getSupportActionBar() != null) {
                 creditDebitCardFlowActivity.getSupportActionBar().setTitle(getString(R.string.card_details));
-                creditDebitCardFlowActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
         bindViews(view);
-
+        setupSavedCard();
         ((CreditDebitCardFlowActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
         fadeIn();
     }
+
 
     @Override
     public void onDestroyView() {
@@ -246,6 +277,7 @@ public class AddCardDetailsFragment extends Fragment {
                 }
             }
         });
+
         imageCvvHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -390,14 +422,14 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
 
-
     private void showSwitchSaveCardLayout(boolean show) {
-        if(show){
+        if (show) {
             layoutSaveCard.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             layoutSaveCard.setVisibility(View.GONE);
         }
     }
+
     private boolean checkPromoValidity() {
         if (((CreditDebitCardFlowActivity) getActivity()).isPaymentWithPromo()) {
             if (!isCarBinValid()) {
@@ -494,6 +526,9 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     private boolean checkCardExpiryValidity() {
+        if (savedCard != null) {
+            return true;
+        }
         boolean isValid = true;
         expiryDate = etExpiryDate.getText().toString().trim();
         try {
@@ -667,5 +702,9 @@ public class AddCardDetailsFragment extends Fragment {
             setInstallmentTerm();
         }
         disableEnableInstallmentButton();
+    }
+
+    public SaveCardRequest getSavedCard() {
+        return savedCard;
     }
 }

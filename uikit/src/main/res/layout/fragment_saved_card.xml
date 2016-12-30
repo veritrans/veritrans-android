@@ -11,8 +11,6 @@
         android:id="@+id/layout_offer_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/sixteen_dp"
-        android:layout_marginBottom="@dimen/eight_dp"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
         android:orientation="vertical">
@@ -33,7 +31,7 @@
             android:text="@string/offer_applied"
             android:textColor="@color/text_offer_success"
             android:textSize="@dimen/eleven_sp"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/text_offer_status_not_applied"
@@ -51,21 +49,22 @@
             android:text="@string/offer_not_applied"
             android:textColor="@color/text_offer_failure"
             android:textSize="@dimen/eleven_sp"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginLeft="@dimen/sixteen_dp"
-        android:layout_marginRight="@dimen/sixteen_dp"
-        android:layout_below="@id/layout_offer_status"
-        android:layout_above="@id/layout_installment"
         android:id="@+id/credit_card_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/layout_installment"
+        android:layout_below="@id/layout_offer_status"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
         android:orientation="vertical"
         android:paddingTop="@dimen/eight_dp">
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_saved_cards"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -74,23 +73,35 @@
     </LinearLayout>
 
 
+        <com.midtrans.sdk.uikit.widgets.FancyButton
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:id="@+id/btn_add_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/credit_card_holder"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            app:fb_borderColor="?attr/colorPrimary"
+            app:fb_borderWidth="2dp"
+            app:fb_iconPaddingTop="5dp"
+            app:fb_defaultColor="@android:color/white"
+            app:fb_focusColor="@color/colorAccentLight"
+            app:fb_iconPosition="left"
+
+            app:fb_iconResource="@drawable/ic_plus_blue"
+            app:fb_radius="5dp"
+            app:fb_text="pay with new card"
+            app:fb_textColor="?attr/colorPrimary" />
+
     <RelativeLayout
         android:id="@+id/new_card_button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/sixteen_dp">
+        android:layout_margin="@dimen/sixteen_dp"
+        android:visibility="gone">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_add_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:foregroundGravity="bottom|right"
-            android:padding="0dp"
-            android:src="@drawable/ic_plus_action"
-            app:borderWidth="0dp"
-            app:elevation="0dp" />
     </RelativeLayout>
 </RelativeLayout>

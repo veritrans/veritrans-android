@@ -598,6 +598,7 @@
     <string name="error_password_empty">Please fill PIN</string>
     <string name="error_password_invalid">Please enter valid PIN</string>
     <string name="save_card_info">Card details above will be saved to help your future transactions.</string>
+    <string name="choose_card">Choose credit card</string>
 
 
 </resources>

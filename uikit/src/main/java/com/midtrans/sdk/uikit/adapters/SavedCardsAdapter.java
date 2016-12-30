@@ -7,9 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.models.BankTransferModel;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 import java.util.ArrayList;
 
@@ -18,9 +19,9 @@ import java.util.ArrayList;
  */
 
 public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.SavedCardsViewHolder> {
-    private static final String TAG = BankTransferListAdapter.class.getSimpleName();
+    private static final String TAG = SavedCardsAdapter.class.getSimpleName();
 
-    private ArrayList<BankTransferModel> mData = new ArrayList<>();
+    private ArrayList<SaveCardRequest> mData = new ArrayList<>();
     private SavedCardAdapterEventListener listener;
 
     public interface SavedCardAdapterEventListener {
@@ -31,13 +32,13 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         this.listener = listener;
     }
 
-    public void setData(ArrayList<BankTransferModel> banktransfers) {
+    public void setData(ArrayList<SaveCardRequest> cards) {
         this.mData.clear();
-        this.mData.addAll(banktransfers);
+        this.mData.addAll(cards);
         this.notifyDataSetChanged();
     }
 
-    public BankTransferModel getItem(int position) {
+    public SaveCardRequest getItem(int position) {
         return mData.get(position);
     }
 
@@ -50,11 +51,30 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
 
     @Override
     public void onBindViewHolder(SavedCardsAdapter.SavedCardsViewHolder holder, int position) {
-        holder.textCardName.setText(mData.get(position).getBankName());
-        holder.textCardNumber.setText();
-        holder.te.setImageResource(mData.get(position).getImage());
-        Logger.d(TAG, "Bank Item: " + mData.get(position).getBankName());
+        SaveCardRequest card = mData.get(position);
+        String maskedCard = card.getMaskedCard();
+        String cardType = Utils.getCardType(maskedCard);
+
+        switch (cardType) {
+            case Utils.CARD_TYPE_VISA:
+                holder.imageCardType.setImageResource(R.drawable.ic_visa);
+                break;
+            case Utils.CARD_TYPE_MASTERCARD:
+                holder.imageCardType.setImageResource(R.drawable.ic_mastercard);
+                break;
+            case Utils.CARD_TYPE_JCB:
+                holder.imageCardType.setImageResource(R.drawable.ic_jcb);
+                break;
+            case Utils.CARD_TYPE_AMEX:
+                holder.imageCardType.setImageResource(R.drawable.ic_amex);
+                break;
+        }
+        String cardName = maskedCard.substring(0, 4);
+        holder.textCardName.setText(cardType + "-" + cardName);
+        String cardNumber = SdkUIFlowUtil.getMaskedCardNumber(maskedCard);
+        holder.textCardNumber.setText(cardNumber);
     }
+
 
     @Override
     public int getItemCount() {

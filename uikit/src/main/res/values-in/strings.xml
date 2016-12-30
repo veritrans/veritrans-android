@@ -427,5 +427,6 @@
     <string name="error_password_empty">PIN harus diisi</string>
     <string name="error_password_invalid">Masukkan PIN yang benar</string>
     <string name="save_card_info">Detail kartu diatas akan disimpan untuk membantu transaksi anda berikutnya.</string>
+    <string name="choose_card">Pilih kartu kredit</string>
 
 </resources>

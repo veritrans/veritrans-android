@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
                     .enableLog(true)
-                    .useBuiltInTokenStorage(true) // enable built in token storage
+                    .useBuiltInTokenStorage(false) // enable built in token storage
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         }
 
         // apply promo transaction
-        transactionRequestNew.setPaymentWithPromo(true);
+        transactionRequestNew.setPaymentWithPromo(false);
 
         ExpiryModel expiryModel = new ExpiryModel();
         expiryModel.setStartTime(Utils.getFormattedTime(System.currentTimeMillis()));

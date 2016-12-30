@@ -1,61 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:paddingTop="@dimen/eight_dp"
-    android:paddingBottom="@dimen/eight_dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="?android:selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/four_dp"
+    android:paddingTop="@dimen/four_dp">
 
     <RelativeLayout
+        android:id="@+id/layout_cards_icons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
-            android:layout_centerVertical="true"
             android:id="@+id/image_arrow_right"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_arrow_right"
-            android:alpha="0.3"
             android:layout_width="@dimen/thirtytwo_dp"
-            android:layout_height="@dimen/thirtytwo_dp" />
-        <ImageView
-            android:layout_marginRight="@dimen/four_dp"
-            android:layout_marginLeft="@dimen/four_dp"
+            android:layout_height="@dimen/thirtytwo_dp"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:alpha="0.3"
+            android:src="@drawable/ic_arrow_right" />
+
+        <ImageView
             android:id="@+id/image_card_type"
-            android:layout_toLeftOf="@id/image_arrow_right"
-            android:src="@drawable/ic_mastercard"
-            android:layout_width="@dimen/fortytwo_dp"
-            android:layout_height="@dimen/fortytwo_dp" />
-        <ImageView
+            android:layout_width="@dimen/thirtytwo_dp"
+            android:layout_height="@dimen/thirtytwo_dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/four_dp"
+            android:layout_marginRight="@dimen/four_dp"
+            android:layout_toLeftOf="@id/image_arrow_right"
+            android:src="@drawable/ic_visa" />
+
+        <ImageView
             android:id="@+id/image_card_offer"
-            android:layout_toLeftOf="@id/image_card_type"
-            android:src="@drawable/ic_offers"
             android:layout_width="@dimen/twenty_four_dp"
-            android:layout_height="@dimen/twenty_four_dp" />
+            android:layout_height="@dimen/twenty_four_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/eight_dp"
+            android:layout_toLeftOf="@id/image_card_type"
+            android:src="@drawable/ic_promo" />
+
         <TextView
             android:id="@+id/text_saved_card_name"
-            android:layout_toLeftOf="@id/image_card_offer"
-            android:text="Visa-4811"
-            android:textSize="18sp"
-            android:maxLines="1"
-            android:layout_marginBottom="@dimen/four_dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/four_dp"
+            android:layout_toLeftOf="@id/image_card_offer"
+            android:maxLines="1"
+            android:textSize="@dimen/sixteen_sp" />
+
         <TextView
             android:id="@+id/text_saved_card_number"
-            android:layout_below="@id/text_saved_card_name"
-            android:layout_toLeftOf="@id/image_cc_offer"
-            android:text="4811 **** **** **48"
             android:layout_width="match_parent"
-            android:maxLines="1"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_saved_card_name"
+            android:layout_toLeftOf="@id/image_card_offer"
+            android:maxLines="1" />
     </RelativeLayout>
+
     <View
-        android:layout_marginTop="8dp"
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray_divider"
-        />
+        android:layout_marginTop="@dimen/four_dp"
+        android:background="@color/gray_divider" />
 </LinearLayout>
