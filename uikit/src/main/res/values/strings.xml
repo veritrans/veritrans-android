@@ -597,6 +597,10 @@
     <string name="info_gci_payment"><b>IMPORTANT!</b> After confirming your payment, you won’t be able to change payment method</string>
     <string name="error_password_empty">Please fill PIN</string>
     <string name="error_password_invalid">Please enter valid PIN</string>
+    <string name="text_order_details">Order Details</string>
+    <string name="text_items">Item(s)</string>
+    <string name="text_item_name_format">%1$s x%2$d</string>
+    <string name="text_price">Price</string>
     <string name="save_card_info">Card details above will be saved to help your future transactions.</string>
     <string name="choose_card">Choose credit card</string>
     <string name="add_new_card">pay with new card</string>

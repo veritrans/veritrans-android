@@ -130,4 +130,7 @@
     <string name="kioson_cs">Kioson</string>
     <string name="other_payment">Other Payment</string>
     <string name="giftcard">Gift Card</string>
+    <string name="promo">Promo</string>
+    <string name="promo_active">Active</string>
+    <string name="promo_inactive">Not Active</string>
 </resources>
