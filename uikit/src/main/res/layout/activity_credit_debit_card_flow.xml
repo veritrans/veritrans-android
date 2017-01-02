@@ -82,7 +82,6 @@
 
             <ImageView
                 android:id="@+id/image_saved_card_delete"
-                android:alpha="0.4"
                 android:visibility="invisible"
                 android:layout_marginRight="@dimen/sixteen_dp"
                 android:layout_width="24dp"

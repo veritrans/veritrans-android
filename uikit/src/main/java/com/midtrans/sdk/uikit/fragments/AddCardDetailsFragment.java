@@ -13,6 +13,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class AddCardDetailsFragment extends Fragment {
     private static final String KEY_SCAN_BUTTON_EVENT = "Scan Card";
     private static final String KEY_CHECKBOX_SAVE_CARD_EVENT = "Save Card";
     private static final String ARGS_SAVED_CARD = "args_saved_card";
+    private static final String TAG = AddCardDetailsFragment.class.getSimpleName();
 
     TextInputLayout tilCardNo, tilCvv, tilExpiry;
     TextView textInstallmentTerm;
@@ -100,6 +102,7 @@ public class AddCardDetailsFragment extends Fragment {
         if (bundle != null) {
             SaveCardRequest savedCard = (SaveCardRequest) bundle.getSerializable(ARGS_SAVED_CARD);
             if (savedCard != null) {
+                Log.i(TAG, "savedcard");
                 this.savedCard = savedCard;
 
                 if (!MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {

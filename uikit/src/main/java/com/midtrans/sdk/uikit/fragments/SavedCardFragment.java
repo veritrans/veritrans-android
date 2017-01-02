@@ -18,13 +18,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.activities.BaseActivity;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.adapters.SavedCardsAdapter;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -35,10 +33,8 @@ import java.util.ArrayList;
 public class SavedCardFragment extends Fragment implements SavedCardsAdapter.SavedCardAdapterEventListener {
     private static final String PARAM_CARD_BINS = "param_card_bins";
     private static final String TAG = SavedCardFragment.class.getSimpleName();
-    int installmentCurrentPosition, installmentTotalPositions;
     private FancyButton addCardBt;
     private ArrayList<SaveCardRequest> creditCards;
-    //private MorphingButton btnMorph;
     private LinearLayout creditCardLayout;
     private RelativeLayout newCardButtonLayout;
     private int creditCardLayoutHeight;
@@ -90,7 +86,6 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("onresume", "fromnewcard:" + fromBackStack);
         showLayouts();
     }
 
@@ -159,144 +154,16 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
             if (getActivity() != null) {
                 cardsAdapter.setData(creditCards);
                 fadeInAnimation(addCardBt);
-//                cardPagerAdapter = new CardPagerAdapter(this, getChildFragmentManager(),
-//                        creditCards, getActivity());
-//                savedCardPager.setAdapter(cardPagerAdapter);
-//                savedCardPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//                    @Override
-//                    public void onPageScrolled(int position, float positionOffset, int
-//                            positionOffsetPixels) {
-//                    }
-//
-//                    @Override
-//                    public void onPageSelected(int position) {
-//                        setupCardInstallment();
-//                        setupPromoValidation();
-//                    }
-//
-//                    @Override
-//                    public void onPageScrollStateChanged(int state) {
-//
-//                    }
-//                });
-//                circlePageIndicator.setViewPager(savedCardPager);
-//                ((CreditDebitCardFlowActivity) getActivity()).setAdapterViews(cardPagerAdapter, circlePageIndicator, emptyCardsTextView);
-//                showHideNoCardMessage();
-//                setupCardInstallment();
-//                setupPromoValidation();
             }
-
         }
     }
-//
-//    private void setupPromoValidation() {
-//        if (((CreditDebitCardFlowActivity) getActivity()).isPaymentWithPromo()) {
-//            if (checkPromoValidity()) {
-//                ((CreditDebitCardFlowActivity) getActivity()).setPromoValidationStatus(true);
-//            } else {
-//                ((CreditDebitCardFlowActivity) getActivity()).setPromoValidationStatus(false);
-//            }
-//        }
-//    }
-
-
-//    private boolean checkPromoValidity() {
-//        boolean valid = true;
-//        SaveCardRequest currentCard = cardPagerAdapter.getCurrentItem(savedCardPager.getCurrentItem());
-//        if (!TextUtils.isEmpty(currentCard.getMaskedCard())) {
-//            String cardBin = currentCard.getMaskedCard().substring(0, 6);
-//
-//            if (((CreditDebitCardFlowActivity) getActivity()).isCardBinValid(cardBin)) {
-//                showInvalidPromoStatus(false);
-//            } else {
-//                showInvalidPromoStatus(true);
-//                valid = false;
-//            }
-//        } else {
-//            showInvalidPromoStatus(true);
-//            valid = false;
-//        }
-//
-//        return valid;
-//    }
-
-//    private void showInvalidPromoStatus(boolean show) {
-//        if (show) {
-//            textInvalidPromoStatus.setVisibility(View.VISIBLE);
-//        } else {
-//            textInvalidPromoStatus.setVisibility(View.GONE);
-//        }
-//    }
-
-//    private void setupCardInstallment() {
-//        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-//        if (midtransSDK.getCreditCard() != null
-//                && midtransSDK.getCreditCard().getBank() != null
-//                && (midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)
-//                || midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.BRI))) {
-//            showInstallmentLayout(false);
-//        } else {
-//            SaveCardRequest currentCard = cardPagerAdapter.getCurrentItem(savedCardPager.getCurrentItem());
-//            ArrayList<Integer> installmentTerms = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerms(currentCard.getMaskedCard().substring(0, 6));
-//            if (installmentTerms != null && installmentTerms.size() > 1) {
-//                installmentCurrentPosition = 0;
-//                installmentTotalPositions = installmentTerms.size() - 1;
-//                setInstallmentTerm();
-//                showInstallmentLayout(true);
-//                setPaymentInstallment();
-//            } else {
-//                showInstallmentLayout(false);
-//            }
-//        }
-//    }
-
-//    private void setInstallmentTerm() {
-//        String installmentTerm;
-//        int term = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerm(installmentCurrentPosition);
-//        if (term < 1) {
-//            installmentTerm = getString(R.string.no_installment);
-//        } else {
-//            installmentTerm = getString(R.string.formatted_installment_month, term + "");
-//        }
-//        textInstallmentTerm.setText(installmentTerm);
-//    }
-//
-//    private void showInstallmentLayout(boolean show) {
-//        if (show) {
-//            if (layoutInstallment.getVisibility() == View.GONE) {
-//                layoutInstallment.setVisibility(View.VISIBLE);
-//            }
-//            buttonDecrease.setEnabled(false);
-//            buttonIncrease.setEnabled(true);
-//        } else {
-//            if (layoutInstallment.getVisibility() == View.VISIBLE) {
-//                layoutInstallment.setVisibility(View.GONE);
-//            }
-//            ((CreditDebitCardFlowActivity) getActivity()).setInstallment(0);
-//        }
-//    }
-
-//    private void showHideNoCardMessage() {
-//        if (creditCards.isEmpty()) {
-//            emptyCardsTextView.setVisibility(View.VISIBLE);
-//        } else {
-//            emptyCardsTextView.setVisibility(View.GONE);
-//        }
-//    }
 
     public void deleteCreditCard(String saveTokenId) {
         SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
-//        showHideNoCardMessage();
         deleteCards(saveTokenId);
 
     }
 
-    public void deleteCreditCard() {
-        SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
-//        showHideNoCardMessage();
-//        deleteCards(saveTokenId);
-
-    }
 
     public void deleteCards(final String tokenId) {
         ArrayList<SaveCardRequest> cardList = new ArrayList<>();
@@ -424,7 +291,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     }
 
     private void fadeInAnimation(final View view) {
-        Animation animation = AnimationUtils.loadAnimation(getContext().getApplicationContext(), R.anim.fade_in);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
 
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
