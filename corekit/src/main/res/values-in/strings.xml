@@ -61,7 +61,7 @@
     <string name="hint_name_on_card">Nama pada kartu</string>
     <string name="hint_card_number">Nomor Kartu</string>
     <string name="hint_cvv">CVV</string>
-    <string name="save_card_message">Simpan detail kartu saya</string>
+    <string name="save_card_message">Simpan detil kartu saya</string>
     <string name="pay_now">Bayar Sekarang</string>
     <string name="pay_with_instalments">Bayar dengan cicilan ?</string>
     <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
@@ -139,7 +139,7 @@
     <string name="bca_instruction_step3">3.\tPilih \'Ke Rek BCA Virtual Account\'.</string>
     <string name="bca_instruction_step4">4.\tMasukkan nomor (11 digit No. Rekening pembayaran) lalu tekan \'Benar\'.</string>
     <string name="bca_instruction_step5">5.\tMasukkan jumlah tagihan yang akan anda bayar.</string>
-    <string name="bca_instruction_step6">6.\tPada halaman konfirmasi transfer akan muncul detail pembayaran anda. Jika informasi telah sesuai tekan \'Ya\'.</string>
+    <string name="bca_instruction_step6">6.\tPada halaman konfirmasi transfer akan muncul detil pembayaran anda. Jika informasi telah sesuai tekan \'Ya\'.</string>
 
     <!--Klik BCA-->
     <string name="bca_klik_instruction_step1">1.\Pilih menu \'Fund Transfer\'.</string>
@@ -217,7 +217,7 @@
     <string name="kioson_instruction_step4">4.\tKasir akan membuka menu kioson Cash Point, kemudian kasir akan memilih "Keagenan".</string>
     <string name="kioson_instruction_step5">5.\tPilih nama merchant.</string>
     <string name="kioson_instruction_step6">6.\tPilih sub menu "Pembayaran".</string>
-    <string name="kioson_instruction_step7">7.\tMasukkan kode pembayaran anda dan dan detail pembayaran anda akan ditampilkan.</string>
+    <string name="kioson_instruction_step7">7.\tMasukkan kode pembayaran anda dan detil pembayaran anda akan ditampilkan.</string>
     <string name="kioson_instruction_step8">8.\tKonfirmasi pembayaran dan cetak bukti pembayarannya.</string>
     <string name="kioson_instruction_step9">9.\tTransaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Anda apabila anda memerlukan bantuan via support.</string>
 
@@ -236,7 +236,7 @@
     <string name="api_fail_message">Terjadi kesalahan. Silakan coba lagi.</string>
     <string name="title_payment_failed">Pembayaran Gagal</string>
     <string name="title_payment_successful">Pembayaran Berhasil</string>
-    <string name="card_details_error_message">Detail kartu tidak ditemukan.</string>
+    <string name="card_details_error_message">Detil kartu tidak ditemukan.</string>
     <string name="no_saved_cards">Belum ada kartu yang disimpan.</string>
 
     <string name="text_bank_name">Nama Bank</string>
