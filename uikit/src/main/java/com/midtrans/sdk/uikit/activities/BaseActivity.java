@@ -1,11 +1,17 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -126,4 +132,5 @@ public class BaseActivity extends AppCompatActivity {
             setResultAndFinish(transactionResponse, errorMessage);
         }
     }
+
 }

@@ -73,29 +73,6 @@
     </LinearLayout>
 
 
-        <com.midtrans.sdk.uikit.widgets.FancyButton
-            android:layout_marginTop="@dimen/sixteen_dp"
-            android:id="@+id/btn_add_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/credit_card_holder"
-            android:layout_centerHorizontal="true"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            app:fb_borderColor="?attr/colorPrimary"
-            app:fb_borderWidth="2dp"
-            app:fb_iconPaddingTop="5dp"
-            app:fb_defaultColor="@android:color/white"
-            app:fb_focusColor="@color/colorAccentLight"
-            app:fb_iconPosition="left"
-
-            app:fb_iconResource="@drawable/ic_plus_blue"
-            app:fb_radius="5dp"
-            app:fb_text="pay with new card"
-            app:fb_textColor="?attr/colorPrimary" />
-
     <RelativeLayout
         android:id="@+id/new_card_button_layout"
         android:layout_width="match_parent"
@@ -104,4 +81,28 @@
         android:visibility="gone">
 
     </RelativeLayout>
+
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:visibility="gone"
+        android:layout_marginTop="19dp"
+        android:id="@+id/btn_add_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        app:fb_iconColor="?attr/colorPrimary"
+        android:paddingTop="10dp"
+        app:fb_borderColor="?attr/colorPrimary"
+        app:fb_borderWidth="2dp"
+        app:fb_iconPaddingTop="5dp"
+        app:fb_defaultColor="@android:color/white"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_iconPosition="left"
+        app:fb_iconResource="@drawable/ic_plus_new"
+        app:fb_radius="5dp"
+        app:fb_text="@string/add_new_card"
+        app:fb_textColor="?attr/colorPrimary"
+        android:layout_below="@+id/credit_card_holder"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

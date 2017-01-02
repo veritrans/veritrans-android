@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -414,5 +417,18 @@ public class SdkUIFlowUtil {
         String bulletMask = "●●";
         String maskedDate = bulletMask + " / " + bulletMask;
         return maskedDate;
+    }
+
+    public static String getMaskedCardCvv() {
+        String bulletMask = "●●●";
+
+        return bulletMask;
+    }
+
+    public static Drawable filterDrawableImage(Context context, int image, int filterColor) {
+        Resources res = context.getResources();
+        Drawable background = res.getDrawable(image);
+        background.setColorFilter(filterColor, PorterDuff.Mode.SRC_IN);
+        return background;
     }
 }

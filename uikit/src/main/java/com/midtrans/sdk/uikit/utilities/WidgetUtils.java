@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.widgets;
+package com.midtrans.sdk.uikit.utilities;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -6,12 +6,14 @@ import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.midtrans.sdk.uikit.widgets.FancyButton;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Utils {
+public class WidgetUtils {
 
 	private static Map<String, Typeface> cachedFontMap = new HashMap<String, Typeface>();
 

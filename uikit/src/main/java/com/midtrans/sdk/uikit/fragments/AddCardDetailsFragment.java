@@ -102,18 +102,28 @@ public class AddCardDetailsFragment extends Fragment {
             if (savedCard != null) {
                 this.savedCard = savedCard;
 
-                ((CreditDebitCardFlowActivity)getActivity()).showDeleteCardIcon(true);
+                if (!MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
+                    ((CreditDebitCardFlowActivity) getActivity()).showDeleteCardIcon(true);
+                }
 
+                layoutSaveCard.setVisibility(View.GONE);
+                scanCardBtn.setVisibility(View.GONE);
 
                 etExpiryDate.setInputType(InputType.TYPE_CLASS_TEXT);
-                InputFilter[] FilterArray = new InputFilter[1];
-                FilterArray[0] = new InputFilter.LengthFilter(20);
-                etExpiryDate.setFilters(FilterArray);
+                InputFilter[] filterArray = new InputFilter[1];
+                filterArray[0] = new InputFilter.LengthFilter(20);
+                etExpiryDate.setFilters(filterArray);
                 etCardNo.setEnabled(false);
                 etExpiryDate.setEnabled(false);
                 etCvv.requestFocus();
                 etCardNo.setText(SdkUIFlowUtil.getMaskedCardNumber(savedCard.getMaskedCard()));
                 etExpiryDate.setText(SdkUIFlowUtil.getMaskedExpDate());
+                if (savedCard.getType() != null && savedCard.getType().equals(getString(R.string.saved_card_one_click))) {
+                    etCvv.setInputType(InputType.TYPE_CLASS_TEXT);
+                    etCvv.setFilters(filterArray);
+                    etCvv.setText(SdkUIFlowUtil.getMaskedCardCvv());
+                    etCvv.setEnabled(false);
+                }
             }
         }
     }
@@ -139,7 +149,6 @@ public class AddCardDetailsFragment extends Fragment {
         }
         bindViews(view);
         setupSavedCard();
-        ((CreditDebitCardFlowActivity) getActivity()).getBtnMorph().setVisibility(View.GONE);
         fadeIn();
     }
 
@@ -257,23 +266,34 @@ public class AddCardDetailsFragment extends Fragment {
                 }
 
                 if (checkCardValidity()) {
-                    String date = etExpiryDate.getText().toString();
-                    String month = date.split("/")[0];
-                    String year = "20" + date.split("/")[1];
-                    CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv,
-                            month, year,
-                            midtransSDK.getClientKey());
-                    cardTokenRequest.setIsSaved(switchSaveCard.isChecked());
-                    cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
-                    cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
-                    cardTokenRequest.setCardType(cardType);
+                    if (isOneClickMode()) {
+                        ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(savedCard.getMaskedCard());
+                    } else if (isTwoClickMode()) {
+
+                        CardTokenRequest request = new CardTokenRequest();
+                        request.setSavedTokenId(savedCard.getSavedTokenId());
+                        request.setCardCVV(cvv);
+                        ((CreditDebitCardFlowActivity) getActivity()).twoClickPayment(request);
+
+                    } else {
+                        String date = etExpiryDate.getText().toString();
+                        String month = date.split("/")[0];
+                        String year = "20" + date.split("/")[1];
+                        CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv,
+                                month, year,
+                                midtransSDK.getClientKey());
+                        cardTokenRequest.setIsSaved(switchSaveCard.isChecked());
+                        cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
+                        cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
+                        cardTokenRequest.setCardType(cardType);
 
 
-                    //make payment
-                    SdkUIFlowUtil.showProgressDialog(getActivity(), false);
-                    setPaymentInstallment();
-                    ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(switchSaveCard.isChecked(), cardType);
-                    ((CreditDebitCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
+                        //make payment
+                        SdkUIFlowUtil.showProgressDialog(getActivity(), false);
+                        setPaymentInstallment();
+                        ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(switchSaveCard.isChecked(), cardType);
+                        ((CreditDebitCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
+                    }
                 }
             }
         });
@@ -506,6 +526,10 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     private boolean checkCardNumberValidity() {
+        if (isTwoClickMode()) {
+            return true;
+        }
+
         boolean isValid = true;
 
         cardNumber = etCardNo.getText().toString().trim().replace(" ", "");
@@ -526,7 +550,7 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     private boolean checkCardExpiryValidity() {
-        if (savedCard != null) {
+        if (isTwoClickMode()) {
             return true;
         }
         boolean isValid = true;
@@ -587,6 +611,9 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     private boolean checkCardCVVValidity() {
+        if (isOneClickMode()) {
+            return true;
+        }
         boolean isValid = true;
         cvv = etCvv.getText().toString().trim();
         if (TextUtils.isEmpty(cvv)) {
@@ -706,5 +733,19 @@ public class AddCardDetailsFragment extends Fragment {
 
     public SaveCardRequest getSavedCard() {
         return savedCard;
+    }
+
+    public boolean isOneClickMode() {
+        if (savedCard != null && savedCard.getType() != null && savedCard.getType().equals(getString(R.string.saved_card_one_click))) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isTwoClickMode() {
+        if (savedCard != null) {
+            return true;
+        }
+        return false;
     }
 }
