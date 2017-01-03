@@ -127,7 +127,7 @@ public class SavedCardFragment extends Fragment {
 
 
     private void setViewPagerValues() {
-        if (creditCards != null) {
+        if (creditCards != null && !creditCards.isEmpty()) {
             if (getActivity() != null) {
                 cardPagerAdapter = new CardPagerAdapter(this, getChildFragmentManager(),
                         creditCards, getActivity());
