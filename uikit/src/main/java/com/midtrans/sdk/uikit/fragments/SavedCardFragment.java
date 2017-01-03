@@ -336,12 +336,14 @@ public class SavedCardFragment extends Fragment {
     public void onDeleteCardSuccess() {
         SdkUIFlowUtil.hideProgressDialog();
         int position = -1;
-        for (int i = 0; i < creditCards.size(); i++) {
-            if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
-                position = i;
-            }
-        }
         if (creditCards != null && !creditCards.isEmpty()) {
+
+            for (int i = 0; i < creditCards.size(); i++) {
+                if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(cardNumber)) {
+                    position = i;
+                }
+            }
+
             Logger.i("position to delete:" + position + "," + creditCards.size());
             if (!creditCards.isEmpty()) {
                 for (int i = 0; i < creditCards.size(); i++) {
