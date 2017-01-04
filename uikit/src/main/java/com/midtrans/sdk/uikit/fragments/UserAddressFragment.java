@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ public class UserAddressFragment extends Fragment {
     private EditText etCity;
     private EditText etZipcode;
     private AutoCompleteTextView etCountry;
-    private CheckBox cbShippingAddress;
+    private SwitchCompat cbShippingAddress;
     private RelativeLayout shippingAddressContainer;
     private EditText etShippingAddress;
     private EditText etShippingCity;
@@ -125,7 +126,7 @@ public class UserAddressFragment extends Fragment {
         etCity = (EditText) view.findViewById(R.id.et_city);
         etZipcode = (EditText) view.findViewById(R.id.et_zipcode);
         etCountry = (AutoCompleteTextView) view.findViewById(R.id.et_country);
-        cbShippingAddress = (CheckBox) view.findViewById(R.id.cb_shipping_address);
+        cbShippingAddress = (SwitchCompat) view.findViewById(R.id.cb_shipping_address);
         shippingAddressContainer = (RelativeLayout) view.findViewById(R.id
                 .shipping_address_container);
         etShippingAddress = (EditText) view.findViewById(R.id.et_shipping_address);

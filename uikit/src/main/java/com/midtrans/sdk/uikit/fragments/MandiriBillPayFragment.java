@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * Displays status information about mandiri bill pay's api call . Created by shivam on 10/28/15.
@@ -33,10 +34,10 @@ public class MandiriBillPayFragment extends Fragment {
     //views
     private TextView mTextViewCompanyCode = null;
     private TextView mTextViewBillpayCode = null;
-    private Button btnSeeInstruction = null;
+    private FancyButton btnSeeInstruction = null;
     private TextView mTextViewValidity = null;
-    private Button btnCopyBillCode = null;
-    private Button btnCopyCompany = null;
+    private FancyButton btnCopyBillCode = null;
+    private FancyButton btnCopyCompany = null;
 
 
     /**
@@ -79,10 +80,10 @@ public class MandiriBillPayFragment extends Fragment {
     private void initializeViews(View view) {
         mTextViewCompanyCode = (TextView) view.findViewById(R.id.text_company_code);
         mTextViewBillpayCode = (TextView) view.findViewById(R.id.text_bill_pay_code);
-        btnSeeInstruction = (Button) view.findViewById(R.id.btn_see_instruction);
+        btnSeeInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
-        btnCopyBillCode = (Button) view.findViewById(R.id.btn_copy_va);
-        btnCopyCompany = (Button) view.findViewById(R.id.btn_copy_company_code);
+        btnCopyBillCode = (FancyButton) view.findViewById(R.id.btn_copy_va);
+        btnCopyCompany = (FancyButton) view.findViewById(R.id.btn_copy_company_code);
 
         if (mTransactionResponse != null) {
             if (mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200)) ||
@@ -94,7 +95,7 @@ public class MandiriBillPayFragment extends Fragment {
 
             mTextViewBillpayCode.setText(mTransactionResponse.getPaymentCode());
 
-            mTextViewValidity.setText(getString(R.string.text_format_valid_until, mTransactionResponse.getMandiriBillExpiration()));
+            mTextViewValidity.setText(mTransactionResponse.getMandiriBillExpiration());
         }
 
         btnSeeInstruction.setOnClickListener(new View.OnClickListener() {

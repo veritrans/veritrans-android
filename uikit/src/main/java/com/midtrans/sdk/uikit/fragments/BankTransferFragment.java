@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
@@ -15,13 +14,14 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * It displays payment related instructions on the screen. Created by shivam on 10/27/15.
  */
 public class BankTransferFragment extends Fragment {
 
-    private Button btnSeeInstruction = null;
+    private FancyButton btnSeeInstruction = null;
     private EditText mEditTextEmailId = null;
     private UserDetail userDetail;
 
@@ -44,7 +44,7 @@ public class BankTransferFragment extends Fragment {
      */
     private void initializeViews(View view) {
 
-        btnSeeInstruction = (Button) view.findViewById(R.id.btn_see_instruction);
+        btnSeeInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
         try {
             userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         } catch (Exception e) {
@@ -76,7 +76,7 @@ public class BankTransferFragment extends Fragment {
 
 
     /**
-     * created to give access to email id field from {@link id.co.veritrans.sdk.activities
+     * created to give access to email id field from {
      * .BankTransferActivity}.
      *
      * @return email identifier

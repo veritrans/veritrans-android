@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * Displays status information about bank transfer's api call .
@@ -32,9 +33,9 @@ public class BankTransferPaymentFragment extends Fragment {
 
     //views
     private TextView mTextViewVirtualAccountNumber = null;
-    private Button btnSeeInstruction = null;
+    private FancyButton btnSeeInstruction = null;
     private TextView mTextViewValidity = null;
-    private Button btnCopyToClipboard = null;
+    private FancyButton btnCopyToClipboard = null;
 
 
     /**
@@ -77,9 +78,9 @@ public class BankTransferPaymentFragment extends Fragment {
     private void initializeViews(View view) {
 
         mTextViewVirtualAccountNumber = (TextView) view.findViewById(R.id.text_virtual_account_number);
-        btnSeeInstruction = (Button) view.findViewById(R.id.btn_see_instruction);
+        btnSeeInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
-        btnCopyToClipboard = (Button) view.findViewById(R.id.btn_copy_va);
+        btnCopyToClipboard = (FancyButton) view.findViewById(R.id.btn_copy_va);
 
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))

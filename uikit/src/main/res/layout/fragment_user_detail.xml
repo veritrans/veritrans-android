@@ -73,6 +73,7 @@
                 android:layout_height="@dimen/btn_height"
                 android:layout_alignParentBottom="true"
                 android:text="@string/next"
+                android:drawableRight="@drawable/ic_arrow_right_white"
                 android:textColor="@android:color/white" />
         </RelativeLayout>
     </RelativeLayout>

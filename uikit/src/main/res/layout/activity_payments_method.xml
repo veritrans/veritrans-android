@@ -19,9 +19,11 @@
                 android:background="@android:color/white">
 
                 <LinearLayout
+                    android:layout_marginRight="@dimen/sixtyfour_dp"
+                    android:layout_marginEnd="@dimen/sixtyfour_dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -34,6 +36,7 @@
                         tools:text="Name" />
 
                     <ImageView
+                        android:layout_gravity="center"
                         android:id="@+id/merchant_logo"
                         android:layout_width="@dimen/logo_width"
                         android:layout_height="@dimen/logo_height"
@@ -53,7 +56,7 @@
                         android:text="@string/select_payment_method"
                         android:textColor="@color/dark_gray"
                         android:textSize="@dimen/tool_bar_title_size"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </android.support.v7.widget.Toolbar>

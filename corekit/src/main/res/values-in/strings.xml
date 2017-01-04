@@ -15,7 +15,7 @@
     <string name="my_credit_card">Kartu Kredit Saya</string>
 
     <!-- User Address -->
-    <string name="title_user_details">Detil Pengguna</string>
+    <string name="title_user_details">Informasi Pengguna</string>
     <string name="hint_address">Alamat</string>
     <string name="hint_city">Kota</string>
     <string name="hint_zip_code">Kode Pos</string>
@@ -89,12 +89,12 @@
     <string name="hint_email_optional">Alamat Email (Opsional)</string>
     <string name="email_instruction">Kami akan mengirimkan instruksi pembayaran melalui email</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
-    <string name="bank_atm_transfer_step1">1.\t Klik tombol Confirm Payment.</string>
-    <string name="bank_atm_transfer_step2">2.\t Anda akan menerima nomor rekening yang unik instruksi pembayaran
+    <string name="bank_atm_transfer_step1">Klik tombol Confirm Payment.</string>
+    <string name="bank_atm_transfer_step2">Anda akan menerima nomor rekening yang unik instruksi pembayaran
         (Anda dapat menerima instruksi via email jika memasukkan alamat email anda pada kolom di atas).</string>
 
-    <string name="bank_atm_transfer_step3">3.\t Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
-    <string name="bank_atm_transfer_step4">4.\t Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
+    <string name="bank_atm_transfer_step3">Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
+    <string name="bank_atm_transfer_step4">Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
     <string name="see_instruction">Lihat instruksi</string>
     <string name="confirm_payment">Konfirmasi Pembayaran</string>
     <string name="copy_payment_code">Salin Kode Pembayaran</string>

@@ -42,6 +42,7 @@ import com.midtrans.sdk.uikit.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.models.ItemViewDetails;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -88,6 +89,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isIndomaret = false;
     private boolean isKioson = false;
     private boolean isGci = false;
+    private boolean backButtonEnabled;
 
     private MidtransSDK midtransSDK = null;
 
@@ -101,7 +103,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private ArrayList<String> bankTrasfers = new ArrayList<>();
     private PaymentMethodsAdapter paymentMethodsAdapter;
     private AlertDialog alertDialog;
-    private boolean backButtonEnabled;
+    private DefaultTextView textTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +155,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         }
     }
 
+
     /**
      * bind views , initializes adapter and set it to recycler view.
      */
@@ -160,12 +163,23 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         //initialize views
         bindActivity();
+        setupToolbarTitle(true);
 
-        toolbar.setTitle("");
+//        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         bindDataToView();
         getPaymentPages();
+    }
+
+    private void setupToolbarTitle(boolean showTitle) {
+        if(showTitle){
+            textTitle.setVisibility(View.VISIBLE);
+            logo.setVisibility(View.GONE);
+        }else{
+            textTitle.setVisibility(View.GONE);
+            logo.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setupRecyclerView() {
@@ -218,6 +232,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         logo = (ImageView) findViewById(R.id.merchant_logo);
         merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
+        textTitle = (DefaultTextView) findViewById(R.id.title_header);
         if (isCreditCardOnly || isBankTransferOnly || isKlikBCA || isBCAKlikpay
                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                 || isTelkomselCash || isIndosatDompetku || isXlTunai
@@ -275,6 +290,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     if (TextUtils.isEmpty(logoUrl)) {
                         showName(merchantName);
                     }
+                    setupToolbarTitle(false);
                     // Directly start credit card payment if using credit card mode only
                     initPaymentMethods(transaction.getEnabledPayments());
                 } catch (NullPointerException e) {

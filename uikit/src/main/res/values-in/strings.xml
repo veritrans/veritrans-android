@@ -20,7 +20,7 @@
     <string name="my_credit_card">Kartu Kredit Saya</string>
     
      <!-- User Address -->
-    <string name="title_user_details">Detil Pengguna</string>
+    <string name="title_user_details">Informasi Pengguna</string>
     <string name="hint_address">Alamat</string>
     <string name="hint_city">Kota</string>
     <string name="hint_zip_code">Kode Pos</string>
@@ -432,5 +432,13 @@
     <string name="save_card_info">Detail kartu diatas akan disimpan untuk membantu transaksi anda berikutnya.</string>
     <string name="choose_card">Pilih kartu kredit</string>
     <string name="add_new_card">bayar dengan kartu baru</string>
+    <string name="mandiri_bill_transfer">Mandiri Bill</string>
+    <string name="bank_bca_transfer">Bank BCA</string>
+    <string name="bank_permata_transfer">Bank Permata</string>
+    <string name="other_bank_transfer">Others Bank</string>
+    <string name="copy">Salin</string>
+    <string name="valid_until">Valid hingga</string>
+    <string name="valid_date">10 September 2015, 16:00</string>
+    <string name="mandir_bill_instruction">bagaimana saya dapat melakukan pembayaran dengan mandiri bill ?</string>
 
 </resources>

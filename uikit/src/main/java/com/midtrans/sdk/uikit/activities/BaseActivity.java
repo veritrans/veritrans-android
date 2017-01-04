@@ -46,9 +46,6 @@ public class BaseActivity extends AppCompatActivity {
                     Picasso.with(this)
                             .load(mMidtransSDK.getMerchantLogo())
                             .into(logo);
-                } else if (name != null && !TextUtils.isEmpty(mMidtransSDK.getMerchantName())) {
-                    name.setVisibility(View.VISIBLE);
-                    name.setText(mMidtransSDK.getMerchantName());
                 }
             }
         }
