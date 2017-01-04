@@ -222,7 +222,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                 || isTelkomselCash || isIndosatDompetku || isXlTunai
                 || isIndomaret || isKioson || isGci) {
-            TextView titleText = (TextView) findViewById(R.id.header_view_title);
+            TextView titleText = (TextView) findViewById(R.id.title_header);
             TextView loadingText = (TextView) findViewById(R.id.loading_text);
             titleText.setText(getString(R.string.txt_checkout));
             loadingText.setText(R.string.txt_checkout);
