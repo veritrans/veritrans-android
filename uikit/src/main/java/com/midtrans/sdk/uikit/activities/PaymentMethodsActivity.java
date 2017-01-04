@@ -194,7 +194,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     midtransSDK.getTransactionRequest().getItemDetails().size() > 0));
             // Add item
             for (ItemDetails itemDetails : midtransSDK.getTransactionRequest().getItemDetails()) {
-                String price = getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.getPrice()));
+                String price = getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.getQuantity() * itemDetails.getPrice()));
                 String itemName = itemDetails.getName();
                 if (itemDetails.getQuantity() > 1) {
                     itemName = getString(R.string.text_item_name_format, itemDetails.getName(), itemDetails.getQuantity());
