@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import android.widget.TextView;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.BankDetail;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
@@ -134,6 +134,7 @@ public class AddCardDetailsFragment extends Fragment {
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
         cbStoreCard = (CheckBox) view.findViewById(R.id.cb_store_card);
+        initCheckbox();
         cvvHelpButton = (Button) view.findViewById(R.id.cvv_help_button);
         questionSaveCardImg = (ImageView) view.findViewById(R.id.image_question_save_card);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
@@ -384,6 +385,12 @@ public class AddCardDetailsFragment extends Fragment {
         );
     }
 
+    private void initCheckbox() {
+        UIKitCustomSetting uiKitCustomSetting = midtransSDK.getUIKitCustomSetting();
+        if (uiKitCustomSetting.isSaveCardChecked()) {
+            cbStoreCard.setChecked(true);
+        }
+    }
 
     private boolean isCarBinValid() {
         boolean valid = false;
