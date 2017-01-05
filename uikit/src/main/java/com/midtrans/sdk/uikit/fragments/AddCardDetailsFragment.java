@@ -386,7 +386,7 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     private void initCheckbox() {
-        UIKitCustomSetting uiKitCustomSetting = midtransSDK.getUIKitCustomSetting();
+        UIKitCustomSetting uiKitCustomSetting = MidtransSDK.getInstance().getUIKitCustomSetting();
         if (uiKitCustomSetting.isSaveCardChecked()) {
             cbStoreCard.setChecked(true);
         }

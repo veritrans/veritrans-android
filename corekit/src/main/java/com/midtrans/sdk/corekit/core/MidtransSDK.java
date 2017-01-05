@@ -1520,6 +1520,10 @@ public class MidtransSDK {
         return UIKitCustomSetting;
     }
 
+    public void setUIKitCustomSetting(UIKitCustomSetting uiKitCustomSetting) {
+        this.UIKitCustomSetting = uiKitCustomSetting;
+    }
+
     public CreditCard getCreditCard() {
         return creditCard;
     }
