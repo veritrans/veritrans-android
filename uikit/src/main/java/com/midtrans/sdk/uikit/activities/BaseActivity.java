@@ -92,7 +92,7 @@ public class BaseActivity extends AppCompatActivity {
         if (MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus()) {
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponse);
-            replaceFragment(paymentTransactionStatusFragment, R.id.card_container, addToBackStack, false);
+            replaceFragment(paymentTransactionStatusFragment, R.id.main_layout, addToBackStack, false);
         } else {
             setResultCode(RESULT_OK);
             setResultAndFinish(transactionResponse, errorMessage);

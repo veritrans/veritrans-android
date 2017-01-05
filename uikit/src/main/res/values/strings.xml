@@ -169,7 +169,7 @@
     <string name="copied_company_code">Company code was copied to clipboard</string>
     <string name="complete_payment_at_atm">Complete Payment At ATM</string>
     <string name="complete_payment_at_klik_bca">Finish</string>
-    <string name="done">Done</string>
+    <string name="done">Finish</string>
     <string name="virtual_account_number">Virtual Account Number</string>
     <string name="payment_pending">Payment Pending !</string>
     <string name="payment_challenged">Payment is being processed</string>
@@ -294,9 +294,9 @@
     <string name="coming_soon">Coming soon!!</string>
     <string name="successful">Successful</string>
     <string name="unsuccessful">Unsuccessful</string>
-    <string name="payment_successful">Payment Successful :)</string>
+    <string name="payment_successful">Payment Successful</string>
     <string name="payment_unsuccessful_msg">Payment gateway error</string>
-    <string name="payment_unsuccessful">Payment unsuccessful :(</string>
+    <string name="payment_unsuccessful">Payment unsuccessful</string>
     <string name="validation_message_invalid_expiry_date">Please enter valid expiry date</string>
     <string name="api_fail_message">Something went wrong. Please try later.</string>
     <string name="title_payment_failed">Payment Failed</string>
@@ -612,4 +612,16 @@
     <string name="valid_until">Valid until</string>
     <string name="valid_date">10 September 2015, 16:00</string>
     <string name="mandir_bill_instruction">how can i pay with mandiri bill payment ?</string>
+    <string name="thank_you">Thank you!</string>
+    <string name="text_payment_type">PAYMENT TYPE</string>
+    <string name="status_payable_amount">TOTAL AMOUNT</string>
+    <string name="status_order_id">ORDER ID</string>
+    <string name="text_payment_time">PAYMENT TIME</string>
+    <string name="text_payment_time_here">Payment Time Here</string>
+    <string name="status_due_amount">TOTAL DUE AMOUNT</string>
+    <string name="status_due_installment">DUE INSTALLMENT</string>
+    <string name="text_due_amount_here">Due Amount Here</string>
+    <string name="due_installment_here">Due Installment Here</string>
+    <string name="status_bank">BANK</string>
+    <string name="sorry">Sorry!</string>
 </resources>

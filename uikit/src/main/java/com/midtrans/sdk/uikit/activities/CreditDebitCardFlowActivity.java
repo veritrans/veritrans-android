@@ -90,7 +90,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private RelativeLayout processingLayout;
     private ArrayList<BankDetail> bankDetails;
     private ReadBankDetailTask readBankDetailTask;
-
+    private RelativeLayout mainlayout;
     //for setResult
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
@@ -134,6 +134,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
         buttonback = (FancyButton) findViewById(R.id.btn_back);
         imageSavedCardDelete = (ImageView) findViewById(R.id.image_saved_card_delete);
+        mainlayout = (RelativeLayout)findViewById(R.id.main_layout);
+
         initializeTheme();
         setSupportActionBar(toolbar);
         calculateScreenWidth();

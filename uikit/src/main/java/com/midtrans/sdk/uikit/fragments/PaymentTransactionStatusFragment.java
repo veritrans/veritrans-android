@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.fragments;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,11 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BCAKlikPayActivity;
@@ -31,6 +36,9 @@ import java.util.regex.Pattern;
 public class PaymentTransactionStatusFragment extends Fragment {
 
     private static final String TRANSACTION_RESPONSE_PARAM = "transaction_response_param";
+    private static final int STATUS_SUCCESS = 2;
+    private static final int STATUS_PENDING = 1;
+    private static final int STATUS_FAILED = 0;
     private TransactionResponse transactionResponse;
     private boolean isSuccessful;
 
@@ -43,10 +51,13 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private TextView orderIdTextView = null;
     private TextView transactionTimeTextView = null;
     private TextView paymentTypeTextView = null;
-    private TextView textInstallmentBank;
+    private TextView textBank;
     private TextView textInstallmentTerm;
+    private TextView textStatusTitle;
     private int count = 1;
-    private LinearLayout detailsTable, layoutInstallment;
+    private LinearLayout detailsTable;
+    private FrameLayout layoutMain;
+    private RelativeLayout layoutDueTotalAmount, layoutInstallment, layoutTransactionTime, layoutBank;
 
     public PaymentTransactionStatusFragment() {
         // Required empty public constructor
@@ -83,19 +94,24 @@ public class PaymentTransactionStatusFragment extends Fragment {
     }
 
     private void initializeViews(View view) {
-        amountTextView = (TextView) view.findViewById(R.id.text_amount);
+        amountTextView = (TextView) view.findViewById(R.id.text_status_amount);
         orderIdTextView = (TextView) view.findViewById(R.id.text_order_id);
-        transactionTimeTextView = (TextView) view.findViewById(R.id.text_transaction_time);
+        transactionTimeTextView = (TextView) view.findViewById(R.id.text_status_transaction_time);
         paymentTypeTextView = (TextView) view.findViewById(R.id.text_payment_type);
         actionBt = (Button) view.findViewById(R.id.btn_action);
         paymentIv = (ImageView) view.findViewById(R.id.image_payment);
         paymentStatusTv = (TextView) view.findViewById(R.id.text_payment_status);
         paymentMessageTv = (TextView) view.findViewById(R.id.text_payment_message);
         detailsTable = (LinearLayout) view.findViewById(R.id.transaction_info_layout);
-        layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installmet_status);
-        textInstallmentBank = (TextView) view.findViewById(R.id.text_transaction_installment_bank);
-        textInstallmentTerm = (TextView) view.findViewById(R.id.text_transaction_installment_term);
-
+        layoutInstallment = (RelativeLayout) view.findViewById(R.id.layout_status_due_installment);
+        layoutDueTotalAmount = (RelativeLayout) view.findViewById(R.id.layout_status_due_amount);
+        layoutInstallment = (RelativeLayout) view.findViewById(R.id.layout_status_due_installment);
+        layoutTransactionTime = (RelativeLayout) view.findViewById(R.id.layout_status_payment_time);
+        layoutBank = (RelativeLayout) view.findViewById(R.id.layout_status_bank);
+        textBank = (TextView) view.findViewById(R.id.text_status_bank);
+        textInstallmentTerm = (TextView) view.findViewById(R.id.text_status_due_installment);
+        textStatusTitle = (TextView) view.findViewById(R.id.text_title_payment_status);
+        layoutMain = (FrameLayout) view.findViewById(R.id.layout_transaction_status);
     }
 
     private void setPaymentStatusValues() {
@@ -103,45 +119,102 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.capital_success)) ||
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.settlement))) {
 
-            paymentIv.setImageResource(R.drawable.ic_successful);
-            paymentStatusTv.setText(getString(R.string.payment_successful));
+            paymentIv.setImageResource(R.drawable.ic_status_success);
+            textStatusTitle.setText(getString(R.string.payment_successful));
+            paymentStatusTv.setText(getString(R.string.thank_you));
             paymentMessageTv.setVisibility(View.GONE);
             setInstallmentStatus();
+            setupStatusBarColor(STATUS_SUCCESS);
+            setupStatusInfo();
         } else if (transactionResponse.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_201)) ||
                 transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.pending))) {
+            setupStatusBarColor(STATUS_PENDING);
+            setupStatusInfo();
+
+            paymentIv.setImageResource(R.drawable.ic_status_pending);
+            paymentMessageTv.setVisibility(View.GONE);
+            paymentStatusTv.setText(getString(R.string.thank_you));
             if (transactionResponse.getFraudStatus().equalsIgnoreCase(getString(R.string.challenge))) {
-                paymentIv.setImageResource(R.drawable.ic_pending);
-                paymentStatusTv.setText(getString(R.string.payment_challenged));
-                paymentMessageTv.setVisibility(View.GONE);
+                textStatusTitle.setText(getString(R.string.payment_challenged));
             } else {
-                paymentIv.setImageResource(R.drawable.ic_pending);
-                paymentStatusTv.setText(getString(R.string.payment_pending));
+                textStatusTitle.setText(getString(R.string.payment_pending));
+
             }
         } else {
             setUiForFailure();
         }
+
+    }
+
+    private void setupStatusInfo() {
+
+        //set payment type
+        setPaymentType();
+
+        TransactionRequest request = MidtransSDK.getInstance().getTransactionRequest();
+
+        //set order id
+        String orderId = TextUtils.isEmpty(transactionResponse.getOrderId()) ? request.getOrderId() : transactionResponse.getOrderId();
+        orderIdTextView.setText(transactionResponse.getOrderId());
+
+        //set total amount
+        String amount = TextUtils.isEmpty(transactionResponse.getGrossAmount()) ? String.valueOf(request.getAmount()) : transactionResponse.getGrossAmount();
         try {
-            transactionTimeTextView.setText(transactionResponse.getTransactionTime());
-            String amount = transactionResponse.getGrossAmount();
             if (!TextUtils.isEmpty(amount)) {
                 String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
                 amountTextView.setText(formattedAmount);
-                orderIdTextView.setText(transactionResponse.getOrderId());
             }
 
         } catch (NullPointerException e) {
             e.printStackTrace();
 
         }
-        if (transactionResponse != null && TextUtils.isEmpty(transactionResponse.getTransactionTime()) &&
-                TextUtils.isEmpty(transactionResponse.getGrossAmount()) && TextUtils.isEmpty(transactionResponse.getOrderId())) {
-            detailsTable.setVisibility(View.GONE);
+
+        // set transaction time
+        if (!TextUtils.isEmpty(transactionResponse.getTransactionTime())) {
+            transactionTimeTextView.setText(transactionResponse.getTransactionTime());
+            layoutTransactionTime.setVisibility(View.VISIBLE);
+        } else {
+            layoutTransactionTime.setVisibility(View.GONE);
+        }
+
+        // setbank
+        if (!TextUtils.isEmpty(transactionResponse.getBank())) {
+            textBank.setText(transactionResponse.getBank());
+            layoutBank.setVisibility(View.VISIBLE);
+        } else {
+            layoutBank.setVisibility(View.GONE);
+        }
+
+        //installment
+        if (!TextUtils.isEmpty(transactionResponse.getInstallmentTerm())) {
+            textInstallmentTerm.setText(transactionResponse.getInstallmentTerm());
+            layoutInstallment.setVisibility(View.VISIBLE);
+        } else {
+            layoutInstallment.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void setupStatusBarColor(int status) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (status == STATUS_FAILED) {
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.payment_status_failed));
+                layoutMain.setBackgroundColor(getContext().getResources().getColor(R.color.payment_status_failed));
+            } else if (status == STATUS_PENDING) {
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.payment_status_pending));
+                layoutMain.setBackgroundColor(getContext().getResources().getColor(R.color.payment_status_pending));
+
+            } else if (status == STATUS_SUCCESS) {
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.payment_status_success));
+
+            }
         }
     }
 
     private void setInstallmentStatus() {
         if (!TextUtils.isEmpty(transactionResponse.getInstallmentTerm())) {
-            textInstallmentBank.setText(transactionResponse.getBank());
+            textBank.setText(transactionResponse.getBank());
             textInstallmentTerm.setText(getString(R.string.installment_months, transactionResponse.getInstallmentTerm()));
             layoutInstallment.setVisibility(View.VISIBLE);
         }
@@ -155,7 +228,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-            setPaymentType();
             setPaymentStatusValues();
 
         } else {
@@ -199,20 +271,24 @@ public class PaymentTransactionStatusFragment extends Fragment {
 
     private void setUiForFailure() {
         isSuccessful = false;
-        paymentIv.setImageResource(R.drawable.ic_failure);
-        paymentStatusTv.setText(getString(R.string.payment_unsuccessful));
-
+        paymentIv.setImageResource(R.drawable.ic_status_failed);
+        paymentStatusTv.setText(getString(R.string.sorry));
+        textStatusTitle.setText(getString(R.string.payment_unsuccessful));
+        setupStatusBarColor(STATUS_FAILED);
+        setupStatusInfo();
         if (transactionResponse == null) {
             paymentMessageTv.setVisibility(View.VISIBLE);
             paymentMessageTv.setText(getString(R.string.api_fail_message));
             detailsTable.setVisibility(View.GONE);
             return;
         }
+
         try {
             Logger.i("fail_message" + transactionResponse.getStatusMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         if (transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.deny))) {
             paymentMessageTv.setVisibility(View.VISIBLE);
             paymentMessageTv.setText(getString(R.string.payment_deny));
@@ -228,6 +304,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
             } else {
                 paymentMessageTv.setText(getString(R.string.message_cannot_proccessed));
             }
+
         } else {
             if (!TextUtils.isEmpty(transactionResponse.getStatusMessage())) {
                 paymentMessageTv.setVisibility(View.VISIBLE);
