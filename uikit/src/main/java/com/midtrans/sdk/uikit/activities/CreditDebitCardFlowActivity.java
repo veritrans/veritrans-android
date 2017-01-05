@@ -804,10 +804,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             } else {
                 //if token storage on merchantserver then saved cards can be used just for two click
                 String clickType = midtransSDK.getTransactionRequest().getCardClickType();
-                for (SaveCardRequest card : cards) {
-                    if (clickType.equals(getString(R.string.card_click_type_two_click)) && card.getType().equals(getString(R.string.card_click_type_two_click))) {
-                        filteredCards.add(card);
-                    }
+                if (!TextUtils.isEmpty(clickType) && clickType.equals(getString(R.string.card_click_type_two_click))) {
+                    filteredCards.addAll(cards);
                 }
             }
         }

@@ -216,6 +216,35 @@
                     android:text="@string/promo_inactive" />
             </RadioGroup>
 
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:text="@string/save_card_options_title"
+                android:visibility="visible" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_save_active"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/promo_active" />
+
+                <RadioButton
+                    android:id="@+id/radio_save_inactive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:checked="true"
+                    android:text="@string/promo_inactive" />
+            </RadioGroup>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
