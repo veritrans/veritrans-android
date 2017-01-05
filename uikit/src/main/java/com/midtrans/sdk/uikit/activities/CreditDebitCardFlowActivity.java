@@ -77,7 +77,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private static final String KEY_SCAN_FAILED_EVENT = "Scan Card Failed";
     private static final String KEY_SCAN_CANCELLED_EVENT = "Scan Card Cancelled";
     private static final int PAY_USING_CARD = 51;
+    private static final int MAX_ATTEMPT = 3;
     private static final String TAG = "CreditCardActivity";
+    private int attempt = 0;
     private Toolbar toolbar;
     private FragmentManager fragmentManager;
     private MidtransSDK midtransSDK;
@@ -265,8 +267,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
      */
     public void payUsingCard() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-        processingLayout.setVisibility(View.VISIBLE);
-        titleHeaderTextView.setText(getString(R.string.processing_payment));
 
         CreditCardPaymentModel paymentModel;
         if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
@@ -297,19 +297,24 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
-                        TransactionResponse transactionResponse = response;
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                processingLayout.setVisibility(View.GONE);
-                            }
-                        }, 200);
-                        CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
-                        CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.message_payment_failed);
                         SdkUIFlowUtil.hideProgressDialog();
-                        initPaymentStatus(transactionResponse, errorMessage, true);
-                        titleHeaderTextView.setText(getString(R.string.title_payment_status));
+                        if (attempt < MAX_ATTEMPT) {
+                            attempt += 1;
+                            SdkUIFlowUtil.showApiFailedMessage(CreditDebitCardFlowActivity.this, getString(R.string.message_payment_failed));
+                        } else {
+                            TransactionResponse transactionResponse = response;
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    processingLayout.setVisibility(View.GONE);
+                                }
+                            }, 200);
+                            CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
+                            CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                            initPaymentStatus(transactionResponse, errorMessage, true);
+                            titleHeaderTextView.setText(getString(R.string.title_payment_status));
+                        }
                     }
 
                     @Override
