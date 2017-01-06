@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +66,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private int count = 1;
     private LinearLayout detailsTable;
     private FrameLayout layoutMain;
-    private RelativeLayout layoutDueTotalAmount, layoutInstallment, layoutTransactionTime, layoutBank;
+    private RelativeLayout layoutDueTotalAmount, layoutInstallment, layoutTransactionTime, layoutBank, layoutPaymentType;
     private int mPaymentType = -1;
     private FancyButton buttonInstruction;
 
@@ -131,6 +132,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         layoutDueTotalAmount = (RelativeLayout) view.findViewById(R.id.layout_status_due_amount);
         layoutInstallment = (RelativeLayout) view.findViewById(R.id.layout_status_due_installment);
         layoutTransactionTime = (RelativeLayout) view.findViewById(R.id.layout_status_payment_time);
+        layoutPaymentType = (RelativeLayout) view.findViewById(R.id.layout_status_payment_type);
         layoutBank = (RelativeLayout) view.findViewById(R.id.layout_status_bank);
         textBank = (TextView) view.findViewById(R.id.text_status_bank);
         textInstallmentTerm = (TextView) view.findViewById(R.id.text_status_due_installment);
@@ -164,7 +166,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 textStatusTitle.setText(getString(R.string.payment_challenged));
             } else {
                 textStatusTitle.setText(getString(R.string.payment_pending));
-
             }
         } else {
             setUiForFailure();
@@ -181,7 +182,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
 
         //set order id
         String orderId = TextUtils.isEmpty(transactionResponse.getOrderId()) ? request.getOrderId() : transactionResponse.getOrderId();
-        orderIdTextView.setText(transactionResponse.getOrderId());
+        orderIdTextView.setText(orderId);
 
         //set total amount
         String amount = TextUtils.isEmpty(transactionResponse.getGrossAmount()) ? String.valueOf(request.getAmount()) : transactionResponse.getGrossAmount();
@@ -247,17 +248,21 @@ public class PaymentTransactionStatusFragment extends Fragment {
 
     private void setupStatusBarColor(int status) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (status == STATUS_FAILED) {
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.payment_status_failed));
-                layoutMain.setBackgroundColor(getContext().getResources().getColor(R.color.payment_status_failed));
+            if (status == STATUS_SUCCESS) {
+                getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.payment_status_success));
             } else if (status == STATUS_PENDING) {
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.payment_status_pending));
-                layoutMain.setBackgroundColor(getContext().getResources().getColor(R.color.payment_status_pending));
-
-            } else if (status == STATUS_SUCCESS) {
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.payment_status_success));
-
+                getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.payment_status_pending));
+            } else {
+                getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.payment_status_failed));
             }
+        }
+
+        if (status == STATUS_SUCCESS) {
+            layoutMain.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.payment_status_success));
+        } else if (status == STATUS_PENDING) {
+            layoutMain.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.payment_status_pending));
+        } else {
+            layoutMain.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.payment_status_failed));
         }
     }
 
@@ -278,7 +283,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 e.printStackTrace();
             }
             setPaymentStatusValues();
-
         } else {
             setUiForFailure();
         }
@@ -322,7 +326,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
                     ((BCAKlikPayActivity) getActivity()).setResultAndFinish();
                 } else if (getActivity().getClass().getName().equals(BankTransferActivity.class.getName())) {
                     ((BankTransferActivity) getActivity()).setResultCode(Activity.RESULT_OK);
-                    ((BankTransferActivity) getActivity()).onBackPressed();
+                    getActivity().onBackPressed();
                 }
             }
         });
@@ -383,6 +387,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         if (transactionResponse == null) {
             return;
         }
+
         if (transactionResponse.getPaymentType().equals(PaymentType.BRI_EPAY)) {
             paymentTypeTextView.setText(R.string.epay_bri);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.E_CHANNEL)) {
@@ -411,6 +416,10 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 transactionResponse.getPaymentType().equals(PaymentType.PERMATA_VA) ||
                 transactionResponse.getPaymentType().equals(PaymentType.ALL_VA)) {
             paymentTypeTextView.setText(getString(R.string.bank_transfer));
+        } else {
+            buttonInstruction.setVisibility(View.GONE);
+            layoutPaymentType.setVisibility(View.GONE);
+            layoutBank.setVisibility(View.GONE);
         }
     }
 
