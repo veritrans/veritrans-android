@@ -256,9 +256,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             setResultAndFinish();
             return;
         }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
@@ -267,15 +264,8 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         mButtonBack.setIconResource(closeIcon);
         setSupportActionBar(mToolbar);
 
-        BankTransactionStatusFragment bankTransactionStatusFragment = !TextUtils.isEmpty(transactionResponse.getPdfUrl()) ?
-                BankTransactionStatusFragment.newInstance(transactionResponse, position, transactionResponse.getPdfUrl()) :
-                BankTransactionStatusFragment.newInstance(transactionResponse, position);
+        initPaymentStatus(transactionResponse, errorMessage, position, false);
 
-        // setup transaction status fragment
-        fragmentTransaction.replace(R.id.instruction_container,
-                bankTransactionStatusFragment, STATUS_FRAGMENT);
-        fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
-        fragmentTransaction.commit();
     }
 
 

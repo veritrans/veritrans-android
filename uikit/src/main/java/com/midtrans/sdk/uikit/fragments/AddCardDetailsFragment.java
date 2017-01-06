@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
@@ -170,6 +171,7 @@ public class AddCardDetailsFragment extends Fragment {
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
         switchSaveCard = (SwitchCompat) view.findViewById(R.id.cb_store_card);
+        initCheckbox();
         imageCvvHelp = (ImageView) view.findViewById(R.id.image_cvv_help);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
@@ -237,7 +239,7 @@ public class AddCardDetailsFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         // Track event scan
-                        midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SCAN_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
+                        midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(MidtransSDK.getInstance().readAuthenticationToken(), KEY_SCAN_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
                         // Start scanning
                         midtransSDK.getExternalScanner().startScan(getActivity(), CreditDebitCardFlowActivity.SCAN_REQUEST_CODE);
                     }
@@ -256,11 +258,12 @@ public class AddCardDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
                 // Track event pay now
-                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
                 // Track event checkbox save card
                 if (switchSaveCard.isChecked()) {
-                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_CHECKBOX_SAVE_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
+                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_CHECKBOX_SAVE_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
                 }
 
                 if (!checkPromoValidity()) {
@@ -280,8 +283,8 @@ public class AddCardDetailsFragment extends Fragment {
 
                     } else {
                         String date = etExpiryDate.getText().toString();
-                        String month = date.split("/")[0];
-                        String year = "20" + date.split("/")[1];
+                        String month = date.split("/")[0].trim();
+                        String year = "20" + date.split("/")[1].trim();
                         CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv,
                                 month, year,
                                 midtransSDK.getClientKey());
@@ -371,23 +374,11 @@ public class AddCardDetailsFragment extends Fragment {
                     @Override
                     public void afterTextChanged(Editable s) {
                         String input = s.toString();
-                        if (s.length() == 2) {
-                            if (!lastExpDate.endsWith("/")) {
+                        if (s.length() == 4) {
+                            if (lastExpDate.length() > s.length()) {
+
                                 try {
-                                    int month = Integer.parseInt(input);
-                                    if (month <= 12) {
-                                        etExpiryDate.setText(getString(R.string.expiry_month_format, etExpiryDate.getText().toString()));
-                                        etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                    } else {
-                                        etExpiryDate.setText(getString(R.string.expiry_month_int_format, Constants.MONTH_COUNT));
-                                        etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
-                                    }
-                                } catch (Exception exception) {
-                                    Logger.e(exception.toString());
-                                }
-                            } else {
-                                try {
-                                    int month = Integer.parseInt(input);
+                                    int month = Integer.parseInt(input.substring(0, 2));
                                     if (month <= 12) {
                                         etExpiryDate.setText(etExpiryDate.getText().toString().substring(0, 1));
                                         etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
@@ -395,6 +386,25 @@ public class AddCardDetailsFragment extends Fragment {
                                         etExpiryDate.setText("");
                                         etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                                     }
+                                } catch (Exception exception) {
+                                    Logger.e(exception.toString());
+                                }
+                            }
+                        } else if (s.length() == 2) {
+
+                            if (lastExpDate.length() < s.length()) {
+
+                                try {
+                                    int month = Integer.parseInt(input);
+
+                                    if (month <= 12) {
+                                        etExpiryDate.setText(getString(R.string.expiry_month_format, etExpiryDate.getText().toString()));
+                                        etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                    } else {
+                                        etExpiryDate.setText(getString(R.string.expiry_month_int_format, Constants.MONTH_COUNT));
+                                        etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
+                                    }
+
                                 } catch (Exception exception) {
                                     Logger.e(exception.toString());
                                 }
@@ -413,7 +423,7 @@ public class AddCardDetailsFragment extends Fragment {
                         lastExpDate = etExpiryDate.getText().toString();
 
                         // Move to next input
-                        if (s.length() == 5) {
+                        if (s.length() == 7) {
                             etCvv.requestFocus();
                         }
                     }
@@ -421,6 +431,12 @@ public class AddCardDetailsFragment extends Fragment {
         );
     }
 
+    private void initCheckbox() {
+        UIKitCustomSetting uiKitCustomSetting = midtransSDK.getUIKitCustomSetting();
+        if (uiKitCustomSetting.isSaveCardChecked()) {
+            switchSaveCard.setChecked(true);
+        }
+    }
 
     private boolean isCarBinValid() {
         boolean valid = false;
@@ -560,7 +576,9 @@ public class AddCardDetailsFragment extends Fragment {
         expiryDate = etExpiryDate.getText().toString().trim();
         try {
             expDateArray = expiryDate.split("/");
-            Logger.i("expDate:" + expDateArray[0], "" + expDateArray[1]);
+            expDateArray[0] = expDateArray[0].trim();
+            expDateArray[1] = expDateArray[1].trim();
+            Logger.i("expDate:" + expDateArray[0].trim(), "" + expDateArray[1].trim());
         } catch (NullPointerException e) {
             Logger.i("expiry date empty");
         } catch (IndexOutOfBoundsException e) {

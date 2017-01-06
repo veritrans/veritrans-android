@@ -170,7 +170,7 @@
     <string name="complete_payment_at_klik_bca">Finish</string>
     <string name="done">Finish</string>
     <string name="virtual_account_number">Virtual Account Number</string>
-    <string name="payment_pending">Payment Pending !</string>
+    <string name="payment_pending">Payment Pending</string>
     <string name="transactionTime">Transaction Time</string>
     <string name="paymentType">Payment Type</string>
     <string name="tab_mandiri">Mandiri/ATM Bersana</string>

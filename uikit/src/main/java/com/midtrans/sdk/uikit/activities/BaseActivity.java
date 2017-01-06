@@ -88,16 +88,17 @@ public class BaseActivity extends AppCompatActivity {
         return null;
     }
 
-    protected void initPaymentStatus(TransactionResponse transactionResponse, String errorMessage, boolean addToBackStack) {
+    protected void initPaymentStatus(TransactionResponse transactionResponse, String errorMessage, int paymentMethod, boolean addToBackStack) {
         if (MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus()) {
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponse);
+                    PaymentTransactionStatusFragment.newInstance(transactionResponse, paymentMethod);
             replaceFragment(paymentTransactionStatusFragment, R.id.main_layout, addToBackStack, false);
         } else {
             setResultCode(RESULT_OK);
             setResultAndFinish(transactionResponse, errorMessage);
         }
     }
+
 
     protected void setResultAndFinish(TransactionResponse transactionResponse, String errorMessage) {
         Intent data = new Intent();

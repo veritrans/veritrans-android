@@ -147,7 +147,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
                 MandiriECashActivity.this.transactionResponse = response;
 
                 if (response != null && response.equals(getString(R.string.failed_code_400))) {
-                    initPaymentStatus(transactionResponse, errorMessage, false);
+                    initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_ECASH, false);
                 } else {
                     SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
                 }
@@ -174,13 +174,13 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             setSupportActionBar(mToolbar);
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
                     mMidtransSDK.getTransactionRequest().getOrderId(), String.valueOf(mMidtransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_mandiri_ecash), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
-            initPaymentStatus(transactionResponse, errorMessage, false);
+            initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_ECASH, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         } else if (resultCode == RESULT_CANCELED) {
             currentFragmentName = STATUS_FRAGMENT;
             mToolbar.setNavigationIcon(closeIcon);
             setSupportActionBar(mToolbar);
-            initPaymentStatus(transactionResponse, errorMessage, false);
+            initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_ECASH, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         }
     }

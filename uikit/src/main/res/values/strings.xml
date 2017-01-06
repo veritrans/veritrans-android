@@ -171,7 +171,7 @@
     <string name="complete_payment_at_klik_bca">Finish</string>
     <string name="done">Finish</string>
     <string name="virtual_account_number">Virtual Account Number</string>
-    <string name="payment_pending">Payment Pending !</string>
+    <string name="payment_pending">Payment Pending</string>
     <string name="payment_challenged">Payment is being processed</string>
     <string name="what_is_cvv">What is CVV?</string>
     <string name="transactionTime">Transaction Time</string>
@@ -303,9 +303,9 @@
     <string name="title_payment_successful">Payment Successful</string>
     <string name="card_details_error_message">Card details not found.</string>
     <string name="no_saved_cards">No saved cards found.</string>
-    <string name="expiry_month_format">%1$s/</string>
-    <string name="expiry_month_int_format">%1$d/</string>
-    <string name="expiry_month_single_digit_format">0%1$s/</string>
+    <string name="expiry_month_format">%1$s /\u0020</string>
+    <string name="expiry_month_int_format">%1$d /\u0020</string>
+    <string name="expiry_month_single_digit_format">0%1$s /\u0020</string>
 
     <string name="appli">APPLI</string>
     <string name="input_1">Input 1</string>

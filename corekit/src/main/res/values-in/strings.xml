@@ -107,7 +107,7 @@
     <string name="complete_payment_at_atm">Selesaikan Pembayaran di ATM</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
-    <string name="payment_pending">Menunggu Pembayaran!</string>
+    <string name="payment_pending">Menunggu Pembayaran</string>
     <string name="transactionTime">Waktu Transaksi</string>
     <string name="paymentType">Tipe Pembayaran</string>
     <string name="tab_mandiri">Mandiri/ATM Bersama</string>
