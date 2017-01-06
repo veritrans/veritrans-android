@@ -80,6 +80,7 @@
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
+
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/et_card_no"
                             android:layout_width="match_parent"
@@ -91,6 +92,7 @@
                             android:maxLength="19"
                             android:maxLines="1"
                             android:nextFocusDown="@+id/et_exp_date" />
+
                         <ImageView
                             android:id="@+id/payment_card_logo"
                             android:layout_width="wrap_content"
@@ -120,9 +122,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.6">
+
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
+
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/et_exp_date"
                             android:layout_width="match_parent"
@@ -137,43 +141,41 @@
                     </RelativeLayout>
                 </android.support.design.widget.TextInputLayout>
 
-                <RelativeLayout
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/cvv_til"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="0.4">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/cvv_til"
-                        android:layout_width="match_parent"
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
-                        <RelativeLayout
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/et_cvv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_cvv"
+                            android:imeOptions="actionDone"
+                            android:inputType="numberPassword"
+                            android:maxLength="6"
+                            android:maxLines="1" />
+
+                        <ImageView
+                            android:id="@+id/image_cvv_help"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                            <android.support.design.widget.TextInputEditText
-                                android:id="@+id/et_cvv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/hint_cvv"
-                                android:imeOptions="actionDone"
-                                android:inputType="numberPassword"
-                                android:maxLength="6"
-                                android:maxLines="1" />
-                            <ImageView
-                                android:id="@+id/image_cvv_help"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/ic_cvvinfo"
-                                android:text="@string/what_is_cvv"
-                                android:textColor="?colorAccent" />
-                        </RelativeLayout>
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_cvvinfo"
+                            android:text="@string/what_is_cvv"
+                            android:textColor="?colorAccent" />
+                    </RelativeLayout>
 
-                    </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>
 
-                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout

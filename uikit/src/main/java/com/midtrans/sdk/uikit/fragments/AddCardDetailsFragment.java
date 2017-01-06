@@ -94,7 +94,6 @@ public class AddCardDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.card_details));
         midtransSDK = ((CreditDebitCardFlowActivity) getActivity()).getMidtransSDK();
     }
 
@@ -136,6 +135,7 @@ public class AddCardDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.card_details));
         return inflater.inflate(R.layout.fragment_add_card_details, container, false);
     }
 
@@ -635,12 +635,18 @@ public class AddCardDetailsFragment extends Fragment {
         if (isOneClickMode()) {
             return true;
         }
+
         boolean isValid = true;
         cvv = etCvv.getText().toString().trim();
+        Log.d("cvvx", "number:" + cvv);
         if (TextUtils.isEmpty(cvv)) {
             tilCvv.setError(getString(R.string.validation_message_cvv));
             isValid = false;
+            Log.d("cvvx", "number:empty");
+
         } else {
+            Log.d("cvvx", "number:not empty");
+
             if (cvv.length() < 3) {
                 tilCvv.setError(getString(R.string.validation_message_invalid_cvv));
                 isValid = false;

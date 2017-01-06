@@ -150,7 +150,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
 
 
     private void setViewPagerValues() {
-        if (creditCards != null) {
+        if (creditCards != null && !creditCards.isEmpty()) {
             if (getActivity() != null) {
                 cardsAdapter.setData(creditCards);
                 fadeInAnimation(addCardBt);
