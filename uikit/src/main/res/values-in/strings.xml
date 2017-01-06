@@ -20,7 +20,7 @@
     <string name="my_credit_card">Kartu Kredit Saya</string>
     
      <!-- User Address -->
-    <string name="title_user_details">Detil Pengguna</string>
+    <string name="title_user_details">Informasi Pengguna</string>
     <string name="hint_address">Alamat</string>
     <string name="hint_city">Kota</string>
     <string name="hint_zip_code">Kode Pos</string>
@@ -67,9 +67,9 @@
     <string name="hint_name_on_card">Nama pada kartu</string>
     <string name="hint_card_number">Nomor Kartu</string>
     <string name="hint_cvv">CVV</string>
-    <string name="save_card_message">Simpan kartu ini untuk transaksi selanjutnya</string>
+    <string name="save_card_message">Simpan detail kartu saya</string>
     <string name="pay_now">Bayar Sekarang</string>
-    <string name="pay_with_instalments">Bayar dengan cicilan</string>
+    <string name="pay_with_instalments">Bayar dengan cicilan ?</string>
     <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
     <string name="hint_expiry_date">Kadaluarsa(mm/yy)</string>
     <string name="validation_message_card_number">Masukkan nomor kartu</string>
@@ -114,7 +114,7 @@
     <string name="complete_payment_at_atm">Selesaikan Pembayaran di ATM</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
-    <string name="payment_pending">Menunggu Pembayaran!</string>
+    <string name="payment_pending">Menunggu Pembayaran</string>
     <string name="payment_challenged">Pembayaran sedang diproses</string>
     <string name="what_is_cvv">Apa itu CVV?</string>
     <string name="transactionTime">Waktu Transaksi</string>
@@ -239,9 +239,9 @@
     <string name="coming_soon">Segera Muncul!!</string>
     <string name="successful">Berhasil</string>
     <string name="unsuccessful">Tidak Berhasil</string>
-    <string name="payment_successful">Pembayaran Berhasil :)</string>
+    <string name="payment_successful">Pembayaran Berhasil</string>
     <string name="payment_unsuccessful_msg">Payment gateway <i>error</i></string>
-    <string name="payment_unsuccessful">Pembayaran Tidak Berhasil :(</string>
+    <string name="payment_unsuccessful">Pembayaran Tidak Berhasil</string>
     <string name="validation_message_invalid_expiry_date">Masukkan tanggal kadaluarsa yang benar</string>
     <string name="api_fail_message">Terjadi kesalahan. Silakan coba lagi.</string>
     <string name="title_payment_failed">Pembayaran Gagal</string>
@@ -429,4 +429,24 @@
     <string name="text_items">Barang</string>
     <string name="text_order_details">Detil Pesanan</string>
     <string name="text_price">Harga</string>
+    <string name="save_card_info">Detail kartu diatas akan disimpan untuk membantu transaksi anda berikutnya.</string>
+    <string name="choose_card">Pilih kartu kredit</string>
+    <string name="add_new_card">bayar dengan kartu baru</string>
+    <string name="mandiri_bill_transfer">Mandiri Bill</string>
+    <string name="bank_bca_transfer">Bank BCA</string>
+    <string name="bank_permata_transfer">Bank Permata</string>
+    <string name="other_bank_transfer">Others Bank</string>
+    <string name="copy">Salin</string>
+    <string name="valid_until">Valid hingga</string>
+    <string name="valid_date">10 September 2015, 16:00</string>
+    <string name="mandir_bill_instruction">bagaimana saya dapat melakukan pembayaran dengan mandiri bill ?</string>
+    <string name="thank_you">Terima kasih!</string>
+    <string name="text_payment_type">TIPE PEMBAYARAN</string>
+    <string name="status_payable_amount">JUMLAH PEMBAYARAN</string>
+    <string name="status_order_id">ORDER ID</string>
+    <string name="text_payment_time">WAKTU PEMBAYARAN</string>
+    <string name="status_due_amount">JUMLAH PEMBAYARAN BERSIH</string>
+    <string name="status_due_installment">CICILAN</string>
+    <string name="sorry">Maaf!</string>
+
 </resources>

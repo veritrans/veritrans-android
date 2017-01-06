@@ -534,7 +534,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
 
     public void morphingAnimation() {
         Logger.i("morphingAnimation");
-        //Logger.i("64dp:"+ Utils.dpToPx(56));
+        //Logger.i("64dp:"+ WidgetUtils.dpToPx(56));
         btnMorph.setVisibility(View.VISIBLE);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

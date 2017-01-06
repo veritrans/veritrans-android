@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,8 +11,6 @@
         android:id="@+id/layout_offer_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/sixteen_dp"
-        android:layout_marginBottom="@dimen/eight_dp"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
         android:orientation="vertical">
@@ -44,10 +42,10 @@
             android:drawablePadding="@dimen/eight_dp"
             android:drawableStart="@drawable/ic_offer_fail"
             android:gravity="center_vertical"
-            android:paddingBottom="@dimen/four_dp"
+            android:paddingBottom="@dimen/eight_dp"
             android:paddingLeft="@dimen/eight_dp"
             android:paddingRight="@dimen/eight_dp"
-            android:paddingTop="@dimen/four_dp"
+            android:paddingTop="@dimen/eight_dp"
             android:text="@string/offer_not_applied"
             android:textColor="@color/text_offer_failure"
             android:textSize="@dimen/eleven_sp"
@@ -58,97 +56,53 @@
         android:id="@+id/credit_card_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/layout_installment"
+        android:layout_below="@id/layout_offer_status"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
         android:orientation="vertical"
         android:paddingTop="@dimen/eight_dp">
 
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_saved_cards"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:id="@+id/text_empty_saved_cards"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/no_saved_cards"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/header_text_size"
-                android:visibility="gone" />
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/saved_card_pager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-        <com.midtrans.sdk.uikit.widgets.CirclePageIndicator
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/four_dp"
-            app:fillColor="?colorPrimary"
-            app:radius="4dp" />
+        </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layout_installment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/scan_card"
-        android:layout_marginLeft="@dimen/sixteen_dp"
-        android:layout_marginRight="@dimen/sixteen_dp"
-        android:layout_marginTop="@dimen/four_dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <Button
-            android:id="@+id/button_installment_decrease"
-            android:layout_width="@dimen/forty_dp"
-            android:layout_height="@dimen/forty_dp"
-            android:background="@drawable/style_button_dec"
-            android:textSize="30sp" />
-
-        <TextView
-
-            android:id="@+id/text_installment_term"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/eight_dp"
-            android:layout_marginRight="@dimen/eight_dp"
-            android:layout_weight="1"
-            android:background="@color/colorSecondary_min"
-            android:gravity="center"
-            android:text="@string/installment_term"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/button_installment_increase"
-            android:layout_width="@dimen/forty_dp"
-            android:layout_height="@dimen/forty_dp"
-            android:background="@drawable/style_button_inc"
-            android:textSize="30sp" />
-
-    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/new_card_button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/sixteen_dp">
+        android:layout_margin="@dimen/sixteen_dp"
+        android:visibility="gone">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_add_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:foregroundGravity="bottom|right"
-            android:padding="0dp"
-            android:src="@drawable/ic_plus_action"
-            app:borderWidth="0dp"
-            app:elevation="0dp" />
     </RelativeLayout>
-</LinearLayout>
+
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/btn_add_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/credit_card_holder"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:visibility="gone"
+        app:fb_borderColor="?attr/colorPrimary"
+        app:fb_borderWidth="2dp"
+        app:fb_defaultColor="@android:color/white"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_iconColor="?attr/colorPrimary"
+        app:fb_iconPaddingTop="5dp"
+        app:fb_iconPosition="left"
+        app:fb_iconResource="@drawable/ic_plus_new"
+        app:fb_radius="5dp"
+        app:fb_text="@string/add_new_card"
+        app:fb_textColor="?attr/colorPrimary" />
+</RelativeLayout>

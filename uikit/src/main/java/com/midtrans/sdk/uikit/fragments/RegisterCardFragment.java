@@ -115,7 +115,7 @@ public class RegisterCardFragment extends Fragment {
         cbStoreCard = (CheckBox) view.findViewById(R.id.cb_store_card);
         cbStoreCard.setVisibility(View.GONE);
         questionImg = (ImageView) view.findViewById(R.id.image_question);
-        questionSaveCardImg = (ImageView) view.findViewById(R.id.image_question_save_card);
+        questionSaveCardImg = (ImageView) view.findViewById(R.id.image_cvv_help);
         questionSaveCardImg.setVisibility(View.GONE);
         saveBtn = (Button) view.findViewById(R.id.btn_pay_now);
         saveBtn.setText(R.string.btn_save_card);

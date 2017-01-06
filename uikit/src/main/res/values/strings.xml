@@ -49,13 +49,13 @@
     <string name="btn_retry">Retry</string>
     <string name="btn_accept">Accept</string>
     <!--Activities-->
-    <string name="activity_select_bank">Select Bank</string>
+    <string name="activity_select_bank">Choose Bank</string>
     <string name="activity_bank_transfer_bca">BCA Bank Transfer</string>
     <string name="activity_bank_transfer_mandiri">Mandiri Bank Transfer</string>
     <string name="activity_bank_transfer_permata">Permata Bank Transfer</string>
     <string name="activity_save_credit_card">Registered Credit Card</string>
     <!-- User Address -->
-    <string name="title_user_details">User Details</string>
+    <string name="title_user_details">User Information</string>
     <string name="hint_address">Address</string>
     <string name="hint_city">City</string>
     <string name="hint_zip_code">Zipcode</string>
@@ -107,9 +107,9 @@
     <string name="hint_name_on_card">Name on the card</string>
     <string name="hint_card_number">Card Number</string>
     <string name="hint_cvv">CVV</string>
-    <string name="save_card_message">Save this card for future use</string>
+    <string name="save_card_message">Save my card details</string>
     <string name="pay_now">Pay now</string>
-    <string name="pay_with_instalments">Pay with instalments</string>
+    <string name="pay_with_instalments">Pay with instalment ?</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
     <string name="hint_expiry_date">Expiry(mm/yy)</string>
     <string name="validation_message_card_number">Please enter card number</string>
@@ -151,12 +151,12 @@
     <string name="hint_email_optional">Email Address (Optional)</string>
     <string name="email_instruction">We\'ll send payment instruction to mail.</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
-    <string name="bank_atm_transfer_step1">1.\t Click the Confirm Payment button.</string>
-    <string name="bank_atm_transfer_step2">2.\t You will receive an unique account number and instructions on how to pay
+    <string name="bank_atm_transfer_step1">Click the Confirm Payment button.</string>
+    <string name="bank_atm_transfer_step2">You will receive an unique account number and instructions on how to pay
         (You can receive instructions via email if you input your mail address above).</string>
 
-    <string name="bank_atm_transfer_step3">3.\t Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
-    <string name="bank_atm_transfer_step4">4.\t Once payment is complete, you will receive a confirmation email.</string>
+    <string name="bank_atm_transfer_step3">Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
+    <string name="bank_atm_transfer_step4">Once payment is complete, you will receive a confirmation email.</string>
     <string name="see_instruction">see instructions</string>
     <string name="download_instruction">Download Instructions</string>
     <string name="confirm_payment">Confirm Payment</string>
@@ -169,9 +169,9 @@
     <string name="copied_company_code">Company code was copied to clipboard</string>
     <string name="complete_payment_at_atm">Complete Payment At ATM</string>
     <string name="complete_payment_at_klik_bca">Finish</string>
-    <string name="done">Done</string>
+    <string name="done">Finish</string>
     <string name="virtual_account_number">Virtual Account Number</string>
-    <string name="payment_pending">Payment Pending !</string>
+    <string name="payment_pending">Payment Pending</string>
     <string name="payment_challenged">Payment is being processed</string>
     <string name="what_is_cvv">What is CVV?</string>
     <string name="transactionTime">Transaction Time</string>
@@ -294,18 +294,18 @@
     <string name="coming_soon">Coming soon!!</string>
     <string name="successful">Successful</string>
     <string name="unsuccessful">Unsuccessful</string>
-    <string name="payment_successful">Payment Successful :)</string>
+    <string name="payment_successful">Payment Successful</string>
     <string name="payment_unsuccessful_msg">Payment gateway error</string>
-    <string name="payment_unsuccessful">Payment unsuccessful :(</string>
+    <string name="payment_unsuccessful">Payment unsuccessful</string>
     <string name="validation_message_invalid_expiry_date">Please enter valid expiry date</string>
     <string name="api_fail_message">Something went wrong. Please try later.</string>
     <string name="title_payment_failed">Payment Failed</string>
     <string name="title_payment_successful">Payment Successful</string>
     <string name="card_details_error_message">Card details not found.</string>
     <string name="no_saved_cards">No saved cards found.</string>
-    <string name="expiry_month_format">%1$s/</string>
-    <string name="expiry_month_int_format">%1$d/</string>
-    <string name="expiry_month_single_digit_format">0%1$s/</string>
+    <string name="expiry_month_format">%1$s /\u0020</string>
+    <string name="expiry_month_int_format">%1$d /\u0020</string>
+    <string name="expiry_month_single_digit_format">0%1$s /\u0020</string>
 
     <string name="appli">APPLI</string>
     <string name="input_1">Input 1</string>
@@ -601,4 +601,27 @@
     <string name="text_items">Item(s)</string>
     <string name="text_item_name_format">%1$s x%2$d</string>
     <string name="text_price">Price</string>
+    <string name="save_card_info">Card details above will be saved to help your future transactions.</string>
+    <string name="choose_card">Choose credit card</string>
+    <string name="add_new_card">pay with new card</string>
+    <string name="mandiri_bill_transfer">Mandiri Bill</string>
+    <string name="bank_bca_transfer">Bank BCA</string>
+    <string name="bank_permata_transfer">Bank Permata</string>
+    <string name="other_bank_transfer">Other Bank</string>
+    <string name="copy">Copy</string>
+    <string name="valid_until">Valid until</string>
+    <string name="valid_date">10 September 2015, 16:00</string>
+    <string name="mandir_bill_instruction">how can i pay with mandiri bill payment ?</string>
+    <string name="thank_you">Thank you!</string>
+    <string name="text_payment_type">PAYMENT TYPE</string>
+    <string name="status_payable_amount">TOTAL AMOUNT</string>
+    <string name="status_order_id">ORDER ID</string>
+    <string name="text_payment_time">PAYMENT TIME</string>
+    <string name="text_payment_time_here">Payment Time Here</string>
+    <string name="status_due_amount">TOTAL DUE AMOUNT</string>
+    <string name="status_due_installment">DUE INSTALLMENT</string>
+    <string name="text_due_amount_here">Due Amount Here</string>
+    <string name="due_installment_here">Due Installment Here</string>
+    <string name="status_bank">BANK</string>
+    <string name="sorry">Sorry!</string>
 </resources>

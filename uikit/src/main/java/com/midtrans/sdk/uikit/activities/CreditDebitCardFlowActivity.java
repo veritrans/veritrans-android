@@ -57,7 +57,7 @@ import com.midtrans.sdk.uikit.utilities.ReadBankDetailTask;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.CirclePageIndicator;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
-import com.midtrans.sdk.uikit.widgets.MorphingButton;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -92,7 +92,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private RelativeLayout processingLayout;
     private ArrayList<BankDetail> bankDetails;
     private ReadBankDetailTask readBankDetailTask;
-
+    private RelativeLayout mainlayout;
     //for setResult
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
@@ -100,10 +100,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private CirclePageIndicator circlePageIndicator;
     private TextView emptyCardsTextView;
     private TextView titleHeaderTextView;
-    private DefaultTextView textOrderId, textTotalAmount;
+    private DefaultTextView textTotalAmount;
     private ImageView logo;
     private int fabHeight;
-    private MorphingButton btnMorph;
     private boolean saveCard = false;
     private String cardType;
     private boolean removeExistCard = false;
@@ -115,10 +114,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private int installmentTermSelected;
     private boolean whiteListBinsAvailable = false;
     private boolean cardBinValid = false;
+    private FancyButton buttonback;
+    private ImageView imageSavedCardDelete;
+    private boolean fromSavedCard;
 
-    public MorphingButton getBtnMorph() {
-        return btnMorph;
-    }
 
     public TextView getTitleHeaderTextView() {
         return titleHeaderTextView;
@@ -133,15 +132,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.text_title);
-        btnMorph = (MorphingButton) findViewById(R.id.btnMorph1);
         logo = (ImageView) findViewById(R.id.merchant_logo);
-        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        buttonback = (FancyButton) findViewById(R.id.btn_back);
+        imageSavedCardDelete = (ImageView) findViewById(R.id.image_saved_card_delete);
+        mainlayout = (RelativeLayout) findViewById(R.id.main_layout);
 
         initializeTheme();
-        morphToCircle(0);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
         if (midtransSDK != null) {
             initBankBins();
@@ -149,15 +147,46 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             if (!midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
                 getCreditCards();
             } else {
-                AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
-                replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
-                titleHeaderTextView.setText(getString(R.string.card_details));
+                showCardDetailFragment(null);
             }
-            textOrderId.setText(midtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
         }
+
+        buttonback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        imageSavedCardDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment currentFragment = getCurrentFagment(AddCardDetailsFragment.class);
+                if (currentFragment != null && imageSavedCardDelete.getVisibility() == View.VISIBLE) {
+                    SdkUIFlowUtil.showProgressDialog(CreditDebitCardFlowActivity.this, getString(R.string.processing_delete), false);
+                    fromSavedCard = true;
+                    SaveCardRequest savedCard = ((AddCardDetailsFragment) currentFragment).getSavedCard();
+                    deleteSavedCard(savedCard);
+                }
+            }
+        });
         readBankDetails();
+    }
+
+    private void deleteSavedCard(SaveCardRequest savedCard) {
+        if (savedCard != null) {
+            ArrayList<SaveCardRequest> cardList = new ArrayList<>();
+            if (creditCards != null && !creditCards.isEmpty()) {
+                cardList.addAll(creditCards);
+                for (int i = 0; i < cardList.size(); i++) {
+                    if (cardList.get(i).getSavedTokenId().equalsIgnoreCase(savedCard.getSavedTokenId())) {
+                        cardList.remove(cardList.get(i));
+                    }
+                }
+            }
+            saveCreditCards(cardList, true);
+        }
     }
 
     @Override
@@ -165,10 +194,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         super.onDestroy();
     }
 
-    public void morphToCircle(int time) {
-        MorphingButton.Params circle = morphCicle(time);
-        btnMorph.morph(circle);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -182,11 +207,16 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     @Override
     public void onBackPressed() {
+        Log.d("backpress", "transaksi:" + currentFragmentName + "  | is : " + fromSavedCard);
         SdkUIFlowUtil.hideKeyboard(this);
         if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equalsIgnoreCase(PaymentTransactionStatusFragment.class
                 .getName())) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
+        } else if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equalsIgnoreCase(AddCardDetailsFragment.class.getName())
+                && fromSavedCard) {
+            super.onBackPressed();
+            fromSavedCard = false;
         } else {
             setResultCode(RESULT_CANCELED);
             setResultAndFinish();
@@ -312,7 +342,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                             }, 200);
                             CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
                             CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                            initPaymentStatus(transactionResponse, errorMessage, true);
+                            initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
                             titleHeaderTextView.setText(getString(R.string.title_payment_status));
                         }
                     }
@@ -381,7 +411,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             }
         }
         SdkUIFlowUtil.hideProgressDialog();
-        initPaymentStatus(transactionResponse, null, true);
+        initPaymentStatus(transactionResponse, null, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
     }
 
     public MidtransSDK getMidtransSDK() {
@@ -432,23 +462,27 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public void saveCreditCards(ArrayList<SaveCardRequest> requests, boolean isRemoveCard) {
+        Log.d(TAG, "savecredicards>isremov:" + isRemoveCard);
         this.removeExistCard = isRemoveCard;
         midtransSDK.saveCards(userDetail.getUserId(), requests, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
+                Log.d(TAG, "savecredicards>success");
+
                 if (removeExistCard) {
                     SdkUIFlowUtil.hideProgressDialog();
-                    removeExistCard = false;
-                    Fragment currentFragment = getCurrentFagment(SavedCardFragment.class);
+                    Fragment currentFragment = getCurrentFagment(AddCardDetailsFragment.class);
                     if (currentFragment != null) {
-                        Logger.d("Delete card success");
-                        ((SavedCardFragment) currentFragment).onDeleteCardSuccess();
+                        Logger.d(TAG, "Delete card success");
+                        onBackPressed();
                     }
                 }
             }
 
             @Override
             public void onFailure(String reason) {
+                Log.d(TAG, "savecredicards>failure");
+
                 if (removeExistCard) {
                     SdkUIFlowUtil.hideProgressDialog();
                     SdkUIFlowUtil.showSnackbar(CreditDebitCardFlowActivity.this, reason);
@@ -458,6 +492,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
             @Override
             public void onError(Throwable error) {
+                Log.d(TAG, "savecredicards>error");
+
                 if (removeExistCard) {
                     SdkUIFlowUtil.hideProgressDialog();
                 }
@@ -502,7 +538,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 }, 200);
                 CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.payment_canceled);
                 SdkUIFlowUtil.hideProgressDialog();
-                initPaymentStatus(transactionResponse, errorMessage, true);
+                initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
             } else if (requestCode == SCAN_REQUEST_CODE) {
                 // track scan cancelled
@@ -566,9 +602,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                         @Override
                         public void onError(Throwable error) {
                             SdkUIFlowUtil.hideProgressDialog();
-                            AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
-                            replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
-                            titleHeaderTextView.setText(getString(R.string.card_details));
+                            showCardDetailFragment(null);
                         }
                     });
                 }
@@ -686,37 +720,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         this.fabHeight = fabHeight;
     }
 
-    public void morphingAnimation() {
-        Logger.i("morphingAnimation");
-        //Logger.i("64dp:"+ Utils.dpToPx(56));
-        btnMorph.setVisibility(View.VISIBLE);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                MorphingButton.Params square = MorphingButton.Params.create()
-                        .duration((int) Constants.CARD_ANIMATION_TIME)
-                        .cornerRadius(dimen(R.dimen.mb_corner_radius_2))
-                        .width((int) cardWidth)
-                        .height(Utils.dpToPx(Constants.FAB_HEIGHT_DP))
-                        .text(getString(R.string.pay_now))
-                        .colorPressed(color(R.color.colorAccent))
-                        .color(color(R.color.colorAccent));
-                btnMorph.morph(square);
-            }
-        }, 50);
-    }
-
-    public MorphingButton.Params morphCicle(int time) {
-        return MorphingButton.Params.create()
-                .cornerRadius(Utils.dpToPx(Constants.FAB_HEIGHT_DP))
-                .width(Utils.dpToPx(Constants.FAB_HEIGHT_DP))
-                .height(Utils.dpToPx(Constants.FAB_HEIGHT_DP))
-                .duration(time)
-                .colorPressed(color(R.color.colorAccent))
-                .color(color(R.color.colorAccent));
-    }
-
     public int dimen(@DimenRes int resId) {
         return (int) getResources().getDimension(resId);
     }
@@ -775,15 +778,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     emptyCardsTextView.setVisibility(View.VISIBLE);
                 }
             }
+
             SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
             //getSupportActionBar().setTitle(getString(R.string.saved_card));
             titleHeaderTextView.setText(getString(R.string.saved_card));
             replaceFragment(savedCardFragment, R.id.card_container, true, false);
 
         } else {
-            AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance();
-            replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
-            titleHeaderTextView.setText(getString(R.string.card_details));
+            showCardDetailFragment(null);
         }
     }
 
@@ -845,6 +847,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public boolean isCardBinValid(String cardBin) {
+        Log.d("binval", "isvalid:" + isInWhiteList(cardBin));
         return isInWhiteList(cardBin);
     }
 
@@ -923,6 +926,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         return whiteListBinsAvailable;
     }
 
+
     private boolean isCardBinValid() {
         return cardBinValid;
     }
@@ -934,5 +938,36 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     public boolean isPaymentWithPromo() {
         boolean isPaymentWithPromo = MidtransSDK.getInstance().getTransactionRequest().isPaymentWithPromo();
         return isPaymentWithPromo && isWhiteListBinsAvailable();
+    }
+
+    public void showAddCardDetailFragment(SaveCardRequest card) {
+        showCardDetailFragment(card);
+    }
+
+    private void showCardDetailFragment(SaveCardRequest card) {
+        if (card == null) {
+            showDeleteCardIcon(false);
+        } else {
+            fromSavedCard = true;
+        }
+        AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance(card);
+        replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
+        titleHeaderTextView.setText(getString(R.string.card_details));
+    }
+
+    public void showDeleteCardIcon(boolean show) {
+        if (show) {
+            imageSavedCardDelete.setVisibility(View.VISIBLE);
+        } else {
+            imageSavedCardDelete.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public boolean isRemoveExistCard() {
+        return removeExistCard;
+    }
+
+    public void setRemoveExistCard(boolean removeExistCard) {
+        this.removeExistCard = removeExistCard;
     }
 }

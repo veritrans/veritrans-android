@@ -15,7 +15,7 @@
     <string name="my_credit_card">Kartu Kredit Saya</string>
 
     <!-- User Address -->
-    <string name="title_user_details">Detil Pengguna</string>
+    <string name="title_user_details">Informasi Pengguna</string>
     <string name="hint_address">Alamat</string>
     <string name="hint_city">Kota</string>
     <string name="hint_zip_code">Kode Pos</string>
@@ -61,9 +61,9 @@
     <string name="hint_name_on_card">Nama pada kartu</string>
     <string name="hint_card_number">Nomor Kartu</string>
     <string name="hint_cvv">CVV</string>
-    <string name="save_card_message">Simpan kartu ini untuk transaksi selanjutnya</string>
+    <string name="save_card_message">Simpan detail kartu saya</string>
     <string name="pay_now">Bayar Sekarang</string>
-    <string name="pay_with_instalments">Bayar dengan cicilan</string>
+    <string name="pay_with_instalments">Bayar dengan cicilan ?</string>
     <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
     <string name="hint_expiry_date">Kadaluarsa(mm/yy)</string>
     <string name="validation_message_card_number">Masukkan nomor kartu</string>
@@ -89,12 +89,12 @@
     <string name="hint_email_optional">Alamat Email (Opsional)</string>
     <string name="email_instruction">Kami akan mengirimkan instruksi pembayaran melalui email</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
-    <string name="bank_atm_transfer_step1">1.\t Klik tombol Confirm Payment.</string>
-    <string name="bank_atm_transfer_step2">2.\t Anda akan menerima nomor rekening yang unik instruksi pembayaran
+    <string name="bank_atm_transfer_step1">Klik tombol Confirm Payment.</string>
+    <string name="bank_atm_transfer_step2">Anda akan menerima nomor rekening yang unik instruksi pembayaran
         (Anda dapat menerima instruksi via email jika memasukkan alamat email anda pada kolom di atas).</string>
 
-    <string name="bank_atm_transfer_step3">3.\t Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
-    <string name="bank_atm_transfer_step4">4.\t Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
+    <string name="bank_atm_transfer_step3">Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
+    <string name="bank_atm_transfer_step4">Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
     <string name="see_instruction">Lihat instruksi</string>
     <string name="confirm_payment">Konfirmasi Pembayaran</string>
     <string name="copy_payment_code">Salin Kode Pembayaran</string>
@@ -107,7 +107,7 @@
     <string name="complete_payment_at_atm">Selesaikan Pembayaran di ATM</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
-    <string name="payment_pending">Menunggu Pembayaran!</string>
+    <string name="payment_pending">Menunggu Pembayaran</string>
     <string name="transactionTime">Waktu Transaksi</string>
     <string name="paymentType">Tipe Pembayaran</string>
     <string name="tab_mandiri">Mandiri/ATM Bersama</string>
@@ -229,9 +229,9 @@
     <string name="coming_soon">Segera Muncul!!</string>
     <string name="successful">Berhasil</string>
     <string name="unsuccessful">Tidak Berhasil</string>
-    <string name="payment_successful">Pembayaran Berhasil :)</string>
+    <string name="payment_successful">Pembayaran Berhasil</string>
     <string name="payment_unsuccessful_msg">Payment gateway <i>error</i></string>
-    <string name="payment_unsuccessful">Pembayaran Tidak Berhasil :(</string>
+    <string name="payment_unsuccessful">Pembayaran Tidak Berhasil</string>
     <string name="validation_message_invalid_expiry_date">Masukkan tanggal kadaluarsa yang benar</string>
     <string name="api_fail_message">Terjadi kesalahan. Silakan coba lagi.</string>
     <string name="title_payment_failed">Pembayaran Gagal</string>

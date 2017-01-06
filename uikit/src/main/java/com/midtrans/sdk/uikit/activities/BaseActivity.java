@@ -1,11 +1,17 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,9 +46,6 @@ public class BaseActivity extends AppCompatActivity {
                     Picasso.with(this)
                             .load(mMidtransSDK.getMerchantLogo())
                             .into(logo);
-                } else if (name != null && !TextUtils.isEmpty(mMidtransSDK.getMerchantName())) {
-                    name.setVisibility(View.VISIBLE);
-                    name.setText(mMidtransSDK.getMerchantName());
                 }
             }
         }
@@ -85,16 +88,17 @@ public class BaseActivity extends AppCompatActivity {
         return null;
     }
 
-    protected void initPaymentStatus(TransactionResponse transactionResponse, String errorMessage, boolean addToBackStack) {
+    protected void initPaymentStatus(TransactionResponse transactionResponse, String errorMessage, int paymentMethod, boolean addToBackStack) {
         if (MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus()) {
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponse);
-            replaceFragment(paymentTransactionStatusFragment, R.id.card_container, addToBackStack, false);
+                    PaymentTransactionStatusFragment.newInstance(transactionResponse, paymentMethod);
+            replaceFragment(paymentTransactionStatusFragment, R.id.main_layout, addToBackStack, false);
         } else {
             setResultCode(RESULT_OK);
             setResultAndFinish(transactionResponse, errorMessage);
         }
     }
+
 
     protected void setResultAndFinish(TransactionResponse transactionResponse, String errorMessage) {
         Intent data = new Intent();
@@ -126,4 +130,5 @@ public class BaseActivity extends AppCompatActivity {
             setResultAndFinish(transactionResponse, errorMessage);
         }
     }
+
 }

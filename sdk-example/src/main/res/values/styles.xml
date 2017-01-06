@@ -20,10 +20,10 @@
     </style>
 
     <style name="AppTheme.Blue">
-        <item name="colorPrimary">@color/blue_500</item>
+        <item name="colorPrimary">@color/blue_700</item>
         <item name="colorAccent">@color/pink_a200</item>
-        <item name="colorPrimaryDark">@color/white</item>
-        <item name="colorButtonNormal">@color/blue_500</item>
+        <item name="colorPrimaryDark">@color/colorAccentLight</item>
+        <item name="colorButtonNormal">@color/blue_700</item>
     </style>
 
     <style name="AppTheme.Pink">
