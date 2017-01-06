@@ -130,7 +130,7 @@ public class KlikBCAActivity extends BaseActivity {
                                         if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                                             setUpTransactionStatusFragment(response);
                                         } else {
-                                            SdkUIFlowUtil.showSnackbar(KlikBCAActivity.this, errorMessage);
+                                            SdkUIFlowUtil.showToast(KlikBCAActivity.this, errorMessage);
                                         }
                                     }
 
@@ -138,7 +138,7 @@ public class KlikBCAActivity extends BaseActivity {
                                     public void onError(Throwable error) {
                                         errorMessage = getString(R.string.message_payment_failed);
                                         SdkUIFlowUtil.hideProgressDialog();
-                                        SdkUIFlowUtil.showSnackbar(KlikBCAActivity.this, errorMessage);
+                                        SdkUIFlowUtil.showToast(KlikBCAActivity.this, errorMessage);
                                     }
                                 });
                     }

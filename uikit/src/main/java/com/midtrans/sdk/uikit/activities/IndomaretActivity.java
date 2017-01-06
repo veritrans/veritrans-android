@@ -71,7 +71,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_INDOMARET);
         } else {
-            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(IndomaretActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -157,7 +157,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
                     setResultCode(RESULT_OK);
-                    SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, SOMETHING_WENT_WRONG);
+                    SdkUIFlowUtil.showToast(IndomaretActivity.this, SOMETHING_WENT_WRONG);
                     setResultAndFinish();
                 }
             } else {
@@ -212,7 +212,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             fragmentTransaction.commit();
             currentFragment = PAYMENT_FRAGMENT;
         } else {
-            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, SOMETHING_WENT_WRONG);
+            SdkUIFlowUtil.showToast(IndomaretActivity.this, SOMETHING_WENT_WRONG);
             onBackPressed();
         }
     }
@@ -245,7 +245,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                 IndomaretActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 IndomaretActivity.this.transactionResponse = response;
                 SdkUIFlowUtil.hideProgressDialog();
-                SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + errorMessage);
+                SdkUIFlowUtil.showToast(IndomaretActivity.this, "" + errorMessage);
                 setUpTransactionStatusFragment(response);
             }
 
@@ -253,7 +253,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
                 IndomaretActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + errorMessage);
+                SdkUIFlowUtil.showToast(IndomaretActivity.this, "" + errorMessage);
             }
         });
     }

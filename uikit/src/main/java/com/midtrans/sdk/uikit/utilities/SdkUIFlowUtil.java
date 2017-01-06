@@ -11,16 +11,13 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.Color;
-import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -88,20 +85,8 @@ public class SdkUIFlowUtil {
      * @param activity instance of an activity.
      * @param message  message to display on snackbar.
      */
-    public static void showSnackbar(Activity activity, String message) {
-
-        try {
-            Snackbar snackbar = Snackbar.make(
-                    activity.getWindow().findViewById(android.R.id.content), message,
-                    Snackbar.LENGTH_LONG);
-            TextView snackBarText = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
-            snackBarText.setTextColor(Color.WHITE);
-            snackBarText.setGravity(Gravity.CENTER_HORIZONTAL);
-            snackBarText.setMaxLines(5);
-            snackbar.show();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+    public static void showToast(Activity activity, String message) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -238,9 +223,9 @@ public class SdkUIFlowUtil {
                     Context context = midtransSDK.getContext();
                     if (context != null) {
                         if (errorMessage.contains(context.getString(R.string.retrofit_network_message))) {
-                            SdkUIFlowUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+                            Toast.makeText(activity, activity.getString(R.string.no_network_msg), Toast.LENGTH_SHORT).show();
                         } else {
-                            SdkUIFlowUtil.showSnackbar(activity, errorMessage);
+                            Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     } else Logger.e("Context is not available.");
                 } else {
@@ -248,7 +233,7 @@ public class SdkUIFlowUtil {
                 }
 
             } else {
-                SdkUIFlowUtil.showSnackbar(activity, activity.getString(R.string.api_fail_message));
+                Toast.makeText(activity, activity.getString(R.string.api_fail_message), Toast.LENGTH_SHORT).show();
             }
         } catch (NullPointerException e) {
             Logger.i("Nullpointer:" + e.getMessage());

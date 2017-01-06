@@ -64,7 +64,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         mMidtransSDK = MidtransSDK.getInstance();
 
         if (mMidtransSDK == null) {
-            SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this, Constants
+            SdkUIFlowUtil.showToast(MandiriClickPayActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
@@ -202,10 +202,10 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                 debitCardNumber = debitCardNumber.replace(" ", "");
 
                 if (debitCardNumber.length() < 16 || !SdkUIFlowUtil.isValidCardNumber(debitCardNumber)) {
-                    SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this,
+                    SdkUIFlowUtil.showToast(MandiriClickPayActivity.this,
                             getString(R.string.validation_message_invalid_card_no));
                 } else if (challengeToken.trim().length() != 6) {
-                    SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this,
+                    SdkUIFlowUtil.showToast(MandiriClickPayActivity.this,
                             getString(R.string.validation_message_invalid_token_no));
                 } else {
 
@@ -222,13 +222,13 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                 }
 
             } else {
-                SdkUIFlowUtil.showSnackbar(
+                SdkUIFlowUtil.showToast(
                         MandiriClickPayActivity.this, getString(R.string.validation_message_please_fillup_form)
                 );
             }
 
         } else {
-            SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(MandiriClickPayActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -252,7 +252,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                         if (transactionResponse != null) {
                             setUpTransactionStatusFragment(transactionResponse);
                         } else {
-                            SdkUIFlowUtil.showSnackbar(MandiriClickPayActivity.this,
+                            SdkUIFlowUtil.showToast(MandiriClickPayActivity.this,
                                     SOMETHING_WENT_WRONG);
                         }
                     }

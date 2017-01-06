@@ -138,10 +138,10 @@ public class CardDetailFragment extends Fragment {
                 SdkUIFlowUtil.hideKeyboard(getActivity());
                 final String cvv = cvvEt.getText().toString().trim();
                 if (TextUtils.isEmpty(cvv)) {
-                    SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_message_cvv));
+                    SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_message_cvv));
                     return;
                 } else if (cvv.length() < 3) {
-                    SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+                    SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                             .validation_message_invalid_cvv));
                     return;
                 }

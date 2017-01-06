@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -87,7 +85,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         if (data != null) {
             position = data.getIntExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
         } else {
-            SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(BankTransferActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -203,7 +201,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             }
 
         } else {
-            SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(BankTransferActivity.this, getString(R.string.error_something_wrong));
             Logger.e(BankTransferActivity.class.getSimpleName(), Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -234,7 +232,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
                     setResultCode(RESULT_OK);
-                    SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
+                    SdkUIFlowUtil.showToast(BankTransferActivity.this, SOMETHING_WENT_WRONG);
                     onBackPressed();
                 }
             } else {
@@ -304,7 +302,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             mButtonConfirmPayment.setText(R.string.complete_payment_at_atm);
 
         } else {
-            SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
+            SdkUIFlowUtil.showToast(BankTransferActivity.this, SOMETHING_WENT_WRONG);
             onBackPressed();
         }
     }
@@ -325,7 +323,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             if (!TextUtils.isEmpty(emailId) && SdkUIFlowUtil.isEmailValid(emailId)) {
                 mMidtransSDK.getTransactionRequest().getCustomerDetails().setEmail(emailId.trim());
             } else if (!TextUtils.isEmpty(emailId) && emailId.trim().length() > 0) {
-                SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_invalid_email_id));
+                SdkUIFlowUtil.showToast(BankTransferActivity.this, getString(R.string.error_invalid_email_id));
                 return;
             }
         }
@@ -491,7 +489,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     private void actionPaymentError(Throwable error) {
         SdkUIFlowUtil.hideProgressDialog();
         BankTransferActivity.this.errorMessage = getString(R.string.message_payment_failed);
-        SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.showToast(BankTransferActivity.this, "" + errorMessage);
     }
 
     private void actionPaymentSuccess(TransactionResponse response) {
@@ -512,7 +510,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                 setUpTransactionStatusFragment(response);
             } else {
-                SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+                SdkUIFlowUtil.showToast(BankTransferActivity.this, "" + errorMessage);
             }
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);

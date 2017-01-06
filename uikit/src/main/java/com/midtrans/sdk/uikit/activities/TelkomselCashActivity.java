@@ -124,7 +124,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         } else {
-            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(TelkomselCashActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
     }
@@ -156,7 +156,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
             telkomselToken = telkomselCashFragment.getTelkomselToken();
 
             if (TextUtils.isEmpty(telkomselToken)) {
-                SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_empty_tcash_token_field));
+                SdkUIFlowUtil.showToast(TelkomselCashActivity.this, getString(R.string.error_empty_tcash_token_field));
             }
         }
 
@@ -185,7 +185,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                         if (response != null) {
                             setUpTransactionStatusFragment(response);
                         } else {
-                            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, SOMETHING_WENT_WRONG);
+                            SdkUIFlowUtil.showToast(TelkomselCashActivity.this, SOMETHING_WENT_WRONG);
                             finish();
                         }
                     }
@@ -199,7 +199,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                         if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                             setUpTransactionStatusFragment(response);
                         } else {
-                            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_message_invalid_input_telkomsel));
+                            SdkUIFlowUtil.showToast(TelkomselCashActivity.this, getString(R.string.error_message_invalid_input_telkomsel));
                         }
                     }
 
@@ -207,7 +207,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                     public void onError(Throwable error) {
                         SdkUIFlowUtil.hideProgressDialog();
                         errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
-                        SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, errorMessage);
+                        SdkUIFlowUtil.showToast(TelkomselCashActivity.this, errorMessage);
                     }
                 });
     }

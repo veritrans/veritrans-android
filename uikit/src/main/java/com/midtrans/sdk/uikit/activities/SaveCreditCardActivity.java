@@ -218,7 +218,7 @@ public class SaveCreditCardActivity extends BaseActivity {
                 @Override
                 public void onSuccess(SaveCardResponse response) {
                     SdkUIFlowUtil.hideProgressDialog();
-                    SdkUIFlowUtil.showSnackbar(SaveCreditCardActivity.this, "Your card has been successfully saved");
+                    SdkUIFlowUtil.showToast(SaveCreditCardActivity.this, "Your card has been successfully saved");
                     savedCardFragment.addCreditCard(cardRequest);
                     replaceFragment(savedCardFragment, true, false);
                 }

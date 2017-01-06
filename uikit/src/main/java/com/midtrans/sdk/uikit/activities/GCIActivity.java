@@ -65,7 +65,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
             position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_GCI);
         } else {
-            SdkUIFlowUtil.showSnackbar(this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -195,7 +195,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
                     SdkUIFlowUtil.hideProgressDialog();
                     if (retryNumber > 0) {
                         buttonConfirmPayment.setText(getString(R.string.retry));
-                        SdkUIFlowUtil.showSnackbar(GCIActivity.this, "" + errorMessage);
+                        SdkUIFlowUtil.showToast(GCIActivity.this, "" + errorMessage);
                         --retryNumber;
                     } else {
                         setUpTransactionStatusFragment(response);
@@ -206,7 +206,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
                 public void onError(Throwable error) {
                     SdkUIFlowUtil.hideProgressDialog();
                     errorMessage = getString(R.string.message_payment_failed);
-                    SdkUIFlowUtil.showSnackbar(GCIActivity.this, "" + errorMessage);
+                    SdkUIFlowUtil.showToast(GCIActivity.this, "" + errorMessage);
                 }
             });
         }

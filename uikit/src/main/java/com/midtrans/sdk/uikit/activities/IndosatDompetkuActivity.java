@@ -147,7 +147,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         } else {
-            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(IndosatDompetkuActivity.this, getString(R.string.error_something_wrong));
             Logger.e(IndosatDompetkuActivity.class.getSimpleName(), Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -195,7 +195,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                 Logger.i("setting phone number " + phoneNumber);
                 mMidtransSDK.getTransactionRequest().getCustomerDetails().setPhone(phoneNumber.trim());
             } else {
-                SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, getString(R.string.error_invalid_phone_number));
+                SdkUIFlowUtil.showToast(IndosatDompetkuActivity.this, getString(R.string.error_invalid_phone_number));
                 return;
             }
         }
@@ -232,7 +232,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                         if (response != null) {
                             setUpTransactionStatusFragment(response);
                         } else {
-                            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, SOMETHING_WENT_WRONG);
+                            SdkUIFlowUtil.showToast(IndosatDompetkuActivity.this, SOMETHING_WENT_WRONG);
                             finish();
                         }
                     }
@@ -247,7 +247,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                             if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                                 setUpTransactionStatusFragment(mTransactionResponse);
                             } else {
-                                SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+                                SdkUIFlowUtil.showToast(IndosatDompetkuActivity.this, "" + errorMessage);
                             }
                         } catch (NullPointerException ex) {
                             Logger.e("transaction error is " + errorMessage);
@@ -259,7 +259,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                         try {
                             IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_failed);
                             SdkUIFlowUtil.hideProgressDialog();
-                            SdkUIFlowUtil.showSnackbar(IndosatDompetkuActivity.this, "" + errorMessage);
+                            SdkUIFlowUtil.showToast(IndosatDompetkuActivity.this, "" + errorMessage);
 
                         } catch (NullPointerException e) {
                             Logger.e("transaction error is " + e.getMessage());

@@ -130,7 +130,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
             position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_OFFERS);
         } else {
-            SdkUIFlowUtil.showSnackbar(OffersActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(OffersActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -328,7 +328,7 @@ public class OffersActivity extends BaseActivity implements ReadBankDetailTask.R
                     @Override
                     public void onError(Throwable error) {
                         SdkUIFlowUtil.hideProgressDialog();
-                        SdkUIFlowUtil.showSnackbar(OffersActivity.this, error.getMessage());
+                        SdkUIFlowUtil.showToast(OffersActivity.this, error.getMessage());
                     }
                 });
 
