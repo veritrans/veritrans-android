@@ -7,6 +7,7 @@ package com.midtrans.sdk.corekit.core;
 public class UIKitCustomSetting {
 
     private boolean showPaymentStatus = true;
+    private boolean saveCardChecked = false;
 
     public boolean isShowPaymentStatus() {
         return showPaymentStatus;
@@ -14,5 +15,13 @@ public class UIKitCustomSetting {
 
     public void setShowPaymentStatus(boolean showPaymentStatus) {
         this.showPaymentStatus = showPaymentStatus;
+    }
+
+    public boolean isSaveCardChecked() {
+        return saveCardChecked;
+    }
+
+    public void setSaveCardChecked(boolean saveCardChecked) {
+        this.saveCardChecked = saveCardChecked;
     }
 }

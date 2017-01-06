@@ -228,14 +228,15 @@ public class CardDetailFragment extends Fragment {
             }
         }
 
+        String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
         if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
 
             if (activity != null) {
                 CardTokenRequest request = new CardTokenRequest();
                 request.setCardNumber(cardDetail.getMaskedCard());
                 // track saved card usage
-                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SAVED_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
-                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SAVED_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_ONE_CLICK);
                 if (activity instanceof CreditDebitCardFlowActivity) {
                     ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(cardDetail.getMaskedCard());
                 } else if (activity instanceof OffersActivity) {
@@ -244,8 +245,8 @@ public class CardDetailFragment extends Fragment {
             }
         } else if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_two_click))) {
             // track saved card usage
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SAVED_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SAVED_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
+            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, MixpanelAnalyticsManager.PAYMENT_TWO_CLICKS);
 
             if (activity != null) {
                 CardTokenRequest request = new CardTokenRequest();
@@ -259,8 +260,8 @@ public class CardDetailFragment extends Fragment {
             }
         } else {
             if (activity != null) {
-                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SAVED_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
-                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SAVED_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
 
                 CardTokenRequest request = new CardTokenRequest();
                 request.setSecure(midtransSDK.getTransactionRequest().isSecureCard());

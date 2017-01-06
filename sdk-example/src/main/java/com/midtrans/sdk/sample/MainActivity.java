@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn, indomaretBtn, kiosonBtn, gciBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn, tcashBtn, indosatBtn, xlTunaiBtn;
-    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour, promoActive, promoInactive;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour, promoActive, promoInactive, savedCard, notSavedCard;
     private Toolbar toolbar;
 
     @Override
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     .enableLog(true)
                     .buildSDK();
         } else {
-//            init custom setting if needed
+            // Init custom settings
             UIKitCustomSetting uisetting = new UIKitCustomSetting();
             uisetting.setShowPaymentStatus(true);
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
                     .enableLog(true)
-                    .useBuiltInTokenStorage(true) // enable built in token storage
+                    .useBuiltInTokenStorage(false) // enable built in token storage
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private TransactionRequest initializePurchaseRequest(int sampleSDKType) {
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(System.currentTimeMillis() + "", 6000);
+                TransactionRequest(UUID.randomUUID().toString(), 6000);
 
         //define customer detail (mandatory for coreflow)
         CustomerDetails mCustomerDetails = new CustomerDetails();
@@ -167,6 +167,15 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             creditCard.setSecure(true);
             transactionRequestNew.setCreditCard(creditCard);
         }
+
+        UIKitCustomSetting uiKitCustomSetting = MidtransSDK.getInstance().getUIKitCustomSetting();
+        if (savedCard.isChecked()) {
+            uiKitCustomSetting.setSaveCardChecked(true);
+        } else {
+            uiKitCustomSetting.setSaveCardChecked(false);
+        }
+        MidtransSDK.getInstance().setUIKitCustomSetting(uiKitCustomSetting);
+
         if (sampleSDKType == CORE_FLOW) {
             transactionRequestNew.setCardPaymentInfo(cardClickType, false);
         } else {
@@ -224,6 +233,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         promoActive = (RadioButton) findViewById(R.id.radio_promo_active);
         promoInactive = (RadioButton) findViewById(R.id.radio_promo_inactive);
+
+        savedCard = (RadioButton) findViewById(R.id.radio_save_active);
+        notSavedCard = (RadioButton) findViewById(R.id.radio_save_inactive);
 
         bankMaybank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

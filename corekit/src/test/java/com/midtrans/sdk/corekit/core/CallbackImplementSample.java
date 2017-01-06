@@ -43,6 +43,7 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
     private SnapRestAPI snapRestAPI;
     private MidtransRestAPI midtransRestAPI;
     private MerchantRestAPI merchantRestAPI;
+    private String authenticationToken = "token";
 
     public void setTransactionManager(SnapTransactionManager transactionManager, MerchantRestAPI merchantRestAPI,
                                       MidtransRestAPI midtransRestAPI, SnapRestAPI snapRestAPI) {
@@ -216,7 +217,7 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
     }
 
     public void getToken(CardTokenRequest cardTokenRequest) {
-        snapTransactionManager.getToken(cardTokenRequest, this);
+        snapTransactionManager.getToken(authenticationToken, cardTokenRequest, this);
     }
 
     public CheckoutCallback getCheckoutCallback() {

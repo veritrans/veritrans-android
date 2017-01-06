@@ -572,7 +572,7 @@
     <string name="kioson_valid">Please complete your payment at Kioson Outlet Before : %1$s</string>
     <string name="kioson_payment_instrution">Kioson Payment Instruction</string>
     <string name="message_payment_cannot_proccessed">Transaction cannot be proccessed. Make sure your payment informations is correct</string>
-    <string name="message_payment_failed">Payment failed! Please try again.</string>
+    <string name="message_payment_failed">Transaction Failed. Re-check your card details or use another card.</string>
     <string name="message_payment_denied">Transaction denied! Please try again or try another payment method.</string>
     <string name="validation_message_please_fillup_form">Please fill up information properly.</string>
     <string name="message_getcard_token_failed">Authentication failed</string>

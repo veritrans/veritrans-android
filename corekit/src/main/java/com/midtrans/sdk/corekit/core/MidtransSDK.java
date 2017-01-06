@@ -310,7 +310,7 @@ public class MidtransSDK {
         if (cardTokenRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                mSnapTransactionManager.getToken(cardTokenRequest, callback);
+                mSnapTransactionManager.getToken(readAuthenticationToken(), cardTokenRequest, callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -1518,6 +1518,10 @@ public class MidtransSDK {
 
     public UIKitCustomSetting getUIKitCustomSetting() {
         return UIKitCustomSetting;
+    }
+
+    public void setUIKitCustomSetting(UIKitCustomSetting uiKitCustomSetting) {
+        this.UIKitCustomSetting = uiKitCustomSetting;
     }
 
     public CreditCard getCreditCard() {

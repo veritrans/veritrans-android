@@ -106,7 +106,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param snapToken Snap Token.
      * @param callback  callback of payment option
      */
-    public void getTransactionOptions(@NonNull String snapToken, final TransactionOptionsCallback callback) {
+    public void getTransactionOptions(@NonNull final String snapToken, final TransactionOptionsCallback callback) {
         final long start = System.currentTimeMillis();
         snapRestAPI.getPaymentOption(snapToken, new Callback<Transaction>() {
             @Override
@@ -118,18 +118,18 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     if (response.getStatus() == 200 && !transaction.getTransactionDetails().getOrderId().equals("")) {
                         callback.onSuccess(transaction);
                         // Track Mixpanel event
-                        analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_SUCCESS, PAYMENT_TYPE_SNAP, end - start);
+                        analyticsManager.trackMixpanel(snapToken, GET_SNAP_TRANSACTION_SUCCESS, PAYMENT_TYPE_SNAP, end - start);
                     } else {
                         callback.onFailure(transaction, response.getReason());
                         // Track Mixpanel event
-                        analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_FAILED, PAYMENT_TYPE_SNAP, end - start);
+                        analyticsManager.trackMixpanel(snapToken, GET_SNAP_TRANSACTION_FAILED, PAYMENT_TYPE_SNAP, end - start);
                     }
                 } else {
                     callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
                     Logger.e(TAG, context.getString(R.string.error_empty_response));
 
                     // Track Mixpanel event
-                    analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_FAILED, PAYMENT_TYPE_SNAP, end - start);
+                    analyticsManager.trackMixpanel(snapToken, GET_SNAP_TRANSACTION_FAILED, PAYMENT_TYPE_SNAP, end - start);
                 }
             }
 
@@ -143,7 +143,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 }
                 callback.onError(new Throwable(e.getMessage(), e.getCause()));
                 // Track Mixpanel event
-                analyticsManager.trackMixpanel(GET_SNAP_TRANSACTION_FAILED, PAYMENT_TYPE_SNAP, end - start);
+                analyticsManager.trackMixpanel(snapToken, GET_SNAP_TRANSACTION_FAILED, PAYMENT_TYPE_SNAP, end - start);
             }
         });
     }
@@ -155,7 +155,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback     Transaction callback
      */
 
-    public void paymentUsingCreditCard(String authenticationToken, CreditCardPaymentRequest requestModel, final TransactionCallback callback) {
+    public void paymentUsingCreditCard(final String authenticationToken, CreditCardPaymentRequest requestModel, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (requestModel != null) {
             snapRestAPI.paymentUsingCreditCard(authenticationToken, requestModel, new Callback<TransactionResponse>() {
@@ -170,14 +170,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, transactionResponse.getStatusMessage());
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, transactionResponse.getStatusMessage());
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -190,7 +190,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, error.getMessage());
                 }
             });
         } else {
@@ -205,7 +205,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest Payment Details.
      * @param callback       Transaction callback
      */
-    public void paymentUsingBankTransferBCA(String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingBankTransferBCA(final String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingBankTransfer(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -220,14 +220,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, transactionResponse.getStatusMessage());
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, end - start, transactionResponse.getStatusMessage());
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -239,7 +239,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, error.getMessage());
                 }
             });
         } else {
@@ -256,7 +256,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest      payment Details
      * @param callback            transaction callback
      */
-    public void paymentUsingBankTransferPermata(String authenticationToken, final BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingBankTransferPermata(final String authenticationToken, final BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingBankTransfer(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -272,14 +272,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, transactionResponse.getStatusMessage());
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, end - start, transactionResponse.getStatusMessage());
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -291,7 +291,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, error.getMessage());
                 }
             });
         } else {
@@ -306,7 +306,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param request  Payment details
      * @param callback transaction callback
      */
-    public void paymentUsingKlikBCA(String authenticationToken, KlikBCAPaymentRequest request, final TransactionCallback callback) {
+    public void paymentUsingKlikBCA(final String authenticationToken, KlikBCAPaymentRequest request, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (request != null) {
             snapRestAPI.paymentUsingKlikBCA(authenticationToken, request, new Callback<TransactionResponse>() {
@@ -323,14 +323,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_KLIK_BCA, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_KLIK_BCA, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -343,7 +343,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KLIK_BCA, end - start, error.getMessage());
                 }
             });
 
@@ -359,7 +359,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest payment request for BCA Klik pay
      * @param callback       transaction callback
      */
-    public void paymentUsingBCAKlikpay(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingBCAKlikpay(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingBCAKlikPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -376,14 +376,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BCA_KLIKPAY, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BCA_KLIKPAY, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -395,7 +395,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BCA_KLIKPAY, end - start, error.getMessage());
                 }
             });
         } else {
@@ -411,7 +411,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest      payment request for Mandiri Bill pay
      * @param callback            transaction callback
      */
-    public void paymentUsingMandiriBillPay(String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingMandiriBillPay(final String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingMandiriBillPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -426,14 +426,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -445,7 +445,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_BILL_PAY, end - start, error.getMessage());
                 }
             });
         } else {
@@ -461,7 +461,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest      payment request for Mandiri Click Pay
      * @param callback            transaction callback
      */
-    public void paymentUsingMandiriClickPay(String authenticationToken, MandiriClickPayPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingMandiriClickPay(final String authenticationToken, MandiriClickPayPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingMandiriClickPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -476,14 +476,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -495,7 +495,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_CLICKPAY, end - start, error.getMessage());
                 }
             });
         } else {
@@ -511,7 +511,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest      payment request for CIMB Click
      * @param callback            transaction callback
      */
-    public void paymentUsingCIMBClick(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingCIMBClick(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingCIMBClick(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -526,14 +526,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CIMB_CLICK, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_CIMB_CLICK, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -545,7 +545,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_CIMB_CLICK, end - start, error.getMessage());
                 }
             });
         } else {
@@ -561,7 +561,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest      payment request for BRI Epay.
      * @param callback            transaction callback
      */
-    public void paymentUsingBRIEpay(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingBRIEpay(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingBRIEpay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -576,14 +576,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BRI_EPAY, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BRI_EPAY, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -595,7 +595,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BRI_EPAY, end - start, error.getMessage());
                 }
             });
         } else {
@@ -611,7 +611,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest      payment request for Mandiri E-Cash
      * @param callback            transaction callbaack
      */
-    public void paymentUsingMandiriEcash(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingMandiriEcash(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingMandiriEcash(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -626,14 +626,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_ECASH, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_MANDIRI_ECASH, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -645,7 +645,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_MANDIRI_ECASH, end - start, error.getMessage());
                 }
             });
         } else {
@@ -660,7 +660,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest payment request for Telkomsel E-Cash
      * @param callback       transaction callback
      */
-    public void paymentUsingTelkomselCash(String authenticationToken, TelkomselEcashPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingTelkomselCash(final String authenticationToken, TelkomselEcashPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingTelkomselEcash(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -675,14 +675,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -694,7 +694,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_TELKOMSEL_ECASH, end - start, error.getMessage());
                 }
             });
         } else {
@@ -710,7 +710,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest      payment request for XL Tunai
      * @param callback            transaction callback
      */
-    public void paymentUsingXLTunai(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingXLTunai(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingXlTunai(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -725,14 +725,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_XL_TUNAI, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_XL_TUNAI, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_XL_TUNAI, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_XL_TUNAI, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_XL_TUNAI, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_XL_TUNAI, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -744,7 +744,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_XL_TUNAI, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_XL_TUNAI, end - start, error.getMessage());
                 }
             });
         } else {
@@ -760,7 +760,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest      payment request for Indomaret
      * @param callback            Transaction callback
      */
-    public void paymentUsingIndomaret(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingIndomaret(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingIndomaret(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -775,14 +775,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOMARET, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOMARET, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -794,7 +794,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOMARET, end - start, error.getMessage());
                 }
             });
         } else {
@@ -810,7 +810,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest      payment request for Indosat Dompetku
      * @param callback            transaction callback
      */
-    public void paymentUsingIndosatDompetku(String authenticationToken, IndosatDompetkuPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingIndosatDompetku(final String authenticationToken, IndosatDompetkuPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingIndosatDompetku(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -825,14 +825,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -844,7 +844,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_INDOSAT_DOMPETKU, end - start, error.getMessage());
                 }
             });
         } else {
@@ -860,7 +860,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest      payment request for Kiosan
      * @param callback            transaction callback
      */
-    public void paymentUsingKiosan(String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingKiosan(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingKiosan(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -875,14 +875,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_KIOSAN, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_KIOSAN, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KIOSAN, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KIOSAN, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KIOSAN, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KIOSAN, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -894,7 +894,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KIOSAN, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_KIOSAN, end - start, error.getMessage());
                 }
             });
         } else {
@@ -904,7 +904,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
     }
 
 
-    public void paymentUsingGCI(String authenticationToken, GCIPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingGCI(final String authenticationToken, GCIPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingGCI(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -919,14 +919,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_GCI, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_GCI, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_GCI, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_GCI, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_GCI, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_GCI, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -938,7 +938,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_GCI, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_GCI, end - start, error.getMessage());
                 }
             });
         } else {
@@ -954,7 +954,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param paymentRequest      payment request for Bank Transfer
      * @param callback            transaction callback
      */
-    public void paymentUsingBankTransferAllBank(String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingBankTransferAllBank(final String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingBankTransfer(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
@@ -969,14 +969,14 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
                                 || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
                             callback.onSuccess(transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, ALL_BANK, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_SUCCESS, PAYMENT_TYPE_BANK_TRANSFER, ALL_BANK, end - start, Events.SNAP_PAYMENT);
                         } else {
                             actionFailedTransaction(callback, transactionResponse);
-                            analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, Events.SNAP_PAYMENT);
+                            analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, Events.SNAP_PAYMENT);
                         }
                     } else {
                         callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                        analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, context.getString(R.string.error_empty_response));
+                        analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, end - start, context.getString(R.string.error_empty_response));
                     }
                 }
 
@@ -988,7 +988,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    analyticsManager.trackMixpanel(KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, ALL_BANK, end - start, error.getMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TRANSACTION_FAILED, PAYMENT_TYPE_BANK_TRANSFER, ALL_BANK, end - start, error.getMessage());
                 }
             });
         } else {
@@ -1126,7 +1126,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param cardTokenRequest information about credit card.
      * @param callback         get creditcard token callback
      */
-    public void getToken(@NonNull CardTokenRequest cardTokenRequest, @NonNull final CardTokenCallback callback) {
+    public void getToken(final String authenticationToken, @NonNull CardTokenRequest cardTokenRequest, @NonNull final CardTokenCallback callback) {
         final long start = System.currentTimeMillis();
         if (cardTokenRequest.isTwoClick()) {
             if (cardTokenRequest.isInstallment()) {
@@ -1144,12 +1144,12 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                consumeTokenSuccesResponse(start, tokenDetailsResponse, callback);
+                                consumeTokenSuccesResponse(authenticationToken, start, tokenDetailsResponse, callback);
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
-                                consumeTokenErrorResponse(start, error, callback);
+                                consumeTokenErrorResponse(authenticationToken, start, error, callback);
                             }
                         });
             } else {
@@ -1165,12 +1165,12 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                consumeTokenSuccesResponse(start, tokenDetailsResponse, callback);
+                                consumeTokenSuccesResponse(authenticationToken, start, tokenDetailsResponse, callback);
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
-                                consumeTokenErrorResponse(start, error, callback);
+                                consumeTokenErrorResponse(authenticationToken, start, error, callback);
                             }
                         });
             }
@@ -1191,12 +1191,12 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.getFormattedInstalmentTerm(), new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                consumeTokenSuccesResponse(start, tokenDetailsResponse, callback);
+                                consumeTokenSuccesResponse(authenticationToken, start, tokenDetailsResponse, callback);
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
-                                consumeTokenErrorResponse(start, error, callback);
+                                consumeTokenErrorResponse(authenticationToken, start, error, callback);
                             }
                         });
             } else {
@@ -1212,12 +1212,12 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             new Callback<TokenDetailsResponse>() {
                                 @Override
                                 public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                    consumeTokenSuccesResponse(start, tokenDetailsResponse, callback);
+                                    consumeTokenSuccesResponse(authenticationToken, start, tokenDetailsResponse, callback);
                                 }
 
                                 @Override
                                 public void failure(RetrofitError error) {
-                                    consumeTokenErrorResponse(start, error, callback);
+                                    consumeTokenErrorResponse(authenticationToken, start, error, callback);
                                 }
                             }
                     );
@@ -1235,12 +1235,12 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             new Callback<TokenDetailsResponse>() {
                                 @Override
                                 public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
-                                    consumeTokenSuccesResponse(start, tokenDetailsResponse, callback);
+                                    consumeTokenSuccesResponse(authenticationToken, start, tokenDetailsResponse, callback);
                                 }
 
                                 @Override
                                 public void failure(RetrofitError error) {
-                                    consumeTokenErrorResponse(start, error, callback);
+                                    consumeTokenErrorResponse(authenticationToken, start, error, callback);
                                 }
                             });
                 }
@@ -1249,7 +1249,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
-    private void consumeTokenSuccesResponse(long start, TokenDetailsResponse tokenDetailsResponse, CardTokenCallback callback) {
+    private void consumeTokenSuccesResponse(final String authenticationToken, long start, TokenDetailsResponse tokenDetailsResponse, CardTokenCallback callback) {
         releaseResources();
 
         long end = System.currentTimeMillis();
@@ -1262,32 +1262,32 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 callback.onSuccess(tokenDetailsResponse);
 
                 // Track Mixpanel event
-                analyticsManager.trackMixpanel(KEY_TOKENIZE_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
+                analyticsManager.trackMixpanel(authenticationToken, KEY_TOKENIZE_SUCCESS, PAYMENT_TYPE_CREDIT_CARD, end - start);
             } else {
                 if (!TextUtils.isEmpty(tokenDetailsResponse.getStatusMessage())) {
                     callback.onFailure(tokenDetailsResponse, tokenDetailsResponse.getStatusMessage());
 
                     // Track Mixpanel event
-                    analyticsManager.trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, tokenDetailsResponse.getStatusMessage());
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, tokenDetailsResponse.getStatusMessage());
                 } else {
                     callback.onFailure(tokenDetailsResponse,
                             context.getString(R.string.error_empty_response));
 
-                    analyticsManager.trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start,
+                    analyticsManager.trackMixpanel(authenticationToken, KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start,
                             context.getString(R.string.error_empty_response));
                 }
             }
         } else {
             callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
 
-            analyticsManager.trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start,
+            analyticsManager.trackMixpanel(authenticationToken, KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start,
                     context.getString(R.string.error_empty_response));
 
             Logger.e(TAG, context.getString(R.string.error_empty_response));
         }
     }
 
-    private void consumeTokenErrorResponse(long start, RetrofitError e, CardTokenCallback callback) {
+    private void consumeTokenErrorResponse(String authenticationToken, long start, RetrofitError e, CardTokenCallback callback) {
         releaseResources();
         long end = System.currentTimeMillis();
 
@@ -1296,7 +1296,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
         callback.onError(new Throwable(e.getMessage(), e.getCause()));
         // Track Mixpanel event
-        analyticsManager.trackMixpanel(KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, e.getMessage());
+        analyticsManager.trackMixpanel(authenticationToken, KEY_TOKENIZE_FAILED, PAYMENT_TYPE_CREDIT_CARD, end - start, e.getMessage());
     }
 
 

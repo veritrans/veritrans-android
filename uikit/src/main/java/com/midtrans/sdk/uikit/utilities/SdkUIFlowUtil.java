@@ -1,5 +1,8 @@
 package com.midtrans.sdk.uikit.utilities;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,16 +11,17 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -87,9 +91,14 @@ public class SdkUIFlowUtil {
     public static void showSnackbar(Activity activity, String message) {
 
         try {
-            Snackbar.make(activity.getWindow().findViewById(android.R.id.content), message,
-                    Snackbar.LENGTH_LONG)
-                    .show();
+            Snackbar snackbar = Snackbar.make(
+                    activity.getWindow().findViewById(android.R.id.content), message,
+                    Snackbar.LENGTH_LONG);
+            TextView snackBarText = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+            snackBarText.setTextColor(Color.WHITE);
+            snackBarText.setGravity(Gravity.CENTER_HORIZONTAL);
+            snackBarText.setMaxLines(5);
+            snackbar.show();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
