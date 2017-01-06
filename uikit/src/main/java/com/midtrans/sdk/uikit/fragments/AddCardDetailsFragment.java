@@ -638,14 +638,11 @@ public class AddCardDetailsFragment extends Fragment {
 
         boolean isValid = true;
         cvv = etCvv.getText().toString().trim();
-        Log.d("cvvx", "number:" + cvv);
         if (TextUtils.isEmpty(cvv)) {
             tilCvv.setError(getString(R.string.validation_message_cvv));
             isValid = false;
-            Log.d("cvvx", "number:empty");
 
         } else {
-            Log.d("cvvx", "number:not empty");
 
             if (cvv.length() < 3) {
                 tilCvv.setError(getString(R.string.validation_message_invalid_cvv));
