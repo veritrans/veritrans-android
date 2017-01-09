@@ -73,7 +73,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
             position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_KIOSON);
         } else {
-            SdkUIFlowUtil.showSnackbar(KiosonActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(KiosonActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -165,7 +165,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
                     setResultCode(RESULT_OK);
-                    SdkUIFlowUtil.showSnackbar(KiosonActivity.this, SOMETHING_WENT_WRONG);
+                    SdkUIFlowUtil.showToast(KiosonActivity.this, SOMETHING_WENT_WRONG);
                     setResultAndFinish();
                 }
             } else {
@@ -228,7 +228,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
             fragmentTransaction.commit();
             currentFragment = PAYMENT_FRAGMENT;
         } else {
-            SdkUIFlowUtil.showSnackbar(KiosonActivity.this, SOMETHING_WENT_WRONG);
+            SdkUIFlowUtil.showToast(KiosonActivity.this, SOMETHING_WENT_WRONG);
             onBackPressed();
         }
     }
@@ -263,7 +263,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                     if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                         setUpTransactionStatusFragment(response);
                     } else {
-                        SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + errorMessage);
+                        SdkUIFlowUtil.showToast(KiosonActivity.this, "" + errorMessage);
                     }
                 } catch (NullPointerException ex) {
                     Logger.e(TAG, "transaction error is " + ex.getMessage());
@@ -276,7 +276,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
                 try {
                     KiosonActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                    SdkUIFlowUtil.showSnackbar(KiosonActivity.this, "" + errorMessage);
+                    SdkUIFlowUtil.showToast(KiosonActivity.this, "" + errorMessage);
                 } catch (NullPointerException ex) {
                     Logger.e(TAG, "transaction error is " + ex.getMessage());
                 }

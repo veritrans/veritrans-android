@@ -56,7 +56,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         mMidtransSDK = MidtransSDK.getInstance();
 
         if (mMidtransSDK == null) {
-            SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, Constants
+            SdkUIFlowUtil.showToast(CIMBClickPayActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
@@ -156,7 +156,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
                         setResultCode(RESULT_OK);
                         setResultAndFinish();
                     } else {
-                        SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
+                        SdkUIFlowUtil.showToast(CIMBClickPayActivity.this, "" + errorMessage);
                     }
                 } catch (NullPointerException ex) {
                     SdkUIFlowUtil.showApiFailedMessage(CIMBClickPayActivity.this, getString(R.string.message_payment_failed));
@@ -167,7 +167,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
             public void onError(Throwable error) {
                 CIMBClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.hideProgressDialog();
-                SdkUIFlowUtil.showSnackbar(CIMBClickPayActivity.this, "" + errorMessage);
+                SdkUIFlowUtil.showToast(CIMBClickPayActivity.this, "" + errorMessage);
             }
         });
     }

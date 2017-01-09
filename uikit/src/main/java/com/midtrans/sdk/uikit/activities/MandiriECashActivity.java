@@ -60,7 +60,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         mMidtransSDK = MidtransSDK.getInstance();
 
         if (mMidtransSDK == null) {
-            SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, Constants
+            SdkUIFlowUtil.showToast(MandiriECashActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
@@ -149,7 +149,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
                 if (response != null && response.equals(getString(R.string.failed_code_400))) {
                     initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_ECASH, false);
                 } else {
-                    SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+                    SdkUIFlowUtil.showToast(MandiriECashActivity.this, "" + errorMessage);
                 }
             }
 
@@ -157,7 +157,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
                 MandiriECashActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+                SdkUIFlowUtil.showToast(MandiriECashActivity.this, "" + errorMessage);
             }
         });
     }

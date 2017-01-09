@@ -49,7 +49,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_epay_bri);
         midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK == null) {
-            SdkUIFlowUtil.showSnackbar(EpayBriActivity.this, Constants
+            SdkUIFlowUtil.showToast(EpayBriActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
