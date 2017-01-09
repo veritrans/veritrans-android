@@ -30,6 +30,8 @@ import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 import com.midtrans.sdk.uikit.activities.CIMBClickPayActivity;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.activities.EpayBriActivity;
+import com.midtrans.sdk.uikit.activities.KlikBCAActivity;
+import com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity;
 import com.midtrans.sdk.uikit.activities.MandiriECashActivity;
 import com.midtrans.sdk.uikit.activities.OffersActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -227,7 +229,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 || mPaymentType == Constants.BANK_TRANSFER_BCA
                 || mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT
                 || mPaymentType == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
-            textBank.setText(getString(R.string.payment_method_bank_transfer));
+
         } else if (mPaymentType == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
             textBank.setText(getActivity().getResources().getString(R.string
                     .indosat_dompetku));
@@ -236,8 +238,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
         } else if (mPaymentType == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY) {
             textBank.setText(getActivity().getResources().getString(R.string
                     .mandiri_click_pay));
-        } else if (mPaymentType == Constants.PAYMENT_METHOD_KLIKBCA) {
-            textBank.setText(getString(R.string.payment_method_klik_bca));
         } else if (mPaymentType == Constants.PAYMENT_METHOD_GCI) {
             textBank.setText(getString(R.string.payment_method_gci));
         } else {
@@ -253,10 +253,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
             } else if (status == STATUS_PENDING) {
                 getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.payment_status_pending));
                 layoutMain.setBackgroundColor(getContext().getResources().getColor(R.color.payment_status_pending));
-
             } else if (status == STATUS_SUCCESS) {
                 getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.payment_status_success));
-
             }
         }
     }
@@ -323,6 +321,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 } else if (getActivity().getClass().getName().equals(BankTransferActivity.class.getName())) {
                     ((BankTransferActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     ((BankTransferActivity) getActivity()).onBackPressed();
+                } else if (getActivity().getClass().getName().equals(KlikBCAActivity.class.getName())) {
+                    ((KlikBCAActivity) getActivity()).setResultCode(Activity.RESULT_OK);
+                    ((KlikBCAActivity) getActivity()).onBackPressed();
                 }
             }
         });
@@ -402,6 +403,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
             paymentTypeTextView.setText(R.string.indosat_dompetku);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.BCA_KLIKPAY)) {
             paymentTypeTextView.setText(getString(R.string.payment_method_bca_klikpay));
+        } else if (transactionResponse.getPaymentType().equals(PaymentType.KLIK_BCA)) {
+            paymentTypeTextView.setText(getString(R.string.payment_method_klik_bca));
         } else if (transactionResponse.getPaymentType().equals(PaymentType.KIOSON)) {
             paymentTypeTextView.setText(getString(R.string.payment_method_kioson));
         } else if (transactionResponse.getPaymentType().equals(PaymentType.GCI)) {
@@ -416,31 +419,42 @@ public class PaymentTransactionStatusFragment extends Fragment {
 
     private void showInstruction() {
         if (mPaymentType != -1) {
-            Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
+            Intent intent = null;
             switch (mPaymentType) {
+                case Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY:
+                    intent = new Intent(getActivity(), MandiriClickPayInstructionActivity.class);
+                    break;
                 case Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT:
+                    intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
                     intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
                     break;
                 case Constants.BANK_TRANSFER_PERMATA:
+                    intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
                     intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
                     break;
                 case Constants.PAYMENT_METHOD_PERMATA_VA_BANK_TRANSFER:
+                    intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
                     intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
                     break;
                 case Constants.BANK_TRANSFER_BCA:
+                    intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
                     intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
                     break;
                 case Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK:
+                    intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
                     intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
                     break;
                 case Constants.PAYMENT_METHOD_KLIKBCA:
+                    intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
                     intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
                     intent.putExtra(BankTransferInstructionActivity.PAGE, BankTransferInstructionActivity.KLIKBCA_PAGE);
                     break;
             }
 
             if (transactionResponse != null && !TextUtils.isEmpty(transactionResponse.getPdfUrl())) {
-                intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, transactionResponse.getPdfUrl());
+                if(intent != null){
+                    intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, transactionResponse.getPdfUrl());
+                }
             }
             getActivity().startActivity(intent);
         }

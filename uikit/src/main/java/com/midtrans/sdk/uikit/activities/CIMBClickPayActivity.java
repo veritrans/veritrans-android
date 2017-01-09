@@ -5,7 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -24,6 +23,7 @@ import com.midtrans.sdk.uikit.fragments.InstructionCIMBFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * Created by Ankit on 11/26/15.
@@ -42,16 +42,15 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     private String errorMessage = null;
     private int position = Constants.PAYMENT_METHOD_CIMB_CLICKS;
 
-    private FragmentManager fragmentManager;
     private String currentFragmentName = HOME_FRAGMENT;
     private TransactionResponse transactionResponseFromMerchant;
-    private DefaultTextView textOrderId, textTotalAmount, textTitle;
+    private DefaultTextView textTotalAmount, textTitle;
+    private FancyButton buttonback;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_cimb_clickpay);
         mMidtransSDK = MidtransSDK.getInstance();
 
@@ -73,15 +72,14 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
-        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
-
+        buttonback = (FancyButton) findViewById(R.id.btn_back);
         initializeTheme();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
+        buttonback.setOnClickListener(this);
         bindData();
     }
 
@@ -91,7 +89,6 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
             if (mMidtransSDK.getSemiBoldText() != null) {
                 buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
-            textOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
@@ -121,6 +118,8 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View view) {
         if (view.getId() == R.id.btn_confirm_payment) {
             makeTransaction();
+        } else if (view.getId() == R.id.btn_back) {
+            onBackPressed();
         }
     }
 

@@ -5,13 +5,11 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -24,6 +22,7 @@ import com.midtrans.sdk.uikit.fragments.BCAKlikPayInstructionFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * @author rakawm
@@ -36,20 +35,18 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     private BCAKlikPayInstructionFragment bcaKlikPayInstructionFragment = null;
     private Button buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
-    private ImageView logo = null;
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
 
-    private FragmentManager fragmentManager;
     private String currentFragmentName = "";
     private TransactionResponse transactionResponseFromMerchant;
-    private DefaultTextView textTitle, textOrderId, textTotalAmount;
+    private DefaultTextView textTitle, textTotalAmount;
+    private FancyButton buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_bca_klikpay);
         mMidtransSDK = MidtransSDK.getInstance();
 
@@ -70,16 +67,14 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     private void initializeViews() {
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
-        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-
+        buttonBack = (FancyButton) findViewById(R.id.btn_back);
         initializeTheme();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
+        buttonBack.setOnClickListener(this);
         bindData();
     }
 
@@ -89,7 +84,6 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
             if (mMidtransSDK.getSemiBoldText() != null) {
                 buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
-            textOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
@@ -127,6 +121,8 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     public void onClick(View view) {
         if (view.getId() == R.id.btn_confirm_payment) {
             makeTransaction();
+        } else if (view.getId() == R.id.btn_back) {
+            onBackPressed();
         }
     }
 
