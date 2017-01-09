@@ -180,13 +180,13 @@
     <string name="cimb_instruction_step3">Pastikan bahwa tidak ada pop-up blocker pada browser Anda.</string>
     
     <!-- Mandiri E Cash transfer Instruction-->
-    <string name="mandiri__e_cash_instruction_step1">1.\tPastikan no. HP anda telah terdaftar untuk Mandiri e-cash.</string>
-    <string name="mandiri__e_cash_instruction_step2">2.\tKlik \'Confirm Payment\'.</string>
-    <string name="mandiri__e_cash_instruction_step3">3.\tMasukkan no. HP dan PIN Anda.</string>
-    <string name="mandiri__e_cash_instruction_step4">4.\tHarap tunggu sampai Anda menerima SMS dari Mandiri e-cash berisi One Time Password (OTP).</string>
-    <string name="mandiri__e_cash_instruction_step5">5.\tMasukkan 6 digit OTP, lalu klik
+    <string name="mandiri__e_cash_instruction_step1">Pastikan no. HP anda telah terdaftar untuk Mandiri e-cash.</string>
+    <string name="mandiri__e_cash_instruction_step2">Klik \'Confirm Payment\'.</string>
+    <string name="mandiri__e_cash_instruction_step3">Masukkan no. HP dan PIN Anda.</string>
+    <string name="mandiri__e_cash_instruction_step4">Harap tunggu sampai Anda menerima SMS dari Mandiri e-cash berisi One Time Password (OTP).</string>
+    <string name="mandiri__e_cash_instruction_step5">Masukkan 6 digit OTP, lalu klik
         \'pay\' untuk melakukan pembayaran.</string>
-    <string name="mandiri__e_cash_instruction_step6">6.\tJika Anda belum menerima OTP atau jika
+    <string name="mandiri__e_cash_instruction_step6">Jika Anda belum menerima OTP atau jika
         OTP sudah kadaluarsa, klik \'cancel\' dan ulangi transaksi.</string>
 
     <!-- Indomaret Instruction-->

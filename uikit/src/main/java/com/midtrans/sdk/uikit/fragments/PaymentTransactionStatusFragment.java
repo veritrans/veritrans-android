@@ -392,6 +392,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
             paymentTypeTextView.setText(R.string.cimb_clicks);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.MANDIRI_ECASH)) {
             paymentTypeTextView.setText(R.string.mandiri_e_cash);
+            buttonInstruction.setVisibility(View.GONE);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.MANDIRI_CLICKPAY)) {
             paymentTypeTextView.setText(R.string.mandiri_click_pay);
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(PaymentType.INDOMARET)) {
