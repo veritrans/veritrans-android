@@ -110,7 +110,7 @@ public class MainActivityTest {
             onView(withId(R.id.et_address)).perform(clearText(), typeText(address), closeSoftKeyboard());
             onView(withId(R.id.et_city)).perform(clearText(), typeText(city), closeSoftKeyboard());
             onView(withId(R.id.et_zipcode)).perform(clearText(), typeText(zipcode), closeSoftKeyboard());
-            onView(withId(R.id.et_country)).perform(clearText(), typeText(country));
+            onView(withId(R.id.et_country)).perform(clearText(), typeText(country), closeSoftKeyboard());
             onView(withText("Indonesia"))
                     .inRoot(isPlatformPopup())
                     .perform(click());
