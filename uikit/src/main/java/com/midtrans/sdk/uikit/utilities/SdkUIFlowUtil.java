@@ -1,8 +1,5 @@
 package com.midtrans.sdk.uikit.utilities;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,12 +16,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
 import com.midtrans.sdk.corekit.models.BBMUrlEncodeJson;
+import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.uikit.R;
 
@@ -34,6 +34,8 @@ import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -424,5 +426,17 @@ public class SdkUIFlowUtil {
         Drawable background = res.getDrawable(image);
         background.setColorFilter(filterColor, PorterDuff.Mode.SRC_IN);
         return background;
+    }
+
+    /**
+     * Sorting bank payment method by priority (Ascending)
+     */
+    public static void sortBankPaymentMethodsByPriority(ArrayList<BankTransferModel> paymentMethodsModels) {
+        Collections.sort(paymentMethodsModels, new Comparator<BankTransferModel>() {
+            @Override
+            public int compare(BankTransferModel lhs, BankTransferModel rhs) {
+                return lhs.getPriority().compareTo(rhs.getPriority());
+            }
+        });
     }
 }

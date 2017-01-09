@@ -175,7 +175,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
     }
 
     /**
-     * initialize adapter data model by dummy values.
+     * initialize adapter data model by snap values.
      */
     private void initialiseBankTransfersModel(List<String> banks) {
         data.clear();
@@ -187,6 +187,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                 }
             }
         }
+        SdkUIFlowUtil.sortBankPaymentMethodsByPriority(data);
     }
 
     /**
@@ -199,6 +200,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                 data.add(model);
             }
         }
+        SdkUIFlowUtil.sortBankPaymentMethodsByPriority(data);
     }
 
     @Override

@@ -326,10 +326,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
                     ((BCAKlikPayActivity) getActivity()).setResultAndFinish();
                 } else if (getActivity().getClass().getName().equals(BankTransferActivity.class.getName())) {
                     ((BankTransferActivity) getActivity()).setResultCode(Activity.RESULT_OK);
-                    ((BankTransferActivity) getActivity()).onBackPressed();
+                    getActivity().onBackPressed();
                 } else if (getActivity().getClass().getName().equals(KlikBCAActivity.class.getName())) {
                     ((KlikBCAActivity) getActivity()).setResultCode(Activity.RESULT_OK);
-                    ((KlikBCAActivity) getActivity()).onBackPressed();
                     getActivity().onBackPressed();
                 }
             }
@@ -465,7 +464,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
             }
 
             if (transactionResponse != null && !TextUtils.isEmpty(transactionResponse.getPdfUrl())) {
-                if(intent != null){
+                if (intent != null) {
                     intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, transactionResponse.getPdfUrl());
                 }
             }
