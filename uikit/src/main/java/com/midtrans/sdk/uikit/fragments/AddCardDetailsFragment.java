@@ -267,7 +267,7 @@ public class AddCardDetailsFragment extends Fragment {
                 }
 
                 if (!checkPromoValidity()) {
-                    SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.message_payment_cannot_proccessed));
+                    SdkUIFlowUtil.showToast(getActivity(), getString(R.string.message_payment_cannot_proccessed));
                     return;
                 }
 
@@ -760,16 +760,10 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     public boolean isOneClickMode() {
-        if (savedCard != null && savedCard.getType() != null && savedCard.getType().equals(getString(R.string.saved_card_one_click))) {
-            return true;
-        }
-        return false;
+        return savedCard != null && savedCard.getType() != null && savedCard.getType().equals(getString(R.string.saved_card_one_click));
     }
 
     public boolean isTwoClickMode() {
-        if (savedCard != null) {
-            return true;
-        }
-        return false;
+        return savedCard != null;
     }
 }

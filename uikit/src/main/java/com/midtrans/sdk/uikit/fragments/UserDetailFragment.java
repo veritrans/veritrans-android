@@ -83,23 +83,23 @@ public class UserDetailFragment extends Fragment {
         String phoneNo = phoneEt.getText().toString().trim();
 
         if (TextUtils.isEmpty(fullName)) {
-            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_full_name_empty));
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_full_name_empty));
             fullnameEt.requestFocus();
             return;
         } else if (TextUtils.isEmpty(email)) {
-            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_email_empty));
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_email_empty));
             emailEt.requestFocus();
             return;
         } else if (!SdkUIFlowUtil.isEmailValid(email)) {
-            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_email_invalid));
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_email_invalid));
             emailEt.requestFocus();
             return;
         } else if (TextUtils.isEmpty(phoneNo)) {
-            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_phone_no_empty));
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_phone_no_empty));
             phoneEt.requestFocus();
             return;
         } else if (!SdkUIFlowUtil.isPhoneNumberValid(phoneNo)) {
-            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_phone_no_invalid));
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_phone_no_invalid));
             phoneEt.requestFocus();
             return;
         }

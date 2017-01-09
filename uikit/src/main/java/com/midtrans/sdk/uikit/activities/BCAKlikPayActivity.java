@@ -51,7 +51,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         mMidtransSDK = MidtransSDK.getInstance();
 
         if (mMidtransSDK == null) {
-            SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, Constants
+            SdkUIFlowUtil.showToast(BCAKlikPayActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
@@ -158,7 +158,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                         setResultCode(RESULT_OK);
                         setResultAndFinish();
                     } else {
-                        SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
+                        SdkUIFlowUtil.showToast(BCAKlikPayActivity.this, "" + errorMessage);
                     }
                 } catch (NullPointerException ex) {
                     SdkUIFlowUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string.empty_transaction_response));
@@ -169,7 +169,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
             public void onError(Throwable error) {
                 BCAKlikPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.hideProgressDialog();
-                SdkUIFlowUtil.showSnackbar(BCAKlikPayActivity.this, "" + errorMessage);
+                SdkUIFlowUtil.showToast(BCAKlikPayActivity.this, "" + errorMessage);
             }
         });
     }

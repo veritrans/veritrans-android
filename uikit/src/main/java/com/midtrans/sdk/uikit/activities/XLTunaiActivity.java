@@ -68,7 +68,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
         if (data != null) {
             position = data.getIntExtra(getString(R.string.position), Constants.PAYMENT_METHOD_XL_TUNAI);
         } else {
-            SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(XLTunaiActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -155,7 +155,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
                     setResultCode(RESULT_OK);
-                    SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, SOMETHING_WENT_WRONG);
+                    SdkUIFlowUtil.showToast(XLTunaiActivity.this, SOMETHING_WENT_WRONG);
                     setResultAndFinish();
                 }
             } else {
@@ -211,7 +211,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
             fragmentTransaction.commit();
             currentFragment = PAYMENT_FRAGMENT;
         } else {
-            SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(XLTunaiActivity.this, getString(R.string.error_something_wrong));
             onBackPressed();
         }
     }
@@ -241,7 +241,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
                 if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                     setUpTransactionStatusFragment(response);
                 } else {
-                    SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + errorMessage);
+                    SdkUIFlowUtil.showToast(XLTunaiActivity.this, "" + errorMessage);
                 }
             }
 
@@ -249,7 +249,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
                 errorMessage = getString(R.string.message_payment_failed);
-                SdkUIFlowUtil.showSnackbar(XLTunaiActivity.this, "" + errorMessage);
+                SdkUIFlowUtil.showToast(XLTunaiActivity.this, "" + errorMessage);
             }
         });
     }

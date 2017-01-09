@@ -307,7 +307,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             //using normal payment & twoclick & oneclick first payment
             paymentModel = new CreditCardPaymentModel(tokenDetailsResponse.getTokenId(), saveCard);
         } else {
-            SdkUIFlowUtil.showSnackbar(this, getString(R.string.message_payment_not_completed));
+            SdkUIFlowUtil.showToast(this, getString(R.string.message_payment_not_completed));
             processingLayout.setVisibility(View.GONE);
             SdkUIFlowUtil.hideProgressDialog();
 
@@ -485,7 +485,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
                 if (removeExistCard) {
                     SdkUIFlowUtil.hideProgressDialog();
-                    SdkUIFlowUtil.showSnackbar(CreditDebitCardFlowActivity.this, reason);
+                    SdkUIFlowUtil.showToast(CreditDebitCardFlowActivity.this, reason);
                     removeExistCard = false;
                 }
             }
@@ -624,7 +624,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     public void oneClickPayment(String maskedCardNumber) {
         if (isPaymentWithPromo() && !isCardBinValid()) {
-            SdkUIFlowUtil.showSnackbar(this, getString(R.string.message_payment_cannot_proccessed));
+            SdkUIFlowUtil.showToast(this, getString(R.string.message_payment_cannot_proccessed));
             return;
         }
 
@@ -635,7 +635,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     public void twoClickPayment(CardTokenRequest cardDetail) {
         if (isPaymentWithPromo() && !isCardBinValid()) {
-            SdkUIFlowUtil.showSnackbar(this, getString(R.string.message_payment_cannot_proccessed));
+            SdkUIFlowUtil.showToast(this, getString(R.string.message_payment_cannot_proccessed));
             return;
         }
 
