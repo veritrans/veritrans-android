@@ -27,9 +27,24 @@ dependencies:
 
 test:
     override:
-        # Build
+        # Unit Test
        - (./gradlew corekit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
             timeout: 3600
+        # UI Test
+       - emulator -avd circleci-android22 -no-audio -no-window:
+           background: true
+           parallel: true
+       # wait for it to have booted
+       - circle-android wait-for-boot
+       # unlock the emulator screen
+       - sleep 30
+       - adb shell input keyevent 82
+       # run tests  against the emulator.
+       - ./gradlew connectedDevelopmentDebugAndroidTest -PdisablePreDex
+       # copy the build outputs to artifacts
+       - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+       # copy the test results to the test results directory.
+       - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
 
 
     post:
