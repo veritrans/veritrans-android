@@ -269,6 +269,34 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:id="@+id/container_security"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_installment"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="@drawable/grey_rounded_background"
+                android:padding="@dimen/eight_dp">
+
+                <ImageView
+                    android:id="@+id/midtrans_lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/midtrans_lock" />
+
+                <ImageView
+                    android:id="@+id/cc_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/midtrans_lock"
+                    android:layout_toRightOf="@+id/midtrans_lock"
+                    android:src="@drawable/cc_badge" />
+            </RelativeLayout>
+
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
