@@ -23,6 +23,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.KlikBCAFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * @author rakawm
@@ -35,19 +36,14 @@ public class KlikBCAActivity extends BaseActivity {
     public String currentFragment = PAYMENT_FRAGMENT;
     private TransactionResponse transactionResponse;
     private String errorMessage;
-    private TextView mTextViewOrderId;
     private TextView mTextViewAmount;
     private Button mButtonConfirmPayment;
-    private AppBarLayout mAppBarLayout;
-    private ImageView logo;
     private TextView mTextViewTitle;
-    private LinearLayout containerCollapsing;
 
     private KlikBCAFragment klikBCAFragment;
-
+    private FancyButton buttonBack;
     private MidtransSDK mMidtransSDK;
     private Toolbar mToolbar;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,21 +54,15 @@ public class KlikBCAActivity extends BaseActivity {
         mMidtransSDK = MidtransSDK.getInstance();
 
         // Initialize views
-        mTextViewOrderId = (TextView) findViewById(R.id.text_order_id);
         mTextViewAmount = (TextView) findViewById(R.id.text_amount);
         mTextViewTitle = (TextView) findViewById(R.id.text_title);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
-        containerCollapsing = (LinearLayout) findViewById(R.id.container_collapsing);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
+        buttonBack = (FancyButton) findViewById(R.id.btn_back);
         initializeTheme();
         // Setup toolbar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         bindData();
     }
 
@@ -81,8 +71,6 @@ public class KlikBCAActivity extends BaseActivity {
         mTextViewTitle.setText(R.string.klik_bca);
         // Set transaction details
         mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
-        mTextViewOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
-
 
         // Set custom font if available
         if (mMidtransSDK.getSemiBoldText() != null) {
@@ -93,6 +81,12 @@ public class KlikBCAActivity extends BaseActivity {
         klikBCAFragment = new KlikBCAFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.instruction_container, klikBCAFragment).commit();
 
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         mButtonConfirmPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,14 +157,12 @@ public class KlikBCAActivity extends BaseActivity {
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
-        mAppBarLayout.setExpanded(false, false);
         Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        mToolbar.setNavigationIcon(closeIcon);
-        setSupportActionBar(mToolbar);
+        buttonBack.setIconResource(closeIcon);
         mButtonConfirmPayment.setText(R.string.complete_payment_at_klik_bca);
 
-        initBankTransferPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_KLIKBCA, STATUS_FRAGMENT);
+        initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_KLIKBCA, false);
     }
 
     @Override
@@ -203,6 +195,7 @@ public class KlikBCAActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+
         if (currentFragment.equals(STATUS_FRAGMENT)) {
             setResultCode(RESULT_OK);
             setResultAndFinish(transactionResponse, errorMessage);

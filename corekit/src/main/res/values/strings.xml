@@ -185,13 +185,13 @@
     <string name="mandiri_instruction_step1">1.\tOn the main menu, Choose \'Pay/Buy\'.</string>
     <string name="mandiri_instruction_step2">2.\tChoose \'Others\'.</string>
     <string name="mandiri_instruction_step3">3.\tChoose \'Multi Payment\'.</string>
-    <string name="mandiri_instruction_step4">4.\tEnter 70012 (Veritrans company code) and press \'Correct\'.</string>
+    <string name="mandiri_instruction_step4">4.\tEnter 70012 (Midtrans company code) and press \'Correct\'.</string>
     <string name="mandiri_instruction_step5">5.\tEnter your Payment code and press \'Correct\'.</string>
     <string name="mandiri_instruction_step6">6.\tYour payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
 
     <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (ib.bankmandiri.co.id).</string>
     <string name="mandiri_internet_instruction_step2">2.\tFrom the main menu choose \'Payment\', then choose \'Multi Payment\'.</string>
-    <string name="mandiri_internet_instruction_step3">3.\tSelect your account in \'From Account\', then \'Billing Name\' select \'Veritrans\'.</string>
+    <string name="mandiri_internet_instruction_step3">3.\tSelect your account in \'From Account\', then \'Billing Name\' select \'Midtrans\'.</string>
     <string name="mandiri_internet_instruction_step4">4.\tEnter the \'Payment Code\' and you will receive your payment details.</string>
     <string name="mandiri_internet_instruction_step5">5.\tConfirm your payment using Mandiri Token.</string>
 
@@ -213,9 +213,9 @@
     <string name="bca_klik_instruction_step6">6.\tYour transaction is Done.</string>
 
     <!--KLIK BCA PAYMENT-->
-    <string name="bca_klik_pay_instruction_step1">1.\tYou will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
-    <string name="bca_klik_pay_instruction_step2">2.\tFor payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
-    <string name="bca_klik_pay_instruction_step3">3.\tFor more information about BCA KlikPay please contact Halo BCA at (021) 500888 or visit www.bca.co.id.</string>
+    <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
+    <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
+    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 500888 or visit www.bca.co.id.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
@@ -228,19 +228,19 @@
     <string name="bca_mbanking_instruction_step8">8.\tEnter amount to be transferred then click \'OK\'.</string>
     <string name="bca_mbanking_instruction_step9">9.\tYour transaction is done.</string>
     <!-- cimb transfer Instructions -->
-    <string name="cimb_instruction_step1">1.\tPlease make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
-    <string name="cimb_instruction_step2">2.\tTransaction will be cancelled if payment is not completed within 2 hours.</string>
-    <string name="cimb_instruction_step3">3.\tPlease make sure that there is no pop-up blocker on your browser.</string>
+    <string name="cimb_instruction_step1">Please make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
+    <string name="cimb_instruction_step2">Transaction will be cancelled if payment is not completed within 2 hours.</string>
+    <string name="cimb_instruction_step3">Please make sure that there is no pop-up blocker on your browser.</string>
 
 
     <!-- Mandiri E Cash transfer Instruction-->
-    <string name="mandiri__e_cash_instruction_step1">1.\tMake sure you have registered your mobile phone number for Mandiri e-cash.</string>
-    <string name="mandiri__e_cash_instruction_step2">2.\tClick \'Confirm Payment\'.</string>
-    <string name="mandiri__e_cash_instruction_step3">3.\tEnter your phone number and PIN.</string>
-    <string name="mandiri__e_cash_instruction_step4">4.\tPlease wait for an SMS from Mandiri e-cash that contains your One Time Password (OTP).</string>
-    <string name="mandiri__e_cash_instruction_step5">5.\tEnter the 6 digit OTP, then click
+    <string name="mandiri__e_cash_instruction_step1">Make sure you have registered your mobile phone number for Mandiri e-cash.</string>
+    <string name="mandiri__e_cash_instruction_step2">Click \'Confirm Payment\'.</string>
+    <string name="mandiri__e_cash_instruction_step3">Enter your phone number and PIN.</string>
+    <string name="mandiri__e_cash_instruction_step4">Please wait for an SMS from Mandiri e-cash that contains your One Time Password (OTP).</string>
+    <string name="mandiri__e_cash_instruction_step5">Enter the 6 digit OTP, then click
         \'pay\' to make payment.</string>
-    <string name="mandiri__e_cash_instruction_step6">6.\tIf you haven\'t received the OTP or the
+    <string name="mandiri__e_cash_instruction_step6">If you haven\'t received the OTP or the
         OTP has expired, click \'cancel\' and retry your transaction.</string>
 
 
@@ -332,19 +332,19 @@
     <string name="card_delete_message">Are you sure you want to delete card?</string>
     <string name="message_save_card">Save your card for faster checkout process.</string>
     <string name="got_it">Got it</string>
-    <string name="bri_instruction_step1">1.Please make sure that you have a User ID for BRI e-Pay and
+    <string name="bri_instruction_step1">Please make sure that you have a User ID for BRI e-Pay and
         have registered for mTOKEN before going through with the payment
     </string>
-    <string name="bri_instruction_step2">2.To obtain a User ID for BRI e-Pay, please register at the
+    <string name="bri_instruction_step2">To obtain a User ID for BRI e-Pay, please register at the
         nearest BRI ATM.
     </string>
-    <string name="bri_instruction_step3">3.Please visit the nearest BRI branch office to register
+    <string name="bri_instruction_step3">Please visit the nearest BRI branch office to register
         the mTOKEN.
     </string>
-    <string name="bri_instruction_step4">4.Payment via BRI e-Pay will be processed online and your
+    <string name="bri_instruction_step4">Payment via BRI e-Pay will be processed online and your
         BRI bank account balance will be deducted automatically based on your total amount.
     </string>
-    <string name="bri_instruction_step5">5.Your transaction will be cancelled if payment is not
+    <string name="bri_instruction_step5">Your transaction will be cancelled if payment is not
         completed within 2 hours.
     </string>
     <string name="empty_transaction_response">Payment failed! Please try again.</string>
@@ -473,8 +473,9 @@
     <string name="tab_prima">Prima</string>
 
     <!--KlikBCA Payment Instructions-->
-    <string name="klikbca_instruction_1">1.\tPlease make sure that the UserID is active and registered at BCA.</string>
-    <string name="klikbca_instruction_2">2.\tPlease continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
+    <string name="klikbca_instruction_1">Please make sure that the UserID is active and registered at BCA.</string>
+    <string name="klikbca_instruction_2">Please continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
+    <string name="klikbca_instruction_3">Transaction will be cancelled if payment is not completed within 2 hours.</string>
 
     <string name="error_user_id">Please fill user ID.</string>
     <string name="btn_close">Close</string>

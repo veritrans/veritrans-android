@@ -114,22 +114,22 @@ public class PaymentMethods {
 
     public static ArrayList<BankTransferModel> getBankTransferList(Context context) {
         ArrayList<BankTransferModel> models = new ArrayList<>();
-        models.add(new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true));
-        models.add(new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true));
-        models.add(new BankTransferModel(context.getString(R.string.all_bank_transfer), R.drawable.ic_other_bank, true));
-        models.add(new BankTransferModel(context.getString(R.string.mandiri_bank_transfer), R.drawable.ic_mandiri_bill_payment2, true));
+        models.add(getBankTransferModel(context, context.getString(R.string.payment_bca_va)));
+        models.add(getBankTransferModel(context, context.getString(R.string.payment_mandiri_bill_payment)));
+        models.add(getBankTransferModel(context, context.getString(R.string.payment_permata_va)));
+        models.add(getBankTransferModel(context, context.getString(R.string.payment_all_va)));
         return models;
     }
 
     public static BankTransferModel getBankTransferModel(Context context, String name) {
         if (name.equals(context.getString(R.string.payment_bca_va))) {
-            return new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true);
+            return new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true, 1);
         } else if (name.equals(context.getString(R.string.payment_permata_va))) {
-            return new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true);
+            return new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true, 3);
         } else if (name.equals(context.getString(R.string.payment_all_va))) {
-            return new BankTransferModel(context.getString(R.string.all_bank_transfer), R.drawable.ic_other_bank, true);
+            return new BankTransferModel(context.getString(R.string.all_bank_transfer), R.drawable.ic_other_bank, true, 4);
         } else if (name.equals(context.getString(R.string.payment_mandiri_bill_payment))) {
-            return new BankTransferModel(context.getString(R.string.mandiri_bank_transfer), R.drawable.ic_mandiri_bill_payment2, true);
+            return new BankTransferModel(context.getString(R.string.mandiri_bank_transfer), R.drawable.ic_mandiri_bill_payment2, true, 2);
         } else {
             return null;
         }

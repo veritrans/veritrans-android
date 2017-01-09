@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -24,6 +23,7 @@ import com.midtrans.sdk.uikit.fragments.InstructionMandiriECashFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,8 +41,9 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private InstructionMandiriECashFragment mandiriECashFragment = null;
     private Button buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
-    private ImageView logo = null;
-    private DefaultTextView textTitle, textOrderId, textTotalAmount;
+    private DefaultTextView textTitle, textTotalAmount;
+    private FancyButton buttonBack;
+
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
@@ -76,24 +77,21 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private void initializeViews() {
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
-        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        buttonBack = (FancyButton) findViewById(R.id.btn_back);
 
         initializeTheme();
         if (mMidtransSDK != null) {
             if (mMidtransSDK.getSemiBoldText() != null) {
                 buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
-            textOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
         textTitle.setText(getString(R.string.mandiri_e_cash));
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
     }
 
@@ -116,6 +114,8 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View view) {
         if (view.getId() == R.id.btn_confirm_payment) {
             makeTransaction();
+        } else if (view.getId() == R.id.btn_back) {
+            onBackPressed();
         }
     }
 

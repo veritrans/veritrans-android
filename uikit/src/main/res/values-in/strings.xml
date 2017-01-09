@@ -131,13 +131,13 @@
     <string name="mandiri_instruction_step1">Pada main menu, Pilih \'Pay/Buy\'.</string>
     <string name="mandiri_instruction_step2">Pilih \'Others\'.</string>
     <string name="mandiri_instruction_step3">Pilih \'Multi Payment\'.</string>
-    <string name="mandiri_instruction_step4">Masukan 70012 (Veritrans company code) dan tekan \'Correct\'.</string>
+    <string name="mandiri_instruction_step4">Masukan 70012 (Midtrans company code) dan tekan \'Correct\'.</string>
     <string name="mandiri_instruction_step5">Masukkan kode pembayaran Anda dan tekan \'Correct\'.</string>
     <string name="mandiri_instruction_step6">Rincian pembayaran Anda akan tampil pada halaman konfirmasi. Jika informasi tersebut benar tekan \'Yes\'.</string>
 
     <string name="mandiri_internet_instruction_step1">1.\tLogin ke Internet Banking Mandiri (ib.bankmandiri.co.id).</string>
     <string name="mandiri_internet_instruction_step2">2.\tPada main menu, pilih \'Payment\', kemudian pilih \'Multi Payment\'.</string>
-    <string name="mandiri_internet_instruction_step3">3.\tPilih rekening Anda di \'From Account\', kemudian \'Billing Name\' pilih \'Veritrans\'.</string>
+    <string name="mandiri_internet_instruction_step3">3.\tPilih rekening Anda di \'From Account\', kemudian \'Billing Name\' pilih \'Midtrans\'.</string>
     <string name="mandiri_internet_instruction_step4">4.\tMasukkan \'Payment Code\' dan Anda akan menerima rincian pembayaran.</string>
     <string name="mandiri_internet_instruction_step5">5.\tKonfirmasi pembayaran melalui Mandiri Token.</string>
     
@@ -159,9 +159,9 @@
     <string name="bca_klik_instruction_step6">6.\tTransaksi Anda selesai.</string>
 
     <!--KLIK BCA PAYMENT-->
-    <string name="bca_klik_pay_instruction_step1">1.\tAnda akan dialihkan ke halaman BCA KlikPay setelah menekan tombol \'Konfirmasi Pembayaran\' .</string>
-    <string name="bca_klik_pay_instruction_step2">2.\tUntuk pembayaran, Anda dapat memilih akun KlikBCA Individu atau kartu BCA.</string>
-    <string name="bca_klik_pay_instruction_step3">3.\tUntuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 500888 atau kunjungi www.bca.co.id.</string>
+    <string name="bca_klik_pay_instruction_step1">Anda akan dialihkan ke halaman BCA KlikPay setelah menekan tombol \'Konfirmasi Pembayaran\' .</string>
+    <string name="bca_klik_pay_instruction_step2">Untuk pembayaran, Anda dapat memilih akun KlikBCA Individu atau kartu BCA.</string>
+    <string name="bca_klik_pay_instruction_step3">Untuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 500888 atau kunjungi www.bca.co.id.</string>
 
      <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tPilih \'m-transfer\'.</string>
@@ -175,18 +175,18 @@
     <string name="bca_mbanking_instruction_step9">9.\tTransaksi Anda telah selesai</string>
     
     <!-- cimb transfer Instructions -->
-    <string name="cimb_instruction_step1">1.\tPastikan bahwa Anda memiliki User ID untuk CIMB Clicks dan telah mendaftarkan mPIN Anda sebelum melanjutkan pembayaran.</string>
-    <string name="cimb_instruction_step2">2.\tTransaksi akan dibatalkan apabila pembayaran tidak diselesaikan dalam 2 jam.</string>
-    <string name="cimb_instruction_step3">3.\tPastikan bahwa tidak ada pop-up blocker pada browser Anda.</string>
+    <string name="cimb_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk CIMB Clicks dan telah mendaftarkan mPIN Anda sebelum melanjutkan pembayaran.</string>
+    <string name="cimb_instruction_step2">Transaksi akan dibatalkan apabila pembayaran tidak diselesaikan dalam 2 jam.</string>
+    <string name="cimb_instruction_step3">Pastikan bahwa tidak ada pop-up blocker pada browser Anda.</string>
     
     <!-- Mandiri E Cash transfer Instruction-->
-    <string name="mandiri__e_cash_instruction_step1">1.\tPastikan no. HP anda telah terdaftar untuk Mandiri e-cash.</string>
-    <string name="mandiri__e_cash_instruction_step2">2.\tKlik \'Confirm Payment\'.</string>
-    <string name="mandiri__e_cash_instruction_step3">3.\tMasukkan no. HP dan PIN Anda.</string>
-    <string name="mandiri__e_cash_instruction_step4">4.\tHarap tunggu sampai Anda menerima SMS dari Mandiri e-cash berisi One Time Password (OTP).</string>
-    <string name="mandiri__e_cash_instruction_step5">5.\tMasukkan 6 digit OTP, lalu klik
+    <string name="mandiri__e_cash_instruction_step1">Pastikan no. HP anda telah terdaftar untuk Mandiri e-cash.</string>
+    <string name="mandiri__e_cash_instruction_step2">Klik \'Confirm Payment\'.</string>
+    <string name="mandiri__e_cash_instruction_step3">Masukkan no. HP dan PIN Anda.</string>
+    <string name="mandiri__e_cash_instruction_step4">Harap tunggu sampai Anda menerima SMS dari Mandiri e-cash berisi One Time Password (OTP).</string>
+    <string name="mandiri__e_cash_instruction_step5">Masukkan 6 digit OTP, lalu klik
         \'pay\' untuk melakukan pembayaran.</string>
-    <string name="mandiri__e_cash_instruction_step6">6.\tJika Anda belum menerima OTP atau jika
+    <string name="mandiri__e_cash_instruction_step6">Jika Anda belum menerima OTP atau jika
         OTP sudah kadaluarsa, klik \'cancel\' dan ulangi transaksi.</string>
 
     <!-- Indomaret Instruction-->
@@ -208,14 +208,14 @@
     <string name="permata_instruction_step7">Pilih rekening pembayaran Anda dan klik \'Correct\'.</string>
     <string name="bank_transfer_dummy_text">* Bergantung pada biaya bank/transfer dan transaksi minimum sebesar Rp50,000, - untuk bank mandiri</string>
 
- <string name="bri_instruction_step1">1.Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran </string>
-    <string name="bri_instruction_step2">2.Untuk mendapatkan User ID untuk BRI e-Pay, harap mendaftar pada ATM BRI terdekat
+ <string name="bri_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran </string>
+    <string name="bri_instruction_step2">Untuk mendapatkan User ID untuk BRI e-Pay, harap mendaftar pada ATM BRI terdekat
     </string>
-    <string name="bri_instruction_step3">3.Harap kunjungi kantor cabang BRI terdekat untuk mendaftar mTOKEN.
+    <string name="bri_instruction_step3">Harap kunjungi kantor cabang BRI terdekat untuk mendaftar mTOKEN.
     </string>
-    <string name="bri_instruction_step4">4.Pembayaran melalui BRI e-Pay akan diproses secara online dan saldo rekening BRI akan dikurangi secara otomatis berdasarkan total harga.
+    <string name="bri_instruction_step4">Pembayaran melalui BRI e-Pay akan diproses secara online dan saldo rekening BRI akan dikurangi secara otomatis berdasarkan total harga.
     </string>
-    <string name="bri_instruction_step5">5.Transaksi akan dibatalkan apabila pembayaran tidak dilakukan dalam 2 jam.
+    <string name="bri_instruction_step5">Transaksi akan dibatalkan apabila pembayaran tidak dilakukan dalam 2 jam.
     </string>
 
     <!-- Kioson Instruction-->
@@ -448,5 +448,6 @@
     <string name="status_due_amount">JUMLAH PEMBAYARAN BERSIH</string>
     <string name="status_due_installment">CICILAN</string>
     <string name="sorry">Maaf!</string>
+    <string name="get_challange_token">Bagaimana saya bisa mendapatkan challange token?</string>
 
 </resources>
