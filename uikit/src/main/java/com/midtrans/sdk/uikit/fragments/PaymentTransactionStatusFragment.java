@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -297,6 +298,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
         actionBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Log.d("statusactivity", "from:" + getActivity().getClass().getName());
                 if (getActivity().getClass().getName().equalsIgnoreCase(CreditDebitCardFlowActivity.class.getName())) {
                     ((CreditDebitCardFlowActivity) getActivity())
                             .setResultCode(getActivity().RESULT_OK);
@@ -332,6 +335,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
                     getActivity().onBackPressed();
                 }
             }
+
         });
     }
 
@@ -404,17 +408,26 @@ public class PaymentTransactionStatusFragment extends Fragment {
             paymentTypeTextView.setText(R.string.mandiri_click_pay);
         } else if (transactionResponse.getPaymentType().equalsIgnoreCase(PaymentType.INDOMARET)) {
             paymentTypeTextView.setText(R.string.indomaret);
+            buttonInstruction.setVisibility(View.GONE);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.CREDIT_CARD)) {
             paymentTypeTextView.setText(R.string.credit_card);
             buttonInstruction.setVisibility(View.GONE);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.INDOSAT_DOMPETKU)) {
             paymentTypeTextView.setText(R.string.indosat_dompetku);
+            buttonInstruction.setVisibility(View.GONE);
+        } else if (transactionResponse.getPaymentType().equals(PaymentType.TELKOMSEL_CASH)) {
+            paymentTypeTextView.setText(R.string.telkomsel_cash);
+            buttonInstruction.setVisibility(View.GONE);
+        } else if (transactionResponse.getPaymentType().equals(PaymentType.XL_TUNAI)) {
+            paymentTypeTextView.setText(R.string.xl_tunai);
+            buttonInstruction.setVisibility(View.GONE);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.BCA_KLIKPAY)) {
             paymentTypeTextView.setText(getString(R.string.payment_method_bca_klikpay));
         } else if (transactionResponse.getPaymentType().equals(PaymentType.KLIK_BCA)) {
             paymentTypeTextView.setText(getString(R.string.payment_method_klik_bca));
         } else if (transactionResponse.getPaymentType().equals(PaymentType.KIOSON)) {
             paymentTypeTextView.setText(getString(R.string.payment_method_kioson));
+            buttonInstruction.setVisibility(View.GONE);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.GCI)) {
             paymentTypeTextView.setText(getString(R.string.payment_method_gci));
         } else if (transactionResponse.getPaymentType().equals(getString(R.string.payment_bank_transfer)) ||

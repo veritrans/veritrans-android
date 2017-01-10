@@ -1,20 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@id/main_layout"
     android:background="@android:color/white">
 
-    <include layout="@layout/layout_appbar_payment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/btn_confirm_payment" />
+    <include android:layout_height="wrap_content"
+        android:id="@+id/layout_toolbar_header"
+        layout="@layout/toolbar_custom_header"
+        android:layout_width="wrap_content"/>
 
     <FrameLayout
-        android:id="@+id/indosat_container"
+        android:layout_below="@id/layout_toolbar_header"
+        android:id="@+id/instruction_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_confirm_payment"
-        android:layout_below="@+id/main_appbar" />
-
+        android:layout_height="match_parent" />
 
     <Button
         android:id="@+id/btn_confirm_payment"
@@ -25,6 +24,7 @@
         android:layout_margin="@dimen/sixteen_dp"
         android:text="@string/confirm_payment"
         android:textAllCaps="true"
+        android:drawableRight="@drawable/ic_arrow_right_white"
         android:textColor="@color/white" />
 
 

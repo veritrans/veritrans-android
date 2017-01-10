@@ -5,15 +5,12 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -24,8 +21,8 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.InstructionXLTunaiFragment;
 import com.midtrans.sdk.uikit.fragments.XLTunaiPaymentFragment;
-import com.midtrans.sdk.uikit.fragments.XLTunaiPaymentStatusFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * @author rakawm
@@ -38,12 +35,10 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
 
     public String currentFragment = "home";
 
-    private TextView textViewOrderId = null;
     private TextView textViewAmount = null;
     private Button buttonConfirmPayment = null;
-    private AppBarLayout appBarLayout = null;
     private TextView textViewTitle = null;
-    private ImageView logo = null;
+    private FancyButton buttonBack;
 
     private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
@@ -51,10 +46,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     private InstructionXLTunaiFragment instructionXLTunaiFragment = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private CollapsingToolbarLayout collapsingToolbarLayout = null;
-
     private int position = Constants.PAYMENT_METHOD_XL_TUNAI;
-    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,31 +91,23 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
-                setResultCode(RESULT_OK);
-                setResultAndFinish();
-            } else {
-                onBackPressed();
-            }
+            onBackPressed();
         }
 
         return false;
     }
 
     private void initializeView() {
-        textViewOrderId = (TextView) findViewById(R.id.text_order_id);
         textViewAmount = (TextView) findViewById(R.id.text_amount);
         textViewTitle = (TextView) findViewById(R.id.text_title);
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        appBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
+        buttonBack = (FancyButton) findViewById(R.id.btn_back);
+
         initializeTheme();
 
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void bindDataToView() {
@@ -131,11 +115,11 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
         if (midtransSDK != null) {
             textViewAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
-            textViewOrderId.setText("" + midtransSDK.getTransactionRequest().getOrderId());
             if (midtransSDK.getSemiBoldText() != null) {
                 buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), midtransSDK.getSemiBoldText()));
             }
             buttonConfirmPayment.setOnClickListener(this);
+            buttonBack.setOnClickListener(this);
         }
     }
 
@@ -148,9 +132,6 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
                 performTransaction();
 
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
-
-                appBarLayout.setExpanded(true);
-
                 if (transactionResponse != null) {
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
@@ -162,6 +143,8 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
             }
+        } else if (view.getId() == R.id.btn_back) {
+            onBackPressed();
         }
     }
 
@@ -174,27 +157,14 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
             return;
         }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         currentFragment = STATUS_FRAGMENT;
         buttonConfirmPayment.setText(R.string.done);
 
-        appBarLayout.setExpanded(false, false);
-
         Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        toolbar.setNavigationIcon(closeIcon);
-        setSupportActionBar(toolbar);
+        buttonBack.setIconResource(closeIcon);
 
-        XLTunaiPaymentStatusFragment indomaretPaymentStatusFragment =
-                XLTunaiPaymentStatusFragment.newInstance(transactionResponse, false);
-
-        // setup transaction status fragment
-        fragmentTransaction.replace(R.id.instruction_container,
-                indomaretPaymentStatusFragment, STATUS_FRAGMENT);
-        fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
-        fragmentTransaction.commit();
+        initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_XL_TUNAI, false);
     }
 
     private void setUpTransactionFragment(final TransactionResponse
@@ -226,7 +196,6 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
 
                 if (response != null) {
                     transactionResponse = response;
-                    appBarLayout.setExpanded(true);
                     setUpTransactionFragment(response);
                 } else {
                     onBackPressed();
