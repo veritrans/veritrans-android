@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * @author rakawm
@@ -30,8 +31,8 @@ public class XLTunaiPaymentFragment extends Fragment {
     private TextView mTextViewOrderId = null;
     private TextView mTextViewMerchantCode = null;
     private TextView mTextViewValidity = null;
-    private Button btnCopyOrderId = null;
-    private Button btnCopyMerchantCode = null;
+    private FancyButton btnCopyOrderId = null;
+    private FancyButton btnCopyMerchantCode = null;
 
     public static XLTunaiPaymentFragment newInstance(TransactionResponse transactionResponse) {
         XLTunaiPaymentFragment fragment = new XLTunaiPaymentFragment();
@@ -65,15 +66,15 @@ public class XLTunaiPaymentFragment extends Fragment {
         mTextViewOrderId = (TextView) view.findViewById(R.id.text_order_id);
         mTextViewMerchantCode = (TextView) view.findViewById(R.id.text_merchant_code);
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
-        btnCopyOrderId = (Button) view.findViewById(R.id.btn_copy_order_id);
-        btnCopyMerchantCode = (Button) view.findViewById(R.id.btn_copy_merchant_code);
+        btnCopyOrderId = (FancyButton) view.findViewById(R.id.btn_copy_order_id);
+        btnCopyMerchantCode = (FancyButton) view.findViewById(R.id.btn_copy_merchant_code);
 
         if (mTransactionResponse != null) {
             mTextViewOrderId.setText(mTransactionResponse.getXlTunaiOrderId());
 
             mTextViewMerchantCode.setText(mTransactionResponse.getXlTunaiMerchantId());
 
-            mTextViewValidity.setText(getString(R.string.text_format_valid_until, mTransactionResponse.getXlTunaiExpiration()));
+            mTextViewValidity.setText(mTransactionResponse.getXlTunaiExpiration());
         }
 
         btnCopyOrderId.setOnClickListener(new View.OnClickListener() {

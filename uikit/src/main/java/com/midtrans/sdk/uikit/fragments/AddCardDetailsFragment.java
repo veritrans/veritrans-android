@@ -109,6 +109,13 @@ public class AddCardDetailsFragment extends Fragment {
                     ((CreditDebitCardFlowActivity) getActivity()).showDeleteCardIcon(true);
                 }
 
+                String cardType = Utils.getCardType(savedCard.getMaskedCard());
+                if(!TextUtils.isEmpty(cardType)){
+                    String cardBin = savedCard.getMaskedCard().substring(0, 4);
+                    String title = cardType + "-" + cardBin;
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(title);
+                }
+
                 layoutSaveCard.setVisibility(View.GONE);
                 scanCardBtn.setVisibility(View.GONE);
 

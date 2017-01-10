@@ -278,12 +278,12 @@
     <string name="cancel_transaction">Batalkan transaksi?</string>
     <string name="cancel_transaction_message">Anda yakin ingin membatalkan transaksi?
     </string>
-    <string name="indosat_instruction_step1">1.\tMasukkan No. Indosat yang terdaftar.</string>
-    <string name="indosat_instruction_step2">2.\tPastikan terdapat dana yang mencukupi pada rekening Anda.</string>
-    <string name="indosat_instruction_step3">3.\tKlik \'Confirm Payment\'.</string>
-    <string name="indosat_instruction_step4">4.\tAnda akan menerima pesan USSD dari \nIndosat untuk menyelesaikan transaksi melalui Dompetku app.</string>
-    <string name="indosat_instruction_step5">5.\tMasukkan PIN Anda.</string>
-    <string name="indosat_instruction_step6">6.\tPembayaran Selesai.</string>
+    <string name="indosat_instruction_step1">Masukkan No. Indosat yang terdaftar.</string>
+    <string name="indosat_instruction_step2">Pastikan terdapat dana yang mencukupi pada rekening Anda.</string>
+    <string name="indosat_instruction_step3">Klik \'Confirm Payment\'.</string>
+    <string name="indosat_instruction_step4">Anda akan menerima pesan USSD dari \nIndosat untuk menyelesaikan transaksi melalui Dompetku app.</string>
+    <string name="indosat_instruction_step5">Masukkan PIN Anda.</string>
+    <string name="indosat_instruction_step6">Pembayaran Selesai.</string>
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
     <string name="mandiri_click_pay_instruction_step1">1.\tAktifkan token Mandiri Anda dengan menekan [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tMasukkan password token Mandiri Anda.</string>

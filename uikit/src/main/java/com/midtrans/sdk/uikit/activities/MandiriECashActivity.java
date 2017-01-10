@@ -93,6 +93,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         buttonConfirmPayment.setOnClickListener(this);
+        buttonBack.setOnClickListener(this);
     }
 
     private void setUpFragment() {

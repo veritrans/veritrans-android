@@ -409,6 +409,13 @@ public class PaymentTransactionStatusFragment extends Fragment {
             buttonInstruction.setVisibility(View.GONE);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.INDOSAT_DOMPETKU)) {
             paymentTypeTextView.setText(R.string.indosat_dompetku);
+            buttonInstruction.setVisibility(View.GONE);
+        } else if (transactionResponse.getPaymentType().equals(PaymentType.TELKOMSEL_CASH)) {
+            paymentTypeTextView.setText(R.string.telkomsel_cash);
+            buttonInstruction.setVisibility(View.GONE);
+        } else if (transactionResponse.getPaymentType().equals(PaymentType.XL_TUNAI)) {
+            paymentTypeTextView.setText(R.string.xl_tunai);
+            buttonInstruction.setVisibility(View.GONE);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.BCA_KLIKPAY)) {
             paymentTypeTextView.setText(getString(R.string.payment_method_bca_klikpay));
         } else if (transactionResponse.getPaymentType().equals(PaymentType.KLIK_BCA)) {
