@@ -28,7 +28,7 @@ dependencies:
         - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
     post:
         - ./gradlew :sdk-example:assembleDevelopmentDebug -PdisablePreDex
-        - ./gradlew :sdk-example:assembleDevelopmentDebugTest -PdisablePreDex
+        - ./gradlew :sdk-example:assembleDevelopmentDebugAndroidTest -PdisablePreDex
         - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/client-secret.json
         - sudo /opt/google-cloud-sdk/bin/gcloud config set project midtrans-android
         - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
