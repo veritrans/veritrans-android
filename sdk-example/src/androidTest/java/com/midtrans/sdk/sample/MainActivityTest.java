@@ -36,6 +36,7 @@ import static android.support.test.espresso.web.webdriver.DriverAtoms.clearEleme
 import static android.support.test.espresso.web.webdriver.DriverAtoms.findElement;
 import static android.support.test.espresso.web.webdriver.DriverAtoms.webClick;
 import static android.support.test.espresso.web.webdriver.DriverAtoms.webKeys;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
@@ -176,5 +177,107 @@ public class MainActivityTest {
         // Load charging request
         SystemClock.sleep(5000);
         onView(withId(R.id.text_title_payment_status)).check(matches(withText(R.string.payment_successful)));
+    }
+
+    @Test
+    public void bankTransferBCAFlowTest() {
+        //Initializing bank transfer payment
+        onView(withId(R.id.show_ui_flow)).perform(scrollTo(), click());
+        SystemClock.sleep(10000);
+
+        onView(withId(R.id.rv_payment_methods)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        onView(withId(R.id.rv_bank_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+        //Check email address text
+        onView(withId(R.id.et_email)).perform(clearText(), typeText(email), closeSoftKeyboard()).check(matches(withText(emailExpected)));
+        onView(withId(R.id.btn_confirm_payment)).perform(click());
+
+        // Wait for request
+        SystemClock.sleep(5000);
+
+        // Check for virtual account
+        onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(""))));
+        onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(R.string.virtual_account_number))));
+        onView(withId(R.id.btn_confirm_payment)).perform(click());
+
+        // Check transaction status
+        onView(withId(R.id.text_title_payment_status)).check(matches(withText(R.string.payment_pending)));
+    }
+
+    @Test
+    public void bankTransferMandiriFlowTest() {
+        //Initializing bank transfer payment
+        onView(withId(R.id.show_ui_flow)).perform(scrollTo(), click());
+        SystemClock.sleep(10000);
+
+        onView(withId(R.id.rv_payment_methods)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        onView(withId(R.id.rv_bank_list)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+
+        //Check email address text
+        onView(withId(R.id.et_email)).perform(clearText(), typeText(email), closeSoftKeyboard()).check(matches(withText(emailExpected)));
+        onView(withId(R.id.btn_confirm_payment)).perform(click());
+
+        // Wait for request
+        SystemClock.sleep(5000);
+
+        // Check for virtual account
+        onView(withId(R.id.text_company_code)).check(matches(not(withText(""))));
+        onView(withId(R.id.text_company_code)).check(matches(not(withText(R.string.virtual_account_number))));
+        onView(withId(R.id.text_bill_pay_code)).check(matches(not(withText(""))));
+        onView(withId(R.id.text_bill_pay_code)).check(matches(not(withText(R.string.virtual_account_number))));
+        onView(withId(R.id.btn_confirm_payment)).perform(click());
+
+        // Check transaction status
+        onView(withId(R.id.text_title_payment_status)).check(matches(withText(R.string.payment_pending)));
+    }
+
+    @Test
+    public void bankTransferPermataFlowTest() {
+        //Initializing bank transfer payment
+        onView(withId(R.id.show_ui_flow)).perform(scrollTo(), click());
+        SystemClock.sleep(10000);
+
+        onView(withId(R.id.rv_payment_methods)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        onView(withId(R.id.rv_bank_list)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+
+        //Check email address text
+        onView(withId(R.id.et_email)).perform(clearText(), typeText(email), closeSoftKeyboard()).check(matches(withText(emailExpected)));
+        onView(withId(R.id.btn_confirm_payment)).perform(click());
+
+        // Wait for request
+        SystemClock.sleep(5000);
+
+        // Check for virtual account
+        onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(""))));
+        onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(R.string.virtual_account_number))));
+        onView(withId(R.id.btn_confirm_payment)).perform(click());
+
+        // Check transaction status
+        onView(withId(R.id.text_title_payment_status)).check(matches(withText(R.string.payment_pending)));
+    }
+
+    @Test
+    public void bankTransferOtherBankFlowTest() {
+        //Initializing bank transfer payment
+        onView(withId(R.id.show_ui_flow)).perform(scrollTo(), click());
+        SystemClock.sleep(10000);
+
+        onView(withId(R.id.rv_payment_methods)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        onView(withId(R.id.rv_bank_list)).perform(RecyclerViewActions.actionOnItemAtPosition(3, click()));
+
+        //Check email address text
+        onView(withId(R.id.et_email)).perform(clearText(), typeText(email), closeSoftKeyboard()).check(matches(withText(emailExpected)));
+        onView(withId(R.id.btn_confirm_payment)).perform(click());
+
+        // Wait for request
+        SystemClock.sleep(5000);
+
+        // Check for virtual account
+        onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(""))));
+        onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(R.string.virtual_account_number))));
+        onView(withId(R.id.btn_confirm_payment)).perform(click());
+
+        // Check transaction status
+        onView(withId(R.id.text_title_payment_status)).check(matches(withText(R.string.payment_pending)));
     }
 }
