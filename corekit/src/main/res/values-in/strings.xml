@@ -181,13 +181,13 @@
         OTP sudah kadaluarsa, klik \'cancel\' dan ulangi transaksi.</string>
 
     <!-- Indomaret Instruction-->
-    <string name="indomaret_instruction_step1">1.\tSetelah pembayaran dikonfirmasi, kami akan mengirimkan nomor Payment Code yang unik.</string>
-    <string name="indomaret_instruction_step2">2.\tCatat Payment Code and jumlah total.
+    <string name="indomaret_instruction_step1">Setelah pembayaran dikonfirmasi, kami akan mengirimkan nomor Payment Code yang unik.</string>
+    <string name="indomaret_instruction_step2">Catat Payment Code and jumlah total.
        Jangan khawatir, kami juga akan mengirimkan instruksi pembayaran melalui email.</string>
-    <string name="indomaret_instruction_step3">3.\tKunjungi Indomaret terdekat dan berikan nomor Payment Code kepada kasir.</string>
-    <string name="indomaret_instruction_step4">4.\tKasir akan melakukan konfirmasi transaksi dengan menanyakan jumlah transaksi dan nama merchant.</string>
-    <string name="indomaret_instruction_step5">5.\tKonfirmasi Pembayaran melalui kasir.</string>
-    <string name="indomaret_instruction_step6">6.\tTransaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Indomaret Anda apabila anda memerlukan bantuan via support.</string>
+    <string name="indomaret_instruction_step3">Kunjungi Indomaret terdekat dan berikan nomor Payment Code kepada kasir.</string>
+    <string name="indomaret_instruction_step4">Kasir akan melakukan konfirmasi transaksi dengan menanyakan jumlah transaksi dan nama merchant.</string>
+    <string name="indomaret_instruction_step5">Konfirmasi Pembayaran melalui kasir.</string>
+    <string name="indomaret_instruction_step6">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Indomaret Anda apabila anda memerlukan bantuan via support.</string>
 
     <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">1.\tPada main menu, pilih \'Other Transaction\'.</string>
@@ -210,16 +210,16 @@
     </string>
 
     <!-- Kioson Instruction-->
-    <string name="kioson_instruction_step1">1.\tSetelah pembayaran dikonfirmasi, kami akan mengirimkan nomor Payment Code yang unik.</string>
-    <string name="kioson_instruction_step2">2.\tCatat Payment Code and jumlah total.
+    <string name="kioson_instruction_step1">Setelah pembayaran dikonfirmasi, kami akan mengirimkan nomor Payment Code yang unik.</string>
+    <string name="kioson_instruction_step2">Catat Payment Code and jumlah total.
        Jangan khawatir, kami juga akan mengirimkan instruksi pembayaran melalui email.</string>
-    <string name="kioson_instruction_step3">3.\tKunjungi outlet kioson terdekat dan berikan nomor Payment Code kepada kasir.</string>
-    <string name="kioson_instruction_step4">4.\tKasir akan membuka menu kioson Cash Point, kemudian kasir akan memilih "Keagenan".</string>
-    <string name="kioson_instruction_step5">5.\tPilih nama merchant.</string>
-    <string name="kioson_instruction_step6">6.\tPilih sub menu "Pembayaran".</string>
-    <string name="kioson_instruction_step7">7.\tMasukkan kode pembayaran anda dan dan detail pembayaran anda akan ditampilkan.</string>
-    <string name="kioson_instruction_step8">8.\tKonfirmasi pembayaran dan cetak bukti pembayarannya.</string>
-    <string name="kioson_instruction_step9">9.\tTransaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Anda apabila anda memerlukan bantuan via support.</string>
+    <string name="kioson_instruction_step3">Kunjungi outlet kioson terdekat dan berikan nomor Payment Code kepada kasir.</string>
+    <string name="kioson_instruction_step4">Kasir akan membuka menu kioson Cash Point, kemudian kasir akan memilih "Keagenan".</string>
+    <string name="kioson_instruction_step5">Pilih nama merchant.</string>
+    <string name="kioson_instruction_step6">Pilih sub menu "Pembayaran".</string>
+    <string name="kioson_instruction_step7">Masukkan kode pembayaran anda dan dan detail pembayaran anda akan ditampilkan.</string>
+    <string name="kioson_instruction_step8">Konfirmasi pembayaran dan cetak bukti pembayarannya.</string>
+    <string name="kioson_instruction_step9">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Anda apabila anda memerlukan bantuan via support.</string>
 
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>

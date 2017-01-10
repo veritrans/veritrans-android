@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * Displays status information about bank transfer's api call .
@@ -24,7 +25,6 @@ import com.midtrans.sdk.uikit.R;
 public class IndomaretPaymentFragment extends Fragment {
 
     public static final String KEY_ARG = "arg";
-    public static final String VALID_UNTIL = "Valid Until : ";
     private static final String LABEL_PAYMENT_CODE = "Payment Code";
     private TransactionResponse transactionResponse;
 
@@ -32,7 +32,7 @@ public class IndomaretPaymentFragment extends Fragment {
 
     private TextView mTextViewValidity = null;
     private TextView mTextViewPaymentCode = null;
-    private Button btnCopyToClipboard = null;
+    private FancyButton btnCopyToClipboard = null;
 
 
     public static IndomaretPaymentFragment newInstance(TransactionResponse mTransactionResponse) {
@@ -70,12 +70,12 @@ public class IndomaretPaymentFragment extends Fragment {
     private void initializeViews(View view) {
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
         mTextViewPaymentCode = (TextView) view.findViewById(R.id.text_payment_code);
-        btnCopyToClipboard = (Button) view.findViewById(R.id.btn_copy_va);
+        btnCopyToClipboard = (FancyButton) view.findViewById(R.id.btn_copy_va);
 
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
                     || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
-                mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getIndomaretExpireTime()));
+                mTextViewValidity.setText(transactionResponse.getIndomaretExpireTime());
             }
             if (transactionResponse.getPaymentCodeResponse() != null)
                 mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeResponse());

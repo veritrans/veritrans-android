@@ -245,13 +245,13 @@
 
 
     <!-- Indomaret Instruction-->
-    <string name="indomaret_instruction_step1">1.\tAfter confirming your payment, we will issue you a unique Payment Code number.</string>
-    <string name="indomaret_instruction_step2">2.\tNote down your Payment Code and total amount.
+    <string name="indomaret_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
+    <string name="indomaret_instruction_step2">Note down your Payment Code and total amount.
         Don\'t worry, we will also mail you a copy of the payment instructions.</string>
-    <string name="indomaret_instruction_step3">3.\tGo to an Indomaret store near you and provide the cashier with the Payment Code number.</string>
-    <string name="indomaret_instruction_step4">4.\tThe cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
-    <string name="indomaret_instruction_step5">5.\tConfirm the payment with the cashier.</string>
-    <string name="indomaret_instruction_step6">6.\tYour transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
+    <string name="indomaret_instruction_step3">Go to an Indomaret store near you and provide the cashier with the Payment Code number.</string>
+    <string name="indomaret_instruction_step4">The cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
+    <string name="indomaret_instruction_step5">Confirm the payment with the cashier.</string>
+    <string name="indomaret_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
 
 
     <!-- BBM Money Instruction-->
@@ -483,16 +483,16 @@
     <string name="error_card_unavailable">Card is not available</string>
 
     <!-- Kioson Instruction-->
-    <string name="kioson_instruction_step1">1.\tAfter confirming your payment, we will issue you a unique Payment Code number.</string>
-    <string name="kioson_instruction_step2">2.\tNote down your Payment Code and total amount.
+    <string name="kioson_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
+    <string name="kioson_instruction_step2">Note down your Payment Code and total amount.
         Don\'t worry, we will also mail you a copy of the payment instructions to your email.</string>
-    <string name="kioson_instruction_step3">3.\tGo to a Kioson outlet near you and provide the cashier with the Payment Code.</string>
-    <string name="kioson_instruction_step4">4.\tThe cashier will open kioson Cash Point, on the menu chasier will select "Keagenan".</string>
-    <string name="kioson_instruction_step5">5.\tChoose merchant name.</string>
-    <string name="kioson_instruction_step6">6.\tChoose sub menu "Pembayaran".</string>
-    <string name="kioson_instruction_step7">7.\tEnter your Payment Code and get the payment details.</string>
-    <string name="kioson_instruction_step8">8.\tSubmit payment and print the receipt.</string>
-    <string name="kioson_instruction_step9">9.\tYour transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
+    <string name="kioson_instruction_step3">Go to a Kioson outlet near you and provide the cashier with the Payment Code.</string>
+    <string name="kioson_instruction_step4">The cashier will open kioson Cash Point, on the menu chasier will select "Keagenan".</string>
+    <string name="kioson_instruction_step5">Choose merchant name.</string>
+    <string name="kioson_instruction_step6">Choose sub menu "Pembayaran".</string>
+    <string name="kioson_instruction_step7">Enter your Payment Code and get the payment details.</string>
+    <string name="kioson_instruction_step8">Submit payment and print the receipt.</string>
+    <string name="kioson_instruction_step9">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
     <string name="callback_unimplemented">Callback Unimplemented</string>
     <string name="transaction_finished_callback_unimplemented">callback not yet implemented</string>
 
