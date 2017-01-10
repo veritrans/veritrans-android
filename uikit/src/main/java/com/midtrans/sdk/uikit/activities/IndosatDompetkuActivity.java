@@ -20,7 +20,6 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.BankTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionIndosatFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -34,7 +33,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  * <p/>
  * <p/>
  * It has - {@link InstructionIndosatFragment} home fragment - an initial fragment which contains an
- * instruction. {@link BankTransactionStatusFragment} - used to display status of transaction.
+ * instruction. {@link com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment} - used to display status of transaction.
  * <p/>
  * <p/>
  * <p/>

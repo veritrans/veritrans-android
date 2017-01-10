@@ -1,17 +1,11 @@
 package com.midtrans.sdk.uikit.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +14,6 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.BankTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
 import com.squareup.picasso.Picasso;
 
@@ -112,23 +105,5 @@ public class BaseActivity extends AppCompatActivity {
         this.RESULT_CODE = resultCode;
     }
 
-    protected void initBankTransferPaymentStatus(TransactionResponse transactionResponse, String errorMessage, int paymentMethod, String statusFragment) {
-        if (MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus()) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            BankTransactionStatusFragment bankTransactionStatusFragment =
-                    BankTransactionStatusFragment.newInstance(transactionResponse,
-                            paymentMethod);
-
-            // setup transaction status fragment
-            fragmentTransaction.replace(R.id.instruction_container,
-                    bankTransactionStatusFragment, statusFragment);
-            fragmentTransaction.addToBackStack(statusFragment);
-            fragmentTransaction.commit();
-        } else {
-            setResultCode(RESULT_OK);
-            setResultAndFinish(transactionResponse, errorMessage);
-        }
-    }
 
 }
