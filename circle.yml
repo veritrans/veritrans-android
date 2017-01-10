@@ -40,12 +40,9 @@ test:
         # Unit Test
        - (./gradlew corekit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
             timeout: 3600
-       - echo "y" | sudo /opt/google-cloud-sdk/bin/gcloud beta test android run --app sdk-example/build/outputs/apk/sdk-example-development-debug.apk --test sdk-example/build/outputs/apk/sdk-example-development-debug-androidTest.apk --results-bucket cloud-test-midtrans-android
-
-
+       - echo "y" | sudo /opt/google-cloud-sdk/bin/gcloud beta test android run --app sdk-example/build/outputs/apk/sdk-example-development-debug.apk --test sdk-example/build/outputs/apk/sdk-example-development-debug-androidTest.apk
 
     post:
-       - sudo /opt/google-cloud-sdk/bin/gsutil -m cp -r -U `sudo /opt/google-cloud-sdk/bin/gsutil ls gs://cloud-test-circle-ctl-test | tail -1` $CIRCLE_ARTIFACTS/ | true
        - cp -r corekit/build/reports $CIRCLE_ARTIFACTS
        - cp -r corekit/build/reports/ $CIRCLE_TEST_REPORTS
 
