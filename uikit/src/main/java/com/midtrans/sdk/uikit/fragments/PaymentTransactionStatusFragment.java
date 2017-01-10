@@ -32,6 +32,7 @@ import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 import com.midtrans.sdk.uikit.activities.CIMBClickPayActivity;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.activities.EpayBriActivity;
+import com.midtrans.sdk.uikit.activities.KiosonInstructionActivity;
 import com.midtrans.sdk.uikit.activities.KlikBCAActivity;
 import com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity;
 import com.midtrans.sdk.uikit.activities.MandiriECashActivity;
@@ -346,6 +347,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
         textStatusTitle.setText(getString(R.string.payment_unsuccessful));
         setupStatusBarColor(STATUS_FAILED);
         setupStatusInfo();
+        buttonInstruction.setVisibility(View.GONE);
+
         if (transactionResponse == null) {
             paymentMessageTv.setVisibility(View.VISIBLE);
             paymentMessageTv.setText(getString(R.string.api_fail_message));
@@ -406,9 +409,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
             buttonInstruction.setVisibility(View.GONE);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.MANDIRI_CLICKPAY)) {
             paymentTypeTextView.setText(R.string.mandiri_click_pay);
-        } else if (transactionResponse.getPaymentType().equalsIgnoreCase(PaymentType.INDOMARET)) {
-            paymentTypeTextView.setText(R.string.indomaret);
-            buttonInstruction.setVisibility(View.GONE);
         } else if (transactionResponse.getPaymentType().equals(PaymentType.CREDIT_CARD)) {
             paymentTypeTextView.setText(R.string.credit_card);
             buttonInstruction.setVisibility(View.GONE);
@@ -425,11 +425,18 @@ public class PaymentTransactionStatusFragment extends Fragment {
             paymentTypeTextView.setText(getString(R.string.payment_method_bca_klikpay));
         } else if (transactionResponse.getPaymentType().equals(PaymentType.KLIK_BCA)) {
             paymentTypeTextView.setText(getString(R.string.payment_method_klik_bca));
-        } else if (transactionResponse.getPaymentType().equals(PaymentType.KIOSON)) {
-            paymentTypeTextView.setText(getString(R.string.payment_method_kioson));
-            buttonInstruction.setVisibility(View.GONE);
+        } else if (transactionResponse.getPaymentType().equals(getString(R.string.cstore_payment))) {
+
+            if (mPaymentType == Constants.PAYMENT_METHOD_INDOMARET) {
+                paymentTypeTextView.setText(getString(R.string.indomaret));
+                buttonInstruction.setVisibility(View.GONE);
+            } else if (mPaymentType == Constants.PAYMENT_METHOD_KIOSON) {
+                paymentTypeTextView.setText(getString(R.string.payment_method_kioson));
+            }
+
         } else if (transactionResponse.getPaymentType().equals(PaymentType.GCI)) {
             paymentTypeTextView.setText(getString(R.string.payment_method_gci));
+            buttonInstruction.setVisibility(View.GONE);
         } else if (transactionResponse.getPaymentType().equals(getString(R.string.payment_bank_transfer)) ||
                 transactionResponse.getPaymentType().equals(PaymentType.BCA_VA) ||
                 transactionResponse.getPaymentType().equals(PaymentType.PERMATA_VA) ||
@@ -473,6 +480,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
                     intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
                     intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
                     intent.putExtra(BankTransferInstructionActivity.PAGE, BankTransferInstructionActivity.KLIKBCA_PAGE);
+                    break;
+                case Constants.PAYMENT_METHOD_KIOSON:
+                    intent = new Intent(getActivity(), KiosonInstructionActivity.class);
                     break;
             }
 

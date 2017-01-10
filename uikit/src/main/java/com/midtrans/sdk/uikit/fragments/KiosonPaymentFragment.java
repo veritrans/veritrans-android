@@ -10,20 +10,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.KiosonInstructionActivity;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * Created by ziahaqi on 8/26/16.
  */
 public class KiosonPaymentFragment extends Fragment {
     public static final String KEY_ARG = "arg";
-    public static final String VALID_UNTIL = "Valid Until : ";
     private static final String LABEL_PAYMENT_CODE = "Payment Code";
     private TransactionResponse transactionResponse;
 
@@ -31,8 +30,8 @@ public class KiosonPaymentFragment extends Fragment {
 
     private TextView mTextViewValidity = null;
     private TextView mTextViewPaymentCode = null;
-    private Button btnCopyToClipboard = null;
-    private Button btnSeeInstruction;
+    private FancyButton btnCopyToClipboard = null;
+    private FancyButton btnSeeInstruction;
 
 
     public static KiosonPaymentFragment newInstance(TransactionResponse mTransactionResponse) {
@@ -70,13 +69,13 @@ public class KiosonPaymentFragment extends Fragment {
     private void initializeViews(View view) {
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
         mTextViewPaymentCode = (TextView) view.findViewById(R.id.text_payment_code);
-        btnCopyToClipboard = (Button) view.findViewById(R.id.btn_copy_va);
-        btnSeeInstruction = (Button) view.findViewById(R.id.btn_see_instruction);
+        btnCopyToClipboard = (FancyButton) view.findViewById(R.id.btn_copy_va);
+        btnSeeInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
 
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
                     || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
-                mTextViewValidity.setText(getString(R.string.kioson_valid, transactionResponse.getKiosonExpireTime()));
+                mTextViewValidity.setText(transactionResponse.getKiosonExpireTime());
             }
             if (transactionResponse.getPaymentCodeResponse() != null)
                 mTextViewPaymentCode.setText(transactionResponse.getPaymentCodeResponse());
