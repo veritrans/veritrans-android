@@ -5,15 +5,12 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -24,6 +21,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.GCIPaymentFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * Created by ziahaqi on 12/7/16.
@@ -35,19 +33,16 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
     public static final String STATUS_FRAGMENT = "transaction_status";
     public String currentFragment = "home";
 
-    private TextView textViewOrderId = null;
     private TextView textViewAmount = null;
     private Button buttonConfirmPayment = null;
-    private AppBarLayout appBarLayout = null;
     private TextView textViewTitle = null;
-    private ImageView logo = null;
     private GCIPaymentFragment paymentFragment;
     private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
+    private FancyButton buttonBack;
 
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
     private int position = Constants.PAYMENT_METHOD_INDOMARET;
     private int retryNumber = 2;
@@ -105,19 +100,16 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initializeView() {
-        textViewOrderId = (TextView) findViewById(R.id.text_order_id);
         textViewAmount = (TextView) findViewById(R.id.text_amount);
         textViewTitle = (TextView) findViewById(R.id.text_title);
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        appBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
+        buttonBack = (FancyButton) findViewById(R.id.btn_back);
+
         initializeTheme();
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void bindDataToView() {
@@ -125,11 +117,11 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
         if (midtransSDK != null) {
             textViewAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
-            textViewOrderId.setText("" + midtransSDK.getTransactionRequest().getOrderId());
             if (midtransSDK.getSemiBoldText() != null) {
                 buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), midtransSDK.getSemiBoldText()));
             }
             buttonConfirmPayment.setOnClickListener(this);
+            buttonBack.setOnClickListener(this);
         }
     }
 
@@ -139,12 +131,13 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
         if (view.getId() == R.id.btn_confirm_payment) {
             if (currentFragment.equalsIgnoreCase(STATUS_FRAGMENT)) {
-                appBarLayout.setExpanded(true);
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
             } else {
                 performTransaction();
             }
+        } else if (view.getId() == R.id.btn_back) {
+            onBackPressed();
         }
     }
 
@@ -154,14 +147,11 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
         currentFragment = STATUS_FRAGMENT;
         buttonConfirmPayment.setText(R.string.done);
 
-        appBarLayout.setExpanded(false, false);
         Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        toolbar.setNavigationIcon(closeIcon);
-        setSupportActionBar(toolbar);
-        buttonConfirmPayment.setText(R.string.complete_payment_at_klik_bca);
+        buttonBack.setIconResource(closeIcon);
 
-        initBankTransferPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_GCI, STATUS_FRAGMENT);
+        initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_GCI, false);
     }
 
 
@@ -181,7 +171,6 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
                     SdkUIFlowUtil.hideProgressDialog();
                     if (response != null) {
                         transactionResponse = response;
-                        appBarLayout.setExpanded(true);
                         setUpTransactionStatusFragment(response);
                     } else {
                         onBackPressed();
