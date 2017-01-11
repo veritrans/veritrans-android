@@ -225,8 +225,9 @@
                 android:layout_marginTop="@dimen/four_dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/sixtyfour_dp"
-                android:visibility="gone">
+                android:paddingBottom="@dimen/four_dp"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
