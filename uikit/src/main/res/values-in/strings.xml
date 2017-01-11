@@ -448,7 +448,7 @@
     <string name="status_due_amount">JUMLAH PEMBAYARAN BERSIH</string>
     <string name="status_due_installment">CICILAN</string>
     <string name="sorry">Maaf!</string>
-    <string name="get_challange_token">Bagaimana saya bisa mendapatkan challange token?</string>
+    <string name="get_challenge_token">Bagaimana saya bisa mendapatkan challenge token?</string>
     <string name="kioson_instruction">bagaimana saya dapat melakukan pembayaran dengan kioson ?</string>
 
 </resources>

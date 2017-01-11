@@ -207,7 +207,7 @@
             app:fb_focusColor="@color/colorAccentLight"
             app:fb_iconColor="?attr/colorPrimary"
             app:fb_radius="5dp"
-            app:fb_text="@string/get_challange_token"
+            app:fb_text="@string/get_challenge_token"
             app:fb_textColor="?attr/colorPrimary" />
 
     </LinearLayout>
