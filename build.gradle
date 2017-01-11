@@ -12,6 +12,16 @@ allprojects {
     repositories {
         jcenter()
     }
+
+    project.plugins.whenPluginAdded { plugin ->
+        if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
+            println "Disable pre dexing for module ${project.name}"
+            project.android.dexOptions.preDexLibraries = false
+        } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
+            println "Disable pre dexing for module ${project.name}"
+            project.android.dexOptions.preDexLibraries = false
+        }
+    }
 }
 
 task clean(type: Delete) {
