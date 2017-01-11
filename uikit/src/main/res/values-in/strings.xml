@@ -450,5 +450,9 @@
     <string name="sorry">Maaf!</string>
     <string name="get_challenge_token">Bagaimana saya bisa mendapatkan challenge token?</string>
     <string name="kioson_instruction">bagaimana saya dapat melakukan pembayaran dengan kioson ?</string>
-
+    <string name="redeem_bni_title">Gunakan Poin Reward BNI</string>
+    <string name="redeem_bni_reward">Gunakan Poin Reward BNI</string>
+    <string name="redeem_bni_details">Anda dapat membayar sebagian dengan Poin Reward BNI melalui Kartu Kredit Anda..</string>
+    <string name="save_card_dialog_title">Simpan Kartu Untuk Penggunakan Selanjutnya</string>
+    <string name="save_card_dialog_message">Kami akan menyimpan data kartu kredit anda untuk digunakan di pembayaran selanjutnya.</string>
 </resources>

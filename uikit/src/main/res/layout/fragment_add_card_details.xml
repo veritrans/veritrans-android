@@ -11,6 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/seventy_two_dp"
         android:background="@android:color/white"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -179,13 +180,39 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout_save_card_detail"
+                android:id="@+id/layout_bni_point"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/expiry_date_layout"
                 android:layout_marginTop="@dimen/eight_dp"
-                android:gravity="right"
-                android:orientation="vertical">
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/cb_bni_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/four_dp"
+                    android:layout_marginTop="@dimen/four_dp"
+                    android:text="@string/redeem_bni_reward" />
+
+                <ImageView
+                    android:id="@+id/image_bni_help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_cvvinfo"
+                    android:text="@string/what_is_cvv"
+                    android:textColor="?colorAccent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_save_card_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_bni_point"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:gravity="end"
+                android:orientation="horizontal">
 
                 <android.support.v7.widget.SwitchCompat
                     android:id="@+id/cb_store_card"
@@ -195,16 +222,13 @@
                     android:layout_marginTop="@dimen/four_dp"
                     android:text="@string/save_card_message" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/two_dp"
-                    android:background="@color/gray_divider" />
-
-                <TextView
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/image_save_card_help"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/save_card_info" />
+                    android:src="@drawable/ic_cvvinfo"
+                    android:text="@string/what_is_cvv"
+                    android:textColor="?colorAccent" />
             </LinearLayout>
 
             <Button
@@ -222,7 +246,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/scan_card"
-                android:layout_marginTop="@dimen/four_dp"
+                android:layout_marginTop="@dimen/eight_dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/four_dp"
@@ -248,7 +272,6 @@
                         android:textSize="30sp" />
 
                     <TextView
-
                         android:id="@+id/text_installment_term"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -275,7 +298,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_installment"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/eight_dp"
                 android:background="@drawable/grey_rounded_background"
                 android:padding="@dimen/eight_dp">
 

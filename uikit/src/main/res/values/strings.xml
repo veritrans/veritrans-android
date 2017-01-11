@@ -637,4 +637,9 @@
     <string name="get_challenge_token">How can i get a challenge token?</string>
     <string name="kioson_instruction">how can i pay with kioson payment ?</string>
     <string name="cstore_payment">cstore</string>
+    <string name="redeem_bni_title">Redeem BNI Reward Point</string>
+    <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
+    <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
+    <string name="save_card_dialog_title">Save Card for Later Reuse</string>
+    <string name="save_card_dialog_message">We will securely stored your card details so you can reuse them later.</string>
 </resources>

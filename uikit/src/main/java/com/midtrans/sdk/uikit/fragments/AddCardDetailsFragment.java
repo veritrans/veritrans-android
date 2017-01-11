@@ -3,10 +3,12 @@ package com.midtrans.sdk.uikit.fragments;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -63,6 +65,8 @@ public class AddCardDetailsFragment extends Fragment {
     private Button buttonIncrease, buttonDecrease;
     private ImageView logo;
     private ImageView imageCvvHelp;
+    private ImageView imageBniHelp;
+    private ImageView imageSaveHelp;
     private Button payNowBtn;
     private Button scanCardBtn;
     private String cardNumber;
@@ -180,6 +184,8 @@ public class AddCardDetailsFragment extends Fragment {
         switchSaveCard = (SwitchCompat) view.findViewById(R.id.cb_store_card);
         initCheckbox();
         imageCvvHelp = (ImageView) view.findViewById(R.id.image_cvv_help);
+        imageBniHelp = (ImageView) view.findViewById(R.id.image_bni_help);
+        imageSaveHelp = (ImageView) view.findViewById(R.id.image_save_card_help);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
         logo = (ImageView) view.findViewById(R.id.payment_card_logo);
@@ -317,6 +323,38 @@ public class AddCardDetailsFragment extends Fragment {
                 MidtransDialog midtransDialog = new MidtransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
                 midtransDialog.show();
+            }
+        });
+
+        imageBniHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.redeem_bni_title)
+                        .setMessage(R.string.redeem_bni_details)
+                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).create();
+                dialog.show();
+            }
+        });
+
+        imageSaveHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.save_card_dialog_title)
+                        .setMessage(R.string.save_card_dialog_message)
+                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).create();
+                dialog.show();
             }
         });
 
