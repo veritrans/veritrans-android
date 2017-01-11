@@ -3,7 +3,6 @@ package com.midtrans.sdk.sample;
 import android.os.SystemClock;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.espresso.web.webdriver.Locator;
 import android.support.test.rule.ActivityTestRule;
@@ -11,10 +10,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.models.UserDetail;
-import com.midtrans.sdk.uikit.models.CountryCodeModel;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,7 +33,6 @@ import static android.support.test.espresso.web.webdriver.DriverAtoms.findElemen
 import static android.support.test.espresso.web.webdriver.DriverAtoms.webClick;
 import static android.support.test.espresso.web.webdriver.DriverAtoms.webKeys;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
  * Created by ziahaqi on 7/27/16.
@@ -52,26 +47,6 @@ public class MainActivityTest {
     String email, emailExpected;
     private String fullName, phone;
     private String address, city, zipcode, country;
-
-    public static Matcher<Object> countryNameShouldHaveString(String expectedTest) {
-        return countryNameShouldHaveObject(equalTo(expectedTest));
-    }
-
-    private static Matcher<Object> countryNameShouldHaveObject(final Matcher<String> expectedObject) {
-        return new BoundedMatcher<Object, CountryCodeModel>(CountryCodeModel.class) {
-            @Override
-            public boolean matchesSafely(final CountryCodeModel actualObject) {
-                // next line is important ... requiring a String having an "equals" method
-                return expectedObject.matches(actualObject.getName());
-            }
-
-            @Override
-            public void describeTo(final Description description) {
-                // could be improved, of course
-                description.appendText("getnumber should return ");
-            }
-        };
-    }
 
     @Before
     public void setup() {

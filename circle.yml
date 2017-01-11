@@ -48,9 +48,9 @@ test:
        - cp -r corekit/build/reports $CIRCLE_ARTIFACTS
        - cp -r corekit/build/reports/ $CIRCLE_TEST_REPORTS
        # copy the build outputs to artifacts
-       - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+       - cp -r sdk-example/build/outputs $CIRCLE_ARTIFACTS
        # copy the test results to the test results directory.
-       - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+       - cp -r sdk-example/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
 
 
 
