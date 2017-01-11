@@ -634,5 +634,7 @@
     <string name="number_instruction8">8.</string>
     <string name="number_instruction9">9.</string>
 
-    <string name="get_challange_token">How can i get a challange token?</string>
+    <string name="get_challenge_token">How can i get a challenge token?</string>
+    <string name="kioson_instruction">how can i pay with kioson payment ?</string>
+    <string name="cstore_payment">cstore</string>
 </resources>

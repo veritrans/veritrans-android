@@ -24,7 +24,6 @@ import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.BankTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.BankTransferPaymentFragment;
 import com.midtrans.sdk.uikit.fragments.MandiriBillPayFragment;
@@ -39,7 +38,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  * <p/>
  * It has - {@link BankTransferFragment} home fragment - an initial fragment which contains an
  * instruction. {@link MandiriBillPayFragment} - used to handle mandiri bill payment {@link
- * BankTransferPaymentFragment} - used to handle bank transfer {@link BankTransactionStatusFragment}
+ * BankTransferPaymentFragment} - used to handle bank transfer {@link com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment}
  * - used to display status of transaction.
  * <p/>
  * <p/>
