@@ -316,9 +316,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void initPaymentMethods(List<EnabledPayment> enabledPayments) {
         initialiseAdapterData(enabledPayments);
         String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
-        if (MidtransSDK.getInstance().getTransactionRequest().isPaymentWithPromo()) {
-            isCreditCardOnly = true;
-        }
+
         if (isCreditCardOnly) {
             // track payment select credit card
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
