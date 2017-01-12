@@ -450,5 +450,7 @@
     <string name="sorry">Maaf!</string>
     <string name="get_challenge_token">Bagaimana saya bisa mendapatkan challenge token?</string>
     <string name="kioson_instruction">bagaimana saya dapat melakukan pembayaran dengan kioson ?</string>
+    <string name="card_bin_invalid">nomor kartu kredit tidak terdapat didalam whitelist bin kartu kredit</string>
+    <string name="installment_required">Pembayaran harus menggunakan cicilan</string>
 
 </resources>

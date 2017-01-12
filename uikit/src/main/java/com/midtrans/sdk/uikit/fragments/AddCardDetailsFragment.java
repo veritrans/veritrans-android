@@ -110,7 +110,7 @@ public class AddCardDetailsFragment extends Fragment {
                 }
 
                 String cardType = Utils.getCardType(savedCard.getMaskedCard());
-                if(!TextUtils.isEmpty(cardType)){
+                if (!TextUtils.isEmpty(cardType)) {
                     String cardBin = savedCard.getMaskedCard().substring(0, 4);
                     String title = cardType + "-" + cardBin;
                     ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(title);
@@ -134,6 +134,8 @@ public class AddCardDetailsFragment extends Fragment {
                     etCvv.setText(SdkUIFlowUtil.getMaskedCardCvv());
                     etCvv.setEnabled(false);
                 }
+
+                initCardInstallment();
             }
         }
     }
@@ -215,7 +217,7 @@ public class AddCardDetailsFragment extends Fragment {
             public void onFocusChange(View view, boolean hasfocus) {
                 if (!hasfocus) {
                     checkCardNumberValidity();
-                    checkPromoValidity();
+                    checkBinLockingValidity();
                     initCardInstallment();
                 }
             }
@@ -273,12 +275,13 @@ public class AddCardDetailsFragment extends Fragment {
                     midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_CHECKBOX_SAVE_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
                 }
 
-                if (!checkPromoValidity()) {
-                    SdkUIFlowUtil.showToast(getActivity(), getString(R.string.message_payment_cannot_proccessed));
-                    return;
-                }
 
                 if (checkCardValidity()) {
+
+                    if(!isValidPayment()){
+                        return;
+                    }
+
                     if (isOneClickMode()) {
                         ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(savedCard.getMaskedCard());
                     } else if (isTwoClickMode()) {
@@ -438,33 +441,59 @@ public class AddCardDetailsFragment extends Fragment {
         );
     }
 
+    private boolean isValidPayment() {
+
+        //card bin validation for bin locking and installmeent
+        if (!isCardBinValid()) {
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.card_bin_invalid));
+            return false;
+        }
+
+        //installment validation
+        if(!((CreditDebitCardFlowActivity)getActivity()).isValidInstallment()){
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.installment_required));
+            return false;
+        }
+        return true;
+    }
+
     private void initCheckbox() {
-        UIKitCustomSetting uiKitCustomSetting = midtransSDK.getUIKitCustomSetting();
+        UIKitCustomSetting uiKitCustomSetting = MidtransSDK.getInstance().getUIKitCustomSetting();
         if (uiKitCustomSetting.isSaveCardChecked()) {
             switchSaveCard.setChecked(true);
         }
     }
 
-    private boolean isCarBinValid() {
+    private boolean isCardBinLockingValid() {
         boolean valid = false;
         String cardNumber = etCardNo.getText().toString().trim();
         if (TextUtils.isEmpty(cardNumber)) {
-            showInvalidPromoStatus(true);
+            showInvalidBinLockingStatus(true);
 
         } else if (cardNumber.length() < 7) {
-            showInvalidPromoStatus(true);
+            showInvalidBinLockingStatus(true);
         } else {
-            String cardBin = cardNumber.replace(" ", "").substring(0, 6);
-            if (((CreditDebitCardFlowActivity) getActivity()).isCardBinValid(cardBin)) {
-                showInvalidPromoStatus(false);
+            if (isCardBinValid()) {
+                showInvalidBinLockingStatus(false);
                 valid = true;
             } else {
-                showInvalidPromoStatus(true);
+                showInvalidBinLockingStatus(true);
             }
         }
 
-
         return valid;
+    }
+
+
+    private boolean isCardBinValid() {
+        if (((CreditDebitCardFlowActivity) getActivity()).isWhiteListBinsAvailable()) {
+            String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+            if (!((CreditDebitCardFlowActivity) getActivity()).isCardBinValid(cardBin)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
@@ -476,16 +505,16 @@ public class AddCardDetailsFragment extends Fragment {
         }
     }
 
-    private boolean checkPromoValidity() {
-        if (((CreditDebitCardFlowActivity) getActivity()).isPaymentWithPromo()) {
-            if (!isCarBinValid()) {
+    private boolean checkBinLockingValidity() {
+        if (((CreditDebitCardFlowActivity) getActivity()).isWhiteListBinsAvailable()) {
+            if (!isCardBinLockingValid()) {
                 return false;
             }
         }
         return true;
     }
 
-    private void showInvalidPromoStatus(boolean show) {
+    private void showInvalidBinLockingStatus(boolean show) {
         if (show) {
             textInvalidPromoStatus.setVisibility(View.VISIBLE);
         } else {
@@ -500,29 +529,33 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     private void initCardInstallment() {
-        String cardNumber = etCardNo.getText().toString();
-        if (TextUtils.isEmpty(cardNumber)) {
-            showInstallmentLayout(false);
-        } else if (cardNumber.length() < 7) {
-            showInstallmentLayout(false);
-        } else if (midtransSDK.getCreditCard() != null
-                && midtransSDK.getCreditCard().getBank() != null
-                && (midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)
-                || midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.BRI))) {
-            showInstallmentLayout(false);
-        } else {
-            String cleanCardNumber = etCardNo.getText().toString().trim().replace(" ", "").substring(0, 6);
-            ArrayList<Integer> installmentTerms = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerms(cleanCardNumber);
 
-            if (installmentTerms != null && installmentTerms.size() > 1) {
-                installmentCurrentPosition = 0;
-                installmentTotalPositions = installmentTerms.size() - 1;
-                setInstallmentTerm();
-                showInstallmentLayout(true);
-            } else {
+        if (((CreditDebitCardFlowActivity) getActivity()).isInstallmentAvailable()) {
+            String cardNumber = etCardNo.getText().toString();
+            if (TextUtils.isEmpty(cardNumber)) {
                 showInstallmentLayout(false);
+            } else if (cardNumber.length() < 7) {
+                showInstallmentLayout(false);
+            } else if (midtransSDK.getCreditCard() != null
+                    && midtransSDK.getCreditCard().getBank() != null
+                    && (midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)
+                    || midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.BRI))) {
+                showInstallmentLayout(false);
+            } else {
+                String cleanCardNumber = etCardNo.getText().toString().trim().replace(" ", "").substring(0, 6);
+                ArrayList<Integer> installmentTerms = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerms(cleanCardNumber);
+
+                if (installmentTerms != null && installmentTerms.size() > 1) {
+                    installmentCurrentPosition = 0;
+                    installmentTotalPositions = installmentTerms.size() - 1;
+                    setInstallmentTerm();
+                    showInstallmentLayout(true);
+                } else {
+                    showInstallmentLayout(false);
+                }
             }
         }
+
     }
 
     private void setInstallmentTerm() {
