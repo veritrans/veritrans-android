@@ -21,7 +21,6 @@ import java.util.Map;
  */
 public class TransactionRequest {
 
-    private boolean paymentWithPromo;
     /**
      * payment method using which user wants to perform transaction. use payment methods from {@link
      * Constants}
@@ -224,13 +223,5 @@ public class TransactionRequest {
 
     public void setExpiry(ExpiryModel expiry) {
         this.expiry = expiry;
-    }
-
-    public boolean isPaymentWithPromo() {
-        return paymentWithPromo;
-    }
-
-    public void setPaymentWithPromo(boolean paymentWithPromo) {
-        this.paymentWithPromo = paymentWithPromo;
     }
 }

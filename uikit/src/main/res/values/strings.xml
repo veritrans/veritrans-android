@@ -637,4 +637,9 @@
     <string name="get_challenge_token">How can i get a challenge token?</string>
     <string name="kioson_instruction">how can i pay with kioson payment ?</string>
     <string name="cstore_payment">cstore</string>
+    <string name="card_bin_invalid">credit card number does not match with the list of credit card bins</string>
+    <string name="installment_required">Payment have to use installment</string>
+
+    <string name="complete_payment_kioson">Complete payment at Kioson</string>
+    <string name="complete_payment_indomaret">Complete payment at Indomaret</string>
 </resources>
