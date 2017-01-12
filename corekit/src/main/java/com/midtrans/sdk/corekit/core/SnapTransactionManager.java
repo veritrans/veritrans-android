@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.R;
+import com.midtrans.sdk.corekit.callback.BNIPointCallback;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -1329,6 +1330,41 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 if (bankBinsResponses != null && !bankBinsResponses.isEmpty()) {
                     if (response.getStatus() == 200 || response.getStatus() == 201) {
                         callback.onSuccess(bankBinsResponses);
+                    } else {
+                        callback.onFailure(response.getReason());
+                    }
+                } else {
+                    callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                releaseResources();
+                if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                    Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                }
+                callback.onError(new Throwable(error.getMessage(), error.getCause()));
+            }
+        });
+    }
+
+    /**
+     *
+     * @param authenticationToken snap token
+     * @param cardToken credit card token
+     * @param callback BNI points callback instance
+     */
+    public void getBNIPoints(String authenticationToken, String cardToken, final BNIPointCallback callback) {
+
+        snapRestAPI.getBNIPoints(authenticationToken, cardToken, new Callback<Long>() {
+            @Override
+            public void success(Long points, Response response) {
+                releaseResources();
+
+                if (points != null) {
+                    if (response.getStatus() == 200 || response.getStatus() == 201) {
+                        callback.onSuccess(points);
                     } else {
                         callback.onFailure(response.getReason());
                     }

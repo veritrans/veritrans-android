@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
+import com.midtrans.sdk.corekit.callback.BNIPointCallback;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -1440,6 +1441,25 @@ public class MidtransSDK {
 
         if (Utils.isNetworkAvailable(context)) {
             mSnapTransactionManager.getBankBins(callback);
+        } else {
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+    /**
+     * it will get bni points from snap backend
+     *
+     * @param cardToken credit card token
+     * @param callback  bni point callback instance
+     */
+    public void getBNIPoints(String cardToken, @NonNull BNIPointCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (Utils.isNetworkAvailable(context)) {
+            mSnapTransactionManager.getBNIPoints(readAuthenticationToken(), cardToken, callback);
         } else {
             callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
         }

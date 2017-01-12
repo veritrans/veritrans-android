@@ -288,7 +288,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             }
         } else {
             SdkUIFlowUtil.showProgressDialog(CreditDebitCardFlowActivity.this, getString(R.string.processing_payment), false);
-            payUsingCard();
+//            payUsingCard();
         }
     }
 

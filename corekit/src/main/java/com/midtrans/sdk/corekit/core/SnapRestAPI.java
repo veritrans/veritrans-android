@@ -191,4 +191,15 @@ public interface SnapRestAPI {
      */
     @GET("/v1/bank_bins")
     void getBankBins(Callback<ArrayList<BankBinsResponse>> callback);
+
+    /**
+     * Get BNI Points from snap backend.
+     *
+     * @param snapToken           snap token
+     * @param transactionCallback response get transaction request
+     */
+    @GET("/v1/transactions/{snap_token}/point_inquiry/{card_token}")
+    void getBNIPoints(@Path("snap_token") String snapToken,  @Path("card_token") String cardToken, Callback<Long> transactionCallback);
+
+
 }
