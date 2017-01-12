@@ -128,14 +128,17 @@ public class AddCardDetailsFragment extends Fragment {
                 etCvv.requestFocus();
                 etCardNo.setText(SdkUIFlowUtil.getMaskedCardNumber(savedCard.getMaskedCard()));
                 etExpiryDate.setText(SdkUIFlowUtil.getMaskedExpDate());
-                if (savedCard.getType() != null && savedCard.getType().equals(getString(R.string.saved_card_one_click))) {
+                if (isOneClickMode()) {
                     etCvv.setInputType(InputType.TYPE_CLASS_TEXT);
                     etCvv.setFilters(filterArray);
                     etCvv.setText(SdkUIFlowUtil.getMaskedCardCvv());
                     etCvv.setEnabled(false);
+
+                    ((CreditDebitCardFlowActivity)getActivity()).setInstallmentAvailableStatus(false);
+                } else {
+                    initCardInstallment();
                 }
 
-                initCardInstallment();
             }
         }
     }
@@ -278,7 +281,7 @@ public class AddCardDetailsFragment extends Fragment {
 
                 if (checkCardValidity()) {
 
-                    if(!isValidPayment()){
+                    if (!isValidPayment()) {
                         return;
                     }
 
@@ -450,7 +453,7 @@ public class AddCardDetailsFragment extends Fragment {
         }
 
         //installment validation
-        if(!((CreditDebitCardFlowActivity)getActivity()).isValidInstallment()){
+        if (!((CreditDebitCardFlowActivity) getActivity()).isValidInstallment()) {
             SdkUIFlowUtil.showToast(getActivity(), getString(R.string.installment_required));
             return false;
         }

@@ -978,4 +978,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
         return true;
     }
+
+    public void setInstallmentAvailableStatus(boolean installmentStatus) {
+        this.installmentAvailable = installmentStatus;
+    }
 }
