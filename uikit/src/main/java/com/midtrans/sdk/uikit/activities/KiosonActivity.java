@@ -198,6 +198,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                     kiosonPaymentFragment, PAYMENT_FRAGMENT);
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();
+            buttonConfirmPayment.setText(getString(R.string.complete_payment_kioson));
             currentFragment = PAYMENT_FRAGMENT;
         } else {
             SdkUIFlowUtil.showToast(KiosonActivity.this, SOMETHING_WENT_WRONG);

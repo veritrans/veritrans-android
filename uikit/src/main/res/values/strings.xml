@@ -637,4 +637,6 @@
     <string name="get_challenge_token">How can i get a challenge token?</string>
     <string name="kioson_instruction">how can i pay with kioson payment ?</string>
     <string name="cstore_payment">cstore</string>
+    <string name="complete_payment_kioson">Complete payment at Kioson</string>
+    <string name="complete_payment_indomaret">Complete payment at Indomaret</string>
 </resources>
