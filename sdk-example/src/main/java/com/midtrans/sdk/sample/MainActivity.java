@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn, indomaretBtn, kiosonBtn, gciBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn, tcashBtn, indosatBtn, xlTunaiBtn;
-    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour, promoActive, promoInactive, savedCard, notSavedCard;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour, savedCard, notSavedCard;
     private Toolbar toolbar;
 
     @Override
@@ -186,11 +186,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             }
         }
 
-        // apply promo transaction
-        if (promoActive.isChecked()) {
-            transactionRequestNew.setPaymentWithPromo(true);
-        }
-
         ExpiryModel expiryModel = new ExpiryModel();
         expiryModel.setStartTime(Utils.getFormattedTime(System.currentTimeMillis()));
         expiryModel.setDuration(1);
@@ -230,9 +225,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         bankBCA = (RadioButton) findViewById(R.id.radio_bca);
         bankMaybank = (RadioButton) findViewById(R.id.radio_maybank);
         bankBri = (RadioButton) findViewById(R.id.radio_bri);
-
-        promoActive = (RadioButton) findViewById(R.id.radio_promo_active);
-        promoInactive = (RadioButton) findViewById(R.id.radio_promo_inactive);
 
         savedCard = (RadioButton) findViewById(R.id.radio_save_active);
         notSavedCard = (RadioButton) findViewById(R.id.radio_save_inactive);
@@ -539,6 +531,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     Toast.makeText(this, "Transaction Failed. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
                     break;
             }
+            result.getResponse().getValidationMessages();
         } else if (result.isTransactionCanceled()) {
             Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show();
         } else {
