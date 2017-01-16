@@ -772,9 +772,9 @@ public class AddCardDetailsFragment extends Fragment {
                     bankLogo.setImageDrawable(null);
                     break;
             }
+        } else {
+            bankLogo.setImageDrawable(null);
         }
-
-
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
