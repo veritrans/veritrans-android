@@ -5,6 +5,27 @@
     android:layout_height="match_parent">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="185dp"
+        android:padding="@dimen/sixteen_dp">
+
+        <Button
+            android:id="@+id/btn_pay_now"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_six_dp"
+            android:layout_alignParentBottom="true"
+            android:text="@string/pay_now"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:visibility="visible" />
+    </RelativeLayout>
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -91,21 +112,24 @@
                             android:inputType="number"
                             android:maxLength="19"
                             android:maxLines="1"
-                            android:nextFocusDown="@+id/et_exp_date" />
+                            android:nextFocusDown="@+id/et_exp_date"
+                            tools:text="4811 1111 1111 1114" />
 
-                        <ImageView
+                        <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
                             android:id="@+id/bank_logo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/bank_logo_size"
+                            android:layout_height="@dimen/bank_logo_size"
                             android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/eight_dp"
                             android:layout_marginRight="@dimen/eight_dp"
                             android:layout_toLeftOf="@+id/payment_card_logo"
-                            tools:src="@drawable/mandiri" />
+                            android:layout_toStartOf="@+id/payment_card_logo"
+                            tools:src="@drawable/bri" />
 
-                        <ImageView
+                        <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
                             android:id="@+id/payment_card_logo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/payment_logo_size"
+                            android:layout_height="@dimen/payment_logo_size"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
@@ -312,25 +336,4 @@
 
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="185dp"
-        android:padding="@dimen/sixteen_dp">
-
-        <Button
-            android:id="@+id/btn_pay_now"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fifty_six_dp"
-            android:layout_alignParentBottom="true"
-            android:text="@string/pay_now"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:visibility="visible" />
-    </RelativeLayout>
 </RelativeLayout>
