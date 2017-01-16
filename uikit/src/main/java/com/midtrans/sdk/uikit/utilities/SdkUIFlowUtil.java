@@ -1,5 +1,8 @@
 package com.midtrans.sdk.uikit.utilities;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,8 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -26,6 +27,7 @@ import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
 import com.midtrans.sdk.corekit.models.BBMUrlEncodeJson;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.R;
 
 import java.io.InputStream;
@@ -36,6 +38,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -438,5 +441,40 @@ public class SdkUIFlowUtil {
                 return lhs.getPriority().compareTo(rhs.getPriority());
             }
         });
+    }
+
+    /**
+     * Check if payment method is enabled.
+     *
+     * @param enabledPayments list of enabled payment method.
+     * @param method          selected payment.
+     * @return true if selected payment is enabled.
+     */
+    public static boolean isPaymentMethodEnabled(List<EnabledPayment> enabledPayments, String method) {
+        for (EnabledPayment enabledPayment : enabledPayments) {
+            if (enabledPayment.getType().equalsIgnoreCase(method)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if bank transfer payment method is enabled.
+     *
+     * @param context         application or activity context.
+     * @param enabledPayments list of enabled payment method.
+     * @return true if bank transfer payment is enabled.
+     */
+    public static boolean isBankTransferMethodEnabled(Context context, List<EnabledPayment> enabledPayments) {
+        for (EnabledPayment enabledPayment : enabledPayments) {
+            if (enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_bca_va))
+                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_permata_va))
+                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_mandiri_bill_payment))
+                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_all_va))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
