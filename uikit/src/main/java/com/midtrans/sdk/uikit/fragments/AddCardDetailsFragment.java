@@ -3,7 +3,9 @@ package com.midtrans.sdk.uikit.fragments;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -62,6 +64,7 @@ public class AddCardDetailsFragment extends Fragment {
     private SwitchCompat switchSaveCard;
     private Button buttonIncrease, buttonDecrease;
     private ImageView logo;
+    private ImageView bankLogo;
     private ImageView imageCvvHelp;
     private Button payNowBtn;
     private Button scanCardBtn;
@@ -188,6 +191,7 @@ public class AddCardDetailsFragment extends Fragment {
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
         logo = (ImageView) view.findViewById(R.id.payment_card_logo);
+        bankLogo = (ImageView) view.findViewById(R.id.bank_logo);
         layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installment);
         layoutSaveCard = (LinearLayout) view.findViewById(R.id.layout_save_card_detail);
         buttonIncrease = (Button) view.findViewById(R.id.button_installment_increase);
@@ -359,6 +363,7 @@ public class AddCardDetailsFragment extends Fragment {
                     }
                 }
                 setCardType();
+                setBankType();
 
                 // Move to next input
                 if (s.length() >= 18 && cardType.equals(getString(R.string.amex))) {
@@ -446,7 +451,7 @@ public class AddCardDetailsFragment extends Fragment {
 
     private boolean isValidPayment() {
 
-        //card bin validation for bin locking and installmeent
+        //card bin validation for bin locking and installment
         if (!isCardBinValid()) {
             SdkUIFlowUtil.showToast(getActivity(), getString(R.string.card_bin_invalid));
             return false;
@@ -730,6 +735,49 @@ public class AddCardDetailsFragment extends Fragment {
         }
     }
 
+    private void setBankType() {
+        // Don't set card type when card number is empty
+        String cardNumberText = etCardNo.getText().toString().trim();
+        if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 7) {
+            bankLogo.setImageDrawable(null);
+            return;
+        }
+
+        String cleanCardNumber = cardNumberText.replace(" ", "").substring(0, 6);
+        String bank = ((CreditDebitCardFlowActivity) getActivity()).getBankByBin(cleanCardNumber);
+
+        if (bank != null) {
+            switch (bank) {
+                case BankType.BCA:
+                    bankLogo.setImageResource(R.drawable.bca);
+                    break;
+                case BankType.BNI:
+                    bankLogo.setImageResource(R.drawable.bni);
+                    break;
+                case BankType.BRI:
+                    //TODO: Set logo BRI
+                    bankLogo.setImageDrawable(null);
+                    break;
+                case BankType.CIMB:
+                    bankLogo.setImageResource(R.drawable.cimb);
+                    break;
+                case BankType.MANDIRI:
+                    bankLogo.setImageResource(R.drawable.mandiri);
+                    break;
+                case BankType.MAYBANK:
+                    //TODO: Set logo Maybank
+                    bankLogo.setImageDrawable(null);
+                    break;
+                default:
+                    bankLogo.setImageDrawable(null);
+                    break;
+            }
+        }
+
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void fadeIn() {
         formLayout.setAlpha(0);
         ObjectAnimator fadeInAnimation = ObjectAnimator.ofFloat(formLayout, "alpha", 0, 1f);

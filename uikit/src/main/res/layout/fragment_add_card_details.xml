@@ -94,13 +94,21 @@
                             android:nextFocusDown="@+id/et_exp_date" />
 
                         <ImageView
+                            android:id="@+id/bank_logo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/eight_dp"
+                            android:layout_toLeftOf="@+id/payment_card_logo"
+                            tools:src="@drawable/mandiri" />
+
+                        <ImageView
                             android:id="@+id/payment_card_logo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginBottom="@dimen/four_dp"
                             tools:src="@drawable/ic_visa" />
                     </RelativeLayout>
                 </android.support.design.widget.TextInputLayout>

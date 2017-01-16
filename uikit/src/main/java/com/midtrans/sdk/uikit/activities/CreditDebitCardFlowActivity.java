@@ -864,7 +864,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         return null;
     }
 
-    private String getBankByBin(String cardBin) {
+    public String getBankByBin(String cardBin) {
         for (BankBinsResponse savedBankBin : bankBins) {
             if (savedBankBin.getBins() != null && !savedBankBin.getBins().isEmpty()) {
                 String bankBin = findBankByCardBin(savedBankBin, cardBin);
@@ -955,11 +955,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
 
         Installment installment = sdk.getCreditCard().getInstallment();
-        if (installment != null && installment.getTerms() != null && !installment.getTerms().isEmpty()) {
-            installmentAvailable = true;
-        } else {
-            installmentAvailable = false;
-        }
+        installmentAvailable = installment != null && installment.getTerms() != null && !installment.getTerms().isEmpty();
     }
 
     public boolean isInstallmentAvailable() {
