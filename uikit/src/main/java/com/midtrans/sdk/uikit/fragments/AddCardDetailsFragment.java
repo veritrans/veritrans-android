@@ -495,9 +495,11 @@ public class AddCardDetailsFragment extends Fragment {
 
     private boolean isCardBinValid() {
         if (((CreditDebitCardFlowActivity) getActivity()).isWhiteListBinsAvailable()) {
-            String cardBin = cardNumber.replace(" ", "").substring(0, 6);
-            if (!((CreditDebitCardFlowActivity) getActivity()).isCardBinValid(cardBin)) {
-                return false;
+            if (cardNumber != null) {
+                String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+                if (!((CreditDebitCardFlowActivity) getActivity()).isCardBinValid(cardBin)) {
+                    return false;
+                }
             }
         }
 
@@ -755,8 +757,7 @@ public class AddCardDetailsFragment extends Fragment {
                     bankLogo.setImageResource(R.drawable.bni);
                     break;
                 case BankType.BRI:
-                    //TODO: Set logo BRI
-                    bankLogo.setImageDrawable(null);
+                    bankLogo.setImageResource(R.drawable.bri);
                     break;
                 case BankType.CIMB:
                     bankLogo.setImageResource(R.drawable.cimb);
@@ -765,8 +766,7 @@ public class AddCardDetailsFragment extends Fragment {
                     bankLogo.setImageResource(R.drawable.mandiri);
                     break;
                 case BankType.MAYBANK:
-                    //TODO: Set logo Maybank
-                    bankLogo.setImageDrawable(null);
+                    bankLogo.setImageResource(R.drawable.maybank);
                     break;
                 default:
                     bankLogo.setImageDrawable(null);
