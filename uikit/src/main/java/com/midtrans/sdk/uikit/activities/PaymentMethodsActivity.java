@@ -100,7 +100,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private TextView merchantName = null;
     private LinearLayout progressContainer = null;
     private ImageView logo = null;
-    private ArrayList<String> bankTrasfers = new ArrayList<>();
+    private ArrayList<String> bankTransfers = new ArrayList<>();
     private PaymentMethodsAdapter paymentMethodsAdapter;
     private AlertDialog alertDialog;
     private DefaultTextView textTitle;
@@ -318,86 +318,162 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
 
         if (isCreditCardOnly) {
-            // track payment select credit card
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
-            Intent intent = new Intent(PaymentMethodsActivity.this, CreditDebitCardFlowActivity.class);
-            startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-        } else if (isBankTransferOnly) {
-            // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, null);
-            Intent startBankPayment = new Intent(PaymentMethodsActivity.this, SelectBankTransferActivity.class);
-            if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
-                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, true);
-            } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
-                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, true);
-            } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
-                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_BCA, true);
-            } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
-                startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, true);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_credit_debit))) {
+                // track payment select credit card
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_CREDIT_CARD, null);
+                Intent intent = new Intent(PaymentMethodsActivity.this, CreditDebitCardFlowActivity.class);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
             }
-            startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
-            startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+        } else if (isBankTransferOnly) {
+            if (SdkUIFlowUtil.isBankTransferMethodEnabled(getApplicationContext(), enabledPayments)) {
+                // track payment select bank transfer
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, null);
+                Intent startBankPayment = new Intent(PaymentMethodsActivity.this, SelectBankTransferActivity.class);
+                if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_permata_va))) {
+                        startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, true);
+                    } else {
+                        showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+                        return;
+                    }
+                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_mandiri_bill_payment))) {
+                        startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, true);
+                    } else {
+                        showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+                        return;
+                    }
+                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_bca_va))) {
+                        startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_BCA, true);
+                    } else {
+                        showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+                        return;
+                    }
+                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_all_va))) {
+                        startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, true);
+                    } else {
+                        showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+                        return;
+                    }
+                }
+                startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
+                startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isBCAKlikpay) {
-            // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BCA_KLIKPAY, null);
-            Intent startBCAKlikPayActivity = new Intent(this, BCAKlikPayActivity.class);
-            startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_bca_click))) {
+                // track payment select BCA Klikpay
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BCA_KLIKPAY, null);
+                Intent startBCAKlikPayActivity = new Intent(this, BCAKlikPayActivity.class);
+                startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isKlikBCA) {
-            // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_KLIK_BCA, null);
-            Intent startKlikBcaActivity = new Intent(this, KlikBCAActivity.class);
-            startKlikBcaActivity.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
-            startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_klik_bca))) {
+                // track payment select KlikBCA
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_KLIK_BCA, null);
+                Intent startKlikBcaActivity = new Intent(this, KlikBCAActivity.class);
+                startKlikBcaActivity.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
+                startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isMandiriClickPay) {
-            // track payment select mandiri clickpay
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_CLICKPAY, null);
-            Intent startMandiriClickpay = new Intent(this, MandiriClickPayActivity.class);
-            startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_mandiri_clickpay))) {
+                // track payment select mandiri clickpay
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_CLICKPAY, null);
+                Intent startMandiriClickpay = new Intent(this, MandiriClickPayActivity.class);
+                startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isMandiriECash) {
-            // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_ECASH, null);
-            Intent startMandiriECash = new Intent(this, MandiriECashActivity.class);
-            startActivityForResult(startMandiriECash, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_mandiri_ecash))) {
+                // track payment select mandiri e cash
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_MANDIRI_ECASH, null);
+                Intent startMandiriECash = new Intent(this, MandiriECashActivity.class);
+                startActivityForResult(startMandiriECash, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isCIMBClicks) {
-            // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_CIMB_CLICK, null);
-            Intent startCIMBClickpay = new Intent(this, CIMBClickPayActivity.class);
-            startActivityForResult(startCIMBClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_mandiri_clickpay))) {
+                // track payment select mandiri clickpay
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_CIMB_CLICK, null);
+                Intent startCIMBClickpay = new Intent(this, CIMBClickPayActivity.class);
+                startActivityForResult(startCIMBClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isBRIEpay) {
-            // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BRI_EPAY, null);
-            Intent startMandiriClickpay = new Intent(this, EpayBriActivity.class);
-            startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_epay_bri))) {
+                // track payment select Epay BRI
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BRI_EPAY, null);
+                Intent startMandiriClickpay = new Intent(this, EpayBriActivity.class);
+                startActivityForResult(startMandiriClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isTelkomselCash) {
-            // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_TELKOMSEL_ECASH, null);
-            Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
-            startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_telkomsel_cash))) {
+                // track payment select Telkomsel Cash
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_TELKOMSEL_ECASH, null);
+                Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
+                startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isIndosatDompetku) {
-            // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOSAT_DOMPETKU, null);
-            Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
-            startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_indosat_dompetku))) {
+                // track payment select Indosat Dompetku
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOSAT_DOMPETKU, null);
+                Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
+                startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isXlTunai) {
-            // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_XL_TUNAI, null);
-            Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
-            startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_xl_tunai))) {
+                // track payment select XL Tunai
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_XL_TUNAI, null);
+                Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
+                startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isIndomaret) {
-            // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOMARET, null);
-            Intent startIndomaret = new Intent(this, IndomaretActivity.class);
-            startActivityForResult(startIndomaret, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_indomaret))) {
+                // track payment select Indomaret
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOMARET, null);
+                Intent startIndomaret = new Intent(this, IndomaretActivity.class);
+                startActivityForResult(startIndomaret, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isKioson) {
-            // track payment select bank transfer
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_KIOSON, null);
-            Intent kiosanActvity = new Intent(this, KiosonActivity.class);
-            startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_kioson))) {
+                // track payment select Kioson
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_KIOSON, null);
+                Intent kiosanActvity = new Intent(this, KiosonActivity.class);
+                startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isGci) {
-            // track payment select Gift Card Indonesia
-            midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_GCI, null);
-            Intent gciActivity = new Intent(this, GCIActivity.class);
-            startActivityForResult(gciActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_gci))) {
+                // track payment select Gift Card Indonesia
+                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_GCI, null);
+                Intent gciActivity = new Intent(this, GCIActivity.class);
+                startActivityForResult(gciActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else {
             if (data.isEmpty()) {
                 showErrorAlertDialog(getString(R.string.message_payment_method_empty));
@@ -499,12 +575,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
      */
     private void initialiseAdapterData(List<EnabledPayment> enabledPayments) {
         data.clear();
-        bankTrasfers.clear();
+        bankTransfers.clear();
 
         for (EnabledPayment enabledPayment : enabledPayments) {
             if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
                     || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
-                bankTrasfers.add(enabledPayment.getType());
+                bankTransfers.add(enabledPayment.getType());
             } else {
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType());
                 if (model != null) {
@@ -513,7 +589,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         }
 
-        if (!bankTrasfers.isEmpty()) {
+        if (!bankTransfers.isEmpty()) {
             data.add(PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer)));
         }
         SdkUtil.sortPaymentMethodsByPriority(data);
@@ -672,7 +748,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     }
 
     public ArrayList<String> getBankTransfers() {
-        return bankTrasfers;
+        return bankTransfers;
     }
 
 

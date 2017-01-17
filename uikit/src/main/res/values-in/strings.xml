@@ -454,5 +454,5 @@
     <string name="installment_required">Pembayaran harus menggunakan cicilan</string>
     <string name="complete_payment_kioson">Selesaikan pembayaran di kioson</string>
     <string name="complete_payment_indomaret">Selesaikan pembayaran di Indomaret</string>
-
+    <string name="payment_not_enabled_message">Tidak dapat membuka halaman ini, silakan aktifkan channel pembayaran ini.</string>
 </resources>
