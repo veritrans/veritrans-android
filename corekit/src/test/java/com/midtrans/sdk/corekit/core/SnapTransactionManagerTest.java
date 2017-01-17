@@ -17,6 +17,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BNIPointsResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
@@ -70,6 +71,8 @@ public class SnapTransactionManagerTest {
     public static final String CARD_CVV = "123";
     public static final String CARD_EXP_MONTH = "123";
     public static final String CARD_EXP_YEAR = "123";
+    private static final String RESPONSE_CODE_200 = "200";
+    private static final String RESPONSE_CODE_400 = "400";
     protected String sampleJsonResponse = "{\"response\":\"response\"}";
     protected Response retrofitResponse = new Response("URL", 200, "success", Collections.EMPTY_LIST,
             new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
@@ -229,6 +232,13 @@ public class SnapTransactionManagerTest {
     private String mAuthToken = "VT-1dqwd34dwed23e2dw";
     private Response retrofitResponseError = new Response("URL", 300, "success", Collections.EMPTY_LIST,
             new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
+    private String cardtoken = "token-234qdr2343edqw";
+    @Captor
+    private ArgumentCaptor<String> cardTokenCaptor;
+    @Captor
+    private ArgumentCaptor<Callback<BNIPointsResponse>> getBNIPointCaptor;
+    @Mock
+    private BNIPointsResponse BNIPointsResponseMock;
 
 
     @Before
@@ -2323,11 +2333,13 @@ public class SnapTransactionManagerTest {
 
     @Test
     public void getBankBinsSuccess_whenCode200or201() {
+        retrofitResponse = new Response("URL", 210, "success", Collections.EMPTY_LIST,
+                new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
         Mockito.when(getBankBinsResponseMock.size()).thenReturn(1);
         callbackImplement.getBankBins();
         Mockito.verify(snapAPI).getBankBins(getBankBinCallbackCaptor.capture());
         getBankBinCallbackCaptor.getValue().success(getBankBinsResponseMock, retrofitResponse);
-        Mockito.verify(callbackCollaborator).onGetBankBinSuccess();
+        Mockito.verify(callbackCollaborator).onGetBankBinFailure();
     }
 
 
@@ -2444,6 +2456,67 @@ public class SnapTransactionManagerTest {
         Mockito.verify(snapAPI).paymentUsingGCI(tokenIdCaptor.capture(), gciCaptor.capture(), transactionResponseCallbackCaptor.capture());
         transactionResponseCallbackCaptor.getValue().failure(retrofitError);
         PowerMockito.verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+
+    /**
+     * get bni points from snap
+     */
+
+
+    @Test
+    public void getBNIPoinstSuccess_whenCode200or201() {
+        Mockito.when(BNIPointsResponseMock.getStatusCode()).thenReturn(RESPONSE_CODE_200);
+        callbackImplement.getBNIPoints(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBNIPoints(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getBNIPointCaptor.capture());
+        getBNIPointCaptor.getValue().success(BNIPointsResponseMock, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onGetBNIPointsSuccess();
+    }
+
+
+    @Test
+    public void getBNIPointsSuccess_whenCodeNot200orNot201() {
+        Mockito.when(BNIPointsResponseMock.getStatusCode()).thenReturn(RESPONSE_CODE_400);
+        callbackImplement.getBNIPoints(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBNIPoints(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getBNIPointCaptor.capture());
+        getBNIPointCaptor.getValue().success(BNIPointsResponseMock, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onGetBNIPointsFailure();
+    }
+
+    @Test
+    public void getBNIPointsSuccess_whenResponseNull() {
+        callbackImplement.getBNIPoints(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBNIPoints(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getBNIPointCaptor.capture());
+        getBNIPointCaptor.getValue().success(null, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onGetBNIPointError();
+    }
+
+    @Test
+    public void getBNIPointsError_whenGeneralError() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorGeneralMock);
+        callbackImplement.getBNIPoints(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBNIPoints(tokenIdCaptor.capture(), cardCVVCaptor.capture(), getBNIPointCaptor.capture());
+        getBNIPointCaptor.getValue().failure(retrofitError);
+        Mockito.verify(callbackCollaborator).onGetBNIPointError();
+    }
+
+    @Test
+    public void getBNIPointError_whenInvalidSSL() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidSSLException);
+        callbackImplement.getBNIPoints(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBNIPoints(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getBNIPointCaptor.capture());
+        getBNIPointCaptor.getValue().failure(retrofitError);
+        PowerMockito.verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void getBNIPointsError_whenInvalidCertPath() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidCertPatMock);
+        callbackImplement.getBNIPoints(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBNIPoints(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getBNIPointCaptor.capture());
+        getBNIPointCaptor.getValue().failure(retrofitError);
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 }

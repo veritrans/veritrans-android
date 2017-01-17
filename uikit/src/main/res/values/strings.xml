@@ -642,4 +642,13 @@
     <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
     <string name="save_card_dialog_title">Save Card for Later Reuse</string>
     <string name="save_card_dialog_message">We will securely stored your card details so you can reuse them later.</string>
+    <string name="point_to_discount">Point converted to discount</string>
+    <string name="total_point">Your total BNI Reward Point is %1$s</string>
+    <string name="amount_after_discount">Amount to pay after discount</string>
+    <string name="complete_payment_at_kioson">Complete payment at Kioson</string>
+    <string name="complete_payment_at_indomaret">Complete payment at Indomaret</string>
+    <string name="redeem_bank_point_title">Redeem %1$s Point</string>
+    <string name="will_be_used_point_here">Will be used point</string>
+    <string name="total_point_here">total point here</string>
+    <string name="redeem_point">Redeem Point</string>
 </resources>

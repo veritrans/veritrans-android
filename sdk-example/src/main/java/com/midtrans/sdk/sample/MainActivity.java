@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private TransactionRequest initializePurchaseRequest(int sampleSDKType) {
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(System.currentTimeMillis()+"", 6000);
+                TransactionRequest(System.currentTimeMillis()+"", 2042000);
 
         //define customer detail (mandatory for coreflow)
         CustomerDetails mCustomerDetails = new CustomerDetails();
@@ -107,16 +107,16 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
 
         // Define item details
-        ItemDetails itemDetails = new ItemDetails("1", 1000, 1, "Trekking Shoes");
-        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 2, "Casual Shoes");
-        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 3, "Formal Shoes");
+//        ItemDetails itemDetails = new ItemDetails("1", 2000, 1, "Trekking Shoes");
+//        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 2, "Casual Shoes");
+//        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 3, "Formal Shoes");
 
         // Add item details into item detail list.
-        ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-        itemDetailsArrayList.add(itemDetails);
-        itemDetailsArrayList.add(itemDetails1);
-        itemDetailsArrayList.add(itemDetails2);
-        transactionRequestNew.setItemDetails(itemDetailsArrayList);
+//        ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
+//        itemDetailsArrayList.add(itemDetails);
+//        itemDetailsArrayList.add(itemDetails1);
+//        itemDetailsArrayList.add(itemDetails2);
+//        transactionRequestNew.setItemDetails(itemDetailsArrayList);
         // Set Bill info
         BillInfoModel billInfoModel = new BillInfoModel("demo_label", "demo_value");
         transactionRequestNew.setBillInfoModel(billInfoModel);

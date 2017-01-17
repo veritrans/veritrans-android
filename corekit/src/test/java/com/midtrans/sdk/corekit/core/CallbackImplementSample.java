@@ -1,5 +1,6 @@
 package com.midtrans.sdk.corekit.core;
 
+import com.midtrans.sdk.corekit.callback.BNIPointsCallback;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -16,6 +17,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BNIPointsResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
@@ -33,7 +35,7 @@ import java.util.ArrayList;
  * Created by ziahaqi on 9/5/16.
  */
 public class CallbackImplementSample implements TransactionCallback, CheckoutCallback, TransactionOptionsCallback,
-        SaveCardCallback, GetCardCallback, CardRegistrationCallback, CardTokenCallback{
+        SaveCardCallback, GetCardCallback, CardRegistrationCallback, CardTokenCallback {
 
     /**
      * Created by ziahaqi on 25/06/2016.
@@ -152,8 +154,8 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
         snapTransactionManager.paymentUsingKlikBCA(token, request, this);
     }
 
-    public void paymentUsingBCAKlikpay(String token,BasePaymentRequest request) {
-        snapTransactionManager.paymentUsingBCAKlikpay(token,request, this);
+    public void paymentUsingBCAKlikpay(String token, BasePaymentRequest request) {
+        snapTransactionManager.paymentUsingBCAKlikpay(token, request, this);
     }
 
     public void paymentUsingSnapMandiriBillpay(String token, BankTransferPaymentRequest request) {
@@ -164,7 +166,7 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
         snapTransactionManager.paymentUsingMandiriClickPay(token, request, this);
     }
 
-    public void paymentUsingSnapCIMBClick(String token,BasePaymentRequest request) {
+    public void paymentUsingSnapCIMBClick(String token, BasePaymentRequest request) {
         snapTransactionManager.paymentUsingCIMBClick(token, request, this);
     }
 
@@ -243,6 +245,29 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
     public void getBankBins() {
         snapTransactionManager.getBankBins(bankBinsCallback);
     }
+
+
+    public void getBNIPoints(String authenticationToken, String cardtoken) {
+        snapTransactionManager.getBNIPoints(authenticationToken, cardtoken, bniPointsCallback);
+    }
+
+
+    private BNIPointsCallback bniPointsCallback = new BNIPointsCallback() {
+        @Override
+        public void onSuccess(BNIPointsResponse response) {
+            callbackCollaborator.onGetBNIPointsSuccess();
+        }
+
+        @Override
+        public void onFailure(String reason) {
+            callbackCollaborator.onGetBNIPointsFailure();
+        }
+
+        @Override
+        public void onError(Throwable error) {
+            callbackCollaborator.onGetBNIPointError();
+        }
+    };
 
 
     private BankBinsCallback bankBinsCallback = new BankBinsCallback() {

@@ -455,4 +455,11 @@
     <string name="redeem_bni_details">Anda dapat membayar sebagian dengan Poin Reward BNI melalui Kartu Kredit Anda..</string>
     <string name="save_card_dialog_title">Simpan Kartu Untuk Penggunakan Selanjutnya</string>
     <string name="save_card_dialog_message">Kami akan menyimpan data kartu kredit anda untuk digunakan di pembayaran selanjutnya.</string>
+    <string name="point_to_discount">Poin dikonversi menjadi diskon</string>
+    <string name="total_point">Total poin hadiah BNI Anda adalah %1$s</string>
+    <string name="amount_after_discount">Jumlah pembayaran setelah diskon</string>
+    <string name="complete_payment_at_kioson">Selesaikan pembayaran di Kioson</string>
+    <string name="complete_payment_at_indomaret">Selesaikan pembayaran di Indomaret</string>
+    <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
+    <string name="redeem_point">Tukar poin</string>
 </resources>

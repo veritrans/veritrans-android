@@ -72,4 +72,15 @@ public class CallbackCollaborator {
     public void onGetBankBinError() {
 
     }
+
+    public void onGetBNIPointsSuccess() {
+    }
+
+    public void onGetBNIPointsFailure() {
+
+    }
+
+    public void onGetBNIPointError() {
+
+    }
 }

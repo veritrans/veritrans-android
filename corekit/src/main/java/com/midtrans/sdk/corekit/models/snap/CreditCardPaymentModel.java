@@ -12,6 +12,7 @@ public class CreditCardPaymentModel {
     private boolean savecard;
     private String maskedCardNumber;
     private String installment;
+    private Long pointRedeemed;
 
     /**
      * init credit card model for normal and twoclick payment
@@ -51,5 +52,13 @@ public class CreditCardPaymentModel {
 
     public void setInstallment(String installment) {
         this.installment = installment;
+    }
+
+    public void setPointRedeemed(long pointRedeemed) {
+        this.pointRedeemed = pointRedeemed;
+    }
+
+    public long getPointRedeemed() {
+        return pointRedeemed;
     }
 }

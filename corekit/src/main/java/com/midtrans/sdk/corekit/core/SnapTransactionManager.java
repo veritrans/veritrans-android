@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.R;
-import com.midtrans.sdk.corekit.callback.BNIPointCallback;
+import com.midtrans.sdk.corekit.callback.BNIPointsCallback;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -22,6 +22,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BNIPointsResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
@@ -1350,21 +1351,19 @@ public class SnapTransactionManager extends BaseTransactionManager {
     }
 
     /**
-     *
      * @param authenticationToken snap token
-     * @param cardToken credit card token
-     * @param callback BNI points callback instance
+     * @param cardToken           credit card token
+     * @param callback            BNI points callback instance
      */
-    public void getBNIPoints(String authenticationToken, String cardToken, final BNIPointCallback callback) {
+    public void getBNIPoints(String authenticationToken, String cardToken, final BNIPointsCallback callback) {
 
-        snapRestAPI.getBNIPoints(authenticationToken, cardToken, new Callback<Long>() {
+        snapRestAPI.getBNIPoints(authenticationToken, cardToken, new Callback<BNIPointsResponse>() {
             @Override
-            public void success(Long points, Response response) {
+            public void success(BNIPointsResponse bankPointResponse, Response response) {
                 releaseResources();
-
-                if (points != null) {
-                    if (response.getStatus() == 200 || response.getStatus() == 201) {
-                        callback.onSuccess(points);
+                if (bankPointResponse != null) {
+                    if (bankPointResponse.getStatusCode() != null && bankPointResponse.getStatusCode().equals(context.getString(R.string.success_code_200))) {
+                        callback.onSuccess(bankPointResponse);
                     } else {
                         callback.onFailure(response.getReason());
                     }
@@ -1382,6 +1381,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 callback.onError(new Throwable(error.getMessage(), error.getCause()));
             }
         });
+
     }
 
 }

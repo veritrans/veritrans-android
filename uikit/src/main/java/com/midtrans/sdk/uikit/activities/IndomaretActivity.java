@@ -189,6 +189,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();
             currentFragment = PAYMENT_FRAGMENT;
+            buttonConfirmPayment.setText(getString(R.string.complete_payment_at_indomaret));
         } else {
             SdkUIFlowUtil.showToast(IndomaretActivity.this, SOMETHING_WENT_WRONG);
             onBackPressed();

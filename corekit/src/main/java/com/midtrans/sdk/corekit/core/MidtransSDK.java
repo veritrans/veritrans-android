@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
-import com.midtrans.sdk.corekit.callback.BNIPointCallback;
+import com.midtrans.sdk.corekit.callback.BNIPointsCallback;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -76,6 +76,7 @@ public class MidtransSDK {
     private int requestTimeOut = 10;
     private String flow = null;
     private CreditCard creditCard = new CreditCard();
+    private ArrayList<String> pointBanks;
 
     private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
@@ -1452,7 +1453,7 @@ public class MidtransSDK {
      * @param cardToken credit card token
      * @param callback  bni point callback instance
      */
-    public void getBNIPoints(String cardToken, @NonNull BNIPointCallback callback) {
+    public void getBNIPoints(String cardToken, @NonNull BNIPointsCallback callback) {
         if (callback == null) {
             Logger.e(TAG, context.getString(R.string.callback_unimplemented));
             return;
@@ -1552,5 +1553,13 @@ public class MidtransSDK {
         if (creditCard != null) {
             this.creditCard = creditCard;
         }
+    }
+
+    public void setPointBanks(ArrayList<String> pointBanks) {
+        this.pointBanks = pointBanks;
+    }
+
+    public ArrayList<String> getPointBanks() {
+        return pointBanks;
     }
 }
