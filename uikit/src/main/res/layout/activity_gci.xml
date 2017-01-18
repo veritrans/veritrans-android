@@ -14,7 +14,8 @@
         android:id="@+id/instruction_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/layout_toolbar_header" />
+        android:layout_below="@id/layout_toolbar_header"
+        android:layout_marginBottom="@dimen/fifty_six_dp" />
 
     <Button
         android:id="@+id/btn_confirm_payment"
@@ -22,10 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/sixteen_dp"
+        android:drawableEnd="@drawable/ic_arrow_right_white"
         android:drawableRight="@drawable/ic_arrow_right_white"
         android:text="@string/confirm_payment"
-        android:textAllCaps="true"
         android:textColor="@color/white" />
 
 
