@@ -450,6 +450,11 @@
     <string name="sorry">Maaf!</string>
     <string name="get_challenge_token">Bagaimana saya bisa mendapatkan challenge token?</string>
     <string name="kioson_instruction">bagaimana saya dapat melakukan pembayaran dengan kioson ?</string>
+    <string name="card_bin_invalid">nomor kartu kredit tidak terdapat didalam whitelist bin kartu kredit</string>
+    <string name="installment_required">Pembayaran harus menggunakan cicilan</string>
+    <string name="complete_payment_kioson">Selesaikan pembayaran di kioson</string>
+    <string name="complete_payment_indomaret">Selesaikan pembayaran di Indomaret</string>
+    <string name="payment_not_enabled_message">Tidak dapat membuka halaman ini, silakan aktifkan channel pembayaran ini.</string>
     <string name="redeem_bni_title">Gunakan Poin Reward BNI</string>
     <string name="redeem_bni_reward">Gunakan Poin Reward BNI</string>
     <string name="redeem_bni_details">Anda dapat membayar sebagian dengan Poin Reward BNI melalui Kartu Kredit Anda..</string>

@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -92,16 +91,27 @@
                             android:inputType="number"
                             android:maxLength="19"
                             android:maxLines="1"
-                            android:nextFocusDown="@+id/et_exp_date" />
+                            android:nextFocusDown="@+id/et_exp_date"
+                            tools:text="4811 1111 1111 1114" />
 
-                        <ImageView
+                        <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
+                            android:id="@+id/bank_logo"
+                            android:layout_width="@dimen/bank_logo_size"
+                            android:layout_height="@dimen/bank_logo_size"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/eight_dp"
+                            android:layout_marginRight="@dimen/eight_dp"
+                            android:layout_toLeftOf="@+id/payment_card_logo"
+                            android:layout_toStartOf="@+id/payment_card_logo"
+                            tools:src="@drawable/bri" />
+
+                        <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
                             android:id="@+id/payment_card_logo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/payment_logo_size"
+                            android:layout_height="@dimen/payment_logo_size"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginBottom="@dimen/four_dp"
                             tools:src="@drawable/ic_visa" />
                     </RelativeLayout>
                 </android.support.design.widget.TextInputLayout>
@@ -293,33 +303,37 @@
 
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/container_security"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_installment"
                 android:layout_marginTop="@dimen/eight_dp"
                 android:background="@drawable/grey_rounded_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:padding="@dimen/eight_dp">
 
                 <ImageView
                     android:id="@+id/midtrans_lock"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/four_dp"
+                    android:layout_marginRight="@dimen/four_dp"
+                    android:layout_weight="0.4"
+                    android:scaleType="centerInside"
                     android:src="@drawable/midtrans_lock" />
 
                 <ImageView
                     android:id="@+id/cc_badge"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/midtrans_lock"
-                    android:layout_toRightOf="@+id/midtrans_lock"
+                    android:layout_marginLeft="@dimen/four_dp"
+                    android:layout_marginStart="@dimen/four_dp"
+                    android:layout_weight="0.6"
+                    android:scaleType="centerInside"
                     android:src="@drawable/cc_badge" />
-            </RelativeLayout>
+            </LinearLayout>
 
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>

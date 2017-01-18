@@ -3,8 +3,10 @@ package com.midtrans.sdk.uikit.fragments;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -64,6 +66,7 @@ public class AddCardDetailsFragment extends Fragment {
     private SwitchCompat switchSaveCard, switchBNIPoints;
     private Button buttonIncrease, buttonDecrease;
     private ImageView logo;
+    private ImageView bankLogo;
     private ImageView imageCvvHelp;
     private ImageView imageBniHelp;
     private ImageView imageSaveHelp;
@@ -132,12 +135,17 @@ public class AddCardDetailsFragment extends Fragment {
                 etCvv.requestFocus();
                 etCardNo.setText(SdkUIFlowUtil.getMaskedCardNumber(savedCard.getMaskedCard()));
                 etExpiryDate.setText(SdkUIFlowUtil.getMaskedExpDate());
-                if (savedCard.getType() != null && savedCard.getType().equals(getString(R.string.saved_card_one_click))) {
+                if (isOneClickMode()) {
                     etCvv.setInputType(InputType.TYPE_CLASS_TEXT);
                     etCvv.setFilters(filterArray);
                     etCvv.setText(SdkUIFlowUtil.getMaskedCardCvv());
                     etCvv.setEnabled(false);
+
+                    ((CreditDebitCardFlowActivity)getActivity()).setInstallmentAvailableStatus(false);
+                } else {
+                    initCardInstallment();
                 }
+
             }
         }
     }
@@ -190,6 +198,7 @@ public class AddCardDetailsFragment extends Fragment {
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
         logo = (ImageView) view.findViewById(R.id.payment_card_logo);
+        bankLogo = (ImageView) view.findViewById(R.id.bank_logo);
         layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installment);
         layoutSaveCard = (LinearLayout) view.findViewById(R.id.layout_save_card_detail);
         layoutBNIPoints = (LinearLayout) view.findViewById(R.id.layout_bni_point);
@@ -223,6 +232,7 @@ public class AddCardDetailsFragment extends Fragment {
             public void onFocusChange(View view, boolean hasfocus) {
                 if (!hasfocus) {
                     boolean validCardNumber = checkCardNumberValidity();
+                    checkBinLockingValidity();
                     checkPromoValidity();
                     initCardInstallment();
                     initBNIPoints(validCardNumber);
@@ -282,13 +292,14 @@ public class AddCardDetailsFragment extends Fragment {
                     midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_CHECKBOX_SAVE_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
                 }
 
-                if (!checkPromoValidity()) {
-                    SdkUIFlowUtil.showToast(getActivity(), getString(R.string.message_payment_cannot_proccessed));
-                    return;
-                }
 
                 if (checkCardValidity()) {
+
                     ((CreditDebitCardFlowActivity) getActivity()).setBNIPointStatus(isBNIPointActivated());
+                    if (!isValidPayment()) {
+                        return;
+                    }
+
                     if (isOneClickMode()) {
                         ((CreditDebitCardFlowActivity) getActivity()).oneClickPayment(savedCard.getMaskedCard());
                     } else if (isTwoClickMode()) {
@@ -395,6 +406,7 @@ public class AddCardDetailsFragment extends Fragment {
                     }
                 }
                 setCardType();
+                setBankType();
 
                 // Move to next input
                 if (s.length() >= 18 && cardType.equals(getString(R.string.amex))) {
@@ -480,6 +492,22 @@ public class AddCardDetailsFragment extends Fragment {
         );
     }
 
+    private boolean isValidPayment() {
+
+        //card bin validation for bin locking and installment
+        if (!isCardBinValid()) {
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.card_bin_invalid));
+            return false;
+        }
+
+        //installment validation
+        if (!((CreditDebitCardFlowActivity) getActivity()).isValidInstallment()) {
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.installment_required));
+            return false;
+        }
+        return true;
+    }
+
     private void initBNIPoints(boolean validCardNumber) {
 
         ArrayList<String> pointBanks = MidtransSDK.getInstance().getPointBanks();
@@ -513,32 +541,44 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     private void initCheckbox() {
-        UIKitCustomSetting uiKitCustomSetting = midtransSDK.getUIKitCustomSetting();
+        UIKitCustomSetting uiKitCustomSetting = MidtransSDK.getInstance().getUIKitCustomSetting();
         if (uiKitCustomSetting.isSaveCardChecked()) {
             switchSaveCard.setChecked(true);
         }
     }
 
-    private boolean isCarBinValid() {
+    private boolean isCardBinLockingValid() {
         boolean valid = false;
         String cardNumber = etCardNo.getText().toString().trim();
         if (TextUtils.isEmpty(cardNumber)) {
-            showInvalidPromoStatus(true);
+            showInvalidBinLockingStatus(true);
 
         } else if (cardNumber.length() < 7) {
-            showInvalidPromoStatus(true);
+            showInvalidBinLockingStatus(true);
         } else {
-            String cardBin = cardNumber.replace(" ", "").substring(0, 6);
-            if (((CreditDebitCardFlowActivity) getActivity()).isCardBinValid(cardBin)) {
-                showInvalidPromoStatus(false);
+            if (isCardBinValid()) {
+                showInvalidBinLockingStatus(false);
                 valid = true;
             } else {
-                showInvalidPromoStatus(true);
+                showInvalidBinLockingStatus(true);
             }
         }
 
-
         return valid;
+    }
+
+
+    private boolean isCardBinValid() {
+        if (((CreditDebitCardFlowActivity) getActivity()).isWhiteListBinsAvailable()) {
+            if (cardNumber != null) {
+                String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+                if (!((CreditDebitCardFlowActivity) getActivity()).isCardBinValid(cardBin)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 
@@ -550,16 +590,16 @@ public class AddCardDetailsFragment extends Fragment {
         }
     }
 
-    private boolean checkPromoValidity() {
-        if (((CreditDebitCardFlowActivity) getActivity()).isPaymentWithPromo()) {
-            if (!isCarBinValid()) {
+    private boolean checkBinLockingValidity() {
+        if (((CreditDebitCardFlowActivity) getActivity()).isWhiteListBinsAvailable()) {
+            if (!isCardBinLockingValid()) {
                 return false;
             }
         }
         return true;
     }
 
-    private void showInvalidPromoStatus(boolean show) {
+    private void showInvalidBinLockingStatus(boolean show) {
         if (show) {
             textInvalidPromoStatus.setVisibility(View.VISIBLE);
         } else {
@@ -574,29 +614,33 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     private void initCardInstallment() {
-        String cardNumber = etCardNo.getText().toString();
-        if (TextUtils.isEmpty(cardNumber)) {
-            showInstallmentLayout(false);
-        } else if (cardNumber.length() < 7) {
-            showInstallmentLayout(false);
-        } else if (midtransSDK.getCreditCard() != null
-                && midtransSDK.getCreditCard().getBank() != null
-                && (midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)
-                || midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.BRI))) {
-            showInstallmentLayout(false);
-        } else {
-            String cleanCardNumber = etCardNo.getText().toString().trim().replace(" ", "").substring(0, 6);
-            ArrayList<Integer> installmentTerms = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerms(cleanCardNumber);
 
-            if (installmentTerms != null && installmentTerms.size() > 1) {
-                installmentCurrentPosition = 0;
-                installmentTotalPositions = installmentTerms.size() - 1;
-                setInstallmentTerm();
-                showInstallmentLayout(true);
-            } else {
+        if (((CreditDebitCardFlowActivity) getActivity()).isInstallmentAvailable()) {
+            String cardNumber = etCardNo.getText().toString();
+            if (TextUtils.isEmpty(cardNumber)) {
                 showInstallmentLayout(false);
+            } else if (cardNumber.length() < 7) {
+                showInstallmentLayout(false);
+            } else if (midtransSDK.getCreditCard() != null
+                    && midtransSDK.getCreditCard().getBank() != null
+                    && (midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)
+                    || midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.BRI))) {
+                showInstallmentLayout(false);
+            } else {
+                String cleanCardNumber = etCardNo.getText().toString().trim().replace(" ", "").substring(0, 6);
+                ArrayList<Integer> installmentTerms = ((CreditDebitCardFlowActivity) getActivity()).getInstallmentTerms(cleanCardNumber);
+
+                if (installmentTerms != null && installmentTerms.size() > 1) {
+                    installmentCurrentPosition = 0;
+                    installmentTotalPositions = installmentTerms.size() - 1;
+                    setInstallmentTerm();
+                    showInstallmentLayout(true);
+                } else {
+                    showInstallmentLayout(false);
+                }
             }
         }
+
     }
 
     private void setInstallmentTerm() {
@@ -768,6 +812,47 @@ public class AddCardDetailsFragment extends Fragment {
         }
     }
 
+    private void setBankType() {
+        // Don't set card type when card number is empty
+        String cardNumberText = etCardNo.getText().toString().trim();
+        if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 7) {
+            bankLogo.setImageDrawable(null);
+            return;
+        }
+
+        String cleanCardNumber = cardNumberText.replace(" ", "").substring(0, 6);
+        String bank = ((CreditDebitCardFlowActivity) getActivity()).getBankByBin(cleanCardNumber);
+
+        if (bank != null) {
+            switch (bank) {
+                case BankType.BCA:
+                    bankLogo.setImageResource(R.drawable.bca);
+                    break;
+                case BankType.BNI:
+                    bankLogo.setImageResource(R.drawable.bni);
+                    break;
+                case BankType.BRI:
+                    bankLogo.setImageResource(R.drawable.bri);
+                    break;
+                case BankType.CIMB:
+                    bankLogo.setImageResource(R.drawable.cimb);
+                    break;
+                case BankType.MANDIRI:
+                    bankLogo.setImageResource(R.drawable.mandiri);
+                    break;
+                case BankType.MAYBANK:
+                    bankLogo.setImageResource(R.drawable.maybank);
+                    break;
+                default:
+                    bankLogo.setImageDrawable(null);
+                    break;
+            }
+        } else {
+            bankLogo.setImageDrawable(null);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void fadeIn() {
         formLayout.setAlpha(0);
         ObjectAnimator fadeInAnimation = ObjectAnimator.ofFloat(formLayout, "alpha", 0, 1f);
