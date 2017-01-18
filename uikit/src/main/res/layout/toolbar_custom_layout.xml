@@ -39,10 +39,11 @@
         tools:src="@drawable/ic_veritrans" />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/thirtytwo_dp"
-        android:layout_marginRight="@dimen/thirtytwo_dp">
+        android:layout_marginEnd="@dimen/forty_dp"
+        android:layout_marginRight="@dimen/forty_dp">
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/text_title"

@@ -233,7 +233,6 @@ public class AddCardDetailsFragment extends Fragment {
                 if (!hasfocus) {
                     boolean validCardNumber = checkCardNumberValidity();
                     checkBinLockingValidity();
-                    checkPromoValidity();
                     initCardInstallment();
                     initBNIPoints(validCardNumber);
                 }
