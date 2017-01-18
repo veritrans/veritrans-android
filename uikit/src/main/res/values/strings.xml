@@ -118,7 +118,7 @@
     <string name="validation_message_cvv">Please enter CVV.</string>
     <string name="validation_message_invalid_cvv">Please enter valid CVV</string>
     <string name="validation_message_empty_expiry_date">Please enter expiry date</string>
-    <string name="message_cvv">CVV is 3 or 4 digit number printed at the back side of the card.</string>
+    <string name="message_cvv">The CVV is a 3 (or 6) digit number security code printed on the back of your card.</string>
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -425,10 +425,10 @@
     <string name="challenge">challenge</string>
     <string name="prefix_money">Rp %1$s</string>
 
-    <string name="payment_method_bri_epay">Epay BRI</string>
+    <string name="payment_method_bri_epay">e-Pay BRI</string>
     <string name="payment_method_offers">Offers</string>
     <string name="payment_method_credit_card">Credit/Debit Card</string>
-    <string name="payment_method_bank_transfer">Bank Transfer</string>
+    <string name="payment_method_bank_transfer">ATM/Bank Transfer</string>
     <string name="payment_method_mandiri_bill">Mandiri Bill</string>
     <string name="payment_method_mandiri_clickpay">Mandiri Clickpay</string>
     <string name="payment_method_cimb_clicks">CIMB Clicks</string>
@@ -643,4 +643,24 @@
     <string name="complete_payment_kioson">Complete payment at Kioson</string>
     <string name="complete_payment_indomaret">Complete payment at Indomaret</string>
     <string name="payment_not_enabled_message">Can\'t open the page, please enable the payment channel.</string>
+
+    <string name="payment_method_description_credit_card">Pay with VISA, MasterCard, JCB or AMEX</string>
+    <string name="payment_method_description_bank_transfer">Pay from ATM Bersama, Prima or Alto</string>
+    <string name="payment_method_description_klik_bca">Pay with your KlikBCA account</string>
+    <string name="payment_method_description_bca_klikpay">Pay with BCA KlikPay</string>
+    <string name="payment_method_description_mandiri_clickpay">Pay through your Mandiri Clickpay account</string>
+    <string name="payment_method_description_cimb_clicks">Pay using CIMB Clicks account</string>
+    <string name="payment_method_description_epay_bri">Pay using e-Pay BRI account</string>
+    <string name="payment_method_description_mandiri_ecash">Pay with your mandiri e-Cash account</string>
+    <string name="payment_method_description_telkomsel_cash">Pay through your Telkomsel Cash account</string>
+    <string name="payment_method_description_xl_tunai">Pay with XL Tunai</string>
+    <string name="payment_method_description_indomaret">Pay from Indomaret</string>
+    <string name="payment_method_description_indosat_dompetku">Pay with Indosat Dompetku</string>
+    <string name="payment_method_description_kioson">Pay from Kioson Outlet</string>
+    <string name="payment_method_description_gci">Pay with Gift Cards</string>
+
+    <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>
+    <string name="payment_bank_description_mandiri">Pay from Mandiri ATMs or internet banking</string>
+    <string name="payment_bank_description_permata">Pay from Permata ATMs or internet banking</string>
+    <string name="payment_bank_description_other">Pay from other Bank ATMs</string>
 </resources>

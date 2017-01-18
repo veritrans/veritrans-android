@@ -10,12 +10,14 @@ public class BankTransferModel {
     private int image;
     private boolean isSelected;
     private Integer priority = 0;
+    private String description;
 
-    public BankTransferModel(String bankName, int image, boolean isSelected, int priority) {
+    public BankTransferModel(String bankName, int image, boolean isSelected, int priority, String description) {
         setBankName(bankName);
         setImage(image);
         setIsSelected(isSelected);
         setPriority(priority);
+        setDescription(description);
     }
 
     public boolean isSelected() {
@@ -42,11 +44,19 @@ public class BankTransferModel {
         this.image = image;
     }
 
+    public Integer getPriority() {
+        return priority;
+    }
+
     public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
-    public Integer getPriority() {
-        return priority;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

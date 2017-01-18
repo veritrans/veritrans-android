@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.uikit.R;
 
@@ -54,7 +53,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
     public void onBindViewHolder(PaymentViewHolder holder, int position) {
         holder.mImageView.setImageResource(data.get(position).getImageId());
         holder.name.setText(data.get(position).getName());
-        Logger.d(TAG, "name is " + data.get(position).getName());
+        holder.description.setText(data.get(position).getDescription());
     }
 
     @Override
@@ -69,15 +68,17 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
     /**
      * public static view holder class.
      */
-    public static class PaymentViewHolder extends RecyclerView.ViewHolder {
+    class PaymentViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
+        TextView description;
         ImageView mImageView;
 
-        public PaymentViewHolder(View itemView, final PaymentMethodListener listener) {
+        PaymentViewHolder(View itemView, final PaymentMethodListener listener) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.text_payment_method_name);
             mImageView = (ImageView) itemView.findViewById(R.id.img_payment_method_icon);
+            description = (TextView) itemView.findViewById(R.id.text_payment_method_description);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
