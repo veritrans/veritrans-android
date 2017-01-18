@@ -271,7 +271,7 @@
     <string name="credit_card">Kartu Kredit/Debit</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
-    <string name="epay_bri">ePay BRI</string>
+    <string name="epay_bri">e-Pay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="mandiri_e_cash">Mandiri e-Cash</string>
@@ -324,7 +324,7 @@
     <string name="klikbca_instruction_2">2.\tSilakan lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com pada browser anda, menggunakan User ID yang sama dengan yang anda masukkan di atas.</string>
     <string name="klikbca_instruction_3">3.\tTransaksi akan dibatalkan bila pembayaran tidak dilakukan dalam 2 jam.</string>
 
-    <string name="payment_method_bri_epay">Epay BRI</string>
+    <string name="payment_method_bri_epay">e-Pay BRI</string>
     <string name="payment_method_offers">Penawaran</string>
     <string name="payment_method_credit_card">Kartu Kredit/Debit</string>
     <string name="payment_method_bank_transfer">Transfer Bank</string>
