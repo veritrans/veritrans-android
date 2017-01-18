@@ -327,7 +327,7 @@
     <string name="payment_method_bri_epay">e-Pay BRI</string>
     <string name="payment_method_offers">Penawaran</string>
     <string name="payment_method_credit_card">Kartu Kredit/Debit</string>
-    <string name="payment_method_bank_transfer">Transfer Bank</string>
+    <string name="payment_method_bank_transfer">ATM/Transfer Bank</string>
     <string name="payment_method_mandiri_bill">Mandiri Bill</string>
     <string name="payment_method_mandiri_clickpay">Mandiri Clickpay</string>
     <string name="payment_method_cimb_clicks">CIMB Clicks</string>
@@ -455,4 +455,24 @@
     <string name="complete_payment_kioson">Selesaikan pembayaran di kioson</string>
     <string name="complete_payment_indomaret">Selesaikan pembayaran di Indomaret</string>
     <string name="payment_not_enabled_message">Tidak dapat membuka halaman ini, silakan aktifkan channel pembayaran ini.</string>
+
+    <string name="payment_method_description_credit_card">Bayar dengan VISA, MasterCard, JCB atau AMEX</string>
+    <string name="payment_method_description_bank_transfer">Bayar dari ATM Bersama, Prima atau Alto</string>
+    <string name="payment_method_description_klik_bca">Bayar dengan akun KlikBCA anda</string>
+    <string name="payment_method_description_bca_klikpay">Bayar dengan BCA KlikPay</string>
+    <string name="payment_method_description_mandiri_clickpay">Bayar melalui akun Mandiri Clickpay anda</string>
+    <string name="payment_method_description_cimb_clicks">Bayar menggunakan akun CIMB Clicks</string>
+    <string name="payment_method_description_epay_bri">Bayar menggunakan akun e-Pay BRI</string>
+    <string name="payment_method_description_mandiri_ecash">Bayar dengan akun Mandiri e-Cash anda</string>
+    <string name="payment_method_description_telkomsel_cash">Bayar melalui akun Telkomsel Cash anda</string>
+    <string name="payment_method_description_xl_tunai">Bayar dengan XL Tunai</string>
+    <string name="payment_method_description_indomaret">Bayar dari Indomaret</string>
+    <string name="payment_method_description_indosat_dompetku">Bayar dengan Indosat Dompetku</string>
+    <string name="payment_method_description_kioson">Bayar dari gerai Kioson</string>
+    <string name="payment_method_description_gci">Bayar dengan Gift Card</string>
+
+    <string name="payment_bank_description_bca">Bayar dari ATM BCA atau internet banking</string>
+    <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>
+    <string name="payment_bank_description_permata">Bayar dari ATM Permata atau internet banking</string>
+    <string name="payment_bank_description_other">Bayar dari ATM bank lainnya</string>
 </resources>
