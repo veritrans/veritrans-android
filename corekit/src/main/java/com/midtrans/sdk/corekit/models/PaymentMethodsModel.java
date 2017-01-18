@@ -11,13 +11,15 @@ public class PaymentMethodsModel {
     private String name;
     private int imageId;
     private int paymentType;
+    private String description;
     private boolean isSelected;
     private Integer priority;
 
-    public PaymentMethodsModel(String name, int imageId, int paymentType, int priority) {
+    public PaymentMethodsModel(String name, String description, int imageId, int paymentType, int priority) {
         this.paymentType = paymentType;
         this.imageId = imageId;
         this.name = name;
+        this.description = description;
         this.priority = priority;
     }
 
@@ -39,5 +41,13 @@ public class PaymentMethodsModel {
 
     public Integer getPriority() {
         return priority;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

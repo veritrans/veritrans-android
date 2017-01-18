@@ -49,6 +49,8 @@
     <dimen name="mb_corner_radius_2">4dp</dimen>
     <dimen name="forty_dp">40dp</dimen>
     <dimen name="fifty_six_dp">56dp</dimen>
+    <dimen name="sixty_four_dp">64dp</dimen>
+    <dimen name="sixty_dp">60dp</dimen>
     <dimen name="seventy_two_dp">72dp</dimen>
 
     <dimen name="logo_width">50dp</dimen>

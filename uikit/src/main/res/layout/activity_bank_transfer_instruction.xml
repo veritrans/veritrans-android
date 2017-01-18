@@ -32,7 +32,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/twenty_four_dp"
+                android:layout_marginTop="@dimen/four_dp"
                 android:clickable="true"
                 android:paddingBottom="@dimen/eight_dp"
                 android:paddingLeft="@dimen/sixteen_dp"

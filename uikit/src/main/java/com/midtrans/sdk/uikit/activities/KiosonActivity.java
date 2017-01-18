@@ -157,6 +157,8 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
             }
+        } else if (view.getId() == R.id.btn_back) {
+            onBackPressed();
         }
     }
 

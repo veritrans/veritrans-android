@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -39,27 +39,29 @@
         tools:src="@drawable/ic_veritrans" />
 
     <RelativeLayout
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/sixtyfour_dp"
-        android:layout_marginRight="@dimen/sixtyfour_dp"
-        android:layout_weight="1">
+        android:layout_marginEnd="@dimen/thirtytwo_dp"
+        android:layout_marginRight="@dimen/thirtytwo_dp">
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:ellipsize="end"
             android:gravity="center"
-            android:layout_marginBottom="@dimen/four_dp"
+            android:maxLines="1"
             android:textColor="@color/dark_gray"
-            android:textSize="@dimen/tool_bar_title_size" />
+            android:textSize="@dimen/tool_bar_title_size"
+            tools:text="Mandiri Clickpay" />
 
         <View
-            android:layout_width="50dp"
+            android:layout_width="45dp"
             android:layout_height="5dp"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/text_title"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/four_dp"
             android:background="?attr/colorPrimary" />
     </RelativeLayout>
 
@@ -69,6 +71,7 @@
         android:layout_height="24dp"
         android:layout_marginRight="@dimen/sixteen_dp"
         android:src="@drawable/ic_delete_black"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        tools:visibility="visible" />
 
 </LinearLayout>
