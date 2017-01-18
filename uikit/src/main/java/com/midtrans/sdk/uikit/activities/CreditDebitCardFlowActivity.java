@@ -300,7 +300,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     private void preCreditCardpayment() {
         if (bniPointActivated) {
-
             MidtransSDK.getInstance().getBNIPoints(this.tokenDetailsResponse.getTokenId(), new BNIPointsCallback() {
                 @Override
                 public void onSuccess(BNIPointsResponse response) {
@@ -312,25 +311,18 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 public void onFailure(String reason) {
                     Log.d(TAG, "bnipoint:onFailure");
                     SdkUIFlowUtil.hideProgressDialog();
-                    showBankPointsFragment(mockGetBankPointResponse().getPointBalance(), BankType.BNI);
                 }
 
                 @Override
                 public void onError(Throwable error) {
                     Log.d(TAG, "bnipoint:onError");
                     SdkUIFlowUtil.hideProgressDialog();
-                    showBankPointsFragment(mockGetBankPointResponse().getPointBalance(), BankType.BNI);
                 }
             });
 
         } else {
             payUsingCard();
         }
-    }
-
-    private BNIPointsResponse mockGetBankPointResponse(){
-        BNIPointsResponse point = new BNIPointsResponse("200", "success", null, 10000L, "2017-01-17 09:53:29");
-        return point;
     }
 
     /**
@@ -359,7 +351,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             paymentModel.setInstallment(installmentBank + "_" + installmentTermSelected);
         }
 
-        if(bniPointActivated && this.pointRedeemed != -1){
+        if (bniPointActivated && this.pointRedeemed != -1) {
             paymentModel.setPointRedeemed(this.pointRedeemed);
         }
 
@@ -1005,7 +997,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         titleHeaderTextView.setText(getString(R.string.card_details));
     }
 
-    private void showBankPointsFragment(long balance, String bankType){
+    private void showBankPointsFragment(long balance, String bankType) {
         BanksPointFragment fragment = BanksPointFragment.newInstance(balance, bankType);
         replaceFragment(fragment, R.id.card_container, true, false);
     }

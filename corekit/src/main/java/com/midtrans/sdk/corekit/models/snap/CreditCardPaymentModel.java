@@ -54,11 +54,11 @@ public class CreditCardPaymentModel {
         this.installment = installment;
     }
 
-    public void setPointRedeemed(long pointRedeemed) {
+    public void setPointRedeemed(Long pointRedeemed) {
         this.pointRedeemed = pointRedeemed;
     }
 
-    public long getPointRedeemed() {
+    public Long getPointRedeemed() {
         return pointRedeemed;
     }
 }

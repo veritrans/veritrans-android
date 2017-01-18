@@ -3,11 +3,14 @@ package com.midtrans.sdk.uikit.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -26,15 +29,20 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
 
     private static final String ARGS_POINT = "point_balance";
     private static final String ARGS_BANK = "point_bank";
-    private DefaultTextView textPointConverted, textAmountToPay, textPointUsed, textTotalPoint;
+    private static final long MULTPIPLY = 10000;
+    private final String TAG = getClass().getSimpleName();
+    private DefaultTextView textPointConverted, textAmountToPay, textTotalPoint;
+    private EditText editPointRedeemed;
     private FancyButton buttonIncrease, buttonDecrease;
     private Button buttonRedeemPoint;
     private long pointBalance;
     private double pointConverted;
     private double amountToPay;
-    private long pointWillBeUsed;
+    private long pointRedeemed;
     private ImageView imagePlus, imageMinus;
     private String pointBank;
+    private double totalAmount;
+    private boolean inputPointFromButtons;
 
     public static BanksPointFragment newInstance(long balance, String bank) {
         BanksPointFragment fragment = new BanksPointFragment();
@@ -59,7 +67,7 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
 
         textPointConverted = (DefaultTextView) view.findViewById(R.id.text_point_converted);
         textAmountToPay = (DefaultTextView) view.findViewById(R.id.text_amount_to_pay);
-        textPointUsed = (DefaultTextView) view.findViewById(R.id.text_point_used);
+        editPointRedeemed = (EditText) view.findViewById(R.id.text_point_used);
         textTotalPoint = (DefaultTextView) view.findViewById(R.id.text_total_point);
         imageMinus = (ImageView) view.findViewById(R.id.image_point_min);
         imagePlus = (ImageView) view.findViewById(R.id.image_point_plus);
@@ -69,10 +77,43 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
 
         setupDefaultView();
         bindValues();
+        updateViews();
         buttonDecrease.setOnClickListener(this);
         buttonIncrease.setOnClickListener(this);
         buttonRedeemPoint.setOnClickListener(this);
+
+        editPointRedeemed.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (inputPointFromButtons) {
+                    return;
+                }
+
+                String inputString = editable.toString();
+                if (editable.length() == 0) {
+                    editable.insert(0, "0");
+                } else if (inputString.length() > 1 && inputString.charAt(0) == '0') {
+                    editable.delete(0, 1);
+                }
+
+                if (!isValidInputPoint(inputString)) {
+                    editable.delete(editable.length() - 1, editable.length());
+                }
+                updateViews();
+            }
+        });
     }
+
 
     private void setupDefaultView() {
         try {
@@ -86,16 +127,18 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     }
 
     private void bindValues() {
-        textAmountToPay.setText(Utils.getFormattedAmount(amountToPay));
-        textPointConverted.setText(Utils.getFormattedAmount(pointConverted));
-        textPointUsed.setText(String.valueOf(pointWillBeUsed));
+        textAmountToPay.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(amountToPay)));
+        textPointConverted.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(pointConverted)));
+        editPointRedeemed.setText(String.valueOf(pointRedeemed));
         textTotalPoint.setText(getString(R.string.total_point, String.valueOf(pointBalance)));
     }
 
     private void initValues() {
-        this.amountToPay = MidtransSDK.getInstance().getTransactionRequest().getAmount();
+        double totalAmount = MidtransSDK.getInstance().getTransactionRequest().getAmount();
+        this.amountToPay = totalAmount;
+        this.totalAmount = totalAmount;
         this.pointConverted = 0;
-        this.pointWillBeUsed = 0;
+        this.pointRedeemed = 0;
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -108,18 +151,144 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         int viewId = view.getId();
         if (viewId == R.id.button_point_increase) {
-
+            onIncreasePoint();
         } else if (viewId == R.id.button_point_decrease) {
-
+            onDecrasePoint();
         } else if (viewId == R.id.btn_redeem_point) {
-            String strPoint = textPointUsed.getText().toString().trim();
+            String strPoint = editPointRedeemed.getText().toString().trim();
             long redeemedPoint = -1;
             try {
                 redeemedPoint = Long.valueOf(strPoint);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
-            ((CreditDebitCardFlowActivity)getActivity()).payWithBankPoint(redeemedPoint);
+            ((CreditDebitCardFlowActivity) getActivity()).payWithBankPoint(redeemedPoint);
         }
+    }
+
+    private void updatePointButtonStatus() {
+        if ((pointRedeemed == 0 && pointBalance == 0) || !isValidCurrentBalance(pointRedeemed)) {
+            setEnablePointButtons(false, false);
+        } else if (pointRedeemed == 0 && pointBalance > 0) {
+            setEnablePointButtons(false, true);
+        } else if (pointRedeemed > 0 && pointRedeemed == pointBalance) {
+            setEnablePointButtons(true, false);
+        } else if (pointRedeemed > 0 && pointRedeemed < pointBalance) {
+            setEnablePointButtons(true, true);
+        }
+    }
+
+    private void setEnablePointButtons(boolean enableDecreaseButton, boolean enableIncreaseButton) {
+        if (enableDecreaseButton) {
+            buttonDecrease.setEnabled(true);
+        } else {
+            buttonDecrease.setEnabled(false);
+        }
+
+        if (enableIncreaseButton) {
+            buttonIncrease.setEnabled(true);
+        } else {
+            buttonIncrease.setEnabled(false);
+        }
+    }
+
+    private void onDecrasePoint() {
+        inputPointFromButtons = true;
+        long currentBalance = getCurrentPoint();
+        if (isValidCurrentBalance(currentBalance)) {
+            long newBalance = currentBalance - MULTPIPLY;
+            if (newBalance <= 0) {
+                currentBalance = 0;
+            } else {
+                currentBalance = newBalance;
+            }
+
+            if (isValidPointAmount(currentBalance)) {
+                this.pointRedeemed = currentBalance;
+            }
+        }
+        updateViews();
+        inputPointFromButtons = false;
+    }
+
+    private void onIncreasePoint() {
+        inputPointFromButtons = true;
+        long currentBalance = getCurrentPoint();
+        if (isValidCurrentBalance(currentBalance)) {
+            long newBalance = currentBalance + MULTPIPLY;
+            if (newBalance > pointBalance) {
+                currentBalance = pointBalance;
+            } else {
+                currentBalance = newBalance;
+            }
+
+            if (isValidPointAmount(currentBalance)) {
+                this.pointRedeemed = currentBalance;
+            }
+        }
+        updateViews();
+        inputPointFromButtons = false;
+    }
+
+    private boolean isValidCurrentBalance(long currentBalance) {
+        if (pointBalance >= MULTPIPLY && currentBalance < this.pointBalance) {
+            return true;
+        }
+        return false;
+    }
+
+    private void updateViews() {
+        if (inputPointFromButtons) {
+            editPointRedeemed.setText(String.valueOf(pointRedeemed));
+        }
+        textAmountToPay.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(amountToPay)));
+        textPointConverted.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(pointConverted)));
+
+        updatePointButtonStatus();
+    }
+
+    private boolean isValidPointAmount(long currentBalance) {
+        double pointAmount;
+        if (currentBalance == 0) {
+            pointAmount = currentBalance;
+        } else {
+            pointAmount = currentBalance / 100;
+        }
+
+        if (pointAmount <= totalAmount) {
+            pointConverted = pointAmount;
+            amountToPay = totalAmount - pointConverted;
+            return true;
+        }
+
+        return false;
+    }
+
+    private long getCurrentPoint() {
+        long currentBalance = 0;
+        String strCurrentBalance = editPointRedeemed.getText().toString().trim();
+        try {
+            currentBalance = Long.parseLong(strCurrentBalance);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return currentBalance;
+    }
+
+    public boolean isValidInputPoint(String inputString) {
+        long currentBalance = 0;
+        try {
+            currentBalance = Long.parseLong(inputString);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        if (currentBalance >= 0 && currentBalance <= pointBalance) {
+            if (isValidPointAmount(currentBalance)) {
+                pointRedeemed = currentBalance;
+                return true;
+            }
+        }
+        return false;
     }
 }

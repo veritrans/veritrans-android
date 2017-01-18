@@ -91,28 +91,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/thirtytwo_dp">
 
-                <com.midtrans.sdk.uikit.widgets.FancyButton
-                    android:id="@+id/button_point_decrease"
-                    android:layout_width="@dimen/forty_dp"
-                    android:layout_height="@dimen/forty_dp"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="visible"
-                    app:fb_borderColor="?attr/colorPrimary"
-                    app:fb_borderWidth="1dp"
-                    app:fb_defaultColor="@android:color/white"
-                    app:fb_focusColor="@color/colorAccentLight"
-                    app:fb_iconColor="?attr/colorPrimary"
-                    app:fb_radius="5dp"
-                    app:fb_text=""
-                    app:fb_textColor="?attr/colorPrimary">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <com.midtrans.sdk.uikit.widgets.FancyButton
+                        android:id="@+id/button_point_decrease"
+                        android:layout_width="@dimen/forty_dp"
+                        android:layout_height="@dimen/forty_dp"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="visible"
+                        app:fb_borderColor="?attr/colorPrimary"
+                        app:fb_borderWidth="1dp"
+                        app:fb_defaultColor="@android:color/white"
+                        app:fb_focusColor="@color/colorAccentLight"
+                        app:fb_iconColor="?attr/colorPrimary"
+                        app:fb_radius="5dp"
+                        app:fb_text=""
+                        app:fb_disabledColor="@color/colorAccentLight"
+                        app:fb_disabledBorderColor="?attr/colorPrimary"
+                        app:fb_textColor="?attr/colorPrimary"/>
 
-                    <ImageView
-                        android:id="@+id/image_point_min"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_minus_new" />
+                        <ImageView
+                            android:layout_centerInParent="true"
+                            android:id="@+id/image_point_min"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_minus_new" />
 
-                </com.midtrans.sdk.uikit.widgets.FancyButton>
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -135,12 +141,15 @@
                         app:fb_radius="5dp"
                         app:fb_text="" />
 
-                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    <EditText
+                        android:background="@android:color/transparent"
                         android:layout_centerVertical="true"
                         android:gravity="center"
+                        android:digits="0123456789"
+                        android:inputType="number"
                         android:id="@+id/text_point_used"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="@dimen/eight_dp"
                         android:layout_marginRight="@dimen/eight_dp"
@@ -151,28 +160,33 @@
                         android:textStyle="bold" />
                 </RelativeLayout>
 
-
-                <com.midtrans.sdk.uikit.widgets.FancyButton
-                    android:id="@+id/button_point_increase"
-                    android:layout_width="@dimen/forty_dp"
-                    android:layout_height="@dimen/forty_dp"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="visible"
-                    app:fb_borderColor="?attr/colorPrimary"
-                    app:fb_borderWidth="1dp"
-                    app:fb_defaultColor="@android:color/white"
-                    app:fb_focusColor="@color/colorAccentLight"
-                    app:fb_iconColor="?attr/colorPrimary"
-                    app:fb_radius="5dp"
-                    app:fb_text=""
-                    app:fb_textColor="?attr/colorPrimary">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <com.midtrans.sdk.uikit.widgets.FancyButton
+                        android:id="@+id/button_point_increase"
+                        android:layout_width="@dimen/forty_dp"
+                        android:layout_height="@dimen/forty_dp"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="visible"
+                        app:fb_borderColor="?attr/colorPrimary"
+                        app:fb_borderWidth="1dp"
+                        app:fb_defaultColor="@android:color/white"
+                        app:fb_focusColor="@color/colorAccentLight"
+                        app:fb_iconColor="?attr/colorPrimary"
+                        app:fb_radius="5dp"
+                        app:fb_text=""
+                        app:fb_disabledColor="@color/colorAccentLight"
+                        app:fb_disabledBorderColor="?attr/colorPrimary"
+                        app:fb_textColor="?attr/colorPrimary"/>
 
                     <ImageView
+                        android:layout_centerInParent="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_plus_new"
                         android:id="@+id/image_point_plus" />
-                </com.midtrans.sdk.uikit.widgets.FancyButton>
+                </RelativeLayout>
             </LinearLayout>
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
