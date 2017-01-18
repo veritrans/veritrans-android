@@ -10,6 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/sixty_dp"
         android:background="@android:color/white"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -19,7 +20,8 @@
             android:id="@+id/form_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/sixteen_dp">
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp">
 
             <LinearLayout
                 android:id="@+id/layout_offer_status"
@@ -188,11 +190,22 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/scan_card"
+                style="?borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/expiry_date_layout"
+                android:text="@string/btn_scan_card"
+                android:textColor="?colorPrimary"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
             <LinearLayout
                 android:id="@+id/layout_save_card_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/expiry_date_layout"
+                android:layout_below="@id/scan_card"
                 android:layout_marginTop="@dimen/eight_dp"
                 android:gravity="right"
                 android:orientation="vertical">
@@ -217,21 +230,11 @@
                     android:text="@string/save_card_info" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/scan_card"
-                style="?borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/layout_save_card_detail"
-                android:text="@string/btn_scan_card"
-                android:textColor="?colorPrimary"
-                android:visibility="gone" />
-
             <LinearLayout
                 android:id="@+id/layout_installment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/scan_card"
+                android:layout_below="@+id/layout_save_card_detail"
                 android:layout_marginTop="@dimen/four_dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
@@ -315,24 +318,14 @@
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <RelativeLayout
+    <Button
+        android:id="@+id/btn_pay_now"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="185dp"
-        android:padding="@dimen/sixteen_dp">
-
-        <Button
-            android:id="@+id/btn_pay_now"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fifty_six_dp"
-            android:layout_alignParentBottom="true"
-            android:text="@string/pay_now"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:visibility="visible" />
-    </RelativeLayout>
+        android:layout_height="@dimen/fifty_six_dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/pay_now"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:visibility="visible" />
 </RelativeLayout>
