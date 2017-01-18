@@ -78,7 +78,7 @@
     <string name="validation_message_cvv">Masukan CVV.</string>
     <string name="validation_message_invalid_cvv">Masukkan CVV yang benar</string>
     <string name="validation_message_empty_expiry_date">Masukkan tanggal kadaluarsa</string>
-    <string name="message_cvv">CVV adalah 3 or 4 digit angka yang tertera pada bagian belakang kartu.</string>
+    <string name="message_cvv">CVV adalah 3 (atau 6) digit angka kode keamanan yang tercetak di belakang kartu Anda.</string>
     
     <!-- Permata VA Bank Transfer-->
     <string name="virtual_account">Akun Virtual</string>

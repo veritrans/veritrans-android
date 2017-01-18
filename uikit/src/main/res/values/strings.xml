@@ -118,7 +118,7 @@
     <string name="validation_message_cvv">Please enter CVV.</string>
     <string name="validation_message_invalid_cvv">Please enter valid CVV</string>
     <string name="validation_message_empty_expiry_date">Please enter expiry date</string>
-    <string name="message_cvv">CVV is 3 or 4 digit number printed at the back side of the card.</string>
+    <string name="message_cvv">The CVV is a 3 (or 6) digit number security code printed on the back of your card.</string>
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
