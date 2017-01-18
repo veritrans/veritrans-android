@@ -425,7 +425,7 @@
     <string name="challenge">challenge</string>
     <string name="prefix_money">Rp %1$s</string>
 
-    <string name="payment_method_bri_epay">Epay BRI</string>
+    <string name="payment_method_bri_epay">e-Pay BRI</string>
     <string name="payment_method_offers">Offers</string>
     <string name="payment_method_credit_card">Credit/Debit Card</string>
     <string name="payment_method_bank_transfer">Bank Transfer</string>
