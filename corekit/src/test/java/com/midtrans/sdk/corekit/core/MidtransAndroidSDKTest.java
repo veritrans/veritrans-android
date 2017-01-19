@@ -261,13 +261,6 @@ public class MidtransAndroidSDKTest {
     }
 
     @Test
-    public void startRegisterCardUIFlow_whenUIFlowNotNull() {
-        midtransSDKSSpy.uiflow = uiflowMock;
-        midtransSDKSSpy.startRegisterCardUIFlow(contextMock);
-        Mockito.verify(uiflowMock).runRegisterCard(contextMock);
-    }
-
-    @Test
     public void startPaymentUiFlow_whenUIFlowNotNull() {
         when(transactionRequestMock.getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
