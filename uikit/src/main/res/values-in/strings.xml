@@ -405,7 +405,8 @@
     <string name="no_network_msg">Koneksi tidak tersedia! Coba lagi lain waktu.</string>
     <string name="kioson">Kioson</string>
     <string name="kioson_valid">Konfirmasi pembayaran anda di outlet Kioson Sebelum : %1$s </string>
-    <string name="kioson_payment_instrution">Instruksi Pembayaran Kioson</string>
+    <string name="kioson_payment_instruction">Instruksi Pembayaran Kioson</string>
+    <string name="klikbca_payment_instruction">Instruksi Pembayaran KlikBCA</string>
     <string name="message_payment_cannot_proccessed">Transaksi anda tidak dapat diproses. Pastikan info pembayaran anda benar</string>
     <string name="message_payment_failed">Pembayaran gagal. Mohon cek kembali detil kartu anda atau gunakan kartu lain.</string>
     <string name="message_payment_denied">Transaksi anda ditolak! Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
@@ -475,4 +476,8 @@
     <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>
     <string name="payment_bank_description_permata">Bayar dari ATM Permata atau internet banking</string>
     <string name="payment_bank_description_other">Bayar dari ATM bank lainnya</string>
+
+    <string name="instruction_klikbca1">Mohon pastikan UserID aktif dan terdaftar di BCA.</string>
+    <string name="instruction_klikbca2">Mohon lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com di jendela atau tab terpisah, menggunakan User ID yang anda masukkan sebelumnya.</string>
+    <string name="instruction_klikbca3">Transaksi akan dibatalkan bila pembayaran tidak diselesaikan dalam 2 jam.</string>
 </resources>

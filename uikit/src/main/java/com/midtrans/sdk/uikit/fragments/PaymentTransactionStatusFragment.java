@@ -37,6 +37,7 @@ import com.midtrans.sdk.uikit.activities.IndosatDompetkuActivity;
 import com.midtrans.sdk.uikit.activities.KiosonActivity;
 import com.midtrans.sdk.uikit.activities.KiosonInstructionActivity;
 import com.midtrans.sdk.uikit.activities.KlikBCAActivity;
+import com.midtrans.sdk.uikit.activities.KlikBCAInstructionActivity;
 import com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity;
 import com.midtrans.sdk.uikit.activities.MandiriECashActivity;
 import com.midtrans.sdk.uikit.activities.TelkomselCashActivity;
@@ -485,9 +486,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
                     intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
                     break;
                 case Constants.PAYMENT_METHOD_KLIKBCA:
-                    intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
-                    intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
-                    intent.putExtra(BankTransferInstructionActivity.PAGE, BankTransferInstructionActivity.KLIKBCA_PAGE);
+                    intent = new Intent(getActivity(), KlikBCAInstructionActivity.class);
                     break;
                 case Constants.PAYMENT_METHOD_KIOSON:
                     intent = new Intent(getActivity(), KiosonInstructionActivity.class);

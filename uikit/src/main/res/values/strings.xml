@@ -570,7 +570,8 @@
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
     <string name="kioson_valid">Please complete your payment at Kioson Outlet Before : %1$s</string>
-    <string name="kioson_payment_instrution">Kioson Payment Instruction</string>
+    <string name="kioson_payment_instruction">Kioson Payment Instruction</string>
+    <string name="klikbca_payment_instruction">KlikBCA Payment Instruction</string>
     <string name="message_payment_cannot_proccessed">Transaction cannot be proccessed. Make sure your payment informations is correct</string>
     <string name="message_payment_failed">Transaction Failed. Re-check your card details or use another card.</string>
     <string name="message_payment_denied">Transaction denied! Please try again or try another payment method.</string>
@@ -663,4 +664,8 @@
     <string name="payment_bank_description_mandiri">Pay from Mandiri ATMs or internet banking</string>
     <string name="payment_bank_description_permata">Pay from Permata ATMs or internet banking</string>
     <string name="payment_bank_description_other">Pay from other Bank ATMs</string>
+
+    <string name="instruction_klikbca1">Please make sure that the UserID is active and registered at BCA.</string>
+    <string name="instruction_klikbca2">Please continue the payment through KlikBCA by opening www.klikbca.com on a separate window or tab, using the same User ID that you entered below.</string>
+    <string name="instruction_klikbca3">Transaction will be cancelled if payment is not completed within 2 hours.</string>
 </resources>
