@@ -327,12 +327,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         // Handle Card registration using UI flow
         uiCardRegistration = (Button) findViewById(R.id.btn_card_registration_ui);
-        uiCardRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MidtransSDK.getInstance().startRegisterCardUIFlow(MainActivity.this);
-            }
-        });
 
         // Handle credit card payment flow
         creditCardBtn = (Button) findViewById(R.id.show_credit_card_payment);
