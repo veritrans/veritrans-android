@@ -32,10 +32,15 @@ import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 import com.midtrans.sdk.uikit.activities.CIMBClickPayActivity;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.activities.EpayBriActivity;
+import com.midtrans.sdk.uikit.activities.IndomaretActivity;
+import com.midtrans.sdk.uikit.activities.IndosatDompetkuActivity;
+import com.midtrans.sdk.uikit.activities.KiosonActivity;
 import com.midtrans.sdk.uikit.activities.KiosonInstructionActivity;
 import com.midtrans.sdk.uikit.activities.KlikBCAActivity;
 import com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity;
 import com.midtrans.sdk.uikit.activities.MandiriECashActivity;
+import com.midtrans.sdk.uikit.activities.TelkomselCashActivity;
+import com.midtrans.sdk.uikit.activities.XLTunaiActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -300,33 +305,42 @@ public class PaymentTransactionStatusFragment extends Fragment {
             public void onClick(View v) {
 
                 Log.d("statusactivity", "from:" + getActivity().getClass().getName());
-                if (getActivity().getClass().getName().equalsIgnoreCase(CreditDebitCardFlowActivity.class.getName())) {
-                    ((CreditDebitCardFlowActivity) getActivity())
-                            .setResultCode(getActivity().RESULT_OK);
+                if (getActivity() instanceof CreditDebitCardFlowActivity) {
+                    ((CreditDebitCardFlowActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     ((CreditDebitCardFlowActivity) getActivity()).setResultAndFinish();
-                } else if (getActivity().getClass().getName().equalsIgnoreCase(EpayBriActivity.class.getName())) {
-                    ((EpayBriActivity) getActivity())
-                            .setResultCode(getActivity().RESULT_OK);
+                } else if (getActivity() instanceof EpayBriActivity) {
+                    ((EpayBriActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     ((EpayBriActivity) getActivity()).setResultAndFinish();
-                } else if (getActivity().getClass().getName().equalsIgnoreCase(CIMBClickPayActivity
-                        .class.getName())) {
+                } else if (getActivity() instanceof CIMBClickPayActivity) {
                     ((CIMBClickPayActivity) getActivity())
-                            .setResultCode(getActivity().RESULT_OK);
+                            .setResultCode(Activity.RESULT_OK);
                     ((CIMBClickPayActivity) getActivity()).setResultAndFinish();
-                } else if (getActivity().getClass().getName().equalsIgnoreCase
-                        (MandiriECashActivity
-                                .class.getName())) {
-                    ((MandiriECashActivity) getActivity())
-                            .setResultCode(getActivity().RESULT_OK);
+                } else if (getActivity() instanceof MandiriECashActivity) {
+                    ((MandiriECashActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     ((MandiriECashActivity) getActivity()).setResultAndFinish();
-                } else if (getActivity().getClass().getName().equals(BCAKlikPayActivity.class.getName())) {
+                } else if (getActivity() instanceof BCAKlikPayActivity) {
                     ((BCAKlikPayActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     ((BCAKlikPayActivity) getActivity()).setResultAndFinish();
-                } else if (getActivity().getClass().getName().equals(BankTransferActivity.class.getName())) {
+                } else if (getActivity() instanceof BankTransferActivity) {
                     ((BankTransferActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     getActivity().onBackPressed();
-                } else if (getActivity().getClass().getName().equals(KlikBCAActivity.class.getName())) {
+                } else if (getActivity() instanceof KlikBCAActivity) {
                     ((KlikBCAActivity) getActivity()).setResultCode(Activity.RESULT_OK);
+                    getActivity().onBackPressed();
+                } else if (getActivity() instanceof TelkomselCashActivity) {
+                    ((TelkomselCashActivity) getActivity()).setResultCode(Activity.RESULT_OK);
+                    getActivity().onBackPressed();
+                } else if (getActivity() instanceof IndosatDompetkuActivity) {
+                    ((IndosatDompetkuActivity) getActivity()).setResultCode(Activity.RESULT_OK);
+                    getActivity().onBackPressed();
+                } else if (getActivity() instanceof XLTunaiActivity) {
+                    ((XLTunaiActivity) getActivity()).setResultCode(Activity.RESULT_OK);
+                    getActivity().onBackPressed();
+                } else if (getActivity() instanceof KiosonActivity) {
+                    ((KiosonActivity) getActivity()).setResultCode(Activity.RESULT_OK);
+                    getActivity().onBackPressed();
+                } else if (getActivity() instanceof IndomaretActivity) {
+                    ((IndomaretActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     getActivity().onBackPressed();
                 }
             }

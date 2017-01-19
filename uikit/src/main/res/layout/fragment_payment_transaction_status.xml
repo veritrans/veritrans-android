@@ -189,14 +189,14 @@
                     android:visibility="gone">
 
                     <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                        android:visibility="visible"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="@string/status_bank"
                         android:textColor="@color/white"
                         android:textSize="@dimen/small_text_size"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="visible" />
 
                     <com.midtrans.sdk.uikit.widgets.DefaultTextView
                         android:id="@+id/text_status_bank"
@@ -344,9 +344,9 @@
         android:id="@+id/btn_action"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/btn_height"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_margin="@dimen/sixteen_dp"
+        android:drawableEnd="@drawable/ic_arrow_right_white"
         android:drawableRight="@drawable/ic_arrow_right_white"
         android:text="@string/done"
         android:textColor="@android:color/white" />

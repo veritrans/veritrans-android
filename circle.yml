@@ -42,7 +42,8 @@ test:
        # Don't show soft keyboard
        - fb-adb shell settings put secure show_ime_with_hard_keyboard 0
        # run tests  against the emulator.
-       - ./gradlew :sdk-example:connectedDevelopmentDebugAndroidTest -PdisablePreDex
+       - (./gradlew :sdk-example:connectedDevelopmentDebugAndroidTest -PdisablePreDex):
+            timeout: 3600
 
     post:
        - cp -r corekit/build/reports $CIRCLE_ARTIFACTS
