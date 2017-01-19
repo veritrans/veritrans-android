@@ -94,7 +94,7 @@
         <item>Mandiri Clickpay</item>
 
         <item>CIMB Clicks</item>
-        <item>ePay BRI</item>
+        <item>e-Pay BRI</item>
         <item>BBM Money</item>
 
         <item>Indosat Dompetku</item>
@@ -325,7 +325,7 @@
     <string name="credit_card">Credit/Debit Card</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
-    <string name="epay_bri">ePay BRI</string>
+    <string name="epay_bri">e-Pay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="telkomsel_cash">Telkomsel Cash</string>
