@@ -88,6 +88,44 @@ dependencies {
     developmentCompile project(path: ':corekit', configuration: 'developmentRelease')
     stagingCompile project(path: ':corekit', configuration: 'stagingRelease')
     productionCompile project(path: ':corekit', configuration: 'productionRelease')
+
+    /*
+ * test dependencies
+ */
+    // Android JUnit Runner
+    androidTestCompile 'com.android.support.test:runner:0.5'
+
+    testCompile 'junit:junit:4.12'
+
+    testCompile 'org.mockito:mockito-core:1.10.19'
+
+    testCompile ('org.powermock:powermock-api-mockito:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+    testCompile ('org.powermock:powermock-module-junit4:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+
+    testCompile ('org.powermock:powermock-api-mockito:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+    testCompile ('org.powermock:powermock-module-junit4-rule:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+
+    testCompile ('org.powermock:powermock-classloading-xstream:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+
+    androidTestCompile ('org.powermock:powermock-mockito-release-full:1.6.2') {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
 }
 
 publishing {
