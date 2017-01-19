@@ -5,7 +5,6 @@ import android.content.Intent;
 
 import com.midtrans.sdk.corekit.core.ISdkFlow;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.uikit.activities.SaveCreditCardActivity;
 import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
 
 /**
@@ -20,13 +19,6 @@ public class UIFlow implements ISdkFlow {
             context.startActivity(new Intent(context,
                     UserDetailsActivity.class));
         }
-    }
-
-    @Override
-    public void runRegisterCard(Context context) {
-        Intent cardRegister = new Intent(context,
-                SaveCreditCardActivity.class);
-        context.startActivity(cardRegister);
     }
 
     @Override

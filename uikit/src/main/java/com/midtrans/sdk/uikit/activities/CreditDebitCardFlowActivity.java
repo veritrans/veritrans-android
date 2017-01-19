@@ -46,7 +46,6 @@ import com.midtrans.sdk.corekit.models.snap.Installment;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.adapters.CardPagerAdapter;
 import com.midtrans.sdk.uikit.fragments.AddCardDetailsFragment;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.SavedCardFragment;
@@ -55,7 +54,6 @@ import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
 import com.midtrans.sdk.uikit.utilities.ReadBankDetailTask;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uikit.widgets.CirclePageIndicator;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -96,8 +94,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     //for setResult
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private CardPagerAdapter cardPagerAdapter;
-    private CirclePageIndicator circlePageIndicator;
     private TextView emptyCardsTextView;
     private TextView titleHeaderTextView;
     private DefaultTextView textTotalAmount;
@@ -694,21 +690,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         setResultAndFinish(transactionResponse, errorMessage);
     }
 
-    public void setAdapterViews(CardPagerAdapter cardPagerAdapter, CirclePageIndicator circlePageIndicator, TextView emptyCardsTextView) {
-        this.cardPagerAdapter = cardPagerAdapter;
-        this.circlePageIndicator = circlePageIndicator;
-        this.emptyCardsTextView = emptyCardsTextView;
-    }
-
-    public int getFabHeight() {
-        return fabHeight;
-    }
-
-    public void setFabHeight(int fabHeight) {
-        Logger.i("fab_height:" + fabHeight);
-        this.fabHeight = fabHeight;
-    }
-
     public int dimen(@DimenRes int resId) {
         return (int) getResources().getDimension(resId);
     }
@@ -755,10 +736,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             creditCards.clear();
 
             creditCards.addAll(filteredCards);
-            if (cardPagerAdapter != null && circlePageIndicator != null) {
-                cardPagerAdapter.notifyDataSetChanged();
-                circlePageIndicator.notifyDataSetChanged();
-            }
             //processingLayout.setVisibility(View.GONE);
             if (emptyCardsTextView != null) {
                 if (!creditCards.isEmpty()) {

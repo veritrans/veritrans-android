@@ -108,8 +108,8 @@ public class UserAddressFragment extends Fragment {
         findViews(view);
         retrieveCountryCode();
 
-        billingCountryAdapter = new ListCountryAdapter(getContext(), R.layout.layout_row_contry_code, countryCodeList);
-        shippingCountryAdapter = new ListCountryAdapter(getContext(), R.layout.layout_row_contry_code, countryCodeList);
+        billingCountryAdapter = new ListCountryAdapter(getContext(), R.layout.layout_row_country_code, countryCodeList);
+        shippingCountryAdapter = new ListCountryAdapter(getContext(), R.layout.layout_row_country_code, countryCodeList);
 
         etCountry.setAdapter(billingCountryAdapter);
         etCountry.setThreshold(1);

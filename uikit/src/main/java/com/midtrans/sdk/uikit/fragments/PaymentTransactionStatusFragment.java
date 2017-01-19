@@ -36,7 +36,6 @@ import com.midtrans.sdk.uikit.activities.KiosonInstructionActivity;
 import com.midtrans.sdk.uikit.activities.KlikBCAActivity;
 import com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity;
 import com.midtrans.sdk.uikit.activities.MandiriECashActivity;
-import com.midtrans.sdk.uikit.activities.OffersActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -320,11 +319,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
                     ((MandiriECashActivity) getActivity())
                             .setResultCode(getActivity().RESULT_OK);
                     ((MandiriECashActivity) getActivity()).setResultAndFinish();
-                } else if (getActivity().getClass().getName().equalsIgnoreCase
-                        (OffersActivity.class.getName())) {
-                    ((OffersActivity) getActivity())
-                            .setResultCode(getActivity().RESULT_OK);
-                    ((OffersActivity) getActivity()).setResultAndFinish();
                 } else if (getActivity().getClass().getName().equals(BCAKlikPayActivity.class.getName())) {
                     ((BCAKlikPayActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     ((BCAKlikPayActivity) getActivity()).setResultAndFinish();

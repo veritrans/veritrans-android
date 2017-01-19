@@ -325,17 +325,6 @@ public class MidtransSDK {
     }
 
     /**
-     * This will start actual execution of save card UI flow.
-     *
-     * @param context current activity.
-     */
-    public void startRegisterCardUIFlow(@NonNull Context context) {
-        if (uiflow != null) {
-            uiflow.runRegisterCard(context);
-        }
-    }
-
-    /**
      * This will start actual execution of credit card UI flow.
      *
      * @param context activity context.

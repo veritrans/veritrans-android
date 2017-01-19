@@ -104,5 +104,6 @@
         app:fb_iconResource="@drawable/ic_plus_new"
         app:fb_radius="5dp"
         app:fb_text="@string/add_new_card"
-        app:fb_textColor="?attr/colorPrimary" />
+        app:fb_textColor="?attr/colorPrimary"
+        tools:visibility="visible" />
 </RelativeLayout>

@@ -530,9 +530,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_INDOMARET, null);
             Intent startIndomaret = new Intent(this, IndomaretActivity.class);
             startActivityForResult(startIndomaret, Constants.RESULT_CODE_PAYMENT_TRANSFER);
-        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_offers))) {
-            Intent startOffersActivity = new Intent(this, OffersActivity.class);
-            startActivityForResult(startOffersActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bca_klikpay))) {
             // track payment select bank transfer
             midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_SELECT_PAYMENT, PAYMENT_TYPE_BCA_KLIKPAY, null);
