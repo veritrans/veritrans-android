@@ -73,6 +73,9 @@
         <activity
             android:name="com.midtrans.sdk.uikit.activities.GCIActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.KlikBCAInstructionActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
