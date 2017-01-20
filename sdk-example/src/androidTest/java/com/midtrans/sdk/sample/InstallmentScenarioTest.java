@@ -54,7 +54,7 @@ public class InstallmentScenarioTest {
         offlineCard = "4811111111111114";
         mandiriCard = "4617006959746656";
         bniCard = "4105058689481467";
-        bcaCardExpected = "4773776057051650";
+        bcaCard = "4773776057051650";
         offlineCardExpected = "4811 1111 1111 1114";
         mandiriCardExpected = "4617 0069 5974 6656";
         bniCardExpected = "4105 0586 8948 1467";
@@ -290,32 +290,10 @@ public class InstallmentScenarioTest {
     }
 
     @Test
-    public void creditCardBCAInstallmentNormalFlowTest() {
-        // Initializing credit card payment
-        onView(ViewMatchers.withId(R.id.show_ui_flow)).perform(scrollTo(), click());
-        // Load 3DS
-        SystemClock.sleep(10000);
-        onView(withId(R.id.rv_payment_methods)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-
-        // Fill credit card data
-        onView(withId(R.id.et_card_no)).perform(typeText(bcaCard), closeSoftKeyboard()).check(matches(withText(bcaCardExpected)));
-        onView(withId(R.id.bank_logo)).check(matches(withDrawable(R.drawable.bca)));
-        onView(withId(R.id.et_exp_date)).perform(typeText(cardExpired), closeSoftKeyboard()).check(matches(withText(cardExpiredExpected)));
-        onView(withId(R.id.et_cvv)).perform(typeText(cardCVV), closeSoftKeyboard()).check(matches(withText(cardCVVExcpected)));
-
-        onView(withId(R.id.layout_installment)).check(matches(isDisplayed()));
-        onView(withId(R.id.button_installment_increase)).perform(click());
-        onView(withId(R.id.btn_pay_now)).perform(click());
-
-        // Load charging request
-        SystemClock.sleep(5000);
-        onView(withId(R.id.text_title_payment_status)).check(matches(withText(R.string.payment_successful)));
-    }
-
-    @Test
     public void creditCardBCAInstallment3DSFlowTest() {
         // Initializing credit card payment
         onView(withId(R.id.radio_secure)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_bca)).perform(scrollTo(), click());
         onView(ViewMatchers.withId(R.id.show_ui_flow)).perform(scrollTo(), click());
         // Load 3DS
         SystemClock.sleep(10000);
