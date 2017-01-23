@@ -38,6 +38,7 @@ import com.midtrans.sdk.uikit.activities.KiosonActivity;
 import com.midtrans.sdk.uikit.activities.KiosonInstructionActivity;
 import com.midtrans.sdk.uikit.activities.KlikBCAActivity;
 import com.midtrans.sdk.uikit.activities.KlikBCAInstructionActivity;
+import com.midtrans.sdk.uikit.activities.MandiriClickPayActivity;
 import com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity;
 import com.midtrans.sdk.uikit.activities.MandiriECashActivity;
 import com.midtrans.sdk.uikit.activities.TelkomselCashActivity;
@@ -342,6 +343,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
                     getActivity().onBackPressed();
                 } else if (getActivity() instanceof IndomaretActivity) {
                     ((IndomaretActivity) getActivity()).setResultCode(Activity.RESULT_OK);
+                    getActivity().onBackPressed();
+                } else if (getActivity() instanceof MandiriClickPayActivity) {
+                    ((MandiriClickPayActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     getActivity().onBackPressed();
                 }
             }
