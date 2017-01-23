@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
+apply from: '../jacoco-uikit.gradle'
+apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
 version = '1.2.8'
@@ -19,6 +21,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+        classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.4.0'
+
     }
 }
 repositories {
@@ -48,6 +52,9 @@ android {
 
             consumerProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            testCoverageEnabled = true;
         }
     }
 

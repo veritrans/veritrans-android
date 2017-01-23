@@ -124,7 +124,8 @@ public class CreditCardTransactionTest {
         cardInstallment.setInstallment(installment);
         cardTransaction.setProperties(card, readDefaultBankBins());
         cardTransaction.getInstallmentTerms(BIN_VALID);
-        assertEquals(6, cardTransaction.getInstallmentTerm(1));
+        int term = cardTransaction.getInstallmentTerm(1);
+        assertEquals(6, term);
     }
 
     @Test
