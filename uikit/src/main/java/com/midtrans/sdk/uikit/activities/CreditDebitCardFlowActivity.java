@@ -9,7 +9,6 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -78,7 +77,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private static final String TAG = "CreditCardActivity";
     private int attempt = 0;
     private Toolbar toolbar;
-    private FragmentManager fragmentManager;
     private MidtransSDK midtransSDK;
     private float cardWidth;
     private UserDetail userDetail;
@@ -114,7 +112,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         setContentView(R.layout.activity_credit_debit_card_flow);
         processingLayout = (RelativeLayout) findViewById(R.id.processing_layout);
         midtransSDK = MidtransSDK.getInstance();
-        fragmentManager = getSupportFragmentManager();
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
@@ -803,11 +800,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         return creditCardTransaction.getInstallmentTerms(cardBin);
     }
 
-    public String getBankByBin(String cardBin) {
+    public String getBankByBin(String cardBin){
         return creditCardTransaction.getBankByBin(cardBin);
     }
 
-    public Integer getInstallmentTerm(int currentPosition) {
+    public int getInstallmentTerm(int currentPosition) {
         return creditCardTransaction.getInstallmentTerm(currentPosition);
     }
 

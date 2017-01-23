@@ -2,7 +2,6 @@ package com.midtrans.sdk.uikit.models;
 
 import android.text.TextUtils;
 
-import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.snap.Installment;
 
 import java.util.ArrayList;
@@ -18,16 +17,14 @@ public class CreditCardInstallment {
     private int termSelected;
     private boolean installmentAvailable;
 
-    public CreditCardInstallment() {
-    }
-
     public void setInstallment(Installment installment) {
         this.installment = installment;
         init();
     }
 
-    public void init() {
+    private void init() {
         installmentAvailable = installment != null && installment.getTerms() != null && !installment.getTerms().isEmpty();
+
     }
 
     public boolean isInstallmentAvailable() {
@@ -36,6 +33,7 @@ public class CreditCardInstallment {
 
     public ArrayList<Integer> getTerms(String bank) {
         if (isInstallmentAvailable()) {
+
             for (String key : installment.getTerms().keySet()) {
                 if (key.equals(bank)) {
                     this.bankSelected = bank;
@@ -60,12 +58,9 @@ public class CreditCardInstallment {
     }
 
     public boolean isInstallmentValid() {
-        if (isInstallmentAvailable()) {
-            Installment installment = MidtransSDK.getInstance().getCreditCard().getInstallment();
-            if (installment != null && installment.isRequired()) {
-                if (termSelected == 0 || TextUtils.isEmpty(bankSelected)) {
-                    return false;
-                }
+        if (isInstallmentAvailable() && installment.isRequired()) {
+            if (termSelected == 0 || TextUtils.isEmpty(bankSelected)) {
+                return false;
             }
         }
         return true;
@@ -81,5 +76,9 @@ public class CreditCardInstallment {
 
     public String getBankSelected() {
         return bankSelected;
+    }
+
+    public Installment getInstallment() {
+        return installment;
     }
 }
