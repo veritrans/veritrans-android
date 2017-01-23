@@ -39,7 +39,7 @@ import static com.midtrans.sdk.sample.EspressoTestsMatchers.withDrawable;
  * Created by rakawm on 1/20/17.
  */
 @RunWith(AndroidJUnit4.class)
-public class InstallmentScenarioTest {
+public class PositiveInstallmentScenarioTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(MainActivity.class);
 
