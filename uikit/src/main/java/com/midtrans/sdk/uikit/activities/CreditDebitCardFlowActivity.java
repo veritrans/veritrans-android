@@ -800,7 +800,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         return creditCardTransaction.getInstallmentTerms(cardBin);
     }
 
-    public String getBankByBin(String cardBin){
+    public String getBankByBin(String cardBin) {
         return creditCardTransaction.getBankByBin(cardBin);
     }
 
