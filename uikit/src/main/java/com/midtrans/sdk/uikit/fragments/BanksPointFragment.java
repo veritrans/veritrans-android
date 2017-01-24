@@ -43,6 +43,7 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     private String pointBank;
     private double totalAmount;
     private boolean inputPointFromButtons;
+    private String latestValidPoint;
 
     public static BanksPointFragment newInstance(long balance, String bank) {
         BanksPointFragment fragment = new BanksPointFragment();
@@ -106,14 +107,30 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
                     editable.delete(0, 1);
                 }
 
-                if (!isValidInputPoint(inputString)) {
-                    editable.delete(editable.length() - 1, editable.length());
+                if (isValidInputPoint(inputString)) {
+                    latestValidPoint = inputString;
+                } else {
+                    editPointRedeemed.setText(latestValidPoint);
                 }
                 updateViews();
             }
         });
     }
 
+    public boolean isValidInputPoint(String inputString) {
+        long currentBalance = 0;
+        try {
+            currentBalance = Long.parseLong(inputString);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        if (currentBalance >= 0 && currentBalance <= pointBalance) {
+            calculateAmount(currentBalance);
+            return true;
+        }
+        return false;
+    }
 
     private void setupDefaultView() {
         try {
@@ -167,15 +184,17 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     }
 
     private void updatePointButtonStatus() {
-        if ((pointRedeemed == 0 && pointBalance == 0) || !isValidCurrentBalance(pointRedeemed)) {
-            setEnablePointButtons(false, false);
-        } else if (pointRedeemed == 0 && pointBalance > 0) {
-            setEnablePointButtons(false, true);
-        } else if (pointRedeemed > 0 && pointRedeemed == pointBalance) {
-            setEnablePointButtons(true, false);
-        } else if (pointRedeemed > 0 && pointRedeemed < pointBalance) {
-            setEnablePointButtons(true, true);
+        boolean enableIncrease = true;
+        boolean enableDecrease = true;
+
+        if (pointRedeemed < 0 || (pointRedeemed - MULTPIPLY) < 0) {
+            enableDecrease = false;
         }
+
+        if (pointRedeemed > pointBalance || (pointRedeemed + MULTPIPLY) > pointBalance) {
+            enableIncrease = false;
+        }
+        setEnablePointButtons(enableDecrease, enableIncrease);
     }
 
     private void setEnablePointButtons(boolean enableDecreaseButton, boolean enableIncreaseButton) {
@@ -195,18 +214,11 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     private void onDecrasePoint() {
         inputPointFromButtons = true;
         long currentBalance = getCurrentPoint();
-        if (isValidCurrentBalance(currentBalance)) {
-            long newBalance = currentBalance - MULTPIPLY;
-            if (newBalance <= 0) {
-                currentBalance = 0;
-            } else {
-                currentBalance = newBalance;
-            }
-
-            if (isValidPointAmount(currentBalance)) {
-                this.pointRedeemed = currentBalance;
-            }
+        long newBalance = currentBalance - MULTPIPLY;
+        if (isValidCurrentBalance(currentBalance) && newBalance >= 0) {
+            calculateAmount(newBalance);
         }
+
         updateViews();
         inputPointFromButtons = false;
     }
@@ -214,24 +226,18 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     private void onIncreasePoint() {
         inputPointFromButtons = true;
         long currentBalance = getCurrentPoint();
-        if (isValidCurrentBalance(currentBalance)) {
-            long newBalance = currentBalance + MULTPIPLY;
-            if (newBalance > pointBalance) {
-                currentBalance = pointBalance;
-            } else {
-                currentBalance = newBalance;
-            }
+        long newBalance = currentBalance + MULTPIPLY;
 
-            if (isValidPointAmount(currentBalance)) {
-                this.pointRedeemed = currentBalance;
-            }
+        if (isValidCurrentBalance(currentBalance) && newBalance <= pointBalance) {
+            calculateAmount(newBalance);
         }
+
         updateViews();
         inputPointFromButtons = false;
     }
 
     private boolean isValidCurrentBalance(long currentBalance) {
-        if (pointBalance >= MULTPIPLY && currentBalance < this.pointBalance) {
+        if (pointBalance >= MULTPIPLY && currentBalance <= this.pointBalance) {
             return true;
         }
         return false;
@@ -241,13 +247,14 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
         if (inputPointFromButtons) {
             editPointRedeemed.setText(String.valueOf(pointRedeemed));
         }
+
         textAmountToPay.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(amountToPay)));
         textPointConverted.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(pointConverted)));
 
         updatePointButtonStatus();
     }
 
-    private boolean isValidPointAmount(long currentBalance) {
+    private void calculateAmount(long currentBalance) {
         double pointAmount;
         if (currentBalance == 0) {
             pointAmount = currentBalance;
@@ -255,13 +262,9 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
             pointAmount = currentBalance / 100;
         }
 
-        if (pointAmount <= totalAmount) {
-            pointConverted = pointAmount;
-            amountToPay = totalAmount - pointConverted;
-            return true;
-        }
-
-        return false;
+        this.pointRedeemed = currentBalance;
+        this.pointConverted = pointAmount;
+        this.amountToPay = totalAmount - pointConverted;
     }
 
     private long getCurrentPoint() {
@@ -275,20 +278,4 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
         return currentBalance;
     }
 
-    public boolean isValidInputPoint(String inputString) {
-        long currentBalance = 0;
-        try {
-            currentBalance = Long.parseLong(inputString);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-
-        if (currentBalance >= 0 && currentBalance <= pointBalance) {
-            if (isValidPointAmount(currentBalance)) {
-                pointRedeemed = currentBalance;
-                return true;
-            }
-        }
-        return false;
-    }
 }

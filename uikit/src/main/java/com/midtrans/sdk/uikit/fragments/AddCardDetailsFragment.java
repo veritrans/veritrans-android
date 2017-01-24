@@ -294,7 +294,7 @@ public class AddCardDetailsFragment extends Fragment {
 
                 if (checkCardValidity()) {
 
-                    ((CreditDebitCardFlowActivity) getActivity()).setBNIPointStatus(isBNIPointActivated());
+                    ((CreditDebitCardFlowActivity) getActivity()).setBankPointStatus(isBNIPointActivated());
                     if (!isValidPayment()) {
                         return;
                     }

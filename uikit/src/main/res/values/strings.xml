@@ -94,7 +94,7 @@
         <item>Mandiri Clickpay</item>
 
         <item>CIMB Clicks</item>
-        <item>ePay BRI</item>
+        <item>e-Pay BRI</item>
         <item>BBM Money</item>
 
         <item>Indosat Dompetku</item>
@@ -325,7 +325,7 @@
     <string name="credit_card">Credit/Debit Card</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
-    <string name="epay_bri">ePay BRI</string>
+    <string name="epay_bri">e-Pay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="telkomsel_cash">Telkomsel Cash</string>
@@ -570,7 +570,8 @@
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
     <string name="kioson_valid">Please complete your payment at Kioson Outlet Before : %1$s</string>
-    <string name="kioson_payment_instrution">Kioson Payment Instruction</string>
+    <string name="kioson_payment_instruction">Kioson Payment Instruction</string>
+    <string name="klikbca_payment_instruction">KlikBCA Payment Instruction</string>
     <string name="message_payment_cannot_proccessed">Transaction cannot be proccessed. Make sure your payment informations is correct</string>
     <string name="message_payment_failed">Transaction Failed. Re-check your card details or use another card.</string>
     <string name="message_payment_denied">Transaction denied! Please try again or try another payment method.</string>
@@ -677,4 +678,8 @@
     <string name="will_be_used_point_here">Will be used point</string>
     <string name="total_point_here">total point here</string>
     <string name="redeem_point">Redeem Point</string>
+
+    <string name="instruction_klikbca1">Please make sure that the UserID is active and registered at BCA.</string>
+    <string name="instruction_klikbca2">Please continue the payment through KlikBCA by opening www.klikbca.com on a separate window or tab, using the same User ID that you entered below.</string>
+    <string name="instruction_klikbca3">Transaction will be cancelled if payment is not completed within 2 hours.</string>
 </resources>

@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
                     .enableLog(true)
-                    .useBuiltInTokenStorage(false) // enable built in token storage
+                    .useBuiltInTokenStorage(true) // enable built in token storage
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
@@ -327,12 +327,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         // Handle Card registration using UI flow
         uiCardRegistration = (Button) findViewById(R.id.btn_card_registration_ui);
-        uiCardRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MidtransSDK.getInstance().startRegisterCardUIFlow(MainActivity.this);
-            }
-        });
 
         // Handle credit card payment flow
         creditCardBtn = (Button) findViewById(R.id.show_credit_card_payment);
