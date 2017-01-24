@@ -2,7 +2,7 @@ package com.midtrans.sdk.corekit.core;
 
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
-import com.midtrans.sdk.corekit.models.snap.BNIPointsResponse;
+import com.midtrans.sdk.corekit.models.snap.BankPointsResponse;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
@@ -200,6 +200,6 @@ public interface SnapRestAPI {
      * @param transactionCallback response get transaction request
      */
     @GET("/v1/transactions/{snap_token}/point_inquiry/{card_token}")
-    void getBNIPoints(@Path("snap_token") String snapToken, @Path("card_token") String cardToken, Callback<BNIPointsResponse> transactionCallback);
+    void getBNIPoints(@Path("snap_token") String snapToken, @Path("card_token") String cardToken, Callback<BankPointsResponse> transactionCallback);
 
 }

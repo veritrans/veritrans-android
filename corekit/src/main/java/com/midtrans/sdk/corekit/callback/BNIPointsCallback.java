@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.callback;
 
-import com.midtrans.sdk.corekit.models.snap.BNIPointsResponse;
+import com.midtrans.sdk.corekit.models.snap.BankPointsResponse;
 
 /**
  * Created by ziahaqi on 1/12/17.
@@ -8,7 +8,7 @@ import com.midtrans.sdk.corekit.models.snap.BNIPointsResponse;
 
 public interface BNIPointsCallback {
 
-    void onSuccess(BNIPointsResponse response);
+    void onSuccess(BankPointsResponse response);
 
     void onFailure(String reason);
 

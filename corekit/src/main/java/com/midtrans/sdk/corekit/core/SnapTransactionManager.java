@@ -22,7 +22,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
-import com.midtrans.sdk.corekit.models.snap.BNIPointsResponse;
+import com.midtrans.sdk.corekit.models.snap.BankPointsResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
@@ -1357,9 +1357,9 @@ public class SnapTransactionManager extends BaseTransactionManager {
      */
     public void getBNIPoints(String authenticationToken, String cardToken, final BNIPointsCallback callback) {
 
-        snapRestAPI.getBNIPoints(authenticationToken, cardToken, new Callback<BNIPointsResponse>() {
+        snapRestAPI.getBNIPoints(authenticationToken, cardToken, new Callback<BankPointsResponse>() {
             @Override
-            public void success(BNIPointsResponse bankPointResponse, Response response) {
+            public void success(BankPointsResponse bankPointResponse, Response response) {
                 releaseResources();
                 if (bankPointResponse != null) {
                     if (bankPointResponse.getStatusCode() != null && bankPointResponse.getStatusCode().equals(context.getString(R.string.success_code_200))) {

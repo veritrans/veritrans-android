@@ -17,7 +17,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
-import com.midtrans.sdk.corekit.models.snap.BNIPointsResponse;
+import com.midtrans.sdk.corekit.models.snap.BankPointsResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
@@ -254,7 +254,7 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
 
     private BNIPointsCallback bniPointsCallback = new BNIPointsCallback() {
         @Override
-        public void onSuccess(BNIPointsResponse response) {
+        public void onSuccess(BankPointsResponse response) {
             callbackCollaborator.onGetBNIPointsSuccess();
         }
 

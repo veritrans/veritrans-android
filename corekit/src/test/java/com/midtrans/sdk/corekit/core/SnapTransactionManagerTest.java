@@ -17,7 +17,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
-import com.midtrans.sdk.corekit.models.snap.BNIPointsResponse;
+import com.midtrans.sdk.corekit.models.snap.BankPointsResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
@@ -236,9 +236,9 @@ public class SnapTransactionManagerTest {
     @Captor
     private ArgumentCaptor<String> cardTokenCaptor;
     @Captor
-    private ArgumentCaptor<Callback<BNIPointsResponse>> getBNIPointCaptor;
+    private ArgumentCaptor<Callback<BankPointsResponse>> getBNIPointCaptor;
     @Mock
-    private BNIPointsResponse BNIPointsResponseMock;
+    private BankPointsResponse BankPointsResponseMock;
 
 
     @Before
@@ -2467,20 +2467,20 @@ public class SnapTransactionManagerTest {
 
     @Test
     public void getBNIPoinstSuccess_whenCode200or201() {
-        Mockito.when(BNIPointsResponseMock.getStatusCode()).thenReturn(RESPONSE_CODE_200);
+        Mockito.when(BankPointsResponseMock.getStatusCode()).thenReturn(RESPONSE_CODE_200);
         callbackImplement.getBNIPoints(tokenId, cardtoken);
         Mockito.verify(snapAPI).getBNIPoints(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getBNIPointCaptor.capture());
-        getBNIPointCaptor.getValue().success(BNIPointsResponseMock, retrofitResponse);
+        getBNIPointCaptor.getValue().success(BankPointsResponseMock, retrofitResponse);
         Mockito.verify(callbackCollaborator).onGetBNIPointsSuccess();
     }
 
 
     @Test
     public void getBNIPointsSuccess_whenCodeNot200orNot201() {
-        Mockito.when(BNIPointsResponseMock.getStatusCode()).thenReturn(RESPONSE_CODE_400);
+        Mockito.when(BankPointsResponseMock.getStatusCode()).thenReturn(RESPONSE_CODE_400);
         callbackImplement.getBNIPoints(tokenId, cardtoken);
         Mockito.verify(snapAPI).getBNIPoints(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getBNIPointCaptor.capture());
-        getBNIPointCaptor.getValue().success(BNIPointsResponseMock, retrofitResponse);
+        getBNIPointCaptor.getValue().success(BankPointsResponseMock, retrofitResponse);
         Mockito.verify(callbackCollaborator).onGetBNIPointsFailure();
     }
 
