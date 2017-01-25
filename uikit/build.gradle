@@ -165,7 +165,7 @@ publishing {
             }
         }
 
-        BintrayPublication(MavenPublication) {
+        BintrayStagingPublication(MavenPublication) {
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/uikit-staging-release.aar")
             groupId group

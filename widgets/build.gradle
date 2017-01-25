@@ -112,7 +112,7 @@ publishing {
             }
         }
 
-        BintrayPublication(MavenPublication) {
+        BintrayStagingPublication(MavenPublication) {
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/widgets-staging-release.aar")
             groupId group
