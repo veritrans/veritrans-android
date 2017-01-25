@@ -49,19 +49,11 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.midtrans.sdk.uikit.activities.OffersActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name="com.midtrans.sdk.uikit.activities.SelectBankTransferActivity"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.midtrans.sdk.uikit.activities.BCAKlikPayActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.SaveCreditCardActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.midtrans.sdk.uikit.activities.KlikBCAActivity"
@@ -80,6 +72,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.midtrans.sdk.uikit.activities.GCIActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.KlikBCAInstructionActivity"
             android:screenOrientation="portrait" />
     </application>
 

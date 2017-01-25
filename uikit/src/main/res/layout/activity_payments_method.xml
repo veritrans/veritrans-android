@@ -19,9 +19,11 @@
                 android:background="@android:color/white">
 
                 <LinearLayout
+                    android:layout_marginRight="@dimen/sixtyfour_dp"
+                    android:layout_marginEnd="@dimen/sixtyfour_dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -34,6 +36,7 @@
                         tools:text="Name" />
 
                     <ImageView
+                        android:layout_gravity="center"
                         android:id="@+id/merchant_logo"
                         android:layout_width="@dimen/logo_width"
                         android:layout_height="@dimen/logo_height"
@@ -53,18 +56,10 @@
                         android:text="@string/select_payment_method"
                         android:textColor="@color/dark_gray"
                         android:textSize="@dimen/tool_bar_title_size"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </android.support.v7.widget.Toolbar>
-
-        <include
-            layout="@layout/layout_tool_bar_titles"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:visibility="visible" />
     </android.support.design.widget.AppBarLayout>
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -73,11 +68,30 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_payment_methods"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_item_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorPrimary"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_payment_methods"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/progress_container"

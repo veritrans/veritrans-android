@@ -47,6 +47,7 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
     public void onBindViewHolder(BankTransferViewHolder holder, int position) {
         holder.bankName.setText(mData.get(position).getBankName());
         holder.bankIcon.setImageResource(mData.get(position).getImage());
+        holder.bankDescription.setText(mData.get(position).getDescription());
         Logger.d(TAG, "Bank Item: " + mData.get(position).getBankName());
     }
 
@@ -59,14 +60,16 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
         void onItemClick(int position);
     }
 
-    public static class BankTransferViewHolder extends RecyclerView.ViewHolder {
+    class BankTransferViewHolder extends RecyclerView.ViewHolder {
         TextView bankName;
+        TextView bankDescription;
         ImageView bankIcon;
 
-        public BankTransferViewHolder(View itemView, final BankTransferAdapterListener listener) {
+        BankTransferViewHolder(View itemView, final BankTransferAdapterListener listener) {
             super(itemView);
             bankName = (TextView) itemView.findViewById(R.id.text_bank_name);
             bankIcon = (ImageView) itemView.findViewById(R.id.img_bank_icon);
+            bankDescription = (TextView) itemView.findViewById(R.id.text_bank_description);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

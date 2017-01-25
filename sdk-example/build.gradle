@@ -18,6 +18,8 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     productFlavors {
@@ -26,6 +28,13 @@ android {
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
         }
+
+        staging {
+            applicationId "com.midtrans.sdk.sample.staging"
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_STAGING
+            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_STAGING
+        }
+
         production {
             applicationId "com.midtrans.sdk.sample.production"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_PRODUCTION
@@ -34,7 +43,7 @@ android {
     }
     buildTypes {
         debug {
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -44,42 +53,64 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     // Android support
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:design:25.0.0'
-    compile 'com.android.support:cardview-v7:25.0.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:cardview-v7:25.1.0'
 
     developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
+    stagingCompile project(path: ':uikit', configuration: 'stagingRelease')
     productionCompile project(path: ':uikit', configuration: 'productionRelease')
+
     developmentCompile(project(path: ':scancard', configuration: 'developmentRelease')) {
         exclude module: 'uikit'
         exclude module: 'corekit'
     }
+
+    stagingCompile(project(path: ':scancard', configuration: 'stagingRelease')) {
+        exclude module: 'uikit'
+        exclude module: 'corekit'
+    }
+
     productionCompile(project(path: ':scancard', configuration: 'productionRelease')) {
         exclude module: 'uikit'
         exclude module: 'corekit'
     }
+
     developmentCompile(project(path: ':widgets', configuration: 'developmentRelease')) {
         exclude module: 'corekit'
     }
+
+    stagingCompile(project(path: ':widgets', configuration: 'stagingRelease')) {
+        exclude module: 'corekit'
+    }
+
     productionCompile(project(path: ':widgets', configuration: 'productionRelease')) {
         exclude module: 'corekit'
     }
 
-    androidTestCompile('com.android.support.test:runner:0.3') {
+    androidTestCompile('com.android.support.test:runner:0.5') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile('com.android.support.test:rules:0.3') {
+    androidTestCompile('com.android.support.test:rules:0.5') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2') {
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile('com.android.support.test.espresso:espresso-intents:2.2') {
+    androidTestCompile('com.android.support.test.espresso:espresso-intents:2.2.2') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2') {
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
         exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'design'
+        exclude module: 'recyclerview-v7'
+    }
+
+    androidTestCompile('com.android.support.test.espresso:espresso-web:2.2.2') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     }
@@ -87,5 +118,6 @@ dependencies {
     // Leak Canary
     developmentCompile 'com.squareup.haha:haha:2.0.3'
     developmentCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    stagingCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 }

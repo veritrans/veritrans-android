@@ -48,14 +48,14 @@
     <string name="btn_cancel">Cancel</string>
     <string name="btn_accept">Accept</string>
     <!--Activities-->
-    <string name="activity_select_bank">Select Bank</string>
+    <string name="activity_select_bank">Choose Bank</string>
     <string name="activity_bank_transfer_bca">BCA Bank Transfer</string>
     <string name="activity_bank_transfer_mandiri">Mandiri Bank Transfer</string>
     <string name="activity_bank_transfer_permata">Permata Bank Transfer</string>
     <string name="activity_bank_transfer_all_bank">Other Bank Transfer</string>
     <string name="activity_save_credit_card">Registered Credit Card</string>
     <!-- User Address -->
-    <string name="title_user_details">User Details</string>
+    <string name="title_user_details">User Information</string>
     <string name="hint_address">Address</string>
     <string name="hint_city">City</string>
     <string name="hint_zip_code">Zipcode</string>
@@ -107,9 +107,9 @@
     <string name="hint_name_on_card">Name on the card</string>
     <string name="hint_card_number">Card Number</string>
     <string name="hint_cvv">CVV</string>
-    <string name="save_card_message">Save this card for future use</string>
+    <string name="save_card_message">Save my card details</string>
     <string name="pay_now">Pay now</string>
-    <string name="pay_with_instalments">Pay with instalments</string>
+    <string name="pay_with_instalments">Pay with instalment ?</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
     <string name="hint_expiry_date">Expiry(mm/yy)</string>
     <string name="validation_message_card_number">Please enter card number</string>
@@ -151,12 +151,12 @@
     <string name="hint_email_optional">Email Address (Optional)</string>
     <string name="email_instruction">We\'ll send payment instruction to mail.</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
-    <string name="bank_atm_transfer_step1">1.\t Click the Confirm Payment button.</string>
-    <string name="bank_atm_transfer_step2">2.\t You will receive an unique account number and instructions on how to pay
+    <string name="bank_atm_transfer_step1">Click the Confirm Payment button.</string>
+    <string name="bank_atm_transfer_step2">You will receive an unique account number and instructions on how to pay
         (You can receive instructions via email if you input your mail address above).</string>
 
-    <string name="bank_atm_transfer_step3">3.\t Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
-    <string name="bank_atm_transfer_step4">4.\t Once payment is complete, you will receive a confirmation email.</string>
+    <string name="bank_atm_transfer_step3">Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
+    <string name="bank_atm_transfer_step4">Once payment is complete, you will receive a confirmation email.</string>
     <string name="see_instruction">see instructions</string>
     <string name="confirm_payment">Confirm Payment</string>
     <string name="copy_payment_code">Copy Payment Code</string>
@@ -168,9 +168,9 @@
     <string name="copied_company_code">Company code was copied to clipboard</string>
     <string name="complete_payment_at_atm">Complete Payment At ATM</string>
     <string name="complete_payment_at_klik_bca">Finish</string>
-    <string name="done">Done</string>
+    <string name="done">Finish</string>
     <string name="virtual_account_number">Virtual Account Number</string>
-    <string name="payment_pending">Payment Pending !</string>
+    <string name="payment_pending">Payment Pending</string>
     <string name="transactionTime">Transaction Time</string>
     <string name="paymentType">Payment Type</string>
     <string name="tab_mandiri">Mandiri/ATM Bersana</string>
@@ -185,13 +185,13 @@
     <string name="mandiri_instruction_step1">1.\tOn the main menu, Choose \'Pay/Buy\'.</string>
     <string name="mandiri_instruction_step2">2.\tChoose \'Others\'.</string>
     <string name="mandiri_instruction_step3">3.\tChoose \'Multi Payment\'.</string>
-    <string name="mandiri_instruction_step4">4.\tEnter 70012 (Veritrans company code) and press \'Correct\'.</string>
+    <string name="mandiri_instruction_step4">4.\tEnter 70012 (Midtrans company code) and press \'Correct\'.</string>
     <string name="mandiri_instruction_step5">5.\tEnter your Payment code and press \'Correct\'.</string>
     <string name="mandiri_instruction_step6">6.\tYour payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
 
     <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (ib.bankmandiri.co.id).</string>
     <string name="mandiri_internet_instruction_step2">2.\tFrom the main menu choose \'Payment\', then choose \'Multi Payment\'.</string>
-    <string name="mandiri_internet_instruction_step3">3.\tSelect your account in \'From Account\', then \'Billing Name\' select \'Veritrans\'.</string>
+    <string name="mandiri_internet_instruction_step3">3.\tSelect your account in \'From Account\', then \'Billing Name\' select \'Midtrans\'.</string>
     <string name="mandiri_internet_instruction_step4">4.\tEnter the \'Payment Code\' and you will receive your payment details.</string>
     <string name="mandiri_internet_instruction_step5">5.\tConfirm your payment using Mandiri Token.</string>
 
@@ -213,9 +213,9 @@
     <string name="bca_klik_instruction_step6">6.\tYour transaction is Done.</string>
 
     <!--KLIK BCA PAYMENT-->
-    <string name="bca_klik_pay_instruction_step1">1.\tYou will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
-    <string name="bca_klik_pay_instruction_step2">2.\tFor payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
-    <string name="bca_klik_pay_instruction_step3">3.\tFor more information about BCA KlikPay please contact Halo BCA at (021) 500888 or visit www.bca.co.id.</string>
+    <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
+    <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
+    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 500888 or visit www.bca.co.id.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
@@ -228,30 +228,30 @@
     <string name="bca_mbanking_instruction_step8">8.\tEnter amount to be transferred then click \'OK\'.</string>
     <string name="bca_mbanking_instruction_step9">9.\tYour transaction is done.</string>
     <!-- cimb transfer Instructions -->
-    <string name="cimb_instruction_step1">1.\tPlease make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
-    <string name="cimb_instruction_step2">2.\tTransaction will be cancelled if payment is not completed within 2 hours.</string>
-    <string name="cimb_instruction_step3">3.\tPlease make sure that there is no pop-up blocker on your browser.</string>
+    <string name="cimb_instruction_step1">Please make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
+    <string name="cimb_instruction_step2">Transaction will be cancelled if payment is not completed within 2 hours.</string>
+    <string name="cimb_instruction_step3">Please make sure that there is no pop-up blocker on your browser.</string>
 
 
     <!-- Mandiri E Cash transfer Instruction-->
-    <string name="mandiri__e_cash_instruction_step1">1.\tMake sure you have registered your mobile phone number for Mandiri e-cash.</string>
-    <string name="mandiri__e_cash_instruction_step2">2.\tClick \'Confirm Payment\'.</string>
-    <string name="mandiri__e_cash_instruction_step3">3.\tEnter your phone number and PIN.</string>
-    <string name="mandiri__e_cash_instruction_step4">4.\tPlease wait for an SMS from Mandiri e-cash that contains your One Time Password (OTP).</string>
-    <string name="mandiri__e_cash_instruction_step5">5.\tEnter the 6 digit OTP, then click
+    <string name="mandiri__e_cash_instruction_step1">Make sure you have registered your mobile phone number for Mandiri e-cash.</string>
+    <string name="mandiri__e_cash_instruction_step2">Click \'Confirm Payment\'.</string>
+    <string name="mandiri__e_cash_instruction_step3">Enter your phone number and PIN.</string>
+    <string name="mandiri__e_cash_instruction_step4">Please wait for an SMS from Mandiri e-cash that contains your One Time Password (OTP).</string>
+    <string name="mandiri__e_cash_instruction_step5">Enter the 6 digit OTP, then click
         \'pay\' to make payment.</string>
-    <string name="mandiri__e_cash_instruction_step6">6.\tIf you haven\'t received the OTP or the
+    <string name="mandiri__e_cash_instruction_step6">If you haven\'t received the OTP or the
         OTP has expired, click \'cancel\' and retry your transaction.</string>
 
 
     <!-- Indomaret Instruction-->
-    <string name="indomaret_instruction_step1">1.\tAfter confirming your payment, we will issue you a unique Payment Code number.</string>
-    <string name="indomaret_instruction_step2">2.\tNote down your Payment Code and total amount.
+    <string name="indomaret_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
+    <string name="indomaret_instruction_step2">Note down your Payment Code and total amount.
         Don\'t worry, we will also mail you a copy of the payment instructions.</string>
-    <string name="indomaret_instruction_step3">3.\tGo to an Indomaret store near you and provide the cashier with the Payment Code number.</string>
-    <string name="indomaret_instruction_step4">4.\tThe cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
-    <string name="indomaret_instruction_step5">5.\tConfirm the payment with the cashier.</string>
-    <string name="indomaret_instruction_step6">6.\tYour transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
+    <string name="indomaret_instruction_step3">Go to an Indomaret store near you and provide the cashier with the Payment Code number.</string>
+    <string name="indomaret_instruction_step4">The cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
+    <string name="indomaret_instruction_step5">Confirm the payment with the cashier.</string>
+    <string name="indomaret_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
 
 
     <!-- BBM Money Instruction-->
@@ -291,9 +291,9 @@
     <string name="coming_soon">Coming soon!!</string>
     <string name="successful">Successful</string>
     <string name="unsuccessful">Unsuccessful</string>
-    <string name="payment_successful">Payment Successful :)</string>
+    <string name="payment_successful">Payment Successful</string>
     <string name="payment_unsuccessful_msg">Payment gateway error</string>
-    <string name="payment_unsuccessful">Payment unsuccessful :(</string>
+    <string name="payment_unsuccessful">Payment unsuccessful</string>
     <string name="validation_message_invalid_expiry_date">Please enter valid expiry date</string>
     <string name="api_fail_message">Something went wrong. Please try later.</string>
     <string name="title_payment_failed">Payment Failed</string>
@@ -319,7 +319,7 @@
     <string name="credit_card">Credit/Debit Card</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
-    <string name="epay_bri">ePay BRI</string>
+    <string name="epay_bri">e-Pay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="mandiri_e_cash">Mandiri e-Cash</string>
@@ -332,31 +332,31 @@
     <string name="card_delete_message">Are you sure you want to delete card?</string>
     <string name="message_save_card">Save your card for faster checkout process.</string>
     <string name="got_it">Got it</string>
-    <string name="bri_instruction_step1">1.Please make sure that you have a User ID for BRI e-Pay and
+    <string name="bri_instruction_step1">Please make sure that you have a User ID for BRI e-Pay and
         have registered for mTOKEN before going through with the payment
     </string>
-    <string name="bri_instruction_step2">2.To obtain a User ID for BRI e-Pay, please register at the
+    <string name="bri_instruction_step2">To obtain a User ID for BRI e-Pay, please register at the
         nearest BRI ATM.
     </string>
-    <string name="bri_instruction_step3">3.Please visit the nearest BRI branch office to register
+    <string name="bri_instruction_step3">Please visit the nearest BRI branch office to register
         the mTOKEN.
     </string>
-    <string name="bri_instruction_step4">4.Payment via BRI e-Pay will be processed online and your
+    <string name="bri_instruction_step4">Payment via BRI e-Pay will be processed online and your
         BRI bank account balance will be deducted automatically based on your total amount.
     </string>
-    <string name="bri_instruction_step5">5.Your transaction will be cancelled if payment is not
+    <string name="bri_instruction_step5">Your transaction will be cancelled if payment is not
         completed within 2 hours.
     </string>
     <string name="empty_transaction_response">Payment failed! Please try again.</string>
     <string name="cancel_transaction">Cancel Transaction?</string>
     <string name="cancel_transaction_message">Are you sure you want to cancel this transaction?
     </string>
-    <string name="indosat_instruction_step1">1.\tInput your registered indosat phone number.</string>
-    <string name="indosat_instruction_step2">2.\tMake sure you have sufficient funds in your account.</string>
-    <string name="indosat_instruction_step3">3.\tClick \'Confirm Payment\'.</string>
-    <string name="indosat_instruction_step4">4.\tYou will receive an USSD maessage from \nIndosat to complete transaction via Dompetku app.</string>
-    <string name="indosat_instruction_step5">5.\tInput your PIN.</string>
-    <string name="indosat_instruction_step6">6.\tPayment Complete.</string>
+    <string name="indosat_instruction_step1">Input your registered indosat phone number.</string>
+    <string name="indosat_instruction_step2">Make sure you have sufficient funds in your account.</string>
+    <string name="indosat_instruction_step3">Click \'Confirm Payment\'.</string>
+    <string name="indosat_instruction_step4">You will receive an USSD maessage from \nIndosat to complete transaction via Dompetku app.</string>
+    <string name="indosat_instruction_step5">Input your PIN.</string>
+    <string name="indosat_instruction_step6">Payment Complete.</string>
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
     <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tEnter your Mandiri token password.</string>
@@ -373,7 +373,7 @@
     <string name="btn_save_card">Register Card</string>
     <string name="btn_scan_card">Scan Card Using Camera</string>
     <string name="offer_applied">Offer Applied Successfully !</string>
-    <string name="offer_not_applied">Offer is not applicable on this card</string>
+    <string name="offer_not_applied">This card is not applicable for this promotion, please use another one.</string>
     <string name="no_offers">No offers found</string>
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
@@ -408,7 +408,7 @@
     <string name="challenge">challenge</string>
     <string name="prefix_money">Rp %1$s</string>
 
-    <string name="payment_method_bri_epay">Epay BRI</string>
+    <string name="payment_method_bri_epay">e-Pay BRI</string>
     <string name="payment_method_offers">Offers</string>
     <string name="payment_method_credit_card">Credit/Debit Card</string>
     <string name="payment_method_bank_transfer">Bank Transfer</string>
@@ -473,8 +473,9 @@
     <string name="tab_prima">Prima</string>
 
     <!--KlikBCA Payment Instructions-->
-    <string name="klikbca_instruction_1">1.\tPlease make sure that the UserID is active and registered at BCA.</string>
-    <string name="klikbca_instruction_2">2.\tPlease continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
+    <string name="klikbca_instruction_1">Please make sure that the UserID is active and registered at BCA.</string>
+    <string name="klikbca_instruction_2">Please continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
+    <string name="klikbca_instruction_3">Transaction will be cancelled if payment is not completed within 2 hours.</string>
 
     <string name="error_user_id">Please fill user ID.</string>
     <string name="btn_close">Close</string>
@@ -482,16 +483,16 @@
     <string name="error_card_unavailable">Card is not available</string>
 
     <!-- Kioson Instruction-->
-    <string name="kioson_instruction_step1">1.\tAfter confirming your payment, we will issue you a unique Payment Code number.</string>
-    <string name="kioson_instruction_step2">2.\tNote down your Payment Code and total amount.
+    <string name="kioson_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
+    <string name="kioson_instruction_step2">Note down your Payment Code and total amount.
         Don\'t worry, we will also mail you a copy of the payment instructions to your email.</string>
-    <string name="kioson_instruction_step3">3.\tGo to a Kioson outlet near you and provide the cashier with the Payment Code.</string>
-    <string name="kioson_instruction_step4">4.\tThe cashier will open kioson Cash Point, on the menu chasier will select "Keagenan".</string>
-    <string name="kioson_instruction_step5">5.\tChoose merchant name.</string>
-    <string name="kioson_instruction_step6">6.\tChoose sub menu "Pembayaran".</string>
-    <string name="kioson_instruction_step7">7.\tEnter your Payment Code and get the payment details.</string>
-    <string name="kioson_instruction_step8">8.\tSubmit payment and print the receipt.</string>
-    <string name="kioson_instruction_step9">9.\tYour transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
+    <string name="kioson_instruction_step3">Go to a Kioson outlet near you and provide the cashier with the Payment Code.</string>
+    <string name="kioson_instruction_step4">The cashier will open kioson Cash Point, on the menu chasier will select "Keagenan".</string>
+    <string name="kioson_instruction_step5">Choose merchant name.</string>
+    <string name="kioson_instruction_step6">Choose sub menu "Pembayaran".</string>
+    <string name="kioson_instruction_step7">Enter your Payment Code and get the payment details.</string>
+    <string name="kioson_instruction_step8">Submit payment and print the receipt.</string>
+    <string name="kioson_instruction_step9">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
     <string name="callback_unimplemented">Callback Unimplemented</string>
     <string name="transaction_finished_callback_unimplemented">callback not yet implemented</string>
 

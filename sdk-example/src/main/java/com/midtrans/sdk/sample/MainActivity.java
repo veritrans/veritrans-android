@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn, indomaretBtn, kiosonBtn, gciBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn, tcashBtn, indosatBtn, xlTunaiBtn;
-    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour, savedCard, notSavedCard;
     private Toolbar toolbar;
 
     @Override
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     .enableLog(true)
                     .buildSDK();
         } else {
-//            init custom setting if needed
+            // Init custom settings
             UIKitCustomSetting uisetting = new UIKitCustomSetting();
             uisetting.setShowPaymentStatus(true);
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                     .setExternalScanner(new ScanCard()) // initialization for using external scancard
                     .enableLog(true)
-                    .useBuiltInTokenStorage(false) // enable built in token storage
+                    .useBuiltInTokenStorage(true) // enable built in token storage
                     .setDefaultText("open_sans_regular.ttf")
                     .setSemiBoldText("open_sans_semibold.ttf")
                     .setBoldText("open_sans_bold.ttf")
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private TransactionRequest initializePurchaseRequest(int sampleSDKType) {
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(UUID.randomUUID().toString(), 3000);
+                TransactionRequest(System.currentTimeMillis()+"", 6000);
 
         //define customer detail (mandatory for coreflow)
         CustomerDetails mCustomerDetails = new CustomerDetails();
@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         // Define item details
         ItemDetails itemDetails = new ItemDetails("1", 1000, 1, "Trekking Shoes");
-        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 1, "Casual Shoes");
-        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 1, "Formal Shoes");
+        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 2, "Casual Shoes");
+        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 3, "Formal Shoes");
 
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
@@ -140,6 +140,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             creditCard.setBank(BankType.MAYBANK);
             // credit card payment using bank Maybank need migs channel
             creditCard.setChannel(CreditCard.MIGS);
+        } else if (bankBri.isChecked()) {
+            // Set bank to BRI
+            creditCard.setBank(BankType.BRI);
+            // credit card payment using bank BRI need migs channel
+            creditCard.setChannel(CreditCard.MIGS);
         }
 
         String cardClickType;
@@ -162,6 +167,15 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             creditCard.setSecure(true);
             transactionRequestNew.setCreditCard(creditCard);
         }
+
+        UIKitCustomSetting uiKitCustomSetting = MidtransSDK.getInstance().getUIKitCustomSetting();
+        if (savedCard.isChecked()) {
+            uiKitCustomSetting.setSaveCardChecked(true);
+        } else {
+            uiKitCustomSetting.setSaveCardChecked(false);
+        }
+        MidtransSDK.getInstance().setUIKitCustomSetting(uiKitCustomSetting);
+
         if (sampleSDKType == CORE_FLOW) {
             transactionRequestNew.setCardPaymentInfo(cardClickType, false);
         } else {
@@ -210,8 +224,19 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         bankMandiri = (RadioButton) findViewById(R.id.radio_mandiri);
         bankBCA = (RadioButton) findViewById(R.id.radio_bca);
         bankMaybank = (RadioButton) findViewById(R.id.radio_maybank);
+        bankBri = (RadioButton) findViewById(R.id.radio_bri);
+
+        savedCard = (RadioButton) findViewById(R.id.radio_save_active);
+        notSavedCard = (RadioButton) findViewById(R.id.radio_save_inactive);
 
         bankMaybank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                secure.setChecked(true);
+            }
+        });
+
+        bankBri.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 secure.setChecked(true);
@@ -302,12 +327,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         // Handle Card registration using UI flow
         uiCardRegistration = (Button) findViewById(R.id.btn_card_registration_ui);
-        uiCardRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MidtransSDK.getInstance().startRegisterCardUIFlow(MainActivity.this);
-            }
-        });
 
         // Handle credit card payment flow
         creditCardBtn = (Button) findViewById(R.id.show_credit_card_payment);
@@ -506,6 +525,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     Toast.makeText(this, "Transaction Failed. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
                     break;
             }
+            result.getResponse().getValidationMessages();
         } else if (result.isTransactionCanceled()) {
             Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show();
         } else {

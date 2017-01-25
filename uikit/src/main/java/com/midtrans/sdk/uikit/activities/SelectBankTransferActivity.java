@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -18,10 +19,13 @@ import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.BankTransferListAdapter;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +53,8 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
     private ImageView logo = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
     private BankTransferListAdapter adapter;
+    private DefaultTextView textTotalAmount;
+    private FancyButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,8 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
             UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
             CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), "", userDetail.getEmail(), userDetail.getPhoneNumber());
             transactionRequest.setCustomerDetails(customerDetails);
+            textTotalAmount.setText(getString(R.string.prefix_money,
+                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
 
         setUpBankList();
@@ -76,7 +84,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         //setup tool bar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // setUp recyclerView
         ArrayList<String> banks = getIntent().getStringArrayListExtra(EXTRA_BANK);
@@ -155,10 +162,20 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new BankTransferListAdapter(this);
         mRecyclerView.setAdapter(adapter);
+        textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        btnBack = (FancyButton) findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SdkUIFlowUtil.hideKeyboard(SelectBankTransferActivity.this);
+                finish();
+            }
+        });
+
     }
 
     /**
-     * initialize adapter data model by dummy values.
+     * initialize adapter data model by snap values.
      */
     private void initialiseBankTransfersModel(List<String> banks) {
         data.clear();
@@ -170,6 +187,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                 }
             }
         }
+        SdkUIFlowUtil.sortBankPaymentMethodsByPriority(data);
     }
 
     /**
@@ -182,6 +200,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                 data.add(model);
             }
         }
+        SdkUIFlowUtil.sortBankPaymentMethodsByPriority(data);
     }
 
     @Override

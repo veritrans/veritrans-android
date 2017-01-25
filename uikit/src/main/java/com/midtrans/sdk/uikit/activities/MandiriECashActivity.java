@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -24,6 +23,7 @@ import com.midtrans.sdk.uikit.fragments.InstructionMandiriECashFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,8 +41,9 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private InstructionMandiriECashFragment mandiriECashFragment = null;
     private Button buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
-    private ImageView logo = null;
-    private DefaultTextView textTitle, textOrderId, textTotalAmount;
+    private DefaultTextView textTitle, textTotalAmount;
+    private FancyButton buttonBack;
+
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
@@ -60,7 +61,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         mMidtransSDK = MidtransSDK.getInstance();
 
         if (mMidtransSDK == null) {
-            SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, Constants
+            SdkUIFlowUtil.showToast(MandiriECashActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
@@ -76,25 +77,23 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private void initializeViews() {
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
-        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        buttonBack = (FancyButton) findViewById(R.id.btn_back);
 
         initializeTheme();
         if (mMidtransSDK != null) {
             if (mMidtransSDK.getSemiBoldText() != null) {
                 buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
-            textOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
         textTitle.setText(getString(R.string.mandiri_e_cash));
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
+        buttonBack.setOnClickListener(this);
     }
 
     private void setUpFragment() {
@@ -116,6 +115,8 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View view) {
         if (view.getId() == R.id.btn_confirm_payment) {
             makeTransaction();
+        } else if (view.getId() == R.id.btn_back) {
+            onBackPressed();
         }
     }
 
@@ -147,9 +148,9 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
                 MandiriECashActivity.this.transactionResponse = response;
 
                 if (response != null && response.equals(getString(R.string.failed_code_400))) {
-                    initPaymentStatus(transactionResponse, errorMessage, false);
+                    initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_ECASH, false);
                 } else {
-                    SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+                    SdkUIFlowUtil.showToast(MandiriECashActivity.this, "" + errorMessage);
                 }
             }
 
@@ -157,7 +158,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
                 MandiriECashActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                SdkUIFlowUtil.showSnackbar(MandiriECashActivity.this, "" + errorMessage);
+                SdkUIFlowUtil.showToast(MandiriECashActivity.this, "" + errorMessage);
             }
         });
     }
@@ -174,13 +175,13 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             setSupportActionBar(mToolbar);
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
                     mMidtransSDK.getTransactionRequest().getOrderId(), String.valueOf(mMidtransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_mandiri_ecash), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
-            initPaymentStatus(transactionResponse, errorMessage, false);
+            initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_ECASH, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         } else if (resultCode == RESULT_CANCELED) {
             currentFragmentName = STATUS_FRAGMENT;
             mToolbar.setNavigationIcon(closeIcon);
             setSupportActionBar(mToolbar);
-            initPaymentStatus(transactionResponse, errorMessage, false);
+            initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_ECASH, false);
             buttonConfirmPayment.setVisibility(View.GONE);
         }
     }

@@ -5,8 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -26,11 +24,11 @@ import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.BankTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.BankTransferPaymentFragment;
 import com.midtrans.sdk.uikit.fragments.MandiriBillPayFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * Created to show and handle bank transfer and mandiri bill pay details. To handle these two
@@ -40,7 +38,7 @@ import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
  * <p/>
  * It has - {@link BankTransferFragment} home fragment - an initial fragment which contains an
  * instruction. {@link MandiriBillPayFragment} - used to handle mandiri bill payment {@link
- * BankTransferPaymentFragment} - used to handle bank transfer {@link BankTransactionStatusFragment}
+ * BankTransferPaymentFragment} - used to handle bank transfer {@link com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment}
  * - used to display status of transaction.
  * <p/>
  * <p/>
@@ -59,10 +57,8 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public String currentFragment = "home";
 
-    private TextView mTextViewOrderId = null;
     private TextView mTextViewAmount = null;
     private Button mButtonConfirmPayment = null;
-    private AppBarLayout mAppBarLayout = null;
     private TextView mTextViewTitle = null;
     private MidtransSDK mMidtransSDK = null;
     private Toolbar mToolbar = null;
@@ -70,8 +66,8 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     private BankTransferFragment bankTransferFragment = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout = null;
     private ImageView logo = null;
+    private FancyButton mButtonBack;
 
     private int position = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
 
@@ -88,7 +84,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         if (data != null) {
             position = data.getIntExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
         } else {
-            SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(BankTransferActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -160,20 +156,23 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
      */
     private void initializeView() {
 
-        mTextViewOrderId = (TextView) findViewById(R.id.text_order_id);
         mTextViewAmount = (TextView) findViewById(R.id.text_amount);
         mTextViewTitle = (TextView) findViewById(R.id.text_title);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
         logo = (ImageView) findViewById(R.id.merchant_logo);
+        mButtonBack = (FancyButton) findViewById(R.id.btn_back);
+
+        mButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         initializeTheme();
         //setup tool bar
-        mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -185,25 +184,23 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         if (mMidtransSDK != null) {
 
             mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
-            mTextViewOrderId.setText("" + mMidtransSDK.getTransactionRequest().getOrderId());
             if (mMidtransSDK.getSemiBoldText() != null) {
                 mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
             mButtonConfirmPayment.setOnClickListener(this);
 
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
-                mTextViewTitle.setText(getString(R.string.mandiri_bill_payment));
+                mTextViewTitle.setText(getString(R.string.mandiri_bill_transfer));
             } else if (position == Constants.BANK_TRANSFER_BCA) {
-                mTextViewTitle.setText(getString(R.string.activity_bank_transfer_bca));
+                mTextViewTitle.setText(getString(R.string.bank_bca_transfer));
             } else if (position == Constants.BANK_TRANSFER_PERMATA) {
-                mTextViewTitle.setText(getString(R.string.activity_bank_transfer_permata));
+                mTextViewTitle.setText(getString(R.string.bank_permata_transfer));
             } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
-                mTextViewTitle.setText(getString(R.string.activity_bank_transfer_all_bank));
+                mTextViewTitle.setText(getString(R.string.other_bank_transfer));
             }
 
-
         } else {
-            SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(BankTransferActivity.this, getString(R.string.error_something_wrong));
             Logger.e(BankTransferActivity.class.getSimpleName(), Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
@@ -234,7 +231,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
                     setResultCode(RESULT_OK);
-                    SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
+                    SdkUIFlowUtil.showToast(BankTransferActivity.this, SOMETHING_WENT_WRONG);
                     onBackPressed();
                 }
             } else {
@@ -256,28 +253,16 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             setResultAndFinish();
             return;
         }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
-        mAppBarLayout.setExpanded(false, false);
-
         Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        mToolbar.setNavigationIcon(closeIcon);
+        mButtonBack.setIconResource(closeIcon);
         setSupportActionBar(mToolbar);
 
-        BankTransactionStatusFragment bankTransactionStatusFragment = !TextUtils.isEmpty(transactionResponse.getPdfUrl()) ?
-                BankTransactionStatusFragment.newInstance(transactionResponse, position, transactionResponse.getPdfUrl()) :
-                BankTransactionStatusFragment.newInstance(transactionResponse, position);
+        initPaymentStatus(transactionResponse, errorMessage, position, false);
 
-        // setup transaction status fragment
-        fragmentTransaction.replace(R.id.instruction_container,
-                bankTransactionStatusFragment, STATUS_FRAGMENT);
-        fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
-        fragmentTransaction.commit();
     }
 
 
@@ -316,7 +301,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             mButtonConfirmPayment.setText(R.string.complete_payment_at_atm);
 
         } else {
-            SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, SOMETHING_WENT_WRONG);
+            SdkUIFlowUtil.showToast(BankTransferActivity.this, SOMETHING_WENT_WRONG);
             onBackPressed();
         }
     }
@@ -337,7 +322,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             if (!TextUtils.isEmpty(emailId) && SdkUIFlowUtil.isEmailValid(emailId)) {
                 mMidtransSDK.getTransactionRequest().getCustomerDetails().setEmail(emailId.trim());
             } else if (!TextUtils.isEmpty(emailId) && emailId.trim().length() > 0) {
-                SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, getString(R.string.error_invalid_email_id));
+                SdkUIFlowUtil.showToast(BankTransferActivity.this, getString(R.string.error_invalid_email_id));
                 return;
             }
         }
@@ -503,14 +488,13 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     private void actionPaymentError(Throwable error) {
         SdkUIFlowUtil.hideProgressDialog();
         BankTransferActivity.this.errorMessage = getString(R.string.message_payment_failed);
-        SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+        SdkUIFlowUtil.showToast(BankTransferActivity.this, "" + errorMessage);
     }
 
     private void actionPaymentSuccess(TransactionResponse response) {
         SdkUIFlowUtil.hideProgressDialog();
         if (response != null) {
             transactionResponse = response;
-            mAppBarLayout.setExpanded(true);
             setUpTransactionFragment(response);
         } else {
             onBackPressed();
@@ -525,7 +509,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                 setUpTransactionStatusFragment(response);
             } else {
-                SdkUIFlowUtil.showSnackbar(BankTransferActivity.this, "" + errorMessage);
+                SdkUIFlowUtil.showToast(BankTransferActivity.this, "" + errorMessage);
             }
         } catch (NullPointerException ex) {
             Logger.e("transaction error is " + errorMessage);

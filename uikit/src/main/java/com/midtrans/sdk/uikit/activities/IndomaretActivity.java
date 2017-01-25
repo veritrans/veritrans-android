@@ -5,15 +5,12 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -25,9 +22,9 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.IndomaretPaymentFragment;
-import com.midtrans.sdk.uikit.fragments.IndomaretPaymentStatusFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionIndomaretFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * Created by ziahaqi on 01/08/16.
@@ -40,12 +37,10 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public String currentFragment = "home";
 
-    private TextView textViewOrderId = null;
     private TextView textViewAmount = null;
     private Button buttonConfirmPayment = null;
-    private AppBarLayout appBarLayout = null;
     private TextView textViewTitle = null;
-    private ImageView logo = null;
+    private FancyButton buttonBack;
 
     private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
@@ -53,8 +48,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     private InstructionIndomaretFragment instructionIndomaretFragment = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private CollapsingToolbarLayout collapsingToolbarLayout = null;
-
     private int position = Constants.PAYMENT_METHOD_INDOMARET;
 
 
@@ -71,7 +64,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             position = data.getIntExtra(getString(R.string.position), Constants
                     .PAYMENT_METHOD_INDOMARET);
         } else {
-            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(IndomaretActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
 
@@ -112,19 +105,16 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void initializeView() {
-        textViewOrderId = (TextView) findViewById(R.id.text_order_id);
         textViewAmount = (TextView) findViewById(R.id.text_amount);
         textViewTitle = (TextView) findViewById(R.id.text_title);
         buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        appBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
+        buttonBack = (FancyButton) findViewById(R.id.btn_back);
+
         initializeTheme();
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void bindDataToView() {
@@ -132,11 +122,11 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         if (midtransSDK != null) {
             textViewAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
-            textViewOrderId.setText("" + midtransSDK.getTransactionRequest().getOrderId());
             if (midtransSDK.getSemiBoldText() != null) {
                 buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), midtransSDK.getSemiBoldText()));
             }
             buttonConfirmPayment.setOnClickListener(this);
+            buttonBack.setOnClickListener(this);
         }
     }
 
@@ -151,19 +141,19 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
 
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
 
-                appBarLayout.setExpanded(true);
-
                 if (transactionResponse != null) {
                     setUpTransactionStatusFragment(transactionResponse);
                 } else {
                     setResultCode(RESULT_OK);
-                    SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, SOMETHING_WENT_WRONG);
+                    SdkUIFlowUtil.showToast(IndomaretActivity.this, SOMETHING_WENT_WRONG);
                     setResultAndFinish();
                 }
             } else {
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
             }
+        } else if (view.getId() == R.id.btn_back) {
+            onBackPressed();
         }
     }
 
@@ -175,27 +165,15 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             setResultAndFinish();
             return;
         }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         currentFragment = STATUS_FRAGMENT;
         buttonConfirmPayment.setText(R.string.done);
 
-        appBarLayout.setExpanded(false, false);
-
         Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        toolbar.setNavigationIcon(closeIcon);
-        setSupportActionBar(toolbar);
+        buttonBack.setIconResource(closeIcon);
 
-        IndomaretPaymentStatusFragment indomaretPaymentStatusFragment =
-                IndomaretPaymentStatusFragment.newInstance(transactionResponse, false);
-
-        // setup transaction status fragment
-        fragmentTransaction.replace(R.id.instruction_container,
-                indomaretPaymentStatusFragment, STATUS_FRAGMENT);
-        fragmentTransaction.addToBackStack(STATUS_FRAGMENT);
-        fragmentTransaction.commit();
+        initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_INDOMARET, false);
     }
 
     private void setUpTransactionFragment(final TransactionResponse
@@ -210,9 +188,10 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                     indomaretPaymentFragment, PAYMENT_FRAGMENT);
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();
+            buttonConfirmPayment.setText(getString(R.string.complete_payment_indomaret));
             currentFragment = PAYMENT_FRAGMENT;
         } else {
-            SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, SOMETHING_WENT_WRONG);
+            SdkUIFlowUtil.showToast(IndomaretActivity.this, SOMETHING_WENT_WRONG);
             onBackPressed();
         }
     }
@@ -233,7 +212,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                 SdkUIFlowUtil.hideProgressDialog();
                 if (response != null) {
                     IndomaretActivity.this.transactionResponse = response;
-                    appBarLayout.setExpanded(true);
                     setUpTransactionFragment(response);
                 } else {
                     onBackPressed();
@@ -245,7 +223,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                 IndomaretActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 IndomaretActivity.this.transactionResponse = response;
                 SdkUIFlowUtil.hideProgressDialog();
-                SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + errorMessage);
+                SdkUIFlowUtil.showToast(IndomaretActivity.this, "" + errorMessage);
                 setUpTransactionStatusFragment(response);
             }
 
@@ -253,7 +231,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
                 IndomaretActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                SdkUIFlowUtil.showSnackbar(IndomaretActivity.this, "" + errorMessage);
+                SdkUIFlowUtil.showToast(IndomaretActivity.this, "" + errorMessage);
             }
         });
     }

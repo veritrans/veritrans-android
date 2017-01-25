@@ -59,6 +59,7 @@
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
     <string name="bank_bca">BCA</string>
+    <string name="bank_bri">BRI</string>
     <string name="bank_maybank">Maybank</string>
     <string name="expiry_options">Custom Expiry Options</string>
     <string name="expiry_none">None</string>
@@ -129,4 +130,11 @@
     <string name="kioson_cs">Kioson</string>
     <string name="other_payment">Other Payment</string>
     <string name="giftcard">Gift Card</string>
+    <string name="promo">Promo</string>
+    <string name="promo_active">Active</string>
+    <string name="promo_inactive">Not Active</string>
+    <string name="save_card_options_title">Save Card Default Options</string>
+    <string name="save_card_true">Save</string>
+    <string name="save_card_false">Not Saved</string>
+
 </resources>

@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -24,6 +23,7 @@ import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionTelkomselCashFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * @author rakawm
@@ -39,9 +39,8 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
     private MidtransSDK mMidtransSDK = null;
     private Toolbar mToolbar = null;
-    private ImageView logo = null;
-    private DefaultTextView textTitle, textOrderId, textTotalAmount;
-
+    private DefaultTextView textTitle, textTotalAmount;
+    private FancyButton buttonBack;
     private InstructionTelkomselCashFragment telkomselCashFragment = null;
     private TransactionResponse mTransactionResponse = null;
     private String errorMessage = null;
@@ -98,16 +97,14 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
-        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        buttonBack = (FancyButton) findViewById(R.id.btn_back);
 
         initializeTheme();
         //setup tool bar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**
@@ -120,11 +117,11 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                 mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
             }
             mButtonConfirmPayment.setOnClickListener(this);
-            textOrderId.setText(mMidtransSDK.getTransactionRequest().getOrderId());
+            buttonBack.setOnClickListener(this);
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         } else {
-            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_something_wrong));
+            SdkUIFlowUtil.showToast(TelkomselCashActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
     }
@@ -142,6 +139,8 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                 setResultAndFinish();
             }
 
+        } else if (view.getId() == R.id.btn_back) {
+            onBackPressed();
         }
     }
 
@@ -156,7 +155,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
             telkomselToken = telkomselCashFragment.getTelkomselToken();
 
             if (TextUtils.isEmpty(telkomselToken)) {
-                SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_empty_tcash_token_field));
+                SdkUIFlowUtil.showToast(TelkomselCashActivity.this, getString(R.string.error_empty_tcash_token_field));
             }
         }
 
@@ -185,7 +184,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                         if (response != null) {
                             setUpTransactionStatusFragment(response);
                         } else {
-                            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, SOMETHING_WENT_WRONG);
+                            SdkUIFlowUtil.showToast(TelkomselCashActivity.this, SOMETHING_WENT_WRONG);
                             finish();
                         }
                     }
@@ -199,7 +198,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                         if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                             setUpTransactionStatusFragment(response);
                         } else {
-                            SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, getString(R.string.error_message_invalid_input_telkomsel));
+                            SdkUIFlowUtil.showToast(TelkomselCashActivity.this, getString(R.string.error_message_invalid_input_telkomsel));
                         }
                     }
 
@@ -207,7 +206,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                     public void onError(Throwable error) {
                         SdkUIFlowUtil.hideProgressDialog();
                         errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
-                        SdkUIFlowUtil.showSnackbar(TelkomselCashActivity.this, errorMessage);
+                        SdkUIFlowUtil.showToast(TelkomselCashActivity.this, errorMessage);
                     }
                 });
     }
@@ -220,18 +219,14 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(R.string.done);
 
         Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        mToolbar.setNavigationIcon(closeIcon);
-        setSupportActionBar(mToolbar);
+        buttonBack.setIconResource(closeIcon);
 
-        initBankTransferPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_TELKOMSEL_CASH, STATUS_FRAGMENT);
+        initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_TELKOMSEL_CASH, false);
     }
 
     /**

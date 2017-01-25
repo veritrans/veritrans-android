@@ -7,13 +7,13 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -41,7 +41,7 @@ public class UserAddressFragment extends Fragment {
     private EditText etCity;
     private EditText etZipcode;
     private AutoCompleteTextView etCountry;
-    private CheckBox cbShippingAddress;
+    private SwitchCompat cbShippingAddress;
     private RelativeLayout shippingAddressContainer;
     private EditText etShippingAddress;
     private EditText etShippingCity;
@@ -108,8 +108,8 @@ public class UserAddressFragment extends Fragment {
         findViews(view);
         retrieveCountryCode();
 
-        billingCountryAdapter = new ListCountryAdapter(getContext(), R.layout.layout_row_contry_code, countryCodeList);
-        shippingCountryAdapter = new ListCountryAdapter(getContext(), R.layout.layout_row_contry_code, countryCodeList);
+        billingCountryAdapter = new ListCountryAdapter(getContext(), R.layout.layout_row_country_code, countryCodeList);
+        shippingCountryAdapter = new ListCountryAdapter(getContext(), R.layout.layout_row_country_code, countryCodeList);
 
         etCountry.setAdapter(billingCountryAdapter);
         etCountry.setThreshold(1);
@@ -125,7 +125,7 @@ public class UserAddressFragment extends Fragment {
         etCity = (EditText) view.findViewById(R.id.et_city);
         etZipcode = (EditText) view.findViewById(R.id.et_zipcode);
         etCountry = (AutoCompleteTextView) view.findViewById(R.id.et_country);
-        cbShippingAddress = (CheckBox) view.findViewById(R.id.cb_shipping_address);
+        cbShippingAddress = (SwitchCompat) view.findViewById(R.id.cb_shipping_address);
         shippingAddressContainer = (RelativeLayout) view.findViewById(R.id
                 .shipping_address_container);
         etShippingAddress = (EditText) view.findViewById(R.id.et_shipping_address);
@@ -173,62 +173,62 @@ public class UserAddressFragment extends Fragment {
         String shippingCountry = etShippingCountry.getText().toString().trim();
 
         if (TextUtils.isEmpty(billingAddress)) {
-            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                     .validation_billingaddress_empty));
             etAddress.requestFocus();
             return;
         } else if (TextUtils.isEmpty(billingCity)) {
-            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string.validation_billingcity_empty));
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_billingcity_empty));
             etCity.requestFocus();
             return;
         } else if (TextUtils.isEmpty(zipcode)) {
-            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                     .validation_billingzipcode_empty));
             etZipcode.requestFocus();
             return;
         } else if (zipcode.length() < Constants.ZIPCODE_LENGTH) {
-            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                     .validation_billingzipcode_invalid));
             etZipcode.requestFocus();
             return;
         } else if (TextUtils.isEmpty(country)) {
-            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                     .validation_billingcountry_empty));
             etCountry.requestFocus();
             return;
         } else if (!isCountryCodeExist(country, true)) {
-            SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                     .validation_billingcountry_notexist));
             etCountry.requestFocus();
             return;
         } else if (!cbShippingAddress.isChecked()) {
             if (TextUtils.isEmpty(shippingAddress)) {
-                SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+                SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                         .validation_shippingaddress_empty));
                 etShippingAddress.requestFocus();
                 return;
             } else if (TextUtils.isEmpty(shippingCity)) {
-                SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+                SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                         .validation_shippingcity_empty));
                 etShippingCity.requestFocus();
                 return;
             } else if (TextUtils.isEmpty(shippingZipcode)) {
-                SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+                SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                         .validation_shippingzipcode_empty));
                 etShippingZipcode.requestFocus();
                 return;
             } else if (shippingZipcode.length() < Constants.ZIPCODE_LENGTH) {
-                SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+                SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                         .validation_shippingzipcode_invalid));
                 etShippingZipcode.requestFocus();
                 return;
             } else if (TextUtils.isEmpty(shippingCountry)) {
-                SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+                SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                         .validation_shippingcountry_empty));
                 etShippingCountry.requestFocus();
                 return;
             } else if (!isCountryCodeExist(shippingCountry, false)) {
-                SdkUIFlowUtil.showSnackbar(getActivity(), getString(R.string
+                SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                         .validation_billingcountry_notexist));
                 etCountry.requestFocus();
                 return;

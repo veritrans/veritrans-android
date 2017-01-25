@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,91 +15,139 @@
 
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:paddingTop="@dimen/sixteen_dp"
+            android:layout_marginLeft="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/sixteen_dp"
             android:text="@string/company_code"
             android:textColor="@color/dark_gray"
-            android:textSize="@dimen/secondary_text_size"
-            />
-
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/text_company_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:padding="@dimen/eight_dp"
-            android:text="@string/text_company_code_here"
-            android:textColor="@color/black"
-            android:textSize="@dimen/header_text_size"
-            />
-
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:paddingTop="@dimen/sixteen_dp"
-            android:text="@string/bill_code"
-            android:textColor="@color/dark_gray"
-            android:textSize="@dimen/secondary_text_size"
-            />
-
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/text_bill_pay_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:padding="@dimen/eight_dp"
-            android:text="@string/text_billpay_code_here"
-            android:textColor="@color/black"
-            android:textSize="@dimen/header_text_size" />
-
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/text_validaty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/sixteen_dp"
-            android:layout_marginTop="@dimen/sixteen_dp"
-            android:background="@color/faint_yellow"
-            android:gravity="left"
-            android:padding="@dimen/sixteen_dp"
-            android:text="@string/text_sample_valid_date"
-            android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
 
-        <Button
-            android:id="@+id/btn_copy_company_code"
-            style="?borderlessButtonStyle"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:id="@+id/text_company_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/four_dp"
+                android:layout_weight="1"
+                android:background="@color/light_gray"
+                android:padding="@dimen/eight_dp"
+                android:text="@string/text_company_code_here"
+                android:textColor="@color/black"
+                android:textSize="@dimen/header_text_size" />
+
+            <com.midtrans.sdk.uikit.widgets.FancyButton
+                android:id="@+id/btn_copy_company_code"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:visibility="visible"
+                app:fb_borderColor="?attr/colorPrimary"
+                app:fb_borderWidth="1dp"
+                app:fb_defaultColor="@android:color/white"
+                app:fb_focusColor="@color/colorAccentLight"
+                app:fb_iconColor="?attr/colorPrimary"
+                app:fb_radius="5dp"
+                app:fb_text="@string/copy"
+                app:fb_textColor="?attr/colorPrimary" />
+        </LinearLayout>
+
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/copy_company_code"
-            android:textColor="?colorPrimary" />
+            android:layout_marginLeft="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:text="@string/bill_code"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/secondary_text_size" />
 
-        <Button
-            android:id="@+id/btn_copy_va"
-            style="?borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/copy_billpay_code"
-            android:textColor="?colorPrimary" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <Button
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:id="@+id/text_bill_pay_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/four_dp"
+                android:layout_marginRight="@dimen/four_dp"
+                android:layout_weight="1"
+                android:background="@color/light_gray"
+                android:padding="@dimen/eight_dp"
+                android:text="@string/text_billpay_code_here"
+                android:textColor="@color/black"
+                android:textSize="@dimen/header_text_size" />
+
+            <com.midtrans.sdk.uikit.widgets.FancyButton
+                android:id="@+id/btn_copy_va"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:visibility="visible"
+                app:fb_borderColor="?attr/colorPrimary"
+                app:fb_borderWidth="1dp"
+                app:fb_defaultColor="@android:color/white"
+                app:fb_focusColor="@color/colorAccentLight"
+                app:fb_iconColor="?attr/colorPrimary"
+                app:fb_radius="5dp"
+                app:fb_text="@string/copy"
+                app:fb_textColor="?attr/colorPrimary" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:paddingBottom="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/eight_dp"
+            android:paddingRight="@dimen/eight_dp"
+            android:background="@color/faint_yellow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/valid_until"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size" />
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_alignParentRight="true"
+                android:id="@+id/text_validaty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/faint_yellow"
+                android:text="@string/valid_date"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size" />
+        </RelativeLayout>
+
+
+        <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/btn_see_instruction"
-            style="?borderlessButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/see_instruction"
-            android:textColor="?colorPrimary" />
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/eight_dp"
+            android:visibility="visible"
+            app:fb_borderColor="?attr/colorPrimary"
+            app:fb_borderWidth="1dp"
+            app:fb_defaultColor="@android:color/white"
+            app:fb_focusColor="@color/colorAccentLight"
+            app:fb_iconColor="?attr/colorPrimary"
+            app:fb_radius="5dp"
+            app:fb_text="@string/mandir_bill_instruction"
+            app:fb_textColor="?attr/colorPrimary" />
 
 
     </LinearLayout>

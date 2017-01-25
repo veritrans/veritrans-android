@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical">
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:id="@+id/merchant_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/btn_back"
+        android:layout_toRightOf="@+id/btn_back"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/tool_bar_title_size"
+        android:visibility="gone"
+        tools:text="Name" />
+
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/btn_back"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/four_dp"
+        android:alpha="0.5"
+        android:padding="@dimen/four_dp"
+        android:visibility="visible"
+        app:fb_defaultColor="@android:color/transparent"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_iconPaddingLeft="0dp"
+        app:fb_iconPaddingRight="0dp"
+        app:fb_iconResource="@drawable/ic_back"
+        app:fb_radius="64dp" />
+
+    <ImageView
+        android:id="@+id/merchant_logo"
+        android:layout_width="@dimen/logo_width"
+        android:layout_height="@dimen/logo_height"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/btn_back"
+        android:layout_toRightOf="@+id/btn_back"
+        android:scaleType="centerInside"
+        tools:src="@drawable/ic_veritrans" />
+
+    <RelativeLayout
+        android:id="@+id/title_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="@dimen/thirtytwo_dp"
+        android:layout_marginRight="@dimen/thirtytwo_dp"
+        android:layout_toEndOf="@id/merchant_logo"
+        android:layout_toLeftOf="@+id/image_saved_card_delete"
+        android:layout_toRightOf="@+id/merchant_logo"
+        android:layout_toStartOf="@id/image_saved_card_delete">
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/tool_bar_title_size"
+            tools:text="Mandiri Clickpay" />
+
+        <View
+            android:layout_width="45dp"
+            android:layout_height="5dp"
+            android:layout_below="@+id/text_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/four_dp"
+            android:background="?attr/colorPrimary" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/image_saved_card_delete"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_weight="1"
+        android:src="@drawable/ic_delete_black"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
+</RelativeLayout>

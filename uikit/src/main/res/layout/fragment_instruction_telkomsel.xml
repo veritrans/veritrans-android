@@ -40,33 +40,48 @@
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size" />
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <LinearLayout
             android:layout_marginTop="@dimen/sixteen_dp"
             android:background="@color/light_gray"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/five_dp"
-            android:text="@string/telkomsel_instruction_step1"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size" />
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/number_instruction1"
+                android:layout_width="@dimen/twenty_four_dp"
+                android:layout_height="wrap_content" />
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/telkomsel_instruction_step1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_marginTop="@dimen/eight_dp"
             android:lineSpacingExtra="2dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:text="@string/telkomsel_instruction_step2"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size" />
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/number_instruction2"
+                android:layout_width="@dimen/twenty_four_dp"
+                android:layout_height="wrap_content" />
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/telkomsel_instruction_step2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_marginTop="@dimen/eight_dp"
             android:background="@color/light_gray"
             android:lineSpacingExtra="2dp"
@@ -74,9 +89,20 @@
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/five_dp"
-            android:text="@string/telkomsel_instruction_step3"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/number_instruction3"
+                android:layout_width="@dimen/twenty_four_dp"
+                android:layout_height="wrap_content" />
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/telkomsel_instruction_step3"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size" />
+        </LinearLayout>
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

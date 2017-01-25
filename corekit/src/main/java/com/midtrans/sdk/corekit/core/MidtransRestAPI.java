@@ -2,41 +2,22 @@ package com.midtrans.sdk.corekit.core;
 
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
-import com.midtrans.sdk.corekit.models.TransactionCancelResponse;
 
 import retrofit.Callback;
 import retrofit.http.GET;
-import retrofit.http.Header;
 import retrofit.http.Headers;
-import retrofit.http.POST;
-import retrofit.http.Path;
 import retrofit.http.Query;
 
 /**
  * Created by ziahaqi on 27/06/2016.
  */
 public interface MidtransRestAPI {
-
-
-    /*
-     *  PAPI end point
-     */
-
-    //http://api.sandbox.veritrans.co.id/v2/10938010/cancel/
-    @Headers({"Content-Type: application/json",
-            "Accept: application/json"})
-    @POST("/{id}/cancel/")
-    void cancelTransaction(
-            @Header("x-auth") String auth,
-            @Path("id") String transactionId,
-            Callback<TransactionCancelResponse> callback);
-
     /**
      * card_cvv, token_id, two_click, bank, secure, gross_amount this api call hit midtrans server
      *
      * @return callback of transaction response
      */
-    @GET("/token/")
+    @GET("/token")
     void getTokenTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
@@ -48,7 +29,7 @@ public interface MidtransRestAPI {
             @Query("channel") String channel,
             Callback<TokenDetailsResponse> callback);
 
-    @GET("/token/")
+    @GET("/token")
     void get3DSToken(@Query("card_number") String cardNumber,
                      @Query("card_cvv") String cardCVV,
                      @Query("card_exp_month") String cardExpiryMonth,
@@ -62,7 +43,7 @@ public interface MidtransRestAPI {
                      Callback<TokenDetailsResponse> callback
     );
 
-    @GET("/token/")
+    @GET("/token")
     void getToken(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
@@ -88,7 +69,7 @@ public interface MidtransRestAPI {
      * @return callback of transaction response
      */
 
-    @GET("/token/")
+    @GET("/token")
     void getTokenInstalmentOfferTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
@@ -118,7 +99,7 @@ public interface MidtransRestAPI {
      * @return callback of transaction response
      */
 
-    @GET("/token/")
+    @GET("/token")
     void get3DSTokenInstalmentOffers(@Query("card_number") String cardNumber,
                                      @Query("card_cvv") String cardCVV,
                                      @Query("card_exp_month") String cardExpiryMonth,

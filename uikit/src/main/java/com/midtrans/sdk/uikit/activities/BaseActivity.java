@@ -14,7 +14,6 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.BankTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
 import com.squareup.picasso.Picasso;
 
@@ -40,9 +39,6 @@ public class BaseActivity extends AppCompatActivity {
                     Picasso.with(this)
                             .load(mMidtransSDK.getMerchantLogo())
                             .into(logo);
-                } else if (name != null && !TextUtils.isEmpty(mMidtransSDK.getMerchantName())) {
-                    name.setVisibility(View.VISIBLE);
-                    name.setText(mMidtransSDK.getMerchantName());
                 }
             }
         }
@@ -85,16 +81,17 @@ public class BaseActivity extends AppCompatActivity {
         return null;
     }
 
-    protected void initPaymentStatus(TransactionResponse transactionResponse, String errorMessage, boolean addToBackStack) {
+    protected void initPaymentStatus(TransactionResponse transactionResponse, String errorMessage, int paymentMethod, boolean addToBackStack) {
         if (MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus()) {
             PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponse);
-            replaceFragment(paymentTransactionStatusFragment, R.id.card_container, addToBackStack, false);
+                    PaymentTransactionStatusFragment.newInstance(transactionResponse, paymentMethod);
+            replaceFragment(paymentTransactionStatusFragment, R.id.main_layout, addToBackStack, false);
         } else {
             setResultCode(RESULT_OK);
             setResultAndFinish(transactionResponse, errorMessage);
         }
     }
+
 
     protected void setResultAndFinish(TransactionResponse transactionResponse, String errorMessage) {
         Intent data = new Intent();
@@ -108,22 +105,5 @@ public class BaseActivity extends AppCompatActivity {
         this.RESULT_CODE = resultCode;
     }
 
-    protected void initBankTransferPaymentStatus(TransactionResponse transactionResponse, String errorMessage, int paymentMethod, String statusFragment) {
-        if (MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus()) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            BankTransactionStatusFragment bankTransactionStatusFragment =
-                    BankTransactionStatusFragment.newInstance(transactionResponse,
-                            paymentMethod);
 
-            // setup transaction status fragment
-            fragmentTransaction.replace(R.id.instruction_container,
-                    bankTransactionStatusFragment, statusFragment);
-            fragmentTransaction.addToBackStack(statusFragment);
-            fragmentTransaction.commit();
-        } else {
-            setResultCode(RESULT_OK);
-            setResultAndFinish(transactionResponse, errorMessage);
-        }
-    }
 }

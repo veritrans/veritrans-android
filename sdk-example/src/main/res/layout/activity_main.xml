@@ -29,7 +29,6 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin">
 
-
             <TextView
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
@@ -115,29 +114,41 @@
                     android:id="@+id/radio_bni"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:text="@string/bank_bni" />
+                    android:layout_weight="0.2"
+                    android:text="@string/bank_bni"
+                    android:textSize="@dimen/small_text_size" />
 
                 <RadioButton
                     android:id="@+id/radio_mandiri"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:text="@string/bank_mandiri" />
+                    android:layout_weight="0.2"
+                    android:text="@string/bank_mandiri"
+                    android:textSize="@dimen/small_text_size" />
 
                 <RadioButton
                     android:id="@+id/radio_bca"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:text="@string/bank_bca" />
+                    android:layout_weight="0.2"
+                    android:text="@string/bank_bca"
+                    android:textSize="@dimen/small_text_size" />
 
                 <RadioButton
                     android:id="@+id/radio_maybank"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:text="@string/bank_maybank" />
+                    android:layout_weight="0.2"
+                    android:text="@string/bank_maybank"
+                    android:textSize="@dimen/small_text_size" />
+
+                <RadioButton
+                    android:id="@+id/radio_bri"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:text="@string/bank_bri"
+                    android:textSize="@dimen/small_text_size" />
             </RadioGroup>
 
             <TextView
@@ -174,6 +185,35 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
                     android:text="@string/expiry_one_hour" />
+            </RadioGroup>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:text="@string/save_card_options_title"
+                android:visibility="visible" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_save_active"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/promo_active" />
+
+                <RadioButton
+                    android:id="@+id/radio_save_inactive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:checked="true"
+                    android:text="@string/promo_inactive" />
             </RadioGroup>
 
             <View

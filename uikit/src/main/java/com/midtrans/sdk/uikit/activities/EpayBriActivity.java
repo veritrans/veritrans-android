@@ -5,13 +5,11 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -24,6 +22,7 @@ import com.midtrans.sdk.uikit.fragments.InstructionEpayBriFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 public class EpayBriActivity extends BaseActivity implements View.OnClickListener {
 
@@ -33,23 +32,21 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     private Button btConfirmPayment = null;
     private Toolbar toolbar = null;
     private MidtransSDK midtransSDK = null;
-    private ImageView logo = null;
     private InstructionEpayBriFragment instructionEpayBriFragment;
     private TransactionResponse transactionResponse;
-    private FragmentManager fragmentManager;
     private String currentFragmentName = HOME_FRAGMENT;
     private String errorMessage;
     private TransactionResponse transactionResponseFromMerchant;
-    private DefaultTextView textTitle, textOrderId, textTotalAmount;
+    private DefaultTextView textTitle, textTotalAmount;
+    private FancyButton buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_epay_bri);
         midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK == null) {
-            SdkUIFlowUtil.showSnackbar(EpayBriActivity.this, Constants
+            SdkUIFlowUtil.showToast(EpayBriActivity.this, Constants
                     .ERROR_SDK_IS_NOT_INITIALIZED);
             finish();
         }
@@ -66,17 +63,15 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     private void initializeViews() {
         btConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
-        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        buttonBack = (FancyButton) findViewById(R.id.btn_back);
 
         initializeTheme();
-        toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         btConfirmPayment.setVisibility(View.VISIBLE);
         btConfirmPayment.setOnClickListener(this);
+        buttonBack.setOnClickListener(this);
         bindData();
     }
 
@@ -86,7 +81,6 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
             if (midtransSDK.getSemiBoldText() != null) {
                 btConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), midtransSDK.getSemiBoldText()));
             }
-            textOrderId.setText(midtransSDK.getTransactionRequest().getOrderId());
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
         }
@@ -103,13 +97,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            if (currentFragmentName.equals(
-                    STATUS_FRAGMENT)) {
-                setResultCode(RESULT_OK);
-                setResultAndFinish();
-            } else {
-                onBackPressed();
-            }
+            onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -119,6 +107,8 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
         if (view.getId() == R.id.btn_confirm_payment) {
             makeTransaction();
+        } else if (view.getId() == R.id.btn_back) {
+            onBackPressed();
         }
     }
 
@@ -189,5 +179,16 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         data.putExtra(getString(R.string.error_transaction), errorMessage);
         setResult(RESULT_CODE, data);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragmentName.equals(
+                STATUS_FRAGMENT)) {
+            setResultCode(RESULT_OK);
+            setResultAndFinish();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

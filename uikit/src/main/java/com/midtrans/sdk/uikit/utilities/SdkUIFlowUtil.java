@@ -1,27 +1,33 @@
 package com.midtrans.sdk.uikit.utilities;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.support.design.widget.Snackbar;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
 import com.midtrans.sdk.corekit.models.BBMUrlEncodeJson;
+import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.R;
 
 import java.io.InputStream;
@@ -30,6 +36,9 @@ import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,6 +51,7 @@ import java.util.regex.Pattern;
 public class SdkUIFlowUtil {
 
     private static ProgressDialog progressDialog;
+    private static int maskedExpDate;
 
     /**
      * it will validate an given email-id.
@@ -80,15 +90,8 @@ public class SdkUIFlowUtil {
      * @param activity instance of an activity.
      * @param message  message to display on snackbar.
      */
-    public static void showSnackbar(Activity activity, String message) {
-
-        try {
-            Snackbar.make(activity.getWindow().findViewById(android.R.id.content), message,
-                    Snackbar.LENGTH_LONG)
-                    .show();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+    public static void showToast(Activity activity, String message) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -225,9 +228,9 @@ public class SdkUIFlowUtil {
                     Context context = midtransSDK.getContext();
                     if (context != null) {
                         if (errorMessage.contains(context.getString(R.string.retrofit_network_message))) {
-                            SdkUIFlowUtil.showSnackbar(activity, activity.getString(R.string.no_network_msg));
+                            Toast.makeText(activity, activity.getString(R.string.no_network_msg), Toast.LENGTH_SHORT).show();
                         } else {
-                            SdkUIFlowUtil.showSnackbar(activity, errorMessage);
+                            Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     } else Logger.e("Context is not available.");
                 } else {
@@ -235,7 +238,7 @@ public class SdkUIFlowUtil {
                 }
 
             } else {
-                SdkUIFlowUtil.showSnackbar(activity, activity.getString(R.string.api_fail_message));
+                Toast.makeText(activity, activity.getString(R.string.api_fail_message), Toast.LENGTH_SHORT).show();
             }
         } catch (NullPointerException e) {
             Logger.i("Nullpointer:" + e.getMessage());
@@ -372,7 +375,7 @@ public class SdkUIFlowUtil {
     }
 
 
-    public static ArrayList<BankBinsResponse> getBankBins(Context context){
+    public static ArrayList<BankBinsResponse> getBankBins(Context context) {
         ArrayList<BankBinsResponse> list = null;
         String data;
         try {
@@ -391,5 +394,87 @@ public class SdkUIFlowUtil {
         }
 
         return list;
+    }
+
+    public static String getMaskedCardNumber(String maskedCard) {
+        StringBuilder builder = new StringBuilder();
+        String bulletMask = "●●●●●●";
+        String newMaskedCard = maskedCard.replace("-", bulletMask);
+
+        for (int i = 0; i < newMaskedCard.length(); i++) {
+            if (i > 0 && i % 4 == 0) {
+                builder.append(' ');
+                builder.append(newMaskedCard.charAt(i));
+            } else {
+                builder.append(newMaskedCard.charAt(i));
+            }
+        }
+        return builder.toString();
+    }
+
+    public static String getMaskedExpDate() {
+        String bulletMask = "●●";
+        String maskedDate = bulletMask + " / " + bulletMask;
+        return maskedDate;
+    }
+
+    public static String getMaskedCardCvv() {
+        String bulletMask = "●●●";
+
+        return bulletMask;
+    }
+
+    public static Drawable filterDrawableImage(Context context, int image, int filterColor) {
+        Resources res = context.getResources();
+        Drawable background = res.getDrawable(image);
+        background.setColorFilter(filterColor, PorterDuff.Mode.SRC_IN);
+        return background;
+    }
+
+    /**
+     * Sorting bank payment method by priority (Ascending)
+     */
+    public static void sortBankPaymentMethodsByPriority(ArrayList<BankTransferModel> paymentMethodsModels) {
+        Collections.sort(paymentMethodsModels, new Comparator<BankTransferModel>() {
+            @Override
+            public int compare(BankTransferModel lhs, BankTransferModel rhs) {
+                return lhs.getPriority().compareTo(rhs.getPriority());
+            }
+        });
+    }
+
+    /**
+     * Check if payment method is enabled.
+     *
+     * @param enabledPayments list of enabled payment method.
+     * @param method          selected payment.
+     * @return true if selected payment is enabled.
+     */
+    public static boolean isPaymentMethodEnabled(List<EnabledPayment> enabledPayments, String method) {
+        for (EnabledPayment enabledPayment : enabledPayments) {
+            if (enabledPayment.getType().equalsIgnoreCase(method)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if bank transfer payment method is enabled.
+     *
+     * @param context         application or activity context.
+     * @param enabledPayments list of enabled payment method.
+     * @return true if bank transfer payment is enabled.
+     */
+    public static boolean isBankTransferMethodEnabled(Context context, List<EnabledPayment> enabledPayments) {
+        for (EnabledPayment enabledPayment : enabledPayments) {
+            if (enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_bca_va))
+                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_permata_va))
+                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_mandiri_bill_payment))
+                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_all_va))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

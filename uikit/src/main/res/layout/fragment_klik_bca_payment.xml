@@ -37,7 +37,7 @@
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size" />
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -45,23 +45,44 @@
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:text="@string/klikbca_instruction_1"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size" />
+            android:paddingTop="@dimen/five_dp">
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <TextView
+                android:layout_width="@dimen/twenty_four_dp"
+                android:layout_height="wrap_content"
+                android:text="@string/number_instruction1" />
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/klikbca_instruction_1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
             android:lineSpacingExtra="2dp"
             android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:text="@string/klikbca_instruction_2"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size" />
+            android:paddingRight="@dimen/sixteen_dp">
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <TextView
+                android:layout_width="@dimen/twenty_four_dp"
+                android:layout_height="wrap_content"
+                android:text="@string/number_instruction2" />
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="@string/klikbca_instruction_2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -69,9 +90,20 @@
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:text="@string/klikbca_instruction_3"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size" />
+            android:paddingTop="@dimen/five_dp">
+
+            <TextView
+                android:layout_width="@dimen/twenty_four_dp"
+                android:layout_height="wrap_content"
+                android:text="@string/number_instruction3" />
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/klikbca_instruction_3"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size" />
+        </LinearLayout>
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
