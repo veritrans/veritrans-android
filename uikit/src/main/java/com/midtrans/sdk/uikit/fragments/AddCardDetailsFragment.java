@@ -188,6 +188,7 @@ public class AddCardDetailsFragment extends Fragment {
         tilExpiry = (TextInputLayout) view.findViewById(R.id.exp_til);
         etCardNo = (EditText) view.findViewById(R.id.et_card_no);
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
+
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
         switchSaveCard = (SwitchCompat) view.findViewById(R.id.cb_store_card);
         switchBNIPoints = (SwitchCompat) view.findViewById(R.id.cb_bni_point);

@@ -29,14 +29,13 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
 
     private static final String ARGS_POINT = "point_balance";
     private static final String ARGS_BANK = "point_bank";
-    private static final long MULTPIPLY = 10000;
+    private static final long MULTIPLY = 100;
     private final String TAG = getClass().getSimpleName();
-    private DefaultTextView textPointConverted, textAmountToPay, textTotalPoint;
+    private DefaultTextView textAmountToPay, textTotalPoint;
     private EditText editPointRedeemed;
     private FancyButton buttonIncrease, buttonDecrease;
     private Button buttonRedeemPoint;
     private long pointBalance;
-    private double pointConverted;
     private double amountToPay;
     private long pointRedeemed;
     private ImageView imagePlus, imageMinus;
@@ -66,7 +65,6 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
         ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.redeem_bank_point_title, this.pointBank));
 
-        textPointConverted = (DefaultTextView) view.findViewById(R.id.text_point_converted);
         textAmountToPay = (DefaultTextView) view.findViewById(R.id.text_amount_to_pay);
         editPointRedeemed = (EditText) view.findViewById(R.id.text_point_used);
         textTotalPoint = (DefaultTextView) view.findViewById(R.id.text_total_point);
@@ -145,7 +143,6 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
 
     private void bindValues() {
         textAmountToPay.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(amountToPay)));
-        textPointConverted.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(pointConverted)));
         editPointRedeemed.setText(String.valueOf(pointRedeemed));
         textTotalPoint.setText(getString(R.string.total_point, String.valueOf(pointBalance)));
     }
@@ -154,7 +151,6 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
         double totalAmount = MidtransSDK.getInstance().getTransactionRequest().getAmount();
         this.amountToPay = totalAmount;
         this.totalAmount = totalAmount;
-        this.pointConverted = 0;
         this.pointRedeemed = 0;
 
         Bundle bundle = getArguments();
@@ -187,11 +183,11 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
         boolean enableIncrease = true;
         boolean enableDecrease = true;
 
-        if (pointRedeemed < 0 || (pointRedeemed - MULTPIPLY) < 0) {
+        if (pointRedeemed <= 0) {
             enableDecrease = false;
         }
 
-        if (pointRedeemed > pointBalance || (pointRedeemed + MULTPIPLY) > pointBalance) {
+        if (pointRedeemed >= pointBalance) {
             enableIncrease = false;
         }
         setEnablePointButtons(enableDecrease, enableIncrease);
@@ -214,8 +210,9 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     private void onDecrasePoint() {
         inputPointFromButtons = true;
         long currentBalance = getCurrentPoint();
-        long newBalance = currentBalance - MULTPIPLY;
-        if (isValidCurrentBalance(currentBalance) && newBalance >= 0) {
+        long newBalance = currentBalance - MULTIPLY;
+        
+        if (isValidCurrentBalance(newBalance)) {
             calculateAmount(newBalance);
         }
 
@@ -226,9 +223,8 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     private void onIncreasePoint() {
         inputPointFromButtons = true;
         long currentBalance = getCurrentPoint();
-        long newBalance = currentBalance + MULTPIPLY;
-
-        if (isValidCurrentBalance(currentBalance) && newBalance <= pointBalance) {
+        long newBalance = currentBalance + MULTIPLY;
+        if (isValidCurrentBalance(newBalance)) {
             calculateAmount(newBalance);
         }
 
@@ -237,7 +233,7 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     }
 
     private boolean isValidCurrentBalance(long currentBalance) {
-        if (pointBalance >= MULTPIPLY && currentBalance <= this.pointBalance) {
+        if (currentBalance >= 0 && currentBalance <= this.pointBalance) {
             return true;
         }
         return false;
@@ -247,24 +243,13 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
         if (inputPointFromButtons) {
             editPointRedeemed.setText(String.valueOf(pointRedeemed));
         }
-
         textAmountToPay.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(amountToPay)));
-        textPointConverted.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(pointConverted)));
-
         updatePointButtonStatus();
     }
 
     private void calculateAmount(long currentBalance) {
-        double pointAmount;
-        if (currentBalance == 0) {
-            pointAmount = currentBalance;
-        } else {
-            pointAmount = currentBalance / 100;
-        }
-
         this.pointRedeemed = currentBalance;
-        this.pointConverted = pointAmount;
-        this.amountToPay = totalAmount - pointConverted;
+        this.amountToPay = totalAmount - pointRedeemed;
     }
 
     private long getCurrentPoint() {
