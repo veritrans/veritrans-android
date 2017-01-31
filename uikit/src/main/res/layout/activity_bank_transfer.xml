@@ -57,7 +57,7 @@
             android:layout_alignParentBottom="true"
             android:drawableEnd="@drawable/ic_arrow_right_white"
             android:drawableRight="@drawable/ic_arrow_right_white"
-            android:text="@string/confirm_payment"
+            android:text="@string/btn_show_account_number"
             android:textColor="@color/white" />
     </RelativeLayout>
 
