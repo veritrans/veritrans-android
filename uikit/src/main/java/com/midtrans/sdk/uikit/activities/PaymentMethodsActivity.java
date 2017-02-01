@@ -285,6 +285,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     midtransSDK.setCreditCard(transaction.getCreditCard());
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
+                    midtransSDK.setPointBanks(transaction.getMerchantData().getPointBanks());
+                    Log.d(TAG,"points:" + transaction.getMerchantData().getPointBanks());
                     showLogo(logoUrl);
                     if (TextUtils.isEmpty(logoUrl)) {
                         showName(merchantName);

@@ -863,4 +863,8 @@ public class FancyButton extends LinearLayout {
     public int getmDefaultIconColor() {
         return mDefaultIconColor;
     }
+
+    public void setDefaultColor(){
+
+    }
 }

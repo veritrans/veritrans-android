@@ -2,6 +2,7 @@ package com.midtrans.sdk.uikit.models;
 
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.models.snap.BankPointsResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 
@@ -16,6 +17,7 @@ public class CreditCardTransaction {
     private static final String BANK_OFFLINE = "offline";
 
     private CreditCardInstallment cardInstallment;
+    private CreditCardBankPoint cardBankPoint;
     private CreditCard creditCard;
     private boolean whiteListBinsAvailable;
     private ArrayList<BankBinsResponse> bankBins;
@@ -24,6 +26,7 @@ public class CreditCardTransaction {
     public CreditCardTransaction() {
         bankBins = new ArrayList<>();
         cardInstallment = new CreditCardInstallment();
+        cardBankPoint = new CreditCardBankPoint();
         creditCard = new CreditCard();
     }
 
@@ -138,5 +141,29 @@ public class CreditCardTransaction {
 
     public String getInstallmentBankSelected() {
         return cardInstallment.getBankSelected();
+    }
+
+    public void setBankPointStatus(boolean bniPointActivated) {
+        cardBankPoint.setStatus(bniPointActivated);
+    }
+
+    public void setBankPoint(BankPointsResponse response, String bankType) {
+        cardBankPoint.setData(response, bankType);
+    }
+
+    public boolean isBankPointEnabled() {
+        return cardBankPoint.isEnabled();
+    }
+
+    public void setBankPointRedeemed(long pointRedeemed) {
+        cardBankPoint.setpointRedeemed(pointRedeemed);
+    }
+
+    public boolean isBankPointValid() {
+        return cardBankPoint.isValid();
+    }
+
+    public long getBankPointRedeemed() {
+        return cardBankPoint.getpointRedeemed();
     }
 }

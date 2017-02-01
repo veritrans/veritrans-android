@@ -9,11 +9,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/fortytwo_dp"
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp"
-        android:paddingTop="@dimen/sixteen_dp"
-        android:paddingBottom="@dimen/fortytwo_dp"
-        android:orientation="vertical">
+        android:paddingTop="@dimen/sixteen_dp">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
