@@ -32,8 +32,6 @@ import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback {
@@ -196,11 +194,8 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             expiryModel.setUnit(ExpiryModel.UNIT_HOUR);
             transactionRequestNew.setExpiry(expiryModel);
         }
-
-        Map<String, String> customMap = new HashMap<>();
-        customMap.put("flight_id", "JT-214");
-        customMap.put("airplane_type", "Boeing");
-        transactionRequestNew.setCustomObject(customMap);
+        // Set promo
+        transactionRequestNew.setPromoEnabled(true);
 
         return transactionRequestNew;
     }
