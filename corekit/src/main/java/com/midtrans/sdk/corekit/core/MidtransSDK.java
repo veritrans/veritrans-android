@@ -25,6 +25,7 @@ import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
@@ -75,6 +76,7 @@ public class MidtransSDK {
     private int requestTimeOut = 10;
     private String flow = null;
     private CreditCard creditCard = new CreditCard();
+    private List<PromoResponse> promoResponses = new ArrayList<>();
 
     private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
@@ -1521,5 +1523,13 @@ public class MidtransSDK {
         if (creditCard != null) {
             this.creditCard = creditCard;
         }
+    }
+
+    public List<PromoResponse> getPromoResponses() {
+        return promoResponses;
+    }
+
+    public void setPromoResponses(List<PromoResponse> promoResponses) {
+        this.promoResponses = promoResponses;
     }
 }
