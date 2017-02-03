@@ -593,6 +593,20 @@ public class SdkUtil {
         return paymentRequest;
     }
 
+    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String discountToken, CreditCardPaymentModel model, TransactionRequest transactionRequest) {
+        if (transactionRequest.isUiEnabled()) {
+            // get user details only if using default ui
+            transactionRequest = initializeUserInfo(transactionRequest);
+        }
+
+        CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transactionRequest);
+        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(),
+                model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
+        CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
+        paymentRequest.setDiscountToken(discountToken);
+        return paymentRequest;
+    }
+
     public static BankTransferPaymentRequest getBankTransferPaymentRequest(String email, String paymentType) {
         CustomerDetailRequest request = new CustomerDetailRequest();
         request.setEmail(email);

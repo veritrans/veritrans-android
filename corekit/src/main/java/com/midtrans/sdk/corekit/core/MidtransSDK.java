@@ -13,6 +13,7 @@ import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
+import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
@@ -42,9 +43,6 @@ import java.util.List;
  * Created by shivam on 10/19/15.
  */
 public class MidtransSDK {
-
-    public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
-            "details are necessary.";
     private static final String TAG = "MidtransSDK";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
@@ -65,6 +63,7 @@ public class MidtransSDK {
     private String semiBoldText = null;
     private String merchantName = null;
     private IScanner externalScanner;
+    private PromoEngineManager promoEngineManager;
     private SnapTransactionManager mSnapTransactionManager;
     private String merchantLogo = null;
     private TransactionRequest transactionRequest = null;
@@ -95,6 +94,7 @@ public class MidtransSDK {
         this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.UIKitCustomSetting;
         this.flow = sdkBuilder.flow;
 
+        this.promoEngineManager = new PromoEngineManager(sdkBuilder.context, MidtransRestAdapter.getPromoEngineRestAPI(BuildConfig.PROMO_ENGINE_URL, requestTimeOut));
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
@@ -294,6 +294,35 @@ public class MidtransSDK {
 
         } else {
             Logger.e(TAG, context.getString(R.string.error_already_running));
+        }
+    }
+
+    /**
+     * It will execute an API request to obtain promo token.
+     *
+     * @param promoId promo identifier.
+     * @param amount transaction amount.
+     * @param callback callback to be called.
+     */
+    public void obtainPromo(String promoId, double amount, ObtainPromoCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (!TextUtils.isEmpty(promoId) && amount != 0) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                promoEngineManager.obtainPromo(promoId, amount, callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+            }
+        } else {
+            Logger.e(context.getString(R.string.error_invalid_data_supplied));
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -895,6 +924,34 @@ public class MidtransSDK {
                 isRunning = true;
                 mSnapTransactionManager.paymentUsingCreditCard(authenticationToken,
                         SdkUtil.getCreditCardPaymentRequest(creditCardPaymentModel, transactionRequest), callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            }
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    /**
+     * It will run backgrond task to charge payment using Credit Card
+     *
+     * @param authenticationToken    authentication token
+     * @param discountToken          discount token
+     * @param creditCardPaymentModel model for creditcard payment
+     * @param callback               transaction callback
+     */
+    public void paymentUsingCard(@NonNull String authenticationToken, @NonNull String discountToken, CreditCardPaymentModel creditCardPaymentModel, @NonNull TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingCreditCard(authenticationToken,
+                        SdkUtil.getCreditCardPaymentRequest(discountToken, creditCardPaymentModel, transactionRequest), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
