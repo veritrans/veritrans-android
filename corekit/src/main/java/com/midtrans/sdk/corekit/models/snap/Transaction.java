@@ -18,6 +18,7 @@ public class Transaction {
     private MerchantData merchantData;
     @SerializedName("credit_card")
     private CreditCard creditCard;
+    private List<PromoResponse> promos;
 
     public Transaction() {
     }
@@ -68,5 +69,13 @@ public class Transaction {
 
     public void setCallbacks(Callbacks callbacks) {
         this.callbacks = callbacks;
+    }
+
+    public List<PromoResponse> getPromos() {
+        return promos;
+    }
+
+    public void setPromos(List<PromoResponse> promos) {
+        this.promos = promos;
     }
 }

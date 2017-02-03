@@ -283,6 +283,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     String logoUrl = transaction.getMerchantData().getPreference().getLogoUrl();
                     String merchantName = transaction.getMerchantData().getPreference().getDisplayName();
                     midtransSDK.setCreditCard(transaction.getCreditCard());
+                    midtransSDK.setPromoResponses(transaction.getPromos());
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
                     showLogo(logoUrl);
