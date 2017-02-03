@@ -116,6 +116,7 @@ public class AddCardDetailsFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             SaveCardRequest savedCard = (SaveCardRequest) bundle.getSerializable(ARGS_SAVED_CARD);
+            promo = (PromoResponse) bundle.getSerializable(ARGS_PROMO);
             if (savedCard != null) {
                 Log.i(TAG, "savedcard");
                 this.savedCard = savedCard;
@@ -143,6 +144,9 @@ public class AddCardDetailsFragment extends Fragment {
                 etCvv.requestFocus();
                 etCardNo.setText(SdkUIFlowUtil.getMaskedCardNumber(savedCard.getMaskedCard()));
                 etExpiryDate.setText(SdkUIFlowUtil.getMaskedExpDate());
+                if (promo != null && promo.getDiscountAmount() > 0) {
+                    obtainPromo(promo);
+                }
                 if (isOneClickMode()) {
                     etCvv.setInputType(InputType.TYPE_CLASS_TEXT);
                     etCvv.setFilters(filterArray);
@@ -310,6 +314,14 @@ public class AddCardDetailsFragment extends Fragment {
                         CardTokenRequest request = new CardTokenRequest();
                         request.setSavedTokenId(savedCard.getSavedTokenId());
                         request.setCardCVV(cvv);
+                        if (promo != null && promo.getDiscountAmount() > 0) {
+                            // Calculate discount amount
+                            double preDiscountAmount = midtransSDK.getTransactionRequest().getAmount();
+                            double discountedAmount = preDiscountAmount - SdkUIFlowUtil.calculateDiscountAmount(promo);
+                            request.setGrossAmount(discountedAmount);
+                        } else {
+                            request.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
+                        }
                         ((CreditDebitCardFlowActivity) getActivity()).twoClickPayment(request);
 
                     } else {

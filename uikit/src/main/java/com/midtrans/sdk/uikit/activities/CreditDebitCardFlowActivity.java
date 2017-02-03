@@ -656,9 +656,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         CardTokenRequest cardTokenRequest = new CardTokenRequest();
         cardTokenRequest.setSavedTokenId(cardDetail.getSavedTokenId());
         cardTokenRequest.setCardCVV(cardDetail.getCardCVV());
+        cardTokenRequest.setGrossAmount(cardDetail.getGrossAmount());
         cardTokenRequest.setTwoClick(true);
         cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
-        cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
         cardTokenRequest.setBank(midtransSDK.getTransactionRequest().getCreditCard().getBank());
         cardTokenRequest.setClientKey(midtransSDK.getClientKey());
         initInstallmentProperties(cardTokenRequest);
