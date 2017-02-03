@@ -100,8 +100,8 @@
                             android:layout_width="@dimen/bank_logo_size"
                             android:layout_height="@dimen/bank_logo_size"
                             android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/eight_dp"
-                            android:layout_marginRight="@dimen/eight_dp"
+                            android:layout_marginEnd="@dimen/four_dp"
+                            android:layout_marginRight="@dimen/four_dp"
                             android:layout_toLeftOf="@+id/payment_card_logo"
                             android:layout_toStartOf="@+id/payment_card_logo"
                             tools:src="@drawable/bri" />
@@ -110,10 +110,24 @@
                             android:id="@+id/payment_card_logo"
                             android:layout_width="@dimen/payment_logo_size"
                             android:layout_height="@dimen/payment_logo_size"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/four_dp"
+                            android:layout_marginRight="@dimen/four_dp"
+                            android:layout_toLeftOf="@id/promo_logo"
+                            android:layout_toStartOf="@id/promo_logo"
+                            tools:src="@drawable/ic_visa" />
+
+                        <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
+                            android:id="@+id/promo_logo"
+                            android:layout_width="@dimen/promo_logo_size"
+                            android:layout_height="@dimen/promo_logo_size"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            tools:src="@drawable/ic_visa" />
+                            android:background="?selectableItemBackground"
+                            android:src="@drawable/ic_promo"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
                     </RelativeLayout>
                 </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
