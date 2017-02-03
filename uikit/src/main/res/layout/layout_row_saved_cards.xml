@@ -16,12 +16,12 @@
             android:id="@+id/image_arrow_right"
             android:layout_width="@dimen/twenty_four_dp"
             android:layout_height="@dimen/twenty_four_dp"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:alpha="0.3"
-            android:layout_marginRight="@dimen/eight_dp"
             android:layout_marginEnd="@dimen/eight_dp"
+            android:layout_marginRight="@dimen/eight_dp"
+            android:alpha="0.3"
             android:src="@drawable/ic_arrow_right" />
 
         <ImageView
@@ -34,13 +34,14 @@
             android:layout_toLeftOf="@id/image_arrow_right"
             android:src="@drawable/ic_visa" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/image_card_offer"
             android:layout_width="@dimen/twenty_four_dp"
             android:layout_height="@dimen/twenty_four_dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/eight_dp"
             android:layout_toLeftOf="@id/image_card_type"
+            android:background="?selectableItemBackground"
             android:src="@drawable/ic_promo" />
 
         <TextView

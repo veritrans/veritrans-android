@@ -4,12 +4,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.models.PromoData;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 import java.util.ArrayList;
@@ -22,20 +24,42 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     private static final String TAG = SavedCardsAdapter.class.getSimpleName();
 
     private ArrayList<SaveCardRequest> mData = new ArrayList<>();
-    private SavedCardAdapterEventListener listener;
+    private ArrayList<PromoData> promoDatas = new ArrayList<>();
 
-    public interface SavedCardAdapterEventListener {
-        void onItemClick(int position);
+    private SavedCardAdapterEventListener listener;
+    private SavedCardPromoListener promoListener;
+
+    public SavedCardsAdapter() {
     }
 
-    public SavedCardsAdapter(SavedCardsAdapter.SavedCardAdapterEventListener listener) {
-        this.listener = listener;
+    public ArrayList<PromoData> getPromoDatas() {
+        return promoDatas;
+    }
+
+    public void setPromoDatas(ArrayList<PromoData> promoDatas) {
+        this.promoDatas = promoDatas;
+    }
+
+    public ArrayList<SaveCardRequest> getData() {
+        return mData;
     }
 
     public void setData(ArrayList<SaveCardRequest> cards) {
         this.mData.clear();
         this.mData.addAll(cards);
         this.notifyDataSetChanged();
+    }
+
+    public void setListener(SavedCardAdapterEventListener listener) {
+        this.listener = listener;
+    }
+
+    public SavedCardPromoListener getPromoListener() {
+        return promoListener;
+    }
+
+    public void setPromoListener(SavedCardPromoListener promoListener) {
+        this.promoListener = promoListener;
     }
 
     public SaveCardRequest getItem(int position) {
@@ -46,7 +70,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     public SavedCardsAdapter.SavedCardsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_row_saved_cards, parent, false);
-        return new SavedCardsAdapter.SavedCardsViewHolder(view, listener);
+        return new SavedCardsAdapter.SavedCardsViewHolder(view);
     }
 
     @Override
@@ -73,31 +97,56 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         holder.textCardName.setText(cardType + "-" + cardName);
         String cardNumber = SdkUIFlowUtil.getMaskedCardNumber(maskedCard);
         holder.textCardNumber.setText(cardNumber);
-    }
 
+        PromoData promoData = promoDatas.get(position);
+        if (promoData != null && promoData.getPromoResponse() != null) {
+
+        } else {
+
+        }
+    }
 
     @Override
     public int getItemCount() {
         return mData.size();
     }
 
+    public interface SavedCardAdapterEventListener {
+        void onItemClick(int position);
+    }
 
-    public static class SavedCardsViewHolder extends RecyclerView.ViewHolder {
+
+    public interface SavedCardPromoListener {
+        void onItemPromo(int position);
+    }
+
+    class SavedCardsViewHolder extends RecyclerView.ViewHolder {
         TextView textCardName, textCardNumber;
-        ImageView imageCardType, imageCardOffer;
+        ImageView imageCardType;
+        ImageButton imageCardOffer;
 
-        public SavedCardsViewHolder(View itemView, final SavedCardsAdapter.SavedCardAdapterEventListener listener) {
+        public SavedCardsViewHolder(View itemView) {
             super(itemView);
             textCardName = (TextView) itemView.findViewById(R.id.text_saved_card_name);
             textCardNumber = (TextView) itemView.findViewById(R.id.text_saved_card_number);
             imageCardType = (ImageView) itemView.findViewById(R.id.image_card_type);
-            imageCardOffer = (ImageView) itemView.findViewById(R.id.image_card_offer);
+            imageCardOffer = (ImageButton) itemView.findViewById(R.id.image_card_offer);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (listener != null) {
                         listener.onItemClick(getAdapterPosition());
+                    }
+                }
+            });
+
+            imageCardOffer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (promoListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                        promoListener.onItemPromo(getAdapterPosition());
                     }
                 }
             });

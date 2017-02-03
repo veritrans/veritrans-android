@@ -28,7 +28,9 @@ import com.midtrans.sdk.corekit.models.BBMUrlEncodeJson;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.models.PromoData;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -476,5 +478,45 @@ public class SdkUIFlowUtil {
             }
         }
         return false;
+    }
+
+    public static PromoResponse getPromoFromCardBins(List<PromoResponse> promoResponses, String cardBins) {
+        List<PromoData> promoDatas = mapPromoResponseIntoData(promoResponses);
+        Collections.sort(promoDatas, new PromoComparator());
+        for (PromoData promoData : promoDatas) {
+            if (isBinCardValidForPromo(promoData.getPromoResponse(), cardBins)) {
+                return promoData.getPromoResponse();
+            }
+        }
+        return null;
+    }
+
+    private static boolean isBinCardValidForPromo(PromoResponse promo, String cardBin) {
+        List<String> bins = promo.getBins();
+        if (bins != null && !bins.isEmpty()) {
+            if (bins.contains(cardBin)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static List<PromoData> mapPromoResponseIntoData(List<PromoResponse> promoResponses) {
+        List<PromoData> promoDatas = new ArrayList<>();
+        double grossAmount = MidtransSDK.getInstance().getTransactionRequest().getAmount();
+        for (PromoResponse promoResponse : promoResponses) {
+            if (grossAmount > calculateDiscountAmount(promoResponse)) {
+                promoDatas.add(new PromoData(promoResponse, grossAmount));
+            }
+        }
+        return promoDatas;
+    }
+
+    public static double calculateDiscountAmount(PromoResponse promoResponse) {
+        if (promoResponse.getDiscountType().equalsIgnoreCase("FIXED")) {
+            return promoResponse.getDiscountAmount();
+        } else {
+            return promoResponse.getDiscountAmount() * MidtransSDK.getInstance().getTransactionRequest().getAmount() / 100;
+        }
     }
 }

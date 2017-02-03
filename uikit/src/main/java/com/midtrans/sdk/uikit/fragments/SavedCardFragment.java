@@ -2,15 +2,16 @@ package com.midtrans.sdk.uikit.fragments;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +22,19 @@ import android.widget.RelativeLayout;
 
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.adapters.SavedCardsAdapter;
+import com.midtrans.sdk.uikit.models.PromoData;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SavedCardFragment extends Fragment implements SavedCardsAdapter.SavedCardAdapterEventListener {
     private static final String PARAM_CARD_BINS = "param_card_bins";
@@ -129,7 +135,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
         rvSavedCards.setHasFixedSize(true);
         rvSavedCards.setLayoutManager(
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        cardsAdapter = new SavedCardsAdapter(this);
+        cardsAdapter = new SavedCardsAdapter();
         rvSavedCards.setAdapter(cardsAdapter);
 
         addCardBt.setOnClickListener(new View.OnClickListener() {
@@ -153,8 +159,42 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
         if (creditCards != null && !creditCards.isEmpty()) {
             if (getActivity() != null) {
                 cardsAdapter.setData(creditCards);
+                cardsAdapter.setListener(this);
+                initPromoData();
                 fadeInAnimation(addCardBt);
             }
+        }
+    }
+
+    private void initPromoData() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK.getTransactionRequest().isPromoEnabled()
+                && midtransSDK.getPromoResponses() != null
+                && !midtransSDK.getPromoResponses().isEmpty()) {
+            // Fill promo data
+            final ArrayList<PromoData> promoDatas = getPromoData();
+            cardsAdapter.setPromoDatas(promoDatas);
+            cardsAdapter.setPromoListener(new SavedCardsAdapter.SavedCardPromoListener() {
+                @Override
+                public void onItemPromo(int position) {
+                    PromoData promoData = promoDatas.get(position);
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                            .setTitle(R.string.promo_dialog_title)
+                            .setMessage(getString(R.string.promo_dialog_message, Utils.getFormattedAmount(SdkUIFlowUtil.calculateDiscountAmount(promoData.getPromoResponse())), promoData.getPromoResponse().getSponsorName()))
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create();
+                    alertDialog.show();
+                }
+            });
+        } else {
+            // Reset promo
+            cardsAdapter.setPromoDatas(initNullPromoData());
+            cardsAdapter.setPromoListener(null);
         }
     }
 
@@ -283,11 +323,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     public void onDestroyView() {
         super.onDestroyView();
 
-        if (this.selectedCard != null) {
-            fromBackStack = true;
-        } else {
-            fromBackStack = false;
-        }
+        fromBackStack = this.selectedCard != null;
     }
 
     private void fadeInAnimation(final View view) {
@@ -311,5 +347,33 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
         });
 
         view.startAnimation(animation);
+    }
+
+    private ArrayList<PromoData> getPromoData() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        ArrayList<PromoData> promoDatas = new ArrayList<>();
+        List<PromoResponse> promoResponses = MidtransSDK.getInstance().getPromoResponses();
+        ArrayList<SaveCardRequest> saveCardRequests = cardsAdapter.getData();
+        double grossAmount = midtransSDK.getTransactionRequest().getAmount();
+        for (int i = 0; i < cardsAdapter.getItemCount(); i++) {
+            SaveCardRequest cardRequest = saveCardRequests.get(i);
+            String cardBins = cardRequest.getMaskedCard().substring(0, 6);
+            PromoResponse promoResponse = SdkUIFlowUtil.getPromoFromCardBins(promoResponses, cardBins);
+            if (promoResponse != null) {
+                promoDatas.add(new PromoData(promoResponse, grossAmount));
+            } else {
+                promoDatas.add(null);
+            }
+        }
+        return promoDatas;
+    }
+
+    private ArrayList<PromoData> initNullPromoData() {
+        int count = cardsAdapter.getItemCount();
+        ArrayList<PromoData> promoDatas = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            promoDatas.add(null);
+        }
+        return promoDatas;
     }
 }

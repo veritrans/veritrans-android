@@ -4,11 +4,13 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -34,6 +37,7 @@ import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
@@ -66,6 +70,7 @@ public class AddCardDetailsFragment extends Fragment {
     private ImageView logo;
     private ImageView bankLogo;
     private ImageView imageCvvHelp;
+    private ImageButton promoLogoBtn;
     private Button payNowBtn;
     private Button scanCardBtn;
     private String cardNumber;
@@ -80,6 +85,7 @@ public class AddCardDetailsFragment extends Fragment {
     private LinearLayout layoutInstallment, layoutSaveCard;
     private DefaultTextView textInvalidPromoStatus;
     private SaveCardRequest savedCard;
+    private PromoResponse promo;
 
     public static AddCardDetailsFragment newInstance(SaveCardRequest card) {
         AddCardDetailsFragment fragment = new AddCardDetailsFragment();
@@ -141,7 +147,6 @@ public class AddCardDetailsFragment extends Fragment {
                 } else {
                     initCardInstallment();
                 }
-
             }
         }
     }
@@ -198,6 +203,7 @@ public class AddCardDetailsFragment extends Fragment {
         buttonDecrease = (Button) view.findViewById(R.id.button_installment_decrease);
         textInstallmentTerm = (TextView) view.findViewById(R.id.text_installment_term);
         textInvalidPromoStatus = (DefaultTextView) view.findViewById(R.id.text_offer_status_not_applied);
+        promoLogoBtn = (ImageButton) view.findViewById(R.id.promo_logo);
 
         buttonIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,6 +232,8 @@ public class AddCardDetailsFragment extends Fragment {
                     checkCardNumberValidity();
                     checkBinLockingValidity();
                     initCardInstallment();
+                    initPromoUsingPromoEngine();
+
                 }
             }
         });
@@ -447,6 +455,48 @@ public class AddCardDetailsFragment extends Fragment {
                     }
                 }
         );
+    }
+
+    private void initPromoUsingPromoEngine() {
+        if (midtransSDK.getTransactionRequest().isPromoEnabled()
+                && midtransSDK.getPromoResponses() != null
+                && !midtransSDK.getPromoResponses().isEmpty()) {
+            String cardNumber = etCardNo.getText().toString();
+            if (TextUtils.isEmpty(cardNumber)) {
+                promoLogoBtn.setVisibility(View.GONE);
+                promoLogoBtn.setOnClickListener(null);
+            } else if (cardNumber.length() < 7) {
+                promoLogoBtn.setVisibility(View.GONE);
+                promoLogoBtn.setOnClickListener(null);
+            } else {
+                String cardBin = cardNumber.trim().replace(" ", "").substring(0, 6);
+                final PromoResponse promoResponse = SdkUIFlowUtil.getPromoFromCardBins(midtransSDK.getPromoResponses(), cardBin);
+                if (promoResponse != null) {
+                    setPromo(promoResponse);
+                    promoLogoBtn.setVisibility(View.VISIBLE);
+                    promoLogoBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                                    .setTitle(R.string.promo_dialog_title)
+                                    .setMessage(getString(R.string.promo_dialog_message, Utils.getFormattedAmount(SdkUIFlowUtil.calculateDiscountAmount(promoResponse)), promoResponse.getSponsorName()))
+                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    })
+                                    .create();
+                            alertDialog.show();
+                        }
+                    });
+                } else {
+                    setPromo(null);
+                    promoLogoBtn.setVisibility(View.GONE);
+                    promoLogoBtn.setOnClickListener(null);
+                }
+            }
+        }
     }
 
     private boolean isValidPayment() {
@@ -856,5 +906,13 @@ public class AddCardDetailsFragment extends Fragment {
 
     public boolean isTwoClickMode() {
         return savedCard != null;
+    }
+
+    public PromoResponse getPromo() {
+        return promo;
+    }
+
+    public void setPromo(PromoResponse promo) {
+        this.promo = promo;
     }
 }
