@@ -2,13 +2,14 @@ package com.midtrans.sdk.corekit.models.snap;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by rakawm on 1/2/17.
  */
 
-public class PromoResponse {
+public class PromoResponse implements Serializable {
     private int id;
     private List<String> bins;
     @SerializedName("discount_amount")

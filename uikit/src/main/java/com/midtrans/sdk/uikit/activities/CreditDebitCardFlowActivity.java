@@ -40,6 +40,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
@@ -128,7 +129,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             if (!midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
                 getCreditCards();
             } else {
-                showCardDetailFragment(null);
+                showCardDetailFragment(null, null);
             }
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
@@ -586,7 +587,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                         @Override
                         public void onError(Throwable error) {
                             SdkUIFlowUtil.hideProgressDialog();
-                            showCardDetailFragment(null);
+                            showCardDetailFragment(null, null);
                         }
                     });
                 }
@@ -740,7 +741,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             replaceFragment(savedCardFragment, R.id.card_container, true, false);
 
         } else {
-            showCardDetailFragment(null);
+            showCardDetailFragment(null, null);
         }
     }
 
@@ -816,17 +817,17 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         return creditCardTransaction.isWhiteListBinsAvailable();
     }
 
-    public void showAddCardDetailFragment(SaveCardRequest card) {
-        showCardDetailFragment(card);
+    public void showAddCardDetailFragment(SaveCardRequest card, PromoResponse promoResponse) {
+        showCardDetailFragment(card, promoResponse);
     }
 
-    private void showCardDetailFragment(SaveCardRequest card) {
+    private void showCardDetailFragment(SaveCardRequest card, PromoResponse promoResponse) {
         if (card == null) {
             showDeleteCardIcon(false);
         } else {
             fromSavedCard = true;
         }
-        AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance(card);
+        AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance(card, promoResponse);
         replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
         titleHeaderTextView.setText(getString(R.string.card_details));
     }

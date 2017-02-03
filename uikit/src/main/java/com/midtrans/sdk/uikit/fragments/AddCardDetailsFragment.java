@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -42,6 +41,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.MidtransDialog;
 
@@ -56,6 +56,7 @@ public class AddCardDetailsFragment extends Fragment {
     private static final String KEY_SCAN_BUTTON_EVENT = "Scan Card";
     private static final String KEY_CHECKBOX_SAVE_CARD_EVENT = "Save Card";
     private static final String ARGS_SAVED_CARD = "args_saved_card";
+    private static final String ARGS_PROMO = "args_promo";
     private static final String TAG = AddCardDetailsFragment.class.getSimpleName();
 
     TextInputLayout tilCardNo, tilCvv, tilExpiry;
@@ -70,7 +71,7 @@ public class AddCardDetailsFragment extends Fragment {
     private ImageView logo;
     private ImageView bankLogo;
     private ImageView imageCvvHelp;
-    private ImageButton promoLogoBtn;
+    private AspectRatioImageView promoLogoBtn;
     private Button payNowBtn;
     private Button scanCardBtn;
     private String cardNumber;
@@ -87,10 +88,11 @@ public class AddCardDetailsFragment extends Fragment {
     private SaveCardRequest savedCard;
     private PromoResponse promo;
 
-    public static AddCardDetailsFragment newInstance(SaveCardRequest card) {
+    public static AddCardDetailsFragment newInstance(SaveCardRequest card, PromoResponse promo) {
         AddCardDetailsFragment fragment = new AddCardDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARGS_SAVED_CARD, card);
+        bundle.putSerializable(ARGS_PROMO, promo);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -203,7 +205,7 @@ public class AddCardDetailsFragment extends Fragment {
         buttonDecrease = (Button) view.findViewById(R.id.button_installment_decrease);
         textInstallmentTerm = (TextView) view.findViewById(R.id.text_installment_term);
         textInvalidPromoStatus = (DefaultTextView) view.findViewById(R.id.text_offer_status_not_applied);
-        promoLogoBtn = (ImageButton) view.findViewById(R.id.promo_logo);
+        promoLogoBtn = (AspectRatioImageView) view.findViewById(R.id.promo_logo);
 
         buttonIncrease.setOnClickListener(new View.OnClickListener() {
             @Override

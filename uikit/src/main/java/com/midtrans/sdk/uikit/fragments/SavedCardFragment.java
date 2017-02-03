@@ -48,6 +48,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     private SavedCardsAdapter cardsAdapter;
     private RecyclerView rvSavedCards;
     private SaveCardRequest selectedCard;
+    private PromoResponse selectedPromo;
     private boolean fromBackStack;
 
     public SavedCardFragment() {
@@ -121,7 +122,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
                         cardsAdapter.notifyDataSetChanged();
                     }
                 } else {
-                    showNewCardFragment(null);
+                    showNewCardFragment(null, null);
                 }
             }
         }
@@ -141,7 +142,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
         addCardBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showNewCardFragment(null);
+                showNewCardFragment(null, null);
             }
         });
 
@@ -219,11 +220,11 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
         ((CreditDebitCardFlowActivity) getActivity()).saveCreditCards(cardList, true);
     }
 
-    public void showNewCardFragment(final SaveCardRequest card) {
+    public void showNewCardFragment(final SaveCardRequest card, final PromoResponse promoResponse) {
         this.selectedCard = card;
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            ((CreditDebitCardFlowActivity) getActivity()).showAddCardDetailFragment(card);
+            ((CreditDebitCardFlowActivity) getActivity()).showAddCardDetailFragment(card, promoResponse);
             return;
         }
 
@@ -245,7 +246,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
             public void onAnimationEnd(Animator animation) {
                 //payNowBtn.setVisibility(View.VISIBLE);
                 addCardBt.setVisibility(View.GONE);
-                ((CreditDebitCardFlowActivity) getActivity()).showAddCardDetailFragment(card);
+                ((CreditDebitCardFlowActivity) getActivity()).showAddCardDetailFragment(card, selectedPromo);
 
             }
 
@@ -315,7 +316,8 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     public void onItemClick(int position) {
         SaveCardRequest card = cardsAdapter.getItem(position);
         if (getActivity() != null) {
-            showNewCardFragment(card);
+            selectedPromo = cardsAdapter.getPromoDatas().get(position).getPromoResponse();
+            showNewCardFragment(card, selectedPromo);
         }
     }
 

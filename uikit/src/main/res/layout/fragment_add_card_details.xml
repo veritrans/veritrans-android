@@ -4,13 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/btn_pay_now"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fifty_six_dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/pay_now"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="@dimen/sixty_dp"
         android:background="@android:color/white"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -95,39 +105,40 @@
                             android:nextFocusDown="@+id/et_exp_date"
                             tools:text="4811 1111 1111 1114" />
 
-                        <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
-                            android:id="@+id/bank_logo"
-                            android:layout_width="@dimen/bank_logo_size"
-                            android:layout_height="@dimen/bank_logo_size"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/four_dp"
-                            android:layout_marginRight="@dimen/four_dp"
-                            android:layout_toLeftOf="@+id/payment_card_logo"
-                            android:layout_toStartOf="@+id/payment_card_logo"
-                            tools:src="@drawable/bri" />
-
-                        <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
-                            android:id="@+id/payment_card_logo"
-                            android:layout_width="@dimen/payment_logo_size"
-                            android:layout_height="@dimen/payment_logo_size"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/four_dp"
-                            android:layout_marginRight="@dimen/four_dp"
-                            android:layout_toLeftOf="@id/promo_logo"
-                            android:layout_toStartOf="@id/promo_logo"
-                            tools:src="@drawable/ic_visa" />
-
-                        <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
-                            android:id="@+id/promo_logo"
-                            android:layout_width="@dimen/promo_logo_size"
-                            android:layout_height="@dimen/promo_logo_size"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:background="?selectableItemBackground"
-                            android:src="@drawable/ic_promo"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
+                                android:id="@+id/bank_logo"
+                                android:layout_width="@dimen/bank_logo_size"
+                                android:layout_height="@dimen/bank_logo_size"
+                                android:layout_marginEnd="@dimen/four_dp"
+                                android:layout_marginRight="@dimen/four_dp"
+                                tools:src="@drawable/bri" />
+
+                            <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
+                                android:id="@+id/payment_card_logo"
+                                android:layout_width="@dimen/payment_logo_size"
+                                android:layout_height="@dimen/payment_logo_size"
+                                android:layout_marginEnd="@dimen/four_dp"
+                                android:layout_marginRight="@dimen/four_dp"
+                                tools:src="@drawable/ic_visa" />
+
+                            <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
+                                android:id="@+id/promo_logo"
+                                android:layout_width="@dimen/promo_logo_size"
+                                android:layout_height="@dimen/promo_logo_size"
+                                android:background="?selectableItemBackground"
+                                android:src="@drawable/ic_promo"
+                                android:visibility="gone"
+                                tools:visibility="visible" />
+                        </LinearLayout>
                     </RelativeLayout>
                 </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
@@ -204,22 +215,11 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/scan_card"
-                style="?borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/expiry_date_layout"
-                android:text="@string/btn_scan_card"
-                android:textColor="?colorPrimary"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
             <LinearLayout
                 android:id="@+id/layout_save_card_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/scan_card"
+                android:layout_below="@+id/scan_card"
                 android:layout_marginTop="@dimen/eight_dp"
                 android:gravity="right"
                 android:orientation="vertical">
@@ -329,17 +329,19 @@
                     android:src="@drawable/cc_badge" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/scan_card"
+                style="?borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/expiry_date_layout"
+                android:text="@string/btn_scan_card"
+                android:textColor="?colorPrimary"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
-
-    <Button
-        android:id="@+id/btn_pay_now"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/fifty_six_dp"
-        android:layout_alignParentBottom="true"
-        android:text="@string/pay_now"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:visibility="visible" />
 </RelativeLayout>

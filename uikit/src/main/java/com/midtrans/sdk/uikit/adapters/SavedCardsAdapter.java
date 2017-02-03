@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +12,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.models.PromoData;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
 
 import java.util.ArrayList;
 
@@ -123,14 +123,14 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     class SavedCardsViewHolder extends RecyclerView.ViewHolder {
         TextView textCardName, textCardNumber;
         ImageView imageCardType;
-        ImageButton imageCardOffer;
+        AspectRatioImageView imageCardOffer;
 
         public SavedCardsViewHolder(View itemView) {
             super(itemView);
             textCardName = (TextView) itemView.findViewById(R.id.text_saved_card_name);
             textCardNumber = (TextView) itemView.findViewById(R.id.text_saved_card_number);
             imageCardType = (ImageView) itemView.findViewById(R.id.image_card_type);
-            imageCardOffer = (ImageButton) itemView.findViewById(R.id.image_card_offer);
+            imageCardOffer = (AspectRatioImageView) itemView.findViewById(R.id.image_card_offer);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
