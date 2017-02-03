@@ -669,4 +669,7 @@
     <string name="instruction_klikbca2">Please continue the payment through KlikBCA by opening www.klikbca.com on a separate window or tab, using the same User ID that you entered below.</string>
     <string name="instruction_klikbca3">Transaction will be cancelled if payment is not completed within 2 hours.</string>
     <string name="btn_show_account_number">See Account Number</string>
+
+    <string name="promo_dialog_title">Congratulations</string>
+    <string name="promo_dialog_message">With this card, you will get Rp. %1$s discount from %2$s.</string>
 </resources>

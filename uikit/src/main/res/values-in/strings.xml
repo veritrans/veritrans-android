@@ -481,4 +481,7 @@
     <string name="instruction_klikbca2">Mohon lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com di jendela atau tab terpisah, menggunakan User ID yang anda masukkan sebelumnya.</string>
     <string name="instruction_klikbca3">Transaksi akan dibatalkan bila pembayaran tidak diselesaikan dalam 2 jam.</string>
     <string name="btn_show_account_number">Lihat Nomor Rekening</string>
+
+    <string name="promo_dialog_title">Selamat</string>
+    <string name="promo_dialog_message">Dengan kartu ini, anda mendapatkan diskon sejumlah Rp. %1$s dari %2$s.</string>
 </resources>
