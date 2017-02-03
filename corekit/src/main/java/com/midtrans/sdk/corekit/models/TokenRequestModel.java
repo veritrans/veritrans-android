@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
+import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ public class TokenRequestModel {
 
     private ExpiryModel expiry;
     private Object custom;
+    private SnapPromo promo;
 
     public TokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails,
                              CustomerDetails customerDetails) {
@@ -105,5 +107,13 @@ public class TokenRequestModel {
 
     public void setCustom(Object custom) {
         this.custom = custom;
+    }
+
+    public SnapPromo getPromo() {
+        return promo;
+    }
+
+    public void setPromo(SnapPromo promo) {
+        this.promo = promo;
     }
 }

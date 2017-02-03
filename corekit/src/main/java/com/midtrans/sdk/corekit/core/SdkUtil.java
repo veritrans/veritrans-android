@@ -35,6 +35,7 @@ import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
@@ -554,6 +555,17 @@ public class SdkUtil {
         // Set custom object if it's available
         if (transactionRequest.getCustomObject() != null && !transactionRequest.getCustomObject().isEmpty()) {
             requestModel = Utils.addCustomMapObjectIntoTransaction(requestModel, transactionRequest.getCustomObject());
+        }
+
+        // Set promo is available
+        if (transactionRequest.isPromoEnabled()) {
+            SnapPromo promo = new SnapPromo();
+            promo.setEnabled(true);
+
+            if (transactionRequest.getPromoCodes() != null && !transactionRequest.getPromoCodes().isEmpty()) {
+                promo.setAllowedPromoCodes(transactionRequest.getPromoCodes());
+            }
+            requestModel.setPromo(promo);
         }
 
         return requestModel;
