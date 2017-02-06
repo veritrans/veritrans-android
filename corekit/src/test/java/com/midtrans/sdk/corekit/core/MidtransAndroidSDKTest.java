@@ -227,7 +227,6 @@ public class MidtransAndroidSDKTest {
                 .buildSDK();
         Mockito.when(midtransSDK.readAuthenticationToken()).thenReturn(sdkTokenMock);
         midtransSDK.setTransactionManager(transactionManager);
-        transactionManager.setAnalyticsManager(mixpanelMock);
         midtransSDKSSpy = spy(midtransSDK);
 
     }

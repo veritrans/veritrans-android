@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.InstructionCIMBFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -95,6 +96,9 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void setUpFragment() {
+        //track page CIMB Clicks
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_CIMB_CLICKS);
+
         // setup  fragment
         cimbClickPayFragment = new InstructionCIMBFragment();
         replaceFragment(cimbClickPayFragment, R.id.instruction_container, false, false);
@@ -124,6 +128,9 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void makeTransaction() {
+        //track CIMB Click confirm payment
+        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         mMidtransSDK.paymentUsingCIMBClick(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override

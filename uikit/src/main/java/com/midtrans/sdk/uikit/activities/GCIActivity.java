@@ -20,6 +20,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.GCIPaymentFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -78,8 +79,10 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
      * set up {@link } to display payment instructions.
      */
     private void setUpHomeFragment() {
-        // setup home fragment
+        //track page telkomsel cash
+        midtransSDK.trackEvent(AnalyticsEventName.PAGE_GCI);
 
+        // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         paymentFragment = new GCIPaymentFragment();
@@ -156,6 +159,9 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
 
     private void performTransaction() {
+        //track page telkomsel cash
+        midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
 
         if (paymentFragment.checkFormValidity()) {
             SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment),

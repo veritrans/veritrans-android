@@ -20,6 +20,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.InstructionEpayBriFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -87,6 +88,8 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void setUpFragment() {
+        //track page BRI Epay
+        midtransSDK.trackEvent(AnalyticsEventName.PAGE_BRI_EPAY);
 
         // setup  fragment
         instructionEpayBriFragment = new InstructionEpayBriFragment();
@@ -113,6 +116,9 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void makeTransaction() {
+        //track BRI Epay confirm payment
+        midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         midtransSDK.paymentUsingEpayBRI(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override

@@ -5,14 +5,10 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -22,6 +18,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.KlikBCAFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -103,6 +100,10 @@ public class KlikBCAActivity extends BaseActivity {
                 } else {
                     // Check klik BCA user ID
                     if (klikBCAFragment.checkUserId()) {
+
+                        //track btn confirm
+                        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
                         // Do the payment
                         SdkUIFlowUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
                         mMidtransSDK.paymentUsingKlikBCA(mMidtransSDK.readAuthenticationToken(),
@@ -139,6 +140,9 @@ public class KlikBCAActivity extends BaseActivity {
                 }
             }
         });
+
+        //track page Klik BCA
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKBCA);
     }
 
     @Override
