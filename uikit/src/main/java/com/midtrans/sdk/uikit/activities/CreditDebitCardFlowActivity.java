@@ -213,6 +213,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         initInstallmentProperties(cardTokenRequest);
         initAcquiringBank(cardTokenRequest);
         this.cardTokenRequest = cardTokenRequest;
+        if (midtransSDK.getCreditCard().getType() != null
+                && !TextUtils.isEmpty(midtransSDK.getCreditCard().getType())) {
+            this.cardTokenRequest.setType(midtransSDK.getCreditCard().getType());
+        }
         getCardToken(cardTokenRequest);
     }
 
@@ -661,6 +665,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
         cardTokenRequest.setBank(midtransSDK.getTransactionRequest().getCreditCard().getBank());
         cardTokenRequest.setClientKey(midtransSDK.getClientKey());
+        if (midtransSDK.getCreditCard().getType() != null
+                && !TextUtils.isEmpty(midtransSDK.getCreditCard().getType())) {
+            cardTokenRequest.setType(midtransSDK.getCreditCard().getType());
+        }
         initInstallmentProperties(cardTokenRequest);
         initAcquiringBank(cardTokenRequest);
         this.cardTokenRequest = cardTokenRequest;
