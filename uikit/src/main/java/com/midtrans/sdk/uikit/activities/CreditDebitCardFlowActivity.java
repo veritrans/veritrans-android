@@ -40,6 +40,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
@@ -99,6 +100,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private FancyButton buttonback;
     private ImageView imageSavedCardDelete;
     private boolean fromSavedCard;
+    private String discountToken;
     private CreditCardTransaction creditCardTransaction = new CreditCardTransaction();
 
 
@@ -128,10 +130,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             if (!midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
                 getCreditCards();
             } else {
-                showCardDetailFragment(null);
+                showCardDetailFragment(null, null);
             }
-            textTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
+            setTextTotalAmount(midtransSDK.getTransactionRequest().getAmount());
         }
 
         buttonback.setOnClickListener(new View.OnClickListener() {
@@ -302,41 +303,79 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             paymentModel.setInstallment(installmentBankSeleted + "_" + installmentTermSelected);
         }
 
-        midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(),
-                paymentModel, new TransactionCallback() {
-                    @Override
-                    public void onSuccess(TransactionResponse response) {
-                        actionPaymentSuccess(response);
-                    }
-
-                    @Override
-                    public void onFailure(TransactionResponse response, String reason) {
-                        SdkUIFlowUtil.hideProgressDialog();
-                        if (attempt < MAX_ATTEMPT) {
-                            attempt += 1;
-                            SdkUIFlowUtil.showApiFailedMessage(CreditDebitCardFlowActivity.this, getString(R.string.message_payment_failed));
-                        } else {
-                            TransactionResponse transactionResponse = response;
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    processingLayout.setVisibility(View.GONE);
-                                }
-                            }, 200);
-                            CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
-                            CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                            initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
-                            titleHeaderTextView.setText(getString(R.string.title_payment_status));
+        if (discountToken != null && !TextUtils.isEmpty(discountToken)) {
+            midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(), discountToken,
+                    paymentModel, new TransactionCallback() {
+                        @Override
+                        public void onSuccess(TransactionResponse response) {
+                            actionPaymentSuccess(response);
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable error) {
-                        SdkUIFlowUtil.hideProgressDialog();
-                        showErrorMessage(getString(R.string.message_payment_failed));
-                    }
-                });
+                        @Override
+                        public void onFailure(TransactionResponse response, String reason) {
+                            SdkUIFlowUtil.hideProgressDialog();
+                            if (attempt < MAX_ATTEMPT) {
+                                attempt += 1;
+                                SdkUIFlowUtil.showApiFailedMessage(CreditDebitCardFlowActivity.this, getString(R.string.message_payment_failed));
+                            } else {
+                                TransactionResponse transactionResponse = response;
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        processingLayout.setVisibility(View.GONE);
+                                    }
+                                }, 200);
+                                CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
+                                CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                                initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
+                                titleHeaderTextView.setText(getString(R.string.title_payment_status));
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable error) {
+                            SdkUIFlowUtil.hideProgressDialog();
+                            showErrorMessage(getString(R.string.message_payment_failed));
+                        }
+                    });
+        } else {
+            midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(),
+                    paymentModel, new TransactionCallback() {
+                        @Override
+                        public void onSuccess(TransactionResponse response) {
+                            actionPaymentSuccess(response);
+                        }
+
+                        @Override
+                        public void onFailure(TransactionResponse response, String reason) {
+                            SdkUIFlowUtil.hideProgressDialog();
+                            if (attempt < MAX_ATTEMPT) {
+                                attempt += 1;
+                                SdkUIFlowUtil.showApiFailedMessage(CreditDebitCardFlowActivity.this, getString(R.string.message_payment_failed));
+                            } else {
+                                TransactionResponse transactionResponse = response;
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        processingLayout.setVisibility(View.GONE);
+                                    }
+                                }, 200);
+                                CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
+                                CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                                initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
+                                titleHeaderTextView.setText(getString(R.string.title_payment_status));
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable error) {
+                            SdkUIFlowUtil.hideProgressDialog();
+                            showErrorMessage(getString(R.string.message_payment_failed));
+                        }
+                    });
+        }
     }
 
     private void actionPaymentSuccess(TransactionResponse response) {
@@ -586,7 +625,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                         @Override
                         public void onError(Throwable error) {
                             SdkUIFlowUtil.hideProgressDialog();
-                            showCardDetailFragment(null);
+                            showCardDetailFragment(null, null);
                         }
                     });
                 }
@@ -617,9 +656,9 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         CardTokenRequest cardTokenRequest = new CardTokenRequest();
         cardTokenRequest.setSavedTokenId(cardDetail.getSavedTokenId());
         cardTokenRequest.setCardCVV(cardDetail.getCardCVV());
+        cardTokenRequest.setGrossAmount(cardDetail.getGrossAmount());
         cardTokenRequest.setTwoClick(true);
         cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
-        cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
         cardTokenRequest.setBank(midtransSDK.getTransactionRequest().getCreditCard().getBank());
         cardTokenRequest.setClientKey(midtransSDK.getClientKey());
         initInstallmentProperties(cardTokenRequest);
@@ -740,7 +779,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             replaceFragment(savedCardFragment, R.id.card_container, true, false);
 
         } else {
-            showCardDetailFragment(null);
+            showCardDetailFragment(null, null);
         }
     }
 
@@ -816,17 +855,17 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         return creditCardTransaction.isWhiteListBinsAvailable();
     }
 
-    public void showAddCardDetailFragment(SaveCardRequest card) {
-        showCardDetailFragment(card);
+    public void showAddCardDetailFragment(SaveCardRequest card, PromoResponse promoResponse) {
+        showCardDetailFragment(card, promoResponse);
     }
 
-    private void showCardDetailFragment(SaveCardRequest card) {
+    private void showCardDetailFragment(SaveCardRequest card, PromoResponse promoResponse) {
         if (card == null) {
             showDeleteCardIcon(false);
         } else {
             fromSavedCard = true;
         }
-        AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance(card);
+        AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance(card, promoResponse);
         replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
         titleHeaderTextView.setText(getString(R.string.card_details));
     }
@@ -864,5 +903,13 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     public void setInstallmentAvailableStatus(boolean installmentStatus) {
         creditCardTransaction.setInstallmentAvailableStatus(installmentStatus);
+    }
+
+    public void setDiscountToken(String discountToken) {
+        this.discountToken = discountToken;
+    }
+
+    public void setTextTotalAmount(double amount) {
+        textTotalAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(amount)));
     }
 }

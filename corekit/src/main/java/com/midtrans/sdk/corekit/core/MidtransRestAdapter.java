@@ -94,6 +94,19 @@ public class MidtransRestAdapter {
         return builder.build().create(SnapRestAPI.class);
     }
 
+    public static PromoEngineRestAPI getPromoEngineRestAPI(String promoEngineUrl, int timeOut) {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(timeOut, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(timeOut, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(timeOut, TimeUnit.SECONDS);
+        RestAdapter.Builder builder = new RestAdapter.Builder()
+                .setLogLevel(LOG_LEVEL)
+                .setClient(new OkClient(okHttpClient))
+                .setRequestInterceptor(buildSnapRequestInterceptor())
+                .setEndpoint(promoEngineUrl);
+        return builder.build().create(PromoEngineRestAPI.class);
+    }
+
     private static RequestInterceptor buildSnapRequestInterceptor() {
         return new RequestInterceptor() {
             @Override

@@ -11,6 +11,7 @@ import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,6 +45,9 @@ public class TransactionRequest {
     private boolean isSecureCard = true;
 
     private String cardClickType;
+
+    private boolean promoEnabled;
+    private List<String> promoCodes;
 
     /**
      * It contains an extra information that you want to display on bill.
@@ -223,5 +227,21 @@ public class TransactionRequest {
 
     public void setExpiry(ExpiryModel expiry) {
         this.expiry = expiry;
+    }
+
+    public List<String> getPromoCodes() {
+        return promoCodes;
+    }
+
+    public void setPromoCodes(List<String> promoCodes) {
+        this.promoCodes = promoCodes;
+    }
+
+    public boolean isPromoEnabled() {
+        return promoEnabled;
+    }
+
+    public void setPromoEnabled(boolean promoEnabled) {
+        this.promoEnabled = promoEnabled;
     }
 }

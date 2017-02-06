@@ -27,7 +27,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.not;
 
 /**
  * Created by rakawm on 1/23/17.
@@ -112,21 +111,5 @@ public class NegativeInstallmentScenarioTest {
         onView(withId(R.id.et_cvv)).perform(typeText(cardCVV), closeSoftKeyboard()).check(matches(withText(cardCVVExcpected)));
 
         onView(withId(R.id.layout_offer_status)).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void creditCardNotOfferDisabledFlowTest() {
-        // Initializing credit card payment
-        onView(ViewMatchers.withId(R.id.show_ui_flow)).perform(scrollTo(), click());
-        // Load 3DS
-        SystemClock.sleep(10000);
-        onView(withId(R.id.rv_payment_methods)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-
-        // Fill credit card data
-        onView(withId(R.id.et_card_no)).perform(typeText(cardNo2), closeSoftKeyboard()).check(matches(withText(cardNo2Expected)));
-        onView(withId(R.id.et_exp_date)).perform(typeText(cardExpired), closeSoftKeyboard()).check(matches(withText(cardExpiredExpected)));
-        onView(withId(R.id.et_cvv)).perform(typeText(cardCVV), closeSoftKeyboard()).check(matches(withText(cardCVVExcpected)));
-
-        onView(withId(R.id.layout_installment)).check(matches(not(isDisplayed())));
     }
 }

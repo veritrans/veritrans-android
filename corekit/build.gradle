@@ -64,19 +64,22 @@ android {
         development {
             DEFAULT_PUBLISH = "developmentRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.sandbox.midtrans.com/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.midtrans.com/snap\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.midtrans.com/snap/\""
+            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
         }
 
         staging {
             DEFAULT_PUBLISH = "stagingRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.stg.midtrans.com/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.stg.midtrans.com/snap\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.stg.midtrans.com/snap/\""
+            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
         }
 
         production {
             DEFAULT_PUBLISH = "productionRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.midtrans.com/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.midtrans.com/snap\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.midtrans.com/snap/\""
+            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
         }
     }
 

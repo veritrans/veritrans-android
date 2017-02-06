@@ -35,6 +35,7 @@ import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
@@ -556,6 +557,17 @@ public class SdkUtil {
             requestModel = Utils.addCustomMapObjectIntoTransaction(requestModel, transactionRequest.getCustomObject());
         }
 
+        // Set promo is available
+        if (transactionRequest.isPromoEnabled()) {
+            SnapPromo promo = new SnapPromo();
+            promo.setEnabled(true);
+
+            if (transactionRequest.getPromoCodes() != null && !transactionRequest.getPromoCodes().isEmpty()) {
+                promo.setAllowedPromoCodes(transactionRequest.getPromoCodes());
+            }
+            requestModel.setPromo(promo);
+        }
+
         return requestModel;
     }
 
@@ -578,6 +590,20 @@ public class SdkUtil {
                 model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
         CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
 
+        return paymentRequest;
+    }
+
+    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String discountToken, CreditCardPaymentModel model, TransactionRequest transactionRequest) {
+        if (transactionRequest.isUiEnabled()) {
+            // get user details only if using default ui
+            transactionRequest = initializeUserInfo(transactionRequest);
+        }
+
+        CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transactionRequest);
+        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(),
+                model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
+        CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
+        paymentRequest.setDiscountToken(discountToken);
         return paymentRequest;
     }
 
