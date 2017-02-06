@@ -16,6 +16,9 @@ import java.util.ArrayList;
 
 public class CardTokenRequest implements Serializable {
 
+    public final static String TYPE_CAPTURE = "authorize_capture";
+    public final static String TYPE_AUTHORIZE = "authorize";
+
     //card_number=4811111111111114
     // &card_cvv=123
     // &card_exp_month=12
@@ -43,7 +46,7 @@ public class CardTokenRequest implements Serializable {
     private int instalmentTerm;
     private ArrayList<String> bins;
     private String channel;
-    //private String cardHolderName;
+    private String type = TYPE_CAPTURE;
 
     public CardTokenRequest() {
     }
@@ -248,5 +251,13 @@ public class CardTokenRequest implements Serializable {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

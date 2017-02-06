@@ -213,6 +213,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         initInstallmentProperties(cardTokenRequest);
         initAcquiringBank(cardTokenRequest);
         this.cardTokenRequest = cardTokenRequest;
+        if (midtransSDK.getCreditCard().getType() != null
+                && !TextUtils.isEmpty(midtransSDK.getCreditCard().getType())) {
+            this.cardTokenRequest.setType(midtransSDK.getCreditCard().getType());
+        }
         getCardToken(cardTokenRequest);
     }
 
@@ -661,6 +665,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
         cardTokenRequest.setBank(midtransSDK.getTransactionRequest().getCreditCard().getBank());
         cardTokenRequest.setClientKey(midtransSDK.getClientKey());
+        if (midtransSDK.getCreditCard().getType() != null
+                && !TextUtils.isEmpty(midtransSDK.getCreditCard().getType())) {
+            cardTokenRequest.setType(midtransSDK.getCreditCard().getType());
+        }
         initInstallmentProperties(cardTokenRequest);
         initAcquiringBank(cardTokenRequest);
         this.cardTokenRequest = cardTokenRequest;
@@ -859,6 +867,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         showCardDetailFragment(card, promoResponse);
     }
 
+    public void showAddCardDetailFragment(SaveCardRequest card) {
+        showCardDetailFragment(card);
+    }
+
     private void showCardDetailFragment(SaveCardRequest card, PromoResponse promoResponse) {
         if (card == null) {
             showDeleteCardIcon(false);
@@ -866,6 +878,17 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             fromSavedCard = true;
         }
         AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance(card, promoResponse);
+        replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
+        titleHeaderTextView.setText(getString(R.string.card_details));
+    }
+
+    private void showCardDetailFragment(SaveCardRequest card) {
+        if (card == null) {
+            showDeleteCardIcon(false);
+        } else {
+            fromSavedCard = true;
+        }
+        AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance(card);
         replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
         titleHeaderTextView.setText(getString(R.string.card_details));
     }

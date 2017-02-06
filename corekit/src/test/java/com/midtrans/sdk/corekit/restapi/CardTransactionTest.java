@@ -50,7 +50,7 @@ public class CardTransactionTest extends APIClientMain {
         final CountDownLatch latch = new CountDownLatch(1);
         MidtransRestAPI paymentAPI = createVeritransPaymentAPIMock(VT_GET_TOKEN_SUCCESS, 200, "success");
         paymentAPI.get3DSToken(CARD_NUMBER, CARD_CVV, CARD_EXP_MONTH, CARD_EXP_YEAR,
-                SDKConfigTest.CLIENT_KEY, null, false, false, 0.0, null, new Callback<TokenDetailsResponse>() {
+                SDKConfigTest.CLIENT_KEY, null, false, false, 0.0, null, null, new Callback<TokenDetailsResponse>() {
                     @Override
                     public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
                         mTokenDetailResponse = tokenDetailsResponse;

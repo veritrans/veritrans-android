@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
+import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
@@ -42,7 +43,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn, indomaretBtn, kiosonBtn, gciBtn;
     private Button coreCardRegistration, uiCardRegistration, klikBCABtn, BCAKlikpayBtn, mandiriClickpayBtn, mandiriEcashBtn, cimbClicksBtn, briEpayBtn, tcashBtn, indosatBtn, xlTunaiBtn;
-    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri, bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone, expiryOneMinute, expiryOneHour, savedCard, notSavedCard, promoActive, promoInactive;
+    private RadioButton normal, twoClick, oneClick, bankBni, bankMandiri,
+            bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone,
+            expiryOneMinute, expiryOneHour, savedCard, notSavedCard,
+            promoActive, promoInactive,
+            preAuthActive, preAuthInactive;
     private Toolbar toolbar;
 
     @Override
@@ -145,6 +150,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             creditCard.setChannel(CreditCard.MIGS);
         }
 
+        if (preAuthActive.isChecked()) {
+            // Set Pre Auth mode
+            creditCard.setType(CardTokenRequest.TYPE_AUTHORIZE);
+        }
+
         String cardClickType;
 
         if (normal.isChecked()) {
@@ -229,6 +239,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         promoActive = (RadioButton) findViewById(R.id.radio_promo_active);
         promoInactive = (RadioButton) findViewById(R.id.radio_promo_inactive);
+
+        preAuthActive = (RadioButton) findViewById(R.id.radio_pre_auth_active);
+        preAuthInactive = (RadioButton) findViewById(R.id.radio_pre_auth_inactive);
 
         bankMaybank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

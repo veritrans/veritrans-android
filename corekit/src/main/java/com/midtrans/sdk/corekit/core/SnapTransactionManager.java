@@ -1141,6 +1141,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.isInstallment(),
                         cardTokenRequest.getFormattedInstalmentTerm(),
                         cardTokenRequest.getChannel(),
+                        cardTokenRequest.getType(),
                         new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1162,6 +1163,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.getBank(),
                         cardTokenRequest.getClientKey(),
                         cardTokenRequest.getChannel(),
+                        cardTokenRequest.getType(),
                         new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1188,7 +1190,9 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.getGrossAmount(),
                         cardTokenRequest.isInstallment(),
                         cardTokenRequest.getChannel(),
-                        cardTokenRequest.getFormattedInstalmentTerm(), new Callback<TokenDetailsResponse>() {
+                        cardTokenRequest.getFormattedInstalmentTerm(),
+                        cardTokenRequest.getType(),
+                        new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
                                 consumeTokenSuccesResponse(authenticationToken, start, tokenDetailsResponse, callback);
@@ -1209,6 +1213,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             cardTokenRequest.getCardExpiryYear(),
                             cardTokenRequest.getClientKey(),
                             cardTokenRequest.getChannel(),
+                            cardTokenRequest.getType(),
                             new Callback<TokenDetailsResponse>() {
                                 @Override
                                 public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1232,6 +1237,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             cardTokenRequest.isTwoClick(),
                             cardTokenRequest.getGrossAmount(),
                             cardTokenRequest.getChannel(),
+                            cardTokenRequest.getType(),
                             new Callback<TokenDetailsResponse>() {
                                 @Override
                                 public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {

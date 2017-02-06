@@ -100,9 +100,9 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
 
         PromoData promoData = promoDatas.get(position);
         if (promoData != null && promoData.getPromoResponse() != null) {
-
+            holder.imageCardOffer.setVisibility(View.VISIBLE);
         } else {
-
+            holder.imageCardOffer.setVisibility(View.GONE);
         }
     }
 
