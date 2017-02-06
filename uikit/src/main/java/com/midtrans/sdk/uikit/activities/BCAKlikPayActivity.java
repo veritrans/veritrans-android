@@ -20,6 +20,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.BCAKlikPayInstructionFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -94,6 +95,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         // setup  fragment
         bcaKlikPayInstructionFragment = new BCAKlikPayInstructionFragment();
         replaceFragment(bcaKlikPayInstructionFragment, R.id.instruction_container, false, false);
+
+        //track page BCA Klik Pay
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKPAY);
     }
 
 
@@ -127,6 +131,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     }
 
     private void makeTransaction() {
+        //track page BCA Klik pay
+        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         mMidtransSDK.paymentUsingBCAKlikpay(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override

@@ -7,7 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 
 /**
  * Created by ziahaqi on 8/26/16.
@@ -56,6 +58,9 @@ public class KiosonInstructionActivity extends BaseActivity {
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //track page kioson
+        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_KIOSON_OVERVIEW);
     }
 
 }

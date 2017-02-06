@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriECashFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -97,6 +98,9 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void setUpFragment() {
+        //track page mandiri ecash
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_ECASH);
+
         // setup  fragment
         mandiriECashFragment = new InstructionMandiriECashFragment();
         replaceFragment(mandiriECashFragment, R.id.instruction_container, false, false);
@@ -121,6 +125,9 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void makeTransaction() {
+        //track mandiri ecash confirm payment
+        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
 
         mMidtransSDK.paymentUsingMandiriEcash(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {

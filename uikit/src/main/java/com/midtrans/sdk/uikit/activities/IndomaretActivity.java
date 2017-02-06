@@ -23,6 +23,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.IndomaretPaymentFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionIndomaretFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -82,8 +83,10 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
      * set up {@link BankTransferFragment} to display payment instructions.
      */
     private void setUpHomeFragment() {
-        // setup home fragment
+        //track page Indomaret
+        midtransSDK.trackEvent(AnalyticsEventName.PAGE_INDOMARET);
 
+        // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         instructionIndomaretFragment = new InstructionIndomaretFragment();
@@ -197,6 +200,8 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void performTransaction() {
+        //track Indomaret confirm payment
+        midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
         SdkUIFlowUtil.showProgressDialog(IndomaretActivity.this, getString(R.string.processing_payment),
                 false);

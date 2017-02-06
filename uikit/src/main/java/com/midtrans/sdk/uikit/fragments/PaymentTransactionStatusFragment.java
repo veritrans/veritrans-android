@@ -43,6 +43,7 @@ import com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity;
 import com.midtrans.sdk.uikit.activities.MandiriECashActivity;
 import com.midtrans.sdk.uikit.activities.TelkomselCashActivity;
 import com.midtrans.sdk.uikit.activities.XLTunaiActivity;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -266,10 +267,16 @@ public class PaymentTransactionStatusFragment extends Fragment {
         }
 
         if (status == STATUS_SUCCESS) {
+            //track page status success
+            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
             layoutMain.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.payment_status_success));
         } else if (status == STATUS_PENDING) {
+            //track page status failed
+            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
             layoutMain.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.payment_status_pending));
         } else {
+            //track page status failed
+            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             layoutMain.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.payment_status_failed));
         }
     }

@@ -99,7 +99,6 @@ public class MidtransSDK {
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
-        this.mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
 
         initializeTheme();
@@ -185,8 +184,7 @@ public class MidtransSDK {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow));
-        this.mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
+        this.mMixpanelAnalyticsManager.setMerchantName(merchantName);
     }
 
     public String getMerchantLogo() {
@@ -240,6 +238,8 @@ public class MidtransSDK {
     public MixpanelAnalyticsManager getmMixpanelAnalyticsManager() {
         return mMixpanelAnalyticsManager;
     }
+
+
 
     public String getMerchantToken() {
         UserDetail userDetail = null;
@@ -1510,7 +1510,6 @@ public class MidtransSDK {
         mSnapTransactionManager = new SnapTransactionManager(context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeout),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeout),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeout));
-        mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
         mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
 
@@ -1580,6 +1579,25 @@ public class MidtransSDK {
         if (creditCard != null) {
             this.creditCard = creditCard;
         }
+    }
+
+    /**
+     * tracking sdk events
+     *
+     * @param eventName
+     */
+    public void trackEvent(String eventName) {
+        this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName);
+    }
+
+    /**
+     * tracking sdk events
+     *
+     * @param eventName
+     * @param cardPaymentMode
+     */
+    public void trackEvent(String eventName, String cardPaymentMode) {
+        this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName, cardPaymentMode);
     }
 
     public List<PromoResponse> getPromoResponses() {
