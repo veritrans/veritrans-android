@@ -1,8 +1,12 @@
 package com.midtrans.sdk.corekit.core;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.models.BBMMoneyRequestModel;
@@ -626,4 +630,5 @@ public class SdkUtil {
             }
         });
     }
+
 }

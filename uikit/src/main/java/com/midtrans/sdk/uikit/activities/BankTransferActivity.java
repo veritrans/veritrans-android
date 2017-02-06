@@ -27,6 +27,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.BankTransferPaymentFragment;
 import com.midtrans.sdk.uikit.fragments.MandiriBillPayFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -111,15 +112,27 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
             bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
             bankTransferFragment.setArguments(bundle);
+
+            //track page mandiri bill
+            mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL);
         } else if (position == Constants.BANK_TRANSFER_PERMATA) {
             bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
             bankTransferFragment.setArguments(bundle);
+
+            //track page bank permata
+            mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA);
         } else if (position == Constants.BANK_TRANSFER_BCA) {
             bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
             bankTransferFragment.setArguments(bundle);
+
+            //track page bank bca
+            mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_VA);
         } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
             bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
             bankTransferFragment.setArguments(bundle);
+
+            //track page other bank
+            mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA);
         }
         fragmentTransaction.add(R.id.instruction_container,
                 bankTransferFragment, HOME_FRAGMENT);
@@ -223,8 +236,10 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         if (view.getId() == R.id.btn_confirm_payment) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
-
                 performTransaction();
+
+                //track page bank transfer
+                mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
             } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
                 if (transactionResponse != null) {

@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionTelkomselCashFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -68,6 +69,9 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
      * set up {@link BankTransferFragment} to display payment instructions.
      */
     private void setUpHomeFragment() {
+        //track page telkomsel cash
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_TCASH);
+
         // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -149,6 +153,8 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
      * Telkomsel Cash payment procedure.
      */
     private void performTransaction() {
+        //track telkomsel cash confirm payment
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_TCASH);
 
         if (telkomselCashFragment != null && !telkomselCashFragment.isDetached()) {
 

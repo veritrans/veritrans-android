@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.MandiriClickPayFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -101,6 +102,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
     private void setUpHomeFragment() {
 
+        //track page mandiri click pay
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_CLICKPAY);
+
         // setup  fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -138,6 +142,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         if (view.getId() == R.id.btn_confirm_payment) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
+
+                //track Mandiri Clickpay confirm payment
+                mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
                 validateInformation();
 

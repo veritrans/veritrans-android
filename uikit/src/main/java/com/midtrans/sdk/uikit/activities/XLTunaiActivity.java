@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.InstructionXLTunaiFragment;
 import com.midtrans.sdk.uikit.fragments.XLTunaiPaymentFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -75,8 +76,10 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void setUpHomeFragment() {
-        // setup home fragment
+        //track page xl tunai
+        midtransSDK.trackEvent(AnalyticsEventName.PAGE_XL_TUNAI);
 
+        // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         instructionXLTunaiFragment = new InstructionXLTunaiFragment();
@@ -187,6 +190,9 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void performTransaction() {
+        //track xl tunai overview
+        midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
         SdkUIFlowUtil.showProgressDialog(XLTunaiActivity.this, getString(R.string.processing_payment), false);
         //Execute transaction
         midtransSDK.paymentUsingXLTunai(midtransSDK.readAuthenticationToken(), new TransactionCallback() {

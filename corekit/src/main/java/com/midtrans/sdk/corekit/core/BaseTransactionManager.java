@@ -43,10 +43,10 @@ public abstract class BaseTransactionManager {
     protected static final String ALL_BANK = "Other";
 
     protected Context context;
-    protected MixpanelAnalyticsManager analyticsManager;
     protected boolean isSDKLogEnabled = false;
     protected MidtransRestAPI midtransPaymentAPI;
     protected MerchantRestAPI merchantPaymentAPI;
+    private MixpanelAnalyticsManager analyticsManager;
 
     protected static void displayResponse(TransactionResponse
                                                   transferResponse) {

@@ -251,7 +251,6 @@ public class SnapTransactionManagerTest {
                 .buildSDK();
 
         transactionManager = midtransSDK.getmSnapTransactionManager();
-        transactionManager.setAnalyticsManager(mixpanelAnalyticsManagerMock);
         transactionManager.setSDKLogEnabled(false);
         callbackImplement.setTransactionManager(transactionManager, merchantApi, midtransAPI, snapAPI);
     }

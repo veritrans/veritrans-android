@@ -88,8 +88,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         // setUp recyclerView
         ArrayList<String> banks = getIntent().getStringArrayListExtra(EXTRA_BANK);
         if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
-            // track bank transfer payment
-            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, 0);
             Intent startBankPayment = new Intent(this, BankTransferActivity.class);
             startBankPayment.putExtra(
                     getString(R.string.position),
@@ -100,8 +98,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
         } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
-            // track bank transfer payment
-            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, 0);
             Intent startMandiriBankPayment = new Intent(this, BankTransferActivity.class);
             startMandiriBankPayment.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
             startActivityForResult(
@@ -109,8 +105,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
         } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
-            // track bank transfer payment
-            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, 0);
             Intent startBankPayment = new Intent(this, BankTransferActivity.class);
             startBankPayment.putExtra(
                     this.getString(R.string.position),
@@ -122,8 +116,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
         } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
-            // track bank transfer payment
-            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, ALL_BANK, 0);
 
             Intent startOtherBankPayment = new Intent(this, BankTransferActivity.class);
             startOtherBankPayment.putExtra(
@@ -260,8 +252,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
     private void startBankTransferPayment(BankTransferModel item) {
         String name = item.getBankName();
         if (name.equals(getString(R.string.bca_bank_transfer))) {
-            // track bank transfer payment
-            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, BANK_BCA, 0);
             Intent startBankPayment = new Intent(this, BankTransferActivity.class);
             startBankPayment.putExtra(
                     this.getString(R.string.position),
@@ -274,8 +264,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
             );
 
         } else if (name.equals(getString(R.string.permata_bank_transfer))) {
-            // track bank transfer payment
-            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, BANK_PERMATA, 0);
             Intent startBankPayment = new Intent(this, BankTransferActivity.class);
             startBankPayment.putExtra(
                     getString(R.string.position),
@@ -287,8 +275,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
             );
 
         } else if (name.equals(getString(R.string.mandiri_bank_transfer))) {
-            // track bank transfer payment
-            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, BANK_MANDIRI, 0);
             Intent startMandiriBankPayment = new Intent(this, BankTransferActivity.class);
             startMandiriBankPayment.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
             startActivityForResult(
@@ -297,8 +283,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
             );
 
         } else if (name.equals(getString(R.string.all_bank_transfer))) {
-            // track bank transfer payment
-            mMidtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(KEY_SELECT_PAYMENT, PAYMENT_TYPE_BANK_TRANSFER, ALL_BANK, 0);
 
             Intent startOtherBankPayment = new Intent(this, BankTransferActivity.class);
             startOtherBankPayment.putExtra(

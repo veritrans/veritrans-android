@@ -27,10 +27,11 @@ import com.midtrans.sdk.uikit.fragments.InstructionMandiriFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriInternetFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionPermataFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionPrimaFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 
 /**
  * It display information related to mandiri bill pay , bank transfer and BCA/Prima transaction.
- *
+ * <p>
  * Created by shivam on 10/28/15.
  */
 public class BankTransferInstructionActivity extends BaseActivity {
@@ -149,18 +150,30 @@ public class BankTransferInstructionActivity extends BaseActivity {
             case TYPE_BCA:
                 pageNumber = 3;
                 POSITION = getIntent().getIntExtra(PAGE, -1);
+
+                //track page bca va overview
+                midtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_VA_OVERVIEW);
                 break;
             case TYPE_PERMATA:
                 pageNumber = 2;
+
+                //track page permata va overview
+                midtransSDK.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA_OVERVIEW);
                 break;
             case TYPE_MANDIRI:
                 pageNumber = 2;
                 break;
             case TYPE_MANDIRI_BILL:
                 pageNumber = 2;
+
+                //track page mandiri bill overview
+                midtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL_OVERVIEW);
                 break;
             case TYPE_ALL_BANK:
                 pageNumber = 3;
+
+                //track page other bank va overview
+                midtransSDK.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA_OVERVIEW);
                 break;
             default:
                 pageNumber = 0;
@@ -202,8 +215,10 @@ public class BankTransferInstructionActivity extends BaseActivity {
                 } else if (position == 1) {
                     fragment = new InstructionBCAKlikFragment();
                 } else fragment = new InstructionBCAMobileFragment();
+
             } else if (getIntent().getStringExtra(BANK).equals(TYPE_PERMATA)) {
                 fragment = new InstructionPermataFragment();
+
             } else if (getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI) ||
                     getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI_BILL)) {
                 if (position == 0) {

@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -37,6 +38,7 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.MidtransDialog;
@@ -137,12 +139,23 @@ public class AddCardDetailsFragment extends Fragment {
                     etCvv.setText(SdkUIFlowUtil.getMaskedCardCvv());
                     etCvv.setEnabled(false);
 
-                    ((CreditDebitCardFlowActivity)getActivity()).setInstallmentAvailableStatus(false);
+                    ((CreditDebitCardFlowActivity) getActivity()).setInstallmentAvailableStatus(false);
+
+                    //track page cc oneclick
+                    midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_ONE_CLICK);
                 } else {
                     initCardInstallment();
+                    //track page cc twoclick
+                    midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_TWO_CLICK);
                 }
 
+            } else {
+                //track page cc detail
+                midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
             }
+        } else {
+            //track page cc detail
+            midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
     }
 
@@ -254,8 +267,6 @@ public class AddCardDetailsFragment extends Fragment {
                 scanCardBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Track event scan
-                        midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(MidtransSDK.getInstance().readAuthenticationToken(), KEY_SCAN_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
                         // Start scanning
                         midtransSDK.getExternalScanner().startScan(getActivity(), CreditDebitCardFlowActivity.SCAN_REQUEST_CODE);
                     }
@@ -274,15 +285,8 @@ public class AddCardDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
                 // Track event pay now
-                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_PAY_BUTTON_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
-                // Track event checkbox save card
-                if (switchSaveCard.isChecked()) {
-                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(authenticationToken, KEY_CHECKBOX_SAVE_CARD_EVENT, CreditDebitCardFlowActivity.PAYMENT_CREDIT_CARD, null);
-                }
-
-
+                midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
                 if (checkCardValidity()) {
 
                     if (!isValidPayment()) {
@@ -615,6 +619,10 @@ public class AddCardDetailsFragment extends Fragment {
         } else {
             tilCardNo.setError(null);
         }
+        if (!isValid) {
+            //track invalid cc number
+            midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+        }
         return isValid;
     }
 
@@ -678,6 +686,11 @@ public class AddCardDetailsFragment extends Fragment {
         } else {
             tilExpiry.setError(null);
         }
+
+        if (!isValid) {
+            //track invalid cc expiry
+            midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+        }
         return isValid;
     }
 
@@ -700,6 +713,11 @@ public class AddCardDetailsFragment extends Fragment {
             } else {
                 tilCvv.setError(null);
             }
+        }
+
+        if (!isValid) {
+            //track invalid cc cvv
+            midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
         return isValid;
     }
