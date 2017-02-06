@@ -479,6 +479,12 @@ public class SdkUIFlowUtil {
     }
 
 
+    /**
+     * Get Device Type
+     *
+     * @param activity
+     * @return device type(tablet or phone)
+     */
     public static String getDeviceType(Activity activity) {
         String deviceType;
         DisplayMetrics metrics = new DisplayMetrics();
