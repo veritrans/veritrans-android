@@ -264,10 +264,51 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
         fadeOut.start();
     }
 
-    public void showLayouts() {
+    public void showNewCardFragment(final SaveCardRequest card) {
+        this.selectedCard = card;
+
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            ((CreditDebitCardFlowActivity) getActivity()).showAddCardDetailFragment(card);
             return;
         }
+
+        creditCardLayoutHeight = SavedCardFragment.this.creditCardLayout.getMeasuredHeight();
+        Logger.i("creditCardLayoutHeight:" + creditCardLayoutHeight);
+
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(newCardButtonLayout, "alpha", 1f, 0f);
+        fadeOut.setDuration(Constants.CARD_ANIMATION_TIME);
+        ObjectAnimator translateY = ObjectAnimator.ofFloat(creditCardLayout, "translationY",
+                -creditCardLayoutHeight);
+        translateY.setDuration(Constants.CARD_ANIMATION_TIME);
+        translateY.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                //payNowBtn.setVisibility(View.VISIBLE);
+                addCardBt.setVisibility(View.GONE);
+                ((CreditDebitCardFlowActivity) getActivity()).showAddCardDetailFragment(card, selectedPromo);
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        translateY.start();
+        fadeOut.start();
+    }
+
+    public void showLayouts() {
         Logger.i("creditCardLayoutHeight:" + creditCardLayoutHeight);
         ObjectAnimator fadeIn = ObjectAnimator.ofFloat(newCardButtonLayout, "alpha", 0f, 1f);
         fadeIn.setDuration(Constants.CARD_ANIMATION_TIME);
@@ -316,8 +357,18 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     public void onItemClick(int position) {
         SaveCardRequest card = cardsAdapter.getItem(position);
         if (getActivity() != null) {
-            selectedPromo = cardsAdapter.getPromoDatas().get(position).getPromoResponse();
-            showNewCardFragment(card, selectedPromo);
+            if (cardsAdapter.getPromoDatas() != null
+                    && !cardsAdapter.getPromoDatas().isEmpty()
+                    && cardsAdapter.getPromoDatas().get(position) != null) {
+                selectedPromo = cardsAdapter.getPromoDatas().get(position).getPromoResponse();
+                if (selectedPromo != null && selectedPromo.getDiscountAmount() > 0) {
+                    showNewCardFragment(card, selectedPromo);
+                } else {
+                    showNewCardFragment(card);
+                }
+            } else {
+                showNewCardFragment(card);
+            }
         }
     }
 

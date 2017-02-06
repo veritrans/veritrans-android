@@ -131,10 +131,10 @@
     <string name="other_payment">Other Payment</string>
     <string name="giftcard">Gift Card</string>
     <string name="promo">Promo</string>
-    <string name="promo_active">Active</string>
-    <string name="promo_inactive">Not Active</string>
+    <string name="txt_active">Active</string>
+    <string name="txt_inactive">Not Active</string>
     <string name="save_card_options_title">Save Card Default Options</string>
     <string name="save_card_true">Save</string>
     <string name="save_card_false">Not Saved</string>
-
+    <string name="pre_auth">Pre Auth Feature</string>
 </resources>

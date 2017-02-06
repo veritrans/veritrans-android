@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:selectableItemBackground"
@@ -42,7 +43,9 @@
             android:layout_marginLeft="@dimen/four_dp"
             android:layout_toLeftOf="@id/image_arrow_right"
             android:background="?selectableItemBackground"
-            android:src="@drawable/ic_promo" />
+            android:src="@drawable/ic_promo"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/text_saved_card_name"

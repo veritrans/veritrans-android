@@ -205,7 +205,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="@string/promo_active" />
+                    android:text="@string/txt_active" />
 
                 <RadioButton
                     android:id="@+id/radio_save_inactive"
@@ -213,7 +213,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:checked="true"
-                    android:text="@string/promo_inactive" />
+                    android:text="@string/txt_inactive" />
             </RadioGroup>
 
             <TextView
@@ -234,7 +234,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="@string/promo_active" />
+                    android:text="@string/txt_active" />
 
                 <RadioButton
                     android:id="@+id/radio_promo_inactive"
@@ -242,7 +242,36 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:checked="true"
-                    android:text="@string/promo_inactive" />
+                    android:text="@string/txt_inactive" />
+            </RadioGroup>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:text="@string/pre_auth"
+                android:visibility="visible" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_pre_auth_active"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/txt_active" />
+
+                <RadioButton
+                    android:id="@+id/radio_pre_auth_inactive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:checked="true"
+                    android:text="@string/txt_inactive" />
             </RadioGroup>
 
             <View

@@ -101,6 +101,14 @@ public class AddCardDetailsFragment extends Fragment {
         return fragment;
     }
 
+    public static AddCardDetailsFragment newInstance(SaveCardRequest card) {
+        AddCardDetailsFragment fragment = new AddCardDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARGS_SAVED_CARD, card);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
