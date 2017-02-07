@@ -9,6 +9,7 @@ import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
+import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
@@ -300,8 +301,8 @@ public class MidtransSDK {
     /**
      * It will execute an API request to obtain promo token.
      *
-     * @param promoId promo identifier.
-     * @param amount transaction amount.
+     * @param promoId  promo identifier.
+     * @param amount   transaction amount.
      * @param callback callback to be called.
      */
     public void obtainPromo(String promoId, double amount, ObtainPromoCallback callback) {
@@ -1492,6 +1493,27 @@ public class MidtransSDK {
             callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
         }
     }
+
+
+    /**
+     * it will get bni points from snap backend
+     *
+     * @param cardToken credit card token
+     * @param callback  bni point callback instance
+     */
+    public void getBanksPoint(String cardToken, @NonNull BanksPointCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (Utils.isNetworkAvailable(context)) {
+            mSnapTransactionManager.getBanksPoint(readAuthenticationToken(), cardToken, callback);
+        } else {
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
 
     /**
      * it will change SDK configuration
