@@ -311,6 +311,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             paymentModel.setInstallment(installmentBankSeleted + "_" + installmentTermSelected);
         }
 
+        if (this.creditCardTransaction.isBankPointValid()) {
+            paymentModel.setPointRedeemed(this.creditCardTransaction.getBankPointRedeemed());
+        }
+
         if (discountToken != null && !TextUtils.isEmpty(discountToken)) {
             midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(), discountToken,
                     paymentModel, new TransactionCallback() {

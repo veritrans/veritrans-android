@@ -17,6 +17,8 @@ public class CreditCardPaymentParams {
     private String installmentTerm;
     @SerializedName("save_card")
     private boolean saveCard;
+    @SerializedName("point")
+    private Long pointRedeemed;
 
     public CreditCardPaymentParams(String cardToken, Boolean saveCard, String maskedCardNumber) {
         this.cardToken = cardToken;
@@ -53,5 +55,9 @@ public class CreditCardPaymentParams {
 
     public boolean isSaveCard() {
         return saveCard;
+    }
+
+    public void setPointRedeemed(Long pointRedeemed) {
+        this.pointRedeemed = pointRedeemed;
     }
 }
