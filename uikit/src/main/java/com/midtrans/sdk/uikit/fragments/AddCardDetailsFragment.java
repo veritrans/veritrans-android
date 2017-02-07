@@ -69,7 +69,7 @@ public class AddCardDetailsFragment extends Fragment {
     private EditText etCardNo;
     private EditText etCvv;
     private EditText etExpiryDate;
-    private SwitchCompat switchSaveCard;
+    private SwitchCompat switchSaveCard, switchBanksPoint;
     private Button buttonIncrease, buttonDecrease;
     private ImageView logo;
     private ImageView bankLogo;
@@ -86,7 +86,7 @@ public class AddCardDetailsFragment extends Fragment {
     private MidtransSDK midtransSDK;
     private String cardType = "";
     private RelativeLayout formLayout;
-    private LinearLayout layoutInstallment, layoutSaveCard;
+    private LinearLayout layoutInstallment, layoutSaveCard, layoutBanksPoint;
     private DefaultTextView textInvalidPromoStatus;
     private SaveCardRequest savedCard;
     private PromoResponse promo;
@@ -209,6 +209,8 @@ public class AddCardDetailsFragment extends Fragment {
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
         switchSaveCard = (SwitchCompat) view.findViewById(R.id.cb_store_card);
+        switchBanksPoint = (SwitchCompat) view.findViewById(R.id.cb_bni_point);
+
         initCheckbox();
         imageCvvHelp = (ImageView) view.findViewById(R.id.image_cvv_help);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
@@ -247,9 +249,10 @@ public class AddCardDetailsFragment extends Fragment {
             @Override
             public void onFocusChange(View view, boolean hasfocus) {
                 if (!hasfocus) {
-                    checkCardNumberValidity();
+                    boolean validCardNumber = checkCardNumberValidity();
                     checkBinLockingValidity();
                     initCardInstallment();
+                    initBNIPoints(validCardNumber);
                     initPromoUsingPromoEngine();
 
                 }
@@ -310,6 +313,7 @@ public class AddCardDetailsFragment extends Fragment {
 
 
                 if (checkCardValidity()) {
+                    ((CreditDebitCardFlowActivity) getActivity()).setBankPointStatus(isBanksPointActivated());
 
                     if (!isValidPayment()) {
                         return;
@@ -985,5 +989,37 @@ public class AddCardDetailsFragment extends Fragment {
                 });
             }
         });
+    }
+
+    private void initBNIPoints(boolean validCardNumber) {
+
+        ArrayList<String> pointBanks = MidtransSDK.getInstance().getBanksPointEnabled();
+        if (validCardNumber && pointBanks != null && !pointBanks.isEmpty()) {
+            String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+            String bankBin = ((CreditDebitCardFlowActivity) getActivity()).getBankByBin(cardBin);
+            if (!TextUtils.isEmpty(bankBin) && bankBin.equals(BankType.BNI)) {
+                showBanksPoint(true);
+            } else {
+                showBanksPoint(false);
+            }
+        } else {
+            showBanksPoint(false);
+        }
+    }
+
+    private boolean isBanksPointActivated() {
+        if (layoutBanksPoint.getVisibility() == View.VISIBLE && switchBanksPoint.isChecked()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void showBanksPoint(boolean show) {
+        if (show) {
+            layoutBanksPoint.setVisibility(View.VISIBLE);
+        } else {
+            layoutBanksPoint.setVisibility(View.GONE);
+        }
     }
 }

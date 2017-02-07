@@ -673,4 +673,11 @@
     <string name="promo_dialog_title">Congratulations</string>
     <string name="promo_dialog_message">With this card, you will get Rp. %1$s discount from %2$s.</string>
     <string name="error_obtain_promo">Failed to obtain promo.</string>
+    <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
+    <string name="amount_after_discount">Amount to pay after discount</string>
+    <string name="will_be_used_point_here">Will be used point</string>
+    <string name="total_point_here">total point here</string>
+    <string name="redeem_point">Redeem Point</string>
+    <string name="redeem_bank_point_title">Redeem %1$s Point</string>
+    <string name="total_point">Your total %1$s Reward Point is %2$s</string>
 </resources>

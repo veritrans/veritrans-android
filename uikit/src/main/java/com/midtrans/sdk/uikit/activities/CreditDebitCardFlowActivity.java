@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
+import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
@@ -31,6 +32,7 @@ import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BankDetail;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
@@ -39,12 +41,14 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.AddCardDetailsFragment;
+import com.midtrans.sdk.uikit.fragments.BanksPointFragment;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
 import com.midtrans.sdk.uikit.fragments.SavedCardFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
@@ -274,7 +278,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             }
         } else {
             SdkUIFlowUtil.showProgressDialog(CreditDebitCardFlowActivity.this, getString(R.string.processing_payment), false);
-            payUsingCard();
+            preCreditCardpayment();
         }
     }
 
@@ -536,7 +540,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         Logger.i(TAG, "reqCode:" + requestCode + ",res:" + resultCode);
         if (resultCode == RESULT_OK) {
             if (requestCode == PAYMENT_WEB_INTENT) {
-                payUsingCard();
+                preCreditCardpayment();
             } else if (requestCode == SCAN_REQUEST_CODE) {
                 if (data != null && data.hasExtra(ExternalScanner.EXTRA_SCAN_DATA)) {
                     // track scan event success
@@ -838,6 +842,44 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         });
     }
 
+    private void preCreditCardpayment() {
+        creditCardTransaction.setBankPointStatus(true);
+        if (creditCardTransaction.isBankPointEnabled()) {
+            MidtransSDK.getInstance().getBanksPoint(this.tokenDetailsResponse.getTokenId(), new BanksPointCallback() {
+                @Override
+                public void onSuccess(BanksPointResponse response) {
+                    SdkUIFlowUtil.hideProgressDialog();
+                    creditCardTransaction.setBankPoint(response, BankType.BNI);
+                    showBankPointsFragment(response.getPointBalance(), BankType.BNI);
+                }
+
+                @Override
+                public void onFailure(String reason) {
+                    Log.d(TAG, "bnipoint:onFailure");
+
+                    creditCardTransaction.setBankPoint(null, null);
+                    SdkUIFlowUtil.hideProgressDialog();
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    Log.d(TAG, "bnipoint:onError");
+
+                    creditCardTransaction.setBankPoint(null, null);
+                    SdkUIFlowUtil.hideProgressDialog();
+                }
+            });
+
+        } else {
+            payUsingCard();
+        }
+    }
+
+    private void showBankPointsFragment(long balance, String bankType) {
+        BanksPointFragment fragment = BanksPointFragment.newInstance(balance, bankType);
+        replaceFragment(fragment, R.id.card_container, true, false);
+    }
+
     public boolean isCardBinValid(String cardBin) {
         return creditCardTransaction.isInWhiteList(cardBin);
     }
@@ -934,5 +976,14 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     public void setTextTotalAmount(double amount) {
         textTotalAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(amount)));
+    }
+
+    public void setBankPointStatus(boolean bankPointEnableStatus) {
+        creditCardTransaction.setBankPointStatus(bankPointEnableStatus);
+    }
+
+    public void payWithBankPoint(long pointRedeemed) {
+        creditCardTransaction.setBankPointRedeemed(pointRedeemed);
+        payUsingCard();
     }
 }

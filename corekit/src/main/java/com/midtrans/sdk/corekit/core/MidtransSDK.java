@@ -77,6 +77,7 @@ public class MidtransSDK {
     private String flow = null;
     private CreditCard creditCard = new CreditCard();
     private List<PromoResponse> promoResponses = new ArrayList<>();
+    private ArrayList<String> banksPointEnabled;
 
     private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
@@ -1610,5 +1611,13 @@ public class MidtransSDK {
 
     public void setPromoResponses(List<PromoResponse> promoResponses) {
         this.promoResponses = promoResponses;
+    }
+
+    public ArrayList<String> getBanksPointEnabled() {
+        return banksPointEnabled;
+    }
+
+    public void setBanksPointEnabled(ArrayList<String> banksPointEnabled) {
+        this.banksPointEnabled = banksPointEnabled;
     }
 }
