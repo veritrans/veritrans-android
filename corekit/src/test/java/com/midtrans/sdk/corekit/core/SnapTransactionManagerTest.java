@@ -17,6 +17,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
@@ -70,6 +71,8 @@ public class SnapTransactionManagerTest {
     public static final String CARD_CVV = "123";
     public static final String CARD_EXP_MONTH = "123";
     public static final String CARD_EXP_YEAR = "123";
+    private static final String RESPONSE_CODE_200 = "200";
+    private static final String RESPONSE_CODE_400 = "400";
     protected String sampleJsonResponse = "{\"response\":\"response\"}";
     protected Response retrofitResponse = new Response("URL", 200, "success", Collections.EMPTY_LIST,
             new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
@@ -233,6 +236,13 @@ public class SnapTransactionManagerTest {
     private Response retrofitResponseError = new Response("URL", 300, "success", Collections.EMPTY_LIST,
             new TypedByteArray("application/sampleJsonResponse", sampleJsonResponse.getBytes()));
 
+    private String cardtoken = "token-234qdr2343edqw";
+    @Captor
+    private ArgumentCaptor<String> cardTokenCaptor;
+    @Captor
+    private ArgumentCaptor<Callback<BanksPointResponse>> getbanksPointCaptor;
+    @Mock
+    private BanksPointResponse BankPointsResponseMock;
 
     @Before
     public void setup() {
@@ -2459,6 +2469,67 @@ public class SnapTransactionManagerTest {
         Mockito.verify(snapAPI).paymentUsingGCI(tokenIdCaptor.capture(), gciCaptor.capture(), transactionResponseCallbackCaptor.capture());
         transactionResponseCallbackCaptor.getValue().failure(retrofitError);
         PowerMockito.verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+
+    /**
+     * get banks points from snap
+     */
+
+
+    @Test
+    public void getbanksPoinstSuccess_whenCode200or201() {
+        Mockito.when(BankPointsResponseMock.getStatusCode()).thenReturn(RESPONSE_CODE_200);
+        callbackImplement.getbanksPoint(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBanksPoint(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getbanksPointCaptor.capture());
+        getbanksPointCaptor.getValue().success(BankPointsResponseMock, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onGetbanksPointSuccess();
+    }
+
+
+    @Test
+    public void getbanksPointsSuccess_whenCodeNot200orNot201() {
+        Mockito.when(BankPointsResponseMock.getStatusCode()).thenReturn(RESPONSE_CODE_400);
+        callbackImplement.getbanksPoint(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBanksPoint(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getbanksPointCaptor.capture());
+        getbanksPointCaptor.getValue().success(BankPointsResponseMock, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onGetbanksPointFailure();
+    }
+
+    @Test
+    public void getbanksPointsSuccess_whenResponseNull() {
+        callbackImplement.getbanksPoint(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBanksPoint(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getbanksPointCaptor.capture());
+        getbanksPointCaptor.getValue().success(null, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onGetbanksPointError();
+    }
+
+    @Test
+    public void getbanksPointsError_whenGeneralError() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorGeneralMock);
+        callbackImplement.getbanksPoint(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBanksPoint(tokenIdCaptor.capture(), cardCVVCaptor.capture(), getbanksPointCaptor.capture());
+        getbanksPointCaptor.getValue().failure(retrofitError);
+        Mockito.verify(callbackCollaborator).onGetbanksPointError();
+    }
+
+    @Test
+    public void getbanksPointError_whenInvalidSSL() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidSSLException);
+        callbackImplement.getbanksPoint(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBanksPoint(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getbanksPointCaptor.capture());
+        getbanksPointCaptor.getValue().failure(retrofitError);
+        PowerMockito.verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void getbanksPointsError_whenInvalidCertPath() {
+        Mockito.when(retrofitError.getCause()).thenReturn(errorInvalidCertPatMock);
+        callbackImplement.getbanksPoint(tokenId, cardtoken);
+        Mockito.verify(snapAPI).getBanksPoint(tokenIdCaptor.capture(), cardTokenCaptor.capture(), getbanksPointCaptor.capture());
+        getbanksPointCaptor.getValue().failure(retrofitError);
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 }

@@ -72,4 +72,16 @@ public class CallbackCollaborator {
     public void onGetBankBinError() {
 
     }
+
+
+    public void onGetbanksPointSuccess() {
+    }
+
+    public void onGetbanksPointFailure() {
+
+    }
+
+    public void onGetbanksPointError() {
+
+    }
 }
