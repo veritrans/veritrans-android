@@ -12,14 +12,14 @@ public class PromoComparator implements Comparator<PromoData> {
 
     @Override
     public int compare(PromoData promoData, PromoData promoData2) {
-        return calculatePromoAmount(promoData) - calculatePromoAmount(promoData2);
+        return Double.compare(calculatePromoAmount(promoData2), calculatePromoAmount(promoData));
     }
 
-    private int calculatePromoAmount(PromoData promoData) {
+    private double calculatePromoAmount(PromoData promoData) {
         if (promoData.getPromoResponse().getDiscountType().equalsIgnoreCase("FIXED")) {
-            return (int) (promoData.getGrossAmount() - promoData.getPromoResponse().getDiscountAmount());
+            return promoData.getPromoResponse().getDiscountAmount();
         } else {
-            return (int) (promoData.getGrossAmount() - promoData.getPromoResponse().getDiscountAmount() / 100 * promoData.getGrossAmount());
+            return promoData.getPromoResponse().getDiscountAmount() * promoData.getGrossAmount() / 100;
         }
     }
 }
