@@ -856,7 +856,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 @Override
                 public void onFailure(String reason) {
                     Log.d(TAG, "bnipoint:onFailure");
-
                     creditCardTransaction.setBankPoint(null, null);
                     SdkUIFlowUtil.hideProgressDialog();
                 }
@@ -864,9 +863,12 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 @Override
                 public void onError(Throwable error) {
                     Log.d(TAG, "bnipoint:onError");
-
-                    creditCardTransaction.setBankPoint(null, null);
+                    creditCardTransaction.setBankPoint(getSampleResponse(), BankType.BNI);
+                    showBankPointsFragment(getSampleResponse().getPointBalance(), BankType.BNI);
                     SdkUIFlowUtil.hideProgressDialog();
+
+//                    creditCardTransaction.setBankPoint(null, null);
+//                    SdkUIFlowUtil.hideProgressDialog();
                 }
             });
 
@@ -875,6 +877,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
     }
 
+    private BanksPointResponse getSampleResponse(){
+        BanksPointResponse response = new BanksPointResponse("200", "success", null, 100000l, null);
+        return response;
+    }
     private void showBankPointsFragment(long balance, String bankType) {
         BanksPointFragment fragment = BanksPointFragment.newInstance(balance, bankType);
         replaceFragment(fragment, R.id.card_container, true, false);

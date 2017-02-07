@@ -485,9 +485,11 @@
     <string name="promo_dialog_title">Selamat</string>
     <string name="promo_dialog_message">Dengan kartu ini, anda mendapatkan diskon sejumlah Rp. %1$s dari %2$s.</string>
     <string name="error_obtain_promo">Gagal memperoleh promo.</string>
-    <string name="redeem_bni_reward">Tukarkan Poin Reward BNI</string>
+    <string name="redeem_bni_reward">Tukarkan poin hadiah BNI</string>
     <string name="amount_after_discount">Jumlah pembayaran setelah diskon</string>
     <string name="redeem_point">Tukar Point</string>
     <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
     <string name="total_point">Total poin hadiah %1$s Anda adalah %2$s</string>
+    <string name="redeem_bni_title">Tukar Poin Hadiah BNI</string>
+    <string name="redeem_bni_details">Anda dapat membayar sebagian dengan Poin Reward BNI melalui Kartu Kredit Anda.</string>
 </resources>

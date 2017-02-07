@@ -74,6 +74,7 @@ public class AddCardDetailsFragment extends Fragment {
     private ImageView logo;
     private ImageView bankLogo;
     private ImageView imageCvvHelp;
+    private ImageView imageBanksPointHelp;
     private AspectRatioImageView promoLogoBtn;
     private Button payNowBtn;
     private Button scanCardBtn;
@@ -213,12 +214,14 @@ public class AddCardDetailsFragment extends Fragment {
 
         initCheckbox();
         imageCvvHelp = (ImageView) view.findViewById(R.id.image_cvv_help);
+        imageBanksPointHelp = (ImageView) view.findViewById(R.id.image_bni_help);
         payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
         logo = (ImageView) view.findViewById(R.id.payment_card_logo);
         bankLogo = (ImageView) view.findViewById(R.id.bank_logo);
         layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installment);
         layoutSaveCard = (LinearLayout) view.findViewById(R.id.layout_save_card_detail);
+        layoutBanksPoint = (LinearLayout) view.findViewById(R.id.layout_bni_point);
         buttonIncrease = (Button) view.findViewById(R.id.button_installment_increase);
         buttonDecrease = (Button) view.findViewById(R.id.button_installment_decrease);
         textInstallmentTerm = (TextView) view.findViewById(R.id.text_installment_term);
@@ -373,6 +376,22 @@ public class AddCardDetailsFragment extends Fragment {
                 MidtransDialog midtransDialog = new MidtransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
                 midtransDialog.show();
+            }
+        });
+
+        imageBanksPointHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.redeem_bni_title)
+                        .setMessage(R.string.redeem_bni_details)
+                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).create();
+                dialog.show();
             }
         });
 

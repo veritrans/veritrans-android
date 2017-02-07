@@ -680,4 +680,6 @@
     <string name="redeem_point">Redeem Point</string>
     <string name="redeem_bank_point_title">Redeem %1$s Point</string>
     <string name="total_point">Your total %1$s Reward Point is %2$s</string>
+    <string name="redeem_bni_title">Redeem BNI Reward Point</string>
+    <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
 </resources>
