@@ -532,8 +532,8 @@
     <string name="instruction_prima1">On the main menu, choose Other Transaction.</string>
     <string name="instruction_prima2">Choose Transfer.</string>
     <string name="instruction_prima3">Choose Other Bank Account.</string>
-    <string name="instruction_prima4">Enter 013 and 16 digit Account no. and choose Correct.</string>
-    <string name="instruction_prima5">Enter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+    <string name="instruction_prima4">Enter 013 and choose Correct.</string>
+    <string name="instruction_prima5">Enter the full amount to be paid and press Correct.</string>
     <string name="instruction_prima6">Enter 16 digits payment Account No. and press Correct.</string>
     <string name="instruction_prima7">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
 

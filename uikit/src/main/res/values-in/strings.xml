@@ -387,8 +387,8 @@
     <string name="instruction_prima1">Di menu utama, pilih Other Transaction.</string>
     <string name="instruction_prima2">Pilih Transfer.</string>
     <string name="instruction_prima3">Pilih Other Bank Account.</string>
-    <string name="instruction_prima4">Masukkan 013 dan 16 digit Nomor Akun Virtual dan tekan Correct.</string>
-    <string name="instruction_prima5">Masukkan jumlah pembayaran total. Jika jumlah yang dimasukkan tidak sesuai tagihan, transaksi akan ditolak.</string>
+    <string name="instruction_prima4">Masukkan 013 dan tekan Correct.</string>
+    <string name="instruction_prima5">Masukkan jumlah pembayaran total dan tekan Correct.</string>
     <string name="instruction_prima6">Masukkan 16 digit Nomor Akun dan pilih Correct.</string>
     <string name="instruction_prima7">Detil pembayaran anda akan muncul di halaman konfirmasi. Bila informasi benar pilih Correct.</string>
 
