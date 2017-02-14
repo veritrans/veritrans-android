@@ -37,7 +37,9 @@ project.afterEvaluate {
                                    '**/BuildConfig.*',
                                    '**/Manifest*.*',
                                    '**/com/midtrans/sdk/core/models/*',
-                                   '**/com/midtrans/sdk/core/environment/*'
+                                   '**/com/midtrans/sdk/core/environment/*',
+                                   '**/com/midtrans/sdk/core/utils/Logger.*',
+                                   '**/com/midtrans/sdk/core/utils/Constants.*'
                         ]
                 )
 
