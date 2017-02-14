@@ -20,7 +20,7 @@ public class AnalyticsEventName {
     public static final String PAGE_CREDIT_CARD_DETAILS = "pg cc card details";
     public static final String CREDIT_CARD_3DS_ERROR = "cc 3ds error";
     public static final String CREDIT_CARD_CVV_VALIDATION = "cc cvv validation";
-    public static final String CREDIT_CARD_CVV_EXPIRY_VALIDATION = "cc expiry validation";
+    public static final String CREDIT_CARD_EXPIRY_VALIDATION = "cc expiry validation";
     public static final String CREDIT_CARD_NUMBER_VALIDATION = "cc num validation";
 
     public static final String PAGE_BCA_KLIKBCA = "pg klikbca";
@@ -59,8 +59,8 @@ public class AnalyticsEventName {
     public static final String PAGE_GCI_OVERVIEW = "pg gci overview";
 
     public static final String PAGE_STATUS_FAILED = "pg failed";
-    public static final String PAGE_STATUS_SUCCESS = "pg pending";
-    public static final String PAGE_STATUS_PENDING = "pg success";
+    public static final String PAGE_STATUS_SUCCESS = "pg success";
+    public static final String PAGE_STATUS_PENDING = "pg pending";
 
     public static final String BTN_CONFIRM_PAYMENT = "btn confirm payment";
     public static final String BTN_NEXT = "btn next";

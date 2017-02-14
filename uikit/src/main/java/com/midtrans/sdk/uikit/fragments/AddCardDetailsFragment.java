@@ -689,7 +689,7 @@ public class AddCardDetailsFragment extends Fragment {
         }
         if (!isValid) {
             //track invalid cc number
-            midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+            midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_NUMBER_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
         return isValid;
     }
@@ -757,7 +757,7 @@ public class AddCardDetailsFragment extends Fragment {
 
         if (!isValid) {
             //track invalid cc expiry
-            midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+            midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_EXPIRY_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
         return isValid;
     }
@@ -785,7 +785,7 @@ public class AddCardDetailsFragment extends Fragment {
 
         if (!isValid) {
             //track invalid cc cvv
-            midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+            midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_CVV_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
         return isValid;
     }

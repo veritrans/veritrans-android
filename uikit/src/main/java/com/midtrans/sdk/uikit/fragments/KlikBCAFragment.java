@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * Klik BCA payment fragment. Shows user ID text field and payment instructions.
@@ -20,6 +23,7 @@ public class KlikBCAFragment extends Fragment {
 
     private EditText userIdEditText;
     private TextInputLayout userIdContainer;
+    private FancyButton buttonInstruction;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +37,19 @@ public class KlikBCAFragment extends Fragment {
         // Initialize view
         userIdEditText = (EditText) view.findViewById(R.id.user_id_et);
         userIdContainer = (TextInputLayout) view.findViewById(R.id.user_id_container);
+        buttonInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
+        buttonInstruction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getActivity() != null) {
+                    Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
+                    intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
+                    intent.putExtra(BankTransferInstructionActivity.PAGE, BankTransferInstructionActivity.KLIKBCA_PAGE);
+                    getActivity().startActivity(intent);
+
+                }
+            }
+        });
     }
 
     /**

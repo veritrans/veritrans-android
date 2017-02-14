@@ -198,6 +198,9 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
         midtransSDK.paymentUsingXLTunai(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
+                //track page status pending
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
                 SdkUIFlowUtil.hideProgressDialog();
 
                 if (response != null) {
@@ -210,6 +213,9 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFailure(TransactionResponse response, String reason) {
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                 SdkUIFlowUtil.hideProgressDialog();
                 errorMessage = getString(R.string.message_payment_failed);
                 transactionResponse = response;
@@ -222,6 +228,9 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onError(Throwable error) {
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                 SdkUIFlowUtil.hideProgressDialog();
                 errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.showToast(XLTunaiActivity.this, "" + errorMessage);

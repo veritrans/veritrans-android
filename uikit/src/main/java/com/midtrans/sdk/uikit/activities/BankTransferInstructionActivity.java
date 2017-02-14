@@ -151,8 +151,13 @@ public class BankTransferInstructionActivity extends BaseActivity {
                 pageNumber = 3;
                 POSITION = getIntent().getIntExtra(PAGE, -1);
 
-                //track page bca va overview
-                midtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_VA_OVERVIEW);
+                if(POSITION == KLIKBCA_PAGE){
+                    //track page bca va overview
+                    midtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKBCA_OVERVIEW);
+                }else{
+                    //track page bca va overview
+                    midtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_VA_OVERVIEW);
+                }
                 break;
             case TYPE_PERMATA:
                 pageNumber = 2;

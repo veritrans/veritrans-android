@@ -229,6 +229,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                 phoneNumber, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
+                        //track page status success
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         mTransactionResponse = response;
                         if (response != null) {
@@ -241,6 +244,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         mTransactionResponse = response;
                         IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_denied);
                         SdkUIFlowUtil.hideProgressDialog();
@@ -258,6 +264,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onError(Throwable error) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         try {
                             IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_failed);
                             SdkUIFlowUtil.hideProgressDialog();

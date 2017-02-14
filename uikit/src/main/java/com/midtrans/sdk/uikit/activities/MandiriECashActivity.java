@@ -133,6 +133,9 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         mMidtransSDK.paymentUsingMandiriEcash(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
+                //track page status pending
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
                 SdkUIFlowUtil.hideProgressDialog();
 
                 if (response != null &&
@@ -150,6 +153,9 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onFailure(TransactionResponse response, String reason) {
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                 SdkUIFlowUtil.hideProgressDialog();
                 MandiriECashActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 MandiriECashActivity.this.transactionResponse = response;
@@ -163,6 +169,9 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onError(Throwable error) {
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                 SdkUIFlowUtil.hideProgressDialog();
                 MandiriECashActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.showToast(MandiriECashActivity.this, "" + errorMessage);
@@ -182,13 +191,15 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             setSupportActionBar(mToolbar);
             transactionResponseFromMerchant = new TransactionResponse("200", "Transaction Success", UUID.randomUUID().toString(),
                     mMidtransSDK.getTransactionRequest().getOrderId(), String.valueOf(mMidtransSDK.getTransactionRequest().getAmount()), getString(R.string.payment_mandiri_ecash), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), getString(R.string.settlement));
-            initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_ECASH, false);
+            RESULT_CODE = RESULT_OK;
+            setResultAndFinish();
             buttonConfirmPayment.setVisibility(View.GONE);
         } else if (resultCode == RESULT_CANCELED) {
             currentFragmentName = STATUS_FRAGMENT;
             mToolbar.setNavigationIcon(closeIcon);
             setSupportActionBar(mToolbar);
-            initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_ECASH, false);
+            RESULT_CODE = RESULT_OK;
+            setResultAndFinish();
             buttonConfirmPayment.setVisibility(View.GONE);
         }
     }

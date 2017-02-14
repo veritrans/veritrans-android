@@ -110,6 +110,9 @@ public class KlikBCAActivity extends BaseActivity {
                                 klikBCAFragment.getUserId(), new TransactionCallback() {
                                     @Override
                                     public void onSuccess(TransactionResponse response) {
+                                        //track page status pending
+                                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
                                         SdkUIFlowUtil.hideProgressDialog();
                                         transactionResponse = response;
                                         errorMessage = response.getStatusMessage();
@@ -118,6 +121,9 @@ public class KlikBCAActivity extends BaseActivity {
 
                                     @Override
                                     public void onFailure(TransactionResponse response, String reason) {
+                                        //track page status failed
+                                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                                         errorMessage = getString(R.string.message_payment_cannot_proccessed);
                                         transactionResponse = response;
                                         SdkUIFlowUtil.hideProgressDialog();
@@ -131,6 +137,9 @@ public class KlikBCAActivity extends BaseActivity {
 
                                     @Override
                                     public void onError(Throwable error) {
+                                        //track page status failed
+                                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                                         errorMessage = getString(R.string.message_payment_failed);
                                         SdkUIFlowUtil.hideProgressDialog();
                                         SdkUIFlowUtil.showToast(KlikBCAActivity.this, errorMessage);

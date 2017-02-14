@@ -220,6 +220,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                 mandiriClickPayModel.getInput3(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
+                        //track page status success
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
+
                         SdkUIFlowUtil.hideProgressDialog();
 
                         MandiriClickPayActivity.this.transactionResponse = response;
@@ -233,6 +236,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         MandiriClickPayActivity.this.transactionResponse = response;
                         MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
@@ -246,6 +252,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onError(Throwable error) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                         Logger.e(TAG, "Error is" + error.getMessage());

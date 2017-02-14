@@ -174,6 +174,9 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
             midtransSDK.paymentUsingGCI(midtransSDK.readAuthenticationToken(), cardNumber, password, new TransactionCallback() {
                 @Override
                 public void onSuccess(TransactionResponse response) {
+                    //track page status success
+                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
+
                     SdkUIFlowUtil.hideProgressDialog();
                     if (response != null) {
                         transactionResponse = response;
@@ -185,6 +188,9 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
                 @Override
                 public void onFailure(TransactionResponse response, String reason) {
+                    //track page status failed
+                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                     errorMessage = getString(R.string.message_payment_failed);
                     transactionResponse = response;
                     SdkUIFlowUtil.hideProgressDialog();
@@ -199,6 +205,9 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
                 @Override
                 public void onError(Throwable error) {
+                    //track page status failed
+                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                     SdkUIFlowUtil.hideProgressDialog();
                     errorMessage = getString(R.string.message_payment_failed);
                     SdkUIFlowUtil.showToast(GCIActivity.this, "" + errorMessage);

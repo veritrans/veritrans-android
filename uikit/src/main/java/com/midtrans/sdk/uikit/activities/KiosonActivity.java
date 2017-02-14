@@ -222,6 +222,9 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
         midtransSDK.paymentUsingKiosan(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
+                //track page status pending
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
                 SdkUIFlowUtil.hideProgressDialog();
 
                 if (response != null) {
@@ -234,6 +237,9 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onFailure(TransactionResponse response, String reason) {
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                 KiosonActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 KiosonActivity.this.transactionResponse = response;
                 SdkUIFlowUtil.hideProgressDialog();
@@ -251,6 +257,9 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onError(Throwable error) {
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                 SdkUIFlowUtil.hideProgressDialog();
 
                 try {

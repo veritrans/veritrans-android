@@ -501,12 +501,18 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void actionPaymentError(Throwable error) {
+        //track page status failed
+        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
         SdkUIFlowUtil.hideProgressDialog();
         BankTransferActivity.this.errorMessage = getString(R.string.message_payment_failed);
         SdkUIFlowUtil.showToast(BankTransferActivity.this, "" + errorMessage);
     }
 
     private void actionPaymentSuccess(TransactionResponse response) {
+        //track page status success
+        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
         SdkUIFlowUtil.hideProgressDialog();
         if (response != null) {
             transactionResponse = response;
@@ -517,6 +523,9 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void actionPaymentFailure(TransactionResponse response, String reason) {
+        //track page status failed
+        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
         SdkUIFlowUtil.hideProgressDialog();
         try {
             BankTransferActivity.this.errorMessage = getString(R.string.message_payment_failed);

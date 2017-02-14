@@ -164,7 +164,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         //initialize views
         bindActivity();
-        setupToolbarTitle(true);
+        setupToolbarTitle(false);
 
 //        toolbar.setTitle("");
         setSupportActionBar(toolbar);

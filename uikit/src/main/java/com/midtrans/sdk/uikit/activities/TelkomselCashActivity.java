@@ -154,7 +154,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
      */
     private void performTransaction() {
         //track telkomsel cash confirm payment
-        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_TCASH);
+        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
         if (telkomselCashFragment != null && !telkomselCashFragment.isDetached()) {
 
@@ -184,6 +184,9 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                 telkomselToken, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
+                        //track page status success
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         mTransactionResponse = response;
 
@@ -197,6 +200,9 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         mTransactionResponse = response;
                         errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
@@ -210,6 +216,9 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
                     @Override
                     public void onError(Throwable error) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
                         SdkUIFlowUtil.showToast(TelkomselCashActivity.this, errorMessage);

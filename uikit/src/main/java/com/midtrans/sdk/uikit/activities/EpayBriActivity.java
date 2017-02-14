@@ -123,6 +123,9 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         midtransSDK.paymentUsingEpayBRI(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
+                //track page status pending
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
                 SdkUIFlowUtil.hideProgressDialog();
                 if (response != null &&
                         !TextUtils.isEmpty(response.getRedirectUrl())) {
@@ -138,6 +141,9 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFailure(TransactionResponse response, String reason) {
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                 SdkUIFlowUtil.hideProgressDialog();
                 EpayBriActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
@@ -150,6 +156,9 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onError(Throwable error) {
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                 SdkUIFlowUtil.hideProgressDialog();
                 EpayBriActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);

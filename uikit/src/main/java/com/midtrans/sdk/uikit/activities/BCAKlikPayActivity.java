@@ -140,6 +140,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();
 
+                //track page status pending
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
                 if (response != null &&
                         !TextUtils.isEmpty(response.getRedirectUrl())) {
                     BCAKlikPayActivity.this.transactionResponse = response;
@@ -160,6 +163,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                     BCAKlikPayActivity.this.transactionResponse = response;
                     SdkUIFlowUtil.hideProgressDialog();
 
+                    //track page status failed
+                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                     if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                         transactionResponseFromMerchant = response;
                         setResultCode(RESULT_OK);
@@ -177,6 +183,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                 BCAKlikPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.hideProgressDialog();
                 SdkUIFlowUtil.showToast(BCAKlikPayActivity.this, "" + errorMessage);
+
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
         });
     }

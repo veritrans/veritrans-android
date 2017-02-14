@@ -9,6 +9,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -318,6 +319,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
                         @Override
                         public void onFailure(TransactionResponse response, String reason) {
+
                             SdkUIFlowUtil.hideProgressDialog();
                             if (attempt < MAX_ATTEMPT) {
                                 attempt += 1;
@@ -336,10 +338,28 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                                 initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
                                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
                             }
+                            if(response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))){
+                                Log.d("3dserror", "1>400:" + response.getValidationMessages().get(0));
+
+                                if(response.getValidationMessages() != null && response.getValidationMessages().get(0) != null){
+                                    if(response.getValidationMessages().get(0).contains("3d")){
+                                        //track page bca va overview
+                                        midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+                                    }
+                                }
+                            }
+
+                            //track page status failed
+                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
                         }
 
                         @Override
                         public void onError(Throwable error) {
+                            //track page status failed
+                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
+
+
                             SdkUIFlowUtil.hideProgressDialog();
                             showErrorMessage(getString(R.string.message_payment_failed));
                         }
@@ -373,23 +393,37 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
                             }
 
-                            if(response != null && response.getStatusCode().equals(getString(R.string.failed_code_411))){
-
-                                //track page bca va overview
-                                midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+                            if(response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))){
+                                Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
+                                if(response.getValidationMessages() != null && response.getValidationMessages().get(0) != null){
+                                    if(response.getValidationMessages().get(0).contains("3d")){
+                                        //track page bca va overview
+                                        midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+                                    }
+                                }
                             }
+
+                            //track page status failed
+                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
                         }
 
                         @Override
                         public void onError(Throwable error) {
+                            //track page status failed
+                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                             SdkUIFlowUtil.hideProgressDialog();
                             showErrorMessage(getString(R.string.message_payment_failed));
+
                         }
                     });
         }
     }
 
     private void actionPaymentSuccess(TransactionResponse response) {
+        //track page status success
+        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
+
         TransactionResponse cardPaymentResponse = response;
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
