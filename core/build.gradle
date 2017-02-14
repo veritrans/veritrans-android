@@ -5,6 +5,10 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25
@@ -38,8 +42,8 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
-    testCompile 'org.mockito:mockito-core:2.7.5'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.retrofit2:retrofit-mock:2.1.0'
+
 
 }
