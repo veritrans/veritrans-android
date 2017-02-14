@@ -35,7 +35,10 @@ project.afterEvaluate {
                                    '**/*$ViewInjector*.*',
                                    '**/*$ViewBinder*.*',
                                    '**/BuildConfig.*',
-                                   '**/Manifest*.*']
+                                   '**/Manifest*.*',
+                                   '**/com/midtrans/sdk/core/models/*',
+                                   '**/com/midtrans/sdk/core/environment/*'
+                        ]
                 )
 
                 def coverageSourceDirs = [
