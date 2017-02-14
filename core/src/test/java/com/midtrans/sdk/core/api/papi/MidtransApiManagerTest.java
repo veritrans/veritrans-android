@@ -115,4 +115,55 @@ public class MidtransApiManagerTest {
             }
         });
     }
+
+    @Test
+    public void getCardTokenOnFailureResponse() throws Exception {
+        MockRetrofit mockRetrofit = MockMidtransRetrofit.getMidtransRetrofit();
+        midtransApi = mockRetrofit.create(MidtransApi.class);
+        MidtransApi api = midtransApi.returningResponse(new CardTokenResponse("failed", null, "400", null, null));
+        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard("saved_token", "cardcvv", true, 10000);
+        midtransApiManager = new MidtransApiManager(api);
+        midtransApiManager.getCardToken(cardTokenRequest, new MidtransCoreCallback<CardTokenResponse>() {
+            @Override
+            public void onSuccess(CardTokenResponse object) {
+                // Do nothing
+            }
+
+            @Override
+            public void onFailure(CardTokenResponse object) {
+                Assert.assertEquals("failed", object.statusMessage);
+                Assert.assertNotEquals("200", object.statusCode);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                // Do nothing
+            }
+        });
+    }
+
+    @Test
+    public void getCardTokenOnErrorResponse() throws Exception {
+        MockRetrofit mockRetrofit = MockMidtransRetrofit.getErrorMidtransRetrofit();
+        midtransApi = mockRetrofit.create(MidtransApi.class);
+        MidtransApi api = midtransApi.returningResponse(null);
+        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard("saved_token", "cardcvv", true, 10000);
+        midtransApiManager = new MidtransApiManager(api);
+        midtransApiManager.getCardToken(cardTokenRequest, new MidtransCoreCallback<CardTokenResponse>() {
+            @Override
+            public void onSuccess(CardTokenResponse object) {
+                // Do nothing
+            }
+
+            @Override
+            public void onFailure(CardTokenResponse object) {
+                // Do nothing
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                Assert.assertNotNull(throwable);
+            }
+        });
+    }
 }
