@@ -7,58 +7,19 @@ import java.util.List;
  */
 
 public class CreditCard {
-    private boolean saveCard;
-    private boolean secure;
-    private String tokenId;
-    private String channel;
-    private String bank;
-    private List<SavedToken> savedTokens;
+    public final boolean saveCard;
+    public final boolean secure;
+    public final String tokenId;
+    public final String channel;
+    public final String bank;
+    public final List<SavedToken> savedTokens;
 
-    public boolean isSaveCard() {
-        return saveCard;
-    }
-
-    public void setSaveCard(boolean saveCard) {
+    public CreditCard(boolean saveCard, boolean secure, String tokenId, String channel, String bank, List<SavedToken> savedTokens) {
         this.saveCard = saveCard;
-    }
-
-    public boolean isSecure() {
-        return secure;
-    }
-
-    public void setSecure(boolean secure) {
         this.secure = secure;
-    }
-
-    public String getTokenId() {
-        return tokenId;
-    }
-
-    public void setTokenId(String tokenId) {
         this.tokenId = tokenId;
-    }
-
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
         this.channel = channel;
-    }
-
-    public String getBank() {
-        return bank;
-    }
-
-    public void setBank(String bank) {
         this.bank = bank;
-    }
-
-    public List<SavedToken> getSavedTokens() {
-        return savedTokens;
-    }
-
-    public void setSavedTokens(List<SavedToken> savedTokens) {
         this.savedTokens = savedTokens;
     }
 }
