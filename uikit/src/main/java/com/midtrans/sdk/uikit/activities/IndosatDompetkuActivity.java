@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -22,6 +21,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionIndosatFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -85,6 +85,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * set up {@link BankTransferFragment} to display payment instructions.
      */
     private void setUpHomeFragment() {
+        //track page indosat dompetku
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_INDOSAT_DOMPETKU);
+
         // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -183,6 +186,8 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * indosat dompetku payment procedure.
      */
     private void performTransaction() {
+        //track indosat dompetku confirm payment
+        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
         if (mIndosatFragment != null && !mIndosatFragment.isDetached()) {
 
@@ -224,6 +229,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                 phoneNumber, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
+                        //track page status success
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         mTransactionResponse = response;
                         if (response != null) {
@@ -236,6 +244,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         mTransactionResponse = response;
                         IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_denied);
                         SdkUIFlowUtil.hideProgressDialog();
@@ -253,6 +264,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onError(Throwable error) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         try {
                             IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_failed);
                             SdkUIFlowUtil.hideProgressDialog();

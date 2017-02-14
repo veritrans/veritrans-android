@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.InstructionCIMBFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -95,6 +96,9 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void setUpFragment() {
+        //track page CIMB Clicks
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_CIMB_CLICKS);
+
         // setup  fragment
         cimbClickPayFragment = new InstructionCIMBFragment();
         replaceFragment(cimbClickPayFragment, R.id.instruction_container, false, false);
@@ -124,10 +128,16 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void makeTransaction() {
+        //track CIMB Click confirm payment
+        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         mMidtransSDK.paymentUsingCIMBClick(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
+                //track page status pending
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
                 SdkUIFlowUtil.hideProgressDialog();
 
                 if (response != null &&
@@ -147,6 +157,9 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onFailure(TransactionResponse response, String reason) {
                 try {
+                    //track page status failed
+                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                     CIMBClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                     CIMBClickPayActivity.this.transactionResponse = response;
                     SdkUIFlowUtil.hideProgressDialog();
@@ -164,6 +177,9 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onError(Throwable error) {
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                 CIMBClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.hideProgressDialog();
                 SdkUIFlowUtil.showToast(CIMBClickPayActivity.this, "" + errorMessage);

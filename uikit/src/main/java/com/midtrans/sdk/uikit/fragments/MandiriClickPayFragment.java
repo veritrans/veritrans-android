@@ -16,6 +16,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -58,6 +59,10 @@ public class MandiriClickPayFragment extends Fragment {
         btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //track page mandiri click pay overview
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_MANDIRI_CLICKPAY_OVERVIEW);
+
                 getActivity().startActivity(new Intent(getActivity(), MandiriClickPayInstructionActivity.class));
             }
         });

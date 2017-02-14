@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.MandiriClickPayFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -101,6 +102,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
     private void setUpHomeFragment() {
 
+        //track page mandiri click pay
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_CLICKPAY);
+
         // setup  fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -138,6 +142,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         if (view.getId() == R.id.btn_confirm_payment) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
+
+                //track Mandiri Clickpay confirm payment
+                mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
                 validateInformation();
 
@@ -213,6 +220,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                 mandiriClickPayModel.getInput3(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
+                        //track page status success
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
+
                         SdkUIFlowUtil.hideProgressDialog();
 
                         MandiriClickPayActivity.this.transactionResponse = response;
@@ -226,6 +236,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         MandiriClickPayActivity.this.transactionResponse = response;
                         MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
@@ -239,6 +252,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onError(Throwable error) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                         Logger.e(TAG, "Error is" + error.getMessage());

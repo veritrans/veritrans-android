@@ -33,6 +33,8 @@ import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback {
@@ -204,6 +206,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             expiryModel.setUnit(ExpiryModel.UNIT_HOUR);
             transactionRequestNew.setExpiry(expiryModel);
         }
+
+        Map<String, String> customObject = new HashMap<>();
+        customObject.put("session_key", "70m0noforhz7s2xfaoryo2yz02hrwhxz");
+
+        transactionRequestNew.setCustomObject(customObject);
 
         if (promoActive.isChecked()) {
             // Set promo

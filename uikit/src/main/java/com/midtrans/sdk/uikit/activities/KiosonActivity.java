@@ -23,6 +23,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionKiosonFragment;
 import com.midtrans.sdk.uikit.fragments.KiosonPaymentFragment;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -82,8 +83,10 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
      * set up {@link BankTransferFragment} to display payment instructions.
      */
     private void setUpHomeFragment() {
-        // setup home fragment
+        //track page kioson
+        midtransSDK.trackEvent(AnalyticsEventName.PAGE_KIOSON);
 
+        // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         instructionKiosonFragment = new InstructionKiosonFragment();
@@ -209,6 +212,8 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void performTransaction() {
+        //track kioson confirm payment
+        midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
         SdkUIFlowUtil.showProgressDialog(KiosonActivity.this, getString(R.string.processing_payment),
                 false);
@@ -217,6 +222,9 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
         midtransSDK.paymentUsingKiosan(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
+                //track page status pending
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
                 SdkUIFlowUtil.hideProgressDialog();
 
                 if (response != null) {
@@ -229,6 +237,9 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onFailure(TransactionResponse response, String reason) {
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                 KiosonActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 KiosonActivity.this.transactionResponse = response;
                 SdkUIFlowUtil.hideProgressDialog();
@@ -246,6 +257,9 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onError(Throwable error) {
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                 SdkUIFlowUtil.hideProgressDialog();
 
                 try {
