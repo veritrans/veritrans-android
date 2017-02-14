@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
+import com.midtrans.sdk.uikit.activities.KlikBCAInstructionActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
@@ -42,11 +42,8 @@ public class KlikBCAFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (getActivity() != null) {
-                    Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
-                    intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
-                    intent.putExtra(BankTransferInstructionActivity.PAGE, BankTransferInstructionActivity.KLIKBCA_PAGE);
+                    Intent intent = new Intent(getActivity(), KlikBCAInstructionActivity.class);
                     getActivity().startActivity(intent);
-
                 }
             }
         });

@@ -94,13 +94,12 @@
     <string name="transfer_amount">Jumlah Transfer</string>
     <string name="hint_email_optional">Alamat Email (Opsional)</string>
     <string name="email_instruction">Kami akan mengirimkan instruksi pembayaran melalui email</string>
-    <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
-    <string name="bank_atm_transfer_step1">1.\t Klik tombol Confirm Payment.</string>
-    <string name="bank_atm_transfer_step2">2.\t Anda akan menerima nomor rekening yang unik instruksi pembayaran
+    <string name="atm_transfer_steps">Langkah-Langkah Transfer ATM</string>
+    <string name="bank_atm_transfer_step1">Klik tombol Confirm Payment.</string>
+    <string name="bank_atm_transfer_step2">Anda akan menerima nomor rekening yang unik instruksi pembayaran
         (Anda dapat menerima instruksi via email jika memasukkan alamat email anda pada kolom di atas).</string>
-
-    <string name="bank_atm_transfer_step3">3.\t Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata).</string>
-    <string name="bank_atm_transfer_step4">4.\t Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
+    <string name="bank_atm_transfer_step3">Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata).</string>
+    <string name="bank_atm_transfer_step4">Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
     <string name="see_instruction">Lihat instruksi</string>
     <string name="download_instruction">Unduh instruksi</string>
     <string name="confirm_payment">Konfirmasi Pembayaran</string>
@@ -151,7 +150,7 @@
     <string name="bca_instruction_step6">Pada halaman konfirmasi transfer akan muncul detail pembayaran anda. Jika informasi telah sesuai tekan \'Ya\'.</string>
 
   <!--Klik BCA-->
-    <string name="bca_klik_instruction_step1">1.\Pilih menu \'Fund Transfer\'.</string>
+    <string name="bca_klik_instruction_step1">1.\tPilih menu \'Fund Transfer\'.</string>
     <string name="bca_klik_instruction_step2">2.\tPilih \'Transfer to BCA Virtual Account\'.</string>
     <string name="bca_klik_instruction_step3">3.\t\'Masukkan Nomor Virtual Account BCA\' atau \'Pilih dari daftar transfer\' dan klik \'Continue\'.</string>
     <string name="bca_klik_instruction_step4">4.\tJumlah yang harus dibayarkan, nomor rekening dan nama merchant akan tampil pada halaman konfirmasi pembayaran, jika informasi tersebut benar, klik \'Continue\'.</string>
@@ -320,9 +319,9 @@
     <string name="text_no">Tidak</string>
 
     <!--KlikBCA Payment Instructions-->
-    <string name="klikbca_instruction_1">1.\tPastikan bahwa UserID sudah aktif dan terdaftar di BCA.</string>
-    <string name="klikbca_instruction_2">2.\tSilakan lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com pada browser anda, menggunakan User ID yang sama dengan yang anda masukkan di atas.</string>
-    <string name="klikbca_instruction_3">3.\tTransaksi akan dibatalkan bila pembayaran tidak dilakukan dalam 2 jam.</string>
+    <string name="klikbca_instruction_1">Pastikan bahwa UserID sudah aktif dan terdaftar di BCA.</string>
+    <string name="klikbca_instruction_2">Silakan lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com pada browser anda, menggunakan User ID yang sama dengan yang anda masukkan di atas.</string>
+    <string name="klikbca_instruction_3">Transaksi akan dibatalkan bila pembayaran tidak dilakukan dalam 2 jam.</string>
 
     <string name="payment_method_bri_epay">e-Pay BRI</string>
     <string name="payment_method_offers">Penawaran</string>
@@ -380,7 +379,7 @@
     <string name="instruction_atm_bersama2">Pilih Transfer.</string>
     <string name="instruction_atm_bersama3">Pilih Online Transfer.</string>
     <string name="instruction_atm_bersama4">Masukkan 013 dan 16 digit Nomor Akun Virtual.</string>
-    <string name="instruction_atm_bersama5">Masukkan jumlah pembayaran total. Jika jumlah yang dimasukkan tidak sesuai tagihan, transaksi akan ditolak.</string>
+    <string name="instruction_atm_bersama5">Masukkan jumlah pembayaran total dan tekan Correct.</string>
     <string name="instruction_atm_bersama6">Kosongkan nomor referensi dan pilih Correct.</string>
     <string name="instruction_atm_bersama7">Detil pembayaran anda akan muncul di halaman konfirmasi. Bila informasi benar pilih Correct.</string>
 

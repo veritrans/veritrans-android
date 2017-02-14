@@ -525,7 +525,7 @@
     <string name="instruction_atm_bersama2">Choose Transfer.</string>
     <string name="instruction_atm_bersama3">Choose Online Transfer.</string>
     <string name="instruction_atm_bersama4">Enter 013 and 16 digit Account No.</string>
-    <string name="instruction_atm_bersama5">Enter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+    <string name="instruction_atm_bersama5">Enter the full amount to be paid and press Correct.</string>
     <string name="instruction_atm_bersama6">Empty the transfer reference number and press Correct.</string>
     <string name="instruction_atm_bersama7">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
 

@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -20,10 +21,10 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionKiosonFragment;
 import com.midtrans.sdk.uikit.fragments.KiosonPaymentFragment;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -144,18 +145,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
         if (view.getId() == R.id.btn_confirm_payment) {
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
-
                 performTransaction();
-
-            } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
-
-                if (transactionResponse != null) {
-                    setUpTransactionStatusFragment(transactionResponse);
-                } else {
-                    setResultCode(RESULT_OK);
-                    SdkUIFlowUtil.showToast(KiosonActivity.this, SOMETHING_WENT_WRONG);
-                    setResultAndFinish();
-                }
             } else {
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
@@ -204,6 +194,11 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();
             buttonConfirmPayment.setText(getString(R.string.complete_payment_kioson));
+            buttonBack.setVisibility(View.GONE);
+            ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
+            if (merchantLogo != null) {
+                merchantLogo.setVisibility(View.INVISIBLE);
+            }
             currentFragment = PAYMENT_FRAGMENT;
         } else {
             SdkUIFlowUtil.showToast(KiosonActivity.this, SOMETHING_WENT_WRONG);
