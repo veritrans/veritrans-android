@@ -958,28 +958,31 @@ public class AddCardDetailsFragment extends Fragment {
                 // Set promo
                 setPromo(promoResponse);
                 // Set discount token
-                ((CreditDebitCardFlowActivity) getActivity()).setDiscountToken(response.getDiscountToken());
-                double finalAmount = midtransSDK.getTransactionRequest().getAmount()
-                        - SdkUIFlowUtil.calculateDiscountAmount(promoResponse);
-                ((CreditDebitCardFlowActivity) getActivity()).setTextTotalAmount(finalAmount);
+                CreditDebitCardFlowActivity activity = (CreditDebitCardFlowActivity) getActivity();
+                if (activity != null) {
+                    activity.setDiscountToken(response.getDiscountToken());
+                    double finalAmount = midtransSDK.getTransactionRequest().getAmount()
+                            - SdkUIFlowUtil.calculateDiscountAmount(promoResponse);
+                    activity.setTextTotalAmount(finalAmount);
 
-                promoLogoBtn.setVisibility(View.VISIBLE);
-                promoLogoBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                                .setTitle(R.string.promo_dialog_title)
-                                .setMessage(getString(R.string.promo_dialog_message, Utils.getFormattedAmount(SdkUIFlowUtil.calculateDiscountAmount(promoResponse)), promoResponse.getSponsorName()))
-                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                                .create();
-                        alertDialog.show();
-                    }
-                });
+                    promoLogoBtn.setVisibility(View.VISIBLE);
+                    promoLogoBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                                    .setTitle(R.string.promo_dialog_title)
+                                    .setMessage(getString(R.string.promo_dialog_message, Utils.getFormattedAmount(SdkUIFlowUtil.calculateDiscountAmount(promoResponse)), promoResponse.getSponsorName()))
+                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    })
+                                    .create();
+                            alertDialog.show();
+                        }
+                    });
+                }
             }
 
             @Override
