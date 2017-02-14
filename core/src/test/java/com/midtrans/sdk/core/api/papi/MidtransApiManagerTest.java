@@ -61,4 +61,58 @@ public class MidtransApiManagerTest {
             }
         });
     }
+
+    @Test
+    public void getCardTokenSecureCardOnSuccess() throws Exception {
+        MockRetrofit mockRetrofit = MockMidtransRetrofit.getMidtransRetrofit();
+        midtransApi = mockRetrofit.create(MidtransApi.class);
+        MidtransApi api = midtransApi.returningResponse(new CardTokenResponse(null, "bni", "200", "token", "url"));
+        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalSecureCard("cardnumber", "cardcvv", "cardexpirymonth", "cardexpiryyear", true, 10000);
+        midtransApiManager = new MidtransApiManager(api);
+        midtransApiManager.getCardToken(cardTokenRequest, new MidtransCoreCallback<CardTokenResponse>() {
+            @Override
+            public void onSuccess(CardTokenResponse object) {
+                Assert.assertEquals("200", object.statusCode);
+                Assert.assertEquals("token", object.tokenId);
+                Assert.assertEquals("bni", object.bank);
+            }
+
+            @Override
+            public void onFailure(CardTokenResponse object) {
+                // Do nothing
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                // Do nothing
+            }
+        });
+    }
+
+    @Test
+    public void getCardTokenTwoClicksCardOnSuccess() throws Exception {
+        MockRetrofit mockRetrofit = MockMidtransRetrofit.getMidtransRetrofit();
+        midtransApi = mockRetrofit.create(MidtransApi.class);
+        MidtransApi api = midtransApi.returningResponse(new CardTokenResponse(null, "bni", "200", "token", "url"));
+        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard("saved_token", "cardcvv", true, 10000);
+        midtransApiManager = new MidtransApiManager(api);
+        midtransApiManager.getCardToken(cardTokenRequest, new MidtransCoreCallback<CardTokenResponse>() {
+            @Override
+            public void onSuccess(CardTokenResponse object) {
+                Assert.assertEquals("200", object.statusCode);
+                Assert.assertEquals("token", object.tokenId);
+                Assert.assertEquals("bni", object.bank);
+            }
+
+            @Override
+            public void onFailure(CardTokenResponse object) {
+                // Do nothing
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                // Do nothing
+            }
+        });
+    }
 }
