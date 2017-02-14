@@ -30,7 +30,7 @@ public class MockMidtransRetrofit {
 
     private static Retrofit provideMerchantRetrofit() {
         return new Retrofit.Builder()
-                .baseUrl("https://api.midtrans.com/")
+                .baseUrl("https://api.midtrans.com/v2/")
                 .addConverterFactory(GsonConverterFactory.create(Utilities.buildGson()))
                 .client(new OkHttpClient())
                 .build();
