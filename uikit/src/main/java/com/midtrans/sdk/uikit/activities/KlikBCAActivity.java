@@ -17,8 +17,8 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.KlikBCAFragment;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
+import com.midtrans.sdk.uikit.fragments.KlikBCAFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -168,7 +168,6 @@ public class KlikBCAActivity extends BaseActivity {
                                                         transactionResponse) {
 
         currentFragment = STATUS_FRAGMENT;
-        mButtonConfirmPayment.setText(R.string.done);
 
         Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
@@ -198,12 +197,6 @@ public class KlikBCAActivity extends BaseActivity {
         }
 
         return false;
-    }
-
-    public void activateRetry() {
-        if (mButtonConfirmPayment != null) {
-            mButtonConfirmPayment.setText(getResources().getString(R.string.retry));
-        }
     }
 
     @Override

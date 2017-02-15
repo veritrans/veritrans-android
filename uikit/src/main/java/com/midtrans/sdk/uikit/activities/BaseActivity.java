@@ -14,7 +14,7 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
+import com.midtrans.sdk.uikit.fragments.KlikBCAStatusFragment;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -83,9 +83,9 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void initPaymentStatus(TransactionResponse transactionResponse, String errorMessage, int paymentMethod, boolean addToBackStack) {
         if (MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus()) {
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponse, paymentMethod);
-            replaceFragment(paymentTransactionStatusFragment, R.id.main_layout, addToBackStack, false);
+            KlikBCAStatusFragment klikBCAStatusFragment =
+                    KlikBCAStatusFragment.newInstance(transactionResponse);
+            getSupportFragmentManager().beginTransaction().replace(R.id.instruction_container, klikBCAStatusFragment).commit();
         } else {
             setResultCode(RESULT_OK);
             setResultAndFinish(transactionResponse, errorMessage);
