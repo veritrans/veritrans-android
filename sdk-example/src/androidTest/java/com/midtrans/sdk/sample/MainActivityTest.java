@@ -173,10 +173,6 @@ public class MainActivityTest {
         // Check for virtual account
         onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(""))));
         onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(R.string.virtual_account_number))));
-        onView(withId(R.id.btn_confirm_payment)).perform(click());
-
-        // Check transaction status
-        onView(withId(R.id.text_title_payment_status)).check(matches(withText(R.string.payment_pending)));
     }
 
     @Test
@@ -200,10 +196,6 @@ public class MainActivityTest {
         onView(withId(R.id.text_company_code)).check(matches(not(withText(R.string.virtual_account_number))));
         onView(withId(R.id.text_bill_pay_code)).check(matches(not(withText(""))));
         onView(withId(R.id.text_bill_pay_code)).check(matches(not(withText(R.string.virtual_account_number))));
-        onView(withId(R.id.btn_confirm_payment)).perform(click());
-
-        // Check transaction status
-        onView(withId(R.id.text_title_payment_status)).check(matches(withText(R.string.payment_pending)));
     }
 
     @Test
@@ -225,10 +217,6 @@ public class MainActivityTest {
         // Check for virtual account
         onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(""))));
         onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(R.string.virtual_account_number))));
-        onView(withId(R.id.btn_confirm_payment)).perform(click());
-
-        // Check transaction status
-        onView(withId(R.id.text_title_payment_status)).check(matches(withText(R.string.payment_pending)));
     }
 
     @Test
@@ -250,9 +238,5 @@ public class MainActivityTest {
         // Check for virtual account
         onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(""))));
         onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(R.string.virtual_account_number))));
-        onView(withId(R.id.btn_confirm_payment)).perform(click());
-
-        // Check transaction status
-        onView(withId(R.id.text_title_payment_status)).check(matches(withText(R.string.payment_pending)));
     }
 }
