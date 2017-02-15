@@ -12,13 +12,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
-import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.KlikBCAFragment;
+import com.midtrans.sdk.uikit.fragments.KlikBCAStatusFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -174,7 +174,9 @@ public class KlikBCAActivity extends BaseActivity {
         buttonBack.setIconResource(closeIcon);
         mButtonConfirmPayment.setText(R.string.complete_payment_at_klik_bca);
 
-        initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_KLIKBCA, false);
+        KlikBCAStatusFragment klikBCAStatusFragment =
+                KlikBCAStatusFragment.newInstance(transactionResponse);
+        getSupportFragmentManager().beginTransaction().replace(R.id.instruction_container, klikBCAStatusFragment).commit();
     }
 
     @Override

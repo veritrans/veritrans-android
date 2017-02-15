@@ -611,7 +611,7 @@
     <string name="other_bank_transfer">Other Bank</string>
     <string name="copy">Copy</string>
     <string name="valid_until">Valid until</string>
-    <string name="klik_bca_complete_payment">Complete payment at www.klikbca.com before: ![CDATA[<b>%1$s</b>]]</string>
+    <string name="klik_bca_complete_payment">Complete payment at www.klikbca.com before</string>
     <string name="valid_date">10 September 2015, 16:00</string>
     <string name="mandir_bill_instruction">how can i pay with mandiri bill payment ?</string>
     <string name="thank_you">Thank you!</string>

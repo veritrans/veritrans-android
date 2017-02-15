@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ public class KlikBCAStatusFragment extends Fragment {
     private static final String RESPONSE = "response";
     TextView expire;
     FancyButton seeInstruction;
-    TransactionResponse transactionResponse;
 
     public static KlikBCAStatusFragment newInstance(TransactionResponse transactionResponse) {
         KlikBCAStatusFragment klikBCAStatusFragment = new KlikBCAStatusFragment();
@@ -52,7 +50,7 @@ public class KlikBCAStatusFragment extends Fragment {
     private void initExpire() {
         TransactionResponse transactionResponse = (TransactionResponse) getArguments().getSerializable(RESPONSE);
         if (transactionResponse != null) {
-            expire.setText(Html.fromHtml(getString(R.string.klik_bca_complete_payment, transactionResponse.getBcaKlikBcaExpiration())));
+            expire.setText(transactionResponse.getBcaKlikBcaExpiration());
         }
     }
 
