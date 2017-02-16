@@ -248,6 +248,9 @@ public class AddCardDetailsFragment extends Fragment {
                 etCardNo.getBackground().setColorFilter(midtransSDK.getColorTheme().getSecondaryColor(), PorterDuff.Mode.SRC_ATOP);
                 etCvv.getBackground().setColorFilter(midtransSDK.getColorTheme().getSecondaryColor(), PorterDuff.Mode.SRC_ATOP);
                 etExpiryDate.getBackground().setColorFilter(midtransSDK.getColorTheme().getSecondaryColor(), PorterDuff.Mode.SRC_ATOP);
+                etCardNo.setHintTextColor(midtransSDK.getColorTheme().getSecondaryColor());
+                etCvv.setHintTextColor(midtransSDK.getColorTheme().getSecondaryColor());
+                etExpiryDate.setHintTextColor(midtransSDK.getColorTheme().getSecondaryColor());
             }
 
             if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
