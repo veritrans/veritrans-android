@@ -1,18 +1,19 @@
-package com.midtrans.sdk.uikit.themes;
+package com.midtrans.sdk.corekit.core.themes;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
-import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.corekit.R;
 
 /**
  * Created by rakawm on 2/16/17.
  */
 
-public class ColorTheme implements SnapColorTheme {
+public class ColorTheme implements BaseColorTheme {
     public final static String NAVY_BLUE = "navyblue";
     public final static String GRAY = "gray";
     public final static String AQUAMARINE = "aquamarine";
+    public final static String INDIGO = "indigo";
     public final static String AZURE = "azure";
     public final static String LAVENDER = "lavender";
     public final static String HOT_PINK = "hotpink";
@@ -29,14 +30,16 @@ public class ColorTheme implements SnapColorTheme {
     public final static String TEAL = "teal";
 
     private final Context context;
+    private final String colorTheme;
 
-    public ColorTheme(Context context) {
+    public ColorTheme(Context context, String colorTheme) {
         this.context = context;
+        this.colorTheme = colorTheme;
     }
 
     @Override
-    public int getPrimaryColor(String themeName) {
-        switch (themeName) {
+    public int getPrimaryColor() {
+        switch (colorTheme) {
             case NAVY_BLUE:
                 return ContextCompat.getColor(context, R.color.navy_blue_primary);
             case GRAY:
@@ -71,14 +74,16 @@ public class ColorTheme implements SnapColorTheme {
                 return ContextCompat.getColor(context, R.color.minty_primary);
             case TEAL:
                 return ContextCompat.getColor(context, R.color.teal_primary);
+            case INDIGO:
+                return ContextCompat.getColor(context, R.color.indigo_primary);
             default:
                 return 0;
         }
     }
 
     @Override
-    public int getPrimaryDarkColor(String themeName) {
-        switch (themeName) {
+    public int getPrimaryDarkColor() {
+        switch (colorTheme) {
             case NAVY_BLUE:
                 return ContextCompat.getColor(context, R.color.navy_blue_primary_dark);
             case GRAY:
@@ -113,14 +118,16 @@ public class ColorTheme implements SnapColorTheme {
                 return ContextCompat.getColor(context, R.color.minty_primary_dark);
             case TEAL:
                 return ContextCompat.getColor(context, R.color.teal_primary_dark);
+            case INDIGO:
+                return ContextCompat.getColor(context, R.color.indigo_primary_dark);
             default:
                 return 0;
         }
     }
 
     @Override
-    public int getSecondaryColor(String themeName) {
-        switch (themeName) {
+    public int getSecondaryColor() {
+        switch (colorTheme) {
             case NAVY_BLUE:
                 return ContextCompat.getColor(context, R.color.navy_blue_secondary);
             case GRAY:
@@ -155,6 +162,8 @@ public class ColorTheme implements SnapColorTheme {
                 return ContextCompat.getColor(context, R.color.minty_secondary);
             case TEAL:
                 return ContextCompat.getColor(context, R.color.teal_secondary);
+            case INDIGO:
+                return ContextCompat.getColor(context, R.color.indigo_secondary);
             default:
                 return 0;
         }
