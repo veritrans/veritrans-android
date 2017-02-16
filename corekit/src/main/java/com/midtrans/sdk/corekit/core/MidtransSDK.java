@@ -89,6 +89,10 @@ public class MidtransSDK {
         this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
         this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.UIKitCustomSetting;
         this.flow = sdkBuilder.flow;
+        // Set custom color theme. This will be prioritized over Snap preferences.
+        if (sdkBuilder.colorTheme != null) {
+            this.colorTheme = sdkBuilder.colorTheme;
+        }
 
         this.promoEngineManager = new PromoEngineManager(sdkBuilder.context, MidtransRestAdapter.getPromoEngineRestAPI(BuildConfig.PROMO_ENGINE_URL, requestTimeOut));
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),

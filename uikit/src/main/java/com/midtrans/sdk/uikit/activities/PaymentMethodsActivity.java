@@ -27,6 +27,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
+import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
@@ -288,8 +289,17 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     midtransSDK.setPromoResponses(transaction.getPromos());
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
-                    midtransSDK.setColorTheme(new ColorTheme(PaymentMethodsActivity.this, transaction.getMerchantData().getPreference().getColorScheme()));
+                    // Prioritize custom color themes over Snap preferences
+                    if (midtransSDK.getColorTheme() == null
+                            || !(midtransSDK.getColorTheme() instanceof CustomColorTheme)) {
+                        midtransSDK.setColorTheme(
+                                new ColorTheme(
+                                        PaymentMethodsActivity.this,
+                                        transaction.getMerchantData().getPreference().getColorScheme()));
+                    }
+                    // Set color themes on item details
                     itemDetailsView.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
+
                     midtransSDK.getmMixpanelAnalyticsManager().setDeviceType(SdkUIFlowUtil.getDeviceType(PaymentMethodsActivity.this));
                     showLogo(logoUrl);
                     if (TextUtils.isEmpty(logoUrl)) {

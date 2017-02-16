@@ -2,6 +2,8 @@ package com.midtrans.sdk.corekit.core.themes;
 
 import android.graphics.Color;
 
+import com.midtrans.sdk.corekit.core.Logger;
+
 /**
  * Created by rakawm on 2/16/17.
  */
@@ -19,28 +21,43 @@ public class CustomColorTheme implements BaseColorTheme {
 
     @Override
     public int getPrimaryColor() {
-        if (colorPrimaryHex.startsWith("#")) {
-            return Color.parseColor(colorPrimaryHex.replace("#", ""));
-        }
+        try {
+            if (!colorPrimaryHex.startsWith("#")) {
+                return Color.parseColor("#" + colorPrimaryHex.toLowerCase());
+            }
 
-        return Color.parseColor(colorPrimaryHex);
+            return Color.parseColor(colorPrimaryHex.toLowerCase());
+        } catch (Exception exception) {
+            Logger.e("Color cannot be parsed. Reverted back to default grey color.");
+            return Color.parseColor("#999999");
+        }
     }
 
     @Override
     public int getPrimaryDarkColor() {
-        if (colorPrimaryDarkHex.startsWith("#")) {
-            return Color.parseColor(colorPrimaryDarkHex.replace("#", ""));
-        }
+        try {
+            if (!colorPrimaryDarkHex.startsWith("#")) {
+                return Color.parseColor("#" + colorPrimaryDarkHex.toLowerCase());
+            }
 
-        return Color.parseColor(colorPrimaryDarkHex);
+            return Color.parseColor(colorPrimaryDarkHex.toLowerCase());
+        } catch (Exception exception) {
+            Logger.e("Color cannot be parsed. Reverted back to default grey color.");
+            return Color.parseColor("#737373");
+        }
     }
 
     @Override
     public int getSecondaryColor() {
-        if (colorSecondaryHex.startsWith("#")) {
-            return Color.parseColor(colorSecondaryHex.replace("#", ""));
-        }
+        try {
+            if (!colorSecondaryHex.startsWith("#")) {
+                return Color.parseColor("#" + colorSecondaryHex.toLowerCase());
+            }
 
-        return Color.parseColor(colorSecondaryHex);
+            return Color.parseColor(colorSecondaryHex.toLowerCase());
+        } catch (Exception exception) {
+            Logger.e("Color cannot be parsed. Reverted back to default grey color.");
+            return Color.parseColor("#adadad");
+        }
     }
 }
