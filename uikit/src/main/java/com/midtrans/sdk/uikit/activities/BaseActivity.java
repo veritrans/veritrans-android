@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Logger;
@@ -15,6 +17,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -40,6 +43,42 @@ public class BaseActivity extends AppCompatActivity {
                             .load(mMidtransSDK.getMerchantLogo())
                             .into(logo);
                 }
+            }
+
+            updateColorTheme(mMidtransSDK);
+        }
+    }
+
+    public void updateColorTheme(MidtransSDK mMidtransSDK) {
+        if (mMidtransSDK.getColorTheme() != null && mMidtransSDK.getColorTheme().getPrimaryColor() != 0) {
+            // Set button confirm color
+            FancyButton confirmPayButton = (FancyButton) findViewById(R.id.btn_confirm_payment);
+            if (confirmPayButton != null) {
+                confirmPayButton.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
+            }
+
+            // Set button pay now color
+            FancyButton payNowButton = (FancyButton) findViewById(R.id.btn_pay_now);
+            if (payNowButton != null) {
+                payNowButton.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
+            }
+
+            // Set amount panel background
+            RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.layout_total_amount);
+            if (relativeLayout != null) {
+                relativeLayout.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
+            }
+
+            // Set tab indicator color if available
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
+            if (tabLayout != null) {
+                tabLayout.setSelectedTabIndicatorColor(mMidtransSDK.getColorTheme().getPrimaryColor());
+            }
+
+            // Set indicator color
+            View indicator = findViewById(R.id.title_underscore);
+            if (indicator != null) {
+                indicator.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
             }
         }
     }

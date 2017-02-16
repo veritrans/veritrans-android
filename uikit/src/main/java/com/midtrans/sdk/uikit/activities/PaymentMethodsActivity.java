@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -27,6 +26,7 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
@@ -41,8 +41,8 @@ import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
-import com.midtrans.sdk.uikit.models.ItemViewDetails;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
+import com.midtrans.sdk.uikit.models.ItemViewDetails;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.squareup.picasso.Picasso;
@@ -288,6 +288,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     midtransSDK.setPromoResponses(transaction.getPromos());
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
+                    midtransSDK.setColorTheme(new ColorTheme(PaymentMethodsActivity.this, transaction.getMerchantData().getPreference().getColorScheme()));
+                    itemDetailsView.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
                     midtransSDK.getmMixpanelAnalyticsManager().setDeviceType(SdkUIFlowUtil.getDeviceType(PaymentMethodsActivity.this));
                     showLogo(logoUrl);
                     if (TextUtils.isEmpty(logoUrl)) {

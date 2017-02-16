@@ -74,6 +74,7 @@
                     android:textSize="@dimen/tool_bar_title_size" />
 
                 <View
+                    android:id="@+id/title_underscore"
                     android:layout_width="50dp"
                     android:layout_height="5dp"
                     android:layout_alignParentBottom="true"
@@ -91,8 +92,8 @@
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
-        android:id="@+id/container_collapsing"
+    <RelativeLayout
+        android:id="@+id/layout_total_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/main_toolbar"
@@ -129,20 +130,20 @@
                 android:textSize="@dimen/header_text_size"
                 android:textStyle="bold" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <RelativeLayout
         android:id="@+id/card_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/container_collapsing" />
+        android:layout_below="@id/layout_total_amount" />
 
     <RelativeLayout
         android:id="@+id/processing_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/container_collapsing"
+        android:layout_below="@id/layout_total_amount"
         android:background="@android:color/white"
         android:visibility="gone">
 
