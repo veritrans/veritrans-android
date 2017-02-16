@@ -525,7 +525,7 @@
     <string name="instruction_atm_bersama2">Choose Transfer.</string>
     <string name="instruction_atm_bersama3">Choose Online Transfer.</string>
     <string name="instruction_atm_bersama4">Enter 013 and 16 digit Account No.</string>
-    <string name="instruction_atm_bersama5">Enter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+    <string name="instruction_atm_bersama5">Enter the full amount to be paid and press Correct.</string>
     <string name="instruction_atm_bersama6">Empty the transfer reference number and press Correct.</string>
     <string name="instruction_atm_bersama7">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
 
@@ -611,6 +611,7 @@
     <string name="other_bank_transfer">Other Bank</string>
     <string name="copy">Copy</string>
     <string name="valid_until">Valid until</string>
+    <string name="klik_bca_complete_payment">Complete payment at www.klikbca.com before</string>
     <string name="valid_date">10 September 2015, 16:00</string>
     <string name="mandir_bill_instruction">how can i pay with mandiri bill payment ?</string>
     <string name="thank_you">Thank you!</string>
@@ -674,4 +675,5 @@
     <string name="promo_dialog_title">Congratulations</string>
     <string name="promo_dialog_message">With this card, you will get Rp. %1$s discount from %2$s.</string>
     <string name="error_obtain_promo">Failed to obtain promo.</string>
+    <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.\n\nTransaction will be cancelled if payment is not completed within 2 hours.</string>
 </resources>
