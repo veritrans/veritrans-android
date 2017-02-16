@@ -36,23 +36,21 @@ public class InstructionTelkomselCashFragment extends Fragment {
         telkomselTokenTextInputLayout = (TextInputLayout) view.findViewById(R.id.telkomsel_token_til);
 
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK != null) {
-            if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
-                if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
-                    // Set color filter in edit text
-                    try {
-                        Field fDefaultTextColor = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
-                        fDefaultTextColor.setAccessible(true);
-                        fDefaultTextColor.set(telkomselTokenTextInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
+                // Set color filter in edit text
+                try {
+                    Field fDefaultTextColor = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                    fDefaultTextColor.setAccessible(true);
+                    fDefaultTextColor.set(telkomselTokenTextInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
 
-                        Field fFocusedTextColor = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
-                        fFocusedTextColor.setAccessible(true);
-                        fFocusedTextColor.set(telkomselTokenTextInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+                    Field fFocusedTextColor = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                    fFocusedTextColor.setAccessible(true);
+                    fFocusedTextColor.set(telkomselTokenTextInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
 
-                        telkomselTokenEditText.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    telkomselTokenEditText.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

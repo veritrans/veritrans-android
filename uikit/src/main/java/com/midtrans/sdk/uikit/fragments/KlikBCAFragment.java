@@ -53,7 +53,7 @@ public class KlikBCAFragment extends Fragment {
         });
 
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK != null) {
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
             if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
                 // Set color filter in edit text
                 try {

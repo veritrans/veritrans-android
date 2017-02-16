@@ -78,7 +78,7 @@ public class MandiriClickPayFragment extends Fragment {
         textInput3.setText(String.valueOf(SdkUIFlowUtil.generateRandomNumber()));
 
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK != null) {
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
             if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
                 // Set color filter in edit text
                 try {
