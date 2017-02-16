@@ -1,18 +1,22 @@
 package com.midtrans.sdk.uikit.fragments;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.KlikBCAInstructionActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
+import java.lang.reflect.Field;
 
 /**
  * Klik BCA payment fragment. Shows user ID text field and payment instructions.
@@ -21,7 +25,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  */
 public class KlikBCAFragment extends Fragment {
 
-    private EditText userIdEditText;
+    private AppCompatEditText userIdEditText;
     private TextInputLayout userIdContainer;
     private FancyButton buttonInstruction;
 
@@ -35,7 +39,7 @@ public class KlikBCAFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Initialize view
-        userIdEditText = (EditText) view.findViewById(R.id.user_id_et);
+        userIdEditText = (AppCompatEditText) view.findViewById(R.id.user_id_et);
         userIdContainer = (TextInputLayout) view.findViewById(R.id.user_id_container);
         buttonInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
         buttonInstruction.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +51,32 @@ public class KlikBCAFragment extends Fragment {
                 }
             }
         });
+
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null) {
+            if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
+                // Set color filter in edit text
+                try {
+                    Field fDefaultTextColor = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                    fDefaultTextColor.setAccessible(true);
+                    fDefaultTextColor.set(userIdContainer, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                    Field fFocusedTextColor = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                    fFocusedTextColor.setAccessible(true);
+                    fFocusedTextColor.set(userIdContainer, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                    userIdEditText.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                buttonInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                buttonInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
+        }
     }
 
     /**
