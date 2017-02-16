@@ -5,12 +5,14 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
@@ -74,7 +76,7 @@ public class AddCardDetailsFragment extends Fragment {
     private EditText etCvv;
     private EditText etExpiryDate;
     private SwitchCompat switchSaveCard;
-    private Button buttonIncrease, buttonDecrease;
+    private FancyButton buttonIncrease, buttonDecrease;
     private ImageView logo;
     private ImageView bankLogo;
     private ImageView imageCvvHelp;
@@ -94,6 +96,7 @@ public class AddCardDetailsFragment extends Fragment {
     private SaveCardRequest savedCard;
     private PromoResponse promo;
     private String discountToken;
+    private TextView installmentText;
 
     public static AddCardDetailsFragment newInstance(SaveCardRequest card, PromoResponse promo) {
         AddCardDetailsFragment fragment = new AddCardDetailsFragment();
@@ -232,11 +235,35 @@ public class AddCardDetailsFragment extends Fragment {
         bankLogo = (ImageView) view.findViewById(R.id.bank_logo);
         layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installment);
         layoutSaveCard = (LinearLayout) view.findViewById(R.id.layout_save_card_detail);
-        buttonIncrease = (Button) view.findViewById(R.id.button_installment_increase);
-        buttonDecrease = (Button) view.findViewById(R.id.button_installment_decrease);
+        buttonIncrease = (FancyButton) view.findViewById(R.id.button_installment_increase);
+        buttonDecrease = (FancyButton) view.findViewById(R.id.button_installment_decrease);
         textInstallmentTerm = (TextView) view.findViewById(R.id.text_installment_term);
         textInvalidPromoStatus = (DefaultTextView) view.findViewById(R.id.text_offer_status_not_applied);
         promoLogoBtn = (AspectRatioImageView) view.findViewById(R.id.promo_logo);
+        installmentText = (TextView) view.findViewById(R.id.installment_title);
+
+        // Set color theme for field
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
+                etCardNo.getBackground().setColorFilter(midtransSDK.getColorTheme().getSecondaryColor(), PorterDuff.Mode.SRC_ATOP);
+                etCvv.getBackground().setColorFilter(midtransSDK.getColorTheme().getSecondaryColor(), PorterDuff.Mode.SRC_ATOP);
+                etExpiryDate.getBackground().setColorFilter(midtransSDK.getColorTheme().getSecondaryColor(), PorterDuff.Mode.SRC_ATOP);
+            }
+
+            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                installmentText.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                buttonIncrease.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                buttonIncrease.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                buttonDecrease.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                buttonDecrease.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
+
+            if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
+                textInstallmentTerm.setBackgroundColor(midtransSDK.getColorTheme().getSecondaryColor());
+                textInstallmentTerm.getBackground().setAlpha(50);
+            }
+        }
+
 
         buttonIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,8 +316,16 @@ public class AddCardDetailsFragment extends Fragment {
 
         if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
             payNowBtn.setCustomTextFont(midtransSDK.getSemiBoldText());
+            // Set background for pay now button
+            if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryColor() != 0) {
+                payNowBtn.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
+            }
             scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getDefaultText()));
             if (midtransSDK.getExternalScanner() != null) {
+                // Set background color for scan button
+                if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                    scanCardBtn.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                }
                 scanCardBtn.setVisibility(View.VISIBLE);
                 scanCardBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -302,6 +337,7 @@ public class AddCardDetailsFragment extends Fragment {
             } else {
                 scanCardBtn.setVisibility(View.GONE);
             }
+
             if (midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
                 showSwitchSaveCardLayout(false);
             } else {
@@ -372,7 +408,7 @@ public class AddCardDetailsFragment extends Fragment {
         imageCvvHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MidtransDialog midtransDialog = new MidtransDialog(getActivity(), getResources().getDrawable(R.drawable.cvv_dialog_image),
+                MidtransDialog midtransDialog = new MidtransDialog(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.cvv_dialog_image),
                         getString(R.string.message_cvv), getString(R.string.got_it), "");
                 midtransDialog.show();
             }
