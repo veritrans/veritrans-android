@@ -39,7 +39,7 @@
                 android:paddingRight="@dimen/sixteen_dp"
                 android:paddingTop="@dimen/eight_dp"
                 android:text="@string/download_instruction"
-                android:textColor="?colorPrimary"
+                android:textColor="@color/gray.primary"
                 android:visibility="visible" />
         </RelativeLayout>
 
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 app:tabGravity="fill"
-                app:tabIndicatorColor="?colorPrimary"
+                app:tabIndicatorColor="@color/gray.primary"
                 app:tabIndicatorHeight="3dp"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/dark_gray"

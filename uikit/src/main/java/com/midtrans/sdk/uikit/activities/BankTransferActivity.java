@@ -2,7 +2,6 @@ package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,7 +56,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     public String currentFragment = "home";
 
     private TextView mTextViewAmount = null;
-    private Button mButtonConfirmPayment = null;
+    private FancyButton mButtonConfirmPayment = null;
     private TextView mTextViewTitle = null;
     private MidtransSDK mMidtransSDK = null;
     private Toolbar mToolbar = null;
@@ -170,7 +168,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
         mTextViewAmount = (TextView) findViewById(R.id.text_amount);
         mTextViewTitle = (TextView) findViewById(R.id.text_title);
-        mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
+        mButtonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
         mButtonBack = (FancyButton) findViewById(R.id.btn_back);
@@ -197,7 +195,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
             mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
             if (mMidtransSDK.getSemiBoldText() != null) {
-                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
+                mButtonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
             }
             mButtonConfirmPayment.setOnClickListener(this);
 
@@ -259,7 +257,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             return;
         }
         currentFragment = STATUS_FRAGMENT;
-        mButtonConfirmPayment.setText(R.string.done);
+        mButtonConfirmPayment.setText(getString(R.string.done));
 
         Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
         closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
@@ -308,7 +306,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             if (merchantLogo != null) {
                 merchantLogo.setVisibility(View.INVISIBLE);
             }
-            mButtonConfirmPayment.setText(R.string.complete_payment_at_atm);
+            mButtonConfirmPayment.setText(getString(R.string.complete_payment_at_atm));
 
         } else {
             SdkUIFlowUtil.showToast(BankTransferActivity.this, SOMETHING_WENT_WRONG);

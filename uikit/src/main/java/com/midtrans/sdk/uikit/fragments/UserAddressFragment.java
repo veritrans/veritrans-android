@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
@@ -13,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -30,6 +28,7 @@ import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
 import com.midtrans.sdk.uikit.adapters.ListCountryAdapter;
 import com.midtrans.sdk.uikit.models.CountryCodeModel;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public class UserAddressFragment extends Fragment {
     private EditText etShippingCity;
     private EditText etShippingZipcode;
     private AutoCompleteTextView etShippingCountry;
-    private Button btnNext;
+    private FancyButton btnNext;
     private ListCountryAdapter billingCountryAdapter;
     private ListCountryAdapter shippingCountryAdapter;
     private ArrayList<CountryCodeModel> countryCodeList = new ArrayList<>();
@@ -132,11 +131,11 @@ public class UserAddressFragment extends Fragment {
         etShippingCity = (EditText) view.findViewById(R.id.et_shipping_city);
         etShippingZipcode = (EditText) view.findViewById(R.id.et_shipping_zipcode);
         etShippingCountry = (AutoCompleteTextView) view.findViewById(R.id.et_shipping_country);
-        btnNext = (Button) view.findViewById(R.id.btn_next);
+        btnNext = (FancyButton) view.findViewById(R.id.btn_next);
 
 
         if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
-            btnNext.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
+            btnNext.setCustomTextFont(midtransSDK.getSemiBoldText());
         }
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override

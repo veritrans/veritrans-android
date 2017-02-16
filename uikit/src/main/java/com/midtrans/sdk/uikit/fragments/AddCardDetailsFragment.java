@@ -48,6 +48,7 @@ import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.MidtransDialog;
 
 import java.text.SimpleDateFormat;
@@ -67,6 +68,7 @@ public class AddCardDetailsFragment extends Fragment {
     TextInputLayout tilCardNo, tilCvv, tilExpiry;
     TextView textInstallmentTerm;
     int installmentCurrentPosition, installmentTotalPositions;
+    FancyButton payNowBtn;
     private String lastExpDate = "";
     private EditText etCardNo;
     private EditText etCvv;
@@ -77,7 +79,6 @@ public class AddCardDetailsFragment extends Fragment {
     private ImageView bankLogo;
     private ImageView imageCvvHelp;
     private AspectRatioImageView promoLogoBtn;
-    private Button payNowBtn;
     private Button scanCardBtn;
     private String cardNumber;
     private String cvv;
@@ -225,7 +226,7 @@ public class AddCardDetailsFragment extends Fragment {
         switchSaveCard = (SwitchCompat) view.findViewById(R.id.cb_store_card);
         initCheckbox();
         imageCvvHelp = (ImageView) view.findViewById(R.id.image_cvv_help);
-        payNowBtn = (Button) view.findViewById(R.id.btn_pay_now);
+        payNowBtn = (FancyButton) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
         logo = (ImageView) view.findViewById(R.id.payment_card_logo);
         bankLogo = (ImageView) view.findViewById(R.id.bank_logo);
@@ -287,7 +288,7 @@ public class AddCardDetailsFragment extends Fragment {
         });
 
         if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
-            payNowBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
+            payNowBtn.setCustomTextFont(midtransSDK.getSemiBoldText());
             scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getDefaultText()));
             if (midtransSDK.getExternalScanner() != null) {
                 scanCardBtn.setVisibility(View.VISIBLE);

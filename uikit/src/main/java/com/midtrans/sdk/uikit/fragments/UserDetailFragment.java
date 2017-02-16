@@ -1,13 +1,11 @@
 package com.midtrans.sdk.uikit.fragments;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
@@ -17,6 +15,7 @@ import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -26,7 +25,7 @@ public class UserDetailFragment extends Fragment {
     private EditText fullnameEt;
     private EditText phoneEt;
     private EditText emailEt;
-    private Button nextBtn;
+    private FancyButton nextBtn;
 
     public UserDetailFragment() {
 
@@ -58,9 +57,9 @@ public class UserDetailFragment extends Fragment {
         fullnameEt = (EditText) view.findViewById(R.id.et_full_name);
         phoneEt = (EditText) view.findViewById(R.id.et_phone);
         emailEt = (EditText) view.findViewById(R.id.et_email);
-        nextBtn = (Button) view.findViewById(R.id.btn_next);
+        nextBtn = (FancyButton) view.findViewById(R.id.btn_next);
         if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
-            nextBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
+            nextBtn.setCustomTextFont(midtransSDK.getSemiBoldText());
         }
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -13,9 +13,9 @@
             android:background="@color/white">
 
             <LinearLayout
-                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -29,18 +29,18 @@
 
                 <com.midtrans.sdk.uikit.widgets.FancyButton
                     android:id="@+id/btn_back"
-                    app:fb_defaultColor="@android:color/transparent"
-                    app:fb_focusColor="@color/colorAccentLight"
-                    app:fb_iconResource="@drawable/ic_back"
-                    app:fb_iconPaddingLeft="0dp"
-                    app:fb_iconPaddingRight="0dp"
-                    android:padding="@dimen/four_dp"
-                    app:fb_radius="64dp"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:layout_marginRight="@dimen/four_dp"
                     android:alpha="0.5"
-                    android:visibility="visible" />
+                    android:padding="@dimen/four_dp"
+                    android:visibility="visible"
+                    app:fb_defaultColor="@android:color/transparent"
+                    app:fb_focusColor="@color/colorAccentLight"
+                    app:fb_iconPaddingLeft="0dp"
+                    app:fb_iconPaddingRight="0dp"
+                    app:fb_iconResource="@drawable/ic_back"
+                    app:fb_radius="64dp" />
 
                 <ImageView
                     android:id="@+id/merchant_logo"
@@ -72,25 +72,25 @@
                         android:layout_height="5dp"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:background="?attr/colorPrimary" />
+                        android:background="@color/gray.primary" />
                 </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/image_saved_card_delete"
-                    android:visibility="invisible"
-                    android:layout_marginRight="@dimen/sixteen_dp"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_delete_black" />
+                    android:layout_marginRight="@dimen/sixteen_dp"
+                    android:src="@drawable/ic_delete_black"
+                    android:visibility="invisible" />
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:layout_marginTop="10dp"
+        android:background="@color/gray.primary"
         android:orientation="vertical"
         android:paddingBottom="@dimen/sixteen_dp"
         android:paddingLeft="@dimen/sixteen_dp"

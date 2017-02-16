@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -227,24 +228,14 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <RelativeLayout
-        android:id="@+id/layout_next"
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/btn_next"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/sixtyfour_dp"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/addressScrollView"
-        android:background="@color/colorAccentLight"
-        android:paddingBottom="@dimen/eight_dp"
-        android:paddingTop="@dimen/eight_dp">
-
-        <Button
-            android:id="@+id/btn_next"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/btn_height"
-            android:layout_alignParentBottom="true"
-            android:text="@string/next"
-            android:textColor="@android:color/white" />
-
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:fb_defaultColor="@color/gray.primary"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_iconPaddingLeft="0dp"
+        app:fb_text="@string/next"
+        app:fb_textGravity="center_horizontal" />
 </LinearLayout>
