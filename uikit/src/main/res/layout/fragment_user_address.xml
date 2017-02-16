@@ -37,7 +37,7 @@
                     android:background="@android:color/white"
                     android:padding="@dimen/sixteen_dp">
 
-                    <TextView
+                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
                         android:id="@+id/text_billing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -54,14 +54,13 @@
                         android:layout_below="@id/text_billing">
 
 
-                        <EditText
+                        <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/et_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_address"
                             android:maxLength="300"
-                            android:singleLine="true"
-                            android:textColorHint="@color/colorAccent" />
+                            android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -70,14 +69,13 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/address_til">
 
-                        <EditText
+                        <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/et_city"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_city"
                             android:maxLength="100"
-                            android:singleLine="true"
-                            android:textColorHint="@color/colorAccent" />
+                            android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -86,15 +84,14 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/city_til">
 
-                        <EditText
+                        <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/et_zipcode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_zip_code"
                             android:inputType="number"
                             android:maxLength="5"
-                            android:singleLine="true"
-                            android:textColorHint="@color/colorAccent" />
+                            android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -103,15 +100,14 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/zip_til">
 
-                        <AutoCompleteTextView
+                        <android.support.v7.widget.AppCompatAutoCompleteTextView
                             android:id="@+id/et_country"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_country"
                             android:imeOptions="actionDone"
                             android:maxLength="100"
-                            android:singleLine="true"
-                            android:textColorHint="@color/colorAccent" />
+                            android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
@@ -162,14 +158,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <EditText
+                            <android.support.v7.widget.AppCompatEditText
                                 android:id="@+id/et_shipping_address"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_address"
                                 android:maxLength="300"
-                                android:singleLine="true"
-                                android:textColorHint="@color/colorAccent" />
+                                android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
 
                         <android.support.design.widget.TextInputLayout
@@ -178,14 +173,13 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/shipping_address_til">
 
-                            <EditText
+                            <android.support.v7.widget.AppCompatEditText
                                 android:id="@+id/et_shipping_city"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_city"
                                 android:maxLength="100"
-                                android:singleLine="true"
-                                android:textColorHint="@color/colorAccent" />
+                                android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
 
                         <android.support.design.widget.TextInputLayout
@@ -194,15 +188,14 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/shipping_city_til">
 
-                            <EditText
+                            <android.support.v7.widget.AppCompatEditText
                                 android:id="@+id/et_shipping_zipcode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_zip_code"
                                 android:inputType="number"
                                 android:maxLength="15"
-                                android:singleLine="true"
-                                android:textColorHint="@color/colorAccent" />
+                                android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
 
                         <android.support.design.widget.TextInputLayout
@@ -211,15 +204,14 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/shipping_zip_til">
 
-                            <AutoCompleteTextView
+                            <android.support.v7.widget.AppCompatAutoCompleteTextView
                                 android:id="@+id/et_shipping_country"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_country"
                                 android:imeOptions="actionDone"
                                 android:maxLength="100"
-                                android:singleLine="true"
-                                android:textColorHint="@color/colorAccent" />
+                                android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
                     </RelativeLayout>
                 </RelativeLayout>
