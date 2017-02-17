@@ -137,4 +137,9 @@
     <string name="save_card_true">Save</string>
     <string name="save_card_false">Not Saved</string>
     <string name="pre_auth">Pre Auth Feature</string>
+    <string name="color_theme">Color Theme</string>
+    <string name="brown">Brown</string>
+    <string name="blue_grey">Blue Grey</string>
+    <string name="orange">Orange</string>
+    <string name="not_set">Not Set</string>
 </resources>
