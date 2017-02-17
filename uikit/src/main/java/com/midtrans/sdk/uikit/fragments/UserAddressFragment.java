@@ -5,9 +5,11 @@ import com.google.gson.reflect.TypeToken;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.SwitchCompat;
@@ -250,6 +252,25 @@ public class UserAddressFragment extends Fragment {
                         etShippingCountry.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
                     } catch (Exception e) {
                         e.printStackTrace();
+                    }
+
+                    if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                        int[][] states = new int[][]{
+                                new int[]{-android.R.attr.state_checked},
+                                new int[]{android.R.attr.state_checked},
+                        };
+
+                        int[] thumbColors = new int[]{
+                                Color.WHITE,
+                                midtransSDK.getColorTheme().getSecondaryColor(),
+                        };
+
+                        int[] trackColors = new int[]{
+                                Color.GRAY,
+                                midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                        };
+                        DrawableCompat.setTintList(DrawableCompat.wrap(cbShippingAddress.getThumbDrawable()), new ColorStateList(states, thumbColors));
+                        DrawableCompat.setTintList(DrawableCompat.wrap(cbShippingAddress.getTrackDrawable()), new ColorStateList(states, trackColors));
                     }
                 }
 
