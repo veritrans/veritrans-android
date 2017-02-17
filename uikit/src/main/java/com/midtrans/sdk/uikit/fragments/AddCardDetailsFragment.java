@@ -271,12 +271,12 @@ public class AddCardDetailsFragment extends Fragment {
 
                     int[] thumbColors = new int[]{
                             Color.WHITE,
-                            midtransSDK.getColorTheme().getSecondaryColor(),
+                            midtransSDK.getColorTheme().getPrimaryDarkColor(),
                     };
 
                     int[] trackColors = new int[]{
                             Color.GRAY,
-                            midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                            midtransSDK.getColorTheme().getSecondaryColor(),
                     };
                     DrawableCompat.setTintList(DrawableCompat.wrap(switchSaveCard.getThumbDrawable()), new ColorStateList(states, thumbColors));
                     DrawableCompat.setTintList(DrawableCompat.wrap(switchSaveCard.getTrackDrawable()), new ColorStateList(states, trackColors));
