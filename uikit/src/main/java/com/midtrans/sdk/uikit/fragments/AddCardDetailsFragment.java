@@ -5,6 +5,8 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -13,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
@@ -259,6 +262,25 @@ public class AddCardDetailsFragment extends Fragment {
                 buttonIncrease.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 buttonDecrease.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 buttonDecrease.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+
+                if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                    int[][] states = new int[][]{
+                            new int[]{-android.R.attr.state_checked},
+                            new int[]{android.R.attr.state_checked},
+                    };
+
+                    int[] thumbColors = new int[]{
+                            Color.WHITE,
+                            midtransSDK.getColorTheme().getSecondaryColor(),
+                    };
+
+                    int[] trackColors = new int[]{
+                            Color.GRAY,
+                            midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                    };
+                    DrawableCompat.setTintList(DrawableCompat.wrap(switchSaveCard.getThumbDrawable()), new ColorStateList(states, thumbColors));
+                    DrawableCompat.setTintList(DrawableCompat.wrap(switchSaveCard.getTrackDrawable()), new ColorStateList(states, trackColors));
+                }
             }
 
             if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
