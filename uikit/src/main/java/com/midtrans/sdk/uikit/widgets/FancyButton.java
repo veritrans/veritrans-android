@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -263,6 +264,10 @@ public class FancyButton extends LinearLayout {
             return iconView;
         }
         return null;
+    }
+
+    public void setIconColorFilter(int colorFilter) {
+        mIconView.setColorFilter(colorFilter, PorterDuff.Mode.SRC_ATOP);
     }
 
     /**
