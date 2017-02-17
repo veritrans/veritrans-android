@@ -137,7 +137,7 @@ public class AddCardDetailsFragment extends Fragment {
                     etCvv.setText(SdkUIFlowUtil.getMaskedCardCvv());
                     etCvv.setEnabled(false);
 
-                    ((CreditDebitCardFlowActivity)getActivity()).setInstallmentAvailableStatus(false);
+                    ((CreditDebitCardFlowActivity) getActivity()).setInstallmentAvailableStatus(false);
                 } else {
                     initCardInstallment();
                 }
@@ -174,7 +174,7 @@ public class AddCardDetailsFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        ((CreditDebitCardFlowActivity)getActivity()).showDeleteCardIcon(false);
+        ((CreditDebitCardFlowActivity) getActivity()).showDeleteCardIcon(false);
         super.onDestroyView();
     }
 
