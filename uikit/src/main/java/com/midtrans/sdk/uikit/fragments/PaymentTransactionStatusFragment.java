@@ -150,6 +150,19 @@ public class PaymentTransactionStatusFragment extends Fragment {
         layoutMain = (FrameLayout) view.findViewById(R.id.layout_transaction_status);
         buttonInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
 
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
+                // Set background for action button
+                actionBt.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
+            }
+
+            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                // Set instruction color
+                buttonInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                buttonInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
+        }
     }
 
     private void setPaymentStatusValues() {
