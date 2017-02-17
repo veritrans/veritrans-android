@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="@string/btn_cancel"
-                android:textColor="?colorAccent"
+                android:textColor="@color/gray.primary_dark"
                 android:textSize="@dimen/secondary_text_size" />
 
             <Button
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="@string/btn_accept"
-                android:textColor="?colorAccent"
+                android:textColor="@color/gray.primary_dark"
                 android:textSize="@dimen/secondary_text_size" />
         </LinearLayout>
 

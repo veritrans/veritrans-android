@@ -9,17 +9,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/fortytwo_dp"
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp"
-        android:paddingTop="@dimen/sixteen_dp"
-        android:paddingBottom="@dimen/fortytwo_dp"
-        android:orientation="vertical">
+        android:paddingTop="@dimen/sixteen_dp">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_debit_card_no"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/et_debit_card_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -32,18 +33,19 @@
 
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_challenge_token"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp">
 
-            <EditText
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/et_challenge_token"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_challenge_token"
                 android:inputType="number"
                 android:maxLength="6"
-                android:singleLine="true" />
+                android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout

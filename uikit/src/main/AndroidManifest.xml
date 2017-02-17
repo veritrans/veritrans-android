@@ -1,9 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.midtrans.sdk.uikit">
 
-    <application
-        android:allowBackup="true"
-        android:theme="@style/VeritransAppTheme">
+    <application>
         <activity
             android:name="com.midtrans.sdk.uikit.activities.UserDetailsActivity"
             android:screenOrientation="portrait"

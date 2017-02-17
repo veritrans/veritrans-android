@@ -4,16 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <com.midtrans.sdk.uikit.widgets.FancyButton
         android:id="@+id/btn_pay_now"
-        style="@style/Widget.AppCompat.Button"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/fifty_six_dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/pay_now"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:visibility="visible" />
+        android:textColor="@color/white"
+        app:fb_defaultColor="@color/gray.primary"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_iconPaddingLeft="0dp"
+        app:fb_text="@string/pay_now"
+        app:fb_textGravity="center_horizontal" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -257,43 +258,58 @@
                 android:visibility="gone"
                 tools:visibility="visible">
 
-                <TextView
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/installment_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/pay_with_instalments"
-                    android:textColor="?attr/colorPrimary" />
+                    android:textColor="@color/gray.primary_dark" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/four_dp">
 
-                    <Button
+                    <com.midtrans.sdk.uikit.widgets.FancyButton
                         android:id="@+id/button_installment_decrease"
                         android:layout_width="@dimen/forty_dp"
                         android:layout_height="@dimen/forty_dp"
-                        android:background="@drawable/style_button_dec"
-                        android:textSize="30sp" />
+                        app:fb_borderColor="@color/gray.primary"
+                        app:fb_borderWidth="1dp"
+                        app:fb_defaultColor="@android:color/white"
+                        app:fb_focusColor="@color/colorAccentLight"
+                        app:fb_iconColor="@color/gray.primary"
+                        app:fb_radius="5dp"
+                        app:fb_text="-"
+                        app:fb_textColor="@color/gray.primary"
+                        app:fb_textSize="14sp" />
 
                     <TextView
-
                         android:id="@+id/text_installment_term"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/eight_dp"
                         android:layout_marginRight="@dimen/eight_dp"
                         android:layout_weight="1"
-                        android:background="@color/colorSecondary_min"
+                        android:background="@color/gray.secondary"
                         android:gravity="center"
                         android:text="@string/installment_term"
                         android:textStyle="bold" />
 
-                    <Button
+                    <com.midtrans.sdk.uikit.widgets.FancyButton
                         android:id="@+id/button_installment_increase"
                         android:layout_width="@dimen/forty_dp"
                         android:layout_height="@dimen/forty_dp"
-                        android:background="@drawable/style_button_inc"
-                        android:textSize="30sp" />
+                        app:fb_borderColor="@color/gray.primary"
+                        app:fb_borderWidth="1dp"
+                        app:fb_defaultColor="@android:color/white"
+                        app:fb_focusColor="@color/colorAccentLight"
+                        app:fb_iconColor="@color/gray.primary"
+                        app:fb_radius="5dp"
+                        app:fb_text="+"
+                        app:fb_textColor="@color/gray.primary"
+                        app:fb_textGravity="center_vertical"
+                        app:fb_textSize="14sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -339,7 +355,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/expiry_date_layout"
                 android:text="@string/btn_scan_card"
-                android:textColor="?colorPrimary"
+                android:textColor="@color/gray.primary_dark"
                 android:visibility="gone"
                 tools:visibility="visible" />
 

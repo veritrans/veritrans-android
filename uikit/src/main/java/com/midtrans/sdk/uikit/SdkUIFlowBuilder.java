@@ -6,6 +6,7 @@ import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.BaseSdkBuilder;
 import com.midtrans.sdk.corekit.core.IScanner;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
+import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 
 import java.util.ArrayList;
@@ -73,6 +74,11 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
 
     public SdkUIFlowBuilder setUIkitCustomSetting(UIKitCustomSetting setting) {
         this.UIKitCustomSetting = setting;
+        return this;
+    }
+
+    public SdkUIFlowBuilder setColorTheme(CustomColorTheme customColorTheme) {
+        this.colorTheme = customColorTheme;
         return this;
     }
 }

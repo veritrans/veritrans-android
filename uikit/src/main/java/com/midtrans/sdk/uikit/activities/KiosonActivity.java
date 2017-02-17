@@ -2,15 +2,14 @@ package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,7 +38,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
     public String currentFragment = "home";
 
     private TextView textViewAmount = null;
-    private Button buttonConfirmPayment = null;
+    private FancyButton buttonConfirmPayment = null;
     private TextView textViewTitle = null;
     private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
@@ -116,7 +115,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
     private void initializeView() {
         textViewAmount = (TextView) findViewById(R.id.text_amount);
         textViewTitle = (TextView) findViewById(R.id.text_title);
-        buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
+        buttonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         buttonBack = (FancyButton) findViewById(R.id.btn_back);
 
@@ -132,7 +131,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
             textViewAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
             if (midtransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), midtransSDK.getSemiBoldText()));
+                buttonConfirmPayment.setCustomTextFont(midtransSDK.getSemiBoldText());
             }
             buttonConfirmPayment.setOnClickListener(this);
             buttonBack.setOnClickListener(this);
@@ -165,10 +164,10 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
         }
 
         currentFragment = STATUS_FRAGMENT;
-        buttonConfirmPayment.setText(R.string.done);
+        buttonConfirmPayment.setText(getString(R.string.done));
 
-        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
-        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        Drawable closeIcon = ContextCompat.getDrawable(this, R.drawable.ic_close);
+        closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         buttonBack.setIconResource(closeIcon);
 
         initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_KIOSON, false);

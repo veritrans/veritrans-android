@@ -274,6 +274,48 @@
                     android:text="@string/txt_inactive" />
             </RadioGroup>
 
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:text="@string/color_theme"
+                android:visibility="visible" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radio_color_not_set"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/not_set" />
+
+                <RadioButton
+                    android:id="@+id/radio_color_brown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/brown" />
+
+                <RadioButton
+                    android:id="@+id/radio_color_blue_grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/blue_grey" />
+
+                <RadioButton
+                    android:id="@+id/radio_color_orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/orange" />
+            </RadioGroup>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"

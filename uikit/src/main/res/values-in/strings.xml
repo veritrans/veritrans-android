@@ -111,6 +111,7 @@
     <string name="copied_bill_code">Kode tagihan sudah disalin ke clipboard</string>
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>
     <string name="complete_payment_at_atm">Selesaikan Pembayaran di ATM</string>
+    <string name="complete_payment">Selesaikan Pembayaran</string>
     <string name="complete_payment_at_klik_bca">Selesaikan Pembayaran di KlikBCA</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>

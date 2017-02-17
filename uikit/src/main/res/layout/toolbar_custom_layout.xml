@@ -69,12 +69,13 @@
             tools:text="Mandiri Clickpay" />
 
         <View
+            android:id="@+id/title_underscore"
             android:layout_width="45dp"
             android:layout_height="5dp"
             android:layout_below="@+id/text_title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/four_dp"
-            android:background="?attr/colorPrimary" />
+            android:background="@color/gray.primary" />
     </RelativeLayout>
 
     <ImageView

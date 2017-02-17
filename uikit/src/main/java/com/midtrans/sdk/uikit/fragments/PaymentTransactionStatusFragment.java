@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,7 +61,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private boolean isSuccessful;
 
     // views
-    private Button actionBt = null;
+    private FancyButton actionBt = null;
     private ImageView paymentIv = null;
     private TextView paymentStatusTv = null;
     private TextView paymentMessageTv = null;
@@ -133,7 +132,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
         orderIdTextView = (TextView) view.findViewById(R.id.text_order_id);
         transactionTimeTextView = (TextView) view.findViewById(R.id.text_status_transaction_time);
         paymentTypeTextView = (TextView) view.findViewById(R.id.text_payment_type);
-        actionBt = (Button) view.findViewById(R.id.btn_action);
+        actionBt = (FancyButton) view.findViewById(R.id.btn_action);
+        actionBt.setCustomTextFont(MidtransSDK.getInstance().getSemiBoldText());
         paymentIv = (ImageView) view.findViewById(R.id.image_payment);
         paymentStatusTv = (TextView) view.findViewById(R.id.text_payment_status);
         paymentMessageTv = (TextView) view.findViewById(R.id.text_payment_message);
@@ -150,6 +150,19 @@ public class PaymentTransactionStatusFragment extends Fragment {
         layoutMain = (FrameLayout) view.findViewById(R.id.layout_transaction_status);
         buttonInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
 
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
+                // Set background for action button
+                actionBt.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
+            }
+
+            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                // Set instruction color
+                buttonInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                buttonInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
+        }
     }
 
     private void setPaymentStatusValues() {

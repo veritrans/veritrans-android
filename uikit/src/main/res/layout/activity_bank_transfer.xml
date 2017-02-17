@@ -49,16 +49,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
+        <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/btn_confirm_payment"
-            style="@style/Widget.AppCompat.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:drawableEnd="@drawable/ic_arrow_right_white"
-            android:drawableRight="@drawable/ic_arrow_right_white"
-            android:text="@string/btn_show_account_number"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            app:fb_defaultColor="@color/gray.primary"
+            app:fb_focusColor="@color/colorAccentLight"
+            app:fb_iconPaddingLeft="0dp"
+            app:fb_text="@string/btn_show_account_number"
+            app:fb_textGravity="center_horizontal" />
     </RelativeLayout>
 
 </RelativeLayout>
