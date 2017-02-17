@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Veritrans Android</string>
+    <string name="btn_get_token">Get Token now</string>
+    <string name="btn_checkout">Checkout</string>
+    <string name="btn_pay_now_cc">Pay now with CC</string>
+    <string name="btn_pay_now_bca_va">Pay now with BCA VA</string>
+    <string name="btn_pay_now_mandiri_bill">Pay now with Mandiri Bill</string>
+    <string name="btn_pay_now_permata_va">Pay now with Permata VA</string>
+    <string name="btn_pay_now_other_va">Pay now with Other VA</string>
+    <string name="btn_pay_now_bca_klikpay">Pay now with BCA KlikPay</string>
+    <string name="btn_pay_now_klikbca">Pay now with KlikBCA</string>
+    <string name="btn_pay_now_epay_bri">Pay now with e-Pay BRI</string>
+    <string name="btn_pay_now_cimb_clicks">Pay now with CIMB Clicks</string>
+    <string name="btn_pay_now_mandiri_clickpay">Pay now with Mandiri Clickpay</string>
+    <string name="btn_pay_now_mandiri_ecash">Pay now with Mandiri E-Cash</string>
+    <string name="btn_pay_now_telkomsel_cash">Pay now with Telkomsel Cash</string>
+    <string name="btn_pay_now_indosat_dompetku">Pay now with Indosat Dompetku</string>
+    <string name="btn_pay_now_xl_tunai">Pay now with XL Tunai</string>
+    <string name="btn_pay_now_indomaret">Pay now with Indomaret</string>
+    <string name="btn_pay_now_kioson">Pay now with Kioson</string>
+    <string name="btn_pay_now_gift_card">Pay now with Gift Card</string>
+    <string name="hint_klikbca">KlikBCA User ID</string>
+    <string name="hint_card_token">Card Token</string>
+    <string name="hint_checkout_token">Checkout Token</string>
+    <string name="hint_card_number">Card Number</string>
+    <string name="hint_card_pin">Pin</string>
+    <string name="hint_card_cvv">Card CVV</string>
+    <string name="hint_card_expiry_month">Card Expiry Month</string>
+    <string name="hint_card_expiry_year">Card Expiry Year</string>
+    <string name="hint_mandiri_clickpay_token_response">Token Response</string>
+    <string name="hint_telkomsel_cash_token">Telkomsel Cash Token</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="txt_loading">Loading</string>
+</resources>
