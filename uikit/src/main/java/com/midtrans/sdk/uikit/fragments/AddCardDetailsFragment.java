@@ -14,10 +14,8 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -29,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -54,7 +53,6 @@ import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-import com.midtrans.sdk.uikit.widgets.MidtransDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,12 +76,13 @@ public class AddCardDetailsFragment extends Fragment {
     private EditText etCardNo;
     private EditText etCvv;
     private EditText etExpiryDate;
-    private SwitchCompat switchSaveCard;
+    private AppCompatCheckBox cbSaveCard;
     private FancyButton buttonIncrease, buttonDecrease;
     private ImageView logo;
     private ImageView bankLogo;
-    private ImageView imageCvvHelp;
+    private ImageButton imageCvvHelp;
     private AspectRatioImageView promoLogoBtn;
+    private ImageButton imageSaveCardHelp;
     private Button scanCardBtn;
     private String cardNumber;
     private String cvv;
@@ -94,7 +93,8 @@ public class AddCardDetailsFragment extends Fragment {
     private MidtransSDK midtransSDK;
     private String cardType = "";
     private RelativeLayout formLayout;
-    private LinearLayout layoutInstallment, layoutSaveCard;
+    private LinearLayout layoutInstallment;
+    private RelativeLayout layoutSaveCard;
     private DefaultTextView textInvalidPromoStatus;
     private SaveCardRequest savedCard;
     private PromoResponse promo;
@@ -229,21 +229,22 @@ public class AddCardDetailsFragment extends Fragment {
         etCardNo = (EditText) view.findViewById(R.id.et_card_no);
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
-        switchSaveCard = (SwitchCompat) view.findViewById(R.id.cb_store_card);
+        cbSaveCard = (AppCompatCheckBox) view.findViewById(R.id.cb_store_card);
         initCheckbox();
-        imageCvvHelp = (ImageView) view.findViewById(R.id.image_cvv_help);
+        imageCvvHelp = (ImageButton) view.findViewById(R.id.image_cvv_help);
         payNowBtn = (FancyButton) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
         logo = (ImageView) view.findViewById(R.id.payment_card_logo);
         bankLogo = (ImageView) view.findViewById(R.id.bank_logo);
         layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installment);
-        layoutSaveCard = (LinearLayout) view.findViewById(R.id.layout_save_card_detail);
+        layoutSaveCard = (RelativeLayout) view.findViewById(R.id.layout_save_card_detail);
         buttonIncrease = (FancyButton) view.findViewById(R.id.button_installment_increase);
         buttonDecrease = (FancyButton) view.findViewById(R.id.button_installment_decrease);
         textInstallmentTerm = (TextView) view.findViewById(R.id.text_installment_term);
         textInvalidPromoStatus = (DefaultTextView) view.findViewById(R.id.text_offer_status_not_applied);
         promoLogoBtn = (AspectRatioImageView) view.findViewById(R.id.promo_logo);
         installmentText = (TextView) view.findViewById(R.id.installment_title);
+        imageSaveCardHelp = (ImageButton) view.findViewById(R.id.help_save_card);
 
         // Set color theme for field
         if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
@@ -262,30 +263,24 @@ public class AddCardDetailsFragment extends Fragment {
                 buttonIncrease.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 buttonDecrease.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 buttonDecrease.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-
-                if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-                    int[][] states = new int[][]{
-                            new int[]{-android.R.attr.state_checked},
-                            new int[]{android.R.attr.state_checked},
-                    };
-
-                    int[] thumbColors = new int[]{
-                            Color.WHITE,
-                            midtransSDK.getColorTheme().getPrimaryDarkColor(),
-                    };
-
-                    int[] trackColors = new int[]{
-                            Color.GRAY,
-                            midtransSDK.getColorTheme().getSecondaryColor(),
-                    };
-                    DrawableCompat.setTintList(DrawableCompat.wrap(switchSaveCard.getThumbDrawable()), new ColorStateList(states, thumbColors));
-                    DrawableCompat.setTintList(DrawableCompat.wrap(switchSaveCard.getTrackDrawable()), new ColorStateList(states, trackColors));
-                }
+                imageSaveCardHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
+                imageCvvHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
             }
 
             if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
                 textInstallmentTerm.setBackgroundColor(midtransSDK.getColorTheme().getSecondaryColor());
                 textInstallmentTerm.getBackground().setAlpha(50);
+
+                int[][] states = new int[][]{
+                        new int[]{-android.R.attr.state_checked},
+                        new int[]{android.R.attr.state_checked},
+                };
+
+                int[] trackColors = new int[]{
+                        Color.GRAY,
+                        midtransSDK.getColorTheme().getSecondaryColor(),
+                };
+                cbSaveCard.setSupportButtonTintList(new ColorStateList(states, trackColors));
             }
         }
 
@@ -304,12 +299,32 @@ public class AddCardDetailsFragment extends Fragment {
             }
         });
 
-        switchSaveCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        cbSaveCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 checkCardValidity();
             }
         });
+
+        imageSaveCardHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Show help dialog
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.save_card_message)
+                        .setMessage(R.string.save_card_dialog)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+                changeDialogButtonColor(alertDialog);
+            }
+        });
+
         etCardNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasfocus) {
@@ -406,7 +421,7 @@ public class AddCardDetailsFragment extends Fragment {
                         CardTokenRequest cardTokenRequest = new CardTokenRequest(cardNumber, cvv,
                                 month, year,
                                 midtransSDK.getClientKey());
-                        cardTokenRequest.setIsSaved(switchSaveCard.isChecked());
+                        cardTokenRequest.setIsSaved(cbSaveCard.isChecked());
                         cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
                         cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
                         cardTokenRequest.setCardType(cardType);
@@ -415,7 +430,7 @@ public class AddCardDetailsFragment extends Fragment {
                         //make payment
                         SdkUIFlowUtil.showProgressDialog(getActivity(), false);
                         setPaymentInstallment();
-                        ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(switchSaveCard.isChecked(), cardType);
+                        ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(cbSaveCard.isChecked(), cardType);
                         if (promo != null && promo.getDiscountAmount() > 0) {
                             // Calculate discount amount
                             double preDiscountAmount = midtransSDK.getTransactionRequest().getAmount();
@@ -433,9 +448,18 @@ public class AddCardDetailsFragment extends Fragment {
         imageCvvHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MidtransDialog midtransDialog = new MidtransDialog(getActivity(), ContextCompat.getDrawable(getActivity(), R.drawable.cvv_dialog_image),
-                        getString(R.string.message_cvv), getString(R.string.got_it), "");
-                midtransDialog.show();
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.what_is_cvv)
+                        .setView(R.layout.dialog_cvv)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+                changeDialogButtonColor(alertDialog);
             }
         });
 
@@ -602,7 +626,7 @@ public class AddCardDetailsFragment extends Fragment {
     private void initCheckbox() {
         UIKitCustomSetting uiKitCustomSetting = MidtransSDK.getInstance().getUIKitCustomSetting();
         if (uiKitCustomSetting.isSaveCardChecked()) {
-            switchSaveCard.setChecked(true);
+            cbSaveCard.setChecked(true);
         }
     }
 
@@ -1042,6 +1066,7 @@ public class AddCardDetailsFragment extends Fragment {
                                     })
                                     .create();
                             alertDialog.show();
+                            changeDialogButtonColor(alertDialog);
                         }
                     });
                 }
@@ -1069,5 +1094,15 @@ public class AddCardDetailsFragment extends Fragment {
                 });
             }
         });
+    }
+
+    private void changeDialogButtonColor(AlertDialog alertDialog) {
+        if (alertDialog.isShowing()
+                && midtransSDK != null
+                && midtransSDK.getColorTheme() != null
+                && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+        }
     }
 }

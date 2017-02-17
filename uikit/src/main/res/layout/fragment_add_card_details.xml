@@ -201,50 +201,52 @@
                             android:maxLength="6"
                             android:maxLines="1" />
 
-                        <ImageView
+                        <ImageButton
                             android:id="@+id/image_cvv_help"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/ic_cvvinfo"
-                            android:text="@string/what_is_cvv"
-                            android:textColor="?colorAccent" />
+                            android:background="?selectableItemBackground"
+                            android:src="@drawable/ic_hints" />
                     </RelativeLayout>
 
                 </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layout_save_card_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/scan_card"
-                android:layout_marginTop="@dimen/eight_dp"
-                android:gravity="right"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/eight_dp">
 
-                <android.support.v7.widget.SwitchCompat
+                <android.support.v7.widget.AppCompatCheckBox
                     android:id="@+id/cb_store_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/four_dp"
+                    android:layout_marginEnd="@dimen/eight_dp"
+                    android:layout_marginRight="@dimen/eight_dp"
                     android:layout_marginTop="@dimen/four_dp"
-                    android:text="@string/save_card_message" />
+                    android:layout_toLeftOf="@+id/help_save_card"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/save_card_message"
+                    app:buttonTint="@color/gray.primary_dark" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/two_dp"
-                    android:background="@color/gray_divider" />
-
-                <TextView
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/help_save_card"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/save_card_info" />
-            </LinearLayout>
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_hints" />
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/layout_installment"
