@@ -218,6 +218,7 @@ public class AddCardDetailsFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        ((CreditDebitCardFlowActivity) getActivity()).showDeleteCardIcon(false);
         super.onDestroyView();
     }
 

@@ -143,6 +143,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
             @Override
             public void onClick(View v) {
                 showNewCardFragment(null, null);
+                ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
             }
         });
 
