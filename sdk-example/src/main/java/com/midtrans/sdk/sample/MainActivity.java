@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -34,8 +36,6 @@ import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback {
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             promoActive, promoInactive,
             preAuthActive, preAuthInactive,
             notSetColor, brown, blueGrey, orange;
+    private EditText customField1, customField2, customField3;
     private Toolbar toolbar;
 
     @Override
@@ -233,14 +234,24 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             transactionRequestNew.setExpiry(expiryModel);
         }
 
-        Map<String, String> customObject = new HashMap<>();
-        customObject.put("session_key", "70m0noforhz7s2xfaoryo2yz02hrwhxz");
-
-        transactionRequestNew.setCustomObject(customObject);
-
         if (promoActive.isChecked()) {
             // Set promo
             transactionRequestNew.setPromoEnabled(true);
+        }
+
+        // Set custom field 1
+        if (!TextUtils.isEmpty(customField1.getText().toString())) {
+            transactionRequestNew.setCustomField1(customField1.getText().toString());
+        }
+
+        // Set custom field 2
+        if (!TextUtils.isEmpty(customField2.getText().toString())) {
+            transactionRequestNew.setCustomField2(customField2.getText().toString());
+        }
+
+        // Set custom field 3
+        if (!TextUtils.isEmpty(customField3.getText().toString())) {
+            transactionRequestNew.setCustomField3(customField3.getText().toString());
         }
 
         return transactionRequestNew;
@@ -256,6 +267,10 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
         dialog.setMessage("Loading");
+
+        customField1 = (EditText) findViewById(R.id.custom_field1);
+        customField2 = (EditText) findViewById(R.id.custom_field2);
+        customField3 = (EditText) findViewById(R.id.custom_field3);
 
         expiryNone = (RadioButton) findViewById(R.id.radio_none);
         expiryOneMinute = (RadioButton) findViewById(R.id.radio_1_minute);
