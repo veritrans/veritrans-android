@@ -24,6 +24,8 @@ allprojects {
     }
 }
 
+ext.powermockVersion = '1.6.5'
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
