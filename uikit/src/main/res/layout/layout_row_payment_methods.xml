@@ -45,8 +45,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:ellipsize="end"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:textColor="@color/black"
+                android:textSize="12sp"
                 tools:text="@string/payment_method_description_bank_transfer" />
         </LinearLayout>
 

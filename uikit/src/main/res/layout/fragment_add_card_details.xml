@@ -231,7 +231,6 @@
                     android:layout_marginEnd="@dimen/eight_dp"
                     android:layout_marginRight="@dimen/eight_dp"
                     android:layout_marginTop="@dimen/four_dp"
-                    android:layout_toLeftOf="@+id/help_save_card"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="@string/save_card_message"
