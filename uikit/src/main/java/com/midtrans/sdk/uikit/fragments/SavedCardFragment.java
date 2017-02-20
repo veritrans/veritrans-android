@@ -143,6 +143,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
             @Override
             public void onClick(View v) {
                 showNewCardFragment(null, null);
+                ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
             }
         });
 
@@ -158,7 +159,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
             if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
                 // set custom color for add card btn
                 addCardBt.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                addCardBt.setIconColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                addCardBt.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 addCardBt.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
             }
         }
