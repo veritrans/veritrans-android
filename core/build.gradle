@@ -7,6 +7,9 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.all {
+            jvmArgs '-noverify'
+        }
     }
 
     defaultConfig {
@@ -32,6 +35,10 @@ android {
     }
 }
 
+tasks.withType(Test) {
+    jvmArgs '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
+}
+
 dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -44,6 +51,11 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.retrofit2:retrofit-mock:2.1.0'
-
-
+    // Mockito
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile "org.powermock:powermock-core:${rootProject.powermockVersion}"
+    testCompile "org.powermock:powermock-module-junit4:${rootProject.powermockVersion}"
+    testCompile "org.powermock:powermock-api-mockito:${rootProject.powermockVersion}"
+    testCompile "org.powermock:powermock-module-javaagent:${rootProject.powermockVersion}"
+    testCompile "org.powermock:powermock-module-junit4-rule-agent:${rootProject.powermockVersion}"
 }
