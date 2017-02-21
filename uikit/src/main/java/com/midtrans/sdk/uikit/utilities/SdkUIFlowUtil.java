@@ -1,5 +1,8 @@
 package com.midtrans.sdk.uikit.utilities;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,14 +20,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
-import com.midtrans.sdk.corekit.models.BBMUrlEncodeJson;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
@@ -33,8 +32,6 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.models.PromoData;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -307,41 +304,6 @@ public class SdkUIFlowUtil {
 
         return isInstalled;
     }
-
-    /**
-     * it returns the encoded url in string format.
-     *
-     * @param permataVA Permata virtual account
-     * @return url in encoded format
-     */
-    public static String createEncodedUrl(String permataVA, String checkStatus, String
-            beforePaymentError, String userCancel) {
-
-        String encodedUrl = null;
-
-        if (permataVA != null && checkStatus != null && beforePaymentError != null && userCancel
-                != null) {
-
-            BBMCallBackUrl bbmCallBackUrl = new BBMCallBackUrl(checkStatus, beforePaymentError,
-                    userCancel);
-            BBMUrlEncodeJson bbmUrlEncodeJson = new BBMUrlEncodeJson();
-
-            bbmUrlEncodeJson.setReference(permataVA);
-
-            bbmUrlEncodeJson.setCallbackUrl(bbmCallBackUrl);
-            String jsonString = bbmUrlEncodeJson.getString();
-            Logger.i("JSON String: " + jsonString);
-
-            try {
-                encodedUrl = URLEncoder.encode(jsonString, "UTF-8");
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-        return encodedUrl;
-    }
-
 
     public static int fetchAccentColor(Context context) {
         TypedValue typedValue = new TypedValue();

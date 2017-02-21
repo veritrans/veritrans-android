@@ -138,6 +138,10 @@
     <string name="save_card_false">Not Saved</string>
     <string name="pre_auth">Pre Auth Feature</string>
     <string name="color_theme">Color Theme</string>
+    <string name="custom_field">Custom Field</string>
+    <string name="hint_custom_field1">Custom Field 1</string>
+    <string name="hint_custom_field2">Custom Field 2</string>
+    <string name="hint_custom_field3">Custom Field 3</string>
     <string name="brown">Brown</string>
     <string name="blue_grey">Blue Grey</string>
     <string name="orange">Orange</string>
