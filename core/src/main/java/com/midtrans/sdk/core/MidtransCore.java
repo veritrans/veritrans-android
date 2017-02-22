@@ -29,6 +29,7 @@ import com.midtrans.sdk.core.models.snap.ewallet.indosatdompetku.IndosatDompetku
 import com.midtrans.sdk.core.models.snap.ewallet.tcash.TelkomselCashPaymentResponse;
 import com.midtrans.sdk.core.models.snap.ewallet.xltunai.XlTunaiPaymentResponse;
 import com.midtrans.sdk.core.models.snap.gci.GiftCardPaymentResponse;
+import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
 import com.midtrans.sdk.core.utils.Logger;
 import com.midtrans.sdk.core.utils.PaymentUtilities;
 
@@ -104,6 +105,9 @@ public class MidtransCore {
         merchantApiManager.checkout(checkoutUrl, checkoutTokenRequest, callback);
     }
 
+    public void getTransactionDetails(String checkoutToken, MidtransCoreCallback<SnapTransaction> callback){
+        snapApiManager.getTransactionDetails(checkoutToken, callback);
+    }
     /**
      * Get card token from Midtrans Payment API.
      */

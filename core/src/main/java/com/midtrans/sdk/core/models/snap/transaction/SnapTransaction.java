@@ -18,7 +18,7 @@ public class SnapTransaction {
     public final SnapCallbacks callbacks;
     public final List<SnapEnabledPayment> enabledPayments;
     public final CreditCard creditCard;
-    public final SnapMerchantData merchantData;
+    public final SnapMerchantData merchant;
 
     public SnapTransaction(String token,
                            SnapTransactionDetails transactionDetails,
@@ -35,6 +35,6 @@ public class SnapTransaction {
         this.callbacks = callbacks;
         this.enabledPayments = enabledPayments;
         this.creditCard = creditCard;
-        this.merchantData = merchantData;
+        this.merchant = merchantData;
     }
 }

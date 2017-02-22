@@ -41,6 +41,9 @@ import com.midtrans.sdk.core.models.snap.ewallet.tcash.TelkomselCashPaymentRespo
 import com.midtrans.sdk.core.models.snap.ewallet.xltunai.XlTunaiPaymentResponse;
 import com.midtrans.sdk.core.models.snap.gci.GiftCardPaymentResponse;
 import com.midtrans.sdk.core.utils.Utilities;
+import com.midtrans.sdk.ui.MidtransUi;
+import com.midtrans.sdk.ui.SdkUiPaymentCallback;
+import com.midtrans.sdk.ui.models.PaymentResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             payNowBcaKlikPay, payNowKlikBca, payNowEpayBri, payNowCimbClicks,
             payNowMandiriEcash, payNowMandiriClickpay, payNowTelkomselCash,
             payNowIndosatDompetku, payNowXlTunai, payNowIndomaret,
-            payNowKioson, payNowGiftCard;
+            payNowKioson, payNowGiftCard, btnUiSdk;
     TextView cardToken, checkoutToken;
     ProgressDialog progressDialog;
 
@@ -98,12 +101,23 @@ public class MainActivity extends AppCompatActivity {
         payNowIndomaret = (Button) findViewById(R.id.btn_pay_now_indomaret);
         payNowKioson = (Button) findViewById(R.id.btn_pay_now_kioson);
         payNowGiftCard = (Button) findViewById(R.id.btn_pay_now_gift_card);
-
+        btnUiSdk = (Button)findViewById(R.id.btn_uisdk);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.txt_loading));
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
 
+        btnUiSdk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidtransUi.getInstance().runUiSdk(MainActivity.this, MyApp.CHECKOUT_URL, initialiseCheckoutTokenRequest(), new SdkUiPaymentCallback() {
+                    @Override
+                    public void onFinished(PaymentResult result) {
+
+                    }
+                });
+            }
+        });
         getToken.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.midtrans.sdk.core.Environment;
 import com.midtrans.sdk.core.MidtransCore;
+import com.midtrans.sdk.ui.MidtransUi;
 
 /**
  * Created by rakawm on 10/19/16.
@@ -20,10 +21,16 @@ public class MyApp extends Application {
     }
 
     private void initMidtransSDK() {
-        new MidtransCore.Builder()
+//        new MidtransCore.Builder()
+//                .enableLog(true)
+//                .setEnvironment(Environment.SANDBOX)
+//                .setClientKey(CLIENT_KEY)
+//                .build();
+
+        MidtransUi.builder()
+                .clientKey(CLIENT_KEY)
+                .environment(Environment.SANDBOX)
                 .enableLog(true)
-                .setEnvironment(Environment.SANDBOX)
-                .setClientKey(CLIENT_KEY)
                 .build();
     }
 }
