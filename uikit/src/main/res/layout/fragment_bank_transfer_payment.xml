@@ -74,20 +74,6 @@
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
 
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/text_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/sixteen_dp"
-            android:background="@color/faint_pink"
-            android:gravity="left"
-            android:padding="@dimen/sixteen_dp"
-            android:text="@string/bank_transfer_dummy_text"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size" />
-
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/btn_see_instruction"
             android:layout_width="wrap_content"
