@@ -19,10 +19,10 @@
                 android:background="@android:color/white">
 
                 <LinearLayout
-                    android:layout_marginRight="@dimen/sixtyfour_dp"
-                    android:layout_marginEnd="@dimen/sixtyfour_dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/sixtyfour_dp"
+                    android:layout_marginRight="@dimen/sixtyfour_dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -36,10 +36,10 @@
                         tools:text="Name" />
 
                     <ImageView
-                        android:layout_gravity="center"
                         android:id="@+id/merchant_logo"
                         android:layout_width="@dimen/logo_width"
                         android:layout_height="@dimen/logo_height"
+                        android:layout_gravity="center"
                         android:scaleType="centerInside"
                         tools:src="@drawable/ic_veritrans" />
 
@@ -52,7 +52,6 @@
                         android:ellipsize="end"
                         android:gravity="end"
                         android:maxLines="1"
-                        android:singleLine="true"
                         android:text="@string/select_payment_method"
                         android:textColor="@color/dark_gray"
                         android:textSize="@dimen/tool_bar_title_size"
@@ -82,7 +81,7 @@
                 android:id="@+id/rv_item_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?colorPrimary"
+                android:background="@color/gray.primary"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <android.support.v7.widget.RecyclerView

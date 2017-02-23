@@ -1,21 +1,26 @@
 package com.midtrans.sdk.uikit.fragments;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.R;
 
-public class InstructionIndosatFragment extends Fragment {
+import java.lang.reflect.Field;
 
-    private EditText mEditTextPhoneNumber = null;
+public class InstructionIndosatFragment extends Fragment {
+    private TextInputLayout mTextInputLayoutPhoneNumber = null;
+    private AppCompatEditText mEditTextPhoneNumber = null;
     private UserDetail userDetail;
 
     @Nullable
@@ -34,9 +39,30 @@ public class InstructionIndosatFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mEditTextPhoneNumber = (EditText) view.findViewById(R.id.et_indosat_phone_number);
+        mTextInputLayoutPhoneNumber = (TextInputLayout) view.findViewById(R.id.til_indosat_phone_number);
+        mEditTextPhoneNumber = (AppCompatEditText) view.findViewById(R.id.et_indosat_phone_number);
         if (!TextUtils.isEmpty(userDetail.getPhoneNumber())) {
             mEditTextPhoneNumber.setText(userDetail.getPhoneNumber());
+        }
+
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
+                // Set color filter in edit text
+                try {
+                    Field fDefaultTextColor = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                    fDefaultTextColor.setAccessible(true);
+                    fDefaultTextColor.set(mTextInputLayoutPhoneNumber, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                    Field fFocusedTextColor = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                    fFocusedTextColor.setAccessible(true);
+                    fFocusedTextColor.set(mTextInputLayoutPhoneNumber, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                    mEditTextPhoneNumber.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

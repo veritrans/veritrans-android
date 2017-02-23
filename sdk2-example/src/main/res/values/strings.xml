@@ -31,5 +31,4 @@
     <string name="hint_telkomsel_cash_token">Telkomsel Cash Token</string>
     <string name="hint_phone_number">Phone Number</string>
     <string name="txt_loading">Loading</string>
-    <string name="btn_uisdk">ui sdk</string>
 </resources>

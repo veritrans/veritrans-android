@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -18,14 +18,14 @@
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/sixteen_dp">
 
-            <EditText
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/user_id_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/klikbca_user_id_hint"
                 android:inputType="text"
                 android:maxLength="100"
-                android:singleLine="true" />
+                android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -48,7 +48,7 @@
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/five_dp">
 
-            <TextView
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="@dimen/twenty_four_dp"
                 android:layout_height="wrap_content"
                 android:text="@string/number_instruction1" />
@@ -69,7 +69,7 @@
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp">
 
-            <TextView
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="@dimen/twenty_four_dp"
                 android:layout_height="wrap_content"
                 android:text="@string/number_instruction2" />
@@ -93,7 +93,7 @@
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/five_dp">
 
-            <TextView
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="@dimen/twenty_four_dp"
                 android:layout_height="wrap_content"
                 android:text="@string/number_instruction3" />
@@ -109,11 +109,11 @@
 
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/btn_see_instruction"
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/credit_card_holder"
             android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="19dp"
             android:padding="@dimen/eight_dp"
             android:visibility="visible"

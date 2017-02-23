@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.midtrans.sdk.core.Environment;
 import com.midtrans.sdk.core.MidtransCore;
-import com.midtrans.sdk.ui.MidtransUi;
 
 /**
  * Created by rakawm on 10/19/16.

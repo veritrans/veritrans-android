@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/gray.primary"
     android:gravity="center_vertical"
     android:paddingLeft="@dimen/sixteen_dp"
-    android:paddingRight="@dimen/sixteen_dp"
-    android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimary" >
+    android:paddingRight="@dimen/sixteen_dp">
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
         android:layout_width="wrap_content"
@@ -16,10 +16,11 @@
         android:textStyle="bold" />
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
-        android:layout_alignParentRight="true"
         android:id="@+id/text_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:text="@string/text_amount_here"
         android:textColor="@color/white"
         android:textSize="@dimen/header_text_size"

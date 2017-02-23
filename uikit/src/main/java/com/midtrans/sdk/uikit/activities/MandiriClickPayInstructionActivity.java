@@ -3,6 +3,7 @@ package com.midtrans.sdk.uikit.activities;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -55,8 +56,8 @@ public class MandiriClickPayInstructionActivity extends BaseActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
         initializeTheme();
-        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
-        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        Drawable closeIcon = ContextCompat.getDrawable(this, R.drawable.ic_close);
+        closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         mToolbar.setNavigationIcon(closeIcon);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);

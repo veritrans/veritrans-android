@@ -16,11 +16,6 @@
         tools:context="com.midtrans.veritransandroid.MainActivity">
 
         <Button
-            android:id="@+id/btn_uisdk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_uisdk" />
-        <Button
             android:id="@+id/btn_checkout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

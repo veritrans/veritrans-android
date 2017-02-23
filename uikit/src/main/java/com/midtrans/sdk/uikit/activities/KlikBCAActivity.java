@@ -2,13 +2,12 @@ package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -34,7 +33,7 @@ public class KlikBCAActivity extends BaseActivity {
     private TransactionResponse transactionResponse;
     private String errorMessage;
     private TextView mTextViewAmount;
-    private Button mButtonConfirmPayment;
+    private FancyButton mButtonConfirmPayment;
     private TextView mTextViewTitle;
 
     private KlikBCAFragment klikBCAFragment;
@@ -53,7 +52,7 @@ public class KlikBCAActivity extends BaseActivity {
         // Initialize views
         mTextViewAmount = (TextView) findViewById(R.id.text_amount);
         mTextViewTitle = (TextView) findViewById(R.id.text_title);
-        mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
+        mButtonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         buttonBack = (FancyButton) findViewById(R.id.btn_back);
         initializeTheme();
@@ -71,7 +70,7 @@ public class KlikBCAActivity extends BaseActivity {
 
         // Set custom font if available
         if (mMidtransSDK.getSemiBoldText() != null) {
-            mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
+            mButtonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
         }
 
         // Initialize fragment
@@ -169,10 +168,10 @@ public class KlikBCAActivity extends BaseActivity {
 
         currentFragment = STATUS_FRAGMENT;
 
-        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
-        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        Drawable closeIcon = ContextCompat.getDrawable(this, R.drawable.ic_close);
+        closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         buttonBack.setIconResource(closeIcon);
-        mButtonConfirmPayment.setText(R.string.complete_payment_at_klik_bca);
+        mButtonConfirmPayment.setText(getString(R.string.complete_payment_at_klik_bca));
 
         KlikBCAStatusFragment klikBCAStatusFragment =
                 KlikBCAStatusFragment.newInstance(transactionResponse);

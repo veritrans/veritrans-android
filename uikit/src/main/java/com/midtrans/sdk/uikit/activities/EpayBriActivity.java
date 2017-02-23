@@ -2,14 +2,13 @@ package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -18,9 +17,9 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.InstructionEpayBriFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -30,7 +29,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     private static final int PAYMENT_WEB_INTENT = 150;
     private static final String STATUS_FRAGMENT = "status";
     private static final String HOME_FRAGMENT = "home";
-    private Button btConfirmPayment = null;
+    private FancyButton btConfirmPayment = null;
     private Toolbar toolbar = null;
     private MidtransSDK midtransSDK = null;
     private InstructionEpayBriFragment instructionEpayBriFragment;
@@ -62,7 +61,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initializeViews() {
-        btConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
+        btConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
@@ -80,7 +79,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         textTitle.setText(getString(R.string.epay_bri));
         if (midtransSDK != null) {
             if (midtransSDK.getSemiBoldText() != null) {
-                btConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), midtransSDK.getSemiBoldText()));
+                btConfirmPayment.setCustomTextFont(midtransSDK.getSemiBoldText());
             }
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
@@ -170,8 +169,8 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
-        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
-        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        Drawable closeIcon = ContextCompat.getDrawable(this, R.drawable.ic_close);
+        closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         if (resultCode == RESULT_OK) {
             currentFragmentName = STATUS_FRAGMENT;
             transactionResponseFromMerchant = transactionResponse;
