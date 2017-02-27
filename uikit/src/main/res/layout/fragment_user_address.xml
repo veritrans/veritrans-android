@@ -164,7 +164,6 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_address"
                                 android:inputType="textPostalAddress"
-                                android:maxLength="300"
                                 android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -180,7 +179,6 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_city"
                                 android:inputType="text"
-                                android:maxLength="100"
                                 android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -196,7 +194,6 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_zip_code"
                                 android:inputType="number"
-                                android:maxLength="15"
                                 android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -212,7 +209,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_country"
                                 android:imeOptions="actionDone"
-                                android:maxLength="100"
+                                android:inputType="text"
                                 android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
                     </RelativeLayout>

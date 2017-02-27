@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 
@@ -152,6 +153,18 @@ public class UserAddressFragment extends Fragment {
         etShippingZipCode = (AppCompatEditText) view.findViewById(R.id.et_shipping_zipcode);
         etShippingCountry = (AppCompatAutoCompleteTextView) view.findViewById(R.id.et_shipping_country);
         btnNext = (FancyButton) view.findViewById(R.id.btn_next);
+        etAddress.setSingleLine();
+        etAddress.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        etCity.setSingleLine();
+        etCity.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        etCountry.setSingleLine();
+        etCountry.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        etShippingAddress.setSingleLine();
+        etShippingAddress.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        etShippingCity.setSingleLine();
+        etShippingCity.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        etShippingCountry.setSingleLine();
+        etShippingCountry.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
 
         if (midtransSDK != null) {
