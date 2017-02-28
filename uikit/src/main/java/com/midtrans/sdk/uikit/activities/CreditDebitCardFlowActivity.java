@@ -56,7 +56,6 @@ import com.midtrans.sdk.uikit.scancard.ScannerModel;
 import com.midtrans.sdk.uikit.utilities.ReadBankDetailTask;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
-import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,7 +98,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private boolean removeExistCard = false;
     private String maskedCardNumber;
     private boolean isNewCard = true;
-    private FancyButton buttonback;
     private ImageView imageSavedCardDelete;
     private boolean fromSavedCard;
     private String discountToken;
@@ -119,11 +117,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-        buttonback = (FancyButton) findViewById(R.id.btn_back);
         imageSavedCardDelete = (ImageView) findViewById(R.id.image_saved_card_delete);
 
         initializeTheme();
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         calculateScreenWidth();
         if (midtransSDK != null) {
             creditCardTransaction.setProperties(midtransSDK.getCreditCard(), SdkUIFlowUtil.getBankBins(this));
@@ -137,12 +135,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             setTextTotalAmount(midtransSDK.getTransactionRequest().getAmount());
         }
 
-        buttonback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
         imageSavedCardDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -184,7 +176,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-                break;
+                return false;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -817,7 +809,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             }
 
             SavedCardFragment savedCardFragment = SavedCardFragment.newInstance();
-            //getSupportActionBar().setTitle(getString(R.string.saved_card));
             titleHeaderTextView.setText(getString(R.string.saved_card));
             replaceFragment(savedCardFragment, R.id.card_container, true, false);
 

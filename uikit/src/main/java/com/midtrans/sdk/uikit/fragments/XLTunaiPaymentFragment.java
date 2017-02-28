@@ -1,18 +1,20 @@
 package com.midtrans.sdk.uikit.fragments;
 
+import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -69,6 +71,16 @@ public class XLTunaiPaymentFragment extends Fragment {
         btnCopyOrderId = (FancyButton) view.findViewById(R.id.btn_copy_order_id);
         btnCopyMerchantCode = (FancyButton) view.findViewById(R.id.btn_copy_merchant_code);
 
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                btnCopyOrderId.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnCopyOrderId.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnCopyMerchantCode.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnCopyMerchantCode.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
+        }
+
         if (mTransactionResponse != null) {
             mTextViewOrderId.setText(mTransactionResponse.getXlTunaiOrderId());
 
@@ -91,6 +103,7 @@ public class XLTunaiPaymentFragment extends Fragment {
         });
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void copyOrderId() {
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(LABEL_ORDER_ID, mTextViewOrderId.getText().toString());
@@ -99,6 +112,7 @@ public class XLTunaiPaymentFragment extends Fragment {
         Toast.makeText(getContext(), R.string.copied_order_id, Toast.LENGTH_SHORT).show();
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void copyMerchantCode() {
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(LABEL_MERCHANT_CODE, mTextViewMerchantCode.getText().toString());

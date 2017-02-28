@@ -40,12 +40,10 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private int position = Constants.PAYMENT_METHOD_CIMB_CLICKS;
 
     private String currentFragmentName = HOME_FRAGMENT;
     private TransactionResponse transactionResponseFromMerchant;
     private DefaultTextView textTotalAmount, textTitle;
-    private FancyButton buttonback;
 
 
     @Override
@@ -74,12 +72,11 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         logo = (ImageView) findViewById(R.id.merchant_logo);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
-        buttonback = (FancyButton) findViewById(R.id.btn_back);
         initializeTheme();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
-        buttonback.setOnClickListener(this);
         bindData();
     }
 
@@ -110,19 +107,19 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
             if (currentFragmentName.equals(STATUS_FRAGMENT)) {
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
+                return false;
             } else {
                 onBackPressed();
+                return false;
             }
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_confirm_payment) {
             makeTransaction();
-        } else if (view.getId() == R.id.btn_back) {
-            onBackPressed();
         }
     }
 

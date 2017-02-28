@@ -42,7 +42,6 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private FancyButton buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
     private DefaultTextView textTitle, textTotalAmount;
-    private FancyButton buttonBack;
 
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
@@ -79,7 +78,6 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-        buttonBack = (FancyButton) findViewById(R.id.btn_back);
 
         initializeTheme();
         if (mMidtransSDK != null) {
@@ -92,8 +90,8 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         textTitle.setText(getString(R.string.mandiri_e_cash));
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
-        buttonBack.setOnClickListener(this);
     }
 
     private void setUpFragment() {
@@ -110,16 +108,16 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
 
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+            return false;
         }
-        return false;
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_confirm_payment) {
             makeTransaction();
-        } else if (view.getId() == R.id.btn_back) {
-            onBackPressed();
         }
     }
 

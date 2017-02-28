@@ -1,12 +1,9 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +39,6 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
     private TextView textViewTitle = null;
     private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
-    private FancyButton buttonBack;
     private InstructionKiosonFragment instructionKiosonFragment = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
@@ -104,12 +100,14 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
             if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
+                return false;
             } else {
                 onBackPressed();
+                return false;
             }
         }
 
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     private void initializeView() {
@@ -117,12 +115,12 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
         textViewTitle = (TextView) findViewById(R.id.text_title);
         buttonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        buttonBack = (FancyButton) findViewById(R.id.btn_back);
 
         initializeTheme();
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void bindDataToView() {
@@ -134,7 +132,6 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                 buttonConfirmPayment.setCustomTextFont(midtransSDK.getSemiBoldText());
             }
             buttonConfirmPayment.setOnClickListener(this);
-            buttonBack.setOnClickListener(this);
         }
     }
 
@@ -149,8 +146,6 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
             }
-        } else if (view.getId() == R.id.btn_back) {
-            onBackPressed();
         }
     }
 
@@ -165,10 +160,6 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
         currentFragment = STATUS_FRAGMENT;
         buttonConfirmPayment.setText(getString(R.string.done));
-
-        Drawable closeIcon = ContextCompat.getDrawable(this, R.drawable.ic_close);
-        closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        buttonBack.setIconResource(closeIcon);
 
         initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_KIOSON, false);
     }
@@ -193,7 +184,6 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();
             buttonConfirmPayment.setText(getString(R.string.complete_payment_kioson));
-            buttonBack.setVisibility(View.GONE);
             ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
             if (merchantLogo != null) {
                 merchantLogo.setVisibility(View.INVISIBLE);

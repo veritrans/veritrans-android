@@ -40,7 +40,6 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     private FancyButton mButtonConfirmPayment = null;
     private Toolbar mToolbar = null;
     private DefaultTextView mTextTitle, mTextTotalAmount;
-    private FancyButton buttonBack;
     private MidtransSDK mMidtransSDK = null;
     // for result
     private TransactionResponse transactionResponse = null;
@@ -78,13 +77,12 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mTextTitle = (DefaultTextView) findViewById(R.id.text_title);
         mTextTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-        buttonBack = (FancyButton) findViewById(R.id.btn_back);
         initializeTheme();
 
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mButtonConfirmPayment.setOnClickListener(this);
-        buttonBack.setOnClickListener(this);
 
     }
 
@@ -121,8 +119,10 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+            return false;
         }
-        return true;
+
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -157,8 +157,6 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                     setResultAndFinish();
                 }
             }
-        } else if (view.getId() == R.id.btn_back) {
-            onBackPressed();
         }
     }
 
