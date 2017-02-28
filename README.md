@@ -4,13 +4,13 @@
 [![CircleCI](https://circleci.com/gh/veritrans/veritrans-android/tree/master.svg?style=svg)](https://circleci.com/gh/veritrans/veritrans-android/tree/master)
 
 ### Overview of Payments and Mobile SDK
- To see a overview of Veritrans SDK read [here](https://github.com/veritrans/veritrans-android/wiki/Getting-started-with-the-Veritrans-SDK)
+ To see a overview of Veritrans SDK read [here](https://mobile-docs.midtrans.com/#getting-started)
  
 ### Setting up Android SDK
 
 ### SDK Installation
 
-To see how to install this SDK please read [this wiki](https://github.com/veritrans/veritrans-android/wiki/SDK-Installation).
+To see how to install this SDK please read [this wiki](https://mobile-docs.midtrans.com/#installation).
 
 
 ## Implementation
@@ -19,7 +19,7 @@ There are two implementation modes on this SDK.
 
 ### UI Kit
 
-To see the implementation guide please read [this wiki](https://github.com/veritrans/veritrans-android/wiki/UI-Flow).
+To see the implementation guide please read [this wiki](https://mobile-docs.midtrans.com/#prepare-transaction-details).
 
 ### Core Kit
 
