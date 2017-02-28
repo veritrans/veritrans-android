@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.KlikBCAInstructionActivity;
@@ -55,6 +56,12 @@ public class KlikBCAStatusFragment extends Fragment {
     }
 
     private void initSeeInstruction() {
+        if (MidtransSDK.getInstance() != null && MidtransSDK.getInstance().getColorTheme() != null) {
+            if (MidtransSDK.getInstance().getColorTheme().getPrimaryDarkColor() != 0) {
+                seeInstruction.setBorderColor(MidtransSDK.getInstance().getColorTheme().getPrimaryDarkColor());
+                seeInstruction.setTextColor(MidtransSDK.getInstance().getColorTheme().getPrimaryDarkColor());
+            }
+        }
         seeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,6 +1,5 @@
 package com.midtrans.sdk.uikit.fragments;
 
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,8 +12,6 @@ import android.view.ViewGroup;
 
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.activities.KlikBCAInstructionActivity;
-import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.lang.reflect.Field;
 
@@ -27,7 +24,6 @@ public class KlikBCAFragment extends Fragment {
 
     private AppCompatEditText userIdEditText;
     private TextInputLayout userIdContainer;
-    private FancyButton buttonInstruction;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,16 +37,6 @@ public class KlikBCAFragment extends Fragment {
         // Initialize view
         userIdEditText = (AppCompatEditText) view.findViewById(R.id.user_id_et);
         userIdContainer = (TextInputLayout) view.findViewById(R.id.user_id_container);
-        buttonInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
-        buttonInstruction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getActivity() != null) {
-                    Intent intent = new Intent(getActivity(), KlikBCAInstructionActivity.class);
-                    getActivity().startActivity(intent);
-                }
-            }
-        });
 
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
@@ -70,11 +56,6 @@ public class KlikBCAFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-
-            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-                buttonInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                buttonInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
             }
         }
     }
