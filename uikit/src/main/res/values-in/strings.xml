@@ -489,4 +489,6 @@
     <string name="error_obtain_promo">Gagal memperoleh promo.</string>
     <string name="klik_bca_continue">Mohon lanjutkan proses pembayaran lewat KlikBCA dengan membuka <b>www.klikbca.com</b> di browser anda.\n\nTransaksi akan dibatalkan bila pembayaran tidak diselesaikan dalam 2 jam.</string>
     <string name="error_delete_message">Gagal menghapus kartu</string>
+    <string name="mandiri_debit_card">Kartu Debit Mandiri</string>
+    <string name="bni_debit_online_card">Kartu Debit Online BNI</string>
 </resources>

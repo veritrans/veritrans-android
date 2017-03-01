@@ -939,6 +939,14 @@ public class AddCardDetailsFragment extends Fragment {
                 case BankType.MAYBANK:
                     bankLogo.setImageResource(R.drawable.maybank);
                     break;
+                case BankType.MANDIRI_DEBIT:
+                    bankLogo.setImageResource(R.drawable.mandiri);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.mandiri_debit_card);
+                    break;
+                case BankType.BNI_DEBIT_ONLINE:
+                    bankLogo.setImageResource(R.drawable.bni);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.bni_debit_online_card);
+                    break;
                 default:
                     bankLogo.setImageDrawable(null);
                     break;
