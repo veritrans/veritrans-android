@@ -488,4 +488,5 @@
     <string name="promo_dialog_message">Dengan kartu ini, anda mendapatkan diskon sejumlah Rp. %1$s dari %2$s.</string>
     <string name="error_obtain_promo">Gagal memperoleh promo.</string>
     <string name="klik_bca_continue">Mohon lanjutkan proses pembayaran lewat KlikBCA dengan membuka <b>www.klikbca.com</b> di browser anda.\n\nTransaksi akan dibatalkan bila pembayaran tidak diselesaikan dalam 2 jam.</string>
+    <string name="error_delete_message">Gagal menghapus kartu</string>
 </resources>

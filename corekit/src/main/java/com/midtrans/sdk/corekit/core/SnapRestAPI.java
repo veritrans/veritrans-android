@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import retrofit.Callback;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
@@ -191,4 +192,7 @@ public interface SnapRestAPI {
      */
     @GET("/v1/bank_bins")
     void getBankBins(Callback<ArrayList<BankBinsResponse>> callback);
+
+    @DELETE("/v1/transactions/{token}/saved_tokens/{masked_card}")
+    void deleteCard(@Path("token") String authenticationToken, @Path("masked_card") String maskedCard, Callback<Void> callback);
 }
