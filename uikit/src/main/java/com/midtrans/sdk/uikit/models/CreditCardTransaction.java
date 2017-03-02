@@ -94,6 +94,11 @@ public class CreditCardTransaction {
             if (savedBankBin.getBins() != null && !savedBankBin.getBins().isEmpty()) {
                 String bankBin = findBankByCardBin(savedBankBin, cardBin);
                 if (bankBin != null) {
+                    if (bankBin.equals(BankType.MANDIRI)) {
+                        if (isMandiriCardDebit(cardBin)) {
+                            return BankType.MANDIRI_DEBIT;
+                        }
+                    }
                     return bankBin;
                 }
             }
