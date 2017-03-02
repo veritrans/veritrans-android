@@ -923,21 +923,27 @@ public class AddCardDetailsFragment extends Fragment {
             switch (bank) {
                 case BankType.BCA:
                     bankLogo.setImageResource(R.drawable.bca);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
                 case BankType.BNI:
                     bankLogo.setImageResource(R.drawable.bni);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
                 case BankType.BRI:
                     bankLogo.setImageResource(R.drawable.bri);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
                 case BankType.CIMB:
                     bankLogo.setImageResource(R.drawable.cimb);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
                 case BankType.MANDIRI:
                     bankLogo.setImageResource(R.drawable.mandiri);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
                 case BankType.MAYBANK:
                     bankLogo.setImageResource(R.drawable.maybank);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
                 case BankType.MANDIRI_DEBIT:
                     bankLogo.setImageResource(R.drawable.mandiri);
@@ -949,10 +955,12 @@ public class AddCardDetailsFragment extends Fragment {
                     break;
                 default:
                     bankLogo.setImageDrawable(null);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
             }
         } else {
             bankLogo.setImageDrawable(null);
+            ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
         }
     }
 
