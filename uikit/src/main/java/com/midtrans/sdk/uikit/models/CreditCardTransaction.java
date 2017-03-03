@@ -94,11 +94,6 @@ public class CreditCardTransaction {
             if (savedBankBin.getBins() != null && !savedBankBin.getBins().isEmpty()) {
                 String bankBin = findBankByCardBin(savedBankBin, cardBin);
                 if (bankBin != null) {
-                    if (bankBin.equals(BankType.MANDIRI)) {
-                        if (isMandiriCardDebit(cardBin)) {
-                            return BankType.MANDIRI_DEBIT;
-                        }
-                    }
                     return bankBin;
                 }
             }
@@ -106,7 +101,7 @@ public class CreditCardTransaction {
         return null;
     }
 
-    private boolean isMandiriCardDebit(String cardBin) {
+    public boolean isMandiriCardDebit(String cardBin) {
         if (getMandiriDebitResponse() != null) {
             String bankBin = findBankByCardBin(getMandiriDebitResponse(), cardBin);
             return bankBin != null;

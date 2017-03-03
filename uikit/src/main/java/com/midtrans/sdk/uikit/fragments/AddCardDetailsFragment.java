@@ -940,14 +940,13 @@ public class AddCardDetailsFragment extends Fragment {
                 case BankType.MANDIRI:
                     bankLogo.setImageResource(R.drawable.mandiri);
                     ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
+                    if (((CreditDebitCardFlowActivity) getActivity()).isMandiriDebitCard(cleanCardNumber)) {
+                        ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.mandiri_debit_card);
+                    }
                     break;
                 case BankType.MAYBANK:
                     bankLogo.setImageResource(R.drawable.maybank);
                     ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
-                    break;
-                case BankType.MANDIRI_DEBIT:
-                    bankLogo.setImageResource(R.drawable.mandiri);
-                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.mandiri_debit_card);
                     break;
                 case BankType.BNI_DEBIT_ONLINE:
                     bankLogo.setImageResource(R.drawable.bni);

@@ -909,6 +909,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         return creditCardTransaction.getBankByBin(cardBin);
     }
 
+    public boolean isMandiriDebitCard(String cardBin) {
+        return creditCardTransaction.isMandiriCardDebit(cardBin);
+    }
+
     public int getInstallmentTerm(int currentPosition) {
         return creditCardTransaction.getInstallmentTerm(currentPosition);
     }
