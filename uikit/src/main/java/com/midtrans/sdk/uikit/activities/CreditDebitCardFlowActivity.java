@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
+import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -151,17 +152,56 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     private void deleteSavedCard(SaveCardRequest savedCard) {
-        if (savedCard != null) {
-            ArrayList<SaveCardRequest> cardList = new ArrayList<>();
-            if (creditCards != null && !creditCards.isEmpty()) {
-                cardList.addAll(creditCards);
-                for (int i = 0; i < cardList.size(); i++) {
-                    if (cardList.get(i).getSavedTokenId().equalsIgnoreCase(savedCard.getSavedTokenId())) {
-                        cardList.remove(cardList.get(i));
+        if (midtransSDK.isEnableBuiltInTokenStorage()) {
+            this.removeExistCard = true;
+            // Delete from token storage
+            midtransSDK.deleteCard(midtransSDK.readAuthenticationToken(), savedCard.getMaskedCard(), new DeleteCardCallback() {
+                @Override
+                public void onSuccess(Void object) {
+                    SdkUIFlowUtil.hideProgressDialog();
+                    // Update saved cards
+                    MidtransSDK.getInstance().getCreditCard().setSavedTokens(
+                            SdkUIFlowUtil.removeCardFromSavedCards(
+                                    MidtransSDK.getInstance().getCreditCard().getSavedTokens(),
+                                    maskedCardNumber
+                            )
+                    );
+                    // init credit cards again
+                    creditCards.clear();
+                    creditCards.addAll(filterCardsByClickType(SdkUIFlowUtil.convertSavedToken(midtransSDK.getCreditCard().getSavedTokens())));
+
+                    Fragment currentFragment = getCurrentFagment(AddCardDetailsFragment.class);
+                    if (currentFragment != null) {
+                        Logger.d(TAG, "Delete card success");
+                        onBackPressed();
                     }
                 }
+
+                @Override
+                public void onFailure(Void object) {
+                    SdkUIFlowUtil.hideProgressDialog();
+                    SdkUIFlowUtil.showToast(CreditDebitCardFlowActivity.this, getString(R.string.error_delete_message));
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    SdkUIFlowUtil.hideProgressDialog();
+                    SdkUIFlowUtil.showToast(CreditDebitCardFlowActivity.this, getString(R.string.error_delete_message));
+                }
+            });
+        } else {
+            if (savedCard != null) {
+                ArrayList<SaveCardRequest> cardList = new ArrayList<>();
+                if (creditCards != null && !creditCards.isEmpty()) {
+                    cardList.addAll(creditCards);
+                    for (int i = 0; i < cardList.size(); i++) {
+                        if (cardList.get(i).getSavedTokenId().equalsIgnoreCase(savedCard.getSavedTokenId())) {
+                            cardList.remove(cardList.get(i));
+                        }
+                    }
+                }
+                saveCreditCards(cardList, true);
             }
-            saveCreditCards(cardList, true);
         }
     }
 
@@ -626,7 +666,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             if (userDetail != null) {
                 if (midtransSDK.isEnableBuiltInTokenStorage()) {
                     List<SavedToken> tokens = midtransSDK.getCreditCard().getSavedTokens();
-                    bindSavedCards(tokens != null ? convertSavedToken(tokens) : new ArrayList<SaveCardRequest>());
+                    bindSavedCards(tokens != null ? SdkUIFlowUtil.convertSavedToken(tokens) : new ArrayList<SaveCardRequest>());
                 } else {
                     SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), true);
                     midtransSDK.getCards(userDetail.getUserId(), new GetCardCallback() {
@@ -782,14 +822,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
     public void setSavedCardInfo(boolean saveCard, String cardType) {
         this.saveCard = saveCard;
-    }
-
-    private ArrayList<SaveCardRequest> convertSavedToken(List<SavedToken> savedTokens) {
-        ArrayList<SaveCardRequest> saveCardRequests = new ArrayList<>();
-        for (SavedToken savedToken : savedTokens) {
-            saveCardRequests.add(new SaveCardRequest(savedToken.getToken(), savedToken.getMaskedCard(), savedToken.getTokenType()));
-        }
-        return saveCardRequests;
     }
 
     private void bindSavedCards(ArrayList<SaveCardRequest> cards) {

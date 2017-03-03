@@ -138,9 +138,7 @@ public class AddCardDetailsFragment extends Fragment {
                 Log.i(TAG, "savedcard");
                 this.savedCard = savedCard;
 
-                if (!MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
-                    ((CreditDebitCardFlowActivity) getActivity()).showDeleteCardIcon(true);
-                }
+                ((CreditDebitCardFlowActivity) getActivity()).showDeleteCardIcon(true);
 
                 String cardType = Utils.getCardType(savedCard.getMaskedCard());
                 if (!TextUtils.isEmpty(cardType)) {
