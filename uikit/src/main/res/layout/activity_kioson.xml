@@ -20,11 +20,10 @@
 
     <com.midtrans.sdk.uikit.widgets.FancyButton
         android:id="@+id/btn_confirm_payment"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/button_size"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/eight_dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:textColor="@color/white"
         app:fb_defaultColor="@color/gray.primary"
