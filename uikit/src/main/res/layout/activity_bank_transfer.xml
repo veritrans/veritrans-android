@@ -8,11 +8,12 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/main_toolbar"
         style="@style/ThemeOverlay.AppCompat.ActionBar"
-
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
+        app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
         app:layout_collapseMode="pin"
         app:title="">
 
@@ -31,23 +32,18 @@
         android:layout_below="@id/main_toolbar"
         android:layout_marginTop="10dp" />
 
-    <android.support.v4.widget.NestedScrollView
+    <FrameLayout
+        android:id="@+id/instruction_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/layout_total_amount"
-        android:layout_marginBottom="@dimen/fifty_six_dp">
+        android:layout_below="@id/layout_total_amount" />
 
-        <FrameLayout
-            android:id="@+id/instruction_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    </android.support.v4.widget.NestedScrollView>
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/btn_confirm_payment"
@@ -56,6 +52,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/eight_dp"
+            android:layout_marginLeft="@dimen/eight_dp"
+            android:layout_marginRight="@dimen/eight_dp"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             app:fb_defaultColor="@color/gray.primary"

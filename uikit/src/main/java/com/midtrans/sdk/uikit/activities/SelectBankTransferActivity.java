@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -25,7 +24,6 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.BankTransferListAdapter;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
-import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +52,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
     private BankTransferListAdapter adapter;
     private DefaultTextView textTotalAmount;
-    private FancyButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +81,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         //setup tool bar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // setUp recyclerView
         ArrayList<String> banks = getIntent().getStringArrayListExtra(EXTRA_BANK);
@@ -155,14 +153,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         adapter = new BankTransferListAdapter(this);
         mRecyclerView.setAdapter(adapter);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-        btnBack = (FancyButton) findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SdkUIFlowUtil.hideKeyboard(SelectBankTransferActivity.this);
-                finish();
-            }
-        });
 
     }
 
@@ -201,6 +191,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         if (item.getItemId() == android.R.id.home) {
             SdkUIFlowUtil.hideKeyboard(this);
             finish();
+            return false;
         }
 
         return super.onOptionsItemSelected(item);

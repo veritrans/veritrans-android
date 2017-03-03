@@ -1,11 +1,8 @@
 package com.midtrans.sdk.uikit.activities;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -40,7 +37,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
     private MidtransSDK mMidtransSDK = null;
     private Toolbar mToolbar = null;
     private DefaultTextView textTitle, textTotalAmount;
-    private FancyButton buttonBack;
     private InstructionTelkomselCashFragment telkomselCashFragment = null;
     private TransactionResponse mTransactionResponse = null;
     private String errorMessage = null;
@@ -88,9 +84,10 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+            return false;
         }
 
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -102,12 +99,12 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         mButtonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-        buttonBack = (FancyButton) findViewById(R.id.btn_back);
 
         initializeTheme();
         //setup tool bar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**
@@ -120,7 +117,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                 mButtonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
             }
             mButtonConfirmPayment.setOnClickListener(this);
-            buttonBack.setOnClickListener(this);
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         } else {
@@ -142,8 +138,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                 setResultAndFinish();
             }
 
-        } else if (view.getId() == R.id.btn_back) {
-            onBackPressed();
         }
     }
 
@@ -235,10 +229,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
         currentFragment = STATUS_FRAGMENT;
         mButtonConfirmPayment.setText(getString(R.string.done));
-
-        Drawable closeIcon = ContextCompat.getDrawable(this, R.drawable.ic_close);
-        closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        buttonBack.setIconResource(closeIcon);
 
         initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_TELKOMSEL_CASH, false);
     }
