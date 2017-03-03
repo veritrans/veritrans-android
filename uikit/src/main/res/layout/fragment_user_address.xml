@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,8 +11,7 @@
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/addressScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:background="@color/colorAccentLight"
         android:fillViewport="true"
         tools:context="com.midtrans.sdk.uikit.fragments.UserAddressFragment">
@@ -223,17 +222,26 @@
         android:id="@+id/btn_next"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_size"
-        android:layout_gravity="center_horizontal|bottom"
+        android:layout_alignParentBottom="true"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:textColor="@color/white"
         app:fb_defaultColor="@color/gray.primary"
         app:fb_focusColor="@color/colorAccentLight"
-        app:fb_iconPaddingLeft="0dp"
-        app:fb_iconPaddingRight="0dp"
-        app:fb_iconPosition="right"
-        app:fb_iconResource="@drawable/ic_arrow_right_white"
-        app:fb_radius="@dimen/eight_dp"
         app:fb_text="@string/next"
         app:fb_textGravity="center_vertical"
         app:fb_textSize="16sp" />
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_size"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom|end">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/eight_dp"
+            android:src="@drawable/ic_arrow_right_white" />
+    </LinearLayout>
+</RelativeLayout>
