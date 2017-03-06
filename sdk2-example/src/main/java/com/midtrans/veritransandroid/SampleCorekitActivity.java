@@ -16,6 +16,7 @@ import com.midtrans.sdk.core.models.merchant.Address;
 import com.midtrans.sdk.core.models.merchant.CheckoutOrderDetails;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenResponse;
+import com.midtrans.sdk.core.models.merchant.CreditCard;
 import com.midtrans.sdk.core.models.merchant.CustomerDetails;
 import com.midtrans.sdk.core.models.merchant.ItemDetails;
 import com.midtrans.sdk.core.models.papi.CardTokenRequest;
@@ -774,7 +775,10 @@ public class SampleCorekitActivity extends AppCompatActivity {
         ItemDetails itemDetails = new ItemDetails("item1", 200000, 1, "VT SDK");
         itemDetailsList.add(itemDetails);
 
-        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", null, itemDetailsList, customerDetails, checkoutOrderDetails, true, null, null);
+        //creditcard properties
+        CreditCard creditCard = new CreditCard();
+        creditCard.setSecure(false);
+        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", creditCard, itemDetailsList, customerDetails, checkoutOrderDetails, false, null, null);
     }
 
     private CreditCardPaymentParams buildCreditCardPaymentParams(String cardToken) {

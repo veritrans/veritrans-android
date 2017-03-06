@@ -137,6 +137,15 @@ public class PaymentStatusFragment extends BaseFragment {
             } else {
                 tvBank.setText(paymentResult.getBank());
             }
+
+            //installment term
+            if(TextUtils.isEmpty(paymentResult.getInstallmentTerm())){
+                layoutInstallmentTerm.setVisibility(View.GONE);
+            }else{
+                layoutInstallmentTerm.setVisibility(View.VISIBLE);
+                tvInstallmentTerm.setText(paymentResult.getInstallmentTerm());
+            }
+
         } catch (NullPointerException e) {
             e.printStackTrace();
 
@@ -207,6 +216,8 @@ public class PaymentStatusFragment extends BaseFragment {
                 } else {
                     tvStatusErrorMessage.setText(getString(R.string.message_cannot_proccessed));
                 }
+            }else{
+                tvStatusErrorMessage.setText(paymentResult.getStatusMessage());
             }
         }
     }

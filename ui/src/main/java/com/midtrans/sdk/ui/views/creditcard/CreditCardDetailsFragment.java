@@ -306,7 +306,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
 //                        } else {
 //                            request.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
 //                        }
-
+                        setPaymentInstallment();
                         presenter.twoClicksPayment(cardDetailModel, cvv);
 
                     } else {
@@ -336,6 +336,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
 //                        } else {
 //                            ((CreditDebitCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
 //                        }
+                        setPaymentInstallment();
                         presenter.normalPayment(cardNumber, cvv, month, year, cbSaveCard.isChecked());
                     }
                 }
@@ -660,7 +661,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         if (presenter.isWhiteListBinsAvailable()) {
             if (cardNumber != null) {
                 String cardBin = cardNumber.replace(" ", "").substring(0, 6);
-                if (presenter.isCardBinValid(cardBin)) {
+                if (!presenter.isCardBinValid(cardBin)) {
                     return false;
                 }
             }
@@ -702,17 +703,17 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
     }
 
     private void initCardInstallment() {
-
         if (presenter.isInstallmentAvailable()) {
             String cardNumber = etCardNumber.getText().toString();
             if (TextUtils.isEmpty(cardNumber)) {
                 showInstallmentLayout(false);
             } else if (cardNumber.length() < 7) {
                 showInstallmentLayout(false);
-            } else if (presenter.isBankSupportInstallment()) {
+            } else if (!presenter.isBankSupportInstallment()) {
                 showInstallmentLayout(false);
             } else {
                 String cleanCardNumber = etCardNumber.getText().toString().trim().replace(" ", "").substring(0, 6);
+
                 List<Integer> installmentTerms = presenter.getInstallmentTerms(cleanCardNumber);
 
                 if (installmentTerms != null && installmentTerms.size() > 1) {
@@ -1013,9 +1014,6 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         disableEnableInstallmentButton();
     }
 
-//    public SaveCardRequest getSavedCard() {
-//        return savedCard;
-//    }
 
     public boolean isOneClickMode() {
         return (hasSavedToken() && cardDetailModel.isOneclickMode());
@@ -1112,7 +1110,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
             Intent intentPaymentWeb = new Intent(getContext(), PaymentWebActivity.class);
             intentPaymentWeb.putExtra(Constants.WebView.WEB_URL, response.redirectUrl);
             intentPaymentWeb.putExtra(Constants.WebView.TYPE, Constants.WebView.TYPE_CREDIT_CARD);
-            startActivityForResult(intentPaymentWeb, Constants.IntentCode.PAYMENT_WEB_INTENT);
+            getActivity().startActivityForResult(intentPaymentWeb, Constants.IntentCode.PAYMENT_WEB_INTENT);
         } else {
             presenter.payUsingCard();
         }
@@ -1171,4 +1169,6 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
     public boolean isSaveEnabled() {
         return cbSaveCard.isChecked();
     }
+
+
 }

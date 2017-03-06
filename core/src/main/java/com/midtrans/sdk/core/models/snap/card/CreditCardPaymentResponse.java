@@ -12,6 +12,7 @@ public class CreditCardPaymentResponse extends BaseTransactionResponse {
     public final String savedTokenIdExpiredAt;
     public final String approvalCode;
     public final String bank;
+    public String installmentTerm;
 
     public CreditCardPaymentResponse(String statusCode,
                                      String statusMessage,

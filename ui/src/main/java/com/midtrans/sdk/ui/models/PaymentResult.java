@@ -15,6 +15,7 @@ import java.util.Objects;
  */
 
 public class PaymentResult implements Serializable {
+    private String installmentTerm;
     private String errorMessage;
     private String paymentStatus;
 
@@ -101,6 +102,7 @@ public class PaymentResult implements Serializable {
         this.savedTokenIdExpiredAt = response.savedTokenIdExpiredAt;
         this.approvalCode = response.approvalCode;
         this.bank = response.bank;
+        this.installmentTerm = response.installmentTerm;
     }
 
     public PaymentResult(String errorMessage) {
@@ -203,5 +205,11 @@ public class PaymentResult implements Serializable {
         return validationMessages;
     }
 
+    public String getInstallmentTerm() {
+        return installmentTerm;
+    }
 
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 }

@@ -48,7 +48,7 @@ public class PaymentUtilitiesTest {
         Assert.assertNotNull(cardPaymentRequest);
         Assert.assertEquals(CreditCardPaymentRequest.TYPE, cardPaymentRequest.paymentType);
         Assert.assertEquals(cardPaymentParams.getCardToken(), cardPaymentRequest.paymentParams.getCardToken());
-        Assert.assertEquals(cardPaymentParams.getInstallmentTerm(), cardPaymentRequest.paymentParams.getInstallmentTerm());
+        Assert.assertEquals(cardPaymentParams.getInstallment(), cardPaymentRequest.paymentParams.getInstallment());
     }
 
     @Test

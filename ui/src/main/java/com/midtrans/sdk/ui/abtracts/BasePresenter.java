@@ -14,6 +14,7 @@ public abstract class BasePresenter{
          if(midtransUiSdk.getColorTheme() != null && midtransUiSdk.getColorTheme().getPrimaryColor() != 0){
              return true;
          }
+
         return false;
     }
 

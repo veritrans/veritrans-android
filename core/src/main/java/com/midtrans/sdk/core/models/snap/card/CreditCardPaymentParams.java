@@ -6,7 +6,7 @@ package com.midtrans.sdk.core.models.snap.card;
 
 public class CreditCardPaymentParams {
     private String cardToken;
-    private String installmentTerm;
+    private String installment;
     private boolean saveCard;
     private String maskedCard;
 
@@ -33,7 +33,7 @@ public class CreditCardPaymentParams {
     public static CreditCardPaymentParams newInstallmentPaymentParams(String cardToken, String installmentTerm) {
         CreditCardPaymentParams creditCardPaymentParams = new CreditCardPaymentParams();
         creditCardPaymentParams.setCardToken(cardToken);
-        creditCardPaymentParams.setInstallmentTerm(installmentTerm);
+        creditCardPaymentParams.setInstallment(installmentTerm);
         return creditCardPaymentParams;
     }
 
@@ -56,12 +56,12 @@ public class CreditCardPaymentParams {
         this.cardToken = cardToken;
     }
 
-    public String getInstallmentTerm() {
-        return installmentTerm;
+    public String getInstallment() {
+        return installment;
     }
 
-    public void setInstallmentTerm(String installmentTerm) {
-        this.installmentTerm = installmentTerm;
+    public void setInstallment(String installment) {
+        this.installment = installment;
     }
 
     public boolean isSaveCard() {

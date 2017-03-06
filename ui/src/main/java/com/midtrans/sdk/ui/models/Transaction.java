@@ -107,4 +107,8 @@ public class Transaction {
     public int getGrossAmount() {
         return transactionDetails.grossAmount;
     }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
 }

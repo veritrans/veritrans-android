@@ -12,7 +12,7 @@ import com.midtrans.sdk.ui.themes.CustomColorTheme;
  */
 
 public class MyApp extends Application {
-    public static final String CHECKOUT_URL = "https://rakawm-snap.herokuapp.com/charge";
+    public static final String CHECKOUT_URL = "https://rakawm-snap.herokuapp.com/installment/charge";
     private static final String CLIENT_KEY = "VT-client-E4f1bsi1LpL1p5cF";
 
     @Override
