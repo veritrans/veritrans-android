@@ -40,32 +40,35 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_height="match_parent">
 
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/btn_confirm_payment"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/button_size"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/eight_dp"
-            android:layout_marginLeft="@dimen/eight_dp"
-            android:layout_marginRight="@dimen/eight_dp"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             app:fb_defaultColor="@color/gray.primary"
             app:fb_focusColor="@color/colorAccentLight"
-            app:fb_iconPaddingLeft="0dp"
-            app:fb_iconPaddingRight="0dp"
-            app:fb_iconPosition="right"
-            app:fb_iconResource="@drawable/ic_arrow_right_white"
-            app:fb_radius="@dimen/eight_dp"
             app:fb_text="@string/btn_show_account_number"
             app:fb_textGravity="center_vertical"
             app:fb_textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_size"
+            android:layout_alignParentBottom="true"
+            android:gravity="bottom|end">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/eight_dp"
+                android:src="@drawable/ic_arrow_right_white" />
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>
