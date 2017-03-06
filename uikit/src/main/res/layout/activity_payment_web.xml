@@ -21,6 +21,9 @@
             android:background="@color/white"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView

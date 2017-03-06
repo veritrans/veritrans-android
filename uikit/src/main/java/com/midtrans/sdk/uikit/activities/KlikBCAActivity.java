@@ -1,10 +1,7 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,7 +34,6 @@ public class KlikBCAActivity extends BaseActivity {
     private TextView mTextViewTitle;
 
     private KlikBCAFragment klikBCAFragment;
-    private FancyButton buttonBack;
     private MidtransSDK mMidtransSDK;
     private Toolbar mToolbar;
 
@@ -54,11 +50,11 @@ public class KlikBCAActivity extends BaseActivity {
         mTextViewTitle = (TextView) findViewById(R.id.text_title);
         mButtonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        buttonBack = (FancyButton) findViewById(R.id.btn_back);
         initializeTheme();
         // Setup toolbar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         bindData();
     }
 
@@ -77,12 +73,6 @@ public class KlikBCAActivity extends BaseActivity {
         klikBCAFragment = new KlikBCAFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.instruction_container, klikBCAFragment).commit();
 
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
         mButtonConfirmPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,9 +158,6 @@ public class KlikBCAActivity extends BaseActivity {
 
         currentFragment = STATUS_FRAGMENT;
 
-        Drawable closeIcon = ContextCompat.getDrawable(this, R.drawable.ic_close);
-        closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        buttonBack.setIconResource(closeIcon);
         mButtonConfirmPayment.setText(getString(R.string.complete_payment_at_klik_bca));
 
         KlikBCAStatusFragment klikBCAStatusFragment =
@@ -192,12 +179,14 @@ public class KlikBCAActivity extends BaseActivity {
                 }
                 setResult(RESULT_OK, data);
                 finish();
+                return false;
             } else {
                 onBackPressed();
+                return false;
             }
         }
 
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

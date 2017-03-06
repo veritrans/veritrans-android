@@ -38,7 +38,6 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     private String errorMessage;
     private TransactionResponse transactionResponseFromMerchant;
     private DefaultTextView textTitle, textTotalAmount;
-    private FancyButton buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +64,12 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-        buttonBack = (FancyButton) findViewById(R.id.btn_back);
 
         initializeTheme();
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         btConfirmPayment.setVisibility(View.VISIBLE);
         btConfirmPayment.setOnClickListener(this);
-        buttonBack.setOnClickListener(this);
         bindData();
     }
 
@@ -106,11 +104,8 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-
         if (view.getId() == R.id.btn_confirm_payment) {
             makeTransaction();
-        } else if (view.getId() == R.id.btn_back) {
-            onBackPressed();
         }
     }
 
