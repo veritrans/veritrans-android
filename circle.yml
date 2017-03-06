@@ -30,10 +30,12 @@ test:
         # Unit Test
        - (./gradlew corekit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
             timeout: 3600
-        # unit Test uikit
+        # Unit Test uikit
        - (./gradlew uikit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
             timeout: 3600
-
+        # Unit Test Core v2
+       - (./gradlew :core:testDebugUnitTestCoverage -PdisablePreDex):
+                     timeout: 3600
        # UI Test
        - emulator -avd circleci-android22 -no-audio -no-window:
             background: true
