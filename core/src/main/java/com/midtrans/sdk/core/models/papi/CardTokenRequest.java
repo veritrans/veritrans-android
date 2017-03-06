@@ -17,6 +17,7 @@ public class CardTokenRequest {
     private int installmentTerm;
     private String type;
     private String bank;
+    private String channel;
 
     public CardTokenRequest() {
 
@@ -772,5 +773,33 @@ public class CardTokenRequest {
 
     public String getBank() {
         return bank;
+    }
+
+    public void setCardType(String cardType) {
+        this.type = cardType;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public void setInstallment(boolean installment) {
+        this.installment = installment;
+    }
+
+    public void setInstallmentTerm(int installmentTerm) {
+        this.installmentTerm = installmentTerm;
+    }
+
+    public void setSecure(boolean secure) {
+        this.secure = secure;
+    }
+
+    public void setGrossAmount(int grossAmount) {
+        this.grossAmount = grossAmount;
     }
 }

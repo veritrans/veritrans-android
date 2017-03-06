@@ -10,7 +10,7 @@ import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.ui.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

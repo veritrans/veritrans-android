@@ -29,6 +29,7 @@ import com.midtrans.sdk.core.models.snap.ewallet.indosatdompetku.IndosatDompetku
 import com.midtrans.sdk.core.models.snap.ewallet.tcash.TelkomselCashPaymentResponse;
 import com.midtrans.sdk.core.models.snap.ewallet.xltunai.XlTunaiPaymentResponse;
 import com.midtrans.sdk.core.models.snap.gci.GiftCardPaymentResponse;
+import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
 import com.midtrans.sdk.core.utils.Logger;
 import com.midtrans.sdk.core.utils.PaymentUtilities;
 
@@ -44,6 +45,7 @@ public class MidtransCore {
 
     private MidtransApiManager midtransApiManager;
     private SnapApiManager snapApiManager;
+    private boolean secureCreditCardPayment;
 
     public MidtransCore(Builder builder) {
         this.clientKey = builder.clientKey;
@@ -100,8 +102,19 @@ public class MidtransCore {
      * @param callback             callback to be called after checkout was finished.
      */
     public void checkout(String checkoutUrl, CheckoutTokenRequest checkoutTokenRequest, MidtransCoreCallback<CheckoutTokenResponse> callback) {
+        this.secureCreditCardPayment = checkoutTokenRequest.secureCreditCardPayment;
         MerchantApiManager merchantApiManager = initialiseMerchantApiManager(checkoutUrl.endsWith("/") ? checkoutUrl : checkoutUrl + "/");
         merchantApiManager.checkout(checkoutUrl, checkoutTokenRequest, callback);
+    }
+
+    /**
+     * get transaction details from snap
+     *
+     * @param checkoutToken
+     * @param midtransCoreCallback
+     */
+    public void getTransactionDetails(String checkoutToken, MidtransCoreCallback<SnapTransaction> midtransCoreCallback) {
+        snapApiManager.getTransactionDetails(checkoutToken, midtransCoreCallback);
     }
 
     /**
@@ -381,6 +394,10 @@ public class MidtransCore {
 
     public void setEnvironment(Environment environment) {
         this.environment = environment;
+    }
+
+    public boolean isSecureCreditCardPayment() {
+        return secureCreditCardPayment;
     }
 
     /**

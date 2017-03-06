@@ -285,7 +285,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
      */
     public void payUsingCard() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
-
         CreditCardPaymentModel paymentModel;
         if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
                 && !isNewCard && this.maskedCardNumber != null) {
@@ -338,11 +337,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                                 initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
                                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
                             }
-                            if(response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))){
+                            if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                                 Log.d("3dserror", "1>400:" + response.getValidationMessages().get(0));
 
-                                if(response.getValidationMessages() != null && response.getValidationMessages().get(0) != null){
-                                    if(response.getValidationMessages().get(0).contains("3d")){
+                                if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
+                                    if (response.getValidationMessages().get(0).contains("3d")) {
                                         //track page bca va overview
                                         midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
                                     }
@@ -357,7 +356,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                         public void onError(Throwable error) {
                             //track page status failed
                             MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
 
 
                             SdkUIFlowUtil.hideProgressDialog();
@@ -393,10 +391,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
                             }
 
-                            if(response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))){
+                            if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                                 Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
-                                if(response.getValidationMessages() != null && response.getValidationMessages().get(0) != null){
-                                    if(response.getValidationMessages().get(0).contains("3d")){
+                                if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
+                                    if (response.getValidationMessages().get(0).contains("3d")) {
                                         //track page bca va overview
                                         midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
                                     }

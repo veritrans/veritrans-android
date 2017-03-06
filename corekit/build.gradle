@@ -257,7 +257,7 @@ bintray {
         publish = true
         publicDownloadNumbers = true
     }
-    publications = ['BintrayProductionPublication', 'BintrayPublication']
+    publications = ['BintrayProductionPublication', 'BintrayStagingPublication', 'BintrayPublication']
 
 }
 

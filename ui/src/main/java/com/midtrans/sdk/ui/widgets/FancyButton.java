@@ -21,8 +21,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.utilities.WidgetUtils;
+import com.midtrans.sdk.ui.R;
+import com.midtrans.sdk.ui.utils.WidgetUtils;
 
 import java.util.ArrayList;
 
@@ -245,14 +245,16 @@ public class FancyButton extends LinearLayout {
         if (mIconResource != null) {
             ImageView iconView = new ImageView(mContext);
             iconView.setImageDrawable(mIconResource);
+            iconView.setScaleType(ImageView.ScaleType.FIT_START);
             iconView.setPadding(mIconPaddingLeft, mIconPaddingTop, mIconPaddingRight, mIconPaddingBottom);
 
             LayoutParams iconViewParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
             if (mTextView != null) {
                 if (mIconPosition == POSITION_TOP || mIconPosition == POSITION_BOTTOM)
-                    iconViewParams.gravity = Gravity.CENTER;
+                    iconViewParams.gravity = Gravity.CENTER | Gravity.CENTER_VERTICAL;
                 else
-                    iconViewParams.gravity = Gravity.START;
+                    iconViewParams.gravity = Gravity.START | Gravity.CENTER_VERTICAL;
 
                 iconViewParams.rightMargin = 10;
                 iconViewParams.leftMargin = 10;

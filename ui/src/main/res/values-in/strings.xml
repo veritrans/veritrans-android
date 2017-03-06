@@ -487,4 +487,5 @@
     <string name="error_obtain_promo">Gagal memperoleh promo.</string>
     <string name="klik_bca_continue">Mohon lanjutkan proses pembayaran lewat KlikBCA dengan membuka <b>www.klikbca.com</b> di browser anda.\n\nTransaksi akan dibatalkan bila pembayaran tidak diselesaikan dalam 2 jam.</string>
     <string name="error_paid_order_id">Order ID sudah dibayar, silakan gunakan order id lain.</string>
+    <string name="save_card_dialog">Kami akan menyimpan kartu anda sehingga bisa digunakan untuk transaksi selanjutnya.</string>
 </resources>

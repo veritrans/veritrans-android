@@ -374,7 +374,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
         setupStatusBarColor(STATUS_FAILED);
         setupStatusInfo();
         buttonInstruction.setVisibility(View.GONE);
-
         if (transactionResponse == null) {
             paymentMessageTv.setVisibility(View.VISIBLE);
             paymentMessageTv.setText(getString(R.string.api_fail_message));

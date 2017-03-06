@@ -8,19 +8,19 @@ package com.midtrans.sdk.ui.models;
  */
 public class PaymentMethodModel {
 
+    private final String paymentType;
     private String name;
     private int imageId;
-    private int paymentType;
     private String description;
     private boolean isSelected;
     private Integer priority;
 
-    public PaymentMethodModel(String name, String description, int imageId, int priority) {
-        this.paymentType = paymentType;
+    public PaymentMethodModel(String name, String description, String paymentType, int imageId, int priority) {
         this.imageId = imageId;
         this.name = name;
         this.description = description;
         this.priority = priority;
+        this.paymentType = paymentType;
     }
 
     public String getName() {
@@ -29,10 +29,6 @@ public class PaymentMethodModel {
 
     public int getImageId() {
         return imageId;
-    }
-
-    public int getPaymentType() {
-        return paymentType;
     }
 
     public String getDescription() {
@@ -45,5 +41,9 @@ public class PaymentMethodModel {
 
     public Integer getPriority() {
         return priority;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
     }
 }

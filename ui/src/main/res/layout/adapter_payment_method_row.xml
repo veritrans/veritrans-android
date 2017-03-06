@@ -60,8 +60,8 @@
 
     <ImageView
         android:id="@+id/image_arrow_right"
-        android:layout_width="@dimen/twenty_four_dp"
-        android:layout_height="@dimen/twenty_four_dp"
+        android:layout_width="@dimen/sixteen_dp"
+        android:layout_height="@dimen/sixteen_dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

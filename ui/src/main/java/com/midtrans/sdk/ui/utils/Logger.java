@@ -7,7 +7,7 @@ import android.util.Log;
  */
 
 public class Logger {
-    public static boolean enabled;
+    public static boolean enabled = true;
 
     /**
      * Log debug message.
@@ -21,9 +21,9 @@ public class Logger {
     /**
      * Log error message.
      */
-    public static void e(String tag, String message, Throwable throwable) {
+    public static void e(String tag, String message) {
         if (enabled) {
-            Log.e(tag, message, throwable);
+            Log.e(tag, message);
         }
     }
 }

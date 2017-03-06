@@ -678,4 +678,5 @@
     <string name="error_obtain_promo">Failed to obtain promo.</string>
     <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.\n\nTransaction will be cancelled if payment is not completed within 2 hours.</string>
     <string name="error_paid_order_id">Order ID has been paid, please use another order ID</string>
+    <string name="save_card_dialog">We will securely save your card details so you can reuse them later.</string>
 </resources>

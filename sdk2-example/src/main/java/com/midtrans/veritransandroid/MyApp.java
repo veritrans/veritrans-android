@@ -3,7 +3,9 @@ package com.midtrans.veritransandroid;
 import android.app.Application;
 
 import com.midtrans.sdk.core.Environment;
-import com.midtrans.sdk.core.MidtransCore;
+import com.midtrans.sdk.ui.CustomSetting;
+import com.midtrans.sdk.ui.MidtransUi;
+import com.midtrans.sdk.ui.themes.CustomColorTheme;
 
 /**
  * Created by rakawm on 10/19/16.
@@ -26,9 +28,13 @@ public class MyApp extends Application {
 //                .setClientKey(CLIENT_KEY)
 //                .build();
 
+//        CustomColorTheme customColorTheme = new CustomColorTheme();
+
+        CustomSetting customSetting = new CustomSetting();
         MidtransUi.builder()
-                .clientKey(CLIENT_KEY)
-                .environment(Environment.SANDBOX)
+                .setClientKey(CLIENT_KEY)
+                .setEnvironment(Environment.SANDBOX)
+                .setCustomSetting(new CustomSetting())
                 .enableLog(true)
                 .build();
     }

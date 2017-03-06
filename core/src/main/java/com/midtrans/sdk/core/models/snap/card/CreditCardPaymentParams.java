@@ -8,6 +8,8 @@ public class CreditCardPaymentParams {
     private String cardToken;
     private String installmentTerm;
     private boolean saveCard;
+    private String maskedCard;
+
 
     /**
      * Create basic payment params.
@@ -35,6 +37,17 @@ public class CreditCardPaymentParams {
         return creditCardPaymentParams;
     }
 
+    /**
+     * Create credit card payment param
+     *
+     * @return credit card payment params.
+     */
+    public static CreditCardPaymentParams newOneClickPaymentParams(String maskedCardNumber) {
+        CreditCardPaymentParams creditCardPaymentParams = new CreditCardPaymentParams();
+        creditCardPaymentParams.setMaskedCard(maskedCardNumber);
+        return creditCardPaymentParams;
+    }
+
     public String getCardToken() {
         return cardToken;
     }
@@ -57,5 +70,9 @@ public class CreditCardPaymentParams {
 
     public void setSaveCard(boolean saveCard) {
         this.saveCard = saveCard;
+    }
+
+    public void setMaskedCard(String maskedCard) {
+        this.maskedCard = maskedCard;
     }
 }

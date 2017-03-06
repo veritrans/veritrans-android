@@ -1,5 +1,7 @@
 package com.midtrans.sdk.ui.utils;
 
+import android.text.TextUtils;
+
 import java.text.DecimalFormat;
 
 /**
@@ -23,4 +25,24 @@ public class Utils {
             return "" + amount;
         }
     }
+
+
+    /**
+     * Get formatted card number;
+     *
+     * @param unformattedCardNumber unformatted credit card number
+     * @return formatted card number.
+     */
+    public static String getFormattedCreditCardNumber(String unformattedCardNumber) {
+        StringBuilder builder = new StringBuilder();
+        if (unformattedCardNumber.length() == 16) {
+            for (int i = 0; i < 16; i += 4) {
+                builder.append(unformattedCardNumber.substring(i, i + 4));
+                builder.append(" ");
+            }
+        }
+        return builder.toString();
+    }
+
+
 }
