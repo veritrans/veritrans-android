@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ru.rambler.libs.swipe_layout.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lyt_container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:left_swipe_enabled="true"
+    app:right_swipe_enabled="true">
 
     <LinearLayout
+        android:id="@+id/save_card_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:selectableItemBackground"
@@ -52,20 +56,21 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
-            <TextView
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:id="@+id/text_saved_card_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/four_dp"
-                android:layout_toLeftOf="@id/image_card_offer"
+                android:layout_marginLeft="@dimen/sixteen_dp"
                 android:maxLines="1"
                 android:textSize="@dimen/sixteen_sp" />
 
-            <TextView
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:id="@+id/text_saved_card_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_saved_card_name"
+                android:layout_marginLeft="@dimen/sixteen_dp"
                 android:layout_toLeftOf="@id/image_card_offer"
                 android:maxLines="1" />
         </RelativeLayout>
@@ -78,38 +83,25 @@
             android:background="@color/gray_divider" />
     </LinearLayout>
 
+    <!--RIGHT-->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/gray.secondary"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/sixteen_dp"
-        android:paddingRight="@dimen/sixteen_dp"
-        android:visibility="gone"
-        android:weightSum="3">
+        android:paddingBottom="@dimen/four_dp"
+        android:paddingTop="@dimen/four_dp"
+        app:clamp="self"
+        app:gravity="right">
 
-        <TextView
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/txt_delete"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:clickable="false"
+            android:background="@color/red"
             android:gravity="center_vertical"
-            android:hapticFeedbackEnabled="true"
-            android:text="@string/deleted"
-            android:textColor="@android:color/white"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/txt_undo"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:clickable="false"
-            android:gravity="center"
-            android:text="@string/undo"
-            android:textColor="@color/gray.secondary"
-            android:visibility="invisible" />
+            android:paddingLeft="@dimen/eight_dp"
+            android:paddingRight="@dimen/eight_dp"
+            android:text="@string/delete"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
-</FrameLayout>
+</ru.rambler.libs.swipe_layout.SwipeLayout>

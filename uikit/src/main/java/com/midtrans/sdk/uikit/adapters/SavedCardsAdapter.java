@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
@@ -15,6 +16,8 @@ import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
 
 import java.util.ArrayList;
+
+import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 /**
  * Created by ziahaqi on 12/27/16.
@@ -28,6 +31,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
 
     private SavedCardAdapterEventListener listener;
     private SavedCardPromoListener promoListener;
+    private DeleteCardListener deleteCardListener;
 
     public SavedCardsAdapter() {
     }
@@ -111,6 +115,10 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         return mData.size();
     }
 
+    public void setDeleteCardListener(DeleteCardListener deleteCardListener) {
+        this.deleteCardListener = deleteCardListener;
+    }
+
     public interface SavedCardAdapterEventListener {
         void onItemClick(int position);
     }
@@ -120,17 +128,67 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         void onItemPromo(int position);
     }
 
+    public interface DeleteCardListener {
+        void onItemDelete(int position);
+    }
+
     class SavedCardsViewHolder extends RecyclerView.ViewHolder {
-        TextView textCardName, textCardNumber;
+        TextView textCardName, textCardNumber, deleteButton;
         ImageView imageCardType;
         AspectRatioImageView imageCardOffer;
+        SwipeLayout swipeLayout;
+        LinearLayout mainSaveCard;
 
         public SavedCardsViewHolder(View itemView) {
             super(itemView);
+            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.lyt_container);
             textCardName = (TextView) itemView.findViewById(R.id.text_saved_card_name);
             textCardNumber = (TextView) itemView.findViewById(R.id.text_saved_card_number);
+            deleteButton = (TextView) itemView.findViewById(R.id.txt_delete);
             imageCardType = (ImageView) itemView.findViewById(R.id.image_card_type);
             imageCardOffer = (AspectRatioImageView) itemView.findViewById(R.id.image_card_offer);
+            mainSaveCard = (LinearLayout) itemView.findViewById(R.id.save_card_main);
+
+            swipeLayout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
+                @Override
+                public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
+
+                }
+
+                @Override
+                public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
+
+                }
+
+                @Override
+                public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
+
+                }
+
+                @Override
+                public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
+
+                }
+            });
+
+            mainSaveCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(getAdapterPosition());
+                    }
+                }
+            });
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (deleteCardListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                        deleteCardListener.onItemDelete(getAdapterPosition());
+                    }
+                }
+            });
+
 
             imageCardOffer.setOnClickListener(new View.OnClickListener() {
                 @Override

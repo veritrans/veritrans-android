@@ -32,10 +32,6 @@ import com.midtrans.sdk.uikit.adapters.SavedCardsAdapter;
 import com.midtrans.sdk.uikit.models.PromoData;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-import com.midtrans.sdk.uikit.widgets.OnItemClickListener;
-import com.midtrans.sdk.uikit.widgets.SwipeToDismissTouchListener;
-import com.midtrans.sdk.uikit.widgets.SwipeableItemClickListener;
-import com.midtrans.sdk.uikit.widgets.swipeadapter.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,86 +140,6 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
         cardsAdapter = new SavedCardsAdapter();
         rvSavedCards.setAdapter(cardsAdapter);
 
-        final SwipeToDismissTouchListener<RecyclerViewAdapter> touchListener =
-                new SwipeToDismissTouchListener<>(
-                        new RecyclerViewAdapter(rvSavedCards),
-                        new SwipeToDismissTouchListener.DismissCallbacks<RecyclerViewAdapter>() {
-                            @Override
-                            public boolean canDismiss(int position) {
-                                return true;
-                            }
-
-                            @Override
-                            public void onPendingDismiss(RecyclerViewAdapter recyclerView, final int position) {
-
-                            }
-
-                            @Override
-                            public void onDismiss(RecyclerViewAdapter view, final int position) {
-                                AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                                        .setMessage(R.string.card_delete_message)
-                                        .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int j) {
-                                                dialogInterface.dismiss();
-                                                selectedCard = cardsAdapter.getItem(position);
-                                                if (MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
-                                                    // Handle delete for built in token storage
-                                                    SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
-                                                    ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
-                                                    ((CreditDebitCardFlowActivity) getActivity()).deleteCardFromTokenStorage(selectedCard);
-                                                } else {
-                                                    // Handle delete for merchant server implementation
-                                                    SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
-                                                    ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
-                                                    ArrayList<SaveCardRequest> cardList = new ArrayList<>();
-                                                    if (creditCards != null && !creditCards.isEmpty()) {
-                                                        cardList.addAll(creditCards);
-                                                        for (int i = 0; i < cardList.size(); i++) {
-                                                            if (cardList.get(i).getSavedTokenId().equalsIgnoreCase(selectedCard.getSavedTokenId())) {
-                                                                cardList.remove(cardList.get(i));
-                                                            }
-                                                        }
-                                                    }
-                                                    ((CreditDebitCardFlowActivity) getActivity()).saveCreditCards(cardList, true);
-                                                }
-                                            }
-                                        })
-                                        .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                dialogInterface.dismiss();
-                                                selectedCard = null;
-                                            }
-                                        })
-                                        .create();
-                                alertDialog.show();
-                            }
-                        });
-        // Dismiss the item automatically after 3 seconds
-        rvSavedCards.setOnTouchListener(touchListener);
-        rvSavedCards.setOnScrollListener((RecyclerView.OnScrollListener) touchListener.makeScrollListener());
-        rvSavedCards.addOnItemTouchListener(new SwipeableItemClickListener(getContext(), new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                SaveCardRequest card = cardsAdapter.getItem(position);
-                if (getActivity() != null) {
-                    if (cardsAdapter.getPromoDatas() != null
-                            && !cardsAdapter.getPromoDatas().isEmpty()
-                            && cardsAdapter.getPromoDatas().get(position) != null) {
-                        selectedPromo = cardsAdapter.getPromoDatas().get(position).getPromoResponse();
-                        if (selectedPromo != null && selectedPromo.getDiscountAmount() > 0) {
-                            showNewCardFragment(card, selectedPromo);
-                        } else {
-                            showNewCardFragment(card);
-                        }
-                    } else {
-                        showNewCardFragment(card);
-                    }
-                }
-            }
-        }));
-
         addCardBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,6 +173,49 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
             if (getActivity() != null) {
                 cardsAdapter.setData(creditCards);
                 cardsAdapter.setListener(this);
+                cardsAdapter.setDeleteCardListener(new SavedCardsAdapter.DeleteCardListener() {
+                    @Override
+                    public void onItemDelete(final int position) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                                .setMessage(R.string.card_delete_message)
+                                .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int j) {
+                                        dialogInterface.dismiss();
+                                        selectedCard = cardsAdapter.getItem(position);
+                                        if (MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
+                                            // Handle delete for built in token storage
+                                            SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+                                            ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
+                                            ((CreditDebitCardFlowActivity) getActivity()).deleteCardFromTokenStorage(selectedCard);
+                                        } else {
+                                            // Handle delete for merchant server implementation
+                                            SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+                                            ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
+                                            ArrayList<SaveCardRequest> cardList = new ArrayList<>();
+                                            if (creditCards != null && !creditCards.isEmpty()) {
+                                                cardList.addAll(creditCards);
+                                                for (int i = 0; i < cardList.size(); i++) {
+                                                    if (cardList.get(i).getSavedTokenId().equalsIgnoreCase(selectedCard.getSavedTokenId())) {
+                                                        cardList.remove(cardList.get(i));
+                                                    }
+                                                }
+                                            }
+                                            ((CreditDebitCardFlowActivity) getActivity()).saveCreditCards(cardList, true);
+                                        }
+                                    }
+                                })
+                                .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                        selectedCard = null;
+                                    }
+                                })
+                                .create();
+                        alertDialog.show();
+                    }
+                });
                 initPromoData();
                 fadeInAnimation(addCardBt);
             }
@@ -271,6 +230,49 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
             // Fill promo data
             final ArrayList<PromoData> promoDatas = getPromoData();
             cardsAdapter.setPromoDatas(promoDatas);
+            cardsAdapter.setDeleteCardListener(new SavedCardsAdapter.DeleteCardListener() {
+                @Override
+                public void onItemDelete(final int position) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                            .setMessage(R.string.card_delete_message)
+                            .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int j) {
+                                    dialogInterface.dismiss();
+                                    selectedCard = cardsAdapter.getItem(position);
+                                    if (MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
+                                        // Handle delete for built in token storage
+                                        SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+                                        ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
+                                        ((CreditDebitCardFlowActivity) getActivity()).deleteCardFromTokenStorage(selectedCard);
+                                    } else {
+                                        // Handle delete for merchant server implementation
+                                        SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+                                        ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
+                                        ArrayList<SaveCardRequest> cardList = new ArrayList<>();
+                                        if (creditCards != null && !creditCards.isEmpty()) {
+                                            cardList.addAll(creditCards);
+                                            for (int i = 0; i < cardList.size(); i++) {
+                                                if (cardList.get(i).getSavedTokenId().equalsIgnoreCase(selectedCard.getSavedTokenId())) {
+                                                    cardList.remove(cardList.get(i));
+                                                }
+                                            }
+                                        }
+                                        ((CreditDebitCardFlowActivity) getActivity()).saveCreditCards(cardList, true);
+                                    }
+                                }
+                            })
+                            .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    selectedCard = null;
+                                }
+                            })
+                            .create();
+                    alertDialog.show();
+                }
+            });
             cardsAdapter.setPromoListener(new SavedCardsAdapter.SavedCardPromoListener() {
                 @Override
                 public void onItemPromo(int position) {

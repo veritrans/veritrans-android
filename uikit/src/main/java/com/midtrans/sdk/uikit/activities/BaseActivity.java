@@ -96,7 +96,7 @@ public class BaseActivity extends AppCompatActivity {
                 fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
             }
 
-            if (!fragmentPopped) { //fragment not in back stack, create it.
+            if (!fragmentPopped) {
                 Logger.i("fragment not in back stack, create it");
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.replace(fragmentContainer, fragment, backStateName);

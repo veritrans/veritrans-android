@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.midtrans.sdk.uikit">
 
+    <uses-sdk tools:overrideLibrary="com.rds.swipelayout" />
     <application>
         <activity
             android:name="com.midtrans.sdk.uikit.activities.UserDetailsActivity"
