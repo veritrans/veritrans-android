@@ -16,6 +16,7 @@ import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.Payment;
 import com.midtrans.sdk.ui.models.CreditCardDetails;
 import com.midtrans.sdk.ui.models.PaymentResult;
+import com.midtrans.sdk.ui.models.SavedCreditCard;
 import com.midtrans.sdk.ui.thirdparty.ExternalScanner;
 import com.midtrans.sdk.ui.thirdparty.ScannerModel;
 import com.midtrans.sdk.ui.utils.Logger;
@@ -32,7 +33,6 @@ import com.midtrans.sdk.ui.widgets.FancyButton;
 public class CreditCardActivity extends BaseActivity {
 
     private CreditCardPresenter presenter;
-
     private TextView tvHeaderTitle;
     private DefaultTextView tvTotalAmount;
     private FancyButton buttonBack;
@@ -51,11 +51,14 @@ public class CreditCardActivity extends BaseActivity {
 
     private void initDefaultState() {
         setViewTotalAmount(MidtransUi.getInstance().getCheckoutTokenRequest().transactionDetails.grossAmount);
-
         if (presenter.isNormalMode()) {
-            showCreditCardDetailFragment(null);
+            showCreditCardDetailFragment(new CreditCardDetails(null, null));
         } else {
-            presenter.getSavedCards();
+            if (presenter.haveSavedTokens()) {
+                showSavedCreditCardFragment(new SavedCreditCard(presenter.getSavedCards(), presenter.getPromos()));
+            } else {
+                showCreditCardDetailFragment(new CreditCardDetails(null, null));
+            }
         }
     }
 
@@ -82,8 +85,8 @@ public class CreditCardActivity extends BaseActivity {
         presenter = new CreditCardPresenter(this);
     }
 
-    private void showCreditCardDetailFragment(CreditCardDetails model) {
-        if (model != null && model.hasSavedToken()) {
+    public void showCreditCardDetailFragment(CreditCardDetails model) {
+        if (model.hasSavedToken()) {
             showDeleteCardIcon(true);
         } else {
             showDeleteCardIcon(false);
@@ -105,8 +108,8 @@ public class CreditCardActivity extends BaseActivity {
     }
 
 
-    private void showSavedCreditCardFragment() {
-        SavedCreditCardsFragment savedCreditCardsFragment = SavedCreditCardsFragment.newInstance();
+    private void showSavedCreditCardFragment(SavedCreditCard savedCreditCard) {
+        SavedCreditCardsFragment savedCreditCardsFragment = SavedCreditCardsFragment.newInstance(savedCreditCard);
         replaceFragment(savedCreditCardsFragment, R.id.layout_container, true, false);
 
         presenter.setSavedCreditCardsView(savedCreditCardsFragment);
@@ -165,13 +168,15 @@ public class CreditCardActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        Logger.d(TAG, "bpress>current:" + currentFragment);
+
         if (currentFragment != null) {
             Logger.d(TAG, "currentFragment:" + currentFragment);
             if (currentFragment.equals(PaymentStatusFragment.class)) {
                 setResultCode(RESULT_OK);
                 completePayment(presenter.getPaymentResult);
             } else if (currentFragment.equals(CreditCardDetailsFragment.class)) {
-                super.onBackPressed();
+//                super.onBackPressed();
             }
         } else {
             setResultCode(RESULT_CANCELED);

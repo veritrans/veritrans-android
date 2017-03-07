@@ -68,4 +68,25 @@ public class BaseFragment extends Fragment {
             ((BaseActivity)getActivity()).setCheckoxStateColor(checkBox);
         }
     }
+
+    public int getPrimaryDarkColor() {
+        if(getActivity() instanceof BaseActivity){
+            ((BaseActivity)getActivity()).getPrimaryDarkColor();
+        }
+        return 0;
+    }
+
+    public int getSecondaryColor() {
+        if(getActivity() instanceof BaseActivity){
+            ((BaseActivity)getActivity()).getPrimaryDarkColor();
+        }
+        return 0;
+    }
+
+    public int getPrimaryColor() {
+        if(getActivity() instanceof BaseActivity){
+            ((BaseActivity)getActivity()).getPrimaryDarkColor();
+        }
+        return  0;
+    }
 }

@@ -52,7 +52,7 @@ public class Payment {
     public class CreditCard {
 
         public static final String ONE_CLICK = "one_click";
-        public static final String TWO_CLICKS = "one_clicks";
+        public static final String TWO_CLICKS = "two_clicks";
     }
 
     public class Param {

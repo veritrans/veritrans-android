@@ -6,6 +6,7 @@ import com.midtrans.sdk.core.models.snap.CreditCard;
 import com.midtrans.sdk.core.models.snap.CustomerDetails;
 import com.midtrans.sdk.core.models.snap.ItemDetails;
 import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
+import com.midtrans.sdk.core.models.snap.promo.PromoResponse;
 import com.midtrans.sdk.core.models.snap.transaction.SnapCallbacks;
 import com.midtrans.sdk.core.models.snap.transaction.SnapEnabledPayment;
 import com.midtrans.sdk.core.models.snap.transaction.SnapMerchantData;
@@ -22,6 +23,7 @@ import java.util.List;
 
 public class Transaction {
 
+    private final List<PromoResponse> promos;
     private String checkoutToken;
     private String token;
     private SnapTransactionDetails transactionDetails;
@@ -41,6 +43,7 @@ public class Transaction {
         this.itemDetails = snapTransaction.itemDetails;
         this.customerDetails = snapTransaction.customerDetails;
         this.transactionDetails = snapTransaction.transactionDetails;
+        this.promos = snapTransaction.promos;
     }
 
     public boolean isCreditCardNormalMode() {
@@ -110,5 +113,13 @@ public class Transaction {
 
     public CreditCard getCreditCard() {
         return creditCard;
+    }
+
+    public boolean haveSavedTokens() {
+        return creditCard.savedTokens != null && !creditCard.savedTokens.isEmpty();
+    }
+
+    public List<PromoResponse> getPromos() {
+        return promos;
     }
 }

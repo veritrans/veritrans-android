@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -140,6 +141,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                 this.fontSemiBold = customSetting.fontSemiBold;
                 this.fontBold = customSetting.fontBold;
             }
+
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && primaryDarkColor != 0) {
+            getWindow().setStatusBarColor(primaryDarkColor);
         }
     }
 
@@ -239,6 +245,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public int getPrimaryDarkColor() {
+        return primaryDarkColor;
+    }
+
+    public int getSecondaryColor() {
+        return secondaryColor;
+    }
+
+    public int getPrimaryColor() {
+        return primaryColor;
+    }
+
     protected void initThemeColor() {
 
         // Set amount panel background
@@ -267,5 +285,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 indicator.setBackgroundColor(primaryColor);
             }
         }
+
+
     }
 }

@@ -7,8 +7,10 @@ import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.papi.CardTokenRequest;
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
+import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentParams;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
+import com.midtrans.sdk.core.models.snap.promo.PromoResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePresenter;
 import com.midtrans.sdk.ui.models.CreditCardDetails;
@@ -18,6 +20,7 @@ import com.midtrans.sdk.ui.models.Transaction;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.utils.UiUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,12 +61,8 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
         return midtransUiSdk.isCreditCardNormalMode();
     }
 
-    public void getSavedCards() {
-        if (midtransUiSdk.isBuiltInTokenStorage()) {
-
-        } else {
-
-        }
+    public List<SavedToken> getSavedCards() {
+        return midtransUiSdk.getTransaction().getCreditCard().savedTokens;
     }
 
     @Override
@@ -143,7 +142,7 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
 
     @Override
     public boolean isCardBinValid(String cardBin) {
-       return  creditCardTransaction.isInWhiteList(cardBin);
+        return creditCardTransaction.isInWhiteList(cardBin);
     }
 
     @Override
@@ -232,6 +231,16 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
     }
 
     @Override
+    public void getTotalAmount() {
+
+    }
+
+    @Override
+    public boolean isNormalCardPayment() {
+        return midtransUiSdk.getTransaction().isCreditCardNormalMode();
+    }
+
+    @Override
     public boolean isPrimaryDarkColorAvailable() {
         return false;
     }
@@ -256,5 +265,17 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
         if (cardDetailView != null) {
 
         }
+    }
+
+    public boolean isBuiltInTokenStorage() {
+        return midtransUiSdk.isBuiltInTokenStorage();
+    }
+
+    public boolean haveSavedTokens() {
+        return midtransUiSdk.isBuiltInTokenStorage() && midtransUiSdk.getTransaction().haveSavedTokens();
+    }
+
+    public List<PromoResponse> getPromos() {
+        return midtransUiSdk.getTransaction().getPromos();
     }
 }

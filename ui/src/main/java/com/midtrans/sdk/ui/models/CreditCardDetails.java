@@ -1,7 +1,9 @@
 package com.midtrans.sdk.ui.models;
 
 import com.midtrans.sdk.core.models.snap.SavedToken;
+import com.midtrans.sdk.core.models.snap.promo.PromoResponse;
 import com.midtrans.sdk.ui.constants.Payment;
+import com.midtrans.sdk.ui.utils.Logger;
 
 import java.io.Serializable;
 
@@ -11,12 +13,14 @@ import java.io.Serializable;
 
 public class CreditCardDetails implements Serializable {
     private SavedToken savedToken;
-
-    public CreditCardDetails(SavedToken savedToken) {
+    private PromoResponse promo;
+    public CreditCardDetails(SavedToken savedToken, PromoResponse promo) {
         this.savedToken = savedToken;
+        this.promo = promo;
     }
 
     public boolean hasSavedToken() {
+        Logger.d("savedTokeen:",  savedToken.tokenType);
         return savedToken != null;
     }
 

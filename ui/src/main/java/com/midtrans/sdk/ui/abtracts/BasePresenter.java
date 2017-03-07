@@ -9,13 +9,4 @@ import com.midtrans.sdk.ui.MidtransUi;
 public abstract class BasePresenter{
     protected MidtransUi midtransUiSdk;
 
-
-    protected  boolean hasPrimaryColor(){
-         if(midtransUiSdk.getColorTheme() != null && midtransUiSdk.getColorTheme().getPrimaryColor() != 0){
-             return true;
-         }
-
-        return false;
-    }
-
 }

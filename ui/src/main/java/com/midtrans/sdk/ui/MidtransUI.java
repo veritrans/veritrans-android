@@ -14,7 +14,10 @@ import com.midtrans.sdk.ui.models.Transaction;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
 import com.midtrans.sdk.ui.themes.ColorTheme;
 import com.midtrans.sdk.ui.themes.CustomColorTheme;
+import com.midtrans.sdk.ui.utils.LocalDataHandler;
 import com.midtrans.sdk.ui.views.transaction.TransactionActivity;
+
+import java.util.UUID;
 
 /**
  * Created by ziahaqi on 2/19/17.
@@ -33,7 +36,7 @@ public class MidtransUi {
     private Transaction transaction;
     private String merchantLogoUrl;
     private String merchantName;
-    private boolean builtInTokenStorage;
+    private boolean builtInTokenStorage = true;
     private BaseColorTheme colorTheme;
 
     private MidtransUi(Builder builder) {
@@ -50,6 +53,7 @@ public class MidtransUi {
         if(customSetting.colorTheme != null){
             this.colorTheme = customSetting.colorTheme;
         }
+
     }
 
     public static Builder builder() {

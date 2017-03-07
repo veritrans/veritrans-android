@@ -3,6 +3,7 @@ package com.midtrans.sdk.core.models.snap.transaction;
 import com.midtrans.sdk.core.models.snap.CreditCard;
 import com.midtrans.sdk.core.models.snap.CustomerDetails;
 import com.midtrans.sdk.core.models.snap.ItemDetails;
+import com.midtrans.sdk.core.models.snap.promo.PromoResponse;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class SnapTransaction {
     public final List<SnapEnabledPayment> enabledPayments;
     public final CreditCard creditCard;
     public final SnapMerchantData merchant;
+    public List<PromoResponse> promos;
 
     public SnapTransaction(String token,
                            SnapTransactionDetails transactionDetails,

@@ -11,6 +11,7 @@ public class Constants {
     public static class Animation {
         public static final long FADE_IN_FORM_TIME = 300;
 
+        public static final long CARD_ANIMATION_TIME = 400;
     }
 
     public static class DateTime {

@@ -3,7 +3,6 @@ package com.midtrans.sdk.ui.views.creditcard;
 import android.support.annotation.NonNull;
 
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
-import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentParams;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.ui.abtracts.IBaseView;
 import com.midtrans.sdk.ui.abtracts.IPresenter;
@@ -75,5 +74,9 @@ public interface CreditCardContract {
         boolean isSecureCardpayment();
 
         void payUsingCard();
+
+        void getTotalAmount();
+
+        boolean isNormalCardPayment();
     }
 }
