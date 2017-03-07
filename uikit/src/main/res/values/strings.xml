@@ -681,4 +681,6 @@
     <string name="error_delete_message">Failed to delete card</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
+    <string name="deleted">Deleted</string>
+    <string name="undo">Undo</string>
 </resources>

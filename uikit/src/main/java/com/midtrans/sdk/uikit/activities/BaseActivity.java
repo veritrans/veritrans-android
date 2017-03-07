@@ -86,7 +86,7 @@ public class BaseActivity extends AppCompatActivity {
     public void replaceFragment(Fragment fragment, int fragmentContainer, boolean addToBackStack, boolean clearBackStack) {
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            Logger.i("replace freagment");
+            Logger.i("replace fragment");
             boolean fragmentPopped = false;
             String backStateName = fragment.getClass().getName();
 

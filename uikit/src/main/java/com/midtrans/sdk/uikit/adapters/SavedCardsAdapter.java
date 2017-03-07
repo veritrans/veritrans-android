@@ -132,16 +132,6 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
             imageCardType = (ImageView) itemView.findViewById(R.id.image_card_type);
             imageCardOffer = (AspectRatioImageView) itemView.findViewById(R.id.image_card_offer);
 
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null) {
-                        listener.onItemClick(getAdapterPosition());
-                    }
-                }
-            });
-
             imageCardOffer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
