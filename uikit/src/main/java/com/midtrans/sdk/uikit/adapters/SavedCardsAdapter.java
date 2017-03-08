@@ -34,6 +34,8 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     private DeleteCardListener deleteCardListener;
 
     public SavedCardsAdapter() {
+        promoDatas = new ArrayList<>();
+        mData = new ArrayList<>();
     }
 
     public ArrayList<PromoData> getPromoDatas() {
@@ -52,6 +54,23 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         this.mData.clear();
         this.mData.addAll(cards);
         this.notifyDataSetChanged();
+    }
+
+    public void removeCard(String maskedCard) {
+        SaveCardRequest saveCardRequest = searchSavedCard(maskedCard);
+        if (saveCardRequest != null) {
+            mData.remove(mData.indexOf(saveCardRequest));
+            notifyDataSetChanged();
+        }
+    }
+
+    private SaveCardRequest searchSavedCard(String maskedCard) {
+        for (SaveCardRequest saveCardRequest : mData) {
+            if (saveCardRequest.getMaskedCard().equals(maskedCard)) {
+                return saveCardRequest;
+            }
+        }
+        return null;
     }
 
     public void setListener(SavedCardAdapterEventListener listener) {
@@ -83,6 +102,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         String maskedCard = card.getMaskedCard();
         String cardType = Utils.getCardType(maskedCard);
 
+        holder.swipeLayout.setOffset(0);
         switch (cardType) {
             case Utils.CARD_TYPE_VISA:
                 holder.imageCardType.setImageResource(R.drawable.ic_visa);
@@ -102,11 +122,13 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         String cardNumber = SdkUIFlowUtil.getMaskedCardNumber(maskedCard);
         holder.textCardNumber.setText(cardNumber);
 
-        PromoData promoData = promoDatas.get(position);
-        if (promoData != null && promoData.getPromoResponse() != null) {
-            holder.imageCardOffer.setVisibility(View.VISIBLE);
-        } else {
-            holder.imageCardOffer.setVisibility(View.GONE);
+        if (promoDatas != null && !promoDatas.isEmpty()) {
+            PromoData promoData = promoDatas.get(position);
+            if (promoData != null && promoData.getPromoResponse() != null) {
+                holder.imageCardOffer.setVisibility(View.VISIBLE);
+            } else {
+                holder.imageCardOffer.setVisibility(View.GONE);
+            }
         }
     }
 

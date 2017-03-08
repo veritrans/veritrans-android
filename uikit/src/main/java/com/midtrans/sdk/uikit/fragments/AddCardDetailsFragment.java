@@ -526,7 +526,6 @@ public class AddCardDetailsFragment extends Fragment {
                         String input = s.toString();
                         if (s.length() == 4) {
                             if (lastExpDate.length() > s.length()) {
-
                                 try {
                                     int month = Integer.parseInt(input.substring(0, 2));
                                     if (month <= 12) {
@@ -993,12 +992,6 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
 
-    public void updateFromScanCardEvent(CreditCardFromScanner creditCardFromScanner) {
-        etCardNo.setText(creditCardFromScanner.getCardNumber());
-        etCvv.setText(creditCardFromScanner.getCvv());
-        etExpiryDate.setText(creditCardFromScanner.getExpired());
-    }
-
     private void disableEnableInstallmentButton() {
         if (installmentCurrentPosition == 0 && installmentTotalPositions == 0) {
             buttonDecrease.setEnabled(false);
@@ -1013,6 +1006,12 @@ public class AddCardDetailsFragment extends Fragment {
             buttonDecrease.setEnabled(false);
             buttonIncrease.setEnabled(true);
         }
+    }
+
+    public void updateFromScanCardEvent(CreditCardFromScanner creditCardFromScanner) {
+        etCardNo.setText(creditCardFromScanner.getCardNumber());
+        etCvv.setText(creditCardFromScanner.getCvv());
+        etExpiryDate.setText(creditCardFromScanner.getExpired());
     }
 
     private void onDecreaseTerm() {

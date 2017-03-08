@@ -93,7 +93,7 @@ public class BaseActivity extends AppCompatActivity {
             if (clearBackStack) {
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             } else {
-                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
+                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
 
             if (!fragmentPopped) {

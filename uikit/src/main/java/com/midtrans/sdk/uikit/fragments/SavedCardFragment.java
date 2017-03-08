@@ -68,12 +68,9 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (fromBackStack) {
-            if (getActivity() != null && ((CreditDebitCardFlowActivity) getActivity()).isRemoveExistCard()) {
-                updateSavedCards();
-                ((CreditDebitCardFlowActivity) getActivity()).setRemoveExistCard(false);
-            }
-            fromBackStack = false;
+        if (getActivity() != null && ((CreditDebitCardFlowActivity) getActivity()).isRemoveExistCard()) {
+            updateSavedCards();
+            ((CreditDebitCardFlowActivity) getActivity()).setRemoveExistCard(false);
         }
         return inflater.inflate(R.layout.fragment_saved_card, container, false);
     }
@@ -99,33 +96,10 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     public void updateSavedCards() {
         ((CreditDebitCardFlowActivity) getActivity()).setRemoveExistCard(false);
         SdkUIFlowUtil.hideProgressDialog();
-        int position = -1;
-
-        if (creditCards != null && selectedCard != null) {
-            for (int i = 0; i < creditCards.size(); i++) {
-                if (creditCards.get(i).getSavedTokenId().equalsIgnoreCase(selectedCard.getSavedTokenId())) {
-                    position = i;
-                }
-            }
-
-            if (!creditCards.isEmpty()) {
-                for (int i = 0; i < creditCards.size(); i++) {
-                    Logger.i(TAG, "before:" + creditCards.get(i).getSavedTokenId());
-                }
-
-                creditCards.remove(position);
-
-                if (!creditCards.isEmpty()) {
-                    for (int i = 0; i < creditCards.size(); i++) {
-                        Logger.i(TAG, "after:" + creditCards.get(i).getSavedTokenId());
-                    }
-                    if (cardsAdapter != null) {
-                        setAdapter();
-                    }
-                } else {
-                    showNewCardFragment(null, null);
-                }
-            }
+        if (!creditCards.isEmpty()) {
+            setAdapter();
+        } else {
+            showNewCardFragment(null, null);
         }
     }
 
@@ -148,8 +122,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
             }
         });
 
-        Drawable filteredDrawable = SdkUIFlowUtil.filterDrawableImage(getContext(), R.drawable.ic_plus_new,
-                addCardBt.getmDefaultIconColor());
+        Drawable filteredDrawable = SdkUIFlowUtil.filterDrawableImage(getContext(), R.drawable.ic_plus_new, addCardBt.getmDefaultIconColor());
         addCardBt.setIconResource(filteredDrawable);
 
         creditCards = ((CreditDebitCardFlowActivity) getActivity()).getCreditCardList();
@@ -230,49 +203,6 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
             // Fill promo data
             final ArrayList<PromoData> promoDatas = getPromoData();
             cardsAdapter.setPromoDatas(promoDatas);
-            cardsAdapter.setDeleteCardListener(new SavedCardsAdapter.DeleteCardListener() {
-                @Override
-                public void onItemDelete(final int position) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                            .setMessage(R.string.card_delete_message)
-                            .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int j) {
-                                    dialogInterface.dismiss();
-                                    selectedCard = cardsAdapter.getItem(position);
-                                    if (MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
-                                        // Handle delete for built in token storage
-                                        SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
-                                        ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
-                                        ((CreditDebitCardFlowActivity) getActivity()).deleteCardFromTokenStorage(selectedCard);
-                                    } else {
-                                        // Handle delete for merchant server implementation
-                                        SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
-                                        ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
-                                        ArrayList<SaveCardRequest> cardList = new ArrayList<>();
-                                        if (creditCards != null && !creditCards.isEmpty()) {
-                                            cardList.addAll(creditCards);
-                                            for (int i = 0; i < cardList.size(); i++) {
-                                                if (cardList.get(i).getSavedTokenId().equalsIgnoreCase(selectedCard.getSavedTokenId())) {
-                                                    cardList.remove(cardList.get(i));
-                                                }
-                                            }
-                                        }
-                                        ((CreditDebitCardFlowActivity) getActivity()).saveCreditCards(cardList, true);
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                    selectedCard = null;
-                                }
-                            })
-                            .create();
-                    alertDialog.show();
-                }
-            });
             cardsAdapter.setPromoListener(new SavedCardsAdapter.SavedCardPromoListener() {
                 @Override
                 public void onItemPromo(int position) {
@@ -473,7 +403,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     public void onDestroyView() {
         super.onDestroyView();
 
-        fromBackStack = this.selectedCard != null;
+        //fromBackStack = this.selectedCard != null;
     }
 
     private void fadeInAnimation(final View view) {

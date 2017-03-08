@@ -29,7 +29,7 @@ import com.midtrans.sdk.uikit.activities.BCAKlikPayActivity;
 import com.midtrans.sdk.uikit.activities.BankTransferActivity;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 import com.midtrans.sdk.uikit.activities.CIMBClickPayActivity;
-import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
+import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
 import com.midtrans.sdk.uikit.activities.EpayBriActivity;
 import com.midtrans.sdk.uikit.activities.IndomaretActivity;
 import com.midtrans.sdk.uikit.activities.IndosatDompetkuActivity;
@@ -320,9 +320,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
             public void onClick(View v) {
 
                 Log.d("statusactivity", "from:" + getActivity().getClass().getName());
-                if (getActivity() instanceof CreditDebitCardFlowActivity) {
-                    ((CreditDebitCardFlowActivity) getActivity()).setResultCode(Activity.RESULT_OK);
-                    ((CreditDebitCardFlowActivity) getActivity()).setResultAndFinish();
+                if (getActivity() instanceof CreditCardFlowActivity) {
+                    ((CreditCardFlowActivity) getActivity()).setResultCode(Activity.RESULT_OK);
+                    ((CreditCardFlowActivity) getActivity()).setResultAndFinish();
                 } else if (getActivity() instanceof EpayBriActivity) {
                     ((EpayBriActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     ((EpayBriActivity) getActivity()).setResultAndFinish();

@@ -335,7 +335,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         if (isCreditCardOnly) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_credit_debit))) {
-                Intent intent = new Intent(PaymentMethodsActivity.this, CreditDebitCardFlowActivity.class);
+                Intent intent = new Intent(PaymentMethodsActivity.this, CreditCardFlowActivity.class);
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
@@ -481,7 +481,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         String name = paymentMethod.getName();
         String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
         if (name.equalsIgnoreCase(getString(R.string.payment_method_credit_card))) {
-            Intent intent = new Intent(this, CreditDebitCardFlowActivity.class);
+            Intent intent = new Intent(this, CreditCardFlowActivity.class);
             startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bank_transfer))) {
             Intent startBankPayment = new Intent(this, SelectBankTransferActivity.class);

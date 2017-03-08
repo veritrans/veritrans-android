@@ -41,6 +41,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
@@ -89,7 +90,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private RelativeLayout processingLayout;
     private ArrayList<BankDetail> bankDetails;
     private ReadBankDetailTask readBankDetailTask;
-    //for setResult
+    //for set result
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
     private TextView emptyCardsTextView;
@@ -194,12 +195,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
             public void onSuccess(Void object) {
                 SdkUIFlowUtil.hideProgressDialog();
                 // Update saved cards
-                MidtransSDK.getInstance().getCreditCard().setSavedTokens(
-                        SdkUIFlowUtil.removeCardFromSavedCards(
-                                MidtransSDK.getInstance().getCreditCard().getSavedTokens(),
-                                maskedCardNumber
-                        )
-                );
+                List<SavedToken> savedTokens = midtransSDK.getCreditCard().getSavedTokens();
+                List<SavedToken> savedTokensUpdated = SdkUIFlowUtil.removeCardFromSavedCards(savedTokens, savedCard.getMaskedCard());
+                CreditCard creditCard = midtransSDK.getCreditCard();
+                creditCard.setSavedTokens(savedTokensUpdated);
+                midtransSDK.setCreditCard(creditCard);
                 // init credit cards again
                 creditCards.clear();
                 creditCards.addAll(filterCardsByClickType(SdkUIFlowUtil.convertSavedToken(midtransSDK.getCreditCard().getSavedTokens())));
@@ -258,8 +258,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         } else if (!TextUtils.isEmpty(currentFragmentName)
                 && currentFragmentName.equalsIgnoreCase(AddCardDetailsFragment.class.getName())
                 && fromSavedCard) {
-            super.onBackPressed();
             setFromSavedCard(false);
+            super.onBackPressed();
         } else {
             setResultCode(RESULT_CANCELED);
             setResultAndFinish();
@@ -348,10 +348,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         CreditCardPaymentModel paymentModel;
         if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
                 && !isNewCard && this.maskedCardNumber != null) {
-            //using one click
+            // using one click
             paymentModel = new CreditCardPaymentModel(this.maskedCardNumber);
         } else if (tokenDetailsResponse != null && !TextUtils.isEmpty(tokenDetailsResponse.getTokenId())) {
-            //using normal payment & twoclick & oneclick first payment
+            // using normal payment & twoclick & oneclick first payment
             paymentModel = new CreditCardPaymentModel(tokenDetailsResponse.getTokenId(), saveCard);
         } else {
             SdkUIFlowUtil.showToast(this, getString(R.string.message_payment_not_completed));
@@ -378,7 +378,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
                         @Override
                         public void onFailure(TransactionResponse response, String reason) {
-
                             SdkUIFlowUtil.hideProgressDialog();
                             if (attempt < MAX_ATTEMPT) {
                                 attempt += 1;
