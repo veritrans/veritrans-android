@@ -270,16 +270,6 @@ public class SDKUtilsTest {
 
     }
 
-
-    @Test
-    public void getBBMMoneyRequestModel() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertNotNull(SdkUtil.getBBMMoneyRequestModel(transactionRequestMock).getTransactionDetails());
-    }
-
     @Test
     public void getCIMBClickPayModelTest() throws ClassNotFoundException {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);

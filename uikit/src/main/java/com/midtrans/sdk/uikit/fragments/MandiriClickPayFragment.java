@@ -1,34 +1,39 @@
 package com.midtrans.sdk.uikit.fragments;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by shivam on 10/28/15.
  */
 public class MandiriClickPayFragment extends Fragment {
-
-
     private static final String DUMMY_CARD_NUMBER = "4811111111111114";
-    private EditText mEditTextDebitCardNumber = null;
-    private EditText mEditTextChallengeToken = null;
+    private AppCompatEditText mEditTextDebitCardNumber = null;
+    private AppCompatEditText mEditTextChallengeToken = null;
+    private TextInputLayout mTextInputLayoutDebitCardNumber = null;
+    private TextInputLayout mTextInputLayoutChallengeToken = null;
     private FancyButton btnSeeInstruction = null;
     private DefaultTextView textAppli, textInput1, textInput2, textInput3;
 
@@ -43,8 +48,10 @@ public class MandiriClickPayFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mEditTextChallengeToken = (EditText) view.findViewById(R.id.et_challenge_token);
-        mEditTextDebitCardNumber = (EditText) view.findViewById(R.id.et_debit_card_no);
+        mEditTextChallengeToken = (AppCompatEditText) view.findViewById(R.id.et_challenge_token);
+        mEditTextDebitCardNumber = (AppCompatEditText) view.findViewById(R.id.et_debit_card_no);
+        mTextInputLayoutChallengeToken = (TextInputLayout) view.findViewById(R.id.til_challenge_token);
+        mTextInputLayoutDebitCardNumber = (TextInputLayout) view.findViewById(R.id.til_debit_card_no);
         btnSeeInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
         textInput1 = (DefaultTextView) view.findViewById(R.id.text_input_1);
         textInput2 = (DefaultTextView) view.findViewById(R.id.text_input_2);
@@ -58,6 +65,10 @@ public class MandiriClickPayFragment extends Fragment {
         btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //track page mandiri click pay overview
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_MANDIRI_CLICKPAY_OVERVIEW);
+
                 getActivity().startActivity(new Intent(getActivity(), MandiriClickPayInstructionActivity.class));
             }
         });
@@ -65,6 +76,43 @@ public class MandiriClickPayFragment extends Fragment {
         textInput1.setText("");
         textInput2.setText(String.valueOf(MidtransSDK.getInstance().getTransactionRequest().getAmount()));
         textInput3.setText(String.valueOf(SdkUIFlowUtil.generateRandomNumber()));
+
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
+                // Set color filter in edit text
+                try {
+                    // Set on challenge token
+                    Field fDefaultTextColorChallengeToken = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                    fDefaultTextColorChallengeToken.setAccessible(true);
+                    fDefaultTextColorChallengeToken.set(mTextInputLayoutChallengeToken, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                    Field fFocusedTextColorChallengeToken = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                    fFocusedTextColorChallengeToken.setAccessible(true);
+                    fFocusedTextColorChallengeToken.set(mTextInputLayoutChallengeToken, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                    mEditTextChallengeToken.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                    // Set on debit card number
+                    Field fDefaultTextColorDebitNumber = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                    fDefaultTextColorDebitNumber.setAccessible(true);
+                    fDefaultTextColorDebitNumber.set(mTextInputLayoutDebitCardNumber, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                    Field fFocusedTextColorDebitNumber = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                    fFocusedTextColorDebitNumber.setAccessible(true);
+                    fFocusedTextColorDebitNumber.set(mTextInputLayoutDebitCardNumber, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                    mEditTextDebitCardNumber.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                btnSeeInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnSeeInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
+        }
     }
 
     private void setTextWatcher() {

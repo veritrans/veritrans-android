@@ -37,7 +37,7 @@
                 android:padding="@dimen/eight_dp"
                 android:text="@string/text_company_code_here"
                 android:textColor="@color/black"
-                android:textSize="@dimen/header_text_size" />
+                android:textSize="@dimen/big_text" />
 
             <com.midtrans.sdk.uikit.widgets.FancyButton
                 android:id="@+id/btn_copy_company_code"
@@ -82,7 +82,7 @@
                 android:padding="@dimen/eight_dp"
                 android:text="@string/text_billpay_code_here"
                 android:textColor="@color/black"
-                android:textSize="@dimen/header_text_size" />
+                android:textSize="@dimen/big_text" />
 
             <com.midtrans.sdk.uikit.widgets.FancyButton
                 android:id="@+id/btn_copy_va"
@@ -103,15 +103,15 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_marginTop="@dimen/sixteen_dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:background="@color/faint_yellow"
             android:paddingBottom="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/sixteen_dp"
             android:paddingLeft="@dimen/eight_dp"
             android:paddingRight="@dimen/eight_dp"
-            android:background="@color/faint_yellow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/sixteen_dp">
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,10 +121,10 @@
                 android:textSize="@dimen/secondary_text_size" />
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:layout_alignParentRight="true"
                 android:id="@+id/text_validaty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_gravity="center"
                 android:background="@color/faint_yellow"
                 android:text="@string/valid_date"

@@ -107,7 +107,8 @@
     <string name="hint_name_on_card">Name on the card</string>
     <string name="hint_card_number">Card Number</string>
     <string name="hint_cvv">CVV</string>
-    <string name="save_card_message">Save my card details</string>
+    <string name="save_card_message">Save card for later reuse</string>
+    <string name="save_card_dialog">We will securely save your card details so you can reuse them later.</string>
     <string name="pay_now">Pay now</string>
     <string name="pay_with_instalments">Pay with instalment ?</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
@@ -168,6 +169,7 @@
     <string name="copied_bill_code">Billpay code was copied to clipboard</string>
     <string name="copied_company_code">Company code was copied to clipboard</string>
     <string name="complete_payment_at_atm">Complete Payment At ATM</string>
+    <string name="complete_payment">Complete Payment</string>
     <string name="complete_payment_at_klik_bca">Finish</string>
     <string name="done">Finish</string>
     <string name="virtual_account_number">Virtual Account Number</string>
@@ -218,7 +220,7 @@
     <!--KLIK BCA PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
     <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
-    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 500888 or visit www.bca.co.id.</string>
+    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit www.bca.co.id.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
@@ -525,15 +527,15 @@
     <string name="instruction_atm_bersama2">Choose Transfer.</string>
     <string name="instruction_atm_bersama3">Choose Online Transfer.</string>
     <string name="instruction_atm_bersama4">Enter 013 and 16 digit Account No.</string>
-    <string name="instruction_atm_bersama5">Enter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+    <string name="instruction_atm_bersama5">Enter the full amount to be paid and press Correct.</string>
     <string name="instruction_atm_bersama6">Empty the transfer reference number and press Correct.</string>
     <string name="instruction_atm_bersama7">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
 
     <string name="instruction_prima1">On the main menu, choose Other Transaction.</string>
     <string name="instruction_prima2">Choose Transfer.</string>
     <string name="instruction_prima3">Choose Other Bank Account.</string>
-    <string name="instruction_prima4">Enter 013 and 16 digit Account no. and choose Correct.</string>
-    <string name="instruction_prima5">Enter the full amount to be paid. If the amount entered is not the same as invoiced amount, the transaction will be declined.</string>
+    <string name="instruction_prima4">Enter 013 and choose Correct.</string>
+    <string name="instruction_prima5">Enter the full amount to be paid and press Correct.</string>
     <string name="instruction_prima6">Enter 16 digits payment Account No. and press Correct.</string>
     <string name="instruction_prima7">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
 
@@ -611,6 +613,7 @@
     <string name="other_bank_transfer">Other Bank</string>
     <string name="copy">Copy</string>
     <string name="valid_until">Valid until</string>
+    <string name="klik_bca_complete_payment">Complete payment at www.klikbca.com before</string>
     <string name="valid_date">10 September 2015, 16:00</string>
     <string name="mandir_bill_instruction">how can i pay with mandiri bill payment ?</string>
     <string name="thank_you">Thank you!</string>
@@ -669,6 +672,7 @@
     <string name="instruction_klikbca2">Please continue the payment through KlikBCA by opening www.klikbca.com on a separate window or tab, using the same User ID that you entered below.</string>
     <string name="instruction_klikbca3">Transaction will be cancelled if payment is not completed within 2 hours.</string>
     <string name="btn_show_account_number">See Account Number</string>
+    <string name="failed_code_411">411</string>
 
     <string name="promo_dialog_title">Congratulations</string>
     <string name="promo_dialog_message">With this card, you will get Rp. %1$s discount from %2$s.</string>
@@ -682,4 +686,5 @@
     <string name="total_point">Your total %1$s Reward Point is %2$s</string>
     <string name="redeem_bni_title">Redeem BNI Reward Point</string>
     <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
+    <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.\n\nTransaction will be cancelled if payment is not completed within 2 hours.</string>
 </resources>

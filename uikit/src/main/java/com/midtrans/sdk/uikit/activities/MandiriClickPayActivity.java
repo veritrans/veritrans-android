@@ -1,16 +1,15 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -20,6 +19,7 @@ import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.MandiriClickPayFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -37,7 +37,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     private static final String TAG = "MandiriClickPayActivity";
     public String currentFragment = "home";
     private MandiriClickPayFragment mMandiriClickPayFragment = null;
-    private Button mButtonConfirmPayment = null;
+    private FancyButton mButtonConfirmPayment = null;
     private Toolbar mToolbar = null;
     private DefaultTextView mTextTitle, mTextTotalAmount;
     private FancyButton buttonBack;
@@ -74,7 +74,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
     private void initializeViews() {
 
-        mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
+        mButtonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mTextTitle = (DefaultTextView) findViewById(R.id.text_title);
         mTextTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
@@ -92,7 +92,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         mTextTitle.setText(getString(R.string.mandiri_click_pay));
         if (mMidtransSDK != null) {
             if (mMidtransSDK.getSemiBoldText() != null) {
-                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
+                mButtonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
             }
             mTextTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
@@ -100,6 +100,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     }
 
     private void setUpHomeFragment() {
+
+        //track page mandiri click pay
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_CLICKPAY);
 
         // setup  fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -138,6 +141,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         if (view.getId() == R.id.btn_confirm_payment) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
+
+                //track Mandiri Clickpay confirm payment
+                mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
                 validateInformation();
 
@@ -213,6 +219,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                 mandiriClickPayModel.getInput3(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
+                        //track page status success
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
+
                         SdkUIFlowUtil.hideProgressDialog();
 
                         MandiriClickPayActivity.this.transactionResponse = response;
@@ -226,6 +235,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         MandiriClickPayActivity.this.transactionResponse = response;
                         MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
@@ -239,6 +251,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onError(Throwable error) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                         Logger.e(TAG, "Error is" + error.getMessage());
@@ -255,10 +270,10 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
         currentFragment = STATUS_FRAGMENT;
-        mButtonConfirmPayment.setText(R.string.done);
+        mButtonConfirmPayment.setText(getString(R.string.done));
 
-        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
-        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        Drawable closeIcon = ContextCompat.getDrawable(this, R.drawable.ic_close);
+        closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
 

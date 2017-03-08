@@ -9,6 +9,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -47,6 +48,7 @@ import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.AddCardDetailsFragment;
 import com.midtrans.sdk.uikit.fragments.BanksPointFragment;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
@@ -151,7 +153,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 Fragment currentFragment = getCurrentFagment(AddCardDetailsFragment.class);
                 if (currentFragment != null && imageSavedCardDelete.getVisibility() == View.VISIBLE) {
                     SdkUIFlowUtil.showProgressDialog(CreditDebitCardFlowActivity.this, getString(R.string.processing_delete), false);
-                    fromSavedCard = true;
+                    setFromSavedCard(true);
                     SaveCardRequest savedCard = ((AddCardDetailsFragment) currentFragment).getSavedCard();
                     deleteSavedCard(savedCard);
                 }
@@ -202,7 +204,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         } else if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equalsIgnoreCase(AddCardDetailsFragment.class.getName())
                 && fromSavedCard) {
             super.onBackPressed();
-            fromSavedCard = false;
+            setFromSavedCard(false);
         } else {
             setResultCode(RESULT_CANCELED);
             setResultAndFinish();
@@ -325,6 +327,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
                         @Override
                         public void onFailure(TransactionResponse response, String reason) {
+
                             SdkUIFlowUtil.hideProgressDialog();
                             if (attempt < MAX_ATTEMPT) {
                                 attempt += 1;
@@ -343,10 +346,28 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                                 initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
                                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
                             }
+                            if(response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))){
+                                Log.d("3dserror", "1>400:" + response.getValidationMessages().get(0));
+
+                                if(response.getValidationMessages() != null && response.getValidationMessages().get(0) != null){
+                                    if(response.getValidationMessages().get(0).contains("3d")){
+                                        //track page bca va overview
+                                        midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+                                    }
+                                }
+                            }
+
+                            //track page status failed
+                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
                         }
 
                         @Override
                         public void onError(Throwable error) {
+                            //track page status failed
+                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
+
+
                             SdkUIFlowUtil.hideProgressDialog();
                             showErrorMessage(getString(R.string.message_payment_failed));
                         }
@@ -379,18 +400,38 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                                 initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
                                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
                             }
+
+                            if(response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))){
+                                Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
+                                if(response.getValidationMessages() != null && response.getValidationMessages().get(0) != null){
+                                    if(response.getValidationMessages().get(0).contains("3d")){
+                                        //track page bca va overview
+                                        midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+                                    }
+                                }
+                            }
+
+                            //track page status failed
+                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
                         }
 
                         @Override
                         public void onError(Throwable error) {
+                            //track page status failed
+                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                             SdkUIFlowUtil.hideProgressDialog();
                             showErrorMessage(getString(R.string.message_payment_failed));
+
                         }
                     });
         }
     }
 
     private void actionPaymentSuccess(TransactionResponse response) {
+        //track page status success
+        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
+
         TransactionResponse cardPaymentResponse = response;
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -547,16 +588,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 preCreditCardpayment();
             } else if (requestCode == SCAN_REQUEST_CODE) {
                 if (data != null && data.hasExtra(ExternalScanner.EXTRA_SCAN_DATA)) {
-                    // track scan event success
-                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(MidtransSDK.getInstance().readAuthenticationToken(), KEY_SCAN_SUCCESS_EVENT, PAYMENT_CREDIT_CARD, null);
 
                     ScannerModel scanData = (ScannerModel) data.getSerializableExtra(ExternalScanner.EXTRA_SCAN_DATA);
                     Logger.i(String.format("Card Number: %s, Card Expire: %s/%d", scanData.getCardNumber(), scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
                     updateCreditCardData(Utils.getFormattedCreditCardNumber(scanData.getCardNumber()), scanData.getCvv(), String.format("%s/%d", scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
                 } else {
-                    // track scan event failed
-                    midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(MidtransSDK.getInstance().readAuthenticationToken(), KEY_SCAN_FAILED_EVENT, PAYMENT_CREDIT_CARD, null);
-
                     Logger.d("No result");
                 }
             } else {
@@ -576,8 +612,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                 initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
                 titleHeaderTextView.setText(getString(R.string.title_payment_status));
             } else if (requestCode == SCAN_REQUEST_CODE) {
-                // track scan cancelled
-                midtransSDK.getmMixpanelAnalyticsManager().trackMixpanel(MidtransSDK.getInstance().readAuthenticationToken(), KEY_SCAN_CANCELLED_EVENT, PAYMENT_CREDIT_CARD, null);
+                Logger.d(TAG, "scancard:canceled");
             }
         }
     }
@@ -740,7 +775,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     public int color(@ColorRes int resId) {
-        return getResources().getColor(resId);
+        return ContextCompat.getColor(this, resId);
     }
 
     public int integer(@IntegerRes int resId) {
@@ -915,6 +950,10 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         return creditCardTransaction.isWhiteListBinsAvailable();
     }
 
+    public void setFromSavedCard(boolean fromSavedCard) {
+        this.fromSavedCard = fromSavedCard;
+    }
+
     public void showAddCardDetailFragment(SaveCardRequest card, PromoResponse promoResponse) {
         showCardDetailFragment(card, promoResponse);
     }
@@ -927,7 +966,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         if (card == null) {
             showDeleteCardIcon(false);
         } else {
-            fromSavedCard = true;
+            setFromSavedCard(true);
         }
         AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance(card, promoResponse);
         replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);
@@ -938,7 +977,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         if (card == null) {
             showDeleteCardIcon(false);
         } else {
-            fromSavedCard = true;
+            setFromSavedCard(true);
         }
         AddCardDetailsFragment addCardDetailsFragment = AddCardDetailsFragment.newInstance(card);
         replaceFragment(addCardDetailsFragment, R.id.card_container, true, false);

@@ -15,6 +15,7 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -26,8 +27,6 @@ import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
-import com.midtrans.sdk.corekit.models.BBMUrlEncodeJson;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
@@ -36,8 +35,6 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.models.PromoData;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -311,41 +308,6 @@ public class SdkUIFlowUtil {
         return isInstalled;
     }
 
-    /**
-     * it returns the encoded url in string format.
-     *
-     * @param permataVA Permata virtual account
-     * @return url in encoded format
-     */
-    public static String createEncodedUrl(String permataVA, String checkStatus, String
-            beforePaymentError, String userCancel) {
-
-        String encodedUrl = null;
-
-        if (permataVA != null && checkStatus != null && beforePaymentError != null && userCancel
-                != null) {
-
-            BBMCallBackUrl bbmCallBackUrl = new BBMCallBackUrl(checkStatus, beforePaymentError,
-                    userCancel);
-            BBMUrlEncodeJson bbmUrlEncodeJson = new BBMUrlEncodeJson();
-
-            bbmUrlEncodeJson.setReference(permataVA);
-
-            bbmUrlEncodeJson.setCallbackUrl(bbmCallBackUrl);
-            String jsonString = bbmUrlEncodeJson.getString();
-            Logger.i("JSON String: " + jsonString);
-
-            try {
-                encodedUrl = URLEncoder.encode(jsonString, "UTF-8");
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-        return encodedUrl;
-    }
-
-
     public static int fetchAccentColor(Context context) {
         TypedValue typedValue = new TypedValue();
 
@@ -481,6 +443,25 @@ public class SdkUIFlowUtil {
             }
         }
         return false;
+    }
+
+
+    public static String getDeviceType(Activity activity) {
+        String deviceType;
+        DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        float yInches = metrics.heightPixels / metrics.ydpi;
+        float xInches = metrics.widthPixels / metrics.xdpi;
+        double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
+
+        if (diagonalInches >= 6.5) {
+            deviceType = "TABLET";
+        } else {
+            deviceType = "PHONE";
+        }
+
+        return deviceType;
     }
 
     public static PromoResponse getPromoFromCardBins(List<PromoResponse> promoResponses, String cardBins) {

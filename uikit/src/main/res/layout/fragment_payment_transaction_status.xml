@@ -340,14 +340,24 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <Button
+    <com.midtrans.sdk.uikit.widgets.FancyButton
         android:id="@+id/btn_action"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_size"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal|bottom"
-        android:drawableEnd="@drawable/ic_arrow_right_white"
-        android:drawableRight="@drawable/ic_arrow_right_white"
-        android:text="@string/done"
-        android:textColor="@android:color/white" />
+        android:layout_marginBottom="@dimen/eight_dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:textColor="@color/white"
+        app:fb_defaultColor="@color/gray.primary"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_iconPaddingLeft="0dp"
+        app:fb_iconPaddingRight="0dp"
+        app:fb_iconPosition="right"
+        app:fb_iconResource="@drawable/ic_arrow_right_white"
+        app:fb_radius="@dimen/eight_dp"
+        app:fb_text="@string/done"
+        app:fb_textGravity="center_vertical"
+        app:fb_textSize="16sp" />
 </FrameLayout>

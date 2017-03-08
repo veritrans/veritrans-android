@@ -61,6 +61,8 @@ public class TransactionResponse implements Serializable {
     private String permataExpiration;
     @SerializedName("va_numbers")
     private List<BCAVANumber> accountNumbers;
+    @SerializedName("bca_klikbca_expire_time")
+    private String bcaKlikBcaExpiration;
     @SerializedName("bca_expiration")
     private String bcaExpiration;
     @SerializedName("billpayment_expiration")
@@ -398,5 +400,13 @@ public class TransactionResponse implements Serializable {
 
     public void setIndomaretExpireTime(String indomaretExpireTime) {
         this.indomaretExpireTime = indomaretExpireTime;
+    }
+
+    public String getBcaKlikBcaExpiration() {
+        return bcaKlikBcaExpiration;
+    }
+
+    public void setBcaKlikBcaExpiration(String bcaKlikBcaExpiration) {
+        this.bcaKlikBcaExpiration = bcaKlikBcaExpiration;
     }
 }

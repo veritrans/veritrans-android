@@ -17,14 +17,14 @@
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/sixteen_dp">
 
-            <EditText
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/user_id_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/klikbca_user_id_hint"
                 android:inputType="text"
                 android:maxLength="100"
-                android:singleLine="true" />
+                android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -47,7 +47,7 @@
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/five_dp">
 
-            <TextView
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="@dimen/twenty_four_dp"
                 android:layout_height="wrap_content"
                 android:text="@string/number_instruction1" />
@@ -68,7 +68,7 @@
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp">
 
-            <TextView
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="@dimen/twenty_four_dp"
                 android:layout_height="wrap_content"
                 android:text="@string/number_instruction2" />
@@ -92,7 +92,7 @@
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/five_dp">
 
-            <TextView
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="@dimen/twenty_four_dp"
                 android:layout_height="wrap_content"
                 android:text="@string/number_instruction3" />
@@ -104,6 +104,5 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/secondary_text_size" />
         </LinearLayout>
-
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

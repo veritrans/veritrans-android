@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
+import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
@@ -36,9 +39,23 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback {
+    private static final String PRIMARY_BROWN = "#795548";
+    private static final String PRIMARY_DARK_BROWN = "#5D4037";
+    private static final String SECONDARY_BROWN = "#A1887F";
+
+    private static final String PRIMARY_BLUE_GREY = "#607D8B";
+    private static final String PRIMARY_DARK_BLUE_GREY = "#455A64";
+    private static final String SECONDARY_DARK_BLUE_GREY = "#90A4AE";
+
+    private static final String PRIMARY_ORANGE = "#FF5722";
+    private static final String PRIMARY_DARK_ORANGE = "#E64A19";
+    private static final String SECONDARY_ORANGE = "#FF8A65";
+
     private static final int CORE_FLOW = 1;
     private static final int UI_FLOW = 2;
     public static String SAMPLE_USER_ID = UUID.randomUUID().toString();
+
+
     ProgressDialog dialog;
     private int mysdkFlow = UI_FLOW;
     private Button coreBtn, uiBtn, widgetBtn, widgetRegisterBtn, creditCardBtn, bankTransferBtn, permataBtn, mandiriBtn, bcaBtn, otherBankBtn, indomaretBtn, kiosonBtn, gciBtn;
@@ -47,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             bankBCA, bankMaybank, bankBri, secure, notSecure, expiryNone,
             expiryOneMinute, expiryOneHour, savedCard, notSavedCard,
             promoActive, promoInactive,
-            preAuthActive, preAuthInactive;
+            preAuthActive, preAuthInactive,
+            notSetColor, brown, blueGrey, orange;
+    private EditText customField1, customField2, customField3;
     private Toolbar toolbar;
 
     @Override
@@ -97,6 +116,16 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
      * @return the transaction request.
      */
     private TransactionRequest initializePurchaseRequest(int sampleSDKType) {
+        // Init theme
+        if (brown.isChecked()) {
+            MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(PRIMARY_BROWN, PRIMARY_DARK_BROWN, SECONDARY_BROWN));
+        } else if (blueGrey.isChecked()) {
+            MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(PRIMARY_BLUE_GREY, PRIMARY_DARK_BLUE_GREY, SECONDARY_DARK_BLUE_GREY));
+        } else if (orange.isChecked()) {
+            MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(PRIMARY_ORANGE, PRIMARY_DARK_ORANGE, SECONDARY_ORANGE));
+        } else {
+            MidtransSDK.getInstance().setColorTheme(null);
+        }
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
                 TransactionRequest(System.currentTimeMillis()+"", 6000);
@@ -210,6 +239,21 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             transactionRequestNew.setPromoEnabled(true);
         }
 
+        // Set custom field 1
+        if (!TextUtils.isEmpty(customField1.getText().toString())) {
+            transactionRequestNew.setCustomField1(customField1.getText().toString());
+        }
+
+        // Set custom field 2
+        if (!TextUtils.isEmpty(customField2.getText().toString())) {
+            transactionRequestNew.setCustomField2(customField2.getText().toString());
+        }
+
+        // Set custom field 3
+        if (!TextUtils.isEmpty(customField3.getText().toString())) {
+            transactionRequestNew.setCustomField3(customField3.getText().toString());
+        }
+
         return transactionRequestNew;
     }
 
@@ -223,6 +267,10 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
         dialog.setMessage("Loading");
+
+        customField1 = (EditText) findViewById(R.id.custom_field1);
+        customField2 = (EditText) findViewById(R.id.custom_field2);
+        customField3 = (EditText) findViewById(R.id.custom_field3);
 
         expiryNone = (RadioButton) findViewById(R.id.radio_none);
         expiryOneMinute = (RadioButton) findViewById(R.id.radio_1_minute);
@@ -242,6 +290,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
         preAuthActive = (RadioButton) findViewById(R.id.radio_pre_auth_active);
         preAuthInactive = (RadioButton) findViewById(R.id.radio_pre_auth_inactive);
+
+        notSetColor = (RadioButton) findViewById(R.id.radio_color_not_set);
+        brown = (RadioButton) findViewById(R.id.radio_color_brown);
+        blueGrey = (RadioButton) findViewById(R.id.radio_color_blue_grey);
+        orange = (RadioButton) findViewById(R.id.radio_color_orange);
 
         bankMaybank.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

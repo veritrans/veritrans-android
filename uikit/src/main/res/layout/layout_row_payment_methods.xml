@@ -23,8 +23,9 @@
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginStart="@dimen/sixteen_dp"
         android:layout_toEndOf="@id/img_payment_method_icon"
-        android:layout_toLeftOf="@+id/image_arrow_right"
-        android:layout_toRightOf="@id/img_payment_method_icon">
+        android:layout_toLeftOf="@id/image_arrow_right"
+        android:layout_toRightOf="@id/img_payment_method_icon"
+        android:layout_toStartOf="@id/image_arrow_right">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,8 +45,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:ellipsize="end"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:textColor="@color/black"
+                android:textSize="12sp"
                 tools:text="@string/payment_method_description_bank_transfer" />
         </LinearLayout>
 

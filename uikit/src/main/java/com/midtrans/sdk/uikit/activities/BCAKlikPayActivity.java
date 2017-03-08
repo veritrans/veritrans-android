@@ -2,14 +2,13 @@ package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -18,6 +17,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BCAKlikPayInstructionFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -33,7 +33,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     private static final java.lang.String TAG = "BCAKlikPayActivity";
     private static final String STATUS_FRAGMENT = "status";
     private BCAKlikPayInstructionFragment bcaKlikPayInstructionFragment = null;
-    private Button buttonConfirmPayment = null;
+    private FancyButton buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
@@ -65,7 +65,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initializeViews() {
-        buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
+        buttonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
@@ -82,7 +82,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         textTitle.setText(getString(R.string.bca_klik));
         if (mMidtransSDK != null) {
             if (mMidtransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
+                buttonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
             }
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
@@ -94,6 +94,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         // setup  fragment
         bcaKlikPayInstructionFragment = new BCAKlikPayInstructionFragment();
         replaceFragment(bcaKlikPayInstructionFragment, R.id.instruction_container, false, false);
+
+        //track page BCA Klik Pay
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKPAY);
     }
 
 
@@ -127,11 +130,17 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     }
 
     private void makeTransaction() {
+        //track page BCA Klik pay
+        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         mMidtransSDK.paymentUsingBCAKlikpay(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();
+
+                //track page status pending
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
 
                 if (response != null &&
                         !TextUtils.isEmpty(response.getRedirectUrl())) {
@@ -153,6 +162,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                     BCAKlikPayActivity.this.transactionResponse = response;
                     SdkUIFlowUtil.hideProgressDialog();
 
+                    //track page status failed
+                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                     if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                         transactionResponseFromMerchant = response;
                         setResultCode(RESULT_OK);
@@ -170,6 +182,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                 BCAKlikPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 SdkUIFlowUtil.hideProgressDialog();
                 SdkUIFlowUtil.showToast(BCAKlikPayActivity.this, "" + errorMessage);
+
+                //track page status failed
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
         });
     }
@@ -179,8 +194,8 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i(TAG, "reqCode:" + requestCode + ",res:" + resultCode);
-        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
-        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        Drawable closeIcon = ContextCompat.getDrawable(this, R.drawable.ic_close);
+        closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         if (resultCode == RESULT_OK) {
             currentFragmentName = STATUS_FRAGMENT;
             transactionResponseFromMerchant = transactionResponse;
