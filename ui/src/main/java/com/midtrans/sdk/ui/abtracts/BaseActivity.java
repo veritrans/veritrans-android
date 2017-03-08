@@ -123,7 +123,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.resultCode = resultCode;
     }
 
-    private void initTheme() {
+    public void initTheme() {
         if (MidtransUi.getInstance() != null) {
             Logger.d(TAG, "prim:" + primaryColor);
             Logger.d(TAG, "secon:" + secondaryColor);
@@ -143,7 +143,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
 
         }
+        setStatusBarColor();
+    }
 
+    public void setStatusBarColor(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && primaryDarkColor != 0) {
             getWindow().setStatusBarColor(primaryDarkColor);
         }

@@ -133,6 +133,7 @@ public class TransactionActivity extends BaseActivity implements TransactionCont
      */
     @Override
     public void showPaymentMethods(List<PaymentMethodModel> enabledPayments, String merchantName) {
+        initTheme();
         rvItemDetails.setBackgroundColor(presenter.getPrimaryColor());
         tvHeaderTitle.setText(merchantName);
         paymentMethodsAdapter.setData(enabledPayments);
