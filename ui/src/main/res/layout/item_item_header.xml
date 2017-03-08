@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:orientation="vertical"
+    android:id="@+id/layout_total_amount"
     android:gravity="center_vertical"
     android:paddingLeft="@dimen/sixteen_dp"
-    android:paddingRight="@dimen/sixteen_dp"
-    tools:background="?colorPrimary">
+    android:paddingRight="@dimen/sixteen_dp" >
 
     <RelativeLayout
         android:gravity="center_vertical"

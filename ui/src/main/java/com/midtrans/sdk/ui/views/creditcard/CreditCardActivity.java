@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -49,6 +50,15 @@ public class CreditCardActivity extends BaseActivity {
         initDefaultState();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     private void initDefaultState() {
         setViewTotalAmount(MidtransUi.getInstance().getCheckoutTokenRequest().transactionDetails.grossAmount);
         if (presenter.isNormalMode()) {
@@ -64,12 +74,15 @@ public class CreditCardActivity extends BaseActivity {
 
 
     private void setupView() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
+
     }
 
     private void bindView() {
@@ -171,12 +184,11 @@ public class CreditCardActivity extends BaseActivity {
         Logger.d(TAG, "bpress>current:" + currentFragment);
 
         if (currentFragment != null) {
-            Logger.d(TAG, "currentFragment:" + currentFragment);
             if (currentFragment.equals(PaymentStatusFragment.class)) {
                 setResultCode(RESULT_OK);
                 completePayment(presenter.getPaymentResult);
             } else if (currentFragment.equals(CreditCardDetailsFragment.class)) {
-//                super.onBackPressed();
+                super.onBackPressed();
             }
         } else {
             setResultCode(RESULT_CANCELED);

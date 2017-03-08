@@ -137,9 +137,8 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
     }
 
     private void initViewsColor() {
-        Logger.d(TAG, "prim:");
 
-
+        buttonPay.setBackgroundColor(getPrimaryColor());
         setTextColor(tvInstallment);
         setBorderColor(buttonIncrease);
         setBorderColor(buttonDecrease);
@@ -161,12 +160,12 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
 
     private void setupView() {
         initCheckbox();
-        if(cardDetails.hasSavedToken()){
+        if (cardDetails.hasSavedToken()) {
             showSwitchSaveCardLayout(false);
-        }else{
-            if(presenter.isNormalCardPayment()){
+        } else {
+            if (presenter.isNormalCardPayment()) {
                 showSwitchSaveCardLayout(false);
-            }else{
+            } else {
                 showSwitchSaveCardLayout(true);
             }
         }
@@ -424,10 +423,6 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
     }
 
     private void initSavedCardState() {
-        Logger.d(TAG, "cardDetailFramgnt:" + cardDetails);
-        Logger.d(TAG, "cardDetailFramgnt>hastoken:" + cardDetails.hasSavedToken());
-        Logger.d(TAG, "cardDetailFramgnt>oneclick:" + cardDetails.isOneclickMode());
-        Logger.d(TAG, "cardDetailFramgnt>twoclick:" + cardDetails.isTwoClicksMode());
 
         if (cardDetails != null && cardDetails.hasSavedToken()) {
             SavedToken savedCard = cardDetails.getSavedToken();
@@ -897,9 +892,9 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
 
 
     private void changeDialogButtonColor(AlertDialog alertDialog) {
-        if (alertDialog.isShowing() && presenter.isPrimaryDarkColorAvailable()) {
+        if (alertDialog.isShowing() && getPrimaryColor() != 0) {
             Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-            positiveButton.setTextColor(presenter.getPrimaryDarkColor());
+            positiveButton.setTextColor(getPrimaryColor());
         }
     }
 

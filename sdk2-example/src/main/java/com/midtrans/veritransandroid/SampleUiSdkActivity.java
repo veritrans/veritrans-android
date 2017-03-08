@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.midtrans.sdk.core.models.BankType;
 import com.midtrans.sdk.core.models.Channel;
@@ -16,11 +17,10 @@ import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
 import com.midtrans.sdk.core.models.merchant.CreditCard;
 import com.midtrans.sdk.core.models.merchant.CustomerDetails;
 import com.midtrans.sdk.core.models.merchant.ItemDetails;
-import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
-import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentParams;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.MidtransUiCallback;
 import com.midtrans.sdk.ui.models.PaymentResult;
+import com.midtrans.sdk.ui.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,22 +81,8 @@ public class SampleUiSdkActivity extends AppCompatActivity {
         MidtransUi.getInstance().runUiSdk(this, MyApp.CHECKOUT_URL, initialiseCheckoutTokenRequest(), new MidtransUiCallback() {
             @Override
             public void onFinished(PaymentResult result) {
-
-            }
-
-            @Override
-            public void onSuccess(Object object) {
-
-            }
-
-            @Override
-            public void onFailure(Object object) {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-
+                Logger.d("onfinished:", "result:" + result.getPaymentStatus());
+                Toast.makeText(SampleUiSdkActivity.this, result.getPaymentStatus(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -153,11 +139,11 @@ public class SampleUiSdkActivity extends AppCompatActivity {
 //            creditCard.setType(CardTokenRequest.TYPE_AUTHORIZE);
 //        }
 
-        if(rbCardOneclick.isChecked()){
+        if (rbCardOneclick.isChecked()) {
             creditCard.setSecure(true);
             creditCard.setSaveCard(true);
             creditCardSecure = true;
-        }else if(rbCardTwoclick.isChecked()){
+        } else if (rbCardTwoclick.isChecked()) {
             creditCard.setSaveCard(true);
         } else {
             if (rb3dsSecure.isChecked()) {

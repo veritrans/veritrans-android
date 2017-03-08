@@ -58,8 +58,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         initTheme();
+        super.onCreate(savedInstanceState);
     }
 
     public void replaceFragment(Fragment fragment, int fragmentContainer, boolean addToBackStack, boolean clearBackStack) {
@@ -269,6 +269,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             // Set button pay now color
             FancyButton payNowButton = (FancyButton) findViewById(R.id.btn_pay_now);
+
             if (payNowButton != null) {
                 payNowButton.setBackgroundColor(primaryColor);
             }

@@ -7,6 +7,7 @@ import com.midtrans.sdk.ui.models.PaymentResult;
  * Created by ziahaqi on 2/19/17.
  */
 
-public interface MidtransUiCallback<T> extends MidtransCoreCallback<T>{
+public interface MidtransUiCallback{
+
     void onFinished(PaymentResult result);
 }

@@ -20,7 +20,6 @@ public class CreditCardDetails implements Serializable {
     }
 
     public boolean hasSavedToken() {
-        Logger.d("savedTokeen:",  savedToken.tokenType);
         return savedToken != null;
     }
 

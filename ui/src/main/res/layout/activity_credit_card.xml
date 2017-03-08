@@ -41,7 +41,7 @@
                 android:layout_marginRight="@dimen/four_dp"
                 android:alpha="0.5"
                 android:padding="@dimen/four_dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:fb_defaultColor="@android:color/transparent"
                 app:fb_focusColor="@color/colorAccentLight"
                 app:fb_iconPaddingLeft="0dp"

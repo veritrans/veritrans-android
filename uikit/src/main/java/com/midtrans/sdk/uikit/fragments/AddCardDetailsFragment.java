@@ -141,7 +141,6 @@ public class AddCardDetailsFragment extends Fragment {
                 ((CreditDebitCardFlowActivity) getActivity()).showDeleteCardIcon(true);
 
 
-
                 String cardType = Utils.getCardType(savedCard.getMaskedCard());
                 if (!TextUtils.isEmpty(cardType)) {
                     String cardBin = savedCard.getMaskedCard().substring(0, 4);

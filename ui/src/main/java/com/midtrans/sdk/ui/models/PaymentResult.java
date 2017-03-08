@@ -84,7 +84,7 @@ public class PaymentResult implements Serializable {
                 paymentStatus = Payment.Status.PENDING;
             }
         }else if(TextUtils.isEmpty(errorMessage)){
-            this.paymentStatus = Payment.Status.ERROR;
+            this.paymentStatus = Payment.Status.INVALID;
         }else{
             this.paymentStatus = Payment.Status.FAILED;
         }
@@ -212,4 +212,5 @@ public class PaymentResult implements Serializable {
     public String getErrorMessage() {
         return errorMessage;
     }
+
 }

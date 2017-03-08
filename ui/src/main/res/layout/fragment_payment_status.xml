@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/aquamarine.primary">
+    android:layout_height="match_parent">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -379,19 +378,13 @@
 
     <com.midtrans.sdk.ui.widgets.FancyButton
         android:id="@+id/btn_finish"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/button_size"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="@dimen/eight_dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:textColor="@color/white"
         app:fb_defaultColor="@color/gray.primary"
         app:fb_focusColor="@color/colorAccentLight"
-        app:fb_iconPaddingLeft="0dp"
-        app:fb_iconPaddingRight="0dp"
-        app:fb_iconPosition="right"
-        app:fb_iconResource="@mipmap/ic_nav_right"
-        app:fb_radius="@dimen/eight_dp"
         app:fb_text="@string/done"
         app:fb_textGravity="center_vertical"
         app:fb_textSize="16sp" />

@@ -16,7 +16,7 @@ public interface TransactionContract {
 
         void showConfirmationDialog(String errorMessage);
 
-        void showPaymentMethods(List<PaymentMethodModel> paymentMethodsModel);
+        void showPaymentMethods(List<PaymentMethodModel> paymentMethodsModel, String merchantName);
     }
 
     public interface Presenter {

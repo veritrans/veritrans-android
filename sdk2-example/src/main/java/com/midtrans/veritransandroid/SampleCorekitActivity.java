@@ -108,36 +108,6 @@ public class SampleCorekitActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
 
-        btnUiSdk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                MidtransUi.getInstance().runUiSdk(SampleCorekitActivity.this, MyApp.CHECKOUT_URL, initialiseCheckoutTokenRequest(), new MidtransUiCallback() {
-                    @Override
-                    public void onFinished(PaymentResult result) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(Object object) {
-
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Object object) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-
-                    }
-                });
-            }
-        });
-
         getToken.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -20,7 +20,6 @@ import com.midtrans.sdk.ui.models.Transaction;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.utils.UiUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,12 +66,14 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
 
     @Override
     public void oneClickPayment(@NonNull String maskedCardNumber) {
-
+        payUsingCard();
     }
 
     @Override
     public void twoClicksPayment(@NonNull CreditCardDetails cardDetailModel, @NonNull String cardCVV) {
-
+        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard(cardDetailModel.getSavedToken().token,
+                cardCVV, true, midtransUiSdk.getTransaction().getGrossAmount());
+        getCreditCardToken(cardTokenRequest);
     }
 
     @Override
@@ -240,31 +241,8 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
         return midtransUiSdk.getTransaction().isCreditCardNormalMode();
     }
 
-    @Override
-    public boolean isPrimaryDarkColorAvailable() {
-        return false;
-    }
-
-    @Override
-    public int getPrimaryDarkColor() {
-        return 0;
-    }
-
-    @Override
-    public boolean isPrimaryColorAvailable() {
-        return false;
-    }
-
-    @Override
-    public int getPrimaryColor() {
-        return 0;
-    }
-
-
     public void setCardDetailFromScanner(String cardNumber, String cvv, String expired) {
-        if (cardDetailView != null) {
 
-        }
     }
 
     public boolean isBuiltInTokenStorage() {

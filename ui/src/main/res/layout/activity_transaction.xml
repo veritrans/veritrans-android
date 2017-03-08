@@ -27,31 +27,13 @@
                 android:orientation="horizontal">
 
                 <com.midtrans.sdk.ui.widgets.DefaultTextView
-                    android:id="@+id/merchant_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/dark_gray"
-                    android:textSize="@dimen/tool_bar_title_size"
-                    android:visibility="gone"
-                    tools:text="Name" />
-
-                <ImageView
-                    android:layout_gravity="center"
-                    android:id="@+id/merchant_logo"
-                    android:layout_width="@dimen/logo_width"
-                    android:layout_height="@dimen/logo_height"
-                    android:scaleType="centerInside"
-                    android:visibility="gone"
-                    tools:src="@mipmap/ic_midtrans" />
-
-                <com.midtrans.sdk.ui.widgets.DefaultTextView
                     android:id="@+id/title_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:ellipsize="end"
-                    android:gravity="end"
+                    android:gravity="center"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:text="@string/checkout_transaction"

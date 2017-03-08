@@ -4,8 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
-import com.midtrans.sdk.ui.abtracts.IBaseView;
-import com.midtrans.sdk.ui.abtracts.IPresenter;
+import com.midtrans.sdk.ui.abtracts.BaseView;
 import com.midtrans.sdk.ui.models.CreditCardDetails;
 
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.List;
 public interface CreditCardContract {
 
 
-    public interface CreditCardDetailView extends IBaseView<Presenter> {
+    public interface CreditCardDetailView extends BaseView<Presenter> {
 
 
         void onGetCardTokenSuccess(CardTokenResponse response);
@@ -37,11 +36,11 @@ public interface CreditCardContract {
         boolean isSaveEnabled();
     }
 
-    public interface SavedCreditCardsView extends IBaseView<Presenter> {
+    public interface SavedCreditCardsView extends BaseView<Presenter> {
 
     }
 
-    public interface Presenter extends IPresenter {
+    public interface Presenter {
 
         void oneClickPayment(@NonNull String maskedCardNumber);
 

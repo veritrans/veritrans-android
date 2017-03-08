@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
  * Created by ziahaqi on 2/22/17.
  */
 
-public interface IBaseView<T> {
+public interface BaseView<T> {
 
     void setPresenter(@NonNull T presenter);
 

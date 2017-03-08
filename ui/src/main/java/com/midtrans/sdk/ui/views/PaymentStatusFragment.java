@@ -91,6 +91,7 @@ public class PaymentStatusFragment extends BaseFragment {
     }
 
     private void setupView() {
+        buttonFinish.setBackgroundColor(getPrimaryColor());
         buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

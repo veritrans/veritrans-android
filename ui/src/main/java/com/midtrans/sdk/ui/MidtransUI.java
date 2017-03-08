@@ -10,6 +10,7 @@ import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
 import com.midtrans.sdk.core.models.merchant.CustomerDetails;
 import com.midtrans.sdk.core.utils.Logger;
+import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.models.Transaction;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
 import com.midtrans.sdk.ui.themes.ColorTheme;
@@ -38,6 +39,7 @@ public class MidtransUi {
     private String merchantName;
     private boolean builtInTokenStorage = true;
     private BaseColorTheme colorTheme;
+    private MidtransUiCallback paymentCallback;
 
     private MidtransUi(Builder builder) {
         this.context = builder.context;
@@ -83,6 +85,7 @@ public class MidtransUi {
         }
         this.checkoutUrl = checkoutUrl;
         this.checkoutTokenRequest = checkoutTokenRequest;
+        this.paymentCallback = callback;
         Intent intent = new Intent(context, TransactionActivity.class);
         context.startActivity(intent);
     }
@@ -156,6 +159,12 @@ public class MidtransUi {
 
     public String readCheckoutToken() {
         return this.transaction.getCheckoutToken();
+    }
+
+    public void sendPaymentCallback(PaymentResult result) {
+        if(paymentCallback != null){
+            paymentCallback.onFinished(result);
+        }
     }
 
 
