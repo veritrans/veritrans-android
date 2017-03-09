@@ -10,8 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
@@ -66,7 +64,6 @@ public class CreditCardFlowActivity extends BaseActivity {
     private MidtransSDK midtransSDK;
     private TextView titleHeaderTextView;
     private TextView textTotalAmount;
-    private ImageView imageSavedCardDelete;
     private String discountToken;
     private TokenDetailsResponse tokenDetailsResponse;
     private boolean saveCard = false;
@@ -90,43 +87,10 @@ public class CreditCardFlowActivity extends BaseActivity {
         initToolbar();
         initializeTheme();
         initCreditCard();
-        initDeleteCard();
 
     }
 
-    private void initDeleteCard() {
-        imageSavedCardDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final CardDetailsFragment cardDetailsFragment = searchCardDetailsFragment();
-                if (cardDetailsFragment != null) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(CreditCardFlowActivity.this)
-                            .setMessage(R.string.card_delete_message)
-                            .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                    if (imageSavedCardDelete.getVisibility() == View.VISIBLE) {
-                                        SdkUIFlowUtil.showProgressDialog(CreditCardFlowActivity.this, getString(R.string.processing_delete), false);
-                                        SaveCardRequest savedCard = cardDetailsFragment.getSavedCard();
-                                        deleteSavedCard(savedCard);
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .create();
-                    alertDialog.show();
-                }
-            }
-        });
-    }
-
-    private void deleteSavedCard(SaveCardRequest savedCard) {
+    public void deleteSavedCard(SaveCardRequest savedCard) {
         if (midtransSDK.isEnableBuiltInTokenStorage()) {
             deleteCardFromTokenStorage(savedCard);
         } else {
@@ -181,6 +145,16 @@ public class CreditCardFlowActivity extends BaseActivity {
         for (Fragment fragment : fragments) {
             if (fragment instanceof CardDetailsFragment) {
                 return (CardDetailsFragment) fragment;
+            }
+        }
+        return null;
+    }
+
+    private SavedCardListFragment searchSavedCardsFragment() {
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment instanceof SavedCardListFragment) {
+                return (SavedCardListFragment) fragment;
             }
         }
         return null;
@@ -275,7 +249,6 @@ public class CreditCardFlowActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.text_title);
         textTotalAmount = (TextView) findViewById(R.id.text_amount);
-        imageSavedCardDelete = (ImageView) findViewById(R.id.image_saved_card_delete);
     }
 
     private void initToolbar() {
@@ -453,6 +426,7 @@ public class CreditCardFlowActivity extends BaseActivity {
             public void onSuccess(Void object) {
                 SdkUIFlowUtil.hideProgressDialog();
                 removeFromCreditCardInstance(savedCard.getMaskedCard());
+                removeCardFromInstance(savedCard.getMaskedCard());
                 if (checkIfCreditCardTokensAvailable()) {
                     onBackPressed();
                     updateSavedCards();
@@ -633,8 +607,8 @@ public class CreditCardFlowActivity extends BaseActivity {
 
                     SaveCardRequest saveCardRequest = new SaveCardRequest();
                     saveCardRequest.setSavedTokenId(cardTokenRequest.getSavedTokenId());
-                    String firstPart = cardTokenRequest.getCardNumber().substring(0, 6);
-                    String secondPart = cardTokenRequest.getCardNumber().substring(12);
+                    String firstPart = cardTokenRequest.getCardNumber().replace(" ", "").substring(0, 6);
+                    String secondPart = cardTokenRequest.getCardNumber().replace(" ", "").substring(12);
                     saveCardRequest.setMaskedCard(firstPart + "-" + secondPart);
                     prepareSaveCard(saveCardRequest);
                 }
@@ -812,5 +786,21 @@ public class CreditCardFlowActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private void removeCardFromInstance(String card) {
+        SaveCardRequest saveCardRequest = searchCardIndex(card);
+        if (saveCardRequest != null) {
+            creditCards.remove(creditCards.indexOf(saveCardRequest));
+        }
+    }
+
+    private SaveCardRequest searchCardIndex(String card) {
+        for (SaveCardRequest saveCardRequest : creditCards) {
+            if (saveCardRequest.getMaskedCard().equals(card)) {
+                return saveCardRequest;
+            }
+        }
+        return null;
     }
 }

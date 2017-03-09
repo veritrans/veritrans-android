@@ -683,4 +683,5 @@
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
     <string name="deleted">Deleted</string>
     <string name="undo">Undo</string>
+    <string name="delete_this_card">delete this card</string>
 </resources>

@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
@@ -80,6 +81,7 @@ public class CardDetailsFragment extends Fragment {
     private FancyButton buttonIncrease;
     private FancyButton buttonDecrease;
     private AspectRatioImageView promoLogoBtn;
+    private FancyButton deleteCardBtn;
 
     private SaveCardRequest savedCard;
 
@@ -123,6 +125,7 @@ public class CardDetailsFragment extends Fragment {
         initScanCard();
         initSaveCardLayout();
         initSaveCardCheckbox();
+        initDelete();
         fetchSavedCardIfAvailable();
         initTheme();
         initCvvHelp();
@@ -132,6 +135,33 @@ public class CardDetailsFragment extends Fragment {
         initFocusChanges();
         initInstallmentTermButton();
         initPayNow();
+    }
+
+    private void initDelete() {
+        deleteCardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                        .setMessage(R.string.card_delete_message)
+                        .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+                                SaveCardRequest savedCard = getSavedCard();
+                                ((CreditCardFlowActivity) getActivity()).deleteSavedCard(savedCard);
+                            }
+                        })
+                        .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+            }
+        });
     }
 
     private void initInstallmentTermButton() {
@@ -342,6 +372,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void bindViews(View view) {
+        deleteCardBtn = (FancyButton) view.findViewById(R.id.image_saved_card_delete);
         cardNumberContainer = (TextInputLayout) view.findViewById(R.id.til_card_no);
         cardExpiryContainer = (TextInputLayout) view.findViewById(R.id.exp_til);
         cardCvvNumberContainer = (TextInputLayout) view.findViewById(R.id.cvv_til);
@@ -408,6 +439,10 @@ public class CardDetailsFragment extends Fragment {
                 payNowBtn.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
             }
         }
+
+        deleteCardBtn.setBorderColor(ContextCompat.getColor(getContext(), R.color.delete_color));
+        deleteCardBtn.setTextColor(ContextCompat.getColor(getContext(), R.color.delete_color));
+        deleteCardBtn.setIconColorFilter(ContextCompat.getColor(getContext(), R.color.delete_color));
     }
 
     private void initCvvHelp() {
@@ -1057,7 +1092,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void showDeleteIcon() {
-        getActivity().findViewById(R.id.image_saved_card_delete).setVisibility(View.VISIBLE);
+        deleteCardBtn.setVisibility(View.VISIBLE);
     }
 
     private void setPaymentInstallment() {

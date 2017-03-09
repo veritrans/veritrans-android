@@ -70,7 +70,11 @@ public class SavedCardListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.saved_card);
-        hideDeleteIcon();
+
+    }
+
+    private void updateLayout() {
+
     }
 
     private void fetchCards() {
@@ -93,7 +97,6 @@ public class SavedCardListFragment extends Fragment {
         savedCardsAdapter.setListener(new SavedCardsAdapter.SavedCardAdapterEventListener() {
             @Override
             public void onItemClick(int position) {
-                // TODO: Go to card details
                 CardDetailsFragment cardDetailsFragment = CardDetailsFragment.newInstance(savedCardsAdapter.getItem(position));
                 getFragmentManager().beginTransaction().replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
             }
@@ -171,6 +174,8 @@ public class SavedCardListFragment extends Fragment {
             public void onSuccess(Void object) {
                 SdkUIFlowUtil.hideProgressDialog();
                 removeFromCreditCardInstance(saveCardRequest.getMaskedCard());
+                removeCardFromInstance(saveCardRequest.getMaskedCard());
+                ((CreditCardFlowActivity) getActivity()).setCreditCards(savedCards);
                 if (checkIfCreditCardTokensAvailable()) {
                     savedCardsAdapter.removeCard(saveCardRequest.getMaskedCard());
                 } else {
@@ -200,12 +205,11 @@ public class SavedCardListFragment extends Fragment {
             public void onSuccess(SaveCardResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();
                 ((CreditCardFlowActivity) getActivity()).setCreditCards(saveCardRequests);
+                savedCards = saveCardRequests;
                 if (saveCardRequests.isEmpty()) {
-                    savedCards = saveCardRequests;
                     ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     getFragmentManager().beginTransaction().replace(R.id.card_container, CardDetailsFragment.newInstance()).commit();
                 } else {
-                    savedCards = saveCardRequests;
                     savedCardsAdapter.removeCard(maskedCard);
                 }
             }
@@ -259,7 +263,19 @@ public class SavedCardListFragment extends Fragment {
         return false;
     }
 
-    private void hideDeleteIcon() {
-        getActivity().findViewById(R.id.image_saved_card_delete).setVisibility(View.GONE);
+    private void removeCardFromInstance(String card) {
+        SaveCardRequest cardRequest = searchCardIndex(card);
+        if (cardRequest != null) {
+            savedCards.remove(savedCards.indexOf(cardRequest));
+        }
+    }
+
+    private SaveCardRequest searchCardIndex(String card) {
+        for (SaveCardRequest saveCardRequest : savedCards) {
+            if (saveCardRequest.getMaskedCard().equals(card)) {
+                return saveCardRequest;
+            }
+        }
+        return null;
     }
 }

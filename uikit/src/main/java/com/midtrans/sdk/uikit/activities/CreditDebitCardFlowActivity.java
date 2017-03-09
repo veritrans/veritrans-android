@@ -528,8 +528,8 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
                     SaveCardRequest saveCardRequest = new SaveCardRequest();
                     saveCardRequest.setSavedTokenId(cardTokenRequest.getSavedTokenId());
-                    String firstPart = cardTokenRequest.getCardNumber().substring(0, 6);
-                    String secondPart = cardTokenRequest.getCardNumber().substring(12);
+                    String firstPart = cardTokenRequest.getCardNumber().trim().replace(" ", "").substring(0, 6);
+                    String secondPart = cardTokenRequest.getCardNumber().trim().replace(" ", "").substring(12);
                     saveCardRequest.setMaskedCard(firstPart + "-" + secondPart);
                     prepareSaveCard(saveCardRequest);
                     creditCards.add(saveCardRequest);
