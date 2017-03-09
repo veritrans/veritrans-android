@@ -174,6 +174,7 @@ public class SavedCardListFragment extends Fragment {
                 if (checkIfCreditCardTokensAvailable()) {
                     savedCardsAdapter.removeCard(saveCardRequest.getMaskedCard());
                 } else {
+                    ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     getFragmentManager().beginTransaction().replace(R.id.card_container, CardDetailsFragment.newInstance()).commit();
                 }
             }
@@ -201,6 +202,7 @@ public class SavedCardListFragment extends Fragment {
                 ((CreditCardFlowActivity) getActivity()).setCreditCards(saveCardRequests);
                 if (saveCardRequests.isEmpty()) {
                     savedCards = saveCardRequests;
+                    ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     getFragmentManager().beginTransaction().replace(R.id.card_container, CardDetailsFragment.newInstance()).commit();
                 } else {
                     savedCards = saveCardRequests;
