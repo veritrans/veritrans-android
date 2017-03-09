@@ -56,6 +56,17 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
+            <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
+                android:id="@+id/bank_logo"
+                android:layout_width="@dimen/bank_logo_size"
+                android:layout_height="@dimen/bank_logo_size"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/four_dp"
+                android:layout_marginRight="@dimen/four_dp"
+                android:layout_toLeftOf="@id/image_card_type"
+                android:layout_toStartOf="@id/image_card_type"
+                tools:src="@drawable/bri" />
+
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:id="@+id/text_saved_card_name"
                 android:layout_width="match_parent"

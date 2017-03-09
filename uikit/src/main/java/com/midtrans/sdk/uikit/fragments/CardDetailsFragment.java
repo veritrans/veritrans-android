@@ -64,6 +64,7 @@ public class CardDetailsFragment extends Fragment {
 
     public static final int SCAN_REQUEST_CODE = 101;
     private static final String PARAM_CARD = "card";
+    private static final String PARAM_PROMO = "promo";
     private TextInputLayout cardNumberContainer;
     private TextInputLayout cardExpiryContainer;
     private TextInputLayout cardCvvNumberContainer;
@@ -107,6 +108,15 @@ public class CardDetailsFragment extends Fragment {
         CardDetailsFragment cardDetailsFragment = new CardDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(PARAM_CARD, saveCardRequest);
+        cardDetailsFragment.setArguments(bundle);
+        return cardDetailsFragment;
+    }
+
+    public static CardDetailsFragment newInstance(SaveCardRequest saveCardRequest, PromoResponse promo) {
+        CardDetailsFragment cardDetailsFragment = new CardDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(PARAM_CARD, saveCardRequest);
+        bundle.putSerializable(PARAM_PROMO, promo);
         cardDetailsFragment.setArguments(bundle);
         return cardDetailsFragment;
     }
@@ -318,6 +328,7 @@ public class CardDetailsFragment extends Fragment {
     private void fetchSavedCardIfAvailable() {
         if (getArguments() != null) {
             savedCard = (SaveCardRequest) getArguments().getSerializable(PARAM_CARD);
+            promo = (PromoResponse) getArguments().getSerializable(PARAM_PROMO);
             if (savedCard != null) {
                 showDeleteIcon();
 
@@ -340,6 +351,10 @@ public class CardDetailsFragment extends Fragment {
                 cardCvv.requestFocus();
                 cardNumber.setText(SdkUIFlowUtil.getMaskedCardNumber(savedCard.getMaskedCard()));
                 cardExpiry.setText(SdkUIFlowUtil.getMaskedExpDate());
+
+                if (promo != null && promo.getDiscountAmount() > 0) {
+                    obtainPromo(promo);
+                }
 
                 if (isOneClickMode()) {
                     cardCvv.setInputType(InputType.TYPE_CLASS_TEXT);

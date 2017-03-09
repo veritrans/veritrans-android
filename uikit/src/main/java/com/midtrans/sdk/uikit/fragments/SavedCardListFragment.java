@@ -19,10 +19,13 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
 import com.midtrans.sdk.uikit.adapters.SavedCardsAdapter;
+import com.midtrans.sdk.uikit.models.PromoData;
 import com.midtrans.sdk.uikit.models.SavedCardList;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -98,6 +101,16 @@ public class SavedCardListFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 CardDetailsFragment cardDetailsFragment = CardDetailsFragment.newInstance(savedCardsAdapter.getItem(position));
+
+                if (savedCardsAdapter.getPromoDatas() != null
+                        && !savedCardsAdapter.getPromoDatas().isEmpty()
+                        && savedCardsAdapter.getPromoDatas().get(position) != null) {
+                    PromoResponse selectedPromo = savedCardsAdapter.getPromoDatas().get(position).getPromoResponse();
+                    if (selectedPromo != null && selectedPromo.getDiscountAmount() > 0) {
+                        cardDetailsFragment = CardDetailsFragment.newInstance(savedCardsAdapter.getItem(position), selectedPromo);
+                    }
+                }
+
                 getFragmentManager().beginTransaction().replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
             }
         });
@@ -140,6 +153,7 @@ public class SavedCardListFragment extends Fragment {
                 alertDialog.show();
             }
         });
+        initPromoData();
         savedCardsContainer.setAdapter(savedCardsAdapter);
     }
 
@@ -277,5 +291,65 @@ public class SavedCardListFragment extends Fragment {
             }
         }
         return null;
+    }
+
+    private void initPromoData() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK.getTransactionRequest().isPromoEnabled()
+                && midtransSDK.getPromoResponses() != null
+                && !midtransSDK.getPromoResponses().isEmpty()) {
+            // Fill promo data
+            final ArrayList<PromoData> promoDatas = getPromoData();
+            savedCardsAdapter.setPromoDatas(promoDatas);
+            savedCardsAdapter.setPromoListener(new SavedCardsAdapter.SavedCardPromoListener() {
+                @Override
+                public void onItemPromo(int position) {
+                    PromoData promoData = promoDatas.get(position);
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                            .setTitle(R.string.promo_dialog_title)
+                            .setMessage(getString(R.string.promo_dialog_message, Utils.getFormattedAmount(SdkUIFlowUtil.calculateDiscountAmount(promoData.getPromoResponse())), promoData.getPromoResponse().getSponsorName()))
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create();
+                    alertDialog.show();
+                }
+            });
+        } else {
+            // Reset promo
+            savedCardsAdapter.setPromoDatas(initNullPromoData());
+            savedCardsAdapter.setPromoListener(null);
+        }
+    }
+
+    private ArrayList<PromoData> getPromoData() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        ArrayList<PromoData> promoDatas = new ArrayList<>();
+        List<PromoResponse> promoResponses = MidtransSDK.getInstance().getPromoResponses();
+        ArrayList<SaveCardRequest> saveCardRequests = savedCardsAdapter.getData();
+        double grossAmount = midtransSDK.getTransactionRequest().getAmount();
+        for (int i = 0; i < savedCardsAdapter.getItemCount(); i++) {
+            SaveCardRequest cardRequest = saveCardRequests.get(i);
+            String cardBins = cardRequest.getMaskedCard().substring(0, 6);
+            PromoResponse promoResponse = SdkUIFlowUtil.getPromoFromCardBins(promoResponses, cardBins);
+            if (promoResponse != null) {
+                promoDatas.add(new PromoData(promoResponse, grossAmount));
+            } else {
+                promoDatas.add(null);
+            }
+        }
+        return promoDatas;
+    }
+
+    private ArrayList<PromoData> initNullPromoData() {
+        int count = savedCardsAdapter.getItemCount();
+        ArrayList<PromoData> promoDatas = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            promoDatas.add(null);
+        }
+        return promoDatas;
     }
 }

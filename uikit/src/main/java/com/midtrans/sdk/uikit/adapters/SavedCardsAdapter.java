@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
 import com.midtrans.sdk.uikit.models.PromoData;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
@@ -130,6 +133,41 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
                 holder.imageCardOffer.setVisibility(View.GONE);
             }
         }
+
+        CreditCardFlowActivity creditCardFlowActivity = (CreditCardFlowActivity) holder.itemView.getContext();
+        if (creditCardFlowActivity != null) {
+            String bank = creditCardFlowActivity.getBankByBin(card.getMaskedCard().substring(0, 6));
+            if (bank != null && !TextUtils.isEmpty(bank)) {
+                switch (bank) {
+                    case BankType.BCA:
+                        holder.bankLogo.setImageResource(R.drawable.bca);
+                        break;
+                    case BankType.BNI:
+                        holder.bankLogo.setImageResource(R.drawable.bni);
+                        break;
+                    case BankType.BRI:
+                        holder.bankLogo.setImageResource(R.drawable.bri);
+                        break;
+                    case BankType.CIMB:
+                        holder.bankLogo.setImageResource(R.drawable.cimb);
+                        break;
+                    case BankType.MANDIRI:
+                        holder.bankLogo.setImageResource(R.drawable.mandiri);
+                        break;
+                    case BankType.MAYBANK:
+                        holder.bankLogo.setImageResource(R.drawable.maybank);
+                        break;
+                    case BankType.BNI_DEBIT_ONLINE:
+                        holder.bankLogo.setImageResource(R.drawable.bni);
+                        break;
+                    default:
+                        holder.bankLogo.setImageDrawable(null);
+                        break;
+                }
+            } else {
+                holder.bankLogo.setImageDrawable(null);
+            }
+        }
     }
 
     @Override
@@ -160,6 +198,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         AspectRatioImageView imageCardOffer;
         SwipeLayout swipeLayout;
         LinearLayout mainSaveCard;
+        AspectRatioImageView bankLogo;
 
         public SavedCardsViewHolder(View itemView) {
             super(itemView);
@@ -170,6 +209,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
             imageCardType = (ImageView) itemView.findViewById(R.id.image_card_type);
             imageCardOffer = (AspectRatioImageView) itemView.findViewById(R.id.image_card_offer);
             mainSaveCard = (LinearLayout) itemView.findViewById(R.id.save_card_main);
+            bankLogo = (AspectRatioImageView) itemView.findViewById(R.id.bank_logo);
 
             swipeLayout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
                 @Override
