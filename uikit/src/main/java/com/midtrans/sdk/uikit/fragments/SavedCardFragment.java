@@ -1,12 +1,9 @@
 package com.midtrans.sdk.uikit.fragments;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -17,11 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import com.midtrans.sdk.corekit.core.Constants;
-import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
@@ -41,8 +34,6 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     private static final String TAG = SavedCardFragment.class.getSimpleName();
     private FancyButton addCardBt;
     private ArrayList<SaveCardRequest> creditCards;
-    private LinearLayout creditCardLayout;
-    private RelativeLayout newCardButtonLayout;
     private int creditCardLayoutHeight;
     private String cardNumber;
     private SavedCardsAdapter cardsAdapter;
@@ -90,7 +81,6 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     @Override
     public void onResume() {
         super.onResume();
-        showLayouts();
     }
 
     public void updateSavedCards() {
@@ -104,8 +94,6 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     }
 
     private void bindViews(final View view) {
-        creditCardLayout = (LinearLayout) view.findViewById(R.id.credit_card_holder);
-        newCardButtonLayout = (RelativeLayout) view.findViewById(R.id.new_card_button_layout);
         addCardBt = (FancyButton) view.findViewById(R.id.btn_add_card);
         rvSavedCards = (RecyclerView) view.findViewById(R.id.rv_saved_cards);
         rvSavedCards.setHasFixedSize(true);
@@ -254,41 +242,6 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
             ((CreditDebitCardFlowActivity) getActivity()).showAddCardDetailFragment(card, promoResponse);
             return;
         }
-
-        creditCardLayoutHeight = SavedCardFragment.this.creditCardLayout.getMeasuredHeight();
-        Logger.i("creditCardLayoutHeight:" + creditCardLayoutHeight);
-
-        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(newCardButtonLayout, "alpha", 1f, 0f);
-        fadeOut.setDuration(Constants.CARD_ANIMATION_TIME);
-        ObjectAnimator translateY = ObjectAnimator.ofFloat(creditCardLayout, "translationY",
-                -creditCardLayoutHeight);
-        translateY.setDuration(Constants.CARD_ANIMATION_TIME);
-        translateY.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                //payNowBtn.setVisibility(View.VISIBLE);
-                addCardBt.setVisibility(View.GONE);
-                ((CreditDebitCardFlowActivity) getActivity()).showAddCardDetailFragment(card, selectedPromo);
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        translateY.start();
-        fadeOut.start();
     }
 
     public void showNewCardFragment(final SaveCardRequest card) {
@@ -298,85 +251,6 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
             ((CreditDebitCardFlowActivity) getActivity()).showAddCardDetailFragment(card);
             return;
         }
-
-        creditCardLayoutHeight = SavedCardFragment.this.creditCardLayout.getMeasuredHeight();
-        Logger.i("creditCardLayoutHeight:" + creditCardLayoutHeight);
-
-        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(newCardButtonLayout, "alpha", 1f, 0f);
-        fadeOut.setDuration(Constants.CARD_ANIMATION_TIME);
-        ObjectAnimator translateY = ObjectAnimator.ofFloat(creditCardLayout, "translationY",
-                -creditCardLayoutHeight);
-        translateY.setDuration(Constants.CARD_ANIMATION_TIME);
-        translateY.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                //payNowBtn.setVisibility(View.VISIBLE);
-                addCardBt.setVisibility(View.GONE);
-                ((CreditDebitCardFlowActivity) getActivity()).showAddCardDetailFragment(card, selectedPromo);
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        translateY.start();
-        fadeOut.start();
-    }
-
-    public void showLayouts() {
-        Logger.i("creditCardLayoutHeight:" + creditCardLayoutHeight);
-        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(newCardButtonLayout, "alpha", 0f, 1f);
-        fadeIn.setDuration(Constants.CARD_ANIMATION_TIME);
-        ObjectAnimator slideOut = ObjectAnimator.ofFloat(creditCardLayout, "translationY",
-                -creditCardLayoutHeight);
-        slideOut.setDuration(0);
-        slideOut.start();
-        ObjectAnimator slideIn = ObjectAnimator.ofFloat(creditCardLayout, "translationY",
-                0);
-        slideIn.setDuration(Constants.CARD_ANIMATION_TIME);
-        slideIn.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        slideIn.start();
-        fadeIn.start();
-        addCardBt.setVisibility(View.VISIBLE);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.choose_card);
-            }
-        }, Constants.CARD_ANIMATION_TIME);
     }
 
 

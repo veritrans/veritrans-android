@@ -52,58 +52,49 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/credit_card_holder"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@id/layout_installment"
-        android:layout_below="@id/layout_offer_status"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/eight_dp">
+        android:layout_below="@id/layout_offer_status">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_saved_cards"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_saved_cards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    </LinearLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/new_card_button_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/sixteen_dp"
-        android:visibility="gone">
-
-    </RelativeLayout>
-
-    <com.midtrans.sdk.uikit.widgets.FancyButton
-        android:id="@+id/btn_add_card"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/credit_card_holder"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        android:visibility="gone"
-        app:fb_borderColor="@color/gray.primary_dark"
-        app:fb_borderWidth="1.25dp"
-        app:fb_defaultColor="@android:color/white"
-        app:fb_focusColor="@color/colorAccentLight"
-        app:fb_iconColor="@color/gray.primary_dark"
-        app:fb_iconPaddingLeft="0dp"
-        app:fb_iconPaddingRight="0dp"
-        app:fb_iconPosition="left"
-        app:fb_iconResource="@drawable/ic_plus_new"
-        app:fb_radius="5dp"
-        app:fb_text="@string/add_new_card"
-        app:fb_textColor="@color/gray.primary_dark"
-        app:fb_textSize="12sp"
-        tools:visibility="visible" />
+            <com.midtrans.sdk.uikit.widgets.FancyButton
+                android:id="@+id/btn_add_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/credit_card_holder"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="19dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:visibility="gone"
+                app:fb_borderColor="@color/gray.primary_dark"
+                app:fb_borderWidth="1.25dp"
+                app:fb_defaultColor="@android:color/white"
+                app:fb_focusColor="@color/colorAccentLight"
+                app:fb_iconColor="@color/gray.primary_dark"
+                app:fb_iconPaddingLeft="0dp"
+                app:fb_iconPaddingRight="0dp"
+                app:fb_iconPosition="left"
+                app:fb_iconResource="@drawable/ic_plus_new"
+                app:fb_radius="5dp"
+                app:fb_text="@string/add_new_card"
+                app:fb_textColor="@color/gray.primary_dark"
+                app:fb_textSize="12sp"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
