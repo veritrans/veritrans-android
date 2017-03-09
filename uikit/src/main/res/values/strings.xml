@@ -410,7 +410,7 @@
 
     <string name="card_click_type_none">normal</string>
     <string name="card_click_type_one_click">one_click</string>
-    <string name="card_click_type_two_click">two_click</string>
+    <string name="card_click_type_two_click">two_clicks</string>
     <string name="users_saved_card">users_saved_card</string>
     <string name="bank_details">bank_details</string>
     <string name="visa">VISA</string>
@@ -681,4 +681,7 @@
     <string name="error_delete_message">Failed to delete card</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
+    <string name="deleted">Deleted</string>
+    <string name="undo">Undo</string>
+    <string name="delete_this_card">delete this card</string>
 </resources>

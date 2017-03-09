@@ -87,6 +87,7 @@ public class MidtransSDK {
         this.transactionFinishedCallback = sdkBuilder.transactionFinishedCallback;
         this.externalScanner = sdkBuilder.externalScanner;
         this.isLogEnabled = sdkBuilder.enableLog;
+        Logger.enabled = sdkBuilder.enableLog;
         this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
         this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.UIKitCustomSetting;
         this.flow = sdkBuilder.flow;

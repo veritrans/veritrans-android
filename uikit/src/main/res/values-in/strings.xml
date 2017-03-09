@@ -491,4 +491,7 @@
     <string name="error_delete_message">Gagal menghapus kartu</string>
     <string name="mandiri_debit_card">Kartu Debit Mandiri</string>
     <string name="bni_debit_online_card">Kartu Debit Online BNI</string>
+    <string name="deleted">Dihapus</string>
+    <string name="undo">Batalkan</string>
+    <string name="delete_this_card">hapus kartu ini</string>
 </resources>
