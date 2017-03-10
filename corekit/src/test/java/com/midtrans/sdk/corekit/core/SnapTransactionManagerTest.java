@@ -126,6 +126,8 @@ public class SnapTransactionManagerTest {
     private CreditCardPaymentRequest transactionRequestMock;
     @Captor
     private ArgumentCaptor<Callback<TransactionResponse>> transactionResponseCallbackCaptor;
+    @Captor
+    private ArgumentCaptor<Boolean> pointCaptor;
     @Mock
     private TransactionResponse transactionResponseMock;
     @Mock
@@ -1763,7 +1765,7 @@ public class SnapTransactionManagerTest {
         Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(),
-                channelCaptor.capture(), typeCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
+                channelCaptor.capture(), typeCaptor.capture(), pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, retrofitResponse);
         Mockito.verify(callbackCollaborator, Mockito.times(1)).onGetCardTokenSuccess();
@@ -1780,7 +1782,7 @@ public class SnapTransactionManagerTest {
         Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(),
-                channelCaptor.capture(), typeCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
+                channelCaptor.capture(), typeCaptor.capture(), pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         //when retrofitResponse not 200
         tokenDetailsResponse.setStatusCode("212");
@@ -1804,7 +1806,7 @@ public class SnapTransactionManagerTest {
         Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(),
-                channelCaptor.capture(), typeCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
+                channelCaptor.capture(), typeCaptor.capture(), pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         // when retrofitResponse null
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, response);
@@ -1820,7 +1822,7 @@ public class SnapTransactionManagerTest {
         Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(),
-                channelCaptor.capture(), typeCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
+                channelCaptor.capture(), typeCaptor.capture(), pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         //when valid certification
         callbackgetTokenArgumentCaptor.getValue().failure(retrofitError);
@@ -1857,7 +1859,7 @@ public class SnapTransactionManagerTest {
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(),
                 grossAmountCaptor.capture(), channelCaptor.capture(), typeCaptor.capture(),
-                callbackgetTokenArgumentCaptor.capture());
+                pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, retrofitResponse);
         Mockito.verify(callbackCollaborator, Mockito.times(1)).onGetCardTokenSuccess();
@@ -1876,7 +1878,7 @@ public class SnapTransactionManagerTest {
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(), grossAmountCaptor.capture(),
-                channelCaptor.capture(), typeCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
+                channelCaptor.capture(), typeCaptor.capture(), pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         //when retrofitResponse not 200
         tokenDetailsResponse.setStatusCode("212");
@@ -1902,7 +1904,7 @@ public class SnapTransactionManagerTest {
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(), grossAmountCaptor.capture(),
-                channelCaptor.capture(), typeCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
+                channelCaptor.capture(), typeCaptor.capture(), pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         // when retrofitResponse null
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, response);
@@ -1920,7 +1922,7 @@ public class SnapTransactionManagerTest {
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
                 cardExpYearCaptor.capture(), clientKeyCaptor.capture(), bankCaptor.capture(),
                 scureCaptor.capture(), twoClickCaptor.capture(), grossAmountCaptor.capture(),
-                channelCaptor.capture(), typeCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
+                channelCaptor.capture(), typeCaptor.capture(), pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         //when valid certification
         callbackgetTokenArgumentCaptor.getValue().failure(retrofitError);
@@ -1964,6 +1966,7 @@ public class SnapTransactionManagerTest {
                 channelCaptor.capture(),
                 instalmentTermCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, retrofitResponse);
@@ -1988,6 +1991,7 @@ public class SnapTransactionManagerTest {
                 channelCaptor.capture(),
                 instalmentTermCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
 
@@ -2022,6 +2026,7 @@ public class SnapTransactionManagerTest {
                 channelCaptor.capture(),
                 instalmentTermCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
         // when retrofitResponse null
@@ -2044,6 +2049,7 @@ public class SnapTransactionManagerTest {
                 channelCaptor.capture(),
                 instalmentTermCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
         //when valid certification
@@ -2090,6 +2096,7 @@ public class SnapTransactionManagerTest {
                 clientKeyCaptor.capture(),
                 channelCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
         // when retrofitResponse 20
@@ -2120,6 +2127,7 @@ public class SnapTransactionManagerTest {
                 clientKeyCaptor.capture(),
                 channelCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
         //when retrofitResponse not 200
@@ -2154,6 +2162,7 @@ public class SnapTransactionManagerTest {
                 clientKeyCaptor.capture(),
                 channelCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
         // when retrofitResponse null
@@ -2179,6 +2188,7 @@ public class SnapTransactionManagerTest {
                 clientKeyCaptor.capture(),
                 channelCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
         //when valid certification
@@ -2228,6 +2238,7 @@ public class SnapTransactionManagerTest {
                 instalmentTermCaptor.capture(),
                 channelCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
         // when retrofitResponse 20
@@ -2259,6 +2270,7 @@ public class SnapTransactionManagerTest {
                 instalmentTermCaptor.capture(),
                 channelCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
         //when retrofitResponse not 200
@@ -2292,6 +2304,7 @@ public class SnapTransactionManagerTest {
                 instalmentTermCaptor.capture(),
                 channelCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
         callbackgetTokenArgumentCaptor.getValue().success(null, response);
@@ -2319,6 +2332,7 @@ public class SnapTransactionManagerTest {
                 instalmentTermCaptor.capture(),
                 channelCaptor.capture(),
                 typeCaptor.capture(),
+                pointCaptor.capture(),
                 callbackgetTokenArgumentCaptor.capture());
 
         //when valid certification
