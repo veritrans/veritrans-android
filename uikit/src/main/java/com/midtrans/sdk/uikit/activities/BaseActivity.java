@@ -86,17 +86,17 @@ public class BaseActivity extends AppCompatActivity {
     public void replaceFragment(Fragment fragment, int fragmentContainer, boolean addToBackStack, boolean clearBackStack) {
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            Logger.i("replace freagment");
+            Logger.i("replace fragment");
             boolean fragmentPopped = false;
             String backStateName = fragment.getClass().getName();
 
             if (clearBackStack) {
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             } else {
-                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
+                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
 
-            if (!fragmentPopped) { //fragment not in back stack, create it.
+            if (!fragmentPopped) {
                 Logger.i("fragment not in back stack, create it");
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.replace(fragmentContainer, fragment, backStateName);

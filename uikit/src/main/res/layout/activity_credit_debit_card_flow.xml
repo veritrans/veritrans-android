@@ -15,7 +15,9 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
         android:gravity="center_vertical"
+        app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
         app:layout_collapseMode="pin"
         app:title="">
 
@@ -33,21 +35,6 @@
                 android:textSize="@dimen/tool_bar_title_size"
                 android:visibility="gone"
                 tools:text="Name" />
-
-            <com.midtrans.sdk.uikit.widgets.FancyButton
-                android:id="@+id/btn_back"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:layout_marginRight="@dimen/four_dp"
-                android:alpha="0.5"
-                android:padding="@dimen/four_dp"
-                android:visibility="visible"
-                app:fb_defaultColor="@android:color/transparent"
-                app:fb_focusColor="@color/colorAccentLight"
-                app:fb_iconPaddingLeft="0dp"
-                app:fb_iconPaddingRight="0dp"
-                app:fb_iconResource="@drawable/ic_back"
-                app:fb_radius="64dp" />
 
             <ImageView
                 android:id="@+id/merchant_logo"
@@ -81,14 +68,6 @@
                     android:layout_centerHorizontal="true"
                     android:background="@color/gray.primary" />
             </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/image_saved_card_delete"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginRight="@dimen/sixteen_dp"
-                android:src="@drawable/ic_delete_black"
-                android:visibility="invisible" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -132,8 +111,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/card_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -42,7 +42,6 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     private String currentFragmentName = "";
     private TransactionResponse transactionResponseFromMerchant;
     private DefaultTextView textTitle, textTotalAmount;
-    private FancyButton buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +68,11 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-        buttonBack = (FancyButton) findViewById(R.id.btn_back);
         initializeTheme();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonConfirmPayment.setOnClickListener(this);
-        buttonBack.setOnClickListener(this);
         bindData();
     }
 
@@ -116,16 +114,16 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+            return false;
         }
-        return false;
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_confirm_payment) {
             makeTransaction();
-        } else if (view.getId() == R.id.btn_back) {
-            onBackPressed();
         }
     }
 

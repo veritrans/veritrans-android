@@ -12,4 +12,6 @@ public class BankType {
     public static final String MAYBANK = "maybank";
     public static final String BRI = "bri";
     public static final String DANAMON = "danamon";
+    public static final String MANDIRI_DEBIT = "mandiri_debit";
+    public static final String BNI_DEBIT_ONLINE = "bni_debit_online";
 }

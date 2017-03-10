@@ -18,6 +18,7 @@ import android.widget.Button;
 
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.InstructionATMBersamaFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionAltoFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAFragment;
@@ -27,7 +28,6 @@ import com.midtrans.sdk.uikit.fragments.InstructionMandiriFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriInternetFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionPermataFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionPrimaFragment;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 
 /**
  * It display information related to mandiri bill pay , bank transfer and BCA/Prima transaction.
@@ -120,9 +120,8 @@ public class BankTransferInstructionActivity extends BaseActivity {
 
 
     private void setUpTabLayout() {
-
         mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
@@ -143,9 +142,8 @@ public class BankTransferInstructionActivity extends BaseActivity {
      * set adapter to view pager and also adds page margin between view pages.
      */
     private void setUpViewPager() {
-
         mViewPager.setPageMargin(PAGE_MARGIN);
-        int pageNumber = 0;
+        int pageNumber;
         switch (getIntent().getStringExtra(BANK)) {
             case TYPE_BCA:
                 pageNumber = 3;

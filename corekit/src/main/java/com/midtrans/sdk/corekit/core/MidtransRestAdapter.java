@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 
-import com.midtrans.sdk.corekit.BuildConfig;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
@@ -20,7 +19,7 @@ import retrofit.converter.GsonConverter;
  * Created by chetan on 16/10/15.
  */
 public class MidtransRestAdapter {
-    private static final RestAdapter.LogLevel LOG_LEVEL = BuildConfig.FLAVOR.equalsIgnoreCase("development") ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
+    private static final RestAdapter.LogLevel LOG_LEVEL = Logger.enabled ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
     private static final String TAG = MidtransRestAdapter.class.getName();
 
     /**

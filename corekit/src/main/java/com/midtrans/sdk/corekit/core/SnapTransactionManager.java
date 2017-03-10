@@ -10,6 +10,7 @@ import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
+import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -1178,6 +1179,29 @@ public class SnapTransactionManager extends BaseTransactionManager {
             }
 
         }
+    }
+
+    public void deleteCard(String authenticationToken, String maskedCard, final DeleteCardCallback deleteCardCallback) {
+        snapRestAPI.deleteCard(authenticationToken, maskedCard, new Callback<Void>() {
+            @Override
+            public void success(Void aVoid, Response response) {
+                releaseResources();
+                if (response.getStatus() == 200 || response.getStatus() == 201) {
+                    deleteCardCallback.onSuccess(aVoid);
+                } else {
+                    deleteCardCallback.onFailure(aVoid);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                releaseResources();
+                if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                    Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                }
+                deleteCardCallback.onError(new Throwable(error.getMessage(), error.getCause()));
+            }
+        });
     }
 
     private void consumeTokenSuccesResponse(final String authenticationToken, long start, TokenDetailsResponse tokenDetailsResponse, CardTokenCallback callback) {

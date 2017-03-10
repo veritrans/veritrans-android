@@ -13,6 +13,7 @@ import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
+import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
@@ -88,6 +89,7 @@ public class MidtransSDK {
         this.transactionFinishedCallback = sdkBuilder.transactionFinishedCallback;
         this.externalScanner = sdkBuilder.externalScanner;
         this.isLogEnabled = sdkBuilder.enableLog;
+        Logger.enabled = sdkBuilder.enableLog;
         this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
         this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.UIKitCustomSetting;
         this.flow = sdkBuilder.flow;
@@ -1507,6 +1509,21 @@ public class MidtransSDK {
     }
 
 
+    /**
+     * It will run background task to delete saved card from token storage.
+     *
+     * @param authenticationToken authentication or snap Token.
+     * @param maskedCard          masked card.
+     * @param callback            delete card callback to be called after background task was
+     *                            finished.
+     */
+    public void deleteCard(@NonNull String authenticationToken, String maskedCard, DeleteCardCallback callback) {
+        if (Utils.isNetworkAvailable(context)) {
+            mSnapTransactionManager.deleteCard(authenticationToken, maskedCard, callback);
+        } else {
+            callback.onError(new RuntimeException(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
     /**
      * it will change SDK configuration
      *

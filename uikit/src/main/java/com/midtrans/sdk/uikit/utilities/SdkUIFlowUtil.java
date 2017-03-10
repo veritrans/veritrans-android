@@ -28,9 +28,11 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
+import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.models.PromoData;
 
@@ -40,8 +42,11 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -502,6 +507,63 @@ public class SdkUIFlowUtil {
         } else {
             return promoResponse.getDiscountAmount() * MidtransSDK.getInstance().getTransactionRequest().getAmount() / 100;
         }
+    }
+
+    public static List<SavedToken> removeCardFromSavedCards(List<SavedToken> savedTokens, String maskedCard) {
+        List<SavedToken> updatedTokens = new ArrayList<>();
+        for (SavedToken savedToken : savedTokens) {
+            if (!savedToken.getMaskedCard().equals(maskedCard)) {
+                updatedTokens.add(savedToken);
+            }
+        }
+        return updatedTokens;
+    }
+
+    public static ArrayList<SaveCardRequest> convertSavedToken(List<SavedToken> savedTokens) {
+        ArrayList<SaveCardRequest> cards = new ArrayList<>();
+        if (savedTokens != null && !savedTokens.isEmpty()) {
+            for (SavedToken saved : savedTokens) {
+                cards.add(new SaveCardRequest(saved.getToken(), saved.getMaskedCard(), saved.getTokenType()));
+            }
+        }
+        return cards;
+    }
+
+    public static List<SaveCardRequest> filterCardsByClickType(Context context, List<SaveCardRequest> cards) {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        ArrayList<SaveCardRequest> filteredCards = new ArrayList<>();
+        if (cards != null && !cards.isEmpty()) {
+            if (midtransSDK.isEnableBuiltInTokenStorage()) {
+                for (SaveCardRequest card : cards) {
+                    if (midtransSDK.getTransactionRequest().getCardClickType().equals(context.getString(R.string.card_click_type_one_click))
+                            && card.getType().equals(context.getString(R.string.saved_card_one_click))) {
+                        filteredCards.add(card);
+                    } else if (midtransSDK.getTransactionRequest().getCardClickType().equals(context.getString(R.string.card_click_type_two_click))
+                            && card.getType().equals(context.getString(R.string.saved_card_two_click))) {
+                        filteredCards.add(card);
+                    }
+                }
+            } else {
+                //if token storage on merchant server then saved cards can be used just for two click
+                String clickType = midtransSDK.getTransactionRequest().getCardClickType();
+                if (!TextUtils.isEmpty(clickType) && clickType.equals(context.getString(R.string.card_click_type_two_click))) {
+                    filteredCards.addAll(cards);
+                }
+            }
+        }
+
+        return filteredCards;
+    }
+
+    public static List<SaveCardRequest> filterMultipleSavedCard(ArrayList<SaveCardRequest> savedCards) {
+        Collections.reverse(savedCards);
+        Set<String> maskedCardSet = new HashSet<>();
+        for (Iterator<SaveCardRequest> it = savedCards.iterator(); it.hasNext(); ) {
+            if (!maskedCardSet.add(it.next().getMaskedCard())) {
+                it.remove();
+            }
+        }
+        return savedCards;
     }
 
     @ColorInt
