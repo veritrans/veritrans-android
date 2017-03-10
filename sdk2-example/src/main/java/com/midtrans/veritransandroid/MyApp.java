@@ -22,13 +22,6 @@ public class MyApp extends Application {
     }
 
     private void initMidtransSDK() {
-//        new MidtransCore.Builder()
-//                .enableLog(true)
-//                .setEnvironment(Environment.SANDBOX)
-//                .setClientKey(CLIENT_KEY)
-//                .build();
-
-//        CustomColorTheme customColorTheme = new CustomColorTheme();
 
         CustomSetting customSetting = new CustomSetting();
         MidtransUi.builder()

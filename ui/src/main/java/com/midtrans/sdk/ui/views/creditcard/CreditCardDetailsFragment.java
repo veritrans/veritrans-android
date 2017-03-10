@@ -1,12 +1,8 @@
 package com.midtrans.sdk.ui.views.creditcard;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -71,10 +67,10 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
 
     private MidtransUi midtransUi;
 
-    TextInputLayout tilCardNo, tilCvv, tilExpiry;
-    TextView tvInstallmentTerm;
+    private TextInputLayout tilCardNo, tilCvv, tilExpiry;
+    private TextView tvInstallmentTerm;
     int installmentCurrentPosition, installmentTotalPositions;
-    FancyButton buttonPay;
+    private FancyButton buttonPay;
     private String lastExpDate = "";
     private EditText etCardNumber;
     private EditText etCvv;
@@ -109,12 +105,10 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         return fragment;
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -133,7 +127,6 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         initViewsColor();
         setupView();
         initSavedCardState();
-        fadeIn();
     }
 
     private void initViewsColor() {
@@ -183,7 +176,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         buttonIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onIncraseTerm();
+                onIncreaseTerm();
             }
         });
 
@@ -828,35 +821,6 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void fadeIn() {
-        layoutCardForm.setAlpha(0);
-        ObjectAnimator fadeInAnimation = ObjectAnimator.ofFloat(layoutCardForm, "alpha", 0, 1f);
-        fadeInAnimation.setDuration(Constants.Animation.FADE_IN_FORM_TIME);
-        fadeInAnimation.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                buttonPay.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        fadeInAnimation.start();
-    }
-
 
     private void disableEnableInstallmentButton() {
         if (installmentCurrentPosition == 0 && installmentTotalPositions == 0) {
@@ -882,7 +846,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         disableEnableInstallmentButton();
     }
 
-    private void onIncraseTerm() {
+    private void onIncreaseTerm() {
         if (installmentCurrentPosition >= 0 && installmentCurrentPosition < installmentTotalPositions) {
             installmentCurrentPosition += 1;
             setInstallmentTerm();
