@@ -1,5 +1,7 @@
 package com.midtrans.sdk.corekit.models.snap;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by ziahaqi on 10/17/16.
  *
@@ -12,7 +14,8 @@ public class CreditCardPaymentModel {
     private boolean savecard;
     private String maskedCardNumber;
     private String installment;
-    private Long pointRedeemed;
+    @SerializedName("point")
+    private float pointRedeemed;
 
     /**
      * init credit card model for normal and twoclick payment
@@ -54,11 +57,11 @@ public class CreditCardPaymentModel {
         this.installment = installment;
     }
 
-    public void setPointRedeemed(Long pointRedeemed) {
-        this.pointRedeemed = pointRedeemed;
+    public float getPointRedeemed() {
+        return pointRedeemed;
     }
 
-    public Long getPointRedeemed() {
-        return pointRedeemed;
+    public void setPointRedeemed(float pointRedeemed) {
+        this.pointRedeemed = pointRedeemed;
     }
 }

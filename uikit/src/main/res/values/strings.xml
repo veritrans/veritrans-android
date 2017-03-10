@@ -693,4 +693,10 @@
     <string name="deleted">Deleted</string>
     <string name="undo">Undo</string>
     <string name="delete_this_card">delete this card</string>
+
+    <string name="how_much_point">How much points you want to redeem?</string>
+    <string name="total_bni_point">Your total BNI points</string>
+    <string name="bank_bni">BNI</string>
+    <string name="bank_mandiri">Mandiri</string>
+    <string name="status_redeemed_point">POINT DISCOUNT</string>
 </resources>

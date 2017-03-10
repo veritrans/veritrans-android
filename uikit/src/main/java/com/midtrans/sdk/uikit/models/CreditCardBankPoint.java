@@ -9,7 +9,7 @@ public class CreditCardBankPoint {
     private String bankType;
     private boolean enableStatus;
     private BanksPointResponse bankPoint;
-    private long pointRedeemed = 0;
+    private float pointRedeemed = 0;
 
     public void setStatus(boolean bankPointStatus) {
         this.enableStatus = bankPointStatus;
@@ -24,7 +24,7 @@ public class CreditCardBankPoint {
         return enableStatus;
     }
 
-    public void setpointRedeemed(long pointRedeemed) {
+    public void setpointRedeemed(float pointRedeemed) {
         this.pointRedeemed = pointRedeemed;
     }
 
@@ -32,7 +32,7 @@ public class CreditCardBankPoint {
         return (bankPoint != null && bankType != null && pointRedeemed > 0);
     }
 
-    public long getpointRedeemed() {
+    public float getpointRedeemed() {
         return pointRedeemed;
     }
 }

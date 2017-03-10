@@ -1634,15 +1634,19 @@ public class MidtransSDK {
         this.promoResponses = promoResponses;
     }
 
-    public void setColorTheme(BaseColorTheme colorTheme) {
-        this.colorTheme = colorTheme;
-    }
-
     public BaseColorTheme getColorTheme() {
         return colorTheme;
     }
 
+    public void setColorTheme(BaseColorTheme colorTheme) {
+        this.colorTheme = colorTheme;
+    }
+
     public ArrayList<String> getBanksPointEnabled() {
         return banksPointEnabled;
+    }
+
+    public void setBanksPointEnabled(ArrayList<String> pointBanks) {
+        this.banksPointEnabled = pointBanks;
     }
 }

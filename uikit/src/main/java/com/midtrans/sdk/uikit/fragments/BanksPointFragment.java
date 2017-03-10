@@ -1,6 +1,8 @@
 package com.midtrans.sdk.uikit.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -9,17 +11,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
+import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
+import java.util.Locale;
+import java.util.TimerTask;
 
 /**
  * Created by ziahaqi on 1/16/17.
@@ -34,20 +40,21 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     private DefaultTextView textAmountToPay, textTotalPoint;
     private EditText editPointRedeemed;
     private FancyButton buttonIncrease, buttonDecrease;
-    private Button buttonRedeemPoint;
-    private long pointBalance;
+    private FancyButton buttonRedeemPoint;
+    private FancyButton containerAmount, containerTotalPoint;
+    private float pointBalance;
     private double amountToPay;
-    private long pointRedeemed;
+    private float pointRedeemed;
     private ImageView imagePlus, imageMinus;
     private String pointBank;
     private double totalAmount;
     private boolean inputPointFromButtons;
     private String latestValidPoint;
 
-    public static BanksPointFragment newInstance(long balance, String bank) {
+    public static BanksPointFragment newInstance(float balance, String bank) {
         BanksPointFragment fragment = new BanksPointFragment();
         Bundle bundle = new Bundle();
-        bundle.putLong(ARGS_POINT, balance);
+        bundle.putFloat(ARGS_POINT, balance);
         bundle.putString(ARGS_BANK, bank);
         fragment.setArguments(bundle);
         return fragment;
@@ -63,20 +70,27 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.redeem_bank_point_title, this.pointBank));
+        switch (pointBank) {
+            case BankType.BNI:
+                ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(getString(R.string.redeem_bank_point_title, getString(R.string.bank_bni)));
+                break;
+        }
 
         textAmountToPay = (DefaultTextView) view.findViewById(R.id.text_amount_to_pay);
-        editPointRedeemed = (EditText) view.findViewById(R.id.text_point_used);
+        editPointRedeemed = (EditText) view.findViewById(R.id.redeemed_point_field);
         textTotalPoint = (DefaultTextView) view.findViewById(R.id.text_total_point);
         imageMinus = (ImageView) view.findViewById(R.id.image_point_min);
         imagePlus = (ImageView) view.findViewById(R.id.image_point_plus);
         buttonIncrease = (FancyButton) view.findViewById(R.id.button_point_increase);
         buttonDecrease = (FancyButton) view.findViewById(R.id.button_point_decrease);
-        buttonRedeemPoint = (Button) view.findViewById(R.id.btn_redeem_point);
+        buttonRedeemPoint = (FancyButton) view.findViewById(R.id.btn_redeem_point);
+        containerAmount = (FancyButton) view.findViewById(R.id.container_amount);
+        containerTotalPoint = (FancyButton) view.findViewById(R.id.container_total_point);
 
         setupDefaultView();
         bindValues();
         updateViews();
+        initThemes();
         buttonDecrease.setOnClickListener(this);
         buttonIncrease.setOnClickListener(this);
         buttonRedeemPoint.setOnClickListener(this);
@@ -109,10 +123,38 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
                     latestValidPoint = inputString;
                 } else {
                     editPointRedeemed.setText(latestValidPoint);
+                    editPointRedeemed.setSelection(editPointRedeemed.getText().length());
                 }
                 updateViews();
             }
         });
+
+        new Handler().postDelayed(new TimerTask() {
+            @Override
+            public void run() {
+                // Request focus for edit text
+                editPointRedeemed.requestFocus();
+                editPointRedeemed.setSelection(editPointRedeemed.getText().toString().length());
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editPointRedeemed, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }, 500);
+    }
+
+    private void initThemes() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
+                buttonRedeemPoint.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
+            }
+
+            if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
+                containerAmount.setBackgroundColor(midtransSDK.getColorTheme().getSecondaryColor());
+                containerAmount.setAlpha(0.5f);
+                containerTotalPoint.setBackgroundColor(midtransSDK.getColorTheme().getSecondaryColor());
+                containerTotalPoint.setAlpha(0.5f);
+            }
+        }
     }
 
     public boolean isValidInputPoint(String inputString) {
@@ -142,9 +184,17 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     }
 
     private void bindValues() {
+        String formattedBalance;
+        if (pointBalance == (long) pointBalance) {
+            formattedBalance = String.format(Locale.getDefault(), "%d", (long) pointBalance);
+        } else {
+            formattedBalance = String.format("%s", pointBalance);
+        }
+        latestValidPoint = formattedBalance;
+        calculateAmount(pointBalance);
+        editPointRedeemed.setText(formattedBalance);
+        textTotalPoint.setText(formattedBalance);
         textAmountToPay.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(amountToPay)));
-        editPointRedeemed.setText(String.valueOf(pointRedeemed));
-        textTotalPoint.setText(getString(R.string.total_point, pointBank, String.valueOf(pointBalance)));
     }
 
     private void initValues() {
@@ -155,7 +205,7 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            this.pointBalance = bundle.getLong(ARGS_POINT);
+            this.pointBalance = bundle.getFloat(ARGS_POINT);
             this.pointBank = bundle.getString(ARGS_BANK);
         }
     }
@@ -166,16 +216,16 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
         if (viewId == R.id.button_point_increase) {
             onIncreasePoint();
         } else if (viewId == R.id.button_point_decrease) {
-            onDecrasePoint();
+            onDecreasePoint();
         } else if (viewId == R.id.btn_redeem_point) {
             String strPoint = editPointRedeemed.getText().toString().trim();
-            long redeemedPoint = -1;
+            float redeemedPoint = -1;
             try {
-                redeemedPoint = Long.valueOf(strPoint);
+                redeemedPoint = Float.valueOf(strPoint);
             } catch (Exception e) {
 
             }
-            ((CreditDebitCardFlowActivity) getActivity()).payWithBankPoint(redeemedPoint);
+            ((CreditCardFlowActivity) getActivity()).payWithBankPoint(redeemedPoint);
         }
     }
 
@@ -207,7 +257,7 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void onDecrasePoint() {
+    private void onDecreasePoint() {
         inputPointFromButtons = true;
         long currentBalance = getCurrentPoint();
         long newBalance = currentBalance - MULTIPLY;
@@ -233,10 +283,7 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     }
 
     private boolean isValidCurrentBalance(long currentBalance) {
-        if (currentBalance >= 0 && currentBalance <= this.pointBalance) {
-            return true;
-        }
-        return false;
+        return currentBalance >= 0 && currentBalance <= this.pointBalance;
     }
 
     private void updateViews() {
@@ -247,7 +294,7 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
         updatePointButtonStatus();
     }
 
-    private void calculateAmount(long currentBalance) {
+    private void calculateAmount(float currentBalance) {
         this.pointRedeemed = currentBalance;
         this.amountToPay = totalAmount - pointRedeemed;
     }

@@ -1068,6 +1068,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.getFormattedInstalmentTerm(),
                         cardTokenRequest.getChannel(),
                         cardTokenRequest.getType(),
+                        cardTokenRequest.isPoint(),
                         new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1090,6 +1091,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.getClientKey(),
                         cardTokenRequest.getChannel(),
                         cardTokenRequest.getType(),
+                        cardTokenRequest.isPoint(),
                         new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1118,6 +1120,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.getChannel(),
                         cardTokenRequest.getFormattedInstalmentTerm(),
                         cardTokenRequest.getType(),
+                        cardTokenRequest.isPoint(),
                         new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1140,6 +1143,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             cardTokenRequest.getClientKey(),
                             cardTokenRequest.getChannel(),
                             cardTokenRequest.getType(),
+                            cardTokenRequest.isPoint(),
                             new Callback<TokenDetailsResponse>() {
                                 @Override
                                 public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1164,6 +1168,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             cardTokenRequest.getGrossAmount(),
                             cardTokenRequest.getChannel(),
                             cardTokenRequest.getType(),
+                            cardTokenRequest.isPoint(),
                             new Callback<TokenDetailsResponse>() {
                                 @Override
                                 public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {

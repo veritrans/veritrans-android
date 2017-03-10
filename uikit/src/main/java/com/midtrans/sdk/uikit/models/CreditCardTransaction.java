@@ -170,15 +170,15 @@ public class CreditCardTransaction {
         return cardBankPoint.isEnabled();
     }
 
-    public void setBankPointRedeemed(long pointRedeemed) {
-        cardBankPoint.setpointRedeemed(pointRedeemed);
-    }
-
     public boolean isBankPointValid() {
         return cardBankPoint.isValid();
     }
 
-    public long getBankPointRedeemed() {
+    public float getBankPointRedeemed() {
         return cardBankPoint.getpointRedeemed();
+    }
+
+    public void setBankPointRedeemed(float pointRedeemed) {
+        cardBankPoint.setpointRedeemed(pointRedeemed);
     }
 }

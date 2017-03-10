@@ -18,6 +18,8 @@ public class BanksPointResponse {
     private ArrayList<String> validationMessages;
     @SerializedName("point_balance")
     private Long pointBalance;
+    @SerializedName("point_balance_amount")
+    private String pointBalanceAmount;
     @SerializedName("transaction_time")
     private String transactionTime;
 
@@ -47,5 +49,13 @@ public class BanksPointResponse {
 
     public String getTransactionTime() {
         return transactionTime;
+    }
+
+    public String getPointBalanceAmount() {
+        return pointBalanceAmount;
+    }
+
+    public void setPointBalanceAmount(String pointBalanceAmount) {
+        this.pointBalanceAmount = pointBalanceAmount;
     }
 }

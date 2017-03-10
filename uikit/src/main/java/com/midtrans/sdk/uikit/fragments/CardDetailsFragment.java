@@ -75,6 +75,7 @@ public class CardDetailsFragment extends Fragment {
     private ImageView bankLogo;
     private ImageButton imageCvvHelp;
     private ImageButton imageSaveCardHelp;
+    private ImageButton imagePointHelp;
     private Button scanCardBtn;
     private FancyButton payNowBtn;
     private RelativeLayout layoutSaveCard;
@@ -83,6 +84,8 @@ public class CardDetailsFragment extends Fragment {
     private FancyButton buttonDecrease;
     private AspectRatioImageView promoLogoBtn;
     private FancyButton deleteCardBtn;
+    private AppCompatCheckBox cbBankPoint;
+    private RelativeLayout layoutBanksPoint;
 
     private SaveCardRequest savedCard;
 
@@ -139,12 +142,33 @@ public class CardDetailsFragment extends Fragment {
         fetchSavedCardIfAvailable();
         initTheme();
         initCvvHelp();
+        initPointHelp();
         initSaveCardHelp();
         initCardNumber();
         initCardExpiry();
         initFocusChanges();
         initInstallmentTermButton();
         initPayNow();
+    }
+
+    private void initPointHelp() {
+        imagePointHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.redeem_bni_title)
+                        .setMessage(R.string.redeem_bni_details)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+                changeDialogButtonColor(alertDialog);
+            }
+        });
     }
 
     private void initDelete() {
@@ -198,8 +222,8 @@ public class CardDetailsFragment extends Fragment {
                     checkCardNumberValidity();
                     checkBinLockingValidity();
                     initCardInstallment();
+                    initBNIPoints(checkCardNumberValidity());
                     initPromoUsingPromoEngine();
-
                 }
             }
         });
@@ -273,6 +297,7 @@ public class CardDetailsFragment extends Fragment {
                 midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
                 if (checkCardValidity()) {
+                    ((CreditCardFlowActivity) getActivity()).setBankPointStatus(isBanksPointActivated());
                     if (isValidPayment()) {
                         if (isOneClickMode()) {
                             ((CreditCardFlowActivity) getActivity()).oneClickPayment(savedCard.getMaskedCard());
@@ -325,6 +350,10 @@ public class CardDetailsFragment extends Fragment {
         });
     }
 
+    private boolean isBanksPointActivated() {
+        return layoutBanksPoint.getVisibility() == View.VISIBLE && cbBankPoint.isChecked();
+    }
+
     private void fetchSavedCardIfAvailable() {
         if (getArguments() != null) {
             savedCard = (SaveCardRequest) getArguments().getSerializable(PARAM_CARD);
@@ -368,6 +397,7 @@ public class CardDetailsFragment extends Fragment {
                     midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_ONE_CLICK);
                 } else {
                     initCardInstallment();
+                    initBNIPoints(checkCardNumberValidity());
 
                     //track page cc two clicks
                     midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_TWO_CLICK);
@@ -413,6 +443,9 @@ public class CardDetailsFragment extends Fragment {
         textInvalidPromoStatus = (DefaultTextView) view.findViewById(R.id.text_offer_status_not_applied);
         promoLogoBtn = (AspectRatioImageView) view.findViewById(R.id.promo_logo);
         installmentText = (TextView) view.findViewById(R.id.installment_title);
+        cbBankPoint = (AppCompatCheckBox) view.findViewById(R.id.cb_bni_point);
+        layoutBanksPoint = (RelativeLayout) view.findViewById(R.id.layout_bni_point);
+        imagePointHelp = (ImageButton) view.findViewById(R.id.image_bni_help);
     }
 
     private void initTheme() {
@@ -438,6 +471,7 @@ public class CardDetailsFragment extends Fragment {
                         midtransSDK.getColorTheme().getSecondaryColor(),
                 };
                 saveCardCheckBox.setSupportButtonTintList(new ColorStateList(states, trackColors));
+                cbBankPoint.setSupportButtonTintList(new ColorStateList(states, trackColors));
             }
 
             if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
@@ -448,6 +482,7 @@ public class CardDetailsFragment extends Fragment {
                 buttonDecrease.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 imageSaveCardHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
                 imageCvvHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
+                imagePointHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
             }
 
             if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
@@ -1118,5 +1153,30 @@ public class CardDetailsFragment extends Fragment {
 
     public SaveCardRequest getSavedCard() {
         return savedCard;
+    }
+
+    private void initBNIPoints(boolean validCardNumber) {
+
+        ArrayList<String> pointBanks = MidtransSDK.getInstance().getBanksPointEnabled();
+        if (validCardNumber && pointBanks != null && !pointBanks.isEmpty()) {
+            String cardNumberText = cardNumber.getText().toString();
+            String cardBin = cardNumberText.replace(" ", "").substring(0, 6);
+            String bankBin = ((CreditCardFlowActivity) getActivity()).getBankByBin(cardBin);
+            if (!TextUtils.isEmpty(bankBin) && bankBin.equals(BankType.BNI)) {
+                showBanksPoint(true);
+            } else {
+                showBanksPoint(false);
+            }
+        } else {
+            showBanksPoint(false);
+        }
+    }
+
+    private void showBanksPoint(boolean show) {
+        if (show) {
+            layoutBanksPoint.setVisibility(View.VISIBLE);
+        } else {
+            layoutBanksPoint.setVisibility(View.GONE);
+        }
     }
 }

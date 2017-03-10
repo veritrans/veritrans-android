@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 
+import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
+import com.midtrans.sdk.corekit.utilities.CustomTypeAdapter;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
@@ -85,7 +87,13 @@ public class MidtransRestAdapter {
         okHttpClient.setConnectTimeout(timeOut, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(timeOut, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(timeOut, TimeUnit.SECONDS);
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                .registerTypeAdapter(CreditCardPaymentParams.class, new CustomTypeAdapter())
+                .create();
         RestAdapter.Builder builder = new RestAdapter.Builder()
+                .setConverter(new GsonConverter(gson))
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient))
                 .setRequestInterceptor(buildSnapRequestInterceptor())
