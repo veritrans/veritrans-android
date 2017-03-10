@@ -3,7 +3,6 @@ package com.midtrans.sdk.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.midtrans.sdk.core.Environment;
 import com.midtrans.sdk.core.MidtransCore;
@@ -13,12 +12,7 @@ import com.midtrans.sdk.core.utils.Logger;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.models.Transaction;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
-import com.midtrans.sdk.ui.themes.ColorTheme;
-import com.midtrans.sdk.ui.themes.CustomColorTheme;
-import com.midtrans.sdk.ui.utils.LocalDataHandler;
 import com.midtrans.sdk.ui.views.transaction.TransactionActivity;
-
-import java.util.UUID;
 
 /**
  * Created by ziahaqi on 2/19/17.
@@ -26,6 +20,7 @@ import java.util.UUID;
 
 public class MidtransUi {
     private static MidtransUi instance;
+
     private Context context;
     private boolean enableLog = true;
     private String clientKey;
@@ -51,13 +46,6 @@ public class MidtransUi {
         initDefaultValues();
     }
 
-    private void initDefaultValues() {
-        if(customSetting.colorTheme != null){
-            this.colorTheme = customSetting.colorTheme;
-        }
-
-    }
-
     public static Builder builder() {
         return new Builder();
     }
@@ -69,6 +57,12 @@ public class MidtransUi {
         return instance;
     }
 
+    private void initDefaultValues() {
+        if (customSetting.colorTheme != null) {
+            this.colorTheme = customSetting.colorTheme;
+        }
+
+    }
 
     /**
      * @param context              Context
@@ -94,16 +88,15 @@ public class MidtransUi {
         return customSetting;
     }
 
+    public BaseColorTheme getColorTheme() {
+        return this.colorTheme;
+    }
+
     public void setColorTheme(BaseColorTheme baseColorTheme) {
         if (this.colorTheme == null) {
             this.colorTheme = baseColorTheme;
         }
     }
-
-    public BaseColorTheme getColorTheme() {
-        return this.colorTheme;
-    }
-
 
     public String getFontBold() {
         if (customSetting != null) {
@@ -138,23 +131,20 @@ public class MidtransUi {
         this.checkoutToken = checkoutToken;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
-    }
-
     public boolean isBuiltInTokenStorage() {
         return builtInTokenStorage;
     }
 
     public boolean isCreditCardNormalMode() {
-        if (transaction != null && transaction.isCreditCardNormalMode()) {
-            return true;
-        }
-        return false;
+        return transaction != null && transaction.isCreditCardNormalMode();
     }
 
     public Transaction getTransaction() {
         return this.transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
     }
 
     public String readCheckoutToken() {
