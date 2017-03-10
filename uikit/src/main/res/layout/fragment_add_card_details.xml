@@ -256,64 +256,40 @@
                     android:src="@drawable/ic_hints" />
             </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layout_bni_point"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/scan_card"
+                android:layout_below="@+id/layout_save_card_detail"
                 android:layout_marginTop="@dimen/eight_dp"
                 android:gravity="end"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.SwitchCompat
+                <android.support.v7.widget.AppCompatCheckBox
                     android:visibility="visible"
                     android:id="@+id/cb_bni_point"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/four_dp"
                     android:layout_marginTop="@dimen/four_dp"
                     android:text="@string/redeem_bni_reward" />
 
                 <ImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:id="@+id/image_bni_help"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_cvvinfo"
+                    android:src="@drawable/ic_hints"
                     android:text="@string/what_is_cvv"
                     android:textColor="?colorAccent" />
-            </LinearLayout>
-            <LinearLayout
-
-                android:id="@+id/layout_save_card_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/layout_bni_point"
-                android:layout_marginTop="@dimen/eight_dp"
-                android:gravity="end"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/cb_store_card"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/four_dp"
-                    android:layout_marginTop="@dimen/four_dp"
-                    android:text="@string/save_card_message" />
-
-                <ImageView
-                    android:id="@+id/image_save_card_help"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_cvvinfo"
-                    android:text="@string/what_is_cvv"
-                    android:textColor="?colorAccent" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/layout_installment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_save_card_detail"
+                android:layout_below="@+id/layout_bni_point"
                 android:layout_marginTop="@dimen/four_dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
