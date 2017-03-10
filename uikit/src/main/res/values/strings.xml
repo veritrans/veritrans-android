@@ -677,6 +677,15 @@
     <string name="promo_dialog_title">Congratulations</string>
     <string name="promo_dialog_message">With this card, you will get Rp. %1$s discount from %2$s.</string>
     <string name="error_obtain_promo">Failed to obtain promo.</string>
+    <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
+    <string name="amount_after_discount">Amount to pay after discount</string>
+    <string name="will_be_used_point_here">Will be used point</string>
+    <string name="total_point_here">total point here</string>
+    <string name="redeem_point">Redeem Point</string>
+    <string name="redeem_bank_point_title">Redeem %1$s Point</string>
+    <string name="total_point">Your total %1$s Reward Point is %2$s</string>
+    <string name="redeem_bni_title">Redeem BNI Reward Point</string>
+    <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
     <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.\n\nTransaction will be cancelled if payment is not completed within 2 hours.</string>
     <string name="error_delete_message">Failed to delete card</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
@@ -684,4 +693,10 @@
     <string name="deleted">Deleted</string>
     <string name="undo">Undo</string>
     <string name="delete_this_card">delete this card</string>
+
+    <string name="how_much_point">How much points you want to redeem?</string>
+    <string name="total_bni_point">Your total BNI points</string>
+    <string name="bank_bni">BNI</string>
+    <string name="bank_mandiri">Mandiri</string>
+    <string name="status_redeemed_point">POINT DISCOUNT</string>
 </resources>

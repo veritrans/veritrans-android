@@ -11,6 +11,9 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.AttrRes;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -561,5 +564,12 @@ public class SdkUIFlowUtil {
             }
         }
         return savedCards;
+    }
+
+    @ColorInt
+    public static int getThemeColor(@NonNull final Context context, @AttrRes final int attributeColor) {
+        final TypedValue value = new TypedValue();
+        context.getTheme().resolveAttribute(attributeColor, value, true);
+        return value.data;
     }
 }

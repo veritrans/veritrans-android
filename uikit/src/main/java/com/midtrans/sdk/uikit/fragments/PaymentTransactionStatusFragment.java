@@ -45,6 +45,7 @@ import com.midtrans.sdk.uikit.activities.XLTunaiActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -71,11 +72,12 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private TextView paymentTypeTextView = null;
     private TextView textBank;
     private TextView textInstallmentTerm;
+    private TextView textRedeemedPoint;
     private DefaultTextView textStatusTitle;
     private int count = 1;
     private LinearLayout detailsTable;
     private FrameLayout layoutMain;
-    private RelativeLayout layoutDueTotalAmount, layoutInstallment, layoutTransactionTime, layoutBank, layoutPaymentType;
+    private RelativeLayout layoutDueTotalAmount, layoutInstallment, layoutTransactionTime, layoutBank, layoutPaymentType, layoutRedeemedPoint;
     private int mPaymentType = -1;
     private FancyButton buttonInstruction;
 
@@ -149,6 +151,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
         textStatusTitle = (DefaultTextView) view.findViewById(R.id.text_title_payment_status);
         layoutMain = (FrameLayout) view.findViewById(R.id.layout_transaction_status);
         buttonInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
+        layoutRedeemedPoint = (RelativeLayout) view.findViewById(R.id.layout_status_point_amount);
+        textRedeemedPoint = (TextView) view.findViewById(R.id.text_point_amount);
 
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
@@ -237,6 +241,20 @@ public class PaymentTransactionStatusFragment extends Fragment {
             layoutInstallment.setVisibility(View.VISIBLE);
         } else {
             layoutInstallment.setVisibility(View.GONE);
+        }
+
+        // Set point
+        if (transactionResponse.getPointRedeemAmount() != 0) {
+            String formattedBalance;
+            if (transactionResponse.getPointRedeemAmount() == (long) transactionResponse.getPointRedeemAmount()) {
+                formattedBalance = String.format(Locale.getDefault(), "%d", (long) transactionResponse.getPointRedeemAmount());
+            } else {
+                formattedBalance = String.format("%s", transactionResponse.getPointRedeemAmount());
+            }
+            layoutRedeemedPoint.setVisibility(View.VISIBLE);
+            textRedeemedPoint.setText(formattedBalance);
+        } else {
+            layoutRedeemedPoint.setVisibility(View.GONE);
         }
 
     }

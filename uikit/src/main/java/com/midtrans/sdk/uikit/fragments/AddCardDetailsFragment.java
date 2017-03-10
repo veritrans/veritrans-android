@@ -76,11 +76,12 @@ public class AddCardDetailsFragment extends Fragment {
     private EditText etCardNo;
     private EditText etCvv;
     private EditText etExpiryDate;
-    private AppCompatCheckBox cbSaveCard;
+    private AppCompatCheckBox cbSaveCard, cbBankPoint;
     private FancyButton buttonIncrease, buttonDecrease;
     private ImageView logo;
     private ImageView bankLogo;
     private ImageButton imageCvvHelp;
+    private ImageView imageBanksPointHelp;
     private AspectRatioImageView promoLogoBtn;
     private ImageButton imageSaveCardHelp;
     private Button scanCardBtn;
@@ -95,6 +96,7 @@ public class AddCardDetailsFragment extends Fragment {
     private RelativeLayout formLayout;
     private LinearLayout layoutInstallment;
     private RelativeLayout layoutSaveCard;
+    private RelativeLayout layoutBanksPoint;
     private DefaultTextView textInvalidPromoStatus;
     private SaveCardRequest savedCard;
     private PromoResponse promo;
@@ -229,8 +231,11 @@ public class AddCardDetailsFragment extends Fragment {
         etCvv = (EditText) view.findViewById(R.id.et_cvv);
         etExpiryDate = (EditText) view.findViewById(R.id.et_exp_date);
         cbSaveCard = (AppCompatCheckBox) view.findViewById(R.id.cb_store_card);
+        cbBankPoint = (AppCompatCheckBox) view.findViewById(R.id.cb_bni_point);
         initCheckbox();
         imageCvvHelp = (ImageButton) view.findViewById(R.id.image_cvv_help);
+        payNowBtn = (FancyButton) view.findViewById(R.id.btn_pay_now);
+        imageBanksPointHelp = (ImageView) view.findViewById(R.id.image_bni_help);
         payNowBtn = (FancyButton) view.findViewById(R.id.btn_pay_now);
         scanCardBtn = (Button) view.findViewById(R.id.scan_card);
         logo = (ImageView) view.findViewById(R.id.payment_card_logo);
@@ -239,6 +244,7 @@ public class AddCardDetailsFragment extends Fragment {
         layoutSaveCard = (RelativeLayout) view.findViewById(R.id.layout_save_card_detail);
         buttonIncrease = (FancyButton) view.findViewById(R.id.button_installment_increase);
         buttonDecrease = (FancyButton) view.findViewById(R.id.button_installment_decrease);
+        layoutBanksPoint = (RelativeLayout) view.findViewById(R.id.layout_bni_point);
         textInstallmentTerm = (TextView) view.findViewById(R.id.text_installment_term);
         textInvalidPromoStatus = (DefaultTextView) view.findViewById(R.id.text_offer_status_not_applied);
         promoLogoBtn = (AspectRatioImageView) view.findViewById(R.id.promo_logo);
@@ -328,9 +334,10 @@ public class AddCardDetailsFragment extends Fragment {
             @Override
             public void onFocusChange(View view, boolean hasfocus) {
                 if (!hasfocus) {
-                    checkCardNumberValidity();
+                    boolean validCardNumber = checkCardNumberValidity();
                     checkBinLockingValidity();
                     initCardInstallment();
+                    initBNIPoints(validCardNumber);
                     initPromoUsingPromoEngine();
 
                 }
@@ -391,6 +398,7 @@ public class AddCardDetailsFragment extends Fragment {
                 // Track event pay now
                 midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
                 if (checkCardValidity()) {
+                    ((CreditDebitCardFlowActivity) getActivity()).setBankPointStatus(isBanksPointActivated());
 
                     if (!isValidPayment()) {
                         return;
@@ -459,6 +467,22 @@ public class AddCardDetailsFragment extends Fragment {
                         .create();
                 alertDialog.show();
                 changeDialogButtonColor(alertDialog);
+            }
+        });
+
+        imageBanksPointHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.redeem_bni_title)
+                        .setMessage(R.string.redeem_bni_details)
+                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).create();
+                dialog.show();
             }
         });
 
@@ -1107,6 +1131,38 @@ public class AddCardDetailsFragment extends Fragment {
                 });
             }
         });
+    }
+
+    private void initBNIPoints(boolean validCardNumber) {
+
+        ArrayList<String> pointBanks = MidtransSDK.getInstance().getBanksPointEnabled();
+        if (validCardNumber && pointBanks != null && !pointBanks.isEmpty()) {
+            String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+            String bankBin = ((CreditDebitCardFlowActivity) getActivity()).getBankByBin(cardBin);
+            if (!TextUtils.isEmpty(bankBin) && bankBin.equals(BankType.BNI)) {
+                showBanksPoint(true);
+            } else {
+                showBanksPoint(false);
+            }
+        } else {
+            showBanksPoint(false);
+        }
+    }
+
+    private boolean isBanksPointActivated() {
+        if (layoutBanksPoint.getVisibility() == View.VISIBLE && cbBankPoint.isChecked()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void showBanksPoint(boolean show) {
+        if (show) {
+            layoutBanksPoint.setVisibility(View.VISIBLE);
+        } else {
+            layoutBanksPoint.setVisibility(View.GONE);
+        }
     }
 
     private void changeDialogButtonColor(AlertDialog alertDialog) {

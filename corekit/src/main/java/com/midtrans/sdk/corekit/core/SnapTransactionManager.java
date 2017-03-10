@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
+import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
@@ -22,6 +23,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
@@ -1071,6 +1073,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.getFormattedInstalmentTerm(),
                         cardTokenRequest.getChannel(),
                         cardTokenRequest.getType(),
+                        cardTokenRequest.isPoint(),
                         new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1093,6 +1096,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.getClientKey(),
                         cardTokenRequest.getChannel(),
                         cardTokenRequest.getType(),
+                        cardTokenRequest.isPoint(),
                         new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1121,6 +1125,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         cardTokenRequest.getChannel(),
                         cardTokenRequest.getFormattedInstalmentTerm(),
                         cardTokenRequest.getType(),
+                        cardTokenRequest.isPoint(),
                         new Callback<TokenDetailsResponse>() {
                             @Override
                             public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1143,6 +1148,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             cardTokenRequest.getClientKey(),
                             cardTokenRequest.getChannel(),
                             cardTokenRequest.getType(),
+                            cardTokenRequest.isPoint(),
                             new Callback<TokenDetailsResponse>() {
                                 @Override
                                 public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1167,6 +1173,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             cardTokenRequest.getGrossAmount(),
                             cardTokenRequest.getChannel(),
                             cardTokenRequest.getType(),
+                            cardTokenRequest.isPoint(),
                             new Callback<TokenDetailsResponse>() {
                                 @Override
                                 public void success(TokenDetailsResponse tokenDetailsResponse, Response response) {
@@ -1297,4 +1304,39 @@ public class SnapTransactionManager extends BaseTransactionManager {
             }
         });
     }
+
+    /**
+     * @param authenticationToken snap token
+     * @param cardToken           credit card token
+     * @param callback            BNI points callback instance
+     */
+    public void getBanksPoint(String authenticationToken, String cardToken, final BanksPointCallback callback) {
+
+        snapRestAPI.getBanksPoint(authenticationToken, cardToken, new Callback<BanksPointResponse>() {
+            @Override
+            public void success(BanksPointResponse bankPointResponse, Response response) {
+                releaseResources();
+                if (bankPointResponse != null) {
+                    if (bankPointResponse.getStatusCode() != null && bankPointResponse.getStatusCode().equals(context.getString(R.string.success_code_200))) {
+                        callback.onSuccess(bankPointResponse);
+                    } else {
+                        callback.onFailure(response.getReason());
+                    }
+                } else {
+                    callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                releaseResources();
+                if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                    Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                }
+                callback.onError(new Throwable(error.getMessage(), error.getCause()));
+            }
+        });
+
+    }
+
 }
