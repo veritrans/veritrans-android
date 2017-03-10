@@ -41,11 +41,11 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
     @Override
     public PaymentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext())
+        View view = LayoutInflater
+                .from(parent.getContext())
                 .inflate(R.layout.adapter_payment_method_row, parent, false);
 
-        PaymentViewHolder paymentViewHolder = new PaymentViewHolder(view, paymentMethodListener);
-        return paymentViewHolder;
+        return new PaymentViewHolder(view, paymentMethodListener);
     }
 
     @Override

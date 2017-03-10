@@ -50,7 +50,6 @@ public class Payment {
     }
 
     public class CreditCard {
-
         public static final String ONE_CLICK = "one_click";
         public static final String TWO_CLICKS = "two_clicks";
     }
@@ -61,7 +60,6 @@ public class Payment {
     }
 
     public class Status {
-
         public static final String CODE_200 = "200";
         public static final String CODE_201 = "201";
         public static final String CODE_400 = "400";

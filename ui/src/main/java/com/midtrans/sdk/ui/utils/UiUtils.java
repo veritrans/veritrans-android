@@ -205,37 +205,6 @@ public class UiUtils {
     }
 
     /**
-     * display snackbar with message about failed api call.
-     *
-     * @param activity     activity instance
-     * @param errorMessage error message
-     */
-//    public static void showApiFailedMessage(Activity activity, String errorMessage) {
-//        try {
-//            if (!TextUtils.isEmpty(errorMessage)) {
-//                MidtransSDK midtransSDK = MidtransSDK.getInstance();
-//                if (midtransSDK != null) {
-//                    Context context = midtransSDK.getContext();
-//                    if (context != null) {
-//                        if (errorMessage.contains(context.getString(R.string.retrofit_network_message))) {
-//                            Toast.makeText(activity, activity.getString(R.string.no_network_msg), Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show();
-//                        }
-//                    } else Logger.e("Context is not available.");
-//                } else {
-//                    Logger.e("Veritrans SDK is not started.");
-//                }
-//
-//            } else {
-//                Toast.makeText(activity, activity.getString(R.string.api_fail_message), Toast.LENGTH_SHORT).show();
-//            }
-//        } catch (NullPointerException e) {
-//            Logger.i("Nullpointer:" + e.getMessage());
-//        }
-//    }
-
-    /**
      * It will generate random 5 digit number. It is used as input3 in mandiri click pay.
      *
      * @return random number
@@ -367,17 +336,6 @@ public class UiUtils {
         return background;
     }
 
-    /**
-     * Sorting bank payment method by priority (Ascending)
-     */
-//    public static void sortBankPaymentMethodsByPriority(ArrayList<BankTransferModel> paymentMethodsModels) {
-//        Collections.sort(paymentMethodsModels, new Comparator<BankTransferModel>() {
-//            @Override
-//            public int compare(BankTransferModel lhs, BankTransferModel rhs) {
-//                return lhs.getPriority().compareTo(rhs.getPriority());
-//            }
-//        });
-//    }
 
     /**
      * Check if payment method is enabled.
@@ -394,24 +352,6 @@ public class UiUtils {
         }
         return false;
     }
-
-    /**
-     * Check if bank transfer payment method is enabled.
-     *
-     * @return true if bank transfer payment is enabled.
-     */
-//    public static boolean isBankTransferMethodEnabled(Context context, List<SnapEnabledPayment> enabledPayments) {
-//        for (SnapEnabledPayment enabledPayment : enabledPayments) {
-//            if (enabledPayment.type.equalsIgnoreCase(context.getString(R.string.payment_bca_va))
-//                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_permata_va))
-//                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_mandiri_bill_payment))
-//                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_all_va))) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
 
     public static String getDeviceType(Activity activity) {
         String deviceType;
@@ -454,44 +394,4 @@ public class UiUtils {
         }
     }
 
-
-//    public static PromoResponse getPromoFromCardBins(List<PromoResponse> promoResponses, String cardBins) {
-//        List<PromoData> promoDatas = mapPromoResponseIntoData(promoResponses);
-//        Collections.sort(promoDatas, new PromoComparator());
-//        for (PromoData promoData : promoDatas) {
-//            if (isBinCardValidForPromo(promoData.getPromoResponse(), cardBins)) {
-//                return promoData.getPromoResponse();
-//            }
-//        }
-//        return null;
-//    }
-//
-//    private static boolean isBinCardValidForPromo(PromoResponse promo, String cardBin) {
-//        List<String> bins = promo.getBins();
-//        if (bins != null && !bins.isEmpty()) {
-//            if (bins.contains(cardBin)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//    private static List<PromoData> mapPromoResponseIntoData(List<PromoResponse> promoResponses) {
-//        List<PromoData> promoDatas = new ArrayList<>();
-//        double grossAmount = MidtransSDK.getInstance().getTransactionRequest().getAmount();
-//        for (PromoResponse promoResponse : promoResponses) {
-//            if (grossAmount > calculateDiscountAmount(promoResponse)) {
-//                promoDatas.add(new PromoData(promoResponse, grossAmount));
-//            }
-//        }
-//        return promoDatas;
-//    }
-//
-//    public static double calculateDiscountAmount(PromoResponse promoResponse) {
-//        if (promoResponse.getDiscountType().equalsIgnoreCase("FIXED")) {
-//            return promoResponse.getDiscountAmount();
-//        } else {
-//            return promoResponse.getDiscountAmount() * MidtransSDK.getInstance().getTransactionRequest().getAmount() / 100;
-//        }
-//    }
 }
