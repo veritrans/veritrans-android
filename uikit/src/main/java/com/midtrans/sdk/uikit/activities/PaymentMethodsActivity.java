@@ -260,12 +260,15 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             @Override
             public void onFailure(Token token, String reason) {
+                Log.d(TAG, "Failed to registering transaction: "+reason);
                 enableButtonBack(true);
                 showErrorMessage();
             }
 
             @Override
             public void onError(Throwable error) {
+                error.printStackTrace();
+
                 enableButtonBack(true);
                 showErrorMessage();
             }
@@ -323,6 +326,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             @Override
             public void onError(Throwable error) {
+                error.printStackTrace();
                 enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
                 showDefaultPaymentMethods();

@@ -97,6 +97,9 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
                     Logger.i(TAG, "Error in SSL Certificate. " + e.getMessage());
                 }
+
+                e.printStackTrace();
+
                 callback.onError(new Throwable(e.getMessage(), e.getCause()));
             }
         });
@@ -996,6 +999,8 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
                     Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                 }
+
+                error.printStackTrace();
                 callback.onError(new Throwable(error.getMessage(), error.getCause()));
             }
         });
@@ -1241,6 +1246,9 @@ public class SnapTransactionManager extends BaseTransactionManager {
         if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
             Logger.e(TAG, "Error in SSL Certificate. " + e.getMessage());
         }
+
+        e.printStackTrace();
+
         callback.onError(new Throwable(e.getMessage(), e.getCause()));
         // Track Mixpanel event
     }
@@ -1289,6 +1297,9 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
                     Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                 }
+
+                error.printStackTrace();
+
                 callback.onError(new Throwable(error.getMessage(), error.getCause()));
             }
         });
