@@ -1,12 +1,8 @@
 package com.midtrans.sdk.ui.views.creditcard;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -39,7 +35,8 @@ import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.abtracts.BaseFragment;
 import com.midtrans.sdk.ui.constants.Constants;
-import com.midtrans.sdk.ui.constants.Payment;
+import com.midtrans.sdk.ui.constants.PaymentType;
+import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.CreditCardDetails;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.CreditCardUtils;
@@ -71,10 +68,10 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
 
     private MidtransUi midtransUi;
 
-    TextInputLayout tilCardNo, tilCvv, tilExpiry;
-    TextView tvInstallmentTerm;
+    private TextInputLayout tilCardNo, tilCvv, tilExpiry;
+    private TextView tvInstallmentTerm;
     int installmentCurrentPosition, installmentTotalPositions;
-    FancyButton buttonPay;
+    private FancyButton buttonPay;
     private String lastExpDate = "";
     private EditText etCardNumber;
     private EditText etCvv;
@@ -109,12 +106,10 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         return fragment;
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -133,7 +128,6 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         initViewsColor();
         setupView();
         initSavedCardState();
-        fadeIn();
     }
 
     private void initViewsColor() {
@@ -146,7 +140,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         setTextColor(buttonDecrease);
         filterColor(ibSaveCardHelp);
         filterColor(ibCvvHelp);
-        setBackgroundColor(tvInstallmentTerm, Constants.Theme.SECONDARY_COLOR);
+        setBackgroundColor(tvInstallmentTerm, Theme.SECONDARY_COLOR);
         tvInstallmentTerm.getBackground().setAlpha(50);
         setCheckoxStateColor(cbSaveCard);
     }
@@ -183,7 +177,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         buttonIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onIncraseTerm();
+                onIncreaseTerm();
             }
         });
 
@@ -382,7 +376,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
                                         etExpiryDate.setText(getString(R.string.expiry_month_format, etExpiryDate.getText().toString()));
                                         etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                                     } else {
-                                        etExpiryDate.setText(getString(R.string.expiry_month_int_format, Constants.DateTime.MONTH_COUNT));
+                                        etExpiryDate.setText(getString(R.string.expiry_month_int_format, Constants.MONTH_COUNT));
                                         etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                                     }
 
@@ -828,35 +822,6 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void fadeIn() {
-        layoutCardForm.setAlpha(0);
-        ObjectAnimator fadeInAnimation = ObjectAnimator.ofFloat(layoutCardForm, "alpha", 0, 1f);
-        fadeInAnimation.setDuration(Constants.Animation.FADE_IN_FORM_TIME);
-        fadeInAnimation.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                buttonPay.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        fadeInAnimation.start();
-    }
-
 
     private void disableEnableInstallmentButton() {
         if (installmentCurrentPosition == 0 && installmentTotalPositions == 0) {
@@ -882,7 +847,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         disableEnableInstallmentButton();
     }
 
-    private void onIncraseTerm() {
+    private void onIncreaseTerm() {
         if (installmentCurrentPosition >= 0 && installmentCurrentPosition < installmentTotalPositions) {
             installmentCurrentPosition += 1;
             setInstallmentTerm();
@@ -909,9 +874,9 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         if (presenter.isSecureCardpayment()) {
             UiUtils.hideProgressDialog();
             Intent intentPaymentWeb = new Intent(getContext(), PaymentWebActivity.class);
-            intentPaymentWeb.putExtra(Constants.WebView.WEB_URL, response.redirectUrl);
-            intentPaymentWeb.putExtra(Constants.WebView.TYPE, Constants.WebView.TYPE_CREDIT_CARD);
-            getActivity().startActivityForResult(intentPaymentWeb, Constants.IntentCode.PAYMENT_WEB_INTENT);
+            intentPaymentWeb.putExtra(Constants.WEB_VIEW_URL, response.redirectUrl);
+            intentPaymentWeb.putExtra(Constants.WEB_VIEW_PARAM_TYPE, PaymentType.CREDIT_CARD);
+            getActivity().startActivityForResult(intentPaymentWeb, Constants.INTENT_CODE_WEB_PAYMENT);
         } else {
             presenter.payUsingCard();
         }
@@ -946,7 +911,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
             attempt += 1;
             UiUtils.showApiFailedMessage(getActivity(), getString(R.string.message_payment_failed));
         } else {
-            ((BaseActivity) getActivity()).initPaymentResult(new PaymentResult(response), Payment.Type.CREDIT_CARD);
+            ((BaseActivity) getActivity()).initPaymentResult(new PaymentResult<CreditCardPaymentResponse>(response), PaymentType.CREDIT_CARD);
         }
     }
 
@@ -955,7 +920,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
     public void onCreditCardPaymentSuccess(CreditCardPaymentResponse response) {
         Logger.d(TAG, "cardPayment:success");
         UiUtils.hideProgressDialog();
-        ((BaseActivity) getActivity()).initPaymentResult(new PaymentResult(response), Payment.Type.CREDIT_CARD);
+        ((BaseActivity) getActivity()).initPaymentResult(new PaymentResult<CreditCardPaymentResponse>(response), PaymentType.CREDIT_CARD);
     }
 
     @Override

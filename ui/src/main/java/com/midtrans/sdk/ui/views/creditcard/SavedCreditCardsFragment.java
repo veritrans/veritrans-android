@@ -160,10 +160,10 @@ public class SavedCreditCardsFragment extends BaseFragment implements CreditCard
         Logger.d(TAG, "cardLayoutHeight:" + creditCardLayoutHeight);
 
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(layoutNewCardButtonn, "alpha", 1f, 0f);
-        fadeOut.setDuration(Constants.Animation.CARD_ANIMATION_TIME);
+        fadeOut.setDuration(Constants.CARD_ANIMATION_TIME);
         ObjectAnimator translateY = ObjectAnimator.ofFloat(layoutCreditCards, "translationY",
                 -creditCardLayoutHeight);
-        translateY.setDuration(Constants.Animation.CARD_ANIMATION_TIME);
+        translateY.setDuration(Constants.CARD_ANIMATION_TIME);
         translateY.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -193,14 +193,14 @@ public class SavedCreditCardsFragment extends BaseFragment implements CreditCard
     public void showLayouts() {
         Logger.d(TAG, "creditLayoutHeight:" + creditCardLayoutHeight);
         ObjectAnimator fadeIn = ObjectAnimator.ofFloat(layoutNewCardButtonn, "alpha", 0f, 1f);
-        fadeIn.setDuration(Constants.Animation.CARD_ANIMATION_TIME);
+        fadeIn.setDuration(Constants.CARD_ANIMATION_TIME);
         ObjectAnimator slideOut = ObjectAnimator.ofFloat(layoutCreditCards, "translationY",
                 -creditCardLayoutHeight);
         slideOut.setDuration(0);
         slideOut.start();
         ObjectAnimator slideIn = ObjectAnimator.ofFloat(layoutCreditCards, "translationY",
                 0);
-        slideIn.setDuration(Constants.Animation.CARD_ANIMATION_TIME);
+        slideIn.setDuration(Constants.CARD_ANIMATION_TIME);
         slideIn.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -231,7 +231,7 @@ public class SavedCreditCardsFragment extends BaseFragment implements CreditCard
             public void run() {
                 ((CreditCardActivity) getActivity()).setHeaderTitle(getString(R.string.choose_card));
             }
-        }, Constants.Animation.CARD_ANIMATION_TIME);
+        }, Constants.CARD_ANIMATION_TIME);
     }
 
     @Override

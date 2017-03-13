@@ -17,7 +17,7 @@ import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.ui.adapters.PaymentMethodsAdapter;
 import com.midtrans.sdk.ui.constants.Constants;
-import com.midtrans.sdk.ui.constants.Payment;
+import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentMethodModel;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.Logger;
@@ -148,12 +148,12 @@ public class TransactionActivity extends BaseActivity implements TransactionCont
 
     private void showPaymentActivity(PaymentMethodModel paymentMethod) {
         switch (paymentMethod.getPaymentType()) {
-            case Payment.Type.CREDIT_CARD:
+            case PaymentType.CREDIT_CARD:
                 Intent intent = new Intent(this, CreditCardActivity.class);
-                startActivityForResult(intent, Constants.IntentCode.PAYMENT);
+                startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
                 break;
 
-            case Payment.Type.BANK_TRANSFER:
+            case PaymentType.BANK_TRANSFER:
 
                 break;
             default:
@@ -172,9 +172,9 @@ public class TransactionActivity extends BaseActivity implements TransactionCont
         super.onActivityResult(requestCode, resultCode, data);
         Logger.d(TAG, "onActivityResult(): request code is " + requestCode + "," + resultCode);
 
-        if (requestCode == Constants.IntentCode.PAYMENT) {
+        if (requestCode == Constants.INTENT_CODE_PAYMENT) {
             if (resultCode == RESULT_OK) {
-                PaymentResult result = (PaymentResult) data.getSerializableExtra(Payment.Param.PAYMENT_RESULT);
+                PaymentResult result = (PaymentResult) data.getSerializableExtra(Constants.PAYMENT_RESULT);
                 Logger.d(TAG, "onActivityResult():response:" + result);
                 if (result != null) {
                     presenter.sendPaymentResult(result);
@@ -182,7 +182,7 @@ public class TransactionActivity extends BaseActivity implements TransactionCont
                 }
 
             } else if (resultCode == RESULT_CANCELED) {
-                PaymentResult result = (PaymentResult) data.getSerializableExtra(Payment.Param.PAYMENT_RESULT);
+                PaymentResult result = (PaymentResult) data.getSerializableExtra(Constants.PAYMENT_RESULT);
                 Logger.d(TAG, "onActivityResult():response:" + result);
 
                 if (result != null) {

@@ -15,7 +15,8 @@ import android.widget.LinearLayout;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.abtracts.BaseFragment;
-import com.midtrans.sdk.ui.constants.Payment;
+import com.midtrans.sdk.ui.constants.PaymentStatus;
+import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
@@ -109,7 +110,7 @@ public class PaymentStatusFragment extends BaseFragment {
 
 
     private void setPaymentDetails() {
-        if (paymentType.equals(Payment.Type.CREDIT_CARD)) {
+        if (paymentType.equals(PaymentType.CREDIT_CARD)) {
             tvPaymentType.setText(getString(R.string.payment_method_credit_card));
         }
 
@@ -140,9 +141,9 @@ public class PaymentStatusFragment extends BaseFragment {
             }
 
             //installment term
-            if(TextUtils.isEmpty(paymentResult.getInstallmentTerm())){
+            if (TextUtils.isEmpty(paymentResult.getInstallmentTerm())) {
                 layoutInstallmentTerm.setVisibility(View.GONE);
-            }else{
+            } else {
                 layoutInstallmentTerm.setVisibility(View.VISIBLE);
                 tvInstallmentTerm.setText(paymentResult.getInstallmentTerm());
             }
@@ -165,18 +166,18 @@ public class PaymentStatusFragment extends BaseFragment {
     //
     private void initlayoutColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (paymentResult.getPaymentStatus().equals(Payment.Status.SUCCESS)) {
+            if (paymentResult.getPaymentStatus().equals(PaymentStatus.SUCCESS)) {
                 getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.payment_status_success));
-            } else if (paymentResult.getPaymentStatus().equals(Payment.Status.PENDING)) {
+            } else if (paymentResult.getPaymentStatus().equals(PaymentStatus.PENDING)) {
                 getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.payment_status_pending));
             } else {
                 getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.payment_status_failed));
             }
         }
 
-        if (paymentResult.getPaymentStatus().equals(Payment.Status.SUCCESS)) {
+        if (paymentResult.getPaymentStatus().equals(PaymentStatus.SUCCESS)) {
             layoutMain.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.payment_status_success));
-        } else if (paymentResult.getPaymentStatus().equals(Payment.Status.PENDING)) {
+        } else if (paymentResult.getPaymentStatus().equals(PaymentStatus.PENDING)) {
             layoutMain.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.payment_status_pending));
         } else {
             layoutMain.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.payment_status_failed));
@@ -185,12 +186,12 @@ public class PaymentStatusFragment extends BaseFragment {
 
 
     private void setHeaderValues() {
-        if (paymentResult.getPaymentStatus().equals(Payment.Status.SUCCESS)) {
+        if (paymentResult.getPaymentStatus().equals(PaymentStatus.SUCCESS)) {
             tvStatusTitle.setText(getString(R.string.payment_successful));
             ivStatusLogo.setImageResource(R.mipmap.ic_status_success);
             tvStatusMessage.setText(getString(R.string.thank_you));
-        } else if (paymentResult.getPaymentStatus().equals(Payment.Status.PENDING)) {
-            if (paymentResult.getFraudStatus().equals(Payment.Status.CHALLENGE)) {
+        } else if (paymentResult.getPaymentStatus().equals(PaymentStatus.PENDING)) {
+            if (paymentResult.getFraudStatus().equals(PaymentStatus.CHALLENGE)) {
                 tvStatusTitle.setText(getString(R.string.payment_challenged));
             } else {
                 tvStatusTitle.setText(getString(R.string.payment_pending));
@@ -206,10 +207,10 @@ public class PaymentStatusFragment extends BaseFragment {
             if (paymentResult.getTransactionStatus() != null &&
                     paymentResult.getPaymentStatus().equalsIgnoreCase(getString(R.string.deny))) {
                 tvStatusErrorMessage.setText(getString(R.string.payment_deny));
-            } else if (paymentResult.getStatusCode().equals(Payment.Status.CODE_400)) {
+            } else if (paymentResult.getStatusCode().equals(PaymentStatus.CODE_400)) {
                 String message = "";
                 if (paymentResult.getValidationMessages() != null && !paymentResult.getValidationMessages().isEmpty()) {
-                    message = paymentResult.getValidationMessages().get(0);
+                    message = (String) paymentResult.getValidationMessages().get(0);
                 }
 
                 if (!TextUtils.isEmpty(message) && message.toLowerCase().contains(getString(R.string.label_expired))) {
@@ -217,7 +218,7 @@ public class PaymentStatusFragment extends BaseFragment {
                 } else {
                     tvStatusErrorMessage.setText(getString(R.string.message_cannot_proccessed));
                 }
-            }else{
+            } else {
                 tvStatusErrorMessage.setText(paymentResult.getStatusMessage());
             }
         }

@@ -6,6 +6,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.midtrans.sdk.ui.constants.Constants;
+import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.utils.UiUtils;
 
@@ -40,7 +41,7 @@ public class MidtransWebViewClient extends WebViewClient {
         super.onPageFinished(view, url);
         Logger.d(TAG, "Url:finished:" + url);
         UiUtils.hideProgressDialog();
-        if (url.contains(Constants.WebView.CALLBACK_STRING)) {
+        if (url.contains(Constants.WEB_VIEW_CALLBACK_STRING)) {
             if (callback != null) {
                 callback.onCompleted();
             }
@@ -51,25 +52,25 @@ public class MidtransWebViewClient extends WebViewClient {
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         Logger.d(TAG, "Url:started:" + url);
         super.onPageStarted(view, url, favicon);
-        if (type != null && type.equals(Constants.WebView.TYPE_BCA_KLIKPAY)) {
+        if (type != null && type.equals(PaymentType.BCA_KLIKPAY)) {
             if (url.contains("?id=")) {
                 if (callback != null) {
                     callback.onCompleted();
                 }
             }
-        } else if (type != null && type.equals(Constants.WebView.TYPE_MANDIRI_ECASH)) {
+        } else if (type != null && type.equals(PaymentType.MANDIRI_ECASH)) {
             if (url.contains("notify?id=")) {
                 if (callback != null) {
                     callback.onCompleted();
                 }
             }
-        } else if (type != null && type.equals(Constants.WebView.TYPE_EPAY_BRI)) {
+        } else if (type != null && type.equals(PaymentType.BRI_EPAY)) {
             if (url.contains("briPayment?tid=")) {
                 if (callback != null) {
                     callback.onCompleted();
                 }
             }
-        } else if (type != null && type.equals(Constants.WebView.TYPE_CIMB_CLICK)) {
+        } else if (type != null && type.equals(PaymentType.CIMB_CLICKS)) {
             if (url.contains("cimb-clicks/response")) {
                 callback.onCompleted();
             }

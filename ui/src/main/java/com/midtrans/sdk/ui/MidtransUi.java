@@ -3,14 +3,16 @@ package com.midtrans.sdk.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.midtrans.sdk.core.Environment;
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
 import com.midtrans.sdk.core.models.merchant.CustomerDetails;
+import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
+import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
 import com.midtrans.sdk.core.utils.Logger;
 import com.midtrans.sdk.ui.models.PaymentResult;
-import com.midtrans.sdk.ui.models.Transaction;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
 import com.midtrans.sdk.ui.views.transaction.TransactionActivity;
 
@@ -20,7 +22,6 @@ import com.midtrans.sdk.ui.views.transaction.TransactionActivity;
 
 public class MidtransUi {
     private static MidtransUi instance;
-
     private Context context;
     private boolean enableLog = true;
     private String clientKey;
@@ -29,12 +30,12 @@ public class MidtransUi {
     private String checkoutToken;
     private String checkoutUrl;
     private CheckoutTokenRequest checkoutTokenRequest;
-    private Transaction transaction;
     private String merchantLogoUrl;
     private String merchantName;
     private boolean builtInTokenStorage = true;
     private BaseColorTheme colorTheme;
     private MidtransUiCallback paymentCallback;
+    private SnapTransaction transaction;
 
     private MidtransUi(Builder builder) {
         this.context = builder.context;
@@ -44,6 +45,13 @@ public class MidtransUi {
         this.enableLog = builder.enableLog;
         instance = this;
         initDefaultValues();
+    }
+
+    private void initDefaultValues() {
+        if (customSetting.colorTheme != null) {
+            this.colorTheme = customSetting.colorTheme;
+        }
+
     }
 
     public static Builder builder() {
@@ -57,12 +65,6 @@ public class MidtransUi {
         return instance;
     }
 
-    private void initDefaultValues() {
-        if (customSetting.colorTheme != null) {
-            this.colorTheme = customSetting.colorTheme;
-        }
-
-    }
 
     /**
      * @param context              Context
@@ -84,12 +86,15 @@ public class MidtransUi {
         context.startActivity(intent);
     }
 
-    public CustomSetting getCustomSetting() {
-        return customSetting;
+
+    public SnapCustomerDetails createSnapCustomerDetails() {
+        String fullName = TextUtils.isEmpty(transaction.customerDetails.lastName)
+                ? transaction.customerDetails.firstName : transaction.customerDetails.firstName + " " + transaction.customerDetails.lastName;
+        return new SnapCustomerDetails(fullName, transaction.customerDetails.email, transaction.customerDetails.phone);
     }
 
-    public BaseColorTheme getColorTheme() {
-        return this.colorTheme;
+    public CustomSetting getCustomSetting() {
+        return customSetting;
     }
 
     public void setColorTheme(BaseColorTheme baseColorTheme) {
@@ -97,6 +102,11 @@ public class MidtransUi {
             this.colorTheme = baseColorTheme;
         }
     }
+
+    public BaseColorTheme getColorTheme() {
+        return this.colorTheme;
+    }
+
 
     public String getFontBold() {
         if (customSetting != null) {
@@ -131,28 +141,25 @@ public class MidtransUi {
         this.checkoutToken = checkoutToken;
     }
 
+    public void setTransaction(SnapTransaction transaction) {
+        this.transaction = transaction;
+    }
+
     public boolean isBuiltInTokenStorage() {
         return builtInTokenStorage;
     }
 
-    public boolean isCreditCardNormalMode() {
-        return transaction != null && transaction.isCreditCardNormalMode();
-    }
 
-    public Transaction getTransaction() {
+    public SnapTransaction getTransaction() {
         return this.transaction;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
-    }
-
     public String readCheckoutToken() {
-        return this.transaction.getCheckoutToken();
+        return this.transaction.token;
     }
 
     public void sendPaymentCallback(PaymentResult result) {
-        if(paymentCallback != null){
+        if (paymentCallback != null) {
             paymentCallback.onFinished(result);
         }
     }
@@ -204,7 +211,6 @@ public class MidtransUi {
                     .setEnvironment(this.environment)
                     .setClientKey(clientKey)
                     .build();
-
 
             return new MidtransUi(this);
         }

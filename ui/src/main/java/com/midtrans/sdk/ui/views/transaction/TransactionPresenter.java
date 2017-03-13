@@ -12,12 +12,12 @@ import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePresenter;
-import com.midtrans.sdk.ui.constants.Payment;
+import com.midtrans.sdk.ui.constants.PaymentCategory;
+import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.constants.SnapResponseMessagePattern;
 import com.midtrans.sdk.ui.models.ItemDetail;
 import com.midtrans.sdk.ui.models.PaymentMethodModel;
 import com.midtrans.sdk.ui.models.PaymentResult;
-import com.midtrans.sdk.ui.models.Transaction;
 import com.midtrans.sdk.ui.themes.ColorTheme;
 import com.midtrans.sdk.ui.utils.PaymentMethodHelper;
 import com.midtrans.sdk.ui.utils.Utils;
@@ -25,7 +25,7 @@ import com.midtrans.sdk.ui.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.midtrans.sdk.ui.constants.Payment.Type.E_CHANNEL;
+import static com.midtrans.sdk.ui.constants.PaymentType.E_CHANNEL;
 
 /**
  * Created by ziahaqi on 2/19/17.
@@ -79,7 +79,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
         MidtransCore.getInstance().getTransactionDetails(checkoutTokenResponse.token, new MidtransCoreCallback<SnapTransaction>() {
             @Override
             public void onSuccess(SnapTransaction snapTransaction) {
-                midtransUiSdk.setTransaction(new Transaction(snapTransaction));
+                midtransUiSdk.setTransaction(snapTransaction);
                 midtransUiSdk.setColorTheme(new ColorTheme(context, snapTransaction.merchant.preference.colorScheme));
                 view.showProgressContainer(false);
                 view.showPaymentMethods(createPaymentMethodsModel(snapTransaction.enabledPayments), snapTransaction.merchant.preference.displayName);
@@ -133,7 +133,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
         bankTranferList.clear();
 
         for (SnapEnabledPayment enabledPayment : enabledPayments) {
-            if ((enabledPayment.category != null && enabledPayment.category.equals(Payment.Category.BANK_TRANSFER))
+            if ((enabledPayment.category != null && enabledPayment.category.equals(PaymentCategory.BANK_TRANSFER))
                     || enabledPayment.type.equalsIgnoreCase(E_CHANNEL)) {
 
                 PaymentMethodModel bankTransferPaymentMethod = PaymentMethodHelper.createBankTransferPaymentMethod(context, enabledPayment.type);
@@ -149,7 +149,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
         }
 
         if (!bankTranferList.isEmpty()) {
-            paymentMethodList.add(PaymentMethodHelper.createPaymentMethodModel(context, Payment.Type.BANK_TRANSFER));
+            paymentMethodList.add(PaymentMethodHelper.createPaymentMethodModel(context, PaymentType.BANK_TRANSFER));
         }
 
         return paymentMethodList;

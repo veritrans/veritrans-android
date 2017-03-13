@@ -2,8 +2,7 @@ package com.midtrans.sdk.ui.models;
 
 import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.promo.PromoResponse;
-import com.midtrans.sdk.ui.constants.Payment;
-import com.midtrans.sdk.ui.utils.Logger;
+import com.midtrans.sdk.ui.constants.Constants;
 
 import java.io.Serializable;
 
@@ -28,11 +27,11 @@ public class CreditCardDetails implements Serializable {
     }
 
     public boolean isOneclickMode() {
-        return hasSavedToken() && savedToken.tokenType.equals(Payment.CreditCard.ONE_CLICK);
+        return hasSavedToken() && savedToken.tokenType.equals(Constants.CREDIT_CARD_ONE_CLICK);
     }
 
     public boolean isTwoClicksMode() {
-        return hasSavedToken() && savedToken.tokenType.equals(Payment.CreditCard.TWO_CLICKS);
+        return hasSavedToken() && savedToken.tokenType.equals(Constants.CREDIT_CARD_TWO_CLICKS);
     }
 
     public boolean isNormalMode() {

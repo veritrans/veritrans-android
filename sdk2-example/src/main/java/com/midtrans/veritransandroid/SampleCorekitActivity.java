@@ -42,9 +42,6 @@ import com.midtrans.sdk.core.models.snap.ewallet.tcash.TelkomselCashPaymentRespo
 import com.midtrans.sdk.core.models.snap.ewallet.xltunai.XlTunaiPaymentResponse;
 import com.midtrans.sdk.core.models.snap.gci.GiftCardPaymentResponse;
 import com.midtrans.sdk.core.utils.Utilities;
-import com.midtrans.sdk.ui.MidtransUi;
-import com.midtrans.sdk.ui.MidtransUiCallback;
-import com.midtrans.sdk.ui.models.PaymentResult;
 
 import java.util.ArrayList;
 import java.util.List;

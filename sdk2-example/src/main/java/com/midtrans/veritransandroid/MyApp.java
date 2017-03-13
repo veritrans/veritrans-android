@@ -5,7 +5,6 @@ import android.app.Application;
 import com.midtrans.sdk.core.Environment;
 import com.midtrans.sdk.ui.CustomSetting;
 import com.midtrans.sdk.ui.MidtransUi;
-import com.midtrans.sdk.ui.themes.CustomColorTheme;
 
 /**
  * Created by rakawm on 10/19/16.
@@ -22,13 +21,6 @@ public class MyApp extends Application {
     }
 
     private void initMidtransSDK() {
-//        new MidtransCore.Builder()
-//                .enableLog(true)
-//                .setEnvironment(Environment.SANDBOX)
-//                .setClientKey(CLIENT_KEY)
-//                .build();
-
-//        CustomColorTheme customColorTheme = new CustomColorTheme();
 
         CustomSetting customSetting = new CustomSetting();
         MidtransUi.builder()

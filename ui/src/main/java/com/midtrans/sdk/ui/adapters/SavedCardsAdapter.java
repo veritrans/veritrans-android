@@ -87,9 +87,9 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
                 break;
         }
         String cardName = maskedCard.substring(0, 4);
-        holder.textCardName.setText(cardType + "-" + cardName);
+        holder.tvCardTitle.setText(cardType + "-" + cardName);
         String cardNumber = UiUtils.getMaskedCardNumber(maskedCard);
-        holder.textCardNumber.setText(cardNumber);
+        holder.tvMaskedCarNumber.setText(cardNumber);
 
     }
 
@@ -99,16 +99,16 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     }
 
     class SavedCardsViewHolder extends RecyclerView.ViewHolder {
-        TextView textCardName, textCardNumber;
+        TextView tvCardTitle, tvMaskedCarNumber;
         ImageView imageCardType;
-        AspectRatioImageView imageCardOffer;
+        AspectRatioImageView ivCardOffer;
 
         public SavedCardsViewHolder(View itemView) {
             super(itemView);
-            textCardName = (TextView) itemView.findViewById(R.id.text_saved_card_name);
-            textCardNumber = (TextView) itemView.findViewById(R.id.text_saved_card_number);
+            tvCardTitle = (TextView) itemView.findViewById(R.id.text_saved_card_name);
+            tvMaskedCarNumber = (TextView) itemView.findViewById(R.id.text_saved_card_number);
             imageCardType = (ImageView) itemView.findViewById(R.id.image_card_type);
-            imageCardOffer = (AspectRatioImageView) itemView.findViewById(R.id.image_card_offer);
+            ivCardOffer = (AspectRatioImageView) itemView.findViewById(R.id.image_card_offer);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +120,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
                 }
             });
 
-            imageCardOffer.setOnClickListener(new View.OnClickListener() {
+            ivCardOffer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (promoListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {

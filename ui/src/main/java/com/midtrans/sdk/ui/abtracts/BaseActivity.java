@@ -26,7 +26,7 @@ import com.midtrans.sdk.ui.CustomSetting;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.constants.Constants;
-import com.midtrans.sdk.ui.constants.Payment;
+import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
 import com.midtrans.sdk.ui.utils.Logger;
@@ -58,8 +58,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        initTheme();
         super.onCreate(savedInstanceState);
+        initTheme();
+
     }
 
     public void replaceFragment(Fragment fragment, int fragmentContainer, boolean addToBackStack, boolean clearBackStack) {
@@ -114,7 +115,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void completePayment(PaymentResult result) {
         Intent data = new Intent();
-        data.putExtra(Payment.Param.PAYMENT_RESULT, result);
+        data.putExtra(Constants.PAYMENT_RESULT, result);
         setResult(this.resultCode, data);
         finish();
     }
@@ -146,7 +147,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setStatusBarColor();
     }
 
-    public void setStatusBarColor(){
+    public void setStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && primaryDarkColor != 0) {
             getWindow().setStatusBarColor(primaryDarkColor);
         }
@@ -164,13 +165,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void setBackgroundColor(View view, String colorType) {
         try {
-            if (colorType.equals(Constants.Theme.PRIMARY_COLOR) && primaryColor != 0) {
+            if (colorType.equals(Theme.PRIMARY_COLOR) && primaryColor != 0) {
                 view.setBackgroundColor(primaryColor);
 
-            } else if (colorType.equals(Constants.Theme.SECONDARY_COLOR) && secondaryColor != 0) {
+            } else if (colorType.equals(Theme.SECONDARY_COLOR) && secondaryColor != 0) {
                 view.setBackgroundColor(secondaryColor);
 
-            } else if (colorType.equals(Constants.Theme.PRIMARY_DARK_COLOR) && primaryDarkColor != 0) {
+            } else if (colorType.equals(Theme.PRIMARY_DARK_COLOR) && primaryDarkColor != 0) {
                 view.setBackgroundColor(primaryDarkColor);
             }
         } catch (RuntimeException exception) {

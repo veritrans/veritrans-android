@@ -12,14 +12,11 @@ public class PaymentMethodModel {
     private String name;
     private int imageId;
     private String description;
-    private boolean isSelected;
-    private Integer priority;
 
-    public PaymentMethodModel(String name, String description, String paymentType, int imageId, int priority) {
+    public PaymentMethodModel(String name, String description, String paymentType, int imageId) {
         this.imageId = imageId;
         this.name = name;
         this.description = description;
-        this.priority = priority;
         this.paymentType = paymentType;
     }
 
@@ -33,14 +30,6 @@ public class PaymentMethodModel {
 
     public String getDescription() {
         return description;
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public Integer getPriority() {
-        return priority;
     }
 
     public String getPaymentType() {
