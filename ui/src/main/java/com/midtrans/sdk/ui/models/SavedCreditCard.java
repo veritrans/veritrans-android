@@ -10,9 +10,10 @@ import java.util.List;
  * Created by ziahaqi on 3/6/17.
  */
 
-public class SavedCreditCard implements Serializable{
+public class SavedCreditCard implements Serializable {
     private List<SavedToken> savedCards;
     private List<PromoResponse> promos;
+
     public SavedCreditCard(List<SavedToken> savedCards, List<PromoResponse> promos) {
         this.savedCards = savedCards;
         this.promos = promos;

@@ -216,7 +216,7 @@
     <string name="bca_klik_instruction_step5">5.\tGet your \'BCA token\' and input KEYBCA Response \'APPLI 1\' and click \'Submit\'.</string>
     <string name="bca_klik_instruction_step6">6.\tYour transaction is Done.</string>
 
-    <!--KLIK BCA PAYMENT-->
+    <!--KLIK BCA INTENT_CODE_PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
     <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
     <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit www.bca.co.id.</string>

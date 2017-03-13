@@ -4,17 +4,16 @@ import android.text.TextUtils;
 
 import com.midtrans.sdk.core.models.snap.BaseTransactionResponse;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
-import com.midtrans.sdk.ui.constants.Payment;
+import com.midtrans.sdk.ui.constants.PaymentStatus;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by ziahaqi on 2/20/17.
  */
 
-public class PaymentResult implements Serializable {
+public class PaymentResult<T extends BaseTransactionResponse> implements Serializable {
     private String installmentTerm;
     private String errorMessage;
     private String paymentStatus;
@@ -73,36 +72,34 @@ public class PaymentResult implements Serializable {
     }
 
     private void initPaymentStatus() {
-        if (statusCode.equals(Payment.Status.CODE_200) ||
-                transactionStatus.equalsIgnoreCase(Payment.Status.SUCCESS) ||
-                transactionStatus.equalsIgnoreCase(Payment.Status.SETTLEMENT)) {
-            paymentStatus = Payment.Status.SUCCESS;
-        }else if(statusCode.equals(Payment.Status.PENDING) || transactionStatus.equalsIgnoreCase(Payment.Status.PENDING)){
-            if(fraudStatus.equalsIgnoreCase(Payment.Status.CHALLENGE)){
-                paymentStatus = Payment.Status.CHALLENGE;
-            }else {
-                paymentStatus = Payment.Status.PENDING;
+        if (statusCode.equals(PaymentStatus.CODE_200) ||
+                transactionStatus.equalsIgnoreCase(PaymentStatus.SUCCESS) ||
+                transactionStatus.equalsIgnoreCase(PaymentStatus.SETTLEMENT)) {
+            paymentStatus = PaymentStatus.SUCCESS;
+        } else if (statusCode.equals(PaymentStatus.PENDING) || transactionStatus.equalsIgnoreCase(PaymentStatus.PENDING)) {
+            if (fraudStatus.equalsIgnoreCase(PaymentStatus.CHALLENGE)) {
+                paymentStatus = PaymentStatus.CHALLENGE;
+            } else {
+                paymentStatus = PaymentStatus.PENDING;
             }
-        }else if(TextUtils.isEmpty(errorMessage)){
-            this.paymentStatus = Payment.Status.INVALID;
-        }else{
-            this.paymentStatus = Payment.Status.FAILED;
+        } else if (TextUtils.isEmpty(errorMessage)) {
+            this.paymentStatus = PaymentStatus.INVALID;
+        } else {
+            this.paymentStatus = PaymentStatus.FAILED;
         }
     }
 
-    public PaymentResult(BaseTransactionResponse response) {
-        init(response);
-    }
-
-
-    public PaymentResult(CreditCardPaymentResponse response) {
-        init(response);
-        this.savedTokenId = response.savedTokenId;
-        this.maskedCard = response.maskedCard;
-        this.savedTokenIdExpiredAt = response.savedTokenIdExpiredAt;
-        this.approvalCode = response.approvalCode;
-        this.bank = response.bank;
-        this.installmentTerm = response.installmentTerm;
+    public PaymentResult(T paymentResponse) {
+        init(paymentResponse);
+        if (paymentResponse instanceof CreditCardPaymentResponse) {
+            CreditCardPaymentResponse response = (CreditCardPaymentResponse) paymentResponse;
+            this.savedTokenId = response.savedTokenId;
+            this.maskedCard = response.maskedCard;
+            this.savedTokenIdExpiredAt = response.savedTokenIdExpiredAt;
+            this.approvalCode = response.approvalCode;
+            this.bank = response.bank;
+            this.installmentTerm = response.installmentTerm;
+        }
     }
 
     public PaymentResult(String errorMessage) {

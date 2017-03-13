@@ -7,16 +7,17 @@ import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.papi.CardTokenRequest;
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
+import com.midtrans.sdk.core.models.snap.CreditCard;
 import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentParams;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.core.models.snap.promo.PromoResponse;
-import com.midtrans.sdk.ui.MidtransUi;
+import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
+import com.midtrans.sdk.ui.MidtransUiKit;
 import com.midtrans.sdk.ui.abtracts.BasePresenter;
 import com.midtrans.sdk.ui.models.CreditCardDetails;
 import com.midtrans.sdk.ui.models.CreditCardTransaction;
 import com.midtrans.sdk.ui.models.PaymentResult;
-import com.midtrans.sdk.ui.models.Transaction;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.utils.UiUtils;
 
@@ -42,8 +43,8 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
 
     public CreditCardPresenter(@NonNull Context context) {
         this.context = context;
-        this.midtransUiSdk = MidtransUi.getInstance();
-        creditCardTransaction.setProperties(midtransUiSdk.getTransaction().getCreditCard(), UiUtils.getBankBins(context));
+        this.midtransUiKitSdk = MidtransUiKit.getInstance();
+        creditCardTransaction.setProperties(midtransUiKitSdk.getTransaction().creditCard, UiUtils.getBankBins(context));
     }
 
     public void setCardDetailView(@NonNull CreditCardContract.CreditCardDetailView cardDetailView) {
@@ -57,11 +58,34 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
     }
 
     public boolean isNormalMode() {
-        return midtransUiSdk.isCreditCardNormalMode();
+        SnapTransaction transaction = midtransUiKitSdk.getTransaction();
+        if (!isCreditCardOneClickMode(transaction.creditCard) && !isCreditCardTwoClickMode(transaction.creditCard)) {
+            return true;
+        }
+        return false;
     }
 
+    public boolean isCreditCardOneClickMode(CreditCard creditCard) {
+        if (creditCard != null) {
+            if (creditCard.saveCard && creditCard.secure) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isCreditCardTwoClickMode(CreditCard creditCard) {
+        if (creditCard != null) {
+            if (creditCard.saveCard && !creditCard.secure) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public List<SavedToken> getSavedCards() {
-        return midtransUiSdk.getTransaction().getCreditCard().savedTokens;
+        return midtransUiKitSdk.getTransaction().creditCard.savedTokens;
     }
 
     @Override
@@ -72,7 +96,7 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
     @Override
     public void twoClicksPayment(@NonNull CreditCardDetails cardDetailModel, @NonNull String cardCVV) {
         CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard(cardDetailModel.getSavedToken().token,
-                cardCVV, true, midtransUiSdk.getTransaction().getGrossAmount());
+                cardCVV, true, midtransUiKitSdk.getTransaction().transactionDetails.grossAmount);
         getCreditCardToken(cardTokenRequest);
     }
 
@@ -82,7 +106,7 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
         CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalCard(cardNumber, cvv, month, year);
         if (MidtransCore.getInstance().isSecureCreditCardPayment()) {
             cardTokenRequest.setSecure(true);
-            cardTokenRequest.setGrossAmount(midtransUiSdk.getTransaction().getGrossAmount());
+            cardTokenRequest.setGrossAmount(midtransUiKitSdk.getTransaction().transactionDetails.grossAmount);
         }
         initCardTokenRequestCustomValues(cardTokenRequest);
         getCreditCardToken(cardTokenRequest);
@@ -111,12 +135,14 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
 
 
     private void initCardTokenRequestCustomValues(CardTokenRequest cardTokenRequest) {
-        Transaction transaction = midtransUiSdk.getTransaction();
+        SnapTransaction transaction = midtransUiKitSdk.getTransaction();
         if (transaction != null) {
 
             //init acquiring
-            cardTokenRequest.setChannel(transaction.getAquiringChannel());
-            cardTokenRequest.setBank(transaction.getAcquiringBank());
+            if (transaction.creditCard != null) {
+                cardTokenRequest.setChannel(transaction.creditCard.channel);
+                cardTokenRequest.setBank(transaction.creditCard.bank);
+            }
 
             //init installment
             if (termInstallmentSelected > 0) {
@@ -189,9 +215,10 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
     @Override
     public void payUsingCard() {
         CreditCardPaymentParams cardPaymentParams;
-        if (midtransUiSdk.getTransaction().isCreditCardOneClickMode()) {
+        SnapTransaction transaction = midtransUiKitSdk.getTransaction();
+        if (isCreditCardOneClickMode(transaction.creditCard)) {
             cardPaymentParams = CreditCardPaymentParams.newOneClickPaymentParams(cardDetailView.getMaskedCardNumber());
-        } else if (midtransUiSdk.getTransaction().isCreditCardTwoClickMode()) {
+        } else if (isCreditCardTwoClickMode(transaction.creditCard)) {
             cardPaymentParams = CreditCardPaymentParams.newBasicPaymentParams(cardTokenResponse.tokenId);
         } else {
             cardPaymentParams = CreditCardPaymentParams.newBasicPaymentParams(cardTokenResponse.tokenId);
@@ -207,9 +234,9 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
             cardPaymentParams.setInstallment(installmentBankSeleted + "_" + installmentTermSelected);
         }
 
-        MidtransCore.getInstance().paymentUsingCreditCard(midtransUiSdk.readCheckoutToken(),
+        MidtransCore.getInstance().paymentUsingCreditCard(midtransUiKitSdk.readCheckoutToken(),
                 cardPaymentParams,
-                midtransUiSdk.getTransaction().createSnapCustomerDetails(),
+                midtransUiKitSdk.createSnapCustomerDetails(),
                 new MidtransCoreCallback<CreditCardPaymentResponse>() {
                     @Override
                     public void onSuccess(CreditCardPaymentResponse response) {
@@ -238,7 +265,7 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
 
     @Override
     public boolean isNormalCardPayment() {
-        return midtransUiSdk.getTransaction().isCreditCardNormalMode();
+        return isNormalMode();
     }
 
     public void setCardDetailFromScanner(String cardNumber, String cvv, String expired) {
@@ -246,14 +273,20 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
     }
 
     public boolean isBuiltInTokenStorage() {
-        return midtransUiSdk.isBuiltInTokenStorage();
+        return midtransUiKitSdk.isBuiltInTokenStorage();
     }
 
     public boolean haveSavedTokens() {
-        return midtransUiSdk.isBuiltInTokenStorage() && midtransUiSdk.getTransaction().haveSavedTokens();
+        CreditCard creditCard = midtransUiKitSdk.getTransaction().creditCard;
+        if (midtransUiKitSdk.isBuiltInTokenStorage() && creditCard != null) {
+            if (creditCard.savedTokens != null && !creditCard.savedTokens.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<PromoResponse> getPromos() {
-        return midtransUiSdk.getTransaction().getPromos();
+        return midtransUiKitSdk.getTransaction().promos;
     }
 }

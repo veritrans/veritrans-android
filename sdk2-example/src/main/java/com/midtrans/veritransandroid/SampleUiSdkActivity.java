@@ -17,7 +17,7 @@ import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
 import com.midtrans.sdk.core.models.merchant.CreditCard;
 import com.midtrans.sdk.core.models.merchant.CustomerDetails;
 import com.midtrans.sdk.core.models.merchant.ItemDetails;
-import com.midtrans.sdk.ui.MidtransUi;
+import com.midtrans.sdk.ui.MidtransUiKit;
 import com.midtrans.sdk.ui.MidtransUiCallback;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.Logger;
@@ -78,7 +78,7 @@ public class SampleUiSdkActivity extends AppCompatActivity {
     }
 
     private void checkout() {
-        MidtransUi.getInstance().runUiSdk(this, MyApp.CHECKOUT_URL, initialiseCheckoutTokenRequest(), new MidtransUiCallback() {
+        MidtransUiKit.getInstance().runUiSdk(this, MyApp.CHECKOUT_URL, initialiseCheckoutTokenRequest(), new MidtransUiCallback() {
             @Override
             public void onFinished(PaymentResult result) {
                 Logger.d("onfinished:", "result:" + result.getPaymentStatus());

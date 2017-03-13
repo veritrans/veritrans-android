@@ -30,12 +30,13 @@ import com.midtrans.sdk.core.models.papi.CardTokenResponse;
 import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.core.utils.CardUtilities;
-import com.midtrans.sdk.ui.MidtransUi;
+import com.midtrans.sdk.ui.MidtransUiKit;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.abtracts.BaseFragment;
 import com.midtrans.sdk.ui.constants.Constants;
-import com.midtrans.sdk.ui.constants.Payment;
+import com.midtrans.sdk.ui.constants.PaymentType;
+import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.CreditCardDetails;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.CreditCardUtils;
@@ -65,7 +66,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
     private CreditCardDetails cardDetails;
 
 
-    private MidtransUi midtransUi;
+    private MidtransUiKit midtransUiKit;
 
     private TextInputLayout tilCardNo, tilCvv, tilExpiry;
     private TextView tvInstallmentTerm;
@@ -139,7 +140,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         setTextColor(buttonDecrease);
         filterColor(ibSaveCardHelp);
         filterColor(ibCvvHelp);
-        setBackgroundColor(tvInstallmentTerm, Constants.Theme.SECONDARY_COLOR);
+        setBackgroundColor(tvInstallmentTerm, Theme.SECONDARY_COLOR);
         tvInstallmentTerm.getBackground().setAlpha(50);
         setCheckoxStateColor(cbSaveCard);
     }
@@ -163,11 +164,11 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
             }
         }
 
-        if (midtransUi != null && midtransUi.getFontSemiBold() != null) {
-            buttonPay.setCustomTextFont(midtransUi.getFontSemiBold());
+        if (midtransUiKit != null && midtransUiKit.getFontSemiBold() != null) {
+            buttonPay.setCustomTextFont(midtransUiKit.getFontSemiBold());
             // Set background for pay now button
-            if (midtransUi.getColorTheme() != null && midtransUi.getColorTheme().getPrimaryColor() != 0) {
-                buttonPay.setBackgroundColor(midtransUi.getColorTheme().getPrimaryColor());
+            if (midtransUiKit.getColorTheme() != null && midtransUiKit.getColorTheme().getPrimaryColor() != 0) {
+                buttonPay.setBackgroundColor(midtransUiKit.getColorTheme().getPrimaryColor());
             }
 
         }
@@ -375,7 +376,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
                                         etExpiryDate.setText(getString(R.string.expiry_month_format, etExpiryDate.getText().toString()));
                                         etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                                     } else {
-                                        etExpiryDate.setText(getString(R.string.expiry_month_int_format, Constants.DateTime.MONTH_COUNT));
+                                        etExpiryDate.setText(getString(R.string.expiry_month_int_format, Constants.MONTH_COUNT));
                                         etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                                     }
 
@@ -412,7 +413,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        midtransUi = MidtransUi.getInstance();
+        midtransUiKit = MidtransUiKit.getInstance();
     }
 
     private void initSavedCardState() {
@@ -422,7 +423,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
             if (savedCard != null) {
                 Log.i(TAG, "savedcard");
 
-                if (!MidtransUi.getInstance().isBuiltInTokenStorage()) {
+                if (!MidtransUiKit.getInstance().isBuiltInTokenStorage()) {
                     ((CreditCardActivity) getActivity()).showDeleteCardIcon(true);
                 }
 
@@ -873,9 +874,9 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         if (presenter.isSecureCardpayment()) {
             UiUtils.hideProgressDialog();
             Intent intentPaymentWeb = new Intent(getContext(), PaymentWebActivity.class);
-            intentPaymentWeb.putExtra(Constants.WebView.WEB_URL, response.redirectUrl);
-            intentPaymentWeb.putExtra(Constants.WebView.TYPE, Constants.WebView.TYPE_CREDIT_CARD);
-            getActivity().startActivityForResult(intentPaymentWeb, Constants.IntentCode.PAYMENT_WEB_INTENT);
+            intentPaymentWeb.putExtra(Constants.WEB_VIEW_URL, response.redirectUrl);
+            intentPaymentWeb.putExtra(Constants.WEB_VIEW_PARAM_TYPE, PaymentType.CREDIT_CARD);
+            getActivity().startActivityForResult(intentPaymentWeb, Constants.INTENT_CODE_WEB_PAYMENT);
         } else {
             presenter.payUsingCard();
         }
@@ -910,7 +911,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
             attempt += 1;
             UiUtils.showApiFailedMessage(getActivity(), getString(R.string.message_payment_failed));
         } else {
-            ((BaseActivity) getActivity()).initPaymentResult(new PaymentResult(response), Payment.Type.CREDIT_CARD);
+            ((BaseActivity) getActivity()).initPaymentResult(new PaymentResult<CreditCardPaymentResponse>(response), PaymentType.CREDIT_CARD);
         }
     }
 
@@ -919,7 +920,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
     public void onCreditCardPaymentSuccess(CreditCardPaymentResponse response) {
         Logger.d(TAG, "cardPayment:success");
         UiUtils.hideProgressDialog();
-        ((BaseActivity) getActivity()).initPaymentResult(new PaymentResult(response), Payment.Type.CREDIT_CARD);
+        ((BaseActivity) getActivity()).initPaymentResult(new PaymentResult<CreditCardPaymentResponse>(response), PaymentType.CREDIT_CARD);
     }
 
     @Override

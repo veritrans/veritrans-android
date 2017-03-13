@@ -68,7 +68,7 @@ public class UiUtils {
      */
     public static boolean isPhoneNumberValid(String phoneNo) {
         if (!TextUtils.isEmpty(phoneNo)) {
-            return phoneNo.length() >= Constants.PhoneNumber.PHONE_NUMBER_LENGTH || phoneNo.length() <= Constants.PhoneNumber.PHONE_NUMBER_MAX_LENGTH;
+            return phoneNo.length() >= Constants.PHONE_NUMBER_LENGTH || phoneNo.length() <= Constants.PHONE_NUMBER_MAX_LENGTH;
         } else {
             return false;
         }

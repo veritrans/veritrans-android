@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.midtrans.sdk.ui.MidtransUi;
+import com.midtrans.sdk.ui.MidtransUiKit;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.constants.Constants;
-import com.midtrans.sdk.ui.constants.Payment;
+import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.CreditCardDetails;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.models.SavedCreditCard;
@@ -25,7 +25,6 @@ import com.midtrans.sdk.ui.utils.UiUtils;
 import com.midtrans.sdk.ui.utils.Utils;
 import com.midtrans.sdk.ui.views.PaymentStatusFragment;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
-import com.midtrans.sdk.ui.widgets.FancyButton;
 
 /**
  * Created by ziahaqi on 2/22/17.
@@ -36,7 +35,6 @@ public class CreditCardActivity extends BaseActivity {
     private CreditCardPresenter presenter;
     private TextView tvHeaderTitle;
     private DefaultTextView tvTotalAmount;
-    private FancyButton buttonBack;
     private ImageView ivDeleteSavedCard;
 
     @Override
@@ -59,8 +57,9 @@ public class CreditCardActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void initDefaultState() {
-        setViewTotalAmount(MidtransUi.getInstance().getCheckoutTokenRequest().transactionDetails.grossAmount);
+        setViewTotalAmount(MidtransUiKit.getInstance().getCheckoutTokenRequest().transactionDetails.grossAmount);
         if (presenter.isNormalMode()) {
             showCreditCardDetailFragment(new CreditCardDetails(null, null));
         } else {
@@ -76,12 +75,6 @@ public class CreditCardActivity extends BaseActivity {
     private void setupView() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
 
     }
 
@@ -90,7 +83,6 @@ public class CreditCardActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         tvHeaderTitle = (TextView) findViewById(R.id.text_title);
         tvTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-        buttonBack = (FancyButton) findViewById(R.id.btn_back);
         ivDeleteSavedCard = (ImageView) findViewById(R.id.image_saved_card_delete);
     }
 
@@ -148,10 +140,10 @@ public class CreditCardActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.d(TAG, "reqCode:" + requestCode + " | res:" + resultCode);
         if (resultCode == RESULT_OK) {
-            if (requestCode == Constants.IntentCode.PAYMENT_WEB_INTENT) {
+            if (requestCode == Constants.INTENT_CODE_WEB_PAYMENT) {
                 UiUtils.showProgressDialog(this, getString(R.string.processing_payment), false);
                 presenter.payUsingCard();
-            } else if (requestCode == Constants.IntentCode.SCAN_REQUEST_CODE) {
+            } else if (requestCode == Constants.INTENT_CODE_SCAN_REQUEST) {
                 if (data != null && data.hasExtra(ExternalScanner.EXTRA_SCAN_DATA)) {
 
                     ScannerModel scanData = (ScannerModel) data.getSerializableExtra(ExternalScanner.EXTRA_SCAN_DATA);
@@ -164,11 +156,11 @@ public class CreditCardActivity extends BaseActivity {
                 Logger.d(TAG, "scancard:Not available");
             }
         } else if (resultCode == RESULT_CANCELED) {
-            if (requestCode == Constants.IntentCode.PAYMENT_WEB_INTENT) {
+            if (requestCode == Constants.INTENT_CODE_WEB_PAYMENT) {
                 UiUtils.hideProgressDialog();
                 String errorMessage = getString(R.string.payment_canceled);
-                initPaymentResult(new PaymentResult(errorMessage), Payment.Type.CREDIT_CARD);
-            } else if (requestCode == Constants.IntentCode.SCAN_REQUEST_CODE) {
+                initPaymentResult(new PaymentResult(errorMessage), PaymentType.CREDIT_CARD);
+            } else if (requestCode == Constants.INTENT_CODE_SCAN_REQUEST) {
                 Logger.d(TAG, "scancard:canceled");
             }
         }
@@ -181,7 +173,7 @@ public class CreditCardActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        Logger.d(TAG, "bpress>current:" + currentFragment);
+        Logger.d(TAG, "onBackPressed>current:" + currentFragment);
 
         if (currentFragment != null) {
             if (currentFragment.equals(PaymentStatusFragment.class)) {

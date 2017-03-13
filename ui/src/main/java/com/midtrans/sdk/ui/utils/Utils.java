@@ -2,6 +2,9 @@ package com.midtrans.sdk.ui.utils;
 
 import android.text.TextUtils;
 
+import com.midtrans.sdk.core.models.snap.CreditCard;
+import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
+
 import java.text.DecimalFormat;
 
 /**
@@ -45,4 +48,12 @@ public class Utils {
     }
 
 
+    public static boolean isCreditCardOneClickMode(CreditCard creditCard) {
+        if (creditCard != null) {
+            if (creditCard.saveCard && creditCard.secure) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

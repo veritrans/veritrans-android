@@ -9,15 +9,15 @@ import com.midtrans.sdk.core.models.merchant.CheckoutTokenResponse;
 import com.midtrans.sdk.core.models.merchant.ItemDetails;
 import com.midtrans.sdk.core.models.snap.transaction.SnapEnabledPayment;
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
-import com.midtrans.sdk.ui.MidtransUi;
+import com.midtrans.sdk.ui.MidtransUiKit;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePresenter;
-import com.midtrans.sdk.ui.constants.Payment;
+import com.midtrans.sdk.ui.constants.PaymentCategory;
+import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.constants.SnapResponseMessagePattern;
 import com.midtrans.sdk.ui.models.ItemDetail;
 import com.midtrans.sdk.ui.models.PaymentMethodModel;
 import com.midtrans.sdk.ui.models.PaymentResult;
-import com.midtrans.sdk.ui.models.Transaction;
 import com.midtrans.sdk.ui.themes.ColorTheme;
 import com.midtrans.sdk.ui.utils.PaymentMethodHelper;
 import com.midtrans.sdk.ui.utils.Utils;
@@ -25,7 +25,7 @@ import com.midtrans.sdk.ui.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.midtrans.sdk.ui.constants.Payment.Type.E_CHANNEL;
+import static com.midtrans.sdk.ui.constants.PaymentType.E_CHANNEL;
 
 /**
  * Created by ziahaqi on 2/19/17.
@@ -38,13 +38,13 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
     private TransactionContract.View view;
 
     public TransactionPresenter(Context context, TransactionContract.View view) {
-        midtransUiSdk = MidtransUi.getInstance();
+        midtransUiKitSdk = MidtransUiKit.getInstance();
         this.context = context;
         this.view = view;
     }
 
     public void checkout() {
-        MidtransCore.getInstance().checkout(midtransUiSdk.getCheckoutUrl(), midtransUiSdk.getCheckoutTokenRequest(), new MidtransCoreCallback<CheckoutTokenResponse>() {
+        MidtransCore.getInstance().checkout(midtransUiKitSdk.getCheckoutUrl(), midtransUiKitSdk.getCheckoutTokenRequest(), new MidtransCoreCallback<CheckoutTokenResponse>() {
             @Override
             public void onSuccess(CheckoutTokenResponse checkoutTokenResponse) {
                 getTransactionDetails(checkoutTokenResponse);
@@ -75,12 +75,12 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
     }
 
     private void getTransactionDetails(CheckoutTokenResponse checkoutTokenResponse) {
-        midtransUiSdk.setCheckoutToken(checkoutTokenResponse.token);
+        midtransUiKitSdk.setCheckoutToken(checkoutTokenResponse.token);
         MidtransCore.getInstance().getTransactionDetails(checkoutTokenResponse.token, new MidtransCoreCallback<SnapTransaction>() {
             @Override
             public void onSuccess(SnapTransaction snapTransaction) {
-                midtransUiSdk.setTransaction(new Transaction(snapTransaction));
-                midtransUiSdk.setColorTheme(new ColorTheme(context, snapTransaction.merchant.preference.colorScheme));
+                midtransUiKitSdk.setTransaction(snapTransaction);
+                midtransUiKitSdk.setColorTheme(new ColorTheme(context, snapTransaction.merchant.preference.colorScheme));
                 view.showProgressContainer(false);
                 view.showPaymentMethods(createPaymentMethodsModel(snapTransaction.enabledPayments), snapTransaction.merchant.preference.displayName);
             }
@@ -100,7 +100,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
     private List<ItemDetail> createItemDetails() {
         List<ItemDetail> itemViewDetails = new ArrayList<>();
 
-        CheckoutTokenRequest checkoutTokenRequest = midtransUiSdk.getCheckoutTokenRequest();
+        CheckoutTokenRequest checkoutTokenRequest = midtransUiKitSdk.getCheckoutTokenRequest();
 
         // Add amount
         String amount = context.getString(R.string.prefix_money, Utils.getFormattedAmount(checkoutTokenRequest.transactionDetails.grossAmount));
@@ -113,7 +113,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
                 checkoutTokenRequest.itemDetails.size() > 0));
 
         // Add items
-        for (ItemDetails itemDetails : midtransUiSdk.getCheckoutTokenRequest().itemDetails) {
+        for (ItemDetails itemDetails : midtransUiKitSdk.getCheckoutTokenRequest().itemDetails) {
             String price = context.getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.quantity * itemDetails.price));
             String itemName = itemDetails.name;
             if (itemDetails.quantity > 1) {
@@ -133,7 +133,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
         bankTranferList.clear();
 
         for (SnapEnabledPayment enabledPayment : enabledPayments) {
-            if ((enabledPayment.category != null && enabledPayment.category.equals(Payment.Category.BANK_TRANSFER))
+            if ((enabledPayment.category != null && enabledPayment.category.equals(PaymentCategory.BANK_TRANSFER))
                     || enabledPayment.type.equalsIgnoreCase(E_CHANNEL)) {
 
                 PaymentMethodModel bankTransferPaymentMethod = PaymentMethodHelper.createBankTransferPaymentMethod(context, enabledPayment.type);
@@ -149,17 +149,17 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
         }
 
         if (!bankTranferList.isEmpty()) {
-            paymentMethodList.add(PaymentMethodHelper.createPaymentMethodModel(context, Payment.Type.BANK_TRANSFER));
+            paymentMethodList.add(PaymentMethodHelper.createPaymentMethodModel(context, PaymentType.BANK_TRANSFER));
         }
 
         return paymentMethodList;
     }
 
     public void sendPaymentResult(PaymentResult result) {
-        midtransUiSdk.sendPaymentCallback(result);
+        midtransUiKitSdk.sendPaymentCallback(result);
     }
 
     public int getPrimaryColor() {
-        return midtransUiSdk.getColorTheme().getPrimaryColor();
+        return midtransUiKitSdk.getColorTheme().getPrimaryColor();
     }
 }

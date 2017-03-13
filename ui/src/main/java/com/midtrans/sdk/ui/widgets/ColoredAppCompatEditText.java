@@ -6,7 +6,7 @@ import android.graphics.Typeface;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
-import com.midtrans.sdk.ui.MidtransUi;
+import com.midtrans.sdk.ui.MidtransUiKit;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
 import com.midtrans.sdk.ui.utils.Logger;
 
@@ -31,7 +31,7 @@ public class ColoredAppCompatEditText extends AppCompatEditText {
     }
 
     private void init() {
-        MidtransUi uiSdk = MidtransUi.getInstance();
+        MidtransUiKit uiSdk = MidtransUiKit.getInstance();
         if (uiSdk != null && uiSdk.getColorTheme()!= null) {
             BaseColorTheme colorTheme = uiSdk.getColorTheme();
             try {

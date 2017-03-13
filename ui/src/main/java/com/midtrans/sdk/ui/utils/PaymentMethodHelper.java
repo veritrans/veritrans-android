@@ -5,24 +5,24 @@ import android.content.Context;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.models.PaymentMethodModel;
 
-import static com.midtrans.sdk.ui.constants.Payment.Type.BANK_TRANSFER;
-import static com.midtrans.sdk.ui.constants.Payment.Type.BCA_KLIKPAY;
-import static com.midtrans.sdk.ui.constants.Payment.Type.BCA_VA;
-import static com.midtrans.sdk.ui.constants.Payment.Type.BRI_EPAY;
-import static com.midtrans.sdk.ui.constants.Payment.Type.CIMB_CLICKS;
-import static com.midtrans.sdk.ui.constants.Payment.Type.CREDIT_CARD;
-import static com.midtrans.sdk.ui.constants.Payment.Type.E_CHANNEL;
-import static com.midtrans.sdk.ui.constants.Payment.Type.GCI;
-import static com.midtrans.sdk.ui.constants.Payment.Type.INDOMARET;
-import static com.midtrans.sdk.ui.constants.Payment.Type.INDOSAT_DOMPETKU;
-import static com.midtrans.sdk.ui.constants.Payment.Type.KIOSON;
-import static com.midtrans.sdk.ui.constants.Payment.Type.KLIK_BCA;
-import static com.midtrans.sdk.ui.constants.Payment.Type.MANDIRI_CLICKPAY;
-import static com.midtrans.sdk.ui.constants.Payment.Type.MANDIRI_ECASH;
-import static com.midtrans.sdk.ui.constants.Payment.Type.OTHER_VA;
-import static com.midtrans.sdk.ui.constants.Payment.Type.PERMATA_VA;
-import static com.midtrans.sdk.ui.constants.Payment.Type.TELKOMSEL_CASH;
-import static com.midtrans.sdk.ui.constants.Payment.Type.XL_TUNAI;
+import static com.midtrans.sdk.ui.constants.PaymentType.BANK_TRANSFER;
+import static com.midtrans.sdk.ui.constants.PaymentType.BCA_KLIKPAY;
+import static com.midtrans.sdk.ui.constants.PaymentType.BCA_VA;
+import static com.midtrans.sdk.ui.constants.PaymentType.BRI_EPAY;
+import static com.midtrans.sdk.ui.constants.PaymentType.CIMB_CLICKS;
+import static com.midtrans.sdk.ui.constants.PaymentType.CREDIT_CARD;
+import static com.midtrans.sdk.ui.constants.PaymentType.E_CHANNEL;
+import static com.midtrans.sdk.ui.constants.PaymentType.GCI;
+import static com.midtrans.sdk.ui.constants.PaymentType.INDOMARET;
+import static com.midtrans.sdk.ui.constants.PaymentType.INDOSAT_DOMPETKU;
+import static com.midtrans.sdk.ui.constants.PaymentType.KIOSON;
+import static com.midtrans.sdk.ui.constants.PaymentType.KLIK_BCA;
+import static com.midtrans.sdk.ui.constants.PaymentType.MANDIRI_CLICKPAY;
+import static com.midtrans.sdk.ui.constants.PaymentType.MANDIRI_ECASH;
+import static com.midtrans.sdk.ui.constants.PaymentType.OTHER_VA;
+import static com.midtrans.sdk.ui.constants.PaymentType.PERMATA_VA;
+import static com.midtrans.sdk.ui.constants.PaymentType.TELKOMSEL_CASH;
+import static com.midtrans.sdk.ui.constants.PaymentType.XL_TUNAI;
 
 /**
  * Created by ziahaqi on 2/21/17.

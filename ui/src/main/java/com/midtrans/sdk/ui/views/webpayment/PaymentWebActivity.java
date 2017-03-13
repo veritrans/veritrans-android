@@ -46,8 +46,8 @@ public class PaymentWebActivity extends BaseActivity {
 
     private void initDefaultProperties() {
         saveCurrentFragment = true;
-        webUrl = getIntent().getStringExtra(Constants.WebView.WEB_URL);
-        type = getIntent().getStringExtra(Constants.WebView.TYPE);
+        webUrl = getIntent().getStringExtra(Constants.WEB_VIEW_URL);
+        type = getIntent().getStringExtra(Constants.WEB_VIEW_PARAM_TYPE);
         Logger.d(TAG, "weburl:" + webUrl);
         Logger.d(TAG, "type:" + type);
     }

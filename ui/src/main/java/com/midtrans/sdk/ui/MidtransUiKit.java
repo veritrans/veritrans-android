@@ -3,29 +3,25 @@ package com.midtrans.sdk.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.text.TextUtils;
 
 import com.midtrans.sdk.core.Environment;
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
 import com.midtrans.sdk.core.models.merchant.CustomerDetails;
+import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
+import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
 import com.midtrans.sdk.core.utils.Logger;
 import com.midtrans.sdk.ui.models.PaymentResult;
-import com.midtrans.sdk.ui.models.Transaction;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
-import com.midtrans.sdk.ui.themes.ColorTheme;
-import com.midtrans.sdk.ui.themes.CustomColorTheme;
-import com.midtrans.sdk.ui.utils.LocalDataHandler;
 import com.midtrans.sdk.ui.views.transaction.TransactionActivity;
-
-import java.util.UUID;
 
 /**
  * Created by ziahaqi on 2/19/17.
  */
 
-public class MidtransUi {
-    private static MidtransUi instance;
+public class MidtransUiKit {
+    private static MidtransUiKit instance;
     private Context context;
     private boolean enableLog = true;
     private String clientKey;
@@ -34,14 +30,14 @@ public class MidtransUi {
     private String checkoutToken;
     private String checkoutUrl;
     private CheckoutTokenRequest checkoutTokenRequest;
-    private Transaction transaction;
     private String merchantLogoUrl;
     private String merchantName;
     private boolean builtInTokenStorage = true;
     private BaseColorTheme colorTheme;
     private MidtransUiCallback paymentCallback;
+    private SnapTransaction transaction;
 
-    private MidtransUi(Builder builder) {
+    private MidtransUiKit(Builder builder) {
         this.context = builder.context;
         this.clientKey = builder.clientKey;
         this.environment = builder.environment;
@@ -52,7 +48,7 @@ public class MidtransUi {
     }
 
     private void initDefaultValues() {
-        if(customSetting.colorTheme != null){
+        if (customSetting.colorTheme != null) {
             this.colorTheme = customSetting.colorTheme;
         }
 
@@ -62,9 +58,9 @@ public class MidtransUi {
         return new Builder();
     }
 
-    public static MidtransUi getInstance() {
+    public static MidtransUiKit getInstance() {
         if (instance == null) {
-            throw new RuntimeException("SDK is not initialized. Please initialize it using MidtransUi.Builder().");
+            throw new RuntimeException("SDK is not initialized. Please initialize it using MidtransUiKit.Builder().");
         }
         return instance;
     }
@@ -88,6 +84,13 @@ public class MidtransUi {
         this.paymentCallback = callback;
         Intent intent = new Intent(context, TransactionActivity.class);
         context.startActivity(intent);
+    }
+
+
+    public SnapCustomerDetails createSnapCustomerDetails() {
+        String fullName = TextUtils.isEmpty(transaction.customerDetails.lastName)
+                ? transaction.customerDetails.firstName : transaction.customerDetails.firstName + " " + transaction.customerDetails.lastName;
+        return new SnapCustomerDetails(fullName, transaction.customerDetails.email, transaction.customerDetails.phone);
     }
 
     public CustomSetting getCustomSetting() {
@@ -138,7 +141,7 @@ public class MidtransUi {
         this.checkoutToken = checkoutToken;
     }
 
-    public void setTransaction(Transaction transaction) {
+    public void setTransaction(SnapTransaction transaction) {
         this.transaction = transaction;
     }
 
@@ -146,23 +149,17 @@ public class MidtransUi {
         return builtInTokenStorage;
     }
 
-    public boolean isCreditCardNormalMode() {
-        if (transaction != null && transaction.isCreditCardNormalMode()) {
-            return true;
-        }
-        return false;
-    }
 
-    public Transaction getTransaction() {
+    public SnapTransaction getTransaction() {
         return this.transaction;
     }
 
     public String readCheckoutToken() {
-        return this.transaction.getCheckoutToken();
+        return this.transaction.token;
     }
 
     public void sendPaymentCallback(PaymentResult result) {
-        if(paymentCallback != null){
+        if (paymentCallback != null) {
             paymentCallback.onFinished(result);
         }
     }
@@ -207,7 +204,7 @@ public class MidtransUi {
             return this;
         }
 
-        public MidtransUi build() {
+        public MidtransUiKit build() {
 
             new MidtransCore.Builder()
                     .enableLog(true)
@@ -215,8 +212,7 @@ public class MidtransUi {
                     .setClientKey(clientKey)
                     .build();
 
-
-            return new MidtransUi(this);
+            return new MidtransUiKit(this);
         }
     }
 }
