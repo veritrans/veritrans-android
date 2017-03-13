@@ -17,7 +17,8 @@ public class BankType {
     public static final String MAYBANK = "maybank";
     public static final String BRI = "bri";
     public static final String DANAMON = "danamon";
-
+    public static final String MANDIRI_DEBIT = "mandiri_debit";
+    public static final String BNI_DEBIT_ONLINE = "bni_debit_online";
     @StringDef({
             CIMB,
             BCA,
@@ -25,7 +26,9 @@ public class BankType {
             BNI,
             MAYBANK,
             BRI,
-            DANAMON
+            DANAMON,
+            MANDIRI_DEBIT,
+            BNI_DEBIT_ONLINE
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface BankDef {

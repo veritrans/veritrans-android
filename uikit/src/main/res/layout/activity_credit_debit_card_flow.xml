@@ -15,7 +15,9 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
         android:gravity="center_vertical"
+        app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
         app:layout_collapseMode="pin"
         app:title="">
 
@@ -33,21 +35,6 @@
                 android:textSize="@dimen/tool_bar_title_size"
                 android:visibility="gone"
                 tools:text="Name" />
-
-            <com.midtrans.sdk.uikit.widgets.FancyButton
-                android:id="@+id/btn_back"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:layout_marginRight="@dimen/four_dp"
-                android:alpha="0.5"
-                android:padding="@dimen/four_dp"
-                android:visibility="visible"
-                app:fb_defaultColor="@android:color/transparent"
-                app:fb_focusColor="@color/colorAccentLight"
-                app:fb_iconPaddingLeft="0dp"
-                app:fb_iconPaddingRight="0dp"
-                app:fb_iconResource="@drawable/ic_back"
-                app:fb_radius="64dp" />
 
             <ImageView
                 android:id="@+id/merchant_logo"

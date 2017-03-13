@@ -138,9 +138,8 @@ public class AddCardDetailsFragment extends Fragment {
                 Log.i(TAG, "savedcard");
                 this.savedCard = savedCard;
 
-                if (!MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
-                    ((CreditDebitCardFlowActivity) getActivity()).showDeleteCardIcon(true);
-                }
+                ((CreditDebitCardFlowActivity) getActivity()).showDeleteCardIcon(true);
+
 
                 String cardType = Utils.getCardType(savedCard.getMaskedCard());
                 if (!TextUtils.isEmpty(cardType)) {
@@ -925,28 +924,43 @@ public class AddCardDetailsFragment extends Fragment {
             switch (bank) {
                 case BankType.BCA:
                     bankLogo.setImageResource(R.drawable.bca);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
                 case BankType.BNI:
                     bankLogo.setImageResource(R.drawable.bni);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
                 case BankType.BRI:
                     bankLogo.setImageResource(R.drawable.bri);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
                 case BankType.CIMB:
                     bankLogo.setImageResource(R.drawable.cimb);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
                 case BankType.MANDIRI:
                     bankLogo.setImageResource(R.drawable.mandiri);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
+                    if (((CreditDebitCardFlowActivity) getActivity()).isMandiriDebitCard(cleanCardNumber)) {
+                        ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.mandiri_debit_card);
+                    }
                     break;
                 case BankType.MAYBANK:
                     bankLogo.setImageResource(R.drawable.maybank);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
+                    break;
+                case BankType.BNI_DEBIT_ONLINE:
+                    bankLogo.setImageResource(R.drawable.bni);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.bni_debit_online_card);
                     break;
                 default:
                     bankLogo.setImageDrawable(null);
+                    ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     break;
             }
         } else {
             bankLogo.setImageDrawable(null);
+            ((CreditDebitCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
         }
     }
 

@@ -16,6 +16,7 @@ import com.midtrans.sdk.core.models.merchant.Address;
 import com.midtrans.sdk.core.models.merchant.CheckoutOrderDetails;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenResponse;
+import com.midtrans.sdk.core.models.merchant.CreditCard;
 import com.midtrans.sdk.core.models.merchant.CustomerDetails;
 import com.midtrans.sdk.core.models.merchant.ItemDetails;
 import com.midtrans.sdk.core.models.papi.CardTokenRequest;
@@ -46,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
+public class SampleCorekitActivity extends AppCompatActivity {
     EditText cardNumber, cardCvv, cardExpiryMonth, cardExpiryYear,
             klikBcaUserId, mandiriClickpayCardNumber, mandiriClickpayTokenResponse,
             telkomselCashToken, indosatPhone, giftCardNumber, giftCardPin;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             payNowBcaKlikPay, payNowKlikBca, payNowEpayBri, payNowCimbClicks,
             payNowMandiriEcash, payNowMandiriClickpay, payNowTelkomselCash,
             payNowIndosatDompetku, payNowXlTunai, payNowIndomaret,
-            payNowKioson, payNowGiftCard;
+            payNowKioson, payNowGiftCard, btnUiSdk;
     TextView cardToken, checkoutToken;
     ProgressDialog progressDialog;
 
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         payNowIndomaret = (Button) findViewById(R.id.btn_pay_now_indomaret);
         payNowKioson = (Button) findViewById(R.id.btn_pay_now_kioson);
         payNowGiftCard = (Button) findViewById(R.id.btn_pay_now_gift_card);
-
+        btnUiSdk = (Button)findViewById(R.id.btn_uisdk);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.txt_loading));
         progressDialog.setIndeterminate(true);
@@ -119,19 +120,19 @@ public class MainActivity extends AppCompatActivity {
                     public void onSuccess(CardTokenResponse object) {
                         progressDialog.dismiss();
                         cardToken.setText(object.tokenId);
-                        Toast.makeText(MainActivity.this, "Card Token: " + object.tokenId, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SampleCorekitActivity.this, "Card Token: " + object.tokenId, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(CardTokenResponse object) {
                         progressDialog.dismiss();
-                        Toast.makeText(MainActivity.this, object.statusMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SampleCorekitActivity.this, object.statusMessage, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
                         progressDialog.dismiss();
-                        Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SampleCorekitActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -146,19 +147,19 @@ public class MainActivity extends AppCompatActivity {
                     public void onSuccess(CheckoutTokenResponse object) {
                         progressDialog.dismiss();
                         checkoutToken.setText(object.token);
-                        Toast.makeText(MainActivity.this, "Checkout Token: " + object.token, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SampleCorekitActivity.this, "Checkout Token: " + object.token, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(CheckoutTokenResponse object) {
                         progressDialog.dismiss();
-                        Toast.makeText(MainActivity.this, object.errorMessages.get(0), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SampleCorekitActivity.this, object.errorMessages.get(0), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
                         progressDialog.dismiss();
-                        Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SampleCorekitActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -174,23 +175,23 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(CreditCardPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with CC success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with CC success", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(CreditCardPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token and card token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token and card token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -205,23 +206,23 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(BcaBankTransferPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with BCA VA pending", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with BCA VA pending", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(BcaBankTransferPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with BCA VA failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with BCA VA failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with BCA VA failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with BCA VA failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -236,23 +237,23 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(MandiriBankTransferPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Mandiri Bill pending", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Mandiri Bill pending", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(MandiriBankTransferPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Mandiri Bill failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Mandiri Bill failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Mandiri Bill failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Mandiri Bill failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -267,23 +268,23 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(PermataBankTransferPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Permata VA pending", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Permata VA pending", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(PermataBankTransferPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Permata VA failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Permata VA failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Permata VA failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Permata VA failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -298,23 +299,23 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(OtherBankTransferPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Other VA pending", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Other VA pending", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(OtherBankTransferPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Other VA failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Other VA failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Other VA failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Other VA failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -329,24 +330,24 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(BcaKlikpayPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with BCA KlikPay pending. Redirect URL: " + object.redirectUrl, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with BCA KlikPay pending. Redirect URL: " + object.redirectUrl, Toast.LENGTH_SHORT).show();
 
                         }
 
                         @Override
                         public void onFailure(BcaKlikpayPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with BCA KlikPay failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with BCA KlikPay failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with BCA KlikPay failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with BCA KlikPay failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -362,23 +363,23 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(KlikBcaPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with KlikBCA pending.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with KlikBCA pending.", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(KlikBcaPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with KlikBCA failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with KlikBCA failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with KlikBCA failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with KlikBCA failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token and fill klikBCA user id first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token and fill klikBCA user id first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -393,23 +394,23 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(EpayBriPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with E-Pay BRI pending. Redirect URL: " + object.redirectUrl, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with E-Pay BRI pending. Redirect URL: " + object.redirectUrl, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(EpayBriPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with E-Pay BRI failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with E-Pay BRI failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with E-Pay BRI failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with E-Pay BRI failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -424,23 +425,23 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(CimbClicksPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with CIMB Clicks pending. Redirect URL: " + object.redirectUrl, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with CIMB Clicks pending. Redirect URL: " + object.redirectUrl, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(CimbClicksPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with CIMB Clicks failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with CIMB Clicks failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with CIMB Clicks failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with CIMB Clicks failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -455,23 +456,23 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(MandiriECashPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Mandiri E-Cash pending. Redirect URL: " + object.redirectUrl, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Mandiri E-Cash pending. Redirect URL: " + object.redirectUrl, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(MandiriECashPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Mandiri E-Cash failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Mandiri E-Cash failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Mandiri E-Cash failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Mandiri E-Cash failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -493,29 +494,29 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(MandiriClickpayPaymentResponse object) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(MainActivity.this, "Payment with Mandiri Clickpay success.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SampleCorekitActivity.this, "Payment with Mandiri Clickpay success.", Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
                                 public void onFailure(MandiriClickpayPaymentResponse object) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(MainActivity.this, "Payment with Mandiri Clickpay failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SampleCorekitActivity.this, "Payment with Mandiri Clickpay failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
                                 public void onError(Throwable throwable) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(MainActivity.this, "Payment with Mandiri Clickpay failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SampleCorekitActivity.this, "Payment with Mandiri Clickpay failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                         } else {
-                            Toast.makeText(MainActivity.this, "You must fill mandiri token response.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "You must fill mandiri token response.", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(MainActivity.this, "You must get fill mandiri clickpay number.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SampleCorekitActivity.this, "You must get fill mandiri clickpay number.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -530,23 +531,23 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(TelkomselCashPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Telkomsel Cash success.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Telkomsel Cash success.", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(TelkomselCashPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Telkomsel Cash failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Telkomsel Cash failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Telkomsel Cash failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Telkomsel Cash failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first and fill token.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first and fill token.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -563,23 +564,23 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(IndosatDompetkuPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Indosat Dompetku success.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Indosat Dompetku success.", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(IndosatDompetkuPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Indosat Dompetku failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Indosat Dompetku failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Indosat Dompetku failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Indosat Dompetku failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first and fill phone number.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first and fill phone number.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -595,7 +596,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(XlTunaiPaymentResponse object) {
                             progressDialog.dismiss();
                             Toast.makeText(
-                                    MainActivity.this,
+                                    SampleCorekitActivity.this,
                                     String.format("Payment with XL Tunai pending. ID: %s, Merchant ID: %s", object.xlTunaiOrderId, object.xlTunaiMerchantId),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -603,17 +604,17 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(XlTunaiPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with XL Tunai failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with XL Tunai failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with XL Tunai failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with XL Tunai failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -629,7 +630,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(IndomaretPaymentResponse object) {
                             progressDialog.dismiss();
                             Toast.makeText(
-                                    MainActivity.this,
+                                    SampleCorekitActivity.this,
                                     String.format("Payment with Indomaret pending. ID: %s", object.paymentCode),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -637,17 +638,17 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(IndomaretPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Indomaret failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Indomaret failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Indomaret failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Indomaret failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -663,7 +664,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(KiosonPaymentResponse object) {
                             progressDialog.dismiss();
                             Toast.makeText(
-                                    MainActivity.this,
+                                    SampleCorekitActivity.this,
                                     String.format("Payment with Kioson pending. ID: %s", object.paymentCode),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -671,17 +672,17 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(KiosonPaymentResponse object) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Kioson failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Kioson failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Payment with Kioson failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "Payment with Kioson failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -697,7 +698,7 @@ public class MainActivity extends AppCompatActivity {
                                 public void onSuccess(GiftCardPaymentResponse object) {
                                     progressDialog.dismiss();
                                     Toast.makeText(
-                                            MainActivity.this,
+                                            SampleCorekitActivity.this,
                                             String.format("Payment with Gift Card success. Approval: %s", object.approvalCode),
                                             Toast.LENGTH_SHORT).show();
                                 }
@@ -705,23 +706,23 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onFailure(GiftCardPaymentResponse object) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(MainActivity.this, "Payment with Gift Card failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SampleCorekitActivity.this, "Payment with Gift Card failed, " + object.statusMessage, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
                                 public void onError(Throwable throwable) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(MainActivity.this, "Payment with Gift Card failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SampleCorekitActivity.this, "Payment with Gift Card failed, " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                         } else {
-                            Toast.makeText(MainActivity.this, "You must fill gift card pin number.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SampleCorekitActivity.this, "You must fill gift card pin number.", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(MainActivity.this, "You must fill gift card number.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SampleCorekitActivity.this, "You must fill gift card number.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(MainActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SampleCorekitActivity.this, "You must get checkout token first.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -735,12 +736,16 @@ public class MainActivity extends AppCompatActivity {
                 "Raka", "Mogandhi", "rakamogandhi@hotmail.com", "082140518011",
                 new Address("Raka", "Mogandhi", "Jalan Wirajaya 312", "Yogyakarta", "55283", "082140518011", "IDN"),
                 new Address("Raka", "Mogandhi", "Jalan Wirajaya 312", "Yogyakarta", "55283", "082140518011", "IDN"));
+
         // Setup item details
         List<ItemDetails> itemDetailsList = new ArrayList<>();
         ItemDetails itemDetails = new ItemDetails("item1", 200000, 1, "VT SDK");
         itemDetailsList.add(itemDetails);
 
-        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", null, itemDetailsList, customerDetails, checkoutOrderDetails, null, null);
+        //creditcard properties
+        CreditCard creditCard = new CreditCard();
+        creditCard.setSecure(false);
+        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", creditCard, itemDetailsList, customerDetails, checkoutOrderDetails, false, null, null);
     }
 
     private CreditCardPaymentParams buildCreditCardPaymentParams(String cardToken) {

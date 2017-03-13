@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.midtrans.sdk.ui.views.creditcard.CreditCardActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        app:contentInsetStart="0dp"
+        app:layout_collapseMode="pin"
+        app:title="">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.midtrans.sdk.ui.widgets.DefaultTextView
+                android:id="@+id/merchant_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/tool_bar_title_size"
+                android:visibility="gone"
+                tools:text="Name" />
+
+            <com.midtrans.sdk.ui.widgets.FancyButton
+                android:id="@+id/btn_back"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginRight="@dimen/four_dp"
+                android:alpha="0.5"
+                android:padding="@dimen/four_dp"
+                android:visibility="gone"
+                app:fb_defaultColor="@android:color/transparent"
+                app:fb_focusColor="@color/colorAccentLight"
+                app:fb_iconPaddingLeft="0dp"
+                app:fb_iconPaddingRight="0dp"
+                app:fb_iconResource="@mipmap/ic_arrow_back"
+                app:fb_radius="64dp" />
+
+            <ImageView
+                android:id="@+id/merchant_logo"
+                android:layout_width="@dimen/logo_width"
+                android:layout_height="@dimen/logo_height"
+                android:layout_centerVertical="true"
+                android:scaleType="centerInside"
+                tools:src="@mipmap/ic_midtrans" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/sixtyfour_dp"
+                android:layout_marginRight="@dimen/sixtyfour_dp"
+                android:layout_weight="1">
+
+                <com.midtrans.sdk.ui.widgets.DefaultTextView
+                    android:id="@+id/text_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/tool_bar_title_size" />
+
+                <View
+                    android:id="@+id/title_underscore"
+                    android:layout_width="50dp"
+                    android:layout_height="5dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/gray.primary" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/image_saved_card_delete"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="@dimen/sixteen_dp"
+                android:src="@mipmap/ic_delete"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/layout_total_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_toolbar"
+        android:layout_marginTop="10dp"
+        android:background="@color/gray.primary"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/sixteen_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/sixteen_dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.midtrans.sdk.ui.widgets.DefaultTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/payable_amount"
+                android:textColor="@color/white"
+                android:textSize="@dimen/primary_text_size"
+                android:textStyle="bold" />
+
+            <com.midtrans.sdk.ui.widgets.DefaultTextView
+                android:id="@+id/text_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/text_amount_here"
+                android:textColor="@color/white"
+                android:textSize="@dimen/header_text_size"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layout_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_total_amount" />
+
+    <RelativeLayout
+        android:id="@+id/processing_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_total_amount"
+        android:background="@android:color/white"
+        android:visibility="gone">
+
+    </RelativeLayout>
+</RelativeLayout>

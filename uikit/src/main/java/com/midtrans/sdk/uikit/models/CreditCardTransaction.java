@@ -2,6 +2,7 @@ package com.midtrans.sdk.uikit.models;
 
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 
@@ -65,10 +66,7 @@ public class CreditCardTransaction {
     }
 
     public boolean isInWhiteList(String cardBin) {
-        if (isWhiteListBinsAvailable() && creditCard.getWhitelistBins().contains(cardBin)) {
-            return true;
-        }
-        return false;
+        return isWhiteListBinsAvailable() && creditCard.getWhitelistBins().contains(cardBin);
     }
 
 
@@ -98,6 +96,23 @@ public class CreditCardTransaction {
                 if (bankBin != null) {
                     return bankBin;
                 }
+            }
+        }
+        return null;
+    }
+
+    public boolean isMandiriCardDebit(String cardBin) {
+        if (getMandiriDebitResponse() != null) {
+            String bankBin = findBankByCardBin(getMandiriDebitResponse(), cardBin);
+            return bankBin != null;
+        }
+        return false;
+    }
+
+    private BankBinsResponse getMandiriDebitResponse() {
+        for (BankBinsResponse bankBinsResponse : bankBins) {
+            if (bankBinsResponse.getBank().equals(BankType.MANDIRI_DEBIT)) {
+                return bankBinsResponse;
             }
         }
         return null;

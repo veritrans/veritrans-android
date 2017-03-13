@@ -1,5 +1,8 @@
 package com.midtrans.sdk.core.models.snap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by rakawm on 10/19/16.
  */
@@ -15,6 +18,7 @@ public class BaseTransactionResponse {
     public final String transactionStatus;
     public final String fraudStatus;
     public final String finishRedirectUrl;
+    public List<String> validationMessages;
 
     public BaseTransactionResponse(String statusCode,
                                    String statusMessage,

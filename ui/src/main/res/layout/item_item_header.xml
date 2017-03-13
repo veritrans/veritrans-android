@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:orientation="vertical"
+    android:id="@+id/layout_total_amount"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/sixteen_dp"
+    android:paddingRight="@dimen/sixteen_dp" >
+
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/eight_dp"
+        android:layout_marginTop="@dimen/eight_dp">
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:id="@+id/total_amount"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/header_text_size"
+            tools:text="Rp. 120.000" />
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:id="@+id/payable_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/payable_amount"
+            android:textColor="@color/white"
+            android:textSize="@dimen/primary_text_size" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/item_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/text_price"
+            android:textColor="@color/white"
+            android:textSize="@dimen/small_text_size" />
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="@string/text_items"
+            android:textColor="@color/white"
+            android:textSize="@dimen/small_text_size" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginBottom="@dimen/four_dp"
+        android:layout_marginTop="@dimen/four_dp"
+        android:background="@color/gray_divider" />
+</LinearLayout>

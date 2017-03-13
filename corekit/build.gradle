@@ -13,7 +13,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
         classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.4.0'
     }
@@ -27,7 +27,7 @@ repositories {
 android {
     def DEFAULT_PUBLISH
     compileSdkVersion 25
-    buildToolsVersion '25'
+    buildToolsVersion '25.0.2'
 
     lintOptions {
         abortOnError false
@@ -257,7 +257,7 @@ bintray {
         publish = true
         publicDownloadNumbers = true
     }
-    publications = ['BintrayProductionPublication', 'BintrayPublication']
+    publications = ['BintrayProductionPublication', 'BintrayStagingPublication', 'BintrayPublication']
 
 }
 

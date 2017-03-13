@@ -25,9 +25,11 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
+import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.models.PromoData;
 
@@ -499,5 +501,25 @@ public class SdkUIFlowUtil {
         } else {
             return promoResponse.getDiscountAmount() * MidtransSDK.getInstance().getTransactionRequest().getAmount() / 100;
         }
+    }
+
+    public static List<SavedToken> removeCardFromSavedCards(List<SavedToken> savedTokens, String maskedCard) {
+        List<SavedToken> updatedTokens = new ArrayList<>();
+        for (SavedToken savedToken : savedTokens) {
+            if (!savedToken.getMaskedCard().equals(maskedCard)) {
+                updatedTokens.add(savedToken);
+            }
+        }
+        return updatedTokens;
+    }
+
+    public static ArrayList<SaveCardRequest> convertSavedToken(List<SavedToken> savedTokens) {
+        ArrayList<SaveCardRequest> cards = new ArrayList<>();
+        if (savedTokens != null && !savedTokens.isEmpty()) {
+            for (SavedToken saved : savedTokens) {
+                cards.add(new SaveCardRequest(saved.getToken(), saved.getMaskedCard(), saved.getTokenType()));
+            }
+        }
+        return cards;
     }
 }

@@ -11,10 +11,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
@@ -84,6 +84,17 @@ public class MandiriBillPayFragment extends Fragment {
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
         btnCopyBillCode = (FancyButton) view.findViewById(R.id.btn_copy_va);
         btnCopyCompany = (FancyButton) view.findViewById(R.id.btn_copy_company_code);
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                btnCopyBillCode.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnCopyBillCode.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnCopyCompany.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnCopyCompany.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnSeeInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnSeeInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
+        }
 
         if (mTransactionResponse != null) {
             if (mTransactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200)) ||

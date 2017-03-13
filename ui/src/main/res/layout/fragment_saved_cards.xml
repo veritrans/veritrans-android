@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context="com.midtrans.sdk.ui.views.creditcard.CreditCardActivity">
+
+    <LinearLayout
+        android:id="@+id/credit_card_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/layout_installment"
+        android:layout_below="@id/layout_offer_status"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/eight_dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_saved_cards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/new_card_button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/sixteen_dp"
+        android:visibility="gone">
+
+    </RelativeLayout>
+
+    <com.midtrans.sdk.ui.widgets.FancyButton
+        android:id="@+id/btn_add_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/credit_card_holder"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:visibility="gone"
+        app:fb_borderColor="?attr/colorPrimary"
+        app:fb_borderWidth="2dp"
+        app:fb_defaultColor="@android:color/white"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_iconColor="?attr/colorPrimary"
+        app:fb_iconPaddingTop="5dp"
+        app:fb_iconPosition="left"
+        app:fb_iconResource="@mipmap/ic_plus_new"
+        app:fb_radius="5dp"
+        app:fb_text="@string/add_new_card"
+        app:fb_textColor="?attr/colorPrimary"
+        tools:visibility="visible" />
+</RelativeLayout>

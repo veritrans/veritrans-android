@@ -3,14 +3,15 @@ package com.midtrans.veritransandroid;
 import android.app.Application;
 
 import com.midtrans.sdk.core.Environment;
-import com.midtrans.sdk.core.MidtransCore;
+import com.midtrans.sdk.ui.CustomSetting;
+import com.midtrans.sdk.ui.MidtransUi;
 
 /**
  * Created by rakawm on 10/19/16.
  */
 
 public class MyApp extends Application {
-    public static final String CHECKOUT_URL = "https://rakawm-snap.herokuapp.com/charge";
+    public static final String CHECKOUT_URL = "https://rakawm-snap.herokuapp.com/installment/charge";
     private static final String CLIENT_KEY = "VT-client-E4f1bsi1LpL1p5cF";
 
     @Override
@@ -20,10 +21,13 @@ public class MyApp extends Application {
     }
 
     private void initMidtransSDK() {
-        new MidtransCore.Builder()
-                .enableLog(true)
-                .setEnvironment(Environment.SANDBOX)
+
+        CustomSetting customSetting = new CustomSetting();
+        MidtransUi.builder()
                 .setClientKey(CLIENT_KEY)
+                .setEnvironment(Environment.SANDBOX)
+                .setCustomSetting(new CustomSetting())
+                .enableLog(true)
                 .build();
     }
 }
