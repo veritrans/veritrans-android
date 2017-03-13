@@ -13,7 +13,7 @@ repositories {
 android {
     def DEFAULT_PUBLISH
     compileSdkVersion 25
-    buildToolsVersion '25'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         minSdkVersion 9
