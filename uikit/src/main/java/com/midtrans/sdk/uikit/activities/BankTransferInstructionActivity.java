@@ -18,6 +18,7 @@ import android.widget.Button;
 
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.InstructionATMBersamaFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionAltoFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAFragment;
@@ -30,7 +31,7 @@ import com.midtrans.sdk.uikit.fragments.InstructionPrimaFragment;
 
 /**
  * It display information related to mandiri bill pay , bank transfer and BCA/Prima transaction.
- *
+ * <p>
  * Created by shivam on 10/28/15.
  */
 public class BankTransferInstructionActivity extends BaseActivity {
@@ -119,9 +120,8 @@ public class BankTransferInstructionActivity extends BaseActivity {
 
 
     private void setUpTabLayout() {
-
         mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
@@ -142,25 +142,41 @@ public class BankTransferInstructionActivity extends BaseActivity {
      * set adapter to view pager and also adds page margin between view pages.
      */
     private void setUpViewPager() {
-
         mViewPager.setPageMargin(PAGE_MARGIN);
-        int pageNumber = 0;
+        int pageNumber;
         switch (getIntent().getStringExtra(BANK)) {
             case TYPE_BCA:
                 pageNumber = 3;
                 POSITION = getIntent().getIntExtra(PAGE, -1);
+
+                if(POSITION == KLIKBCA_PAGE){
+                    //track page bca va overview
+                    midtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKBCA_OVERVIEW);
+                }else{
+                    //track page bca va overview
+                    midtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_VA_OVERVIEW);
+                }
                 break;
             case TYPE_PERMATA:
                 pageNumber = 2;
+
+                //track page permata va overview
+                midtransSDK.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA_OVERVIEW);
                 break;
             case TYPE_MANDIRI:
                 pageNumber = 2;
                 break;
             case TYPE_MANDIRI_BILL:
                 pageNumber = 2;
+
+                //track page mandiri bill overview
+                midtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL_OVERVIEW);
                 break;
             case TYPE_ALL_BANK:
                 pageNumber = 3;
+
+                //track page other bank va overview
+                midtransSDK.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA_OVERVIEW);
                 break;
             default:
                 pageNumber = 0;
@@ -202,8 +218,10 @@ public class BankTransferInstructionActivity extends BaseActivity {
                 } else if (position == 1) {
                     fragment = new InstructionBCAKlikFragment();
                 } else fragment = new InstructionBCAMobileFragment();
+
             } else if (getIntent().getStringExtra(BANK).equals(TYPE_PERMATA)) {
                 fragment = new InstructionPermataFragment();
+
             } else if (getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI) ||
                     getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI_BILL)) {
                 if (position == 0) {

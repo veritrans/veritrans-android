@@ -1,9 +1,11 @@
 package com.midtrans.sdk.uikit.fragments;
 
+import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,10 +13,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
@@ -82,6 +84,16 @@ public class BankTransferPaymentFragment extends Fragment {
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
         btnCopyToClipboard = (FancyButton) view.findViewById(R.id.btn_copy_va);
 
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                btnSeeInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnSeeInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnCopyToClipboard.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnCopyToClipboard.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
+        }
+
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
                     || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
@@ -138,6 +150,7 @@ public class BankTransferPaymentFragment extends Fragment {
     /**
      * Copy generated Virtual Account Number to clipboard.
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void copyVANumber() {
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(LABEL_VA_NUMBER, mTextViewVirtualAccountNumber.getText().toString());

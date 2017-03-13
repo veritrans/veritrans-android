@@ -1,9 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,10 +16,10 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkUtil;
-import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.BankTransferPaymentFragment;
 import com.midtrans.sdk.uikit.fragments.MandiriBillPayFragment;
@@ -58,7 +54,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     public String currentFragment = "home";
 
     private TextView mTextViewAmount = null;
-    private Button mButtonConfirmPayment = null;
+    private FancyButton mButtonConfirmPayment = null;
     private TextView mTextViewTitle = null;
     private MidtransSDK mMidtransSDK = null;
     private Toolbar mToolbar = null;
@@ -67,7 +63,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
     private ImageView logo = null;
-    private FancyButton mButtonBack;
 
     private int position = Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT;
 
@@ -106,20 +101,26 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        bankTransferFragment = new BankTransferFragment();
-        Bundle bundle = new Bundle();
         if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
-            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
-            bankTransferFragment.setArguments(bundle);
+            bankTransferFragment = BankTransferFragment.newInstance(BankTransferInstructionActivity.TYPE_MANDIRI_BILL, 0);
+
+            //track page mandiri bill
+            mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL);
         } else if (position == Constants.BANK_TRANSFER_PERMATA) {
-            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_PERMATA);
-            bankTransferFragment.setArguments(bundle);
+            bankTransferFragment = BankTransferFragment.newInstance(BankTransferInstructionActivity.TYPE_PERMATA, 0);
+
+            //track page bank permata
+            mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA);
         } else if (position == Constants.BANK_TRANSFER_BCA) {
-            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_BCA);
-            bankTransferFragment.setArguments(bundle);
+            bankTransferFragment = BankTransferFragment.newInstance(BankTransferInstructionActivity.TYPE_BCA, 0);
+
+            //track page bank bca
+            mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_VA);
         } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
-            bundle.putString(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_ALL_BANK);
-            bankTransferFragment.setArguments(bundle);
+            bankTransferFragment = BankTransferFragment.newInstance(BankTransferInstructionActivity.TYPE_ALL_BANK, 0);
+
+            //track page other bank
+            mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA);
         }
         fragmentTransaction.add(R.id.instruction_container,
                 bankTransferFragment, HOME_FRAGMENT);
@@ -140,15 +141,15 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+            return false;
         }
 
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -158,21 +159,14 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
         mTextViewAmount = (TextView) findViewById(R.id.text_amount);
         mTextViewTitle = (TextView) findViewById(R.id.text_title);
-        mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
+        mButtonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
-        mButtonBack = (FancyButton) findViewById(R.id.btn_back);
-
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
 
         initializeTheme();
         //setup tool bar
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -185,7 +179,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
             mTextViewAmount.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
             if (mMidtransSDK.getSemiBoldText() != null) {
-                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
+                mButtonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
             }
             mButtonConfirmPayment.setOnClickListener(this);
 
@@ -223,17 +217,10 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         if (view.getId() == R.id.btn_confirm_payment) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
-
                 performTransaction();
 
-            } else if (currentFragment.equalsIgnoreCase(PAYMENT_FRAGMENT)) {
-                if (transactionResponse != null) {
-                    setUpTransactionStatusFragment(transactionResponse);
-                } else {
-                    setResultCode(RESULT_OK);
-                    SdkUIFlowUtil.showToast(BankTransferActivity.this, SOMETHING_WENT_WRONG);
-                    onBackPressed();
-                }
+                //track page bank transfer
+                mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
             } else {
                 setResultCode(RESULT_OK);
                 onBackPressed();
@@ -254,12 +241,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             return;
         }
         currentFragment = STATUS_FRAGMENT;
-        mButtonConfirmPayment.setText(R.string.done);
-
-        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
-        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        mButtonBack.setIconResource(closeIcon);
-        setSupportActionBar(mToolbar);
+        mButtonConfirmPayment.setText(getString(R.string.done));
 
         initPaymentStatus(transactionResponse, errorMessage, position, false);
 
@@ -298,7 +280,11 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             fragmentTransaction.commit();
 
             currentFragment = PAYMENT_FRAGMENT;
-            mButtonConfirmPayment.setText(R.string.complete_payment_at_atm);
+            ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
+            if (merchantLogo != null) {
+                merchantLogo.setVisibility(View.INVISIBLE);
+            }
+            mButtonConfirmPayment.setText(getString(R.string.complete_payment_at_atm));
 
         } else {
             SdkUIFlowUtil.showToast(BankTransferActivity.this, SOMETHING_WENT_WRONG);
@@ -332,10 +318,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
         if (midtransSDK != null) {
             //transaction details
-            TransactionDetails transactionDetails =
-                    new TransactionDetails("" + mMidtransSDK.getTransactionRequest().getAmount(),
-                            mMidtransSDK.getTransactionRequest().getOrderId());
-
             SdkUIFlowUtil.showProgressDialog(BankTransferActivity.this, getString(R.string.processing_payment), false);
 
             if (position == Constants.BANK_TRANSFER_PERMATA) {
@@ -486,12 +468,18 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void actionPaymentError(Throwable error) {
+        //track page status failed
+        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
         SdkUIFlowUtil.hideProgressDialog();
         BankTransferActivity.this.errorMessage = getString(R.string.message_payment_failed);
         SdkUIFlowUtil.showToast(BankTransferActivity.this, "" + errorMessage);
     }
 
     private void actionPaymentSuccess(TransactionResponse response) {
+        //track page status success
+        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
         SdkUIFlowUtil.hideProgressDialog();
         if (response != null) {
             transactionResponse = response;
@@ -502,6 +490,9 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void actionPaymentFailure(TransactionResponse response, String reason) {
+        //track page status failed
+        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
         SdkUIFlowUtil.hideProgressDialog();
         try {
             BankTransferActivity.this.errorMessage = getString(R.string.message_payment_failed);

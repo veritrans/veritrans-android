@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.R;
-import com.midtrans.sdk.corekit.models.BBMMoneyRequestModel;
 import com.midtrans.sdk.corekit.models.BCABankTransfer;
 import com.midtrans.sdk.corekit.models.BCAKlikPayDescriptionModel;
 import com.midtrans.sdk.corekit.models.BCAKlikPayModel;
@@ -35,6 +34,7 @@ import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
@@ -46,7 +46,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
-import com.midtrans.sdk.corekit.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -237,23 +236,6 @@ public class SdkUtil {
 
         return model;
 
-    }
-
-    protected static BBMMoneyRequestModel getBBMMoneyRequestModel(TransactionRequest request) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        BBMMoneyRequestModel model =
-                new BBMMoneyRequestModel();
-        model.setPaymentType("bbm_money");
-        model.setTransactionDetails(transactionDetails);
-        return model;
     }
 
 
@@ -551,9 +533,27 @@ public class SdkUtil {
             requestModel.setExpiry(transactionRequest.getExpiry());
         }
 
-        // Set custom object if it's available
-        if (transactionRequest.getCustomObject() != null && !transactionRequest.getCustomObject().isEmpty()) {
-            requestModel = Utils.addCustomMapObjectIntoTransaction(requestModel, transactionRequest.getCustomObject());
+        if (transactionRequest.getCustomField1() != null && !TextUtils.isEmpty(transactionRequest.getCustomField1())) {
+            requestModel.setCustomField1(transactionRequest.getCustomField1());
+        }
+
+        if (transactionRequest.getCustomField2() != null && !TextUtils.isEmpty(transactionRequest.getCustomField2())) {
+            requestModel.setCustomField2(transactionRequest.getCustomField2());
+        }
+
+        if (transactionRequest.getCustomField3() != null && !TextUtils.isEmpty(transactionRequest.getCustomField3())) {
+            requestModel.setCustomField3(transactionRequest.getCustomField3());
+        }
+
+        // Set promo is available
+        if (transactionRequest.isPromoEnabled()) {
+            SnapPromo promo = new SnapPromo();
+            promo.setEnabled(true);
+
+            if (transactionRequest.getPromoCodes() != null && !transactionRequest.getPromoCodes().isEmpty()) {
+                promo.setAllowedPromoCodes(transactionRequest.getPromoCodes());
+            }
+            requestModel.setPromo(promo);
         }
 
         return requestModel;
@@ -576,8 +576,24 @@ public class SdkUtil {
         CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transactionRequest);
         CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(),
                 model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
+        paymentParams.setPointRedeemed(model.getPointRedeemed());
+
         CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
 
+        return paymentRequest;
+    }
+
+    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String discountToken, CreditCardPaymentModel model, TransactionRequest transactionRequest) {
+        if (transactionRequest.isUiEnabled()) {
+            // get user details only if using default ui
+            transactionRequest = initializeUserInfo(transactionRequest);
+        }
+
+        CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transactionRequest);
+        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(),
+                model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
+        CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
+        paymentRequest.setDiscountToken(discountToken);
         return paymentRequest;
     }
 
@@ -626,4 +642,5 @@ public class SdkUtil {
             }
         });
     }
+
 }

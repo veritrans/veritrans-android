@@ -11,6 +11,7 @@ import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +46,9 @@ public class TransactionRequest {
 
     private String cardClickType;
 
+    private boolean promoEnabled;
+    private List<String> promoCodes;
+
     /**
      * It contains an extra information that you want to display on bill.
      */
@@ -77,6 +81,9 @@ public class TransactionRequest {
     private CreditCard creditCard;
     private Map<String, String> customObject;
     private ExpiryModel expiry;
+    private String customField1;
+    private String customField2;
+    private String customField3;
 
     /**
      * @param orderId       order id of transaction.
@@ -209,19 +216,51 @@ public class TransactionRequest {
         this.creditCard = creditCard;
     }
 
-    public Map<String, String> getCustomObject() {
-        return customObject;
-    }
-
-    public void setCustomObject(Map<String, String> customObject) {
-        this.customObject = customObject;
-    }
-
     public ExpiryModel getExpiry() {
         return expiry;
     }
 
     public void setExpiry(ExpiryModel expiry) {
         this.expiry = expiry;
+    }
+
+    public List<String> getPromoCodes() {
+        return promoCodes;
+    }
+
+    public void setPromoCodes(List<String> promoCodes) {
+        this.promoCodes = promoCodes;
+    }
+
+    public boolean isPromoEnabled() {
+        return promoEnabled;
+    }
+
+    public void setPromoEnabled(boolean promoEnabled) {
+        this.promoEnabled = promoEnabled;
+    }
+
+    public String getCustomField1() {
+        return customField1;
+    }
+
+    public void setCustomField1(String customField1) {
+        this.customField1 = customField1;
+    }
+
+    public String getCustomField2() {
+        return customField2;
+    }
+
+    public void setCustomField2(String customField2) {
+        this.customField2 = customField2;
+    }
+
+    public String getCustomField3() {
+        return customField3;
+    }
+
+    public void setCustomField3(String customField3) {
+        this.customField3 = customField3;
     }
 }

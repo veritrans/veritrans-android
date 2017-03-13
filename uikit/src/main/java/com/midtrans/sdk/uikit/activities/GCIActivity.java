@@ -1,16 +1,12 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -19,6 +15,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.GCIPaymentFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -34,12 +31,11 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
     public String currentFragment = "home";
 
     private TextView textViewAmount = null;
-    private Button buttonConfirmPayment = null;
+    private FancyButton buttonConfirmPayment = null;
     private TextView textViewTitle = null;
     private GCIPaymentFragment paymentFragment;
     private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
-    private FancyButton buttonBack;
 
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
@@ -78,8 +74,10 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
      * set up {@link } to display payment instructions.
      */
     private void setUpHomeFragment() {
-        // setup home fragment
+        //track page telkomsel cash
+        midtransSDK.trackEvent(AnalyticsEventName.PAGE_GCI);
 
+        // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         paymentFragment = new GCIPaymentFragment();
@@ -94,22 +92,23 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+            return false;
         }
 
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     private void initializeView() {
         textViewAmount = (TextView) findViewById(R.id.text_amount);
         textViewTitle = (TextView) findViewById(R.id.text_title);
-        buttonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
+        buttonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        buttonBack = (FancyButton) findViewById(R.id.btn_back);
 
         initializeTheme();
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void bindDataToView() {
@@ -118,10 +117,9 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
             textViewAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
             if (midtransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), midtransSDK.getSemiBoldText()));
+                buttonConfirmPayment.setCustomTextFont(midtransSDK.getSemiBoldText());
             }
             buttonConfirmPayment.setOnClickListener(this);
-            buttonBack.setOnClickListener(this);
         }
     }
 
@@ -136,8 +134,6 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
             } else {
                 performTransaction();
             }
-        } else if (view.getId() == R.id.btn_back) {
-            onBackPressed();
         }
     }
 
@@ -145,17 +141,16 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
                                                         transactionResponse) {
 
         currentFragment = STATUS_FRAGMENT;
-        buttonConfirmPayment.setText(R.string.done);
-
-        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
-        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        buttonBack.setIconResource(closeIcon);
+        buttonConfirmPayment.setText(getString(R.string.done));
 
         initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_GCI, false);
     }
 
 
     private void performTransaction() {
+        //track page telkomsel cash
+        midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
 
         if (paymentFragment.checkFormValidity()) {
             SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment),
@@ -168,6 +163,9 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
             midtransSDK.paymentUsingGCI(midtransSDK.readAuthenticationToken(), cardNumber, password, new TransactionCallback() {
                 @Override
                 public void onSuccess(TransactionResponse response) {
+                    //track page status success
+                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
+
                     SdkUIFlowUtil.hideProgressDialog();
                     if (response != null) {
                         transactionResponse = response;
@@ -179,6 +177,9 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
                 @Override
                 public void onFailure(TransactionResponse response, String reason) {
+                    //track page status failed
+                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                     errorMessage = getString(R.string.message_payment_failed);
                     transactionResponse = response;
                     SdkUIFlowUtil.hideProgressDialog();
@@ -193,6 +194,9 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
                 @Override
                 public void onError(Throwable error) {
+                    //track page status failed
+                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                     SdkUIFlowUtil.hideProgressDialog();
                     errorMessage = getString(R.string.message_payment_failed);
                     SdkUIFlowUtil.showToast(GCIActivity.this, "" + errorMessage);

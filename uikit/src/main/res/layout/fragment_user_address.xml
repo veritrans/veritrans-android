@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,8 +11,7 @@
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/addressScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:background="@color/colorAccentLight"
         android:fillViewport="true"
         tools:context="com.midtrans.sdk.uikit.fragments.UserAddressFragment">
@@ -36,7 +36,7 @@
                     android:background="@android:color/white"
                     android:padding="@dimen/sixteen_dp">
 
-                    <TextView
+                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
                         android:id="@+id/text_billing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -53,14 +53,13 @@
                         android:layout_below="@id/text_billing">
 
 
-                        <EditText
+                        <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/et_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_address"
                             android:maxLength="300"
-                            android:singleLine="true"
-                            android:textColorHint="@color/colorAccent" />
+                            android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -69,14 +68,13 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/address_til">
 
-                        <EditText
+                        <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/et_city"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_city"
                             android:maxLength="100"
-                            android:singleLine="true"
-                            android:textColorHint="@color/colorAccent" />
+                            android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -85,15 +83,14 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/city_til">
 
-                        <EditText
+                        <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/et_zipcode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_zip_code"
                             android:inputType="number"
                             android:maxLength="5"
-                            android:singleLine="true"
-                            android:textColorHint="@color/colorAccent" />
+                            android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -102,15 +99,14 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/zip_til">
 
-                        <AutoCompleteTextView
+                        <android.support.v7.widget.AppCompatAutoCompleteTextView
                             android:id="@+id/et_country"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_country"
                             android:imeOptions="actionDone"
                             android:maxLength="100"
-                            android:singleLine="true"
-                            android:textColorHint="@color/colorAccent" />
+                            android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
@@ -161,14 +157,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <EditText
+                            <android.support.v7.widget.AppCompatEditText
                                 android:id="@+id/et_shipping_address"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_address"
-                                android:maxLength="300"
-                                android:singleLine="true"
-                                android:textColorHint="@color/colorAccent" />
+                                android:inputType="textPostalAddress"
+                                android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
 
                         <android.support.design.widget.TextInputLayout
@@ -177,14 +172,13 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/shipping_address_til">
 
-                            <EditText
+                            <android.support.v7.widget.AppCompatEditText
                                 android:id="@+id/et_shipping_city"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_city"
-                                android:maxLength="100"
-                                android:singleLine="true"
-                                android:textColorHint="@color/colorAccent" />
+                                android:inputType="text"
+                                android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
 
                         <android.support.design.widget.TextInputLayout
@@ -193,15 +187,13 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/shipping_city_til">
 
-                            <EditText
+                            <android.support.v7.widget.AppCompatEditText
                                 android:id="@+id/et_shipping_zipcode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_zip_code"
                                 android:inputType="number"
-                                android:maxLength="15"
-                                android:singleLine="true"
-                                android:textColorHint="@color/colorAccent" />
+                                android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
 
                         <android.support.design.widget.TextInputLayout
@@ -210,15 +202,14 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/shipping_zip_til">
 
-                            <AutoCompleteTextView
+                            <android.support.v7.widget.AppCompatAutoCompleteTextView
                                 android:id="@+id/et_shipping_country"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_country"
                                 android:imeOptions="actionDone"
-                                android:maxLength="100"
-                                android:singleLine="true"
-                                android:textColorHint="@color/colorAccent" />
+                                android:inputType="text"
+                                android:maxLines="1" />
                         </android.support.design.widget.TextInputLayout>
                     </RelativeLayout>
                 </RelativeLayout>
@@ -227,24 +218,30 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <RelativeLayout
-        android:id="@+id/layout_next"
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/btn_next"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/sixtyfour_dp"
+        android:layout_height="@dimen/button_size"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/addressScrollView"
-        android:background="@color/colorAccentLight"
-        android:paddingBottom="@dimen/eight_dp"
-        android:paddingTop="@dimen/eight_dp">
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:textColor="@color/white"
+        app:fb_defaultColor="@color/gray.primary"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_text="@string/next"
+        app:fb_textGravity="center_vertical"
+        app:fb_textSize="16sp" />
 
-        <Button
-            android:id="@+id/btn_next"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/btn_height"
-            android:layout_alignParentBottom="true"
-            android:text="@string/next"
-            android:textColor="@android:color/white" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_size"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom|end">
 
-    </RelativeLayout>
-</LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/eight_dp"
+            android:src="@drawable/ic_arrow_right_white" />
+    </LinearLayout>
+</RelativeLayout>

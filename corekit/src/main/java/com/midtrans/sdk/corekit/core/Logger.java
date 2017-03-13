@@ -11,28 +11,28 @@ import com.midtrans.sdk.corekit.BuildConfig;
  * Created by shivam on 10/20/15.
  */
 public class Logger {
-
+    public static boolean enabled = false;
     public static void d(String tag, String message) {
-        if (BuildConfig.FLAVOR.equalsIgnoreCase("development")) {
+        if (enabled) {
             Log.d("" + tag, "" + message);
         }
     }
 
     public static void d(String message) {
-        if (BuildConfig.FLAVOR.equalsIgnoreCase("development")) {
+        if (enabled) {
             Log.d(Constants.TAG, "" + message);
         }
     }
 
 
     public static void i(String tag, String message) {
-        if (BuildConfig.FLAVOR.equalsIgnoreCase("development")) {
+        if (enabled) {
             Log.i("" + tag, "" + message);
         }
     }
 
     public static void i(String message) {
-        if (BuildConfig.FLAVOR.equalsIgnoreCase("development")) {
+        if (enabled) {
             Log.i(Constants.TAG, "" + message);
         }
     }
@@ -45,7 +45,7 @@ public class Logger {
     }
 
     public static void e(String message) {
-        if (BuildConfig.FLAVOR.equalsIgnoreCase("development")) {
+        if (enabled) {
             Log.e(Constants.TAG, "" + message);
         }
     }

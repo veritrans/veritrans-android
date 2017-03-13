@@ -5,6 +5,17 @@
     android:layout_height="60dp"
     android:background="?android:selectableItemBackground">
 
+    <ImageView
+        android:id="@+id/image_arrow_right"
+        android:layout_width="@dimen/twenty_four_dp"
+        android:layout_height="@dimen/twenty_four_dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/eight_dp"
+        android:layout_marginRight="@dimen/eight_dp"
+        android:alpha="0.3"
+        android:src="@drawable/ic_arrow_right" />
 
     <ImageView
         android:id="@+id/img_bank_icon"
@@ -16,15 +27,15 @@
         android:contentDescription="@string/description_bank_icon"
         android:src="@drawable/ic_launcher" />
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginStart="@dimen/sixteen_dp"
         android:layout_toEndOf="@id/img_bank_icon"
-        android:layout_toLeftOf="@+id/image_arrow_right"
-        android:layout_toRightOf="@id/img_bank_icon">
+        android:layout_toLeftOf="@id/image_arrow_right"
+        android:layout_toRightOf="@id/img_bank_icon"
+        android:layout_toStartOf="@id/image_arrow_right">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,6 +58,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/black"
+                android:textSize="12sp"
                 tools:text="@string/payment_method_description_bank_transfer" />
         </LinearLayout>
 
@@ -57,16 +69,4 @@
             android:layout_alignParentBottom="true"
             android:background="@color/gray_divider" />
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/image_arrow_right"
-        android:layout_width="@dimen/twenty_four_dp"
-        android:layout_height="@dimen/twenty_four_dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/eight_dp"
-        android:layout_marginRight="@dimen/eight_dp"
-        android:alpha="0.3"
-        android:src="@drawable/ic_arrow_right" />
 </RelativeLayout>

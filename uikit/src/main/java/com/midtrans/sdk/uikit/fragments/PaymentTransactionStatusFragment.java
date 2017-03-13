@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,7 +29,7 @@ import com.midtrans.sdk.uikit.activities.BCAKlikPayActivity;
 import com.midtrans.sdk.uikit.activities.BankTransferActivity;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 import com.midtrans.sdk.uikit.activities.CIMBClickPayActivity;
-import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
+import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
 import com.midtrans.sdk.uikit.activities.EpayBriActivity;
 import com.midtrans.sdk.uikit.activities.IndomaretActivity;
 import com.midtrans.sdk.uikit.activities.IndosatDompetkuActivity;
@@ -46,6 +45,7 @@ import com.midtrans.sdk.uikit.activities.XLTunaiActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -62,7 +62,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private boolean isSuccessful;
 
     // views
-    private Button actionBt = null;
+    private FancyButton actionBt = null;
     private ImageView paymentIv = null;
     private TextView paymentStatusTv = null;
     private TextView paymentMessageTv = null;
@@ -72,11 +72,12 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private TextView paymentTypeTextView = null;
     private TextView textBank;
     private TextView textInstallmentTerm;
+    private TextView textRedeemedPoint;
     private DefaultTextView textStatusTitle;
     private int count = 1;
     private LinearLayout detailsTable;
     private FrameLayout layoutMain;
-    private RelativeLayout layoutDueTotalAmount, layoutInstallment, layoutTransactionTime, layoutBank, layoutPaymentType;
+    private RelativeLayout layoutDueTotalAmount, layoutInstallment, layoutTransactionTime, layoutBank, layoutPaymentType, layoutRedeemedPoint;
     private int mPaymentType = -1;
     private FancyButton buttonInstruction;
 
@@ -133,7 +134,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
         orderIdTextView = (TextView) view.findViewById(R.id.text_order_id);
         transactionTimeTextView = (TextView) view.findViewById(R.id.text_status_transaction_time);
         paymentTypeTextView = (TextView) view.findViewById(R.id.text_payment_type);
-        actionBt = (Button) view.findViewById(R.id.btn_action);
+        actionBt = (FancyButton) view.findViewById(R.id.btn_action);
+        actionBt.setCustomTextFont(MidtransSDK.getInstance().getSemiBoldText());
         paymentIv = (ImageView) view.findViewById(R.id.image_payment);
         paymentStatusTv = (TextView) view.findViewById(R.id.text_payment_status);
         paymentMessageTv = (TextView) view.findViewById(R.id.text_payment_message);
@@ -149,7 +151,22 @@ public class PaymentTransactionStatusFragment extends Fragment {
         textStatusTitle = (DefaultTextView) view.findViewById(R.id.text_title_payment_status);
         layoutMain = (FrameLayout) view.findViewById(R.id.layout_transaction_status);
         buttonInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
+        layoutRedeemedPoint = (RelativeLayout) view.findViewById(R.id.layout_status_point_amount);
+        textRedeemedPoint = (TextView) view.findViewById(R.id.text_point_amount);
 
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
+                // Set background for action button
+                actionBt.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
+            }
+
+            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                // Set instruction color
+                buttonInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                buttonInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
+        }
     }
 
     private void setPaymentStatusValues() {
@@ -224,6 +241,20 @@ public class PaymentTransactionStatusFragment extends Fragment {
             layoutInstallment.setVisibility(View.VISIBLE);
         } else {
             layoutInstallment.setVisibility(View.GONE);
+        }
+
+        // Set point
+        if (transactionResponse.getPointRedeemAmount() != 0) {
+            String formattedBalance;
+            if (transactionResponse.getPointRedeemAmount() == (long) transactionResponse.getPointRedeemAmount()) {
+                formattedBalance = String.format(Locale.getDefault(), "%d", (long) transactionResponse.getPointRedeemAmount());
+            } else {
+                formattedBalance = String.format("%s", transactionResponse.getPointRedeemAmount());
+            }
+            layoutRedeemedPoint.setVisibility(View.VISIBLE);
+            textRedeemedPoint.setText(formattedBalance);
+        } else {
+            layoutRedeemedPoint.setVisibility(View.GONE);
         }
 
     }
@@ -307,9 +338,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
             public void onClick(View v) {
 
                 Log.d("statusactivity", "from:" + getActivity().getClass().getName());
-                if (getActivity() instanceof CreditDebitCardFlowActivity) {
-                    ((CreditDebitCardFlowActivity) getActivity()).setResultCode(Activity.RESULT_OK);
-                    ((CreditDebitCardFlowActivity) getActivity()).setResultAndFinish();
+                if (getActivity() instanceof CreditCardFlowActivity) {
+                    ((CreditCardFlowActivity) getActivity()).setResultCode(Activity.RESULT_OK);
+                    ((CreditCardFlowActivity) getActivity()).setResultAndFinish();
                 } else if (getActivity() instanceof EpayBriActivity) {
                     ((EpayBriActivity) getActivity()).setResultCode(Activity.RESULT_OK);
                     ((EpayBriActivity) getActivity()).setResultAndFinish();

@@ -18,8 +18,6 @@ import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
-import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
-import com.midtrans.sdk.corekit.models.BBMMoneyRequestModel;
 import com.midtrans.sdk.corekit.models.BCABankTransfer;
 import com.midtrans.sdk.corekit.models.BCAKlikPayDescriptionModel;
 import com.midtrans.sdk.corekit.models.BCAKlikPayModel;
@@ -161,8 +159,6 @@ public class MidtransAndroidSDKTest {
     private MandiriClickPayModel mandiriClickPayModelMock;
     @Mock
     private MandiriClickPayRequestModel mandiriClickPayRequestModelMock;
-    @Mock
-    private BBMMoneyRequestModel bbmMoneyRequestModelMock;
     private String userId = "klikBCA";
     private String transactionId = "A1";
     private String cardToken = "card_token";
@@ -180,8 +176,6 @@ public class MidtransAndroidSDKTest {
     @Mock
     private Drawable drawableDefaultMock;
     private String merchantLogoMock = "merchantLogo";
-    @Mock
-    private BBMCallBackUrl bbmCallbackUrlMock;
     @Mock
     private ArrayList<PaymentMethodsModel> paymentMethodMock;
     @Mock
@@ -227,7 +221,6 @@ public class MidtransAndroidSDKTest {
                 .buildSDK();
         Mockito.when(midtransSDK.readAuthenticationToken()).thenReturn(sdkTokenMock);
         midtransSDK.setTransactionManager(transactionManager);
-        transactionManager.setAnalyticsManager(mixpanelMock);
         midtransSDKSSpy = spy(midtransSDK);
 
     }

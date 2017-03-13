@@ -166,8 +166,8 @@
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="copied_bill_code">Billpay code was copied to clipboard</string>
     <string name="copied_company_code">Company code was copied to clipboard</string>
-    <string name="complete_payment_at_atm">Complete Payment At ATM</string>
-    <string name="complete_payment_at_klik_bca">Finish</string>
+    <string name="complete_payment_at_atm">Complete Payment at ATM</string>
+    <string name="complete_payment_at_klik_bca">Complete Payment at KlikBCA</string>
     <string name="done">Finish</string>
     <string name="virtual_account_number">Virtual Account Number</string>
     <string name="payment_pending">Payment Pending</string>

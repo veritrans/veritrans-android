@@ -3,6 +3,7 @@ package com.midtrans.sdk.corekit.core;
 import android.content.Context;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 
 import java.util.ArrayList;
@@ -21,8 +22,6 @@ public abstract class BaseSdkBuilder<T> {
     protected boolean enableLog = false;
     protected boolean enableBuiltInTokenStorage = true;
     protected String merchantServerUrl = null;
-    protected String colorTheme = null;
-    protected int colorThemeResourceId = 0;
     protected String merchantName = null;
     protected ISdkFlow sdkFlow;
     protected String defaultText;
@@ -33,6 +32,7 @@ public abstract class BaseSdkBuilder<T> {
     protected TransactionFinishedCallback transactionFinishedCallback;
     protected UIKitCustomSetting UIKitCustomSetting;
     protected String flow;
+    protected BaseColorTheme colorTheme;
 
     public abstract T setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods);
 
