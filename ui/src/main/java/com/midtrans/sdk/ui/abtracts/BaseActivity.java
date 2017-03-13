@@ -23,7 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.ui.CustomSetting;
-import com.midtrans.sdk.ui.MidtransUiKit;
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.Theme;
@@ -102,7 +102,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     public void initPaymentResult(PaymentResult result, String paymentType) {
-        CustomSetting settings = MidtransUiKit.getInstance().getCustomSetting();
+        CustomSetting settings = MidtransUi.getInstance().getCustomSetting();
         Log.d(TAG, "show:" + settings.showPaymentStatus);
         if (settings != null && settings.showPaymentStatus) {
             PaymentStatusFragment fragment = PaymentStatusFragment.newInstance(result, paymentType);
@@ -125,18 +125,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void initTheme() {
-        if (MidtransUiKit.getInstance() != null) {
+        if (MidtransUi.getInstance() != null) {
             Logger.d(TAG, "prim:" + primaryColor);
             Logger.d(TAG, "secon:" + secondaryColor);
             Logger.d(TAG, "dar:" + primaryDarkColor);
 
-            BaseColorTheme baseColorTheme = MidtransUiKit.getInstance().getColorTheme();
+            BaseColorTheme baseColorTheme = MidtransUi.getInstance().getColorTheme();
             if (baseColorTheme != null) {
                 this.primaryColor = baseColorTheme.getPrimaryColor();
                 this.primaryDarkColor = baseColorTheme.getPrimaryDarkColor();
                 this.secondaryColor = baseColorTheme.getSecondaryColor();
             }
-            CustomSetting customSetting = MidtransUiKit.getInstance().getCustomSetting();
+            CustomSetting customSetting = MidtransUi.getInstance().getCustomSetting();
             if (customSetting != null) {
                 this.fontDefault = customSetting.fontDefault;
                 this.fontSemiBold = customSetting.fontSemiBold;

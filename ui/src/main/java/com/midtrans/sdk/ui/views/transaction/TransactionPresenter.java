@@ -9,7 +9,7 @@ import com.midtrans.sdk.core.models.merchant.CheckoutTokenResponse;
 import com.midtrans.sdk.core.models.merchant.ItemDetails;
 import com.midtrans.sdk.core.models.snap.transaction.SnapEnabledPayment;
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
-import com.midtrans.sdk.ui.MidtransUiKit;
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePresenter;
 import com.midtrans.sdk.ui.constants.PaymentCategory;
@@ -38,13 +38,13 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
     private TransactionContract.View view;
 
     public TransactionPresenter(Context context, TransactionContract.View view) {
-        midtransUiKitSdk = MidtransUiKit.getInstance();
+        midtransUiSdk = MidtransUi.getInstance();
         this.context = context;
         this.view = view;
     }
 
     public void checkout() {
-        MidtransCore.getInstance().checkout(midtransUiKitSdk.getCheckoutUrl(), midtransUiKitSdk.getCheckoutTokenRequest(), new MidtransCoreCallback<CheckoutTokenResponse>() {
+        MidtransCore.getInstance().checkout(midtransUiSdk.getCheckoutUrl(), midtransUiSdk.getCheckoutTokenRequest(), new MidtransCoreCallback<CheckoutTokenResponse>() {
             @Override
             public void onSuccess(CheckoutTokenResponse checkoutTokenResponse) {
                 getTransactionDetails(checkoutTokenResponse);
@@ -75,12 +75,12 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
     }
 
     private void getTransactionDetails(CheckoutTokenResponse checkoutTokenResponse) {
-        midtransUiKitSdk.setCheckoutToken(checkoutTokenResponse.token);
+        midtransUiSdk.setCheckoutToken(checkoutTokenResponse.token);
         MidtransCore.getInstance().getTransactionDetails(checkoutTokenResponse.token, new MidtransCoreCallback<SnapTransaction>() {
             @Override
             public void onSuccess(SnapTransaction snapTransaction) {
-                midtransUiKitSdk.setTransaction(snapTransaction);
-                midtransUiKitSdk.setColorTheme(new ColorTheme(context, snapTransaction.merchant.preference.colorScheme));
+                midtransUiSdk.setTransaction(snapTransaction);
+                midtransUiSdk.setColorTheme(new ColorTheme(context, snapTransaction.merchant.preference.colorScheme));
                 view.showProgressContainer(false);
                 view.showPaymentMethods(createPaymentMethodsModel(snapTransaction.enabledPayments), snapTransaction.merchant.preference.displayName);
             }
@@ -100,7 +100,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
     private List<ItemDetail> createItemDetails() {
         List<ItemDetail> itemViewDetails = new ArrayList<>();
 
-        CheckoutTokenRequest checkoutTokenRequest = midtransUiKitSdk.getCheckoutTokenRequest();
+        CheckoutTokenRequest checkoutTokenRequest = midtransUiSdk.getCheckoutTokenRequest();
 
         // Add amount
         String amount = context.getString(R.string.prefix_money, Utils.getFormattedAmount(checkoutTokenRequest.transactionDetails.grossAmount));
@@ -113,7 +113,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
                 checkoutTokenRequest.itemDetails.size() > 0));
 
         // Add items
-        for (ItemDetails itemDetails : midtransUiKitSdk.getCheckoutTokenRequest().itemDetails) {
+        for (ItemDetails itemDetails : midtransUiSdk.getCheckoutTokenRequest().itemDetails) {
             String price = context.getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.quantity * itemDetails.price));
             String itemName = itemDetails.name;
             if (itemDetails.quantity > 1) {
@@ -156,10 +156,10 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
     }
 
     public void sendPaymentResult(PaymentResult result) {
-        midtransUiKitSdk.sendPaymentCallback(result);
+        midtransUiSdk.sendPaymentCallback(result);
     }
 
     public int getPrimaryColor() {
-        return midtransUiKitSdk.getColorTheme().getPrimaryColor();
+        return midtransUiSdk.getColorTheme().getPrimaryColor();
     }
 }

@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.midtrans.sdk.core.Environment;
 import com.midtrans.sdk.ui.CustomSetting;
-import com.midtrans.sdk.ui.MidtransUiKit;
+import com.midtrans.sdk.ui.MidtransUi;
 
 /**
  * Created by rakawm on 10/19/16.
@@ -23,7 +23,7 @@ public class MyApp extends Application {
     private void initMidtransSDK() {
 
         CustomSetting customSetting = new CustomSetting();
-        MidtransUiKit.builder()
+        MidtransUi.builder()
                 .setClientKey(CLIENT_KEY)
                 .setEnvironment(Environment.SANDBOX)
                 .setCustomSetting(new CustomSetting())

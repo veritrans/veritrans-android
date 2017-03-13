@@ -5,7 +5,7 @@ import android.content.res.ColorStateList;
 import android.support.design.widget.TextInputEditText;
 import android.util.AttributeSet;
 
-import com.midtrans.sdk.ui.MidtransUiKit;
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
 import com.midtrans.sdk.ui.utils.Logger;
 
@@ -30,7 +30,7 @@ public class ColoredTextInputEditText extends TextInputEditText {
     }
 
     private void init() {
-        MidtransUiKit uiSdk = MidtransUiKit.getInstance();
+        MidtransUi uiSdk = MidtransUi.getInstance();
         if (uiSdk != null && uiSdk.getColorTheme() != null) {
             BaseColorTheme colorTheme = uiSdk.getColorTheme();
             try {

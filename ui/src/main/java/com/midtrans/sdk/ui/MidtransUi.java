@@ -20,8 +20,8 @@ import com.midtrans.sdk.ui.views.transaction.TransactionActivity;
  * Created by ziahaqi on 2/19/17.
  */
 
-public class MidtransUiKit {
-    private static MidtransUiKit instance;
+public class MidtransUi {
+    private static MidtransUi instance;
     private Context context;
     private boolean enableLog = true;
     private String clientKey;
@@ -37,7 +37,7 @@ public class MidtransUiKit {
     private MidtransUiCallback paymentCallback;
     private SnapTransaction transaction;
 
-    private MidtransUiKit(Builder builder) {
+    private MidtransUi(Builder builder) {
         this.context = builder.context;
         this.clientKey = builder.clientKey;
         this.environment = builder.environment;
@@ -58,9 +58,9 @@ public class MidtransUiKit {
         return new Builder();
     }
 
-    public static MidtransUiKit getInstance() {
+    public static MidtransUi getInstance() {
         if (instance == null) {
-            throw new RuntimeException("SDK is not initialized. Please initialize it using MidtransUiKit.Builder().");
+            throw new RuntimeException("SDK is not initialized. Please initialize it using MidtransUi.Builder().");
         }
         return instance;
     }
@@ -204,7 +204,7 @@ public class MidtransUiKit {
             return this;
         }
 
-        public MidtransUiKit build() {
+        public MidtransUi build() {
 
             new MidtransCore.Builder()
                     .enableLog(true)
@@ -212,7 +212,7 @@ public class MidtransUiKit {
                     .setClientKey(clientKey)
                     .build();
 
-            return new MidtransUiKit(this);
+            return new MidtransUi(this);
         }
     }
 }

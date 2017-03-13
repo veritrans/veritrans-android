@@ -30,7 +30,7 @@ import com.midtrans.sdk.core.models.papi.CardTokenResponse;
 import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.core.utils.CardUtilities;
-import com.midtrans.sdk.ui.MidtransUiKit;
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.abtracts.BaseFragment;
@@ -66,7 +66,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
     private CreditCardDetails cardDetails;
 
 
-    private MidtransUiKit midtransUiKit;
+    private MidtransUi midtransUi;
 
     private TextInputLayout tilCardNo, tilCvv, tilExpiry;
     private TextView tvInstallmentTerm;
@@ -164,11 +164,11 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
             }
         }
 
-        if (midtransUiKit != null && midtransUiKit.getFontSemiBold() != null) {
-            buttonPay.setCustomTextFont(midtransUiKit.getFontSemiBold());
+        if (midtransUi != null && midtransUi.getFontSemiBold() != null) {
+            buttonPay.setCustomTextFont(midtransUi.getFontSemiBold());
             // Set background for pay now button
-            if (midtransUiKit.getColorTheme() != null && midtransUiKit.getColorTheme().getPrimaryColor() != 0) {
-                buttonPay.setBackgroundColor(midtransUiKit.getColorTheme().getPrimaryColor());
+            if (midtransUi.getColorTheme() != null && midtransUi.getColorTheme().getPrimaryColor() != 0) {
+                buttonPay.setBackgroundColor(midtransUi.getColorTheme().getPrimaryColor());
             }
 
         }
@@ -413,7 +413,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        midtransUiKit = MidtransUiKit.getInstance();
+        midtransUi = MidtransUi.getInstance();
     }
 
     private void initSavedCardState() {
@@ -423,7 +423,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
             if (savedCard != null) {
                 Log.i(TAG, "savedcard");
 
-                if (!MidtransUiKit.getInstance().isBuiltInTokenStorage()) {
+                if (!MidtransUi.getInstance().isBuiltInTokenStorage()) {
                     ((CreditCardActivity) getActivity()).showDeleteCardIcon(true);
                 }
 

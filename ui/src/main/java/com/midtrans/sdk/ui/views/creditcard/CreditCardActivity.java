@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.midtrans.sdk.ui.MidtransUiKit;
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.constants.Constants;
@@ -59,7 +59,7 @@ public class CreditCardActivity extends BaseActivity {
     }
 
     private void initDefaultState() {
-        setViewTotalAmount(MidtransUiKit.getInstance().getCheckoutTokenRequest().transactionDetails.grossAmount);
+        setViewTotalAmount(MidtransUi.getInstance().getCheckoutTokenRequest().transactionDetails.grossAmount);
         if (presenter.isNormalMode()) {
             showCreditCardDetailFragment(new CreditCardDetails(null, null));
         } else {

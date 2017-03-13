@@ -7,7 +7,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.midtrans.sdk.ui.MidtransUiKit;
+import com.midtrans.sdk.ui.MidtransUi;
 
 /**
  * Created by ziahaqi on 2/19/17.
@@ -37,7 +37,7 @@ public class DefaultTextView extends TextView {
     }
 
     private void init() {
-        MidtransUiKit uiSdk = MidtransUiKit.getInstance();
+        MidtransUi uiSdk = MidtransUi.getInstance();
         if (uiSdk != null && uiSdk.getFontDefault() != null) {
             Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), uiSdk.getFontDefault());
             if (typeface != null) {
