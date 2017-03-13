@@ -68,14 +68,6 @@
                     android:layout_centerHorizontal="true"
                     android:background="@color/gray.primary" />
             </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/image_saved_card_delete"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginRight="@dimen/sixteen_dp"
-                android:src="@drawable/ic_delete_black"
-                android:visibility="invisible" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -119,8 +111,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/card_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

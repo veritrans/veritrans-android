@@ -163,7 +163,7 @@
     <!--KLIK BCA PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">Anda akan dialihkan ke halaman BCA KlikPay setelah menekan tombol \'Konfirmasi Pembayaran\' .</string>
     <string name="bca_klik_pay_instruction_step2">Untuk pembayaran, Anda dapat memilih akun KlikBCA Individu atau kartu BCA.</string>
-    <string name="bca_klik_pay_instruction_step3">Untuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 1500888 atau kunjungi www.bca.co.id.</string>
+    <string name="bca_klik_pay_instruction_step3">Untuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 1500888 atau kunjungi www.klikbca.com/klikpay.</string>
 
      <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tPilih \'m-transfer\'.</string>
@@ -491,4 +491,18 @@
     <string name="error_delete_message">Gagal menghapus kartu</string>
     <string name="mandiri_debit_card">Kartu Debit Mandiri</string>
     <string name="bni_debit_online_card">Kartu Debit Online BNI</string>
+    <string name="deleted">Dihapus</string>
+    <string name="undo">Batalkan</string>
+    <string name="delete_this_card">hapus kartu ini</string>
+    <string name="redeem_bni_reward">Tukarkan poin hadiah BNI</string>
+    <string name="amount_after_discount">Jumlah pembayaran setelah diskon</string>
+    <string name="redeem_point">Tukar Poin</string>
+    <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
+    <string name="total_point">Total poin hadiah %1$s Anda adalah %2$s</string>
+    <string name="redeem_bni_title">Tukar Poin Hadiah BNI</string>
+    <string name="redeem_bni_details">Anda dapat membayar sebagian dengan Poin Reward BNI melalui Kartu Kredit Anda.</string>
+
+    <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
+    <string name="total_bni_point">Total poin BNI anda</string>
+    <string name="status_redeemed_point">DISKON POIN</string>
 </resources>

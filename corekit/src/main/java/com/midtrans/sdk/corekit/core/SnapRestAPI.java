@@ -2,6 +2,7 @@ package com.midtrans.sdk.corekit.core;
 
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
@@ -195,4 +196,15 @@ public interface SnapRestAPI {
 
     @DELETE("/v1/transactions/{token}/saved_tokens/{masked_card}")
     void deleteCard(@Path("token") String authenticationToken, @Path("masked_card") String maskedCard, Callback<Void> callback);
+
+
+    /**
+     * Get Banks Points from snap backend.
+     *
+     * @param snapToken           snap token
+     * @param transactionCallback response get transaction request
+     */
+    @GET("/v1/transactions/{snap_token}/point_inquiry/{card_token}")
+    void getBanksPoint(@Path("snap_token") String snapToken, @Path("card_token") String cardToken, Callback<BanksPointResponse> transactionCallback);
+
 }

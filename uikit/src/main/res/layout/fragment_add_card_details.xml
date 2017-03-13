@@ -264,11 +264,44 @@
                     android:src="@drawable/ic_hints" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/layout_bni_point"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_save_card_detail"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cb_bni_point"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/four_dp"
+                    android:layout_marginTop="@dimen/four_dp"
+                    android:text="@string/redeem_bni_reward"
+                    android:visibility="visible" />
+
+                <ImageButton
+                    android:id="@+id/image_bni_help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_hints"
+                    android:text="@string/what_is_cvv"
+                    android:textColor="?colorAccent" />
+            </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/layout_installment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_save_card_detail"
+                android:layout_below="@+id/layout_bni_point"
                 android:layout_marginTop="@dimen/four_dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
@@ -377,6 +410,33 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
+
+            <com.midtrans.sdk.uikit.widgets.FancyButton
+                android:id="@+id/image_saved_card_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/container_security"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="19dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:visibility="gone"
+                app:fb_borderColor="@color/delete_color"
+                app:fb_borderWidth="1.25dp"
+                app:fb_defaultColor="@android:color/white"
+                app:fb_focusColor="@color/colorAccentLight"
+                app:fb_iconColor="@color/delete_color"
+                app:fb_iconPaddingLeft="0dp"
+                app:fb_iconPaddingRight="0dp"
+                app:fb_iconPosition="left"
+                app:fb_iconResource="@drawable/ic_delete_black"
+                app:fb_radius="5dp"
+                app:fb_text="@string/delete_this_card"
+                app:fb_textColor="@color/delete_color"
+                app:fb_textSize="12sp"
+                tools:visibility="visible" />
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>

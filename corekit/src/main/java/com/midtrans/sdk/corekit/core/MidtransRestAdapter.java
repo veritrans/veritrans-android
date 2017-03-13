@@ -5,7 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 
-import com.midtrans.sdk.corekit.BuildConfig;
+import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
+import com.midtrans.sdk.corekit.utilities.CustomTypeAdapter;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.sql.Date;
@@ -20,7 +21,7 @@ import retrofit.converter.GsonConverter;
  * Created by chetan on 16/10/15.
  */
 public class MidtransRestAdapter {
-    private static final RestAdapter.LogLevel LOG_LEVEL = BuildConfig.FLAVOR.equalsIgnoreCase("development") ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
+    private static final RestAdapter.LogLevel LOG_LEVEL = Logger.enabled ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
     private static final String TAG = MidtransRestAdapter.class.getName();
 
     /**
@@ -86,7 +87,13 @@ public class MidtransRestAdapter {
         okHttpClient.setConnectTimeout(timeOut, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(timeOut, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(timeOut, TimeUnit.SECONDS);
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                .registerTypeAdapter(CreditCardPaymentParams.class, new CustomTypeAdapter())
+                .create();
         RestAdapter.Builder builder = new RestAdapter.Builder()
+                .setConverter(new GsonConverter(gson))
                 .setLogLevel(LOG_LEVEL)
                 .setClient(new OkClient(okHttpClient))
                 .setRequestInterceptor(buildSnapRequestInterceptor())

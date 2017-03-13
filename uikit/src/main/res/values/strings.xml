@@ -220,7 +220,7 @@
     <!--KLIK BCA PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
     <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
-    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit www.bca.co.id.</string>
+    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit www.klikbca.com/klikpay.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
@@ -410,7 +410,7 @@
 
     <string name="card_click_type_none">normal</string>
     <string name="card_click_type_one_click">one_click</string>
-    <string name="card_click_type_two_click">two_click</string>
+    <string name="card_click_type_two_click">two_clicks</string>
     <string name="users_saved_card">users_saved_card</string>
     <string name="bank_details">bank_details</string>
     <string name="visa">VISA</string>
@@ -677,8 +677,26 @@
     <string name="promo_dialog_title">Congratulations</string>
     <string name="promo_dialog_message">With this card, you will get Rp. %1$s discount from %2$s.</string>
     <string name="error_obtain_promo">Failed to obtain promo.</string>
+    <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
+    <string name="amount_after_discount">Amount to pay after discount</string>
+    <string name="will_be_used_point_here">Will be used point</string>
+    <string name="total_point_here">total point here</string>
+    <string name="redeem_point">Redeem Point</string>
+    <string name="redeem_bank_point_title">Redeem %1$s Point</string>
+    <string name="total_point">Your total %1$s Reward Point is %2$s</string>
+    <string name="redeem_bni_title">Redeem BNI Reward Point</string>
+    <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
     <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.\n\nTransaction will be cancelled if payment is not completed within 2 hours.</string>
     <string name="error_delete_message">Failed to delete card</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
+    <string name="deleted">Deleted</string>
+    <string name="undo">Undo</string>
+    <string name="delete_this_card">delete this card</string>
+
+    <string name="how_much_point">How much points you want to redeem?</string>
+    <string name="total_bni_point">Your total BNI points</string>
+    <string name="bank_bni">BNI</string>
+    <string name="bank_mandiri">Mandiri</string>
+    <string name="status_redeemed_point">POINT DISCOUNT</string>
 </resources>

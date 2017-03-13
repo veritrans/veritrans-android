@@ -9,6 +9,7 @@ import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
+import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
@@ -73,6 +74,7 @@ public class MidtransSDK {
     private String flow = null;
     private CreditCard creditCard = new CreditCard();
     private List<PromoResponse> promoResponses = new ArrayList<>();
+    private ArrayList<String> banksPointEnabled;
     private BaseColorTheme colorTheme;
 
     private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
@@ -87,6 +89,7 @@ public class MidtransSDK {
         this.transactionFinishedCallback = sdkBuilder.transactionFinishedCallback;
         this.externalScanner = sdkBuilder.externalScanner;
         this.isLogEnabled = sdkBuilder.enableLog;
+        Logger.enabled = sdkBuilder.enableLog;
         this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
         this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.UIKitCustomSetting;
         this.flow = sdkBuilder.flow;
@@ -292,8 +295,8 @@ public class MidtransSDK {
     /**
      * It will execute an API request to obtain promo token.
      *
-     * @param promoId promo identifier.
-     * @param amount transaction amount.
+     * @param promoId  promo identifier.
+     * @param amount   transaction amount.
      * @param callback callback to be called.
      */
     public void obtainPromo(String promoId, double amount, ObtainPromoCallback callback) {
@@ -1485,6 +1488,27 @@ public class MidtransSDK {
         }
     }
 
+
+    /**
+     * it will get bni points from snap backend
+     *
+     * @param cardToken credit card token
+     * @param callback  bni point callback instance
+     */
+    public void getBanksPoint(String cardToken, @NonNull BanksPointCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (Utils.isNetworkAvailable(context)) {
+            mSnapTransactionManager.getBanksPoint(readAuthenticationToken(), cardToken, callback);
+        } else {
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+
     /**
      * It will run background task to delete saved card from token storage.
      *
@@ -1616,5 +1640,13 @@ public class MidtransSDK {
 
     public void setColorTheme(BaseColorTheme colorTheme) {
         this.colorTheme = colorTheme;
+    }
+
+    public ArrayList<String> getBanksPointEnabled() {
+        return banksPointEnabled;
+    }
+
+    public void setBanksPointEnabled(ArrayList<String> pointBanks) {
+        this.banksPointEnabled = pointBanks;
     }
 }

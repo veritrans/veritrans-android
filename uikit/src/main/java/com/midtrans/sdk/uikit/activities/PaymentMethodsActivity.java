@@ -260,12 +260,15 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             @Override
             public void onFailure(Token token, String reason) {
+                Log.d(TAG, "Failed to registering transaction: "+reason);
                 enableButtonBack(true);
                 showErrorMessage();
             }
 
             @Override
             public void onError(Throwable error) {
+                error.printStackTrace();
+
                 enableButtonBack(true);
                 showErrorMessage();
             }
@@ -289,6 +292,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     midtransSDK.setPromoResponses(transaction.getPromos());
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
+                    midtransSDK.setBanksPointEnabled(transaction.getMerchantData().getPointBanks());
                     // Prioritize custom color themes over Snap preferences
                     if (midtransSDK.getColorTheme() == null
                             || !(midtransSDK.getColorTheme() instanceof CustomColorTheme)) {
@@ -322,6 +326,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             @Override
             public void onError(Throwable error) {
+                error.printStackTrace();
                 enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
                 showDefaultPaymentMethods();
@@ -335,7 +340,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         if (isCreditCardOnly) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_credit_debit))) {
-                Intent intent = new Intent(PaymentMethodsActivity.this, CreditDebitCardFlowActivity.class);
+                Intent intent = new Intent(PaymentMethodsActivity.this, CreditCardFlowActivity.class);
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
@@ -481,7 +486,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         String name = paymentMethod.getName();
         String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
         if (name.equalsIgnoreCase(getString(R.string.payment_method_credit_card))) {
-            Intent intent = new Intent(this, CreditDebitCardFlowActivity.class);
+            Intent intent = new Intent(this, CreditCardFlowActivity.class);
             startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bank_transfer))) {
             Intent startBankPayment = new Intent(this, SelectBankTransferActivity.class);

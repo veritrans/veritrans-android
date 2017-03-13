@@ -47,6 +47,7 @@ public class CardTokenRequest implements Serializable {
     private ArrayList<String> bins;
     private String channel;
     private String type = TYPE_CAPTURE;
+    private boolean point;
 
     public CardTokenRequest() {
     }
@@ -259,5 +260,13 @@ public class CardTokenRequest implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isPoint() {
+        return point;
+    }
+
+    public void setPoint(boolean point) {
+        this.point = point;
     }
 }

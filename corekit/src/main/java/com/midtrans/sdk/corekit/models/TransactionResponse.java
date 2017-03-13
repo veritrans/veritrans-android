@@ -116,6 +116,13 @@ public class TransactionResponse implements Serializable {
     @SerializedName("validation_messages")
     private ArrayList<String> validationMessages;
 
+    @SerializedName("point_balance")
+    private float pointBalance;
+    @SerializedName("point_balance_amount")
+    private String pointBalanceAmount;
+    @SerializedName("point_redeem_amount")
+    private float pointRedeemAmount;
+
     public TransactionResponse(String statusCode, String statusMessage, String transactionId,
                                String orderId, String grossAmount, String paymentType,
                                String transactionTime, String transactionStatus) {
@@ -408,5 +415,29 @@ public class TransactionResponse implements Serializable {
 
     public void setBcaKlikBcaExpiration(String bcaKlikBcaExpiration) {
         this.bcaKlikBcaExpiration = bcaKlikBcaExpiration;
+    }
+
+    public float getPointBalance() {
+        return pointBalance;
+    }
+
+    public void setPointBalance(float pointBalance) {
+        this.pointBalance = pointBalance;
+    }
+
+    public String getPointBalanceAmount() {
+        return pointBalanceAmount;
+    }
+
+    public void setPointBalanceAmount(String pointBalanceAmount) {
+        this.pointBalanceAmount = pointBalanceAmount;
+    }
+
+    public float getPointRedeemAmount() {
+        return pointRedeemAmount;
+    }
+
+    public void setPointRedeemAmount(float pointRedeemAmount) {
+        this.pointRedeemAmount = pointRedeemAmount;
     }
 }
