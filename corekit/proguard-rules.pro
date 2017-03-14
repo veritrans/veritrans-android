@@ -127,6 +127,7 @@
 -keep class com.midtrans.sdk.uikit.scancard.ExternalScanner{*;}
 -keep class com.midtrans.sdk.corekit.core.PaymentMethods{*;}
 -keep class com.midtrans.sdk.corekit.callback.** { *; }
+-keep class com.midtrans.sdk.corekit.core.PaymentMethod{*;}
 
 
 # RxJava 0.21
