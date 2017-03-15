@@ -1,5 +1,6 @@
 package com.midtrans.demo;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -43,6 +44,8 @@ import java.util.ArrayList;
  */
 
 public class DemoConfigActivity extends AppCompatActivity implements TransactionFinishedCallback {
+    public static final String COLOR_THEME = "config.theme";
+
     private static final String CARD_CLICK_TYPE = "config.card";
     private static final String SECURE_TYPE = "config.secure";
     private static final String BANK_TYPE = "config.bank";
@@ -50,7 +53,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String SAVE_CARD_TYPE = "config.save";
     private static final String PROMO_TYPE = "config.promo";
     private static final String PRE_AUTH_TYPE = "config.preauth";
-    private static final String COLOR_THEME = "config.theme";
     private static int DELAY = 200;
     private String selectedColor = DemoThemeConstants.BLUE_THEME;
     /**
@@ -831,7 +833,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
                 TransactionRequest transactionRequest = initializePurchaseRequest();
                 MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
-                MidtransSDK.getInstance().startPaymentUiFlow(DemoConfigActivity.this);
+                //MidtransSDK.getInstance().startPaymentUiFlow(DemoConfigActivity.this);
+
+                startActivity(new Intent(DemoConfigActivity.this, DemoProductPageActivity.class));
             }
         });
     }

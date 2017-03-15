@@ -66,5 +66,13 @@
     <string name="disabled">Disabled</string>
 
     <string name="demo_configuration">Demo Configuration</string>
+    <string name="product_details">Product Details</string>
+    <string name="product_price_sample">Rp 20,000</string>
+    <string name="product_name_sample">Midtrans Pillow</string>
+    <string name="product_details_sample">Get cozy with our new pillow!</string>
+    <string name="product_rating_sample">4.4</string>
+    <string name="product_copyright_sample">2012</string>
+
     <string name="btn_launch_demo">Launch Demo App</string>
+    <string name="btn_buy">Buy</string>
 </resources>
