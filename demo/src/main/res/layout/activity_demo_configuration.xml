@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.midtrans.demo.DemoTextView
         android:id="@+id/title"
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:orientation="vertical"
             android:padding="@dimen/sixteen_dp">
 
-            <TextView
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_credit_card_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                 android:paddingRight="@dimen/thirtytwo_dp"
                 android:visibility="gone">
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_credit_card_normal"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/card_click_normal" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_credit_card_two_clicks"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -65,7 +65,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/card_click_two_click" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_credit_card_one_click"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                     android:text="@string/card_click_one_click" />
             </RadioGroup>
 
-            <TextView
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_secure_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                 android:paddingRight="@dimen/thirtytwo_dp"
                 android:visibility="gone">
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_secure_disabled"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/disabled" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_secure_enabled"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -118,7 +118,7 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <TextView
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_issuing_bank_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
@@ -137,7 +137,7 @@
                 android:paddingRight="@dimen/thirtytwo_dp"
                 android:visibility="gone">
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_bank_none"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -148,7 +148,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/issuing_bank_none" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_bank_bni"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -158,7 +158,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/bank_bni" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_bank_mandiri"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -168,7 +168,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/bank_mandiri" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_bank_bca"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -178,7 +178,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/bank_bca" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_bank_maybank"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -188,7 +188,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/bank_maybank" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_bank_bri"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -199,7 +199,7 @@
                     android:text="@string/bank_bri" />
             </RadioGroup>
 
-            <TextView
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_custom_expiry_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
@@ -219,7 +219,7 @@
                 android:paddingRight="@dimen/thirtytwo_dp"
                 android:visibility="gone">
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_expiry_none"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -230,7 +230,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/expiry_none" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_expiry_one_minute"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -240,7 +240,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/expiry_one_minute" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_expiry_one_hour"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -251,7 +251,7 @@
                     android:text="@string/expiry_one_hour" />
             </RadioGroup>
 
-            <TextView
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_default_save_card_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
@@ -271,7 +271,7 @@
                 android:paddingRight="@dimen/thirtytwo_dp"
                 android:visibility="gone">
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_default_save_disabled"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -282,7 +282,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/disabled" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_default_save_enabled"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -293,7 +293,7 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <TextView
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_promo_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
@@ -313,7 +313,7 @@
                 android:paddingRight="@dimen/thirtytwo_dp"
                 android:visibility="gone">
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_promo_disabled"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -324,7 +324,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/disabled" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_promo_enabled"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -335,7 +335,7 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <TextView
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_pre_auth_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
@@ -355,7 +355,7 @@
                 android:paddingRight="@dimen/thirtytwo_dp"
                 android:visibility="gone">
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_preauth_disabled"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -366,7 +366,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/disabled" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_preauth_enabled"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -377,7 +377,7 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <TextView
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_color_theme_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
@@ -396,7 +396,7 @@
                 android:paddingRight="@dimen/thirtytwo_dp"
                 android:visibility="gone">
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_theme_default"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -410,7 +410,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/color_blue" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_theme_red"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -423,7 +423,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/color_red" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_theme_green"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -436,7 +436,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/color_green" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_theme_orange"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -449,7 +449,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/color_orange" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_theme_black"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -476,6 +476,7 @@
         app:fb_defaultColor="@color/gray.primary"
         app:fb_focusColor="@color/colorAccentLight"
         app:fb_text="@string/btn_launch_demo"
+        app:fb_textFont="fonts/SourceSansPro-Semibold.ttf"
         app:fb_textGravity="center_vertical"
         app:fb_textSize="16sp" />
 
