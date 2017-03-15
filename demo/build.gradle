@@ -15,6 +15,11 @@ android {
 
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -23,19 +28,13 @@ android {
 
     productFlavors {
         development {
-            applicationId "com.midtrans.sdk.sample.development"
+            applicationId "com.midtrans.sdk.demo.development"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
         }
 
-        staging {
-            applicationId "com.midtrans.sdk.sample.staging"
-            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_STAGING
-            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_STAGING
-        }
-
         production {
-            applicationId "com.midtrans.sdk.sample.production"
+            applicationId "com.midtrans.sdk.demo"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_PRODUCTION
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_PRODUCTION
         }
