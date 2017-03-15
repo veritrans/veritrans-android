@@ -1,174 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <LinearLayout
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_instructions"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:layout_height="wrap_content"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/gray.primary" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/email_til"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_divider" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/sixteen_dp"
-            >
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/et_email"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/email_til"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_email_optional"
-                android:inputType="textEmailAddress"
-                android:maxLength="100"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/sixteen_dp">
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/twenty_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:text="@string/email_instruction"
-            android:textColor="@color/dark_gray"
-            android:textSize="@dimen/tertiary_text_size"
-            />
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_email_optional"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="100"
+                    android:maxLines="1" />
+            </android.support.design.widget.TextInputLayout>
 
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/sixteen_dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:text="@string/atm_transfer_steps"
-            android:textColor="@color/dark_gray"
-            android:textSize="@dimen/primary_text_size"
-            />
-
-            <LinearLayout
-
-                android:layout_marginTop="@dimen/eight_dp"
-                android:orientation="vertical"
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <LinearLayout
-                    android:paddingLeft="@dimen/sixteen_dp"
-                    android:paddingRight="@dimen/sixteen_dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="1."
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content" />
-                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="2dp"
-                        android:text="@string/bank_atm_transfer_step1"
-                        android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/twenty_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:text="@string/email_instruction"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/tertiary_text_size" />
 
-                        android:textSize="@dimen/secondary_text_size"
-                        android:id="@+id/defaultTextView1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:paddingLeft="@dimen/sixteen_dp"
-                    android:paddingRight="@dimen/sixteen_dp"
-                    android:background="@color/light_gray"
-                    android:layout_marginTop="@dimen/four_dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="2."
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content" />
-                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="2dp"
-                        android:text="@string/bank_atm_transfer_step2"
-                        android:textColor="@color/black"
-
-                        android:textSize="@dimen/secondary_text_size"
-                        android:id="@+id/defaultTextView2" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:paddingLeft="@dimen/sixteen_dp"
-                    android:paddingRight="@dimen/sixteen_dp"
-                    android:layout_marginTop="@dimen/four_dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="3."
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content" />
-                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="2dp"
-                        android:text="@string/bank_atm_transfer_step3"
-                        android:textColor="@color/black"
-
-                        android:textSize="@dimen/secondary_text_size"
-                        android:id="@+id/defaultTextView3" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:paddingLeft="@dimen/sixteen_dp"
-                    android:paddingRight="@dimen/sixteen_dp"
-                    android:background="@color/light_gray"
-                    android:layout_marginTop="@dimen/four_dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:text="4."
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content" />
-                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="2dp"
-                        android:text="@string/bank_atm_transfer_step4"
-                        android:textColor="@color/black"
-
-                        android:textSize="@dimen/secondary_text_size"
-                        android:id="@+id/defaultTextView4" />
-                </LinearLayout>
-            </LinearLayout>
-
-        <com.midtrans.sdk.uikit.widgets.FancyButton
-            android:id="@+id/btn_see_instruction"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/credit_card_holder"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="19dp"
-            android:padding="@dimen/eight_dp"
-            android:visibility="visible"
-            app:fb_borderColor="?attr/colorPrimary"
-            app:fb_borderWidth="1dp"
-            app:fb_defaultColor="@android:color/white"
-            app:fb_focusColor="@color/colorAccentLight"
-            app:fb_iconColor="?attr/colorPrimary"
-            app:fb_radius="5dp"
-            app:fb_text="@string/see_instruction"
-            app:fb_textColor="?attr/colorPrimary" />
-
-    </LinearLayout>
-
-
-</android.support.v4.widget.NestedScrollView>
+            <com.midtrans.sdk.uikit.widgets.MagicViewPager
+                android:id="@+id/tab_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/fifty_six_dp" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

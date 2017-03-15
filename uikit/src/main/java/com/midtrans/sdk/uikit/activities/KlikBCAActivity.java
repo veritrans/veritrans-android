@@ -1,27 +1,20 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
-import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.KlikBCAFragment;
+import com.midtrans.sdk.uikit.fragments.KlikBCAStatusFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -37,11 +30,10 @@ public class KlikBCAActivity extends BaseActivity {
     private TransactionResponse transactionResponse;
     private String errorMessage;
     private TextView mTextViewAmount;
-    private Button mButtonConfirmPayment;
+    private FancyButton mButtonConfirmPayment;
     private TextView mTextViewTitle;
 
     private KlikBCAFragment klikBCAFragment;
-    private FancyButton buttonBack;
     private MidtransSDK mMidtransSDK;
     private Toolbar mToolbar;
 
@@ -56,13 +48,13 @@ public class KlikBCAActivity extends BaseActivity {
         // Initialize views
         mTextViewAmount = (TextView) findViewById(R.id.text_amount);
         mTextViewTitle = (TextView) findViewById(R.id.text_title);
-        mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
+        mButtonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        buttonBack = (FancyButton) findViewById(R.id.btn_back);
         initializeTheme();
         // Setup toolbar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         bindData();
     }
 
@@ -74,19 +66,13 @@ public class KlikBCAActivity extends BaseActivity {
 
         // Set custom font if available
         if (mMidtransSDK.getSemiBoldText() != null) {
-            mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
+            mButtonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
         }
 
         // Initialize fragment
         klikBCAFragment = new KlikBCAFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.instruction_container, klikBCAFragment).commit();
 
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
         mButtonConfirmPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,12 +89,19 @@ public class KlikBCAActivity extends BaseActivity {
                 } else {
                     // Check klik BCA user ID
                     if (klikBCAFragment.checkUserId()) {
+
+                        //track btn confirm
+                        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
                         // Do the payment
                         SdkUIFlowUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
                         mMidtransSDK.paymentUsingKlikBCA(mMidtransSDK.readAuthenticationToken(),
                                 klikBCAFragment.getUserId(), new TransactionCallback() {
                                     @Override
                                     public void onSuccess(TransactionResponse response) {
+                                        //track page status pending
+                                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
                                         SdkUIFlowUtil.hideProgressDialog();
                                         transactionResponse = response;
                                         errorMessage = response.getStatusMessage();
@@ -117,6 +110,9 @@ public class KlikBCAActivity extends BaseActivity {
 
                                     @Override
                                     public void onFailure(TransactionResponse response, String reason) {
+                                        //track page status failed
+                                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                                         errorMessage = getString(R.string.message_payment_cannot_proccessed);
                                         transactionResponse = response;
                                         SdkUIFlowUtil.hideProgressDialog();
@@ -130,6 +126,9 @@ public class KlikBCAActivity extends BaseActivity {
 
                                     @Override
                                     public void onError(Throwable error) {
+                                        //track page status failed
+                                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                                         errorMessage = getString(R.string.message_payment_failed);
                                         SdkUIFlowUtil.hideProgressDialog();
                                         SdkUIFlowUtil.showToast(KlikBCAActivity.this, errorMessage);
@@ -139,6 +138,9 @@ public class KlikBCAActivity extends BaseActivity {
                 }
             }
         });
+
+        //track page Klik BCA
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKBCA);
     }
 
     @Override
@@ -155,14 +157,12 @@ public class KlikBCAActivity extends BaseActivity {
                                                         transactionResponse) {
 
         currentFragment = STATUS_FRAGMENT;
-        mButtonConfirmPayment.setText(R.string.done);
 
-        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
-        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        buttonBack.setIconResource(closeIcon);
-        mButtonConfirmPayment.setText(R.string.complete_payment_at_klik_bca);
+        mButtonConfirmPayment.setText(getString(R.string.complete_payment_at_klik_bca));
 
-        initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_KLIKBCA, false);
+        KlikBCAStatusFragment klikBCAStatusFragment =
+                KlikBCAStatusFragment.newInstance(transactionResponse);
+        getSupportFragmentManager().beginTransaction().replace(R.id.instruction_container, klikBCAStatusFragment).commit();
     }
 
     @Override
@@ -179,18 +179,14 @@ public class KlikBCAActivity extends BaseActivity {
                 }
                 setResult(RESULT_OK, data);
                 finish();
+                return false;
             } else {
                 onBackPressed();
+                return false;
             }
         }
 
-        return false;
-    }
-
-    public void activateRetry() {
-        if (mButtonConfirmPayment != null) {
-            mButtonConfirmPayment.setText(getResources().getString(R.string.retry));
-        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
@@ -16,15 +17,31 @@
         android:layout_below="@id/layout_toolbar_header"
         android:layout_marginBottom="@dimen/fifty_six_dp" />
 
-    <Button
+    <com.midtrans.sdk.uikit.widgets.FancyButton
         android:id="@+id/btn_confirm_payment"
-        style="@style/Widget.AppCompat.Button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/button_size"
         android:layout_alignParentBottom="true"
-        android:drawableEnd="@drawable/ic_arrow_right_white"
-        android:drawableRight="@drawable/ic_arrow_right_white"
-        android:text="@string/confirm_payment"
-        android:textColor="@color/white" />
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:textColor="@color/white"
+        app:fb_defaultColor="@color/gray.primary"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_text="@string/confirm_payment"
+        app:fb_textGravity="center_vertical"
+        app:fb_textSize="16sp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_size"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom|end">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/eight_dp"
+            android:src="@drawable/ic_arrow_right_white" />
+    </LinearLayout>
 </RelativeLayout>

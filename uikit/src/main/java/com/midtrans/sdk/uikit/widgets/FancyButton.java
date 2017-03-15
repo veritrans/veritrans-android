@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -20,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.utilities.WidgetUtils;
 
 import java.util.ArrayList;
 
@@ -28,47 +28,6 @@ import java.util.ArrayList;
 public class FancyButton extends LinearLayout {
 
     public static final String TAG = FancyButton.class.getSimpleName();
-
-    private Context mContext;
-
-    // # Background Attributes
-    private int mDefaultBackgroundColor = Color.BLACK;
-    private int mFocusBackgroundColor = 0;
-    private int mDisabledBackgroundColor = Color.parseColor("#f6f7f9");
-    private int mDisabledTextColor = Color.parseColor("#bec2c9");
-    private int mDisabledBorderColor = Color.parseColor("#dddfe2");
-
-    // # Text Attributes
-    private int mDefaultTextColor = Color.WHITE;
-    private int mDefaultIconColor = Color.WHITE;
-    private int mTextPosition = 1;
-    private int mDefaultTextSize = WidgetUtils.spToPx(getContext(), 15);
-    private int mDefaultTextGravity = 0x11; // Gravity.CENTER
-    private String mText = null;
-
-    // # Icon Attributes
-    private Drawable mIconResource = null;
-    private int mFontIconSize = WidgetUtils.spToPx(getContext(), 15);
-    private String mFontIcon = null;
-    private int mIconPosition = 1;
-
-    private int mIconPaddingLeft = 10;
-    private int mIconPaddingRight = 10;
-    private int mIconPaddingTop = 0;
-    private int mIconPaddingBottom = 0;
-
-
-    private int mBorderColor = Color.TRANSPARENT;
-    private int mBorderWidth = 0;
-
-    private int mRadius = 0;
-    private boolean mEnabled = true;
-
-    private boolean mTextAllCaps = false;
-
-    private Typeface mTextTypeFace = null;
-    private Typeface mIconTypeFace = null;
-
     /**
      * Tags to identify icon position
      */
@@ -76,7 +35,36 @@ public class FancyButton extends LinearLayout {
     public static final int POSITION_RIGHT = 2;
     public static final int POSITION_TOP = 3;
     public static final int POSITION_BOTTOM = 4;
-
+    private Context mContext;
+    // # Background Attributes
+    private int mDefaultBackgroundColor = Color.BLACK;
+    private int mFocusBackgroundColor = 0;
+    private int mDisabledBackgroundColor = Color.parseColor("#f6f7f9");
+    private int mDisabledTextColor = Color.parseColor("#bec2c9");
+    private int mDisabledBorderColor = Color.parseColor("#dddfe2");
+    // # Text Attributes
+    private int mDefaultTextColor = Color.WHITE;
+    private int mDefaultIconColor = Color.WHITE;
+    private int mTextPosition = 1;
+    private int mDefaultTextSize = Utils.spToPx(getContext(), 15);
+    private int mDefaultTextGravity = 0x11; // Gravity.CENTER
+    private String mText = null;
+    // # Icon Attributes
+    private Drawable mIconResource = null;
+    private int mFontIconSize = Utils.spToPx(getContext(), 15);
+    private String mFontIcon = null;
+    private int mIconPosition = 1;
+    private int mIconPaddingLeft = 10;
+    private int mIconPaddingRight = 10;
+    private int mIconPaddingTop = 0;
+    private int mIconPaddingBottom = 0;
+    private int mBorderColor = Color.TRANSPARENT;
+    private int mBorderWidth = 0;
+    private int mRadius = 0;
+    private boolean mEnabled = true;
+    private boolean mTextAllCaps = false;
+    private Typeface mTextTypeFace = null;
+    private Typeface mIconTypeFace = null;
     private String mDefaultIconFont = "fontawesome.ttf";
     private String mDefaultTextFont = "robotoregular.ttf";
 
@@ -90,24 +78,23 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Default constructor
-     *
      * @param context : Context
      */
     public FancyButton(Context context) {
         super(context);
         this.mContext = context;
 
-        mTextTypeFace = WidgetUtils.findFont(mContext, mDefaultTextFont, null);
-        mIconTypeFace = WidgetUtils.findFont(mContext, mDefaultIconFont, null);
+        mTextTypeFace = Utils.findFont(mContext, mDefaultTextFont, null);
+        mIconTypeFace = Utils.findFont(mContext, mDefaultIconFont, null);
         initializeFancyButton();
     }
 
 
+
     /**
      * Default constructor called from Layouts
-     *
      * @param context : Context
-     * @param attrs   : Attributes Array
+     * @param attrs : Attributes Array
      */
     public FancyButton(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -120,13 +107,12 @@ public class FancyButton extends LinearLayout {
         initializeFancyButton();
 
     }
-
     /**
      * Initialize Button dependencies
-     * - Initialize Button Container : The LinearLayout
-     * - Initialize Button TextView
-     * - Initialize Button Icon
-     * - Initialize Button Font Icon
+     *  - Initialize Button Container : The LinearLayout
+     *  - Initialize Button TextView
+     *  - Initialize Button Icon
+     *  - Initialize Button Font Icon
      */
     private void initializeFancyButton() {
 
@@ -179,7 +165,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Setup Text View
-     *
      * @return : TextView
      */
     private TextView setupTextView() {
@@ -192,7 +177,7 @@ public class FancyButton extends LinearLayout {
 
         textView.setGravity(mDefaultTextGravity);
         textView.setTextColor(mEnabled ? mDefaultTextColor : mDisabledTextColor);
-        textView.setTextSize(WidgetUtils.pxToSp(getContext(), mDefaultTextSize));
+        textView.setTextSize(Utils.pxToSp(getContext(), mDefaultTextSize));
         textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         if (!isInEditMode() && !mUseSystemFont) {
             textView.setTypeface(mTextTypeFace); //we can pass null in first arg
@@ -202,7 +187,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Setup Font Icon View
-     *
      * @return : TextView
      */
     private TextView setupFontIconView() {
@@ -234,11 +218,11 @@ public class FancyButton extends LinearLayout {
 
             fontIconView.setLayoutParams(iconTextViewParams);
             if (!isInEditMode()) {
-                fontIconView.setTextSize(WidgetUtils.pxToSp(getContext(), mFontIconSize));
+                fontIconView.setTextSize(Utils.pxToSp(getContext(), mFontIconSize));
                 fontIconView.setText(mFontIcon);
                 fontIconView.setTypeface(mIconTypeFace);
             } else {
-                fontIconView.setTextSize(WidgetUtils.pxToSp(getContext(), mFontIconSize));
+                fontIconView.setTextSize(Utils.pxToSp(getContext(), mFontIconSize));
                 fontIconView.setText("O");
             }
             return fontIconView;
@@ -248,7 +232,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Text Icon resource view
-     *
      * @return : ImageView
      */
     private ImageView setupIconView() {
@@ -262,7 +245,7 @@ public class FancyButton extends LinearLayout {
                 if (mIconPosition == POSITION_TOP || mIconPosition == POSITION_BOTTOM)
                     iconViewParams.gravity = Gravity.CENTER;
                 else
-                    iconViewParams.gravity = Gravity.START;
+                    iconViewParams.gravity = Gravity.CENTER_VERTICAL;
 
                 iconViewParams.rightMargin = 10;
                 iconViewParams.leftMargin = 10;
@@ -346,15 +329,15 @@ public class FancyButton extends LinearLayout {
 
         if (!isInEditMode()) {
             if (iconFontFamily != null) {
-                mIconTypeFace = WidgetUtils.findFont(mContext, iconFontFamily, mDefaultIconFont);
+                mIconTypeFace = Utils.findFont(mContext, iconFontFamily, mDefaultIconFont);
             } else {
-                mIconTypeFace = WidgetUtils.findFont(mContext, mDefaultIconFont, null);
+                mIconTypeFace = Utils.findFont(mContext, mDefaultIconFont, null);
             }
 
             if (textFontFamily != null) {
-                mTextTypeFace = WidgetUtils.findFont(mContext, textFontFamily, mDefaultTextFont);
+                mTextTypeFace = Utils.findFont(mContext, textFontFamily, mDefaultTextFont);
             } else {
-                mTextTypeFace = WidgetUtils.findFont(mContext, mDefaultTextFont, null);
+                mTextTypeFace = Utils.findFont(mContext, mDefaultTextFont, null);
             }
         }
     }
@@ -451,13 +434,14 @@ public class FancyButton extends LinearLayout {
             states.addState(new int[]{}, defaultDrawable);
 
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 this.setBackgroundDrawable(states);
             } else {
                 this.setBackground(states);
             }
 
         }
+
 
 
     }
@@ -487,22 +471,7 @@ public class FancyButton extends LinearLayout {
         }
     }
 
-    /**
-     * Set Text of the button
-     *
-     * @param text : Text
-     */
-    public void setText(String text) {
-        text = mTextAllCaps ? text.toUpperCase() : text;
-        this.mText = text;
-        if (mTextView == null)
-            initializeFancyButton();
-        else
-            mTextView.setText(text);
-    }
-
-    /**
-     * Set the capitalization of text
+    /** Set the capitalization of text
      *
      * @param textAllCaps : is text to be capitalized
      */
@@ -513,9 +482,8 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set the color of text
-     *
      * @param color : Color
-     *              use Color.parse('#code')
+     * use Color.parse('#code')
      */
     public void setTextColor(int color) {
         this.mDefaultTextColor = color;
@@ -528,7 +496,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Setting the icon's color independent of the text color
-     *
      * @param color : Color
      */
     public void setIconColor(int color) {
@@ -539,7 +506,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set Background color of the button
-     *
      * @param color : use Color.parse('#code')
      */
     public void setBackgroundColor(int color) {
@@ -549,9 +515,16 @@ public class FancyButton extends LinearLayout {
         }
     }
 
+    public int getmDefaultIconColor() {
+        return mDefaultIconColor;
+    }
+
+    public void setIconColorFilter(int colorFilter) {
+        mIconView.setColorFilter(colorFilter, PorterDuff.Mode.SRC_ATOP);
+    }
+
     /**
      * Set Focus color of the button
-     *
      * @param color : use Color.parse('#code')
      */
     public void setFocusBackgroundColor(int color) {
@@ -602,18 +575,16 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set the size of Text in sp
-     *
      * @param textSize : Text Size
      */
     public void setTextSize(int textSize) {
-        this.mDefaultTextSize = WidgetUtils.spToPx(getContext(), textSize);
+        this.mDefaultTextSize = Utils.spToPx(getContext(), textSize);
         if (mTextView != null)
             mTextView.setTextSize(textSize);
     }
 
     /**
      * Set the gravity of Text
-     *
      * @param gravity : Text Gravity
      */
 
@@ -626,10 +597,9 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set Padding for mIconView and mFontIconSize
-     *
-     * @param paddingLeft   : Padding Left
-     * @param paddingTop    : Padding Top
-     * @param paddingRight  : Padding Right
+     * @param paddingLeft : Padding Left
+     * @param paddingTop : Padding Top
+     * @param paddingRight : Padding Right
      * @param paddingBottom : Padding Bottom
      */
     public void setIconPadding(int paddingLeft, int paddingTop, int paddingRight, int paddingBottom) {
@@ -647,7 +617,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set an icon from resources to the button
-     *
      * @param drawable : Int resource
      */
     public void setIconResource(int drawable) {
@@ -661,7 +630,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set a drawable to the button
-     *
      * @param drawable : Drawable resource
      */
     public void setIconResource(Drawable drawable) {
@@ -675,7 +643,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set a font icon to the button (eg FFontAwesome or Entypo...)
-     *
      * @param icon : Icon value eg : \uf082
      */
     public void setIconResource(String icon) {
@@ -689,11 +656,10 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set Icon size of the button (for only font icons) in sp
-     *
      * @param iconSize : Icon Size
      */
     public void setFontIconSize(int iconSize) {
-        this.mFontIconSize = WidgetUtils.spToPx(getContext(), iconSize);
+        this.mFontIconSize = Utils.spToPx(getContext(), iconSize);
         if (mFontIconView != null)
             mFontIconView.setTextSize(iconSize);
     }
@@ -701,7 +667,6 @@ public class FancyButton extends LinearLayout {
     /**
      * Set Icon Position
      * Use the global variables (FancyButton.POSITION_LEFT, FancyButton.POSITION_RIGHT, FancyButton.POSITION_TOP, FancyButton.POSITION_BOTTOM)
-     *
      * @param position : Position
      */
     public void setIconPosition(int position) {
@@ -715,9 +680,8 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set color of the button border
-     *
      * @param color : Color
-     *              use Color.parse('#code')
+     * use Color.parse('#code')
      */
     public void setBorderColor(int color) {
         this.mBorderColor = color;
@@ -728,7 +692,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set Width of the button
-     *
      * @param width : Width
      */
     public void setBorderWidth(int width) {
@@ -740,7 +703,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set Border Radius of the button
-     *
      * @param radius : Radius
      */
     public void setRadius(int radius) {
@@ -752,12 +714,11 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set custom font for button Text
-     *
      * @param fontName : Font Name
-     *                 Place your text fonts in assets
+     * Place your text fonts in assets
      */
     public void setCustomTextFont(String fontName) {
-        mTextTypeFace = WidgetUtils.findFont(mContext, fontName, mDefaultTextFont);
+        mTextTypeFace = Utils.findFont(mContext, fontName, mDefaultTextFont);
 
         if (mTextView == null)
             initializeFancyButton();
@@ -768,13 +729,12 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Set Custom font for button icon
-     *
      * @param fontName : Font Name
-     *                 Place your icon fonts in assets
+     * Place your icon fonts in assets
      */
     public void setCustomIconFont(String fontName) {
 
-        mIconTypeFace = WidgetUtils.findFont(mContext, fontName, mDefaultIconFont);
+        mIconTypeFace = Utils.findFont(mContext, fontName, mDefaultIconFont);
 
         if (mFontIconView == null)
             initializeFancyButton();
@@ -786,7 +746,6 @@ public class FancyButton extends LinearLayout {
     /**
      * Override setEnabled and rebuild the fancybutton view
      * To redraw the button according to the state : enabled or disabled
-     *
      * @param value
      */
     @Override
@@ -799,7 +758,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Setting the button to have hollow or solid shape
-     *
      * @param ghost
      */
     public void setGhost(boolean ghost) {
@@ -822,7 +780,6 @@ public class FancyButton extends LinearLayout {
 
     /**
      * Return Text of the button
-     *
      * @return Text
      */
     public CharSequence getText() {
@@ -833,34 +790,41 @@ public class FancyButton extends LinearLayout {
     }
 
     /**
-     * Return TextView Object of the FancyButton
+     * Set Text of the button
      *
+     * @param text : Text
+     */
+    public void setText(String text) {
+        text = mTextAllCaps ? text.toUpperCase() : text;
+        this.mText = text;
+        if (mTextView == null)
+            initializeFancyButton();
+        else
+            mTextView.setText(text);
+    }
+
+    /**
+     * Return TextView Object of the FancyButton
      * @return TextView Object
      */
-    public TextView getTextViewObject() {
+    public TextView getTextViewObject(){
         return mTextView;
     }
 
     /**
      * Return Icon Font of the FancyButton
-     *
      * @return TextView Object
      */
-    public TextView getIconFontObject() {
+    public TextView getIconFontObject(){
         return mFontIconView;
     }
 
     /**
      * Return Icon of the FancyButton
-     *
      * @return ImageView Object
      */
-    public ImageView getIconImageObject() {
+    public ImageView getIconImageObject(){
         return mIconView;
     }
 
-
-    public int getmDefaultIconColor() {
-        return mDefaultIconColor;
-    }
 }

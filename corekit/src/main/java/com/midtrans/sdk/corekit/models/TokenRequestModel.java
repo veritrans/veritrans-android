@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
+import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,14 @@ public class TokenRequestModel {
     private String userId;
 
     private ExpiryModel expiry;
-    private Object custom;
+    private SnapPromo promo;
+    // Custom field
+    @SerializedName("custom_field1")
+    private String customField1;
+    @SerializedName("custom_field2")
+    private String customField2;
+    @SerializedName("custom_field3")
+    private String customField3;
 
     public TokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails,
                              CustomerDetails customerDetails) {
@@ -99,11 +107,35 @@ public class TokenRequestModel {
         this.expiry = expiry;
     }
 
-    public Object getCustom() {
-        return custom;
+    public SnapPromo getPromo() {
+        return promo;
     }
 
-    public void setCustom(Object custom) {
-        this.custom = custom;
+    public void setPromo(SnapPromo promo) {
+        this.promo = promo;
+    }
+
+    public String getCustomField1() {
+        return customField1;
+    }
+
+    public void setCustomField1(String customField1) {
+        this.customField1 = customField1;
+    }
+
+    public String getCustomField2() {
+        return customField2;
+    }
+
+    public void setCustomField2(String customField2) {
+        this.customField2 = customField2;
+    }
+
+    public String getCustomField3() {
+        return customField3;
+    }
+
+    public void setCustomField3(String customField3) {
+        this.customField3 = customField3;
     }
 }

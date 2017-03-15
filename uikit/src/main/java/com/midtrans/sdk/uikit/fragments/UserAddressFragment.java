@@ -4,18 +4,21 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.midtrans.sdk.corekit.core.Constants;
@@ -30,24 +33,34 @@ import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
 import com.midtrans.sdk.uikit.adapters.ListCountryAdapter;
 import com.midtrans.sdk.uikit.models.CountryCodeModel;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class UserAddressFragment extends Fragment {
 
     MidtransSDK midtransSDK;
-    private EditText etAddress;
-    private EditText etCity;
-    private EditText etZipcode;
-    private AutoCompleteTextView etCountry;
+    private TextInputLayout tilAddress;
+    private TextInputLayout tilCity;
+    private TextInputLayout tilZipCode;
+    private TextInputLayout tilCountry;
+    private AppCompatEditText etAddress;
+    private AppCompatEditText etCity;
+    private AppCompatEditText etZipCode;
+    private AppCompatAutoCompleteTextView etCountry;
     private SwitchCompat cbShippingAddress;
     private RelativeLayout shippingAddressContainer;
-    private EditText etShippingAddress;
-    private EditText etShippingCity;
-    private EditText etShippingZipcode;
-    private AutoCompleteTextView etShippingCountry;
-    private Button btnNext;
+    private TextInputLayout tilShippingAddress;
+    private TextInputLayout tilShippingCity;
+    private TextInputLayout tilShippingZipCode;
+    private TextInputLayout tilShippingCountry;
+    private AppCompatEditText etShippingAddress;
+    private AppCompatEditText etShippingCity;
+    private AppCompatEditText etShippingZipCode;
+    private AppCompatAutoCompleteTextView etShippingCountry;
+    private FancyButton btnNext;
     private ListCountryAdapter billingCountryAdapter;
     private ListCountryAdapter shippingCountryAdapter;
     private ArrayList<CountryCodeModel> countryCodeList = new ArrayList<>();
@@ -121,22 +134,163 @@ public class UserAddressFragment extends Fragment {
     }
 
     private void findViews(View view) {
-        etAddress = (EditText) view.findViewById(R.id.et_address);
-        etCity = (EditText) view.findViewById(R.id.et_city);
-        etZipcode = (EditText) view.findViewById(R.id.et_zipcode);
-        etCountry = (AutoCompleteTextView) view.findViewById(R.id.et_country);
+        tilAddress = (TextInputLayout) view.findViewById(R.id.address_til);
+        tilCity = (TextInputLayout) view.findViewById(R.id.city_til);
+        tilZipCode = (TextInputLayout) view.findViewById(R.id.zip_til);
+        tilCountry = (TextInputLayout) view.findViewById(R.id.country_til);
+        etAddress = (AppCompatEditText) view.findViewById(R.id.et_address);
+        etCity = (AppCompatEditText) view.findViewById(R.id.et_city);
+        etZipCode = (AppCompatEditText) view.findViewById(R.id.et_zipcode);
+        etCountry = (AppCompatAutoCompleteTextView) view.findViewById(R.id.et_country);
         cbShippingAddress = (SwitchCompat) view.findViewById(R.id.cb_shipping_address);
-        shippingAddressContainer = (RelativeLayout) view.findViewById(R.id
-                .shipping_address_container);
-        etShippingAddress = (EditText) view.findViewById(R.id.et_shipping_address);
-        etShippingCity = (EditText) view.findViewById(R.id.et_shipping_city);
-        etShippingZipcode = (EditText) view.findViewById(R.id.et_shipping_zipcode);
-        etShippingCountry = (AutoCompleteTextView) view.findViewById(R.id.et_shipping_country);
-        btnNext = (Button) view.findViewById(R.id.btn_next);
+        shippingAddressContainer = (RelativeLayout) view.findViewById(R.id.shipping_address_container);
+        tilShippingAddress = (TextInputLayout) view.findViewById(R.id.shipping_address_til);
+        tilShippingCity = (TextInputLayout) view.findViewById(R.id.shipping_city_til);
+        tilShippingZipCode = (TextInputLayout) view.findViewById(R.id.shipping_zip_til);
+        tilShippingCountry = (TextInputLayout) view.findViewById(R.id.shipping_country_til);
+        etShippingAddress = (AppCompatEditText) view.findViewById(R.id.et_shipping_address);
+        etShippingCity = (AppCompatEditText) view.findViewById(R.id.et_shipping_city);
+        etShippingZipCode = (AppCompatEditText) view.findViewById(R.id.et_shipping_zipcode);
+        etShippingCountry = (AppCompatAutoCompleteTextView) view.findViewById(R.id.et_shipping_country);
+        btnNext = (FancyButton) view.findViewById(R.id.btn_next);
+        etAddress.setSingleLine();
+        etAddress.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        etCity.setSingleLine();
+        etCity.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        etCountry.setSingleLine();
+        etCountry.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        etShippingAddress.setSingleLine();
+        etShippingAddress.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        etShippingCity.setSingleLine();
+        etShippingCity.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        etShippingCountry.setSingleLine();
+        etShippingCountry.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
 
-        if (midtransSDK != null && midtransSDK.getSemiBoldText() != null) {
-            btnNext.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getSemiBoldText()));
+        if (midtransSDK != null) {
+            if (midtransSDK.getSemiBoldText() != null) {
+                btnNext.setCustomTextFont(midtransSDK.getSemiBoldText());
+            }
+
+            if (midtransSDK.getColorTheme() != null) {
+                if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
+                    // Set color filter in edit text
+                    try {
+                        // Set on address
+                        Field fDefaultTextColorAddress = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                        fDefaultTextColorAddress.setAccessible(true);
+                        fDefaultTextColorAddress.set(tilAddress, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        Field fFocusedTextColorAddress = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                        fFocusedTextColorAddress.setAccessible(true);
+                        fFocusedTextColorAddress.set(tilAddress, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        etAddress.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        // Set on city
+                        Field fDefaultTextColorCity = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                        fDefaultTextColorCity.setAccessible(true);
+                        fDefaultTextColorCity.set(tilCity, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        Field fFocusedTextColorCity = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                        fFocusedTextColorCity.setAccessible(true);
+                        fFocusedTextColorCity.set(tilCity, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        etCity.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        // Set on zip
+                        Field fDefaultTextColorZipCode = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                        fDefaultTextColorZipCode.setAccessible(true);
+                        fDefaultTextColorZipCode.set(tilZipCode, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        Field fFocusedTextColorZipCode = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                        fFocusedTextColorZipCode.setAccessible(true);
+                        fFocusedTextColorZipCode.set(tilZipCode, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        etZipCode.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        // Set on country
+                        Field fDefaultTextColorCountry = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                        fDefaultTextColorCountry.setAccessible(true);
+                        fDefaultTextColorCountry.set(tilCountry, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        Field fFocusedTextColorCountry = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                        fFocusedTextColorCountry.setAccessible(true);
+                        fFocusedTextColorCountry.set(tilCountry, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        etCountry.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        // Set on shipping address
+                        Field fDefaultTextColorShippingAddress = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                        fDefaultTextColorShippingAddress.setAccessible(true);
+                        fDefaultTextColorShippingAddress.set(tilShippingAddress, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        Field fFocusedTextColorShippingAddress = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                        fFocusedTextColorShippingAddress.setAccessible(true);
+                        fFocusedTextColorShippingAddress.set(tilShippingAddress, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        etShippingAddress.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        // Set on shipping city
+                        Field fDefaultTextColorShippingCity = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                        fDefaultTextColorShippingCity.setAccessible(true);
+                        fDefaultTextColorShippingCity.set(tilShippingCity, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        Field fFocusedTextColorShippingCity = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                        fFocusedTextColorShippingCity.setAccessible(true);
+                        fFocusedTextColorShippingCity.set(tilShippingCity, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        etShippingCity.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        // Set on shipping zip
+                        Field fDefaultTextColorShippingZipCode = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                        fDefaultTextColorShippingZipCode.setAccessible(true);
+                        fDefaultTextColorShippingZipCode.set(tilShippingZipCode, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        Field fFocusedTextColorShippingZipCode = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                        fFocusedTextColorShippingZipCode.setAccessible(true);
+                        fFocusedTextColorShippingZipCode.set(tilShippingZipCode, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        etShippingZipCode.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        // Set on shipping country
+                        Field fDefaultTextColorShippingCountry = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                        fDefaultTextColorShippingCountry.setAccessible(true);
+                        fDefaultTextColorShippingCountry.set(tilShippingCountry, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        Field fFocusedTextColorShippingCountry = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                        fFocusedTextColorShippingCountry.setAccessible(true);
+                        fFocusedTextColorCountry.set(tilShippingCountry, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+
+                        etShippingCountry.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                        int[][] states = new int[][]{
+                                new int[]{-android.R.attr.state_checked},
+                                new int[]{android.R.attr.state_checked},
+                        };
+
+                        int[] thumbColors = new int[]{
+                                Color.WHITE,
+                                midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                        };
+
+                        int[] trackColors = new int[]{
+                                Color.GRAY,
+                                midtransSDK.getColorTheme().getSecondaryColor(),
+                        };
+                        DrawableCompat.setTintList(DrawableCompat.wrap(cbShippingAddress.getThumbDrawable()), new ColorStateList(states, thumbColors));
+                        DrawableCompat.setTintList(DrawableCompat.wrap(cbShippingAddress.getTrackDrawable()), new ColorStateList(states, trackColors));
+                    }
+                }
+
+                if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
+                    btnNext.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
+                }
+            }
         }
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,11 +319,11 @@ public class UserAddressFragment extends Fragment {
         ArrayList<UserAddress> userAddresses = new ArrayList<>();
         String billingAddress = etAddress.getText().toString().trim();
         String billingCity = etCity.getText().toString().trim();
-        String zipcode = etZipcode.getText().toString().trim();
+        String zipcode = etZipCode.getText().toString().trim();
         String country = etCountry.getText().toString().trim();
         String shippingAddress = etShippingAddress.getText().toString().trim();
         String shippingCity = etShippingCity.getText().toString().trim();
-        String shippingZipcode = etShippingZipcode.getText().toString().trim();
+        String shippingZipcode = etShippingZipCode.getText().toString().trim();
         String shippingCountry = etShippingCountry.getText().toString().trim();
 
         if (TextUtils.isEmpty(billingAddress)) {
@@ -184,12 +338,12 @@ public class UserAddressFragment extends Fragment {
         } else if (TextUtils.isEmpty(zipcode)) {
             SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                     .validation_billingzipcode_empty));
-            etZipcode.requestFocus();
+            etZipCode.requestFocus();
             return;
         } else if (zipcode.length() < Constants.ZIPCODE_LENGTH) {
             SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                     .validation_billingzipcode_invalid));
-            etZipcode.requestFocus();
+            etZipCode.requestFocus();
             return;
         } else if (TextUtils.isEmpty(country)) {
             SdkUIFlowUtil.showToast(getActivity(), getString(R.string
@@ -215,12 +369,12 @@ public class UserAddressFragment extends Fragment {
             } else if (TextUtils.isEmpty(shippingZipcode)) {
                 SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                         .validation_shippingzipcode_empty));
-                etShippingZipcode.requestFocus();
+                etShippingZipCode.requestFocus();
                 return;
             } else if (shippingZipcode.length() < Constants.ZIPCODE_LENGTH) {
                 SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                         .validation_shippingzipcode_invalid));
-                etShippingZipcode.requestFocus();
+                etShippingZipCode.requestFocus();
                 return;
             } else if (TextUtils.isEmpty(shippingCountry)) {
                 SdkUIFlowUtil.showToast(getActivity(), getString(R.string

@@ -22,9 +22,14 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private boolean itemShown = false;
 
     private List<ItemViewDetails> itemViewDetails;
+    private ItemDetailListener listener;
+    public interface ItemDetailListener{
+        public void onItemShown();
+    }
 
-    public ItemDetailsAdapter(List<ItemViewDetails> itemViewDetails) {
+    public ItemDetailsAdapter(List<ItemViewDetails> itemViewDetails, ItemDetailListener listener) {
         this.itemViewDetails = itemViewDetails;
+        this.listener = listener;
     }
 
     @Override
@@ -37,6 +42,9 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     public void onClick(View view) {
                         itemShown = !itemShown;
                         notifyDataSetChanged();
+                        if(listener != null && itemShown){
+                            listener.onItemShown();
+                        }
                     }
                 });
 

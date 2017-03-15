@@ -11,7 +11,11 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.AttrRes;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,23 +27,26 @@ import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
-import com.midtrans.sdk.corekit.models.BBMUrlEncodeJson;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
+import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.models.PromoData;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -306,41 +313,6 @@ public class SdkUIFlowUtil {
         return isInstalled;
     }
 
-    /**
-     * it returns the encoded url in string format.
-     *
-     * @param permataVA Permata virtual account
-     * @return url in encoded format
-     */
-    public static String createEncodedUrl(String permataVA, String checkStatus, String
-            beforePaymentError, String userCancel) {
-
-        String encodedUrl = null;
-
-        if (permataVA != null && checkStatus != null && beforePaymentError != null && userCancel
-                != null) {
-
-            BBMCallBackUrl bbmCallBackUrl = new BBMCallBackUrl(checkStatus, beforePaymentError,
-                    userCancel);
-            BBMUrlEncodeJson bbmUrlEncodeJson = new BBMUrlEncodeJson();
-
-            bbmUrlEncodeJson.setReference(permataVA);
-
-            bbmUrlEncodeJson.setCallbackUrl(bbmCallBackUrl);
-            String jsonString = bbmUrlEncodeJson.getString();
-            Logger.i("JSON String: " + jsonString);
-
-            try {
-                encodedUrl = URLEncoder.encode(jsonString, "UTF-8");
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-        return encodedUrl;
-    }
-
-
     public static int fetchAccentColor(Context context) {
         TypedValue typedValue = new TypedValue();
 
@@ -476,5 +448,128 @@ public class SdkUIFlowUtil {
             }
         }
         return false;
+    }
+
+
+    public static String getDeviceType(Activity activity) {
+        String deviceType;
+        DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        float yInches = metrics.heightPixels / metrics.ydpi;
+        float xInches = metrics.widthPixels / metrics.xdpi;
+        double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
+
+        if (diagonalInches >= 6.5) {
+            deviceType = "TABLET";
+        } else {
+            deviceType = "PHONE";
+        }
+
+        return deviceType;
+    }
+
+    public static PromoResponse getPromoFromCardBins(List<PromoResponse> promoResponses, String cardBins) {
+        List<PromoData> promoDatas = mapPromoResponseIntoData(promoResponses);
+        Collections.sort(promoDatas, new PromoComparator());
+        for (PromoData promoData : promoDatas) {
+            if (isBinCardValidForPromo(promoData.getPromoResponse(), cardBins)) {
+                return promoData.getPromoResponse();
+            }
+        }
+        return null;
+    }
+
+    private static boolean isBinCardValidForPromo(PromoResponse promo, String cardBin) {
+        List<String> bins = promo.getBins();
+        if (bins != null && !bins.isEmpty()) {
+            if (bins.contains(cardBin)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static List<PromoData> mapPromoResponseIntoData(List<PromoResponse> promoResponses) {
+        List<PromoData> promoDatas = new ArrayList<>();
+        double grossAmount = MidtransSDK.getInstance().getTransactionRequest().getAmount();
+        for (PromoResponse promoResponse : promoResponses) {
+            if (grossAmount > calculateDiscountAmount(promoResponse)) {
+                promoDatas.add(new PromoData(promoResponse, grossAmount));
+            }
+        }
+        return promoDatas;
+    }
+
+    public static double calculateDiscountAmount(PromoResponse promoResponse) {
+        if (promoResponse.getDiscountType().equalsIgnoreCase("FIXED")) {
+            return promoResponse.getDiscountAmount();
+        } else {
+            return promoResponse.getDiscountAmount() * MidtransSDK.getInstance().getTransactionRequest().getAmount() / 100;
+        }
+    }
+
+    public static List<SavedToken> removeCardFromSavedCards(List<SavedToken> savedTokens, String maskedCard) {
+        List<SavedToken> updatedTokens = new ArrayList<>();
+        for (SavedToken savedToken : savedTokens) {
+            if (!savedToken.getMaskedCard().equals(maskedCard)) {
+                updatedTokens.add(savedToken);
+            }
+        }
+        return updatedTokens;
+    }
+
+    public static ArrayList<SaveCardRequest> convertSavedToken(List<SavedToken> savedTokens) {
+        ArrayList<SaveCardRequest> cards = new ArrayList<>();
+        if (savedTokens != null && !savedTokens.isEmpty()) {
+            for (SavedToken saved : savedTokens) {
+                cards.add(new SaveCardRequest(saved.getToken(), saved.getMaskedCard(), saved.getTokenType()));
+            }
+        }
+        return cards;
+    }
+
+    public static List<SaveCardRequest> filterCardsByClickType(Context context, List<SaveCardRequest> cards) {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        ArrayList<SaveCardRequest> filteredCards = new ArrayList<>();
+        if (cards != null && !cards.isEmpty()) {
+            if (midtransSDK.isEnableBuiltInTokenStorage()) {
+                for (SaveCardRequest card : cards) {
+                    if (midtransSDK.getTransactionRequest().getCardClickType().equals(context.getString(R.string.card_click_type_one_click))
+                            && card.getType().equals(context.getString(R.string.saved_card_one_click))) {
+                        filteredCards.add(card);
+                    } else if (midtransSDK.getTransactionRequest().getCardClickType().equals(context.getString(R.string.card_click_type_two_click))
+                            && card.getType().equals(context.getString(R.string.saved_card_two_click))) {
+                        filteredCards.add(card);
+                    }
+                }
+            } else {
+                //if token storage on merchant server then saved cards can be used just for two click
+                String clickType = midtransSDK.getTransactionRequest().getCardClickType();
+                if (!TextUtils.isEmpty(clickType) && clickType.equals(context.getString(R.string.card_click_type_two_click))) {
+                    filteredCards.addAll(cards);
+                }
+            }
+        }
+
+        return filteredCards;
+    }
+
+    public static List<SaveCardRequest> filterMultipleSavedCard(ArrayList<SaveCardRequest> savedCards) {
+        Collections.reverse(savedCards);
+        Set<String> maskedCardSet = new HashSet<>();
+        for (Iterator<SaveCardRequest> it = savedCards.iterator(); it.hasNext(); ) {
+            if (!maskedCardSet.add(it.next().getMaskedCard())) {
+                it.remove();
+            }
+        }
+        return savedCards;
+    }
+
+    @ColorInt
+    public static int getThemeColor(@NonNull final Context context, @AttrRes final int attributeColor) {
+        final TypedValue value = new TypedValue();
+        context.getTheme().resolveAttribute(attributeColor, value, true);
+        return value.data;
     }
 }

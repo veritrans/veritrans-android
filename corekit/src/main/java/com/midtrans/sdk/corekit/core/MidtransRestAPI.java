@@ -27,6 +27,8 @@ public interface MidtransRestAPI {
             @Query("bank") String bank,
             @Query("client_key") String clientKey,
             @Query("channel") String channel,
+            @Query("type") String type,
+            @Query("point") boolean point,
             Callback<TokenDetailsResponse> callback);
 
     @GET("/token")
@@ -40,6 +42,8 @@ public interface MidtransRestAPI {
                      @Query("two_click") boolean twoClick,
                      @Query("gross_amount") double grossAmount,
                      @Query("channel") String channel,
+                     @Query("type") String type,
+                     @Query("point") boolean point,
                      Callback<TokenDetailsResponse> callback
     );
 
@@ -51,6 +55,8 @@ public interface MidtransRestAPI {
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey,
             @Query("channel") String channel,
+            @Query("type") String type,
+            @Query("point") boolean point,
             Callback<TokenDetailsResponse> callback
     );
 
@@ -81,6 +87,8 @@ public interface MidtransRestAPI {
             @Query("installment") boolean instalment,
             @Query("installment_term") String instalmentTerm,
             @Query("channel") String channel,
+            @Query("type") String type,
+            @Query("point") boolean point,
             Callback<TokenDetailsResponse> callback
     );
 
@@ -113,6 +121,8 @@ public interface MidtransRestAPI {
                                      @Query("channel") String channel,
                                      @Query("installment_term") String
                                              instalmentTerm,
+                                     @Query("type") String type,
+                                     @Query("point") boolean point,
                                      Callback<TokenDetailsResponse> callback
     );
 
@@ -134,6 +144,7 @@ public interface MidtransRestAPI {
             @Query("card_cvv") String cardCVV,
             @Query("card_exp_month") String cardExpiryMonth,
             @Query("card_exp_year") String cardExpiryYear,
-            @Query("client_key") String clientKey, Callback<CardRegistrationResponse> callback
+            @Query("client_key") String clientKey,
+            Callback<CardRegistrationResponse> callback
     );
 }

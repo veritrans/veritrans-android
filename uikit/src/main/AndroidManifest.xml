@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.midtrans.sdk.uikit">
 
-    <application
-        android:allowBackup="true"
-        android:theme="@style/VeritransAppTheme">
+    <uses-sdk tools:overrideLibrary="com.rds.swipelayout" />
+    <application>
         <activity
             android:name="com.midtrans.sdk.uikit.activities.UserDetailsActivity"
             android:screenOrientation="portrait"
@@ -15,6 +15,10 @@
             android:name="com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.CreditCardFlowActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.midtrans.sdk.uikit.activities.BankTransferActivity"
             android:screenOrientation="portrait" />

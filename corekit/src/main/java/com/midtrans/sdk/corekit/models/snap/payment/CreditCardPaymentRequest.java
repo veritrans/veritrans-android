@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.models.snap.payment;
 
 import com.google.gson.annotations.SerializedName;
+
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 
 /**
@@ -12,6 +13,8 @@ public class CreditCardPaymentRequest extends BasePaymentRequest {
 
     @SerializedName("customer_details")
     private CustomerDetailRequest customerDetails;
+    @SerializedName("discount_token")
+    private String discountToken;
 
     public CreditCardPaymentRequest(String paymentType, CreditCardPaymentParams paymentParams, CustomerDetailRequest customerDetails) {
         super(paymentType);
@@ -25,5 +28,13 @@ public class CreditCardPaymentRequest extends BasePaymentRequest {
 
     public CustomerDetailRequest getCustomerDetails() {
         return customerDetails;
+    }
+
+    public String getDiscountToken() {
+        return discountToken;
+    }
+
+    public void setDiscountToken(String discountToken) {
+        this.discountToken = discountToken;
     }
 }

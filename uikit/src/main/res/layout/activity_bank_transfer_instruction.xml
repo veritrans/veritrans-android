@@ -39,7 +39,7 @@
                 android:paddingRight="@dimen/sixteen_dp"
                 android:paddingTop="@dimen/eight_dp"
                 android:text="@string/download_instruction"
-                android:textColor="?colorPrimary"
+                android:textColor="@color/gray.primary"
                 android:visibility="visible" />
         </RelativeLayout>
 
@@ -54,6 +54,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/white"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -92,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 app:tabGravity="fill"
-                app:tabIndicatorColor="?colorPrimary"
+                app:tabIndicatorColor="@color/gray.primary"
                 app:tabIndicatorHeight="3dp"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/dark_gray"

@@ -17,6 +17,8 @@ public class CreditCardPaymentParams {
     private String installmentTerm;
     @SerializedName("save_card")
     private boolean saveCard;
+    @SerializedName("point")
+    private float pointRedeemed;
 
     public CreditCardPaymentParams(String cardToken, Boolean saveCard, String maskedCardNumber) {
         this.cardToken = cardToken;
@@ -31,27 +33,51 @@ public class CreditCardPaymentParams {
         this.installmentTerm = installmentTerm;
     }
 
+    public String getCardToken() {
+        return cardToken;
+    }
+
     public void setCardToken(String cardToken) {
         this.cardToken = cardToken;
     }
 
-    public void setBank(String bank) {
-        this.bank = bank;
-    }
-
-    public void setInstallmentTerm(String installmentTerm) {
-        this.installmentTerm = installmentTerm;
+    public boolean isSaveCard() {
+        return saveCard;
     }
 
     public void setSaveCard(boolean saveCard) {
         this.saveCard = saveCard;
     }
 
-    public String getCardToken() {
-        return cardToken;
+    public String getMaskedCard() {
+        return maskedCard;
     }
 
-    public boolean isSaveCard() {
-        return saveCard;
+    public void setMaskedCard(String maskedCard) {
+        this.maskedCard = maskedCard;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getInstallmentTerm() {
+        return installmentTerm;
+    }
+
+    public void setInstallmentTerm(String installmentTerm) {
+        this.installmentTerm = installmentTerm;
+    }
+
+    public float getPointRedeemed() {
+        return pointRedeemed;
+    }
+
+    public void setPointRedeemed(float pointRedeemed) {
+        this.pointRedeemed = pointRedeemed;
     }
 }

@@ -131,10 +131,19 @@
     <string name="other_payment">Other Payment</string>
     <string name="giftcard">Gift Card</string>
     <string name="promo">Promo</string>
-    <string name="promo_active">Active</string>
-    <string name="promo_inactive">Not Active</string>
+    <string name="txt_active">Active</string>
+    <string name="txt_inactive">Not Active</string>
     <string name="save_card_options_title">Save Card Default Options</string>
     <string name="save_card_true">Save</string>
     <string name="save_card_false">Not Saved</string>
-
+    <string name="pre_auth">Pre Auth Feature</string>
+    <string name="color_theme">Color Theme</string>
+    <string name="custom_field">Custom Field</string>
+    <string name="hint_custom_field1">Custom Field 1</string>
+    <string name="hint_custom_field2">Custom Field 2</string>
+    <string name="hint_custom_field3">Custom Field 3</string>
+    <string name="brown">Brown</string>
+    <string name="blue_grey">Blue Grey</string>
+    <string name="orange">Orange</string>
+    <string name="not_set">Not Set</string>
 </resources>

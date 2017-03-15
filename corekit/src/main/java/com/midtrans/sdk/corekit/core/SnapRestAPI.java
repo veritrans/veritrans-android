@@ -2,6 +2,7 @@ package com.midtrans.sdk.corekit.core;
 
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 
 import retrofit.Callback;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
@@ -191,4 +193,18 @@ public interface SnapRestAPI {
      */
     @GET("/v1/bank_bins")
     void getBankBins(Callback<ArrayList<BankBinsResponse>> callback);
+
+    @DELETE("/v1/transactions/{token}/saved_tokens/{masked_card}")
+    void deleteCard(@Path("token") String authenticationToken, @Path("masked_card") String maskedCard, Callback<Void> callback);
+
+
+    /**
+     * Get Banks Points from snap backend.
+     *
+     * @param snapToken           snap token
+     * @param transactionCallback response get transaction request
+     */
+    @GET("/v1/transactions/{snap_token}/point_inquiry/{card_token}")
+    void getBanksPoint(@Path("snap_token") String snapToken, @Path("card_token") String cardToken, Callback<BanksPointResponse> transactionCallback);
+
 }

@@ -17,29 +17,29 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/eight_dp"
             android:layout_marginTop="@dimen/sixteen_dp"
             android:text="@string/payment_code"
-            android:layout_marginLeft="@dimen/eight_dp"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/secondary_text_size"
             />
 
         <LinearLayout
-            android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:background="@color/light_gray"
                 android:id="@+id/text_payment_code"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginRight="@dimen/four_dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginRight="@dimen/four_dp"
+                android:layout_weight="1"
+                android:background="@color/light_gray"
+                android:padding="@dimen/eight_dp"
                 android:text="@string/payment_code"
                 android:textColor="@color/black"
                 android:textSize="@dimen/header_text_size"
-                android:padding="@dimen/eight_dp"
 
                 />
 
@@ -62,12 +62,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:background="@color/faint_yellow"
-            android:padding="@dimen/sixteen_dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/faint_yellow"
+            android:orientation="horizontal"
+            android:padding="@dimen/sixteen_dp">
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,21 +89,5 @@
                 android:textSize="@dimen/secondary_text_size"
                 />
         </LinearLayout>
-
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/text_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/sixteen_dp"
-            android:background="@color/faint_pink"
-            android:gravity="left"
-            android:padding="@dimen/sixteen_dp"
-            android:text="@string/bank_transfer_dummy_text"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-            />
-
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

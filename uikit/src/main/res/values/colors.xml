@@ -34,4 +34,5 @@
     <color name="material_grey">#ededed</color>
     <color name="grey_f1">#f1f1f2</color>
 
+    <color name="delete_color">#D4385C</color>
 </resources>

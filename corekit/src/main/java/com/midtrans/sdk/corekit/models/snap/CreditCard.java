@@ -25,6 +25,7 @@ public class CreditCard {
     private ArrayList<String> whitelistBins;
     @SerializedName("installment")
     private Installment installment;
+    private String type;
 
     public String getChannel() {
         return channel;
@@ -80,5 +81,13 @@ public class CreditCard {
 
     public Installment getInstallment() {
         return installment;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

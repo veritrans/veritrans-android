@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.core;
 
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
+import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
@@ -16,6 +17,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
@@ -244,6 +246,26 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
         snapTransactionManager.getBankBins(bankBinsCallback);
     }
 
+    public void getbanksPoint(String authenticationToken, String cardtoken) {
+        snapTransactionManager.getBanksPoint(authenticationToken, cardtoken, banksPointCallback);
+    }
+
+    private BanksPointCallback banksPointCallback = new BanksPointCallback() {
+        @Override
+        public void onSuccess(BanksPointResponse response) {
+            callbackCollaborator.onGetbanksPointSuccess();
+        }
+
+        @Override
+        public void onFailure(String reason) {
+            callbackCollaborator.onGetbanksPointFailure();
+        }
+
+        @Override
+        public void onError(Throwable error) {
+            callbackCollaborator.onGetbanksPointError();
+        }
+    };
 
     private BankBinsCallback bankBinsCallback = new BankBinsCallback() {
         @Override

@@ -59,5 +59,8 @@
     <dimen name="thirtytwo_sp">32sp</dimen>
     <dimen name="eighteen_sp">18sp</dimen>
     <dimen name="payment_logo_size">30dp</dimen>
+    <dimen name="promo_logo_size">20dp</dimen>
     <dimen name="bank_logo_size">36dp</dimen>
+
+    <dimen name="button_size">48dp</dimen>
 </resources>

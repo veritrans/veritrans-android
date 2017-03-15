@@ -112,6 +112,40 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/layout_status_point_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/eight_dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/status_redeemed_point"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_text_size"
+                        android:textStyle="bold" />
+
+                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                        android:id="@+id/text_point_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/text_amount_here"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/primary_text_size" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="@dimen/eight_dp"
+                        android:background="@color/material_grey" />
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/layout_status_due_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -291,7 +325,6 @@
 
                     <com.midtrans.sdk.uikit.widgets.DefaultTextView
                         android:layout_width="wrap_content"
-
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="@string/text_payment_time"
@@ -340,14 +373,37 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <Button
-        android:id="@+id/btn_action"
-        style="@style/Widget.AppCompat.Button"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:drawableEnd="@drawable/ic_arrow_right_white"
-        android:drawableRight="@drawable/ic_arrow_right_white"
-        android:text="@string/done"
-        android:textColor="@android:color/white" />
+        android:layout_height="match_parent">
+
+        <com.midtrans.sdk.uikit.widgets.FancyButton
+            android:id="@+id/btn_action"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_size"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal|bottom"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:textColor="@color/white"
+            app:fb_defaultColor="@color/gray.primary"
+            app:fb_focusColor="@color/colorAccentLight"
+            app:fb_text="@string/done"
+            app:fb_textGravity="center_vertical"
+            app:fb_textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_size"
+            android:layout_alignParentBottom="true"
+            android:gravity="bottom|end">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/eight_dp"
+                android:src="@drawable/ic_arrow_right_white" />
+        </LinearLayout>
+    </RelativeLayout>
 </FrameLayout>

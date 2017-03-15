@@ -5,7 +5,7 @@ apply from: '../jacoco.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.3.3'
+version = '1.4.1'
 
 buildscript {
     repositories {
@@ -13,7 +13,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
         classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.4.0'
     }
@@ -64,19 +64,22 @@ android {
         development {
             DEFAULT_PUBLISH = "developmentRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.sandbox.midtrans.com/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.midtrans.com/snap\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.midtrans.com/snap/\""
+            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
         }
 
         staging {
             DEFAULT_PUBLISH = "stagingRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.stg.midtrans.com/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.stg.midtrans.com/snap\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.stg.midtrans.com/snap/\""
+            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
         }
 
         production {
             DEFAULT_PUBLISH = "productionRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.midtrans.com/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.midtrans.com/snap\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.midtrans.com/snap/\""
+            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
         }
     }
 
@@ -97,13 +100,13 @@ tasks.withType(Test) {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     // Analytics Manager
-    developmentCompile 'com.midtrans:analytics:1.2.1-SANDBOX'
-    stagingCompile 'com.midtrans:analytics:1.2.1-SANDBOX'
-    productionCompile 'com.midtrans:analytics:1.2.1'
+    developmentCompile 'com.midtrans:analytics:1.3.3-SANDBOX'
+    stagingCompile 'com.midtrans:analytics:1.3.3-SANDBOX'
+    productionCompile 'com.midtrans:analytics:1.3.3'
     /*
      * test dependencies
      */

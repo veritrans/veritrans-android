@@ -9,15 +9,18 @@ import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
+import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
+import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
+import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
-import com.midtrans.sdk.corekit.models.BBMCallBackUrl;
+import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
@@ -25,7 +28,7 @@ import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
-import com.midtrans.sdk.corekit.models.snap.SavedToken;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.TelkomselCashPaymentParams;
@@ -41,9 +44,6 @@ import java.util.List;
  * Created by shivam on 10/19/15.
  */
 public class MidtransSDK {
-
-    public static final String BILL_INFO_AND_ITEM_DETAILS_ARE_NECESSARY = "bill info and item " +
-            "details are necessary.";
     private static final String TAG = "MidtransSDK";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
@@ -56,7 +56,6 @@ public class MidtransSDK {
     private TransactionFinishedCallback transactionFinishedCallback;
     private MixpanelAnalyticsManager mMixpanelAnalyticsManager;
     private Context context = null;
-    private int themeColor;
     private String clientKey = null;
     private String merchantServerUrl = null;
     private String defaultText = null;
@@ -64,17 +63,19 @@ public class MidtransSDK {
     private String semiBoldText = null;
     private String merchantName = null;
     private IScanner externalScanner;
+    private PromoEngineManager promoEngineManager;
     private SnapTransactionManager mSnapTransactionManager;
     private String merchantLogo = null;
     private TransactionRequest transactionRequest = null;
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
-    private List<SavedToken> savedTokens = new ArrayList<>();
     private boolean enableBuiltInTokenStorage;
-    private BBMCallBackUrl mBBMCallBackUrl = null;
     private String sdkBaseUrl = "";
     private int requestTimeOut = 10;
     private String flow = null;
     private CreditCard creditCard = new CreditCard();
+    private List<PromoResponse> promoResponses = new ArrayList<>();
+    private ArrayList<String> banksPointEnabled;
+    private BaseColorTheme colorTheme;
 
     private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
@@ -87,20 +88,23 @@ public class MidtransSDK {
         this.uiflow = sdkBuilder.sdkFlow;
         this.transactionFinishedCallback = sdkBuilder.transactionFinishedCallback;
         this.externalScanner = sdkBuilder.externalScanner;
-        themeColor = sdkBuilder.colorThemeResourceId;
         this.isLogEnabled = sdkBuilder.enableLog;
+        Logger.enabled = sdkBuilder.enableLog;
         this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
         this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.UIKitCustomSetting;
         this.flow = sdkBuilder.flow;
+        // Set custom color theme. This will be prioritized over Snap preferences.
+        if (sdkBuilder.colorTheme != null) {
+            this.colorTheme = sdkBuilder.colorTheme;
+        }
 
+        this.promoEngineManager = new PromoEngineManager(sdkBuilder.context, MidtransRestAdapter.getPromoEngineRestAPI(BuildConfig.PROMO_ENGINE_URL, requestTimeOut));
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
-        this.mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
 
-        initializeTheme();
         initializeSharedPreferences();
     }
 
@@ -157,10 +161,6 @@ public class MidtransSDK {
         mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
     }
 
-    private void initializeTheme() {
-        themeColor = context.getResources().getColor(R.color.colorPrimary);
-    }
-
     /**
      * get Default text font for SDK
      *
@@ -183,8 +183,7 @@ public class MidtransSDK {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow));
-        this.mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
+        this.mMixpanelAnalyticsManager.setMerchantName(merchantName);
     }
 
     public String getMerchantLogo() {
@@ -193,10 +192,6 @@ public class MidtransSDK {
 
     public void setMerchantLogo(String merchantLogo) {
         this.merchantLogo = merchantLogo;
-    }
-
-    public int getThemeColor() {
-        return themeColor;
     }
 
     public String getBoldText() {
@@ -238,6 +233,8 @@ public class MidtransSDK {
     public MixpanelAnalyticsManager getmMixpanelAnalyticsManager() {
         return mMixpanelAnalyticsManager;
     }
+
+
 
     public String getMerchantToken() {
         UserDetail userDetail = null;
@@ -292,6 +289,35 @@ public class MidtransSDK {
 
         } else {
             Logger.e(TAG, context.getString(R.string.error_already_running));
+        }
+    }
+
+    /**
+     * It will execute an API request to obtain promo token.
+     *
+     * @param promoId  promo identifier.
+     * @param amount   transaction amount.
+     * @param callback callback to be called.
+     */
+    public void obtainPromo(String promoId, double amount, ObtainPromoCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (!TextUtils.isEmpty(promoId) && amount != 0) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                promoEngineManager.obtainPromo(promoId, amount, callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+            }
+        } else {
+            Logger.e(context.getString(R.string.error_invalid_data_supplied));
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
 
@@ -904,6 +930,34 @@ public class MidtransSDK {
     }
 
     /**
+     * It will run backgrond task to charge payment using Credit Card
+     *
+     * @param authenticationToken    authentication token
+     * @param discountToken          discount token
+     * @param creditCardPaymentModel model for creditcard payment
+     * @param callback               transaction callback
+     */
+    public void paymentUsingCard(@NonNull String authenticationToken, @NonNull String discountToken, CreditCardPaymentModel creditCardPaymentModel, @NonNull TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingCreditCard(authenticationToken,
+                        SdkUtil.getCreditCardPaymentRequest(discountToken, creditCardPaymentModel, transactionRequest), callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            }
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    /**
      * It will run backround task to charge payment using Bank Transfer BCA
      *
      * @param authenticationToken authentication token
@@ -1434,6 +1488,42 @@ public class MidtransSDK {
         }
     }
 
+
+    /**
+     * it will get bni points from snap backend
+     *
+     * @param cardToken credit card token
+     * @param callback  bni point callback instance
+     */
+    public void getBanksPoint(String cardToken, @NonNull BanksPointCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (Utils.isNetworkAvailable(context)) {
+            mSnapTransactionManager.getBanksPoint(readAuthenticationToken(), cardToken, callback);
+        } else {
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+
+    /**
+     * It will run background task to delete saved card from token storage.
+     *
+     * @param authenticationToken authentication or snap Token.
+     * @param maskedCard          masked card.
+     * @param callback            delete card callback to be called after background task was
+     *                            finished.
+     */
+    public void deleteCard(@NonNull String authenticationToken, String maskedCard, DeleteCardCallback callback) {
+        if (Utils.isNetworkAvailable(context)) {
+            mSnapTransactionManager.deleteCard(authenticationToken, maskedCard, callback);
+        } else {
+            callback.onError(new RuntimeException(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
     /**
      * it will change SDK configuration
      *
@@ -1451,7 +1541,6 @@ public class MidtransSDK {
         mSnapTransactionManager = new SnapTransactionManager(context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeout),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeout),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeout));
-        mSnapTransactionManager.setAnalyticsManager(mMixpanelAnalyticsManager);
         mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
 
@@ -1496,11 +1585,6 @@ public class MidtransSDK {
         return requestTimeOut;
     }
 
-
-    public void setSavedTokens(List<SavedToken> savedTokens) {
-        this.savedTokens = savedTokens;
-    }
-
     public boolean isEnableBuiltInTokenStorage() {
         return enableBuiltInTokenStorage;
     }
@@ -1521,5 +1605,48 @@ public class MidtransSDK {
         if (creditCard != null) {
             this.creditCard = creditCard;
         }
+    }
+
+    /**
+     * tracking sdk events
+     *
+     * @param eventName
+     */
+    public void trackEvent(String eventName) {
+        this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName);
+    }
+
+    /**
+     * tracking sdk events
+     *
+     * @param eventName
+     * @param cardPaymentMode
+     */
+    public void trackEvent(String eventName, String cardPaymentMode) {
+        this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName, cardPaymentMode);
+    }
+
+    public List<PromoResponse> getPromoResponses() {
+        return promoResponses;
+    }
+
+    public void setPromoResponses(List<PromoResponse> promoResponses) {
+        this.promoResponses = promoResponses;
+    }
+
+    public BaseColorTheme getColorTheme() {
+        return colorTheme;
+    }
+
+    public void setColorTheme(BaseColorTheme colorTheme) {
+        this.colorTheme = colorTheme;
+    }
+
+    public ArrayList<String> getBanksPointEnabled() {
+        return banksPointEnabled;
+    }
+
+    public void setBanksPointEnabled(ArrayList<String> pointBanks) {
+        this.banksPointEnabled = pointBanks;
     }
 }

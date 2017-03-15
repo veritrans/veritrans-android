@@ -1,8 +1,5 @@
 package com.midtrans.sdk.uikit.activities;
 
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,8 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -20,6 +15,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionIndosatFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -49,9 +45,8 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public String currentFragment = "home";
 
-    private Button mButtonConfirmPayment = null;
+    private FancyButton mButtonConfirmPayment = null;
     private DefaultTextView textTitle, textTotalAmount;
-    private FancyButton buttonBack;
 
     private MidtransSDK mMidtransSDK = null;
     private Toolbar mToolbar = null;
@@ -85,6 +80,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * set up {@link BankTransferFragment} to display payment instructions.
      */
     private void setUpHomeFragment() {
+        //track page indosat dompetku
+        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_INDOSAT_DOMPETKU);
+
         // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -104,12 +102,14 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
             if (currentFragment.equals(STATUS_FRAGMENT)) {
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
+                return false;
             } else {
                 onBackPressed();
+                return false;
             }
         }
 
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -119,13 +119,13 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     private void initializeView() {
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mButtonConfirmPayment = (Button) findViewById(R.id.btn_confirm_payment);
+        mButtonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-        buttonBack = (FancyButton) findViewById(R.id.btn_back);
         initializeTheme();
         //setup tool bar
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**
@@ -135,10 +135,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         textTitle.setText(getString(R.string.indosat_dompetku));
         if (mMidtransSDK != null) {
             if (mMidtransSDK.getSemiBoldText() != null) {
-                mButtonConfirmPayment.setTypeface(Typeface.createFromAsset(getAssets(), mMidtransSDK.getSemiBoldText()));
+                mButtonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
             }
             mButtonConfirmPayment.setOnClickListener(this);
-            buttonBack.setOnClickListener(this);
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         } else {
@@ -166,14 +165,10 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
                 performTransaction();
-
             } else {
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
             }
-
-        }else if(view.getId() == R.id.btn_back){
-            onBackPressed();
         }
     }
 
@@ -183,6 +178,8 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * indosat dompetku payment procedure.
      */
     private void performTransaction() {
+        //track indosat dompetku confirm payment
+        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
         if (mIndosatFragment != null && !mIndosatFragment.isDetached()) {
 
@@ -224,6 +221,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                 phoneNumber, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
+                        //track page status success
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
+
                         SdkUIFlowUtil.hideProgressDialog();
                         mTransactionResponse = response;
                         if (response != null) {
@@ -236,6 +236,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         mTransactionResponse = response;
                         IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_denied);
                         SdkUIFlowUtil.hideProgressDialog();
@@ -253,6 +256,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onError(Throwable error) {
+                        //track page status failed
+                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
                         try {
                             IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_failed);
                             SdkUIFlowUtil.hideProgressDialog();
@@ -274,11 +280,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     private void setUpTransactionStatusFragment(final TransactionResponse
                                                         transactionResponse) {
         currentFragment = STATUS_FRAGMENT;
-        mButtonConfirmPayment.setText(R.string.done);
-
-        Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close);
-        closeIcon.setColorFilter(getResources().getColor(R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
-        buttonBack.setIconResource(closeIcon);
+        mButtonConfirmPayment.setText(getString(R.string.done));
 
         initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU, false);
     }
