@@ -1,0 +1,62 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        applicationId "com.midtrans.demo"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        development {
+            applicationId "com.midtrans.sdk.sample.development"
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
+            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
+        }
+
+        staging {
+            applicationId "com.midtrans.sdk.sample.staging"
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_STAGING
+            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_STAGING
+        }
+
+        production {
+            applicationId "com.midtrans.sdk.sample.production"
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_PRODUCTION
+            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_PRODUCTION
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    testCompile 'junit:junit:4.12'
+    developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
+    productionCompile project(path: ':uikit', configuration: 'productionRelease')
+    developmentCompile(project(path: ':scancard', configuration: 'developmentRelease')) {
+        exclude module: 'uikit'
+        exclude module: 'corekit'
+    }
+    productionCompile(project(path: ':scancard', configuration: 'productionRelease')) {
+        exclude module: 'uikit'
+        exclude module: 'corekit'
+    }
+}

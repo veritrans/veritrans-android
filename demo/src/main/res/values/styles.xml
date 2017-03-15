@@ -1,0 +1,32 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="CustomRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/selector_custom_radio_buttom</item>
+        <item name="android:paddingLeft">@dimen/twelve_dp</item>
+        <item name="android:paddingTop">@dimen/four_dp</item>
+        <item name="android:paddingBottom">@dimen/four_dp</item>
+    </style>
+
+    <style name="ConfigItemTextTitle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:layout_marginTop">@dimen/four_dp</item>
+        <item name="android:layout_marginBottom">@dimen/four_dp</item>
+        <item name="android:paddingLeft">@dimen/eight_dp</item>
+        <item name="android:paddingRight">@dimen/eight_dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:drawableRight">@drawable/ic_keyboard_arrow_down_black_24dp</item>
+        <item name="android:drawableEnd" tools:targetApi="ice_cream_sandwich">
+            @drawable/ic_keyboard_arrow_down_black_24dp
+        </item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+</resources>
