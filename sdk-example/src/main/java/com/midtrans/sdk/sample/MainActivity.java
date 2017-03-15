@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
@@ -401,7 +402,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startCreditCardUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.CREDIT_CARD);
             }
         });
 
@@ -411,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startBankTransferUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.BANK_TRANSFER);
             }
         });
 
@@ -420,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startPermataBankTransferUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.BANK_TRANSFER_PERMATA);
             }
         });
 
@@ -429,7 +430,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startMandiriBankTransferUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.BANK_TRANSFER_MANDIRI);
             }
         });
 
@@ -438,7 +439,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startBCABankTransferUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.BANK_TRANSFER_BCA);
             }
         });
 
@@ -447,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startOtherBankTransferUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.BANK_TRANSFER_OTHER);
             }
         });
 
@@ -456,7 +457,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startKlikBCAUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.KLIKBCA);
             }
         });
 
@@ -465,7 +466,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startBCAKlikPayUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.BCA_KLIKPAY);
             }
         });
 
@@ -474,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startMandiriClickpayUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.MANDIRI_CLICKPAY);
             }
         });
 
@@ -483,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startMandiriECashUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.MANDIRI_ECASH);
             }
         });
 
@@ -492,7 +493,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startCIMBClicksUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.CIMB_CLICKS);
             }
         });
 
@@ -501,7 +502,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startBRIEpayUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.EPAY_BRI);
             }
         });
 
@@ -510,7 +511,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startTelkomselCashUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.TELKOMSEL_CASH);
             }
         });
 
@@ -519,7 +520,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startIndosatDompetkuUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.INDOSAT_DOMPETKU);
             }
         });
 
@@ -528,7 +529,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startXlTunaiUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.XL_TUNAI);
             }
         });
 
@@ -537,7 +538,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startIndomaretUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.INDOMARET);
             }
         });
 
@@ -546,7 +547,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startKiosonUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.KIOSON);
             }
         });
 
@@ -555,7 +556,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().setTransactionRequest(initializePurchaseRequest(UI_FLOW));
-                MidtransSDK.getInstance().startGiftCardUIFlow(MainActivity.this);
+                MidtransSDK.getInstance().startPaymentUiFlow(MainActivity.this, PaymentMethod.GIFT_CARD_INDONESIA);
             }
         });
     }
