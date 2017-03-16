@@ -341,10 +341,7 @@ public class CreditCardFlowActivity extends BaseActivity {
             }
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == PAYMENT_WEB_INTENT) {
-                errorMessage = getString(R.string.payment_canceled);
-                SdkUIFlowUtil.hideProgressDialog();
-                initPaymentStatus(null, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
-                titleHeaderTextView.setText(getString(R.string.title_payment_status));
+                preCreditCardPayment();
             }
         }
     }
