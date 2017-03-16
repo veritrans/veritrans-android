@@ -460,6 +460,9 @@
     <string name="payment_not_enabled_message">Tidak dapat membuka halaman ini, silakan aktifkan channel pembayaran ini.</string>
 
     <string name="payment_method_description_credit_card">Bayar dengan VISA, MasterCard, JCB atau AMEX</string>
+    <string name="payment_method_description_credit_card_2">Bayar dengan VISA atau MasterCard</string>
+    <string name="payment_method_description_credit_card_3">Bayar dengan VISA, MasterCard atau JCB</string>
+    <string name="payment_method_description_credit_card_4">Bayar dengan VISA, MasterCard atau AMEX</string>
     <string name="payment_method_description_bank_transfer">Bayar dari ATM Bersama, Prima atau Alto</string>
     <string name="payment_method_description_klik_bca">Bayar dengan akun KlikBCA anda</string>
     <string name="payment_method_description_bca_klikpay">Bayar dengan BCA KlikPay</string>

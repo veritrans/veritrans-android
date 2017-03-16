@@ -649,6 +649,9 @@
     <string name="payment_not_enabled_message">Can\'t open the page, please enable the payment channel.</string>
 
     <string name="payment_method_description_credit_card">Pay with VISA, MasterCard, JCB or AMEX</string>
+    <string name="payment_method_description_credit_card_2">Pay with VISA or MasterCard</string>
+    <string name="payment_method_description_credit_card_3">Pay with VISA, MasterCard or JCB</string>
+    <string name="payment_method_description_credit_card_4">Pay with VISA, MasterCard or AMEX</string>
     <string name="payment_method_description_bank_transfer">Pay from ATM Bersama, Prima or Alto</string>
     <string name="payment_method_description_klik_bca">Pay with your KlikBCA account</string>
     <string name="payment_method_description_bca_klikpay">Pay with BCA KlikPay</string>

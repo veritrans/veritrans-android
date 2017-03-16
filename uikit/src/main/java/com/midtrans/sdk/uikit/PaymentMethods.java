@@ -6,6 +6,8 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
+import com.midtrans.sdk.uikit.models.CreditCardType;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,17 @@ public class PaymentMethods {
     }
 
     private static PaymentMethodsModel getMethodCreditCards(Context context, int priority) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_credit_card), context.getString(R.string.payment_method_description_credit_card), R.drawable.ic_credit, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
+        int creditCardSupportType = SdkUIFlowUtil.getCreditCardIconType();
+        switch (creditCardSupportType) {
+            case CreditCardType.TYPE_MASTER_VISA_JCB_AMEX:
+                return new PaymentMethodsModel(context.getString(R.string.payment_method_credit_card), context.getString(R.string.payment_method_description_credit_card), R.drawable.ic_credit, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
+            case CreditCardType.TYPE_MASTER_VISA_JCB:
+                return new PaymentMethodsModel(context.getString(R.string.payment_method_credit_card), context.getString(R.string.payment_method_description_credit_card_3), R.drawable.ic_credit_3, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
+            case CreditCardType.TYPE_MASTER_VISA_AMEX:
+                return new PaymentMethodsModel(context.getString(R.string.payment_method_credit_card), context.getString(R.string.payment_method_description_credit_card_4), R.drawable.ic_credit_4, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
+            default:
+                return new PaymentMethodsModel(context.getString(R.string.payment_method_credit_card), context.getString(R.string.payment_method_description_credit_card_2), R.drawable.ic_credit_2, Constants.PAYMENT_METHOD_NOT_SELECTED, priority);
+        }
     }
 
     private static PaymentMethodsModel getMethodBankTransfer(Context context, int priority) {
