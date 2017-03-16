@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
+        app:title="">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="@string/product_details" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/view_pager_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/image_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:layout_weight="0.5">
+
+            <com.midtrans.demo.indicator.CirclePageIndicator
+                android:id="@+id/image_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four_dp"
+                android:padding="@dimen/four_dp"
+                app:strokeColor="@color/white"
+                app:unselectedColor="@color/gray.secondary" />
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/product_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/twenty_dp"
+                android:text="@string/product_price_sample"
+                android:textColor="@color/navy_blue.secondary"
+                android:textSize="26sp" />
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/product_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/product_price"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:text="@string/product_name_sample"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/product_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/product_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/four_dp"
+                android:text="@string/product_details_sample"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:id="@+id/rating_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/product_details"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:gravity="center_vertical">
+
+                <com.midtrans.demo.DemoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_rating_sample"
+                    android:textSize="26sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_fill" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_fill" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_fill" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_fill" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_empty" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.midtrans.demo.DemoTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/product_copyright_sample"
+                            android:textSize="10sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_reviewer" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.midtrans.sdk.uikit.widgets.FancyButton
+                android:id="@+id/btn_buy"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_size"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                app:fb_defaultColor="@color/gray.primary"
+                app:fb_focusColor="@color/colorAccentLight"
+                app:fb_text="@string/btn_buy"
+                app:fb_textFont="fonts/SourceSansPro-Semibold.ttf"
+                app:fb_textGravity="center_vertical"
+                app:fb_textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_size"
+                android:layout_alignParentBottom="true"
+                android:gravity="bottom|end">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/eight_dp"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:src="@drawable/ic_arrow_right_white" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

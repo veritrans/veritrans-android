@@ -20,14 +20,14 @@ buildscript {
 }
 repositories {
     jcenter()
-    maven { url "http://dl.bintray.com/pt-midtrans/maven" }
+    maven { url "https://dl.bintray.com/pt-midtrans/maven" }
 }
 
 
 android {
     def DEFAULT_PUBLISH
     compileSdkVersion 25
-    buildToolsVersion '25'
+    buildToolsVersion '25.0.2'
 
     lintOptions {
         abortOnError false

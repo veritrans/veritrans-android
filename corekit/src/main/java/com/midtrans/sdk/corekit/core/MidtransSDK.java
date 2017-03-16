@@ -1683,4 +1683,8 @@ public class MidtransSDK {
     public void setBanksPointEnabled(ArrayList<String> pointBanks) {
         this.banksPointEnabled = pointBanks;
     }
+
+    public void setTransactionFinishedCallback(TransactionFinishedCallback transactionFinishedCallback) {
+        this.transactionFinishedCallback = transactionFinishedCallback;
+    }
 }
