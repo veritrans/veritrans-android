@@ -65,14 +65,26 @@
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
 
+    <!--ACTIVITY TITLE-->
     <string name="demo_configuration">Demo Configuration</string>
     <string name="product_details">Product Details</string>
+    <string name="order_review">Order Review</string>
+
+    <!--PRODUCT DETAILS-->
     <string name="product_price_sample">Rp 20,000</string>
     <string name="product_name_sample">Midtrans Pillow</string>
     <string name="product_details_sample">Get cozy with our new pillow!</string>
     <string name="product_rating_sample">4.4</string>
     <string name="product_copyright_sample">2012</string>
 
+    <!--ORDER REVIEW-->
+    <string name="order_review_total_amount">Total Amount</string>
+    <string name="order_review_delivery_address">YOUR DELIVERY ADDRESS</string>
+    <string name="order_review_delivery_address_sample">Midplaza 2, 4th Floor Jl. Jend. Sudirman\nKav.10-11, Jakarta - 10220\nIndonesia</string>
+    <string name="order_review_delivery_options">ORDER REVIEW &amp; DELIVERY OPTIONS</string>
+    <string name="order_review_quantity">Qty 1</string>
+    <!--BUTTON-->
     <string name="btn_launch_demo">Launch Demo App</string>
     <string name="btn_buy">Buy</string>
+    <string name="btn_pay_20000">Pay Rp 20,000</string>
 </resources>

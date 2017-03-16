@@ -1,5 +1,6 @@
 package com.midtrans.demo;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -35,6 +36,7 @@ public class DemoProductPageActivity extends AppCompatActivity {
         bindViews();
         bindThemes();
         initViewPager();
+        initBuyButton();
     }
 
     private void bindViews() {
@@ -55,42 +57,42 @@ public class DemoProductPageActivity extends AppCompatActivity {
                     buyBtn.setBackgroundColor(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX));
                     indicator.setFillColor(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX));
                     indicator.setStrokeColor(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX));
-                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX), PorterDuff.Mode.SRC_ATOP);
+                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_DARK_HEX), PorterDuff.Mode.SRC_ATOP);
                     break;
                 case DemoThemeConstants.RED_THEME:
                     productPrice.setTextColor(Color.parseColor(DemoThemeConstants.RED_SECONDARY_HEX));
                     buyBtn.setBackgroundColor(Color.parseColor(DemoThemeConstants.RED_PRIMARY_HEX));
                     indicator.setFillColor(Color.parseColor(DemoThemeConstants.RED_PRIMARY_HEX));
                     indicator.setStrokeColor(Color.parseColor(DemoThemeConstants.RED_PRIMARY_HEX));
-                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.RED_PRIMARY_HEX), PorterDuff.Mode.SRC_ATOP);
+                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.RED_PRIMARY_DARK_HEX), PorterDuff.Mode.SRC_ATOP);
                     break;
                 case DemoThemeConstants.GREEN_THEME:
                     indicator.setFillColor(Color.parseColor(DemoThemeConstants.GREEN_PRIMARY_HEX));
                     indicator.setStrokeColor(Color.parseColor(DemoThemeConstants.GREEN_PRIMARY_HEX));
                     productPrice.setTextColor(Color.parseColor(DemoThemeConstants.GREEN_SECONDARY_HEX));
                     buyBtn.setBackgroundColor(Color.parseColor(DemoThemeConstants.GREEN_PRIMARY_HEX));
-                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.GREEN_PRIMARY_HEX), PorterDuff.Mode.SRC_ATOP);
+                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.GREEN_PRIMARY_DARK_HEX), PorterDuff.Mode.SRC_ATOP);
                     break;
                 case DemoThemeConstants.ORANGE_THEME:
                     indicator.setFillColor(Color.parseColor(DemoThemeConstants.ORANGE_PRIMARY_HEX));
                     indicator.setStrokeColor(Color.parseColor(DemoThemeConstants.ORANGE_PRIMARY_HEX));
                     productPrice.setTextColor(Color.parseColor(DemoThemeConstants.ORANGE_SECONDARY_HEX));
                     buyBtn.setBackgroundColor(Color.parseColor(DemoThemeConstants.ORANGE_PRIMARY_HEX));
-                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.ORANGE_PRIMARY_HEX), PorterDuff.Mode.SRC_ATOP);
+                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.ORANGE_PRIMARY_DARK_HEX), PorterDuff.Mode.SRC_ATOP);
                     break;
                 case DemoThemeConstants.BLACK_THEME:
                     indicator.setFillColor(Color.parseColor(DemoThemeConstants.BLACK_PRIMARY_HEX));
                     indicator.setStrokeColor(Color.parseColor(DemoThemeConstants.BLACK_PRIMARY_HEX));
                     productPrice.setTextColor(Color.parseColor(DemoThemeConstants.BLACK_SECONDARY_HEX));
                     buyBtn.setBackgroundColor(Color.parseColor(DemoThemeConstants.BLACK_PRIMARY_HEX));
-                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.BLACK_PRIMARY_HEX), PorterDuff.Mode.SRC_ATOP);
+                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.BLACK_PRIMARY_DARK_HEX), PorterDuff.Mode.SRC_ATOP);
                     break;
                 default:
                     indicator.setFillColor(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX));
                     indicator.setStrokeColor(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX));
                     productPrice.setTextColor(Color.parseColor(DemoThemeConstants.BLUE_SECONDARY_HEX));
                     buyBtn.setBackgroundColor(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX));
-                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX), PorterDuff.Mode.SRC_ATOP);
+                    drawable.setColorFilter(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_DARK_HEX), PorterDuff.Mode.SRC_ATOP);
                     break;
             }
         } else {
@@ -98,7 +100,7 @@ public class DemoProductPageActivity extends AppCompatActivity {
             buyBtn.setBackgroundColor(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX));
             indicator.setFillColor(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX));
             indicator.setStrokeColor(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX));
-            drawable.setColorFilter(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_HEX), PorterDuff.Mode.SRC_ATOP);
+            drawable.setColorFilter(Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_DARK_HEX), PorterDuff.Mode.SRC_ATOP);
         }
 
         toolbar.setNavigationIcon(drawable);
@@ -114,5 +116,14 @@ public class DemoProductPageActivity extends AppCompatActivity {
         viewPager.setAdapter(new DemoImageAdapter(getSupportFragmentManager()));
         indicator.setViewPager(viewPager);
         indicator.setSnap(true);
+    }
+
+    private void initBuyButton() {
+        buyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(DemoProductPageActivity.this, DemoOrderReviewActivity.class));
+            }
+        });
     }
 }

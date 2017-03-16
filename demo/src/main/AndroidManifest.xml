@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DemoProductPageActivity" />
+        <activity android:name=".DemoOrderReviewActivity" />
     </application>
 
 </manifest>

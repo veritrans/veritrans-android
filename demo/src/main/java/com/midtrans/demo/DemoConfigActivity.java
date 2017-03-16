@@ -27,7 +27,6 @@ import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
-import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
@@ -1191,32 +1190,20 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.BLACK_PRIMARY_HEX, DemoThemeConstants.BLACK_PRIMARY_DARK_HEX, DemoThemeConstants.BLACK_SECONDARY_HEX));
         }
         // Create new Transaction Request
-        TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 6000);
-
-        //define customer detail (mandatory for coreflow)
-        CustomerDetails mCustomerDetails = new CustomerDetails();
-        mCustomerDetails.setPhone("624234234234");
-        mCustomerDetails.setFirstName("sample full name");
-        mCustomerDetails.setEmail("mail@mail.com");
-        transactionRequestNew.setCustomerDetails(mCustomerDetails);
+        TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 20000);
 
 
         // Define item details
-        ItemDetails itemDetails = new ItemDetails("1", 1000, 1, "Trekking Shoes");
-        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 2, "Casual Shoes");
-        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 3, "Formal Shoes");
-
+        ItemDetails itemDetails = new ItemDetails("1", 20000, 1, getString(R.string.product_name_sample));
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
         itemDetailsArrayList.add(itemDetails);
-        itemDetailsArrayList.add(itemDetails1);
-        itemDetailsArrayList.add(itemDetails2);
         transactionRequestNew.setItemDetails(itemDetailsArrayList);
         // Set Bill info
         BillInfoModel billInfoModel = new BillInfoModel("demo_label", "demo_value");
         transactionRequestNew.setBillInfoModel(billInfoModel);
 
-        // Create creditcard options for payment
+        // Create credit card options for payment
         // noted : channel migs is needed if bank type is BCA, BRI or MyBank
         CreditCard creditCard = new CreditCard();
         if (bankMandiriSelection.isChecked()) {
