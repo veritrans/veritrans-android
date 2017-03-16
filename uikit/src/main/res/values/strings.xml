@@ -392,7 +392,7 @@
     <string name="success">success</string>
     <string name="fetching_cards">Fetching cards</string>
     <string name="btn_save_card">Register Card</string>
-    <string name="btn_scan_card">Scan Card Using Camera</string>
+    <string name="btn_scan_card">scan card using camera</string>
     <string name="offer_applied">Offer Applied Successfully !</string>
     <string name="offer_not_applied">This card is not applicable for this promotion, please use another one.</string>
     <string name="no_offers">No offers found</string>
