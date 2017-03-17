@@ -587,36 +587,36 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         if (bank != null && !TextUtils.isEmpty(bank)) {
             switch (bank) {
                 case Constants.BANK_NONE:
-                    bankTitle.setText(R.string.issuing_bank_none);
+                    bankTitle.setText(R.string.acquiring_bank_none);
                     bankNoneSelection.setChecked(true);
                     break;
                 case Constants.BANK_BNI:
-                    bankTitle.setText(R.string.issuing_bank_by_bni);
+                    bankTitle.setText(R.string.acquiring_bank_by_bni);
                     bankBniSelection.setChecked(true);
                     break;
                 case Constants.BANK_MANDIRI:
-                    bankTitle.setText(R.string.issuing_bank_by_mandiri);
+                    bankTitle.setText(R.string.acquiring_bank_by_mandiri);
                     bankMandiriSelection.setChecked(true);
                     break;
                 case Constants.BANK_BCA:
-                    bankTitle.setText(R.string.issuing_bank_by_bca);
+                    bankTitle.setText(R.string.acquiring_bank_by_bca);
                     bankBcaSelection.setChecked(true);
                     break;
                 case Constants.BANK_MAYBANK:
-                    bankTitle.setText(R.string.issuing_bank_by_maybank);
+                    bankTitle.setText(R.string.acquiring_bank_by_maybank);
                     bankMaybankSelection.setChecked(true);
                     break;
                 case Constants.BANK_BRI:
-                    bankTitle.setText(R.string.issuing_bank_by_bri);
+                    bankTitle.setText(R.string.acquiring_bank_by_bri);
                     bankBriSelection.setChecked(true);
                     break;
                 default:
-                    bankTitle.setText(R.string.issuing_bank_none);
+                    bankTitle.setText(R.string.acquiring_bank_none);
                     bankNoneSelection.setChecked(true);
                     break;
             }
         } else {
-            bankTitle.setText(R.string.issuing_bank_none);
+            bankTitle.setText(R.string.acquiring_bank_none);
             bankNoneSelection.setChecked(true);
         }
 
@@ -624,7 +624,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    bankTitle.setText(R.string.issuing_bank_none);
+                    bankTitle.setText(R.string.acquiring_bank_none);
                 }
             }
         });
@@ -633,7 +633,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    bankTitle.setText(R.string.issuing_bank_by_bni);
+                    bankTitle.setText(R.string.acquiring_bank_by_bni);
                 }
             }
         });
@@ -642,7 +642,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    bankTitle.setText(R.string.issuing_bank_by_mandiri);
+                    bankTitle.setText(R.string.acquiring_bank_by_mandiri);
                 }
             }
         });
@@ -651,7 +651,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    bankTitle.setText(R.string.issuing_bank_by_bca);
+                    bankTitle.setText(R.string.acquiring_bank_by_bca);
                 }
             }
         });
@@ -660,7 +660,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    bankTitle.setText(R.string.issuing_bank_by_maybank);
+                    bankTitle.setText(R.string.acquiring_bank_by_maybank);
                 }
             }
         });
@@ -669,7 +669,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    bankTitle.setText(R.string.issuing_bank_by_bri);
+                    bankTitle.setText(R.string.acquiring_bank_by_bri);
                 }
             }
         });

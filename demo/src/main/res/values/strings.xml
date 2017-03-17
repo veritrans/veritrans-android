@@ -16,12 +16,12 @@
     <string name="secure_type_disabled">3D Secure Disabled</string>
 
     <!--ISSUING BANK TITLE-->
-    <string name="issuing_bank_none">No Issuing Bank</string>
-    <string name="issuing_bank_by_bni">Issuing Bank by BNI</string>
-    <string name="issuing_bank_by_mandiri">Issuing Bank by Mandiri</string>
-    <string name="issuing_bank_by_bca">Issuing Bank by BCA</string>
-    <string name="issuing_bank_by_maybank">Issuing Bank by Maybank</string>
-    <string name="issuing_bank_by_bri">Issuing Bank by BRI</string>
+    <string name="acquiring_bank_none">No Acquiring Bank</string>
+    <string name="acquiring_bank_by_bni">Acquiring Bank by BNI</string>
+    <string name="acquiring_bank_by_mandiri">Acquiring Bank by Mandiri</string>
+    <string name="acquiring_bank_by_bca">Acquiring Bank by BCA</string>
+    <string name="acquiring_bank_by_maybank">Acquiring Bank by Maybank</string>
+    <string name="acquiring_bank_by_bri">Acquiring Bank by BRI</string>
 
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
