@@ -126,7 +126,7 @@
                 android:drawableLeft="@drawable/ic_config_bank"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/ic_config_bank"
-                android:text="@string/issuing_bank_none" />
+                android:text="@string/acquiring_bank_none" />
 
             <RadioGroup
                 android:id="@+id/issuing_bank_type_container"
@@ -146,7 +146,7 @@
                     android:layout_marginStart="@dimen/eight_dp"
                     android:checked="true"
                     android:gravity="center_vertical"
-                    android:text="@string/issuing_bank_none" />
+                    android:text="@string/acquiring_bank_none" />
 
                 <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_bank_bni"
