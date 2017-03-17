@@ -28,6 +28,7 @@ import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
@@ -76,6 +77,7 @@ public class MidtransSDK {
     private List<PromoResponse> promoResponses = new ArrayList<>();
     private ArrayList<String> banksPointEnabled;
     private BaseColorTheme colorTheme;
+    private MerchantData merchantData;
 
     private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
@@ -1686,5 +1688,13 @@ public class MidtransSDK {
 
     public void setTransactionFinishedCallback(TransactionFinishedCallback transactionFinishedCallback) {
         this.transactionFinishedCallback = transactionFinishedCallback;
+    }
+
+    public MerchantData getMerchantData() {
+        return merchantData;
+    }
+
+    public void setMerchantData(MerchantData merchantData) {
+        this.merchantData = merchantData;
     }
 }

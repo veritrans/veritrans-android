@@ -206,3 +206,5 @@ public static final *** NULL; }
 -keep class **.R$* {
    <fields>;
 }
+
+-dontwarn okhttp3.**
