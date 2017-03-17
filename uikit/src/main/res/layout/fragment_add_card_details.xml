@@ -237,7 +237,7 @@
                 android:id="@+id/layout_save_card_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/scan_card"
+                android:layout_below="@+id/expiry_date_layout"
                 android:layout_marginTop="@dimen/eight_dp">
 
                 <android.support.v7.widget.AppCompatCheckBox
@@ -397,19 +397,6 @@
                     android:src="@drawable/cc_badge" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/scan_card"
-                style="?borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/expiry_date_layout"
-                android:text="@string/btn_scan_card"
-                android:textColor="@color/gray.primary_dark"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
 
             <com.midtrans.sdk.uikit.widgets.FancyButton
                 android:id="@+id/image_saved_card_delete"
@@ -436,6 +423,33 @@
                 app:fb_text="@string/delete_this_card"
                 app:fb_textColor="@color/delete_color"
                 app:fb_textSize="12sp"
+                tools:visibility="visible" />
+
+            <com.midtrans.sdk.uikit.widgets.FancyButton
+                android:id="@+id/scan_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/container_security"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="19dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                app:fb_borderColor="@color/navy_blue.primary_dark"
+                app:fb_borderWidth="1.25dp"
+                app:fb_defaultColor="@android:color/white"
+                app:fb_focusColor="@color/colorAccentLight"
+                app:fb_iconColor="@color/navy_blue.primary_dark"
+                app:fb_text="@string/btn_scan_card"
+                app:fb_iconPaddingLeft="0dp"
+                app:fb_iconPaddingRight="0dp"
+                app:fb_iconPosition="left"
+                app:fb_iconResource="@drawable/ic_scan_cam"
+                app:fb_radius="5dp"
+                app:fb_textColor="@color/navy_blue.primary_dark"
+                app:fb_textSize="12sp"
+                android:visibility="gone"
                 tools:visibility="visible" />
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
