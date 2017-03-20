@@ -112,6 +112,12 @@ public class DemoProductPageActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+    }
+
     private void initViewPager() {
         viewPager.setAdapter(new DemoImageAdapter(getSupportFragmentManager()));
         indicator.setViewPager(viewPager);
@@ -123,6 +129,7 @@ public class DemoProductPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DemoProductPageActivity.this, DemoOrderReviewActivity.class));
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
     }

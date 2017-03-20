@@ -420,6 +420,10 @@ public class UserAddressFragment extends Fragment {
                 selectPaymentIntent.putExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, true);
             }
             startActivity(selectPaymentIntent);
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
             getActivity().finish();
         } catch (Exception e) {
             e.printStackTrace();

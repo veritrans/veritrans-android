@@ -95,6 +95,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
             Intent startMandiriBankPayment = new Intent(this, BankTransferActivity.class);
             startMandiriBankPayment.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
@@ -102,6 +106,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startMandiriBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
             Intent startBankPayment = new Intent(this, BankTransferActivity.class);
             startBankPayment.putExtra(
@@ -113,6 +121,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
 
             Intent startOtherBankPayment = new Intent(this, BankTransferActivity.class);
@@ -124,6 +136,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startOtherBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else {
             if (banks != null && banks.size() > 0) {
                 initialiseBankTransfersModel(banks);
@@ -191,6 +207,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         if (item.getItemId() == android.R.id.home) {
             SdkUIFlowUtil.hideKeyboard(this);
             finish();
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+            }
             return false;
         }
 
@@ -253,7 +273,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
-
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (name.equals(getString(R.string.permata_bank_transfer))) {
             Intent startBankPayment = new Intent(this, BankTransferActivity.class);
             startBankPayment.putExtra(
@@ -264,7 +287,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
-
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (name.equals(getString(R.string.mandiri_bank_transfer))) {
             Intent startMandiriBankPayment = new Intent(this, BankTransferActivity.class);
             startMandiriBankPayment.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
@@ -272,7 +298,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startMandiriBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
-
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (name.equals(getString(R.string.all_bank_transfer))) {
 
             Intent startOtherBankPayment = new Intent(this, BankTransferActivity.class);
@@ -284,7 +313,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startOtherBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
-
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else {
             Toast.makeText(this, "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
         }

@@ -108,11 +108,18 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+    }
+
     private void initPayButton() {
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
     }

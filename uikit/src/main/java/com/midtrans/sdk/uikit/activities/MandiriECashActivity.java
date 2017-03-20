@@ -142,6 +142,10 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
                     intentPaymentWeb.putExtra(Constants.WEBURL, response.getRedirectUrl());
                     intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_MANDIRI_ECASH);
                     startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    }
                 } else {
                     SdkUIFlowUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string
                             .empty_transaction_response));

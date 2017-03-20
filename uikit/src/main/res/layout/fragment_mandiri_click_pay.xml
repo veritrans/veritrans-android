@@ -197,8 +197,6 @@
             android:id="@+id/btn_see_instruction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/credit_card_holder"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="19dp"
             android:padding="@dimen/eight_dp"

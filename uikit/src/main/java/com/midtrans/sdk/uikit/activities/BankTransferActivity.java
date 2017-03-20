@@ -101,6 +101,10 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+        }
         if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
             bankTransferFragment = BankTransferFragment.newInstance(BankTransferInstructionActivity.TYPE_MANDIRI_BILL, 0);
 
@@ -262,6 +266,10 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             FragmentManager fragmentManager = getSupportFragmentManager();
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+            }
             if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
                 MandiriBillPayFragment bankTransferPaymentFragment = MandiriBillPayFragment.newInstance(transactionResponse);
                 fragmentTransaction.replace(R.id.instruction_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);

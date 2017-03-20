@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
+import android.support.annotation.IdRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -46,6 +47,15 @@ public class BaseActivity extends AppCompatActivity {
             }
 
             updateColorTheme(mMidtransSDK);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
         }
     }
 
@@ -99,6 +109,10 @@ public class BaseActivity extends AppCompatActivity {
             if (!fragmentPopped) {
                 Logger.i("fragment not in back stack, create it");
                 FragmentTransaction ft = fragmentManager.beginTransaction();
+                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+                }
                 ft.replace(fragmentContainer, fragment, backStateName);
                 if (addToBackStack) {
                     ft.addToBackStack(backStateName);
