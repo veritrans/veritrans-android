@@ -227,4 +227,11 @@ public class Utils {
         String nowAsISO = df.format(new Date(time));
         return nowAsISO;
     }
+
+    public static String formatDouble(double d) {
+        if(d == (long) d)
+            return String.format("%d",(long)d);
+        else
+            return String.format("%s",d);
+    }
 }
