@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
@@ -29,6 +30,8 @@ import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
+import com.midtrans.sdk.corekit.models.UserAddress;
+import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -37,6 +40,7 @@ import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by rakawm on 3/15/17.
@@ -1285,6 +1289,22 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             transactionRequestNew.setPromoEnabled(true);
         }
 
+        if (LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class) == null) {
+            UserDetail userDetail = new UserDetail();
+            userDetail.setUserFullName(getString(R.string.order_review_customer_details_name));
+            userDetail.setEmail(getString(R.string.order_review_customer_details_email));
+            userDetail.setPhoneNumber(getString(R.string.order_review_customer_details_phone));
+            userDetail.setUserId(UUID.randomUUID().toString());
+            ArrayList<UserAddress> userAddresses = new ArrayList<>();
+            UserAddress userAddress = new UserAddress();
+            userAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
+            userAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
+            userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
+            userAddresses.add(userAddress);
+            userDetail.setUserAddresses(userAddresses);
+
+            LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
+        }
         return transactionRequestNew;
     }
 }

@@ -61,6 +61,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/sixty_four_dp"
         android:layout_below="@id/amount_container">
 
         <RelativeLayout
@@ -68,54 +69,9 @@
             android:layout_height="wrap_content">
 
             <com.midtrans.demo.DemoTextView
-                android:id="@+id/title_delivery_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/sixteen_dp"
-                android:layout_marginRight="@dimen/sixteen_dp"
-                android:layout_marginTop="@dimen/sixteen_dp"
-                android:paddingBottom="@dimen/eight_dp"
-                android:paddingTop="@dimen/eight_dp"
-                android:text="@string/order_review_delivery_address"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/delivery_address_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/title_delivery_address"
-                android:layout_marginLeft="@dimen/sixteen_dp"
-                android:layout_marginRight="@dimen/sixteen_dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/eight_dp"
-                    android:src="@drawable/address" />
-
-                <com.midtrans.demo.DemoTextView
-                    android:id="@+id/delivery_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/order_review_delivery_address_sample" />
-            </LinearLayout>
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_below="@id/delivery_address_container"
-                android:layout_marginBottom="@dimen/eight_dp"
-                android:layout_marginTop="@dimen/eight_dp"
-                android:background="@color/gray_divider" />
-
-            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_delivery_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/divider"
                 android:layout_marginLeft="@dimen/sixteen_dp"
                 android:layout_marginRight="@dimen/sixteen_dp"
                 android:paddingBottom="@dimen/eight_dp"
@@ -167,6 +123,121 @@
                     android:textColor="@color/navy_blue.primary_dark"
                     android:textSize="10sp" />
             </RelativeLayout>
+
+            <View
+                android:id="@+id/divider_1"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/order_review_container"
+                android:layout_marginBottom="@dimen/eight_dp"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:background="@color/gray_divider" />
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_customer_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/sixteen_dp"
+                android:layout_marginRight="@dimen/sixteen_dp"
+                android:layout_marginTop="@dimen/sixteen_dp"
+                android:layout_below="@id/divider_1"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp"
+                android:text="@string/order_review_customer_details"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/customer_details_container"
+                android:layout_below="@id/title_customer_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/sixteen_dp"
+                android:layout_marginRight="@dimen/sixteen_dp"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="@string/order_review_customer_details_hint_name"
+                        android:text="@string/order_review_customer_details_name"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="@string/order_review_customer_details_hint_email"
+                        android:text="@string/order_review_customer_details_email"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="@string/order_review_customer_details_hint_phone"
+                        android:text="@string/order_review_customer_details_phone"/>
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider_2"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/customer_details_container"
+                android:layout_marginBottom="@dimen/eight_dp"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:background="@color/gray_divider" />
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_delivery_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/sixteen_dp"
+                android:layout_marginRight="@dimen/sixteen_dp"
+                android:layout_marginTop="@dimen/sixteen_dp"
+                android:layout_below="@id/divider_2"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp"
+                android:text="@string/order_review_delivery_address"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/delivery_address_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_delivery_address"
+                android:layout_marginLeft="@dimen/sixteen_dp"
+                android:layout_marginRight="@dimen/sixteen_dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:src="@drawable/address" />
+
+                <com.midtrans.demo.DemoTextView
+                    android:id="@+id/delivery_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_review_delivery_address_sample" />
+            </LinearLayout>
         </RelativeLayout>
     </ScrollView>
 

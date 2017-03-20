@@ -80,7 +80,15 @@
     <!--ORDER REVIEW-->
     <string name="order_review_total_amount">Total Amount</string>
     <string name="order_review_delivery_address">YOUR DELIVERY ADDRESS</string>
+    <string name="order_review_customer_details">CUSTOMER DETAILS</string>
+    <string name="order_review_customer_details_name">Budi Utomo</string>
+    <string name="order_review_customer_details_hint_name">Full Name</string>
+    <string name="order_review_customer_details_email">budi@utomo.com</string>
+    <string name="order_review_customer_details_hint_email">Email</string>
+    <string name="order_review_customer_details_phone">081808466410</string>
+    <string name="order_review_customer_details_hint_phone">Phone Number</string>
     <string name="order_review_delivery_address_sample">Midplaza 2, 4th Floor Jl. Jend. Sudirman\nKav.10-11, Jakarta - 10220\nIndonesia</string>
+    <string name="order_review_delivery_address_city_sample">Jakarta</string>
     <string name="order_review_delivery_options">ORDER REVIEW &amp; DELIVERY OPTIONS</string>
     <string name="order_review_quantity">Qty 1</string>
     <!--BUTTON-->
