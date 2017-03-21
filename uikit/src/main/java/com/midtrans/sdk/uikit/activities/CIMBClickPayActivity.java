@@ -61,11 +61,6 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         setUpFragment();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     private void initializeViews() {
         buttonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -75,9 +70,31 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         initializeTheme();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        prepareToolbar();
         buttonConfirmPayment.setOnClickListener(this);
         bindData();
+    }
+
+    private void prepareToolbar() {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            drawable.setColorFilter(
+                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+        mToolbar.setNavigationIcon(drawable);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentFragmentName.equals(STATUS_FRAGMENT)) {
+                    setResultCode(RESULT_OK);
+                    setResultAndFinish();
+                } else {
+                    onBackPressed();
+                }
+            }
+        });
     }
 
     private void bindData() {
@@ -98,22 +115,6 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         // setup  fragment
         cimbClickPayFragment = new InstructionCIMBFragment();
         replaceFragment(cimbClickPayFragment, R.id.instruction_container, false, false);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            if (currentFragmentName.equals(STATUS_FRAGMENT)) {
-                setResultCode(RESULT_OK);
-                setResultAndFinish();
-                return false;
-            } else {
-                onBackPressed();
-                return false;
-            }
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

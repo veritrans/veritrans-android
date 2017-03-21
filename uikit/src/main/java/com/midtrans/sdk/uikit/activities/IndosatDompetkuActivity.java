@@ -1,8 +1,11 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -94,25 +97,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         currentFragment = HOME_FRAGMENT;
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            if (currentFragment.equals(STATUS_FRAGMENT)) {
-                setResultCode(RESULT_OK);
-                setResultAndFinish();
-                return false;
-            } else {
-                onBackPressed();
-                return false;
-            }
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
     /**
      * initialize all views
      */
@@ -125,7 +109,29 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         initializeTheme();
         //setup tool bar
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        prepareToolbar();
+    }
+
+    private void prepareToolbar() {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            drawable.setColorFilter(
+                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+        mToolbar.setNavigationIcon(drawable);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentFragment.equals(STATUS_FRAGMENT)) {
+                    setResultCode(RESULT_OK);
+                    setResultAndFinish();
+                } else {
+                    onBackPressed();
+                }
+            }
+        });
     }
 
     /**

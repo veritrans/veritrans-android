@@ -1,9 +1,12 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -93,17 +96,6 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         currentFragment = HOME_FRAGMENT;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return false;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void initializeView() {
         textViewAmount = (TextView) findViewById(R.id.text_amount);
         textViewTitle = (TextView) findViewById(R.id.text_title);
@@ -114,7 +106,24 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
         //setup tool bar
         toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        prepareToolbar();
+    }
+
+    private void prepareToolbar() {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            drawable.setColorFilter(
+                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+        toolbar.setNavigationIcon(drawable);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void bindDataToView() {
