@@ -448,7 +448,7 @@
                 app:fb_iconResource="@drawable/ic_scan_cam"
                 app:fb_radius="5dp"
                 app:fb_textColor="@color/navy_blue.primary_dark"
-                app:fb_textSize="12sp"
+                app:fb_textSize="14sp"
                 android:visibility="gone"
                 tools:visibility="visible" />
         </RelativeLayout>

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.R;
@@ -94,17 +95,21 @@ public class UserDetailsActivity extends BaseActivity {
                         paymentOptionIntent.putExtra(GIFT_CARD, true);
                     }
                     startActivity(paymentOptionIntent);
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    }
                     finish();
                 } else {
                     setView();
                     UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
-                    replaceFragment(userAddressFragment);
+                    replaceFragment(userAddressFragment, false);
                     return;
                 }
             } else {
                 setView();
                 UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
-                replaceFragment(userDetailFragment);
+                replaceFragment(userDetailFragment, false);
                 return;
             }
         } catch (Exception e) {
@@ -113,7 +118,7 @@ public class UserDetailsActivity extends BaseActivity {
 
         setView();
         UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
-        replaceFragment(userDetailFragment);
+        replaceFragment(userDetailFragment, false);
     }
 
     private void setView() {
@@ -129,6 +134,25 @@ public class UserDetailsActivity extends BaseActivity {
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+            }
+            ft.replace(R.id.user_detail_container, fragment);
+            ft.commit();
+        }
+    }
+
+    public void replaceFragment(Fragment fragment, boolean needAnimation) {
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            if (needAnimation) {
+                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+                }
+            }
             ft.replace(R.id.user_detail_container, fragment);
             ft.commit();
         }

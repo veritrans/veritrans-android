@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -535,6 +536,10 @@ public class CreditCardFlowActivity extends BaseActivity {
                         intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
                         intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_CREDIT_CARD);
                         startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                        }
                     }
                 } else {
                     SdkUIFlowUtil.showProgressDialog(CreditCardFlowActivity.this, getString(R.string.processing_payment), false);

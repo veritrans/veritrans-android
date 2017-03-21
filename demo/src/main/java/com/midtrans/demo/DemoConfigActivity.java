@@ -832,9 +832,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
                 TransactionRequest transactionRequest = initializePurchaseRequest();
                 MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
-                //MidtransSDK.getInstance().startPaymentUiFlow(DemoConfigActivity.this);
 
                 startActivity(new Intent(DemoConfigActivity.this, DemoProductPageActivity.class));
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
     }

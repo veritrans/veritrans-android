@@ -144,6 +144,10 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
                     intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_CIMB_CLICK);
                     intentPaymentWeb.putExtra(Constants.WEBVIEW_REDIRECT_URL, response.getFinishRedirectUrl());
                     startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    }
                 } else {
                     SdkUIFlowUtil.showApiFailedMessage(CIMBClickPayActivity.this, getString(R.string
                             .empty_transaction_response));

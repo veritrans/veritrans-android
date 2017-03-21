@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
@@ -120,8 +121,12 @@ public class WebviewFragment extends Fragment {
             SdkUIFlowUtil.hideProgressDialog();
             if (url.contains(BuildConfig.CALLBACK_STRING)) {
                 Intent returnIntent = new Intent();
-                getActivity().setResult(getActivity().RESULT_OK, returnIntent);
+                getActivity().setResult(Activity.RESULT_OK, returnIntent);
                 getActivity().finish();
+                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                }
             }
         }
 
@@ -134,6 +139,10 @@ public class WebviewFragment extends Fragment {
                     Intent returnIntent = new Intent();
                     getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                    }
                     return;
                 }
             } else if (type != null && type.equals(TYPE_MANDIRI_ECASH)) {
@@ -141,6 +150,10 @@ public class WebviewFragment extends Fragment {
                     Intent returnIntent = new Intent();
                     getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                    }
                     return;
                 }
             } else if (type != null && type.equals(TYPE_EPAY_BRI)) {
@@ -148,6 +161,10 @@ public class WebviewFragment extends Fragment {
                     Intent returnIntent = new Intent();
                     getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                    }
                     return;
                 }
             } else if (type != null && type.equals(TYPE_CIMB_CLICK)) {
@@ -155,6 +172,10 @@ public class WebviewFragment extends Fragment {
                     Intent returnIntent = new Intent();
                     getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                    }
                     return;
                 }
             }

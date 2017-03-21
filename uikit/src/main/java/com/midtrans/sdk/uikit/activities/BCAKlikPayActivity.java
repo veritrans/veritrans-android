@@ -147,6 +147,10 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                     intentPaymentWeb.putExtra(Constants.WEBURL, response.getRedirectUrl());
                     intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_BCA_KLIKPAY);
                     startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    }
                 } else {
                     SdkUIFlowUtil.showApiFailedMessage(BCAKlikPayActivity.this, getString(R.string
                             .empty_transaction_response));

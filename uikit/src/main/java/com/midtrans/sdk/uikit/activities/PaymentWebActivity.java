@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 
@@ -69,6 +70,10 @@ public class PaymentWebActivity extends BaseActivity {
                         Intent returnIntent = new Intent();
                         setResult(RESULT_CANCELED, returnIntent);
                         finish();
+                        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                        }
                     }
                 })
                 .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {

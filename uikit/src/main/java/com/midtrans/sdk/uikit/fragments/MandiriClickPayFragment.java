@@ -70,6 +70,10 @@ public class MandiriClickPayFragment extends Fragment {
                 MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_MANDIRI_CLICKPAY_OVERVIEW);
 
                 getActivity().startActivity(new Intent(getActivity(), MandiriClickPayInstructionActivity.class));
+                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
             }
         });
 
