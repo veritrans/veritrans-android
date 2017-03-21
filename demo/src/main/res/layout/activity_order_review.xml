@@ -168,7 +168,7 @@
                         android:focusable="false"
                         android:hint="@string/order_review_customer_details_hint_name"
                         android:text="@string/order_review_customer_details_name"
-                        android:textSize="12sp" />
+                        android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -180,7 +180,7 @@
                         android:focusable="false"
                         android:hint="@string/order_review_customer_details_hint_email"
                         android:text="@string/order_review_customer_details_email"
-                        android:textSize="12sp" />
+                        android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -192,7 +192,7 @@
                         android:focusable="false"
                         android:hint="@string/order_review_customer_details_hint_phone"
                         android:text="@string/order_review_customer_details_phone"
-                        android:textSize="12sp" />
+                        android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
