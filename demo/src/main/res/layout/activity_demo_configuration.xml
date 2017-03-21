@@ -256,9 +256,9 @@
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_config_save_card"
+                android:drawableLeft="@drawable/ic_save_card"
                 android:drawablePadding="10dp"
-                android:drawableStart="@drawable/ic_config_save_card"
+                android:drawableStart="@drawable/ic_save_card"
                 android:paddingLeft="10dp"
                 android:text="@string/default_save_card_disabled" />
 
