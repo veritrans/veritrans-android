@@ -1,7 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
-import android.support.annotation.IdRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -83,12 +82,6 @@ public class BaseActivity extends AppCompatActivity {
             TabLayout tabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
             if (tabLayout != null) {
                 tabLayout.setSelectedTabIndicatorColor(mMidtransSDK.getColorTheme().getPrimaryColor());
-            }
-
-            // Set indicator color
-            View indicator = findViewById(R.id.title_underscore);
-            if (indicator != null) {
-                indicator.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
             }
         }
     }
