@@ -197,8 +197,6 @@ public class UtilsTest {
 
     @Test
     public void getFormattedAmount() {
-        Assert.assertEquals("1.000", Utils.getFormattedAmount(1000.0));
+        Assert.assertEquals("1,000", Utils.getFormattedAmount(1000.0));
     }
-
-
 }
