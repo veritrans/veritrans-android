@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center_vertical"
     android:paddingLeft="@dimen/sixteen_dp"
     android:paddingRight="@dimen/sixteen_dp"
-    tools:background="?colorPrimary">
+    tools:background="@color/navy_blue.primary">
 
     <RelativeLayout
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/eight_dp"
-        android:layout_marginTop="@dimen/eight_dp">
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:layout_marginBottom="@dimen/sixteen_dp">
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/total_amount"

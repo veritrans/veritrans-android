@@ -90,8 +90,25 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         textTitle.setText(getString(R.string.mandiri_e_cash));
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        prepareToolbar();
         buttonConfirmPayment.setOnClickListener(this);
+    }
+
+    private void prepareToolbar() {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            drawable.setColorFilter(
+                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+        mToolbar.setNavigationIcon(drawable);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void setUpFragment() {
@@ -101,17 +118,6 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         // setup  fragment
         mandiriECashFragment = new InstructionMandiriECashFragment();
         replaceFragment(mandiriECashFragment, R.id.instruction_container, false, false);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return false;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
