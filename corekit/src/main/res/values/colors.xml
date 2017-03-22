@@ -10,6 +10,7 @@
     <color name="colorSecondary">#ACD6FA</color>
     <color name="inactiveTabColor">#B2DFDB</color>
     <color name="light_gray">#F1F1F1</color>
+    <color name="gray_bd">#BDBDBD</color>
 
     <color name="faint_gray">#d3d3d3</color>
     <color name="faint_yellow">#FFF3CD</color>
