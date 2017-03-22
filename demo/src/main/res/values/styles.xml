@@ -1,0 +1,35 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/gray.primary</item>
+        <item name="colorPrimaryDark">@color/gray_bd</item>
+        <item name="colorAccent">@color/gray.primary_dark</item>
+    </style>
+
+    <style name="CustomRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/selector_custom_radio_button</item>
+        <item name="android:paddingLeft">@dimen/twelve_dp</item>
+        <item name="android:paddingTop">@dimen/eight_dp</item>
+        <item name="android:paddingBottom">@dimen/eight_dp</item>
+    </style>
+
+    <style name="ConfigItemTextTitle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:layout_marginTop">@dimen/four_dp</item>
+        <item name="android:layout_marginBottom">@dimen/four_dp</item>
+        <item name="android:paddingLeft">@dimen/eight_dp</item>
+        <item name="android:paddingRight">@dimen/eight_dp</item>
+        <item name="android:paddingTop">@dimen/eight_dp</item>
+        <item name="android:paddingBottom">@dimen/eight_dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:drawableRight">@drawable/selector_title_arrow</item>
+        <item name="android:drawableEnd" tools:targetApi="ice_cream_sandwich">
+            @drawable/selector_title_arrow
+        </item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+</resources>

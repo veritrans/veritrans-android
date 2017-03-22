@@ -1,15 +1,20 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.R;
@@ -94,17 +99,21 @@ public class UserDetailsActivity extends BaseActivity {
                         paymentOptionIntent.putExtra(GIFT_CARD, true);
                     }
                     startActivity(paymentOptionIntent);
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    }
                     finish();
                 } else {
                     setView();
                     UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
-                    replaceFragment(userAddressFragment);
+                    replaceFragment(userAddressFragment, false);
                     return;
                 }
             } else {
                 setView();
                 UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
-                replaceFragment(userDetailFragment);
+                replaceFragment(userDetailFragment, false);
                 return;
             }
         } catch (Exception e) {
@@ -113,33 +122,60 @@ public class UserDetailsActivity extends BaseActivity {
 
         setView();
         UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
-        replaceFragment(userDetailFragment);
+        replaceFragment(userDetailFragment, false);
     }
 
     private void setView() {
         setContentView(R.layout.activity_user_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        prepareToolbar(toolbar);
         initializeTheme();
 
+    }
+
+    private void prepareToolbar(Toolbar toolbar) {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            drawable.setColorFilter(
+                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+        toolbar.setNavigationIcon(drawable);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     public void replaceFragment(Fragment fragment) {
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+            }
             ft.replace(R.id.user_detail_container, fragment);
             ft.commit();
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+    public void replaceFragment(Fragment fragment, boolean needAnimation) {
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            if (needAnimation) {
+                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+                }
+            }
+            ft.replace(R.id.user_detail_container, fragment);
+            ft.commit();
         }
-        return super.onOptionsItemSelected(item);
     }
 }

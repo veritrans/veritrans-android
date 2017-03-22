@@ -1,7 +1,10 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,8 +57,37 @@ public class KlikBCAActivity extends BaseActivity {
         // Setup toolbar
         mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        prepareToolbar();
         bindData();
+    }
+
+    private void prepareToolbar() {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            drawable.setColorFilter(
+                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+        mToolbar.setNavigationIcon(drawable);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentFragment.equals(STATUS_FRAGMENT)) {
+                    Intent data = new Intent();
+                    if (transactionResponse != null) {
+                        data.putExtra(getString(R.string.transaction_response), transactionResponse);
+                    }
+                    if (errorMessage != null && !errorMessage.equals("")) {
+                        data.putExtra(getString(R.string.error_transaction), errorMessage);
+                    }
+                    setResult(RESULT_OK, data);
+                    finish();
+                } else {
+                    onBackPressed();
+                }
+            }
+        });
     }
 
     private void bindData() {
@@ -143,11 +175,6 @@ public class KlikBCAActivity extends BaseActivity {
         mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKBCA);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     /**
      * Displays status of transaction from {@link TransactionResponse} object.
      *
@@ -163,30 +190,6 @@ public class KlikBCAActivity extends BaseActivity {
         KlikBCAStatusFragment klikBCAStatusFragment =
                 KlikBCAStatusFragment.newInstance(transactionResponse);
         getSupportFragmentManager().beginTransaction().replace(R.id.instruction_container, klikBCAStatusFragment).commit();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            if (currentFragment.equals(STATUS_FRAGMENT)) {
-                Intent data = new Intent();
-                if (transactionResponse != null) {
-                    data.putExtra(getString(R.string.transaction_response), transactionResponse);
-                }
-                if (errorMessage != null && !errorMessage.equals("")) {
-                    data.putExtra(getString(R.string.error_transaction), errorMessage);
-                }
-                setResult(RESULT_OK, data);
-                finish();
-                return false;
-            } else {
-                onBackPressed();
-                return false;
-            }
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

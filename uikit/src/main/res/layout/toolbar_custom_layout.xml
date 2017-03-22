@@ -28,10 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="@dimen/thirtytwo_dp"
-        android:layout_marginRight="@dimen/thirtytwo_dp"
+        android:layout_marginEnd="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
         android:layout_toEndOf="@id/merchant_logo"
-        android:layout_toLeftOf="@+id/image_saved_card_delete"
         android:layout_toRightOf="@+id/merchant_logo"
         android:layout_toStartOf="@id/image_saved_card_delete">
 
@@ -39,35 +38,14 @@
             android:id="@+id/text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/tool_bar_title_size"
             tools:text="Mandiri Clickpay" />
-
-        <View
-            android:id="@+id/title_underscore"
-            android:layout_width="45dp"
-            android:layout_height="5dp"
-            android:layout_below="@+id/text_title"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/four_dp"
-            android:background="@color/gray.primary" />
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/image_saved_card_delete"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/sixteen_dp"
-        android:layout_weight="1"
-        android:src="@drawable/ic_delete_black"
-        android:visibility="invisible"
-        tools:visibility="visible" />
 
 </RelativeLayout>

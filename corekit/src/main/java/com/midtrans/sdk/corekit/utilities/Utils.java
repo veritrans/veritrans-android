@@ -16,10 +16,13 @@ import com.midtrans.sdk.corekit.core.Logger;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -67,8 +70,11 @@ public class Utils {
 
     public static String getFormattedAmount(double amount) {
         try {
-            String amountString = new DecimalFormat("#,###").format(amount);
-            return amountString.replace(",", ".");
+            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.US);
+            otherSymbols.setDecimalSeparator('.');
+            otherSymbols.setGroupingSeparator(',');
+            String amountString = new DecimalFormat("#,###", otherSymbols).format(amount);
+            return amountString;
         } catch (NumberFormatException e) {
             return "" + amount;
         } catch (NullPointerException e) {
@@ -220,5 +226,12 @@ public class Utils {
         df.setTimeZone(TimeZone.getTimeZone("Asia/Jakarta"));
         String nowAsISO = df.format(new Date(time));
         return nowAsISO;
+    }
+
+    public static String formatDouble(double d) {
+        if(d == (long) d)
+            return String.format("%d",(long)d);
+        else
+            return String.format("%s",d);
     }
 }

@@ -90,8 +90,25 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         textTitle.setText(getString(R.string.mandiri_e_cash));
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        prepareToolbar();
         buttonConfirmPayment.setOnClickListener(this);
+    }
+
+    private void prepareToolbar() {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            drawable.setColorFilter(
+                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+        mToolbar.setNavigationIcon(drawable);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void setUpFragment() {
@@ -101,17 +118,6 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         // setup  fragment
         mandiriECashFragment = new InstructionMandiriECashFragment();
         replaceFragment(mandiriECashFragment, R.id.instruction_container, false, false);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return false;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -142,6 +148,10 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
                     intentPaymentWeb.putExtra(Constants.WEBURL, response.getRedirectUrl());
                     intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_MANDIRI_ECASH);
                     startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    }
                 } else {
                     SdkUIFlowUtil.showApiFailedMessage(MandiriECashActivity.this, getString(R.string
                             .empty_transaction_response));

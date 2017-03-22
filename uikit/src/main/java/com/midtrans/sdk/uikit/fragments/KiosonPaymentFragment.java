@@ -103,6 +103,10 @@ public class KiosonPaymentFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), KiosonInstructionActivity.class));
+                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
             }
         });
     }

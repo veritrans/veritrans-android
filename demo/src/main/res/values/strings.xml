@@ -1,0 +1,98 @@
+<resources>
+    <string name="app_name">Midtrans Demo</string>
+
+    <!--CREDIT CARD TYPE TITLE-->
+    <string name="credit_card_type_normal">Normal Credit Card Payment</string>
+    <string name="credit_card_type_two_clicks">Two Clicks Credit Card Payment</string>
+    <string name="credit_card_type_one_click">One Click Credit Card Payment</string>
+
+    <string name="card_click_normal">Normal</string>
+    <string name="card_click_two_click">Two Click</string>
+    <string name="card_click_one_click">One Click</string>
+    <string name="label_credit_card">credit_card</string>
+
+    <!--SECURE TYPE TITLE-->
+    <string name="secure_type_enabled">3D Secure Enabled</string>
+    <string name="secure_type_disabled">3D Secure Disabled</string>
+
+    <!--ISSUING BANK TITLE-->
+    <string name="acquiring_bank_none">No Acquiring Bank</string>
+    <string name="acquiring_bank_by_bni">Acquiring Bank by BNI</string>
+    <string name="acquiring_bank_by_mandiri">Acquiring Bank by Mandiri</string>
+    <string name="acquiring_bank_by_bca">Acquiring Bank by BCA</string>
+    <string name="acquiring_bank_by_maybank">Acquiring Bank by Maybank</string>
+    <string name="acquiring_bank_by_bri">Acquiring Bank by BRI</string>
+
+    <string name="bank_bni">BNI</string>
+    <string name="bank_mandiri">Mandiri</string>
+    <string name="bank_bca">BCA</string>
+    <string name="bank_bri">BRI</string>
+    <string name="bank_maybank">Maybank</string>
+
+    <!--CUSTOM EXPIRY TITLE-->
+    <string name="custom_expiry_none">No Custom Expiry</string>
+    <string name="custom_expiry_one_minute">One Minute Custom Expiry</string>
+    <string name="custom_expiry_one_hour">One Hour Custom Expiry</string>
+
+    <string name="expiry_none">None</string>
+    <string name="expiry_one_minute">1 Minute</string>
+    <string name="expiry_one_hour">1 Hour</string>
+
+    <!--DEFAULT SAVE CARD TITLE-->
+    <string name="default_save_card_enabled">Default Save Card Enabled</string>
+    <string name="default_save_card_disabled">Default Save Card Disabled</string>
+
+    <!--PROMO ENABLED TITLE-->
+    <string name="default_promo_enabled">Promo Enabled</string>
+    <string name="default_promo_disabled">Promo Disabled</string>
+
+    <!--PRE AUTHORIZATION ENABLED TITLE-->
+    <string name="pre_auth_enabled">Pre Auth Feature Enabled</string>
+    <string name="pre_auth_disabled">Pre Auth Feature Disabled</string>
+
+    <!--COLOR THEME TITLE-->
+    <string name="default_color_theme">Default Color Theme</string>
+    <string name="color_theme_red">Red Color Theme</string>
+    <string name="color_theme_green">Green Color Theme</string>
+    <string name="color_theme_orange">Orange Color Theme</string>
+    <string name="color_theme_black">Black Color Theme</string>
+    <string name="color_blue">Default - Blue</string>
+    <string name="color_red">Red</string>
+    <string name="color_green">Green</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_black">Black</string>
+
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+
+    <!--ACTIVITY TITLE-->
+    <string name="demo_configuration">Demo Configuration</string>
+    <string name="product_details">Product Details</string>
+    <string name="order_review">Order Review</string>
+
+    <!--PRODUCT DETAILS-->
+    <string name="product_price_sample">Rp 20,000</string>
+    <string name="product_name_sample">Midtrans Pillow</string>
+    <string name="product_details_sample">Get cozy with our new pillow!</string>
+    <string name="product_rating_sample">4.4</string>
+    <string name="product_copyright_sample">2012</string>
+
+    <!--ORDER REVIEW-->
+    <string name="order_review_total_amount">Total Amount</string>
+    <string name="order_review_delivery_address">YOUR DELIVERY ADDRESS</string>
+    <string name="order_review_customer_details">CUSTOMER DETAILS</string>
+    <string name="order_review_customer_details_name">Budi Utomo</string>
+    <string name="order_review_customer_details_hint_name">Full Name</string>
+    <string name="order_review_customer_details_email">budi@utomo.com</string>
+    <string name="order_review_customer_details_hint_email">Email</string>
+    <string name="order_review_customer_details_phone">081808466410</string>
+    <string name="order_review_customer_details_hint_phone">Phone Number</string>
+    <string name="order_review_delivery_address_sample">Midplaza 2, 4th Floor Jl. Jend. Sudirman\nKav.10-11, Jakarta - 10220\nIndonesia</string>
+    <string name="order_review_delivery_address_city_sample">Jakarta</string>
+    <string name="order_review_delivery_options">ORDER REVIEW &amp; DELIVERY OPTIONS</string>
+    <string name="order_review_quantity">Qty 1</string>
+    <!--BUTTON-->
+    <string name="btn_launch_demo">Launch Demo App</string>
+    <string name="btn_buy">Buy</string>
+    <string name="btn_pay_20000">Pay Rp 20,000</string>
+</resources>

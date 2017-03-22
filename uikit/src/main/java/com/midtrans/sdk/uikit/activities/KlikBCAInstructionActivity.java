@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
 
 /**
@@ -38,6 +39,10 @@ public class KlikBCAInstructionActivity extends BaseActivity {
         if (item.getItemId() == android.R.id.home) {
             //close activity on click of cross button.
             finish();
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+            }
         }
 
         return super.onOptionsItemSelected(item);

@@ -141,6 +141,10 @@ public class MandiriBillPayFragment extends Fragment {
                 BankTransferInstructionActivity.class);
         intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
         getActivity().startActivity(intent);
+        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+            getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        }
     }
 
     /**
@@ -152,6 +156,10 @@ public class MandiriBillPayFragment extends Fragment {
         intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
         intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, downloadUrl);
         getActivity().startActivity(intent);
+        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+            getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        }
     }
 
     /**

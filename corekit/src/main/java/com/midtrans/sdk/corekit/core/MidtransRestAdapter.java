@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 
+import com.jakewharton.retrofit.Ok3Client;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.utilities.CustomTypeAdapter;
 import com.squareup.okhttp.OkHttpClient;
@@ -57,10 +58,11 @@ public class MidtransRestAdapter {
      */
     public static MerchantRestAPI getMerchantApiClient(String merchantBaseURL, int timeout) {
 
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(timeout, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(timeout, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(timeout, TimeUnit.SECONDS);
+        okhttp3.OkHttpClient.Builder okclient = new okhttp3.OkHttpClient.Builder();
+        okclient.connectTimeout(timeout, TimeUnit.SECONDS);
+        okclient.readTimeout(timeout, TimeUnit.SECONDS);
+        okclient.writeTimeout(timeout, TimeUnit.SECONDS);
+
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
@@ -68,7 +70,7 @@ public class MidtransRestAdapter {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setConverter(new GsonConverter(gson))
                 .setLogLevel(LOG_LEVEL)
-                .setClient(new OkClient(okHttpClient))
+                .setClient(new Ok3Client(okclient.build()))
                 .setRequestInterceptor(buildSnapRequestInterceptor())
                 .setEndpoint(merchantBaseURL);
         RestAdapter restAdapter = builder.build();
