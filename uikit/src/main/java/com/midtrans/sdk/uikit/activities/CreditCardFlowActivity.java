@@ -727,9 +727,9 @@ public class CreditCardFlowActivity extends BaseActivity {
                 && !TextUtils.isEmpty(midtransSDK.getCreditCard().getType())) {
             cardTokenRequest.setType(midtransSDK.getCreditCard().getType());
         }
-        initInstallmentProperties(cardTokenRequest);
-        initAcquiringBank(cardTokenRequest);
-        this.cardTokenRequest = cardTokenRequest;
+        CardTokenRequest installmentCardTokenRequest = initInstallmentProperties(cardTokenRequest);
+        CardTokenRequest acquiringBankCardTokenReques = initAcquiringBank(installmentCardTokenRequest);
+        this.cardTokenRequest = acquiringBankCardTokenReques;
         getCardToken(cardTokenRequest);
     }
 
