@@ -21,22 +21,12 @@ import java.util.List;
  */
 
 public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.SavedCardsViewHolder> {
-    private final String TAG = getClass().getName();
 
     private List<SavedToken> savedCards = new ArrayList<>();
 
     private SavedCardAdapterEventListener listener;
     private SavedCardPromoListener promoListener;
 
-
-    public interface SavedCardAdapterEventListener {
-        void onItemClick(int position);
-    }
-
-
-    public interface SavedCardPromoListener {
-        void onItemPromo(int position);
-    }
 
     public SavedCardsAdapter() {
     }
@@ -62,7 +52,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     @Override
     public SavedCardsAdapter.SavedCardsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_saved_cards, parent, false);
+                .inflate(R.layout.item_saved_cards, parent, false);
         return new SavedCardsAdapter.SavedCardsViewHolder(view);
     }
 
@@ -74,16 +64,16 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
 
         switch (cardType) {
             case CardUtilities.CARD_TYPE_VISA:
-                holder.imageCardType.setImageResource(R.mipmap.ic_visa);
+                holder.imageCardType.setImageResource(R.drawable.ic_visa);
                 break;
             case CardUtilities.CARD_TYPE_MASTERCARD:
-                holder.imageCardType.setImageResource(R.mipmap.ic_mastercard);
+                holder.imageCardType.setImageResource(R.drawable.ic_mastercard);
                 break;
             case CardUtilities.CARD_TYPE_JCB:
-                holder.imageCardType.setImageResource(R.mipmap.ic_jcb);
+                holder.imageCardType.setImageResource(R.drawable.ic_jcb);
                 break;
             case CardUtilities.CARD_TYPE_AMEX:
-                holder.imageCardType.setImageResource(R.mipmap.ic_amex);
+                holder.imageCardType.setImageResource(R.drawable.ic_amex);
                 break;
         }
         String cardName = maskedCard.substring(0, 4);
@@ -98,6 +88,14 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         return savedCards.size();
     }
 
+    public interface SavedCardAdapterEventListener {
+        void onItemClick(int position);
+    }
+
+    public interface SavedCardPromoListener {
+        void onItemPromo(int position);
+    }
+
     class SavedCardsViewHolder extends RecyclerView.ViewHolder {
         TextView tvCardTitle, tvMaskedCarNumber;
         ImageView imageCardType;
@@ -109,7 +107,6 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
             tvMaskedCarNumber = (TextView) itemView.findViewById(R.id.text_saved_card_number);
             imageCardType = (ImageView) itemView.findViewById(R.id.image_card_type);
             ivCardOffer = (AspectRatioImageView) itemView.findViewById(R.id.image_card_offer);
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

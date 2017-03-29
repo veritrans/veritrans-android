@@ -20,24 +20,21 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final int TYPE_HEADER = 1002;
     private static final int TYPE_ITEM = 1003;
+
     private boolean itemShown = false;
 
     private List<ItemDetail> itemDetails;
     private ItemDetailListener listener;
 
+    public ItemDetailsAdapter(ItemDetailListener listener, List<ItemDetail> itemDetails) {
+        this.listener = listener;
+        this.itemDetails = new ArrayList<>(itemDetails);
+    }
+
     public void setData(List<ItemDetail> itemDetails) {
         itemDetails.clear();
         itemDetails.addAll(itemDetails);
         notifyDataSetChanged();
-    }
-
-    public interface ItemDetailListener {
-        public void onItemShown();
-    }
-
-    public ItemDetailsAdapter(ItemDetailListener listener, List<ItemDetail> itemDetails) {
-        this.listener = listener;
-        this.itemDetails = new ArrayList<>(itemDetails);
     }
 
     @Override
@@ -63,7 +60,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         return null;
     }
-
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -109,11 +105,15 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return super.getItemViewType(position);
     }
 
-    class ItemDetailsViewHolder extends RecyclerView.ViewHolder {
+    public interface ItemDetailListener {
+        void onItemShown();
+    }
+
+    private class ItemDetailsViewHolder extends RecyclerView.ViewHolder {
         TextView item;
         TextView price;
 
-        public ItemDetailsViewHolder(View itemView) {
+        ItemDetailsViewHolder(View itemView) {
             super(itemView);
             item = (TextView) itemView.findViewById(R.id.item_name);
             price = (TextView) itemView.findViewById(R.id.item_price);
@@ -125,7 +125,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         View containerItem;
         View divider;
 
-        public ItemHeaderViewHolder(final View itemView) {
+        ItemHeaderViewHolder(final View itemView) {
             super(itemView);
             divider = itemView.findViewById(R.id.divider);
             amount = (TextView) itemView.findViewById(R.id.total_amount);
