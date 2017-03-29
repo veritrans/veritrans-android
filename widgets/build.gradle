@@ -3,7 +3,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 group = 'com.midtrans'
-version = '1.4.1'
+version = '1.5.0'
 
 repositories {
     jcenter()
@@ -13,7 +13,7 @@ repositories {
 android {
     def DEFAULT_PUBLISH
     compileSdkVersion 25
-    buildToolsVersion '25'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         minSdkVersion 9

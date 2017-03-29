@@ -2,12 +2,17 @@ package com.midtrans.sdk.uikit.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 
@@ -32,7 +37,7 @@ public class PaymentWebActivity extends BaseActivity {
         toolbar.setTitle(R.string.processing_payment);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        prepareToolbar();
         WebviewFragment webviewFragment;
         if (!type.equals("")) {
             webviewFragment = WebviewFragment.newInstance(webUrl, type);
@@ -42,13 +47,27 @@ public class PaymentWebActivity extends BaseActivity {
         replaceFragment(webviewFragment, R.id.webview_container, true, false);
     }
 
+    private void prepareToolbar() {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            drawable.setColorFilter(
+                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+        toolbar.setNavigationIcon(drawable);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               showCancelConfirmationDialog();
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        if (item.getItemId() == android.R.id.home) {
-            showCancelConfirmationDialog();
-            return true;
-        } else if (item.getItemId() == R.id.action_close) {
+        if (item.getItemId() == R.id.action_close) {
             showCancelConfirmationDialog();
             return true;
         }
@@ -69,6 +88,10 @@ public class PaymentWebActivity extends BaseActivity {
                         Intent returnIntent = new Intent();
                         setResult(RESULT_CANCELED, returnIntent);
                         finish();
+                        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                        }
                     }
                 })
                 .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {

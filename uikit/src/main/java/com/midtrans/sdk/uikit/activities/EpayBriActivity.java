@@ -67,10 +67,27 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
         initializeTheme();
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        prepareToolbar();
         btConfirmPayment.setVisibility(View.VISIBLE);
         btConfirmPayment.setOnClickListener(this);
         bindData();
+    }
+
+    private void prepareToolbar() {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            drawable.setColorFilter(
+                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+        toolbar.setNavigationIcon(drawable);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void bindData() {
@@ -91,15 +108,6 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
         // setup  fragment
         instructionEpayBriFragment = new InstructionEpayBriFragment();
         replaceFragment(instructionEpayBriFragment, R.id.instruction_container, false, false);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -128,6 +136,10 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
                     intentPaymentWeb.putExtra(Constants.WEBURL, response.getRedirectUrl());
                     intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_EPAY_BRI);
                     startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    }
                 } else {
                     SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, getString(R.string.empty_transaction_response));
                 }

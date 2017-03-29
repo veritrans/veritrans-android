@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.midtrans.demo.DemoTextView
+        android:id="@+id/title"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/sixteen_dp"
+        android:gravity="center_horizontal"
+        android:text="@string/demo_configuration" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_launch_app"
+        android:layout_below="@id/title">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/sixteen_dp">
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_credit_card_type"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_cc_click"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_cc_click"
+                android:text="@string/credit_card_type_normal" />
+
+            <RadioGroup
+                android:id="@+id/credit_card_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_credit_card_normal"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/card_click_normal" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_credit_card_two_clicks"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/card_click_two_click" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_credit_card_one_click"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/card_click_one_click" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_secure_type"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_secure"
+                android:drawablePadding="14dp"
+                android:drawableStart="@drawable/ic_secure"
+                android:paddingLeft="12dp"
+                android:text="@string/secure_type_disabled" />
+
+            <RadioGroup
+                android:id="@+id/secure_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_secure_disabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/disabled" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_secure_enabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/enabled" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_issuing_bank_type"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_config_bank"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_config_bank"
+                android:text="@string/acquiring_bank_none" />
+
+            <RadioGroup
+                android:id="@+id/issuing_bank_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bank_none"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/acquiring_bank_none" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bank_bni"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/bank_bni" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bank_mandiri"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/bank_mandiri" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bank_bca"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/bank_bca" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bank_maybank"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/bank_maybank" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bank_bri"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/bank_bri" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_custom_expiry_type"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_config_expiry"
+                android:drawablePadding="12dp"
+                android:drawableStart="@drawable/ic_config_expiry"
+                android:paddingLeft="10dp"
+                android:text="@string/custom_expiry_none" />
+
+            <RadioGroup
+                android:id="@+id/expiry_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_expiry_none"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/expiry_none" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_expiry_one_minute"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/expiry_one_minute" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_expiry_one_hour"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/expiry_one_hour" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_default_save_card_type"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_save_card"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_save_card"
+                android:paddingLeft="10dp"
+                android:text="@string/default_save_card_disabled" />
+
+            <RadioGroup
+                android:id="@+id/default_save_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_default_save_disabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/disabled" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_default_save_enabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/enabled" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_promo_type"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_config_promo"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_config_promo"
+                android:paddingLeft="10dp"
+                android:text="@string/default_promo_disabled" />
+
+            <RadioGroup
+                android:id="@+id/promo_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_promo_disabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/disabled" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_promo_enabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/enabled" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_pre_auth_type"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_config_preauth"
+                android:drawablePadding="12dp"
+                android:drawableStart="@drawable/ic_config_preauth"
+                android:paddingLeft="14dp"
+                android:text="@string/pre_auth_disabled" />
+
+            <RadioGroup
+                android:id="@+id/preauth_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_preauth_disabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/disabled" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_preauth_enabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/enabled" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_color_theme_type"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_config_theme"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_config_theme"
+                android:text="@string/default_color_theme" />
+
+            <RadioGroup
+                android:id="@+id/theme_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_theme_default"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/ic_blue_theme"
+                    android:drawablePadding="@dimen/eight_dp"
+                    android:drawableStart="@drawable/ic_blue_theme"
+                    android:gravity="center_vertical"
+                    android:text="@string/color_blue" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_theme_red"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:drawableLeft="@drawable/ic_red_theme"
+                    android:drawablePadding="@dimen/eight_dp"
+                    android:drawableStart="@drawable/ic_red_theme"
+                    android:gravity="center_vertical"
+                    android:text="@string/color_red" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_theme_green"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:drawableLeft="@drawable/ic_green_theme"
+                    android:drawablePadding="@dimen/eight_dp"
+                    android:drawableStart="@drawable/ic_green_theme"
+                    android:gravity="center_vertical"
+                    android:text="@string/color_green" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_theme_orange"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:drawableLeft="@drawable/ic_orange_theme"
+                    android:drawablePadding="@dimen/eight_dp"
+                    android:drawableStart="@drawable/ic_orange_theme"
+                    android:gravity="center_vertical"
+                    android:text="@string/color_orange" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_theme_black"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:drawableLeft="@drawable/ic_black_theme"
+                    android:drawablePadding="@dimen/eight_dp"
+                    android:drawableStart="@drawable/ic_black_theme"
+                    android:gravity="center_vertical"
+                    android:text="@string/color_black" />
+
+            </RadioGroup>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/btn_launch_app"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_size"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        app:fb_defaultColor="@color/gray.primary"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_text="@string/btn_launch_demo"
+        app:fb_textFont="fonts/SourceSansPro-Semibold.ttf"
+        app:fb_textGravity="center_vertical"
+        app:fb_textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_size"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom|end">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/eight_dp"
+            android:layout_marginRight="@dimen/eight_dp"
+            android:src="@drawable/ic_arrow_right_white" />
+    </LinearLayout>
+</RelativeLayout>

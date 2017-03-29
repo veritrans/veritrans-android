@@ -76,7 +76,7 @@ public class CardDetailsFragment extends Fragment {
     private ImageButton imageCvvHelp;
     private ImageButton imageSaveCardHelp;
     private ImageButton imagePointHelp;
-    private Button scanCardBtn;
+    private FancyButton scanCardBtn;
     private FancyButton payNowBtn;
     private RelativeLayout layoutSaveCard;
     private AppCompatCheckBox saveCardCheckBox;
@@ -246,9 +246,6 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void initScanCard() {
-        if (midtransSDK.getDefaultText() != null) {
-            scanCardBtn.setTypeface(Typeface.createFromAsset(getContext().getAssets(), midtransSDK.getDefaultText()));
-        }
         if (midtransSDK.getExternalScanner() != null) {
             // Set background color for scan button
             if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
@@ -313,6 +310,7 @@ public class CardDetailsFragment extends Fragment {
                             } else {
                                 request.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
                             }
+                            setPaymentInstallment();
                             ((CreditCardFlowActivity) getActivity()).twoClickPayment(request);
                         } else {
                             String cardNumberText = cardNumber.getText().toString();
@@ -429,7 +427,7 @@ public class CardDetailsFragment extends Fragment {
         imageCvvHelp = (ImageButton) view.findViewById(R.id.image_cvv_help);
         imageSaveCardHelp = (ImageButton) view.findViewById(R.id.help_save_card);
         saveCardCheckBox = (AppCompatCheckBox) view.findViewById(R.id.cb_store_card);
-        scanCardBtn = (Button) view.findViewById(R.id.scan_card);
+        scanCardBtn = (FancyButton) view.findViewById(R.id.scan_card);
         layoutSaveCard = (RelativeLayout) view.findViewById(R.id.layout_save_card_detail);
         payNowBtn = (FancyButton) view.findViewById(R.id.btn_pay_now);
         layoutInstallment = (LinearLayout) view.findViewById(R.id.layout_installment);
@@ -483,6 +481,9 @@ public class CardDetailsFragment extends Fragment {
                 imageSaveCardHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
                 imageCvvHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
                 imagePointHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
+                scanCardBtn.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                scanCardBtn.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                scanCardBtn.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryColor());
             }
 
             if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {

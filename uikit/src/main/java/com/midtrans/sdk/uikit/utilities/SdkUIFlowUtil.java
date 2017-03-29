@@ -1,8 +1,5 @@
 package com.midtrans.sdk.uikit.utilities;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,6 +20,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -34,6 +33,7 @@ import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.models.PromoData;
 
 import java.io.InputStream;
@@ -571,5 +571,24 @@ public class SdkUIFlowUtil {
         final TypedValue value = new TypedValue();
         context.getTheme().resolveAttribute(attributeColor, value, true);
         return value.data;
+    }
+
+    public static int getCreditCardIconType() {
+        if (MidtransSDK.getInstance().getMerchantData() != null) {
+            List<String> principles = MidtransSDK.getInstance().getMerchantData().getEnabledPrinciples();
+            if (principles.contains(CreditCardType.MASTERCARD) && principles.contains(CreditCardType.VISA)) {
+                if (principles.contains(CreditCardType.JCB)) {
+                    if (principles.contains(CreditCardType.AMEX)) {
+                        return CreditCardType.TYPE_MASTER_VISA_JCB_AMEX;
+                    }
+                    return CreditCardType.TYPE_MASTER_VISA_JCB;
+                } else if (principles.contains(CreditCardType.AMEX)) {
+                    return CreditCardType.TYPE_MASTER_VISA_AMEX;
+                }
+                return CreditCardType.TYPE_MASTER_VISA;
+            }
+        }
+
+        return CreditCardType.TYPE_UNKNOWN;
     }
 }

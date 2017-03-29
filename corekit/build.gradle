@@ -5,7 +5,7 @@ apply from: '../jacoco.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.4.1'
+version = '1.5.0'
 
 buildscript {
     repositories {
@@ -20,14 +20,14 @@ buildscript {
 }
 repositories {
     jcenter()
-    maven { url "http://dl.bintray.com/pt-midtrans/maven" }
+    maven { url "https://dl.bintray.com/pt-midtrans/maven" }
 }
 
 
 android {
     def DEFAULT_PUBLISH
     compileSdkVersion 25
-    buildToolsVersion '25'
+    buildToolsVersion '25.0.2'
 
     lintOptions {
         abortOnError false

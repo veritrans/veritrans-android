@@ -1,0 +1,97 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        // These docs use an open ended version so that our plugin
+        // can be updated quickly in response to Android tooling updates
+
+        // We recommend changing it to the latest version from our changelog:
+        // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+
+apply plugin: 'com.android.application'
+
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        applicationId "com.midtrans.demo"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("$KEYSTORE")
+            storePassword "$KEYSTORE_PASSWORD"
+            keyAlias "$KEY_ALIAS"
+            keyPassword "$KEY_PASSWORD"
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            signingConfig signingConfigs.release
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        development {
+            applicationId "com.midtrans.sdk.demo.development"
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
+            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
+        }
+
+        production {
+            applicationId "com.midtrans.sdk.demo"
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_PRODUCTION
+            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_PRODUCTION
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    testCompile 'junit:junit:4.12'
+    developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
+    productionCompile project(path: ':uikit', configuration: 'productionRelease')
+    developmentCompile(project(path: ':scancard', configuration: 'developmentRelease')) {
+        exclude module: 'uikit'
+        exclude module: 'corekit'
+    }
+    productionCompile(project(path: ':scancard', configuration: 'productionRelease')) {
+        exclude module: 'uikit'
+        exclude module: 'corekit'
+    }
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
+        transitive = true;
+    }
+}

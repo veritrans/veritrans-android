@@ -534,6 +534,10 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 }
             }
             getActivity().startActivity(intent);
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         }
     }
 

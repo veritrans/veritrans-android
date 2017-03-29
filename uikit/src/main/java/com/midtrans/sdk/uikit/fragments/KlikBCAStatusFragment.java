@@ -67,6 +67,10 @@ public class KlikBCAStatusFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), KlikBCAInstructionActivity.class);
                 startActivity(intent);
+                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
             }
         });
     }
