@@ -3,7 +3,6 @@ package com.midtrans.veritransandroid;
 import android.app.Application;
 
 import com.midtrans.sdk.core.Environment;
-import com.midtrans.sdk.ui.CustomSetting;
 import com.midtrans.sdk.ui.MidtransUi;
 
 /**
@@ -13,6 +12,9 @@ import com.midtrans.sdk.ui.MidtransUi;
 public class MyApp extends Application {
     public static final String CHECKOUT_URL = "https://rakawm-snap.herokuapp.com/installment/charge";
     private static final String CLIENT_KEY = "VT-client-E4f1bsi1LpL1p5cF";
+    private static final String DEFAULT_FONT = "fonts/open_sans_regular.ttf";
+    private static final String SEMI_BOLD_FONT = "fonts/open_sans_semibold.ttf";
+    private static final String BOLD_FONT = "fonts/open_sans_bold.ttf";
 
     @Override
     public void onCreate() {
@@ -21,12 +23,12 @@ public class MyApp extends Application {
     }
 
     private void initMidtransSDK() {
-
-        CustomSetting customSetting = new CustomSetting();
-        MidtransUi.builder()
+        new MidtransUi.Builder()
                 .setClientKey(CLIENT_KEY)
                 .setEnvironment(Environment.SANDBOX)
-                .setCustomSetting(new CustomSetting())
+                .setDefaultFontPath(DEFAULT_FONT)
+                .setBoldFontPath(BOLD_FONT)
+                .setSemiBoldFontPath(SEMI_BOLD_FONT)
                 .enableLog(true)
                 .build();
     }

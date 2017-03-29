@@ -81,7 +81,7 @@ public class SampleUiSdkActivity extends AppCompatActivity {
         MidtransUi.getInstance().runUiSdk(this, MyApp.CHECKOUT_URL, initialiseCheckoutTokenRequest(), new MidtransUiCallback() {
             @Override
             public void onFinished(PaymentResult result) {
-                Logger.d("onfinished:", "result:" + result.getPaymentStatus());
+                Logger.d("onFinished:", "result: " + result.getPaymentStatus());
                 Toast.makeText(SampleUiSdkActivity.this, result.getPaymentStatus(), Toast.LENGTH_SHORT).show();
             }
         });

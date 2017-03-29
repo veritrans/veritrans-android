@@ -3,9 +3,15 @@ package com.midtrans.sdk.ui.utils;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.core.models.snap.CreditCard;
+import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
+import com.midtrans.sdk.ui.MidtransUi;
+import com.midtrans.sdk.ui.MidtransUiCallback;
+import com.midtrans.sdk.ui.models.PaymentResult;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
  * Created by ziahaqi on 2/22/17.
@@ -20,8 +26,10 @@ public class Utils {
      */
     public static String getFormattedAmount(double amount) {
         try {
-            String amountString = new DecimalFormat("#,###").format(amount);
-            return amountString.replace(",", ".");
+            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.US);
+            otherSymbols.setDecimalSeparator('.');
+            otherSymbols.setGroupingSeparator(',');
+            return new DecimalFormat("#,###", otherSymbols).format(amount);
         } catch (NumberFormatException e) {
             return "" + amount;
         } catch (NullPointerException e) {
@@ -55,5 +63,22 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static SnapCustomerDetails createSnapCustomerDetails() {
+        SnapTransaction transaction = MidtransUi.getInstance().getTransaction();
+        String fullName = TextUtils.isEmpty(transaction.customerDetails.lastName) ? transaction.customerDetails.firstName : getFullName(transaction.customerDetails.firstName, transaction.customerDetails.lastName);
+        return new SnapCustomerDetails(fullName, transaction.customerDetails.email, transaction.customerDetails.phone);
+    }
+
+    public static String getFullName(String firstName, String lastName) {
+        return firstName + " " + lastName;
+    }
+
+    public static void sendPaymentResult(PaymentResult paymentResult) {
+        MidtransUiCallback paymentCallback = MidtransUi.getInstance().getPaymentCallback();
+        if (paymentCallback != null) {
+            paymentCallback.onFinished(paymentResult);
+        }
     }
 }

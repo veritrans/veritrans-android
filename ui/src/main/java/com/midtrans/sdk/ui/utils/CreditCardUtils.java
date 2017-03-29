@@ -6,7 +6,6 @@ package com.midtrans.sdk.ui.utils;
 
 public class CreditCardUtils {
 
-
     public static String getMaskedCardNumber(String maskedCard) {
         StringBuilder builder = new StringBuilder();
         String bulletMask = "●●●●●●";
@@ -25,14 +24,11 @@ public class CreditCardUtils {
 
     public static String getMaskedExpDate() {
         String bulletMask = "●●";
-        String maskedDate = bulletMask + " / " + bulletMask;
-        return maskedDate;
+        return bulletMask + " / " + bulletMask;
     }
 
     public static String getMaskedCardCvv() {
-        String bulletMask = "●●●";
-
-        return bulletMask;
+        return "●●●";
     }
 
 }
