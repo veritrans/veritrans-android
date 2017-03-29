@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.midtrans.sdk.ui.R;
@@ -26,7 +27,7 @@ public class PaymentWebActivity extends BaseActivity {
         setupViews();
 
         MidtransWebviewFragment midtransWebviewFragment;
-        if (!type.equals("")) {
+        if (type != null && !TextUtils.isEmpty(type)) {
             midtransWebviewFragment = MidtransWebviewFragment.newInstance(webUrl, type);
         } else {
             midtransWebviewFragment = MidtransWebviewFragment.newInstance(webUrl);
