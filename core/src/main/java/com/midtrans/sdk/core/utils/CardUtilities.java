@@ -57,11 +57,9 @@ public class CardUtilities {
                 return CARD_TYPE_AMEX;
             } else if (cardNo.startsWith("35") || cardNo.startsWith("2131") || cardNo.startsWith("1800")) {
                 return CARD_TYPE_JCB;
-            } else {
-                return "";
-
             }
         }
+        return "";
     }
 
     /**
