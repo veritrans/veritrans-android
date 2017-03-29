@@ -60,17 +60,12 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
 
     private static final String ARGS_PROMO = "args_promo";
     private static final String ARGS_CARD_DETAIL = "args_card_detail";
-
-
+    int installmentCurrentPosition, installmentTotalPositions;
     private CreditCardContract.Presenter presenter;
     private CreditCardDetails cardDetails;
-
-
     private MidtransUi midtransUi;
-
     private TextInputLayout tilCardNo, tilCvv, tilExpiry;
     private TextView tvInstallmentTerm;
-    int installmentCurrentPosition, installmentTotalPositions;
     private FancyButton buttonPay;
     private String lastExpDate = "";
     private EditText etCardNumber;
@@ -164,8 +159,8 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
             }
         }
 
-        if (midtransUi != null && midtransUi.getFontSemiBold() != null) {
-            buttonPay.setCustomTextFont(midtransUi.getFontSemiBold());
+        if (midtransUi != null && midtransUi.getSemiBoldFontPath() != null) {
+            buttonPay.setCustomTextFont(midtransUi.getSemiBoldFontPath());
             // Set background for pay now button
             if (midtransUi.getColorTheme() != null && midtransUi.getColorTheme().getPrimaryColor() != 0) {
                 buttonPay.setBackgroundColor(midtransUi.getColorTheme().getPrimaryColor());
@@ -274,7 +269,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
             public void onClick(View v) {
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.what_is_cvv)
-                        .setView(R.layout.dialog_cvv)
+                        .setView(R.layout.layout_dialog_cvv)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -423,7 +418,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
             if (savedCard != null) {
                 Log.i(TAG, "savedcard");
 
-                if (!MidtransUi.getInstance().isBuiltInTokenStorage()) {
+                if (!MidtransUi.getInstance().isTokenStorageEnabled()) {
                     ((CreditCardActivity) getActivity()).showDeleteCardIcon(true);
                 }
 
@@ -768,16 +763,16 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         String cardType = CardUtilities.getCardType(cardNumberText);
         switch (cardType) {
             case CardUtilities.CARD_TYPE_VISA:
-                ivLogo.setImageResource(R.mipmap.ic_visa);
+                ivLogo.setImageResource(R.drawable.ic_visa);
                 break;
             case CardUtilities.CARD_TYPE_MASTERCARD:
-                ivLogo.setImageResource(R.mipmap.ic_mastercard);
+                ivLogo.setImageResource(R.drawable.ic_mastercard);
                 break;
             case CardUtilities.CARD_TYPE_JCB:
-                ivLogo.setImageResource(R.mipmap.ic_jcb);
+                ivLogo.setImageResource(R.drawable.ic_jcb);
                 break;
             case CardUtilities.CARD_TYPE_AMEX:
-                ivLogo.setImageResource(R.mipmap.ic_amex);
+                ivLogo.setImageResource(R.drawable.ic_amex);
                 break;
         }
     }
@@ -796,22 +791,22 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
         if (bank != null) {
             switch (bank) {
                 case BankType.BCA:
-                    ivBankLogo.setImageResource(R.mipmap.ic_bank_bca);
+                    ivBankLogo.setImageResource(R.drawable.bca);
                     break;
                 case BankType.BNI:
-                    ivBankLogo.setImageResource(R.mipmap.ic_bank_bni);
+                    ivBankLogo.setImageResource(R.drawable.bni);
                     break;
                 case BankType.BRI:
-                    ivBankLogo.setImageResource(R.mipmap.ic_bank_bri);
+                    ivBankLogo.setImageResource(R.drawable.bri);
                     break;
                 case BankType.CIMB:
-                    ivBankLogo.setImageResource(R.mipmap.ic_bank_cimb);
+                    ivBankLogo.setImageResource(R.drawable.cimb);
                     break;
                 case BankType.MANDIRI:
-                    ivBankLogo.setImageResource(R.mipmap.ic_bank_mandiri);
+                    ivBankLogo.setImageResource(R.drawable.mandiri);
                     break;
                 case BankType.MAYBANK:
-                    ivBankLogo.setImageResource(R.mipmap.ic_bank_mybank);
+                    ivBankLogo.setImageResource(R.drawable.maybank);
                     break;
                 default:
                     ivBankLogo.setImageDrawable(null);
