@@ -2,6 +2,7 @@ package com.midtrans.sdk.core.models.merchant;
 
 import android.support.annotation.StringDef;
 
+import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -9,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
  * Created by rakawm on 2/8/17.
  */
 
-public class Expiry {
+public class Expiry implements Serializable {
     public static final String UNIT_HOUR = "hours";
     public static final String UNIT_MINUTE = "minutes";
     public static final String UNIT_DAY = "days";

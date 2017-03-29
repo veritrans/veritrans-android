@@ -2,6 +2,7 @@ package com.midtrans.sdk.core.models.merchant;
 
 import com.midtrans.sdk.core.utils.Utilities;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,7 @@ import java.util.Map;
  * Created by rakawm on 10/19/16.
  */
 
-public class CheckoutTokenRequest {
+public class CheckoutTokenRequest implements Serializable {
     public String userId;
     public CreditCard creditCard;
     public List<ItemDetails> itemDetails;

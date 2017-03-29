@@ -1,10 +1,12 @@
 package com.midtrans.sdk.core.models.merchant;
 
+import java.io.Serializable;
+
 /**
  * Created by rakawm on 10/19/16.
  */
 
-public class CheckoutOrderDetails {
+public class CheckoutOrderDetails implements Serializable {
     public final String orderId;
     public final int grossAmount;
 
