@@ -45,7 +45,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/eight_dp"
                 android:contentDescription="@string/description_success_transaction"
-                android:src="@mipmap/ic_status_success" />
+                android:src="@drawable/ic_status_success" />
 
             <com.midtrans.sdk.ui.widgets.DefaultTextView
                 android:id="@+id/text_status_message"
@@ -80,9 +80,9 @@
 
                 <LinearLayout
                     android:id="@+id/layout_status_order"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -119,10 +119,10 @@
 
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:id="@+id/layout_status_total_amount"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -160,8 +160,8 @@
                     android:id="@+id/layout_status_due_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -199,10 +199,10 @@
 
                 <LinearLayout
                     android:id="@+id/layout_status_due_installment"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -238,9 +238,9 @@
 
                 <LinearLayout
                     android:id="@+id/layout_status_bank"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -277,11 +277,11 @@
 
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:id="@+id/layout_status_payment_type"
-
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -317,9 +317,9 @@
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/layout_status_payment_time"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -381,7 +381,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_size"
         android:layout_gravity="center_horizontal|bottom"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:textColor="@color/white"
         app:fb_defaultColor="@color/gray.primary"
         app:fb_focusColor="@color/colorAccentLight"

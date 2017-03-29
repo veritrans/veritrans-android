@@ -6,96 +6,70 @@
     android:background="@android:color/white"
     android:fitsSystemWindows="true">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/main_appbar"
+    <include layout="@layout/toolbar_payment_methods" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/main_toolbar"
-            style="@style/ThemeOverlay.AppCompat.ActionBar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/white">
-
-            <LinearLayout
-                android:layout_marginRight="@dimen/sixtyfour_dp"
-                android:layout_marginEnd="@dimen/sixtyfour_dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.midtrans.sdk.ui.widgets.DefaultTextView
-                    android:id="@+id/title_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:text="@string/checkout_transaction"
-                    android:textColor="@color/dark_gray"
-                    android:textSize="@dimen/tool_bar_title_size"
-                    android:visibility="visible" />
-            </LinearLayout>
-
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
-
-    <com.midtrans.sdk.ui.widgets.DefaultTextView
-        android:id="@+id/textview_to_compare"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include layout="@layout/layout_item_details" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/container_payment_methods"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </LinearLayout>
+
+    <include layout="@layout/layout_progress_bar" />
+
+    <RelativeLayout
+        android:id="@+id/container_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:id="@+id/error_text"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:text="@string/error_message_failed_checkout"
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_below="@id/error_text"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:gravity="center_horizontal">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_item_list"
-                android:layout_width="match_parent"
+            <com.midtrans.sdk.ui.widgets.FancyButton
+                android:id="@+id/checkout_retry_button"
+                style="@style/ButtonSecondary"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?colorPrimary"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                android:layout_marginEnd="@dimen/eight_dp"
+                android:layout_marginRight="@dimen/eight_dp"
+                app:fb_borderColor="@color/navy_blue.primary_dark"
+                app:fb_text="@string/retry"
+                app:fb_textColor="@color/navy_blue.primary_dark" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_payment_methods"
-                android:layout_width="match_parent"
+            <com.midtrans.sdk.ui.widgets.FancyButton
+                android:id="@+id/cancel_button"
+                style="@style/ButtonSecondary"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                android:layout_toEndOf="@id/checkout_retry_button"
+                android:layout_toRightOf="@id/checkout_retry_button"
+                app:fb_borderColor="@color/navy_blue.primary_dark"
+                app:fb_text="@string/btn_cancel"
+                app:fb_textColor="@color/navy_blue.primary_dark" />
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-
-    <LinearLayout
-        android:id="@+id/progress_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:gravity="center_vertical|center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.midtrans.sdk.ui.widgets.DefaultTextView
-            android:id="@+id/loading_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/txt_loading_payment" />
-    </LinearLayout>
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

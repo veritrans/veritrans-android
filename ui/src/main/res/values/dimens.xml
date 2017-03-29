@@ -21,6 +21,7 @@
     <dimen name="eighty_dp">80dp</dimen>
     <dimen name="fiftyfour_dp">54dp</dimen>
     <dimen name="fortytwo_dp">54dp</dimen>
+    <dimen name="forty_eight_dp">48dp</dimen>
     <dimen name="tool_bar_height">56dp</dimen>
 
 

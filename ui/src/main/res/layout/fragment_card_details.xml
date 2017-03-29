@@ -50,9 +50,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/bg_offer_success"
-                    android:drawableLeft="@mipmap/ic_offer_success"
+                    android:drawableLeft="@drawable/ic_offer_success"
                     android:drawablePadding="@dimen/eight_dp"
-                    android:drawableStart="@mipmap/ic_offer_success"
+                    android:drawableStart="@drawable/ic_offer_success"
                     android:gravity="center_vertical"
                     android:paddingBottom="@dimen/four_dp"
                     android:paddingLeft="@dimen/eight_dp"
@@ -68,9 +68,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/bg_offer_failure"
-                    android:drawableLeft="@mipmap/ic_offer_fail"
+                    android:drawableLeft="@drawable/ic_offer_fail"
                     android:drawablePadding="@dimen/eight_dp"
-                    android:drawableStart="@mipmap/ic_offer_fail"
+                    android:drawableStart="@drawable/ic_offer_fail"
                     android:gravity="center_vertical"
                     android:paddingBottom="@dimen/eight_dp"
                     android:paddingLeft="@dimen/eight_dp"
@@ -125,7 +125,7 @@
                                 android:layout_height="@dimen/bank_logo_size"
                                 android:layout_marginEnd="@dimen/four_dp"
                                 android:layout_marginRight="@dimen/four_dp"
-                                tools:src="@mipmap/ic_bank_bri" />
+                                tools:src="@drawable/bri" />
 
                             <com.midtrans.sdk.ui.widgets.AspectRatioImageView
                                 android:id="@+id/payment_card_logo"
@@ -133,14 +133,14 @@
                                 android:layout_height="@dimen/payment_logo_size"
                                 android:layout_marginEnd="@dimen/four_dp"
                                 android:layout_marginRight="@dimen/four_dp"
-                                tools:src="@mipmap/ic_visa" />
+                                tools:src="@drawable/ic_visa" />
 
                             <com.midtrans.sdk.ui.widgets.AspectRatioImageView
                                 android:id="@+id/promo_logo"
                                 android:layout_width="@dimen/promo_logo_size"
                                 android:layout_height="@dimen/promo_logo_size"
                                 android:background="?selectableItemBackground"
-                                android:src="@mipmap/ic_promo"
+                                android:src="@drawable/ic_promo"
                                 android:visibility="gone"
                                 tools:visibility="visible" />
                         </LinearLayout>
@@ -217,7 +217,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerInParent="true"
                                 android:background="?selectableItemBackground"
-                                android:src="@mipmap/ic_hint" />
+                                android:src="@drawable/ic_hints" />
                         </RelativeLayout>
 
                     </android.support.design.widget.TextInputLayout>
@@ -313,7 +313,7 @@
                     android:layout_marginEnd="@dimen/four_dp"
                     android:layout_marginRight="@dimen/four_dp"
                     android:layout_weight="0.4"
-                    android:src="@mipmap/ic_midtrans_lock" />
+                    android:src="@drawable/midtrans_lock" />
 
                 <ImageView
                     android:id="@+id/cc_badge"
@@ -322,7 +322,7 @@
                     android:layout_marginLeft="@dimen/four_dp"
                     android:layout_marginStart="@dimen/four_dp"
                     android:layout_weight="0.6"
-                    android:src="@mipmap/ic_cc_badge" />
+                    android:src="@drawable/cc_badge" />
             </LinearLayout>
 
             <Button
@@ -367,7 +367,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:background="?selectableItemBackground"
-                    android:src="@mipmap/ic_hint" />
+                    android:src="@drawable/ic_hints" />
             </RelativeLayout>
 
         </RelativeLayout>

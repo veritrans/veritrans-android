@@ -71,7 +71,8 @@
     <string name="pay_now">Bayar Sekarang</string>
     <string name="pay_with_instalments">Bayar dengan cicilan ?</string>
     <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
-    <string name="hint_expiry_date">Kadaluarsa(mm/yy)</string>
+    <string name="hint_expiry_date">Kadaluarsa</string>
+    <string name="hint_expiry_date_example">BB / TT</string>
     <string name="validation_message_card_number">Masukkan nomor kartu</string>
     <string name="validation_message_invalid_card_no">Masukkan nomor kartu yang benar</string>
     <string name="validation_message_invalid_token_no">Challenge token harus terdiri dari 6 karakter.</string>
@@ -312,7 +313,7 @@
     <string name="success">success</string>
     <string name="fetching_cards">Mengambil data kartu</string>
     <string name="btn_save_card">Mendaftarkan Kartu</string>
-    <string name="btn_scan_card">Pindai Kartu Menggunakan Kamera</string>
+    <string name="btn_scan_card">pindai kartu menggunakan kamera</string>
     <string name="offer_applied">Sukses menggunakan penawaran!</string>
     <string name="offer_not_applied">Kartu tidak berlaku untuk promo, coba gunakan kartu lain.</string>
     <string name="no_offers">Tidak ada penawaran</string>
@@ -458,6 +459,9 @@
     <string name="payment_not_enabled_message">Tidak dapat membuka halaman ini, silakan aktifkan channel pembayaran ini.</string>
 
     <string name="payment_method_description_credit_card">Bayar dengan VISA, MasterCard, JCB atau AMEX</string>
+    <string name="payment_method_description_credit_card_2">Bayar dengan VISA atau MasterCard</string>
+    <string name="payment_method_description_credit_card_3">Bayar dengan VISA, MasterCard atau JCB</string>
+    <string name="payment_method_description_credit_card_4">Bayar dengan VISA, MasterCard atau AMEX</string>
     <string name="payment_method_description_bank_transfer">Bayar dari ATM Bersama, Prima atau Alto</string>
     <string name="payment_method_description_klik_bca">Bayar dengan akun KlikBCA anda</string>
     <string name="payment_method_description_bca_klikpay">Bayar dengan BCA KlikPay</string>
@@ -488,4 +492,7 @@
     <string name="klik_bca_continue">Mohon lanjutkan proses pembayaran lewat KlikBCA dengan membuka <b>www.klikbca.com</b> di browser anda.\n\nTransaksi akan dibatalkan bila pembayaran tidak diselesaikan dalam 2 jam.</string>
     <string name="error_paid_order_id">Order ID sudah dibayar, silakan gunakan order id lain.</string>
     <string name="save_card_dialog">Kami akan menyimpan kartu anda sehingga bisa digunakan untuk transaksi selanjutnya.</string>
+    <string name="redeem_bni_reward">Tukarkan poin hadiah BNI</string>
+    <string name="delete_this_card">hapus kartu ini</string>
+    <string name="error_message_failed_checkout">Checkout gagal.\nMohon ulangi atau batalkan pembayaran.</string>
 </resources>

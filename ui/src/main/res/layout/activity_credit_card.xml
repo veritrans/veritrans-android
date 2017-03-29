@@ -46,7 +46,7 @@
                 app:fb_focusColor="@color/colorAccentLight"
                 app:fb_iconPaddingLeft="0dp"
                 app:fb_iconPaddingRight="0dp"
-                app:fb_iconResource="@mipmap/ic_arrow_back"
+                app:fb_iconResource="@drawable/ic_back"
                 app:fb_radius="64dp" />
 
             <ImageView
@@ -87,7 +87,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginRight="@dimen/sixteen_dp"
-                android:src="@mipmap/ic_delete"
+                android:src="@drawable/ic_delete_black"
                 android:visibility="invisible" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
