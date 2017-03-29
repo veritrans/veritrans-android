@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="activity_select_bank">Pilih Bank</string>
-    <string name="activity_bank_transfer_bca">Transfer Bank BCA</string>
-    <string name="activity_bank_transfer_mandiri">Transfer Bank Mandiri</string>
-    <string name="activity_bank_transfer_permata">Transfer Bank Permata</string>
-    <string name="activity_bank_transfer_all_bank">Transfer ke Bank Lain</string>
-    <string name="activity_save_credit_card">Kartu Kredit Terdaftar</string>
-
     <!--user detail-->
     <string name="hint_full_name">Nama Lengkap</string>
     <string name="hint_email">Email</string>
@@ -355,7 +348,6 @@
     <string name="error_transaction_empty">Tidak Ada Data Transaksi</string>
     <string name="text_hint_telkomsel_token">Token T-Cash</string>
 
-    <string name="error_empty_tcash_token_field">Token T-Cash tidak boleh kosong.</string>
     <string name="error_invalid_phone_number">Nomor telepon tidak benar.</string>
     <string name="error_something_wrong">Sedang terjadi kesalahan, silakan ulangi lagi!</string>
 
