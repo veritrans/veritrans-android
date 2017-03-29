@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.abtracts.BaseFragment;
@@ -115,37 +116,40 @@ public class PaymentStatusFragment extends BaseFragment {
         }
 
         //set order id
-        tvOrderId.setText(paymentResult.getOrderId());
+        tvOrderId.setText(paymentResult.getTransactionResponse().orderId);
 
         try {
             //set total amount
-            String amount = paymentResult.getGrossAmount();
+            String amount = paymentResult.getTransactionResponse().grossAmount;
             if (!TextUtils.isEmpty(amount)) {
                 String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
                 tvTotalAmount.setText(formattedAmount);
             }
 
             //transaction time
-            if (!TextUtils.isEmpty(paymentResult.getTransactionTime())) {
-                tvTransactionTime.setText(paymentResult.getTransactionTime());
+            if (!TextUtils.isEmpty(paymentResult.getTransactionResponse().transactionTime)) {
+                tvTransactionTime.setText(paymentResult.getTransactionResponse().transactionTime);
                 layoutPaymentTime.setVisibility(View.VISIBLE);
             } else {
                 layoutPaymentTime.setVisibility(View.GONE);
             }
 
             // bank
-            if (TextUtils.isEmpty(paymentResult.getBank())) {
-                layoutBank.setVisibility(View.GONE);
-            } else {
-                tvBank.setText(paymentResult.getBank());
-            }
+            if (paymentResult.getTransactionResponse().paymentType.equalsIgnoreCase(PaymentType.CREDIT_CARD)) {
+                PaymentResult<CreditCardPaymentResponse> creditCardPaymentResponsePaymentResult = paymentResult;
+                if (TextUtils.isEmpty(creditCardPaymentResponsePaymentResult.getTransactionResponse().bank)) {
+                    layoutBank.setVisibility(View.GONE);
+                } else {
+                    tvBank.setText(creditCardPaymentResponsePaymentResult.getTransactionResponse().bank);
+                }
 
-            //installment term
-            if (TextUtils.isEmpty(paymentResult.getInstallmentTerm())) {
-                layoutInstallmentTerm.setVisibility(View.GONE);
-            } else {
-                layoutInstallmentTerm.setVisibility(View.VISIBLE);
-                tvInstallmentTerm.setText(paymentResult.getInstallmentTerm());
+                //installment term
+                if (TextUtils.isEmpty(creditCardPaymentResponsePaymentResult.getTransactionResponse().installmentTerm)) {
+                    layoutInstallmentTerm.setVisibility(View.GONE);
+                } else {
+                    layoutInstallmentTerm.setVisibility(View.VISIBLE);
+                    tvInstallmentTerm.setText(creditCardPaymentResponsePaymentResult.getTransactionResponse().installmentTerm);
+                }
             }
 
         } catch (NullPointerException e) {
@@ -160,7 +164,6 @@ public class PaymentStatusFragment extends BaseFragment {
         initlayoutColor();
         setHeaderValues();
         setPaymentDetails();
-
     }
 
     //
@@ -188,29 +191,30 @@ public class PaymentStatusFragment extends BaseFragment {
     private void setHeaderValues() {
         if (paymentResult.getPaymentStatus().equals(PaymentStatus.SUCCESS)) {
             tvStatusTitle.setText(getString(R.string.payment_successful));
-            ivStatusLogo.setImageResource(R.mipmap.ic_status_success);
+            ivStatusLogo.setImageResource(R.drawable.ic_status_success);
             tvStatusMessage.setText(getString(R.string.thank_you));
         } else if (paymentResult.getPaymentStatus().equals(PaymentStatus.PENDING)) {
-            if (paymentResult.getFraudStatus().equals(PaymentStatus.CHALLENGE)) {
+            if (paymentResult.getTransactionResponse().fraudStatus.equals(PaymentStatus.CHALLENGE)) {
                 tvStatusTitle.setText(getString(R.string.payment_challenged));
             } else {
                 tvStatusTitle.setText(getString(R.string.payment_pending));
             }
             tvStatusMessage.setText(getString(R.string.thank_you));
-            ivStatusLogo.setImageResource(R.mipmap.ic_status_pending);
+            ivStatusLogo.setImageResource(R.drawable.ic_status_pending);
         } else {
             tvStatusTitle.setText(getString(R.string.payment_unsuccessful));
             tvStatusMessage.setText(getString(R.string.sorry));
-            ivStatusLogo.setImageResource(R.mipmap.ic_status_failed);
+            ivStatusLogo.setImageResource(R.drawable.ic_status_failed);
             tvStatusErrorMessage.setVisibility(View.VISIBLE);
 
-            if (paymentResult.getTransactionStatus() != null &&
+            if (paymentResult.getTransactionResponse().transactionStatus != null &&
                     paymentResult.getPaymentStatus().equalsIgnoreCase(getString(R.string.deny))) {
                 tvStatusErrorMessage.setText(getString(R.string.payment_deny));
-            } else if (paymentResult.getStatusCode().equals(PaymentStatus.CODE_400)) {
+            } else if (paymentResult.getTransactionResponse().statusCode.equals(PaymentStatus.CODE_400)) {
                 String message = "";
-                if (paymentResult.getValidationMessages() != null && !paymentResult.getValidationMessages().isEmpty()) {
-                    message = (String) paymentResult.getValidationMessages().get(0);
+                if (paymentResult.getTransactionResponse().validationMessages != null
+                        && !paymentResult.getTransactionResponse().validationMessages.isEmpty()) {
+                    message = paymentResult.getTransactionResponse().validationMessages.get(0);
                 }
 
                 if (!TextUtils.isEmpty(message) && message.toLowerCase().contains(getString(R.string.label_expired))) {
@@ -219,7 +223,7 @@ public class PaymentStatusFragment extends BaseFragment {
                     tvStatusErrorMessage.setText(getString(R.string.message_cannot_proccessed));
                 }
             } else {
-                tvStatusErrorMessage.setText(paymentResult.getStatusMessage());
+                tvStatusErrorMessage.setText(paymentResult.getTransactionResponse().statusMessage);
             }
         }
     }
