@@ -375,6 +375,13 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
                         return;
                     }
+                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BNI, false)) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_bni_va))) {
+                        startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_BNI, true);
+                    } else {
+                        showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+                        return;
+                    }
                 } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
                     if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_all_va))) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, true);

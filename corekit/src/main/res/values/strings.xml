@@ -444,6 +444,7 @@
     <string name="payment_permata_va">permata_va</string>
     <string name="payment_bca_va">bca_va</string>
     <string name="payment_all_va">other_va</string>
+    <string name="payment_bni_va">bni_va</string>
     <string name="payment_gci">gci</string>
 
     <!--Error Response-->

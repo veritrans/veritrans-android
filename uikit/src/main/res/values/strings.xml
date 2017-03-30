@@ -145,6 +145,7 @@
     <string name="permata_bank_transfer">Permata</string>
     <string name="mandiri_bank_transfer">Mandiri</string>
     <string name="all_bank_transfer">Other Banks</string>
+    <string name="bni_bank_transfer">BNI</string>
 
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
@@ -610,6 +611,7 @@
     <string name="mandiri_bill_transfer">Mandiri Bill</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
+    <string name="bank_bni_transfer">Bank BNI</string>
     <string name="other_bank_transfer">Other Bank</string>
     <string name="copy">Copy</string>
     <string name="valid_until">Valid until</string>
@@ -669,6 +671,7 @@
     <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>
     <string name="payment_bank_description_mandiri">Pay from Mandiri ATMs or internet banking</string>
     <string name="payment_bank_description_permata">Pay from Permata ATMs or internet banking</string>
+    <string name="payment_bank_description_bni">Pay from BNI ATMs or internet banking</string>
     <string name="payment_bank_description_other">Pay from other Bank ATMs</string>
 
     <string name="instruction_klikbca1">Please make sure that the UserID is active and registered at BCA.</string>

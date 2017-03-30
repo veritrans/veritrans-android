@@ -1294,7 +1294,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             userDetail.setUserFullName(getString(R.string.order_review_customer_details_name));
             userDetail.setEmail(getString(R.string.order_review_customer_details_email));
             userDetail.setPhoneNumber(getString(R.string.order_review_customer_details_phone));
-            userDetail.setUserId(UUID.randomUUID().toString());
+            userDetail.setUserId(getString(R.string.sample_user_id));
             ArrayList<UserAddress> userAddresses = new ArrayList<>();
             UserAddress userAddress = new UserAddress();
             userAddress.setAddress(getString(R.string.order_review_delivery_address_sample));

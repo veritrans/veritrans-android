@@ -438,6 +438,7 @@
     <string name="mandiri_bill_transfer">Mandiri Bill</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
+    <string name="bank_bni_transfer">Bank BNI</string>
     <string name="other_bank_transfer">Others Bank</string>
     <string name="copy">Salin</string>
     <string name="valid_until">Valid hingga</string>
@@ -480,6 +481,7 @@
     <string name="payment_bank_description_bca">Bayar dari ATM BCA atau internet banking</string>
     <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>
     <string name="payment_bank_description_permata">Bayar dari ATM Permata atau internet banking</string>
+    <string name="payment_bank_description_bni">Bayar dari ATM BNI atau internet banking</string>
     <string name="payment_bank_description_other">Bayar dari ATM bank lainnya</string>
 
     <string name="instruction_klikbca1">Mohon pastikan UserID aktif dan terdaftar di BCA.</string>

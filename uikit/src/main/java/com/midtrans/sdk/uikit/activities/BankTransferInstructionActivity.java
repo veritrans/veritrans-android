@@ -39,6 +39,7 @@ public class BankTransferInstructionActivity extends BaseActivity {
     public static final String DOWNLOAD_URL = "url";
     public static final String BANK = "bank";
     public static final String TYPE_BCA = "bank.bca";
+    public static final String TYPE_BNI = "bank.bni";
     public static final String TYPE_PERMATA = "bank.permata";
     public static final String TYPE_MANDIRI = "bank.mandiri";
     public static final String TYPE_MANDIRI_BILL = "bank.mandiri.bill";
