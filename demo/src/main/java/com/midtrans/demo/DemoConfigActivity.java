@@ -541,6 +541,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     cardClickTitle.setText(R.string.credit_card_type_two_clicks);
+                    secureEnabledSelection.setChecked(true);
+
                 }
             }
         });
@@ -550,6 +552,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     cardClickTitle.setText(R.string.credit_card_type_one_click);
+                    secureEnabledSelection.setChecked(true);
                 }
             }
         });
