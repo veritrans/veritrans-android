@@ -1,8 +1,5 @@
 package com.midtrans.sdk.uikit.utilities;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,6 +20,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -575,18 +574,21 @@ public class SdkUIFlowUtil {
     }
 
     public static int getCreditCardIconType() {
-        List<String> principles = MidtransSDK.getInstance().getMerchantData().getEnabledPrinciples();
-        if (principles.contains(CreditCardType.MASTERCARD) && principles.contains(CreditCardType.VISA)) {
-            if (principles.contains(CreditCardType.JCB)) {
-                if (principles.contains(CreditCardType.AMEX)) {
-                    return CreditCardType.TYPE_MASTER_VISA_JCB_AMEX;
+        if (MidtransSDK.getInstance().getMerchantData() != null) {
+            List<String> principles = MidtransSDK.getInstance().getMerchantData().getEnabledPrinciples();
+            if (principles.contains(CreditCardType.MASTERCARD) && principles.contains(CreditCardType.VISA)) {
+                if (principles.contains(CreditCardType.JCB)) {
+                    if (principles.contains(CreditCardType.AMEX)) {
+                        return CreditCardType.TYPE_MASTER_VISA_JCB_AMEX;
+                    }
+                    return CreditCardType.TYPE_MASTER_VISA_JCB;
+                } else if (principles.contains(CreditCardType.AMEX)) {
+                    return CreditCardType.TYPE_MASTER_VISA_AMEX;
                 }
-                return CreditCardType.TYPE_MASTER_VISA_JCB;
-            } else if (principles.contains(CreditCardType.AMEX)) {
-                return CreditCardType.TYPE_MASTER_VISA_AMEX;
+                return CreditCardType.TYPE_MASTER_VISA;
             }
-            return CreditCardType.TYPE_MASTER_VISA;
         }
+
         return CreditCardType.TYPE_UNKNOWN;
     }
 }
