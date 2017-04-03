@@ -49,6 +49,15 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+        }
+    }
+
     public void updateColorTheme(MidtransSDK mMidtransSDK) {
         if (mMidtransSDK.getColorTheme() != null && mMidtransSDK.getColorTheme().getPrimaryColor() != 0) {
             // Set button confirm color
@@ -74,12 +83,6 @@ public class BaseActivity extends AppCompatActivity {
             if (tabLayout != null) {
                 tabLayout.setSelectedTabIndicatorColor(mMidtransSDK.getColorTheme().getPrimaryColor());
             }
-
-            // Set indicator color
-            View indicator = findViewById(R.id.title_underscore);
-            if (indicator != null) {
-                indicator.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
-            }
         }
     }
 
@@ -99,6 +102,10 @@ public class BaseActivity extends AppCompatActivity {
             if (!fragmentPopped) {
                 Logger.i("fragment not in back stack, create it");
                 FragmentTransaction ft = fragmentManager.beginTransaction();
+                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+                }
                 ft.replace(fragmentContainer, fragment, backStateName);
                 if (addToBackStack) {
                     ft.addToBackStack(backStateName);

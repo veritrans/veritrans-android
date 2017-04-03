@@ -4,13 +4,14 @@ import com.midtrans.sdk.core.models.BankType;
 import com.midtrans.sdk.core.models.Channel;
 import com.midtrans.sdk.core.models.snap.SavedToken;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by rakawm on 10/19/16.
  */
 
-public class CreditCard {
+public class CreditCard implements Serializable {
     private boolean saveCard;
     private boolean secure;
     private String tokenId;

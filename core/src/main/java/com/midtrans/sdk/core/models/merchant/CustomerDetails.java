@@ -1,10 +1,12 @@
 package com.midtrans.sdk.core.models.merchant;
 
+import java.io.Serializable;
+
 /**
  * Created by rakawm on 10/19/16.
  */
 
-public class CustomerDetails {
+public class CustomerDetails implements Serializable {
     public final String firstName;
     public final String lastName;
     public final String email;

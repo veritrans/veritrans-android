@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/sixteen_dp"
     android:paddingRight="@dimen/sixteen_dp"
     android:paddingTop="@dimen/eight_dp"
-    tools:background="?colorPrimary">
+    tools:background="@color/navy_blue.primary">
 
     <com.midtrans.sdk.ui.widgets.DefaultTextView
         android:id="@+id/item_price"

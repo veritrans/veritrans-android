@@ -56,7 +56,7 @@
         app:fb_iconColor="?attr/colorPrimary"
         app:fb_iconPaddingTop="5dp"
         app:fb_iconPosition="left"
-        app:fb_iconResource="@mipmap/ic_plus_new"
+        app:fb_iconResource="@drawable/ic_plus_new"
         app:fb_radius="5dp"
         app:fb_text="@string/add_new_card"
         app:fb_textColor="?attr/colorPrimary"

@@ -11,15 +11,21 @@ import java.util.List;
 public interface TransactionContract {
 
 
-    public interface View{
+    interface View {
+        void showMerchantNameOrLogo(String merchantName, String merchantLogoUrl);
+
         void showProgressContainer(boolean show);
 
-        void showConfirmationDialog(String errorMessage);
+        void showPaymentMethods(List<PaymentMethodModel> paymentMethodsModel);
 
-        void showPaymentMethods(List<PaymentMethodModel> paymentMethodsModel, String merchantName);
+        void updateColorTheme();
+
+        void showErrorContainer();
+
+        void showErrorContainer(String message, boolean needRetry);
     }
 
-    public interface Presenter {
+    interface Presenter {
 
     }
 

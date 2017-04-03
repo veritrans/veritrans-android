@@ -8,6 +8,7 @@ public class UIKitCustomSetting {
 
     private boolean showPaymentStatus = true;
     private boolean saveCardChecked = false;
+    private boolean enabledAnimation = true;
 
     public boolean isShowPaymentStatus() {
         return showPaymentStatus;
@@ -23,5 +24,13 @@ public class UIKitCustomSetting {
 
     public void setSaveCardChecked(boolean saveCardChecked) {
         this.saveCardChecked = saveCardChecked;
+    }
+
+    public boolean isEnabledAnimation() {
+        return enabledAnimation;
+    }
+
+    public void setEnabledAnimation(boolean enabledAnimation) {
+        this.enabledAnimation = enabledAnimation;
     }
 }

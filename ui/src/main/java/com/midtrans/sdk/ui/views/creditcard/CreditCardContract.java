@@ -16,8 +16,7 @@ import java.util.List;
 public interface CreditCardContract {
 
 
-    public interface CreditCardDetailView extends BaseView<Presenter> {
-
+    interface CreditCardDetailView extends BaseView<Presenter> {
 
         void onGetCardTokenSuccess(CardTokenResponse response);
 
@@ -36,11 +35,11 @@ public interface CreditCardContract {
         boolean isSaveEnabled();
     }
 
-    public interface SavedCreditCardsView extends BaseView<Presenter> {
+    interface SavedCreditCardsView extends BaseView<Presenter> {
 
     }
 
-    public interface Presenter {
+    interface Presenter {
 
         void oneClickPayment(@NonNull String maskedCardNumber);
 

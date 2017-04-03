@@ -1,6 +1,7 @@
 package com.midtrans.sdk.ui.views.transaction;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
@@ -19,7 +20,7 @@ import com.midtrans.sdk.ui.models.ItemDetail;
 import com.midtrans.sdk.ui.models.PaymentMethodModel;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.themes.ColorTheme;
-import com.midtrans.sdk.ui.utils.PaymentMethodHelper;
+import com.midtrans.sdk.ui.utils.PaymentMethodUtils;
 import com.midtrans.sdk.ui.utils.Utils;
 
 import java.util.ArrayList;
@@ -43,23 +44,38 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
         this.view = view;
     }
 
-    public void checkout() {
-        MidtransCore.getInstance().checkout(midtransUiSdk.getCheckoutUrl(), midtransUiSdk.getCheckoutTokenRequest(), new MidtransCoreCallback<CheckoutTokenResponse>() {
+    /**
+     * Init transaction.
+     */
+    public void init() {
+        String checkoutToken = midtransUiSdk.getCheckoutToken();
+        if (checkoutToken != null && !TextUtils.isEmpty(checkoutToken)) {
+            getTransactionDetails(checkoutToken);
+        } else {
+            checkout();
+        }
+    }
+
+    private void checkout() {
+        MidtransCore.getInstance().checkout(
+                midtransUiSdk.getCheckoutUrl(),
+                midtransUiSdk.getCheckoutTokenRequest(),
+                new MidtransCoreCallback<CheckoutTokenResponse>() {
             @Override
             public void onSuccess(CheckoutTokenResponse checkoutTokenResponse) {
-                getTransactionDetails(checkoutTokenResponse);
+                getTransactionDetails(checkoutTokenResponse.token);
             }
 
             @Override
             public void onFailure(CheckoutTokenResponse object) {
                 view.showProgressContainer(false);
-                view.showConfirmationDialog(createCheckoutErrorMessage(object));
+                view.showErrorContainer(createCheckoutErrorMessage(object), isErrorNeedRetry(object));
             }
 
             @Override
             public void onError(Throwable throwable) {
                 view.showProgressContainer(false);
-                view.showConfirmationDialog(context.getString(R.string.failed_get_snap_token));
+                view.showErrorContainer();
             }
         });
     }
@@ -74,25 +90,45 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
         return errorMessage;
     }
 
-    private void getTransactionDetails(CheckoutTokenResponse checkoutTokenResponse) {
-        midtransUiSdk.setCheckoutToken(checkoutTokenResponse.token);
-        MidtransCore.getInstance().getTransactionDetails(checkoutTokenResponse.token, new MidtransCoreCallback<SnapTransaction>() {
+    private boolean isErrorNeedRetry(CheckoutTokenResponse checkoutTokenResponse) {
+        if (checkoutTokenResponse != null && checkoutTokenResponse.errorMessages != null) {
+            if (checkoutTokenResponse.errorMessages.get(0).contains(SnapResponseMessagePattern.ERROR_PAID_ORDER_ID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void getTransactionDetails(String token) {
+        midtransUiSdk.setCheckoutToken(token);
+        MidtransCore.getInstance().getTransactionDetails(token, new MidtransCoreCallback<SnapTransaction>() {
             @Override
             public void onSuccess(SnapTransaction snapTransaction) {
+                // Set transaction details
                 midtransUiSdk.setTransaction(snapTransaction);
+                // Set color theme
                 midtransUiSdk.setColorTheme(new ColorTheme(context, snapTransaction.merchant.preference.colorScheme));
+                // Dismiss progress
                 view.showProgressContainer(false);
-                view.showPaymentMethods(createPaymentMethodsModel(snapTransaction.enabledPayments), snapTransaction.merchant.preference.displayName);
+                // Show payment methods
+                view.showPaymentMethods(createPaymentMethodsModel(snapTransaction.enabledPayments));
+                // Show merchant name or logo
+                view.showMerchantNameOrLogo(snapTransaction.merchant.preference.displayName, snapTransaction.merchant.preference.logoUrl);
+                // Update color theme
+                view.updateColorTheme();
+
             }
 
             @Override
             public void onFailure(SnapTransaction snapTransaction) {
                 view.showProgressContainer(false);
+                view.showErrorContainer();
             }
 
             @Override
             public void onError(Throwable throwable) {
                 view.showProgressContainer(false);
+                view.showErrorContainer();
             }
         });
     }
@@ -136,12 +172,12 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
             if ((enabledPayment.category != null && enabledPayment.category.equals(PaymentCategory.BANK_TRANSFER))
                     || enabledPayment.type.equalsIgnoreCase(E_CHANNEL)) {
 
-                PaymentMethodModel bankTransferPaymentMethod = PaymentMethodHelper.createBankTransferPaymentMethod(context, enabledPayment.type);
+                PaymentMethodModel bankTransferPaymentMethod = PaymentMethodUtils.createBankTransferPaymentMethod(context, enabledPayment.type);
                 if (bankTransferPaymentMethod != null) {
                     bankTranferList.add(bankTransferPaymentMethod);
                 }
             } else {
-                PaymentMethodModel model = PaymentMethodHelper.createPaymentMethodModel(context, enabledPayment.type);
+                PaymentMethodModel model = PaymentMethodUtils.createPaymentMethodModel(context, enabledPayment.type);
                 if (model != null) {
                     paymentMethodList.add(model);
                 }
@@ -149,14 +185,14 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
         }
 
         if (!bankTranferList.isEmpty()) {
-            paymentMethodList.add(PaymentMethodHelper.createPaymentMethodModel(context, PaymentType.BANK_TRANSFER));
+            paymentMethodList.add(PaymentMethodUtils.createPaymentMethodModel(context, PaymentType.BANK_TRANSFER));
         }
 
         return paymentMethodList;
     }
 
     public void sendPaymentResult(PaymentResult result) {
-        midtransUiSdk.sendPaymentCallback(result);
+        Utils.sendPaymentResult(result);
     }
 
     public int getPrimaryColor() {

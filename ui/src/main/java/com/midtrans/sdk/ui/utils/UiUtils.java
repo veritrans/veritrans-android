@@ -1,5 +1,8 @@
 package com.midtrans.sdk.ui.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,16 +13,17 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.midtrans.sdk.core.models.CreditCardType;
+import com.midtrans.sdk.core.models.snap.CustomerDetails;
+import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
 import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
 import com.midtrans.sdk.core.models.snap.transaction.SnapEnabledPayment;
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.constants.Constants;
 
@@ -90,14 +94,13 @@ public class UiUtils {
      *
      * @param activity activity instance
      */
-    public static void hideKeyboard(Activity activity) {
+    public static void hideKeyboard(EditText editText, Activity activity) {
         try {
             Logger.d(TAG, "hide keyboard");
-            View view = activity.getCurrentFocus();
-            if (view != null) {
+            if (editText != null) {
                 InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context
                         .INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -394,4 +397,31 @@ public class UiUtils {
         }
     }
 
+    public static int getCreditCardIconType() {
+        List<String> principles = MidtransUi.getInstance().getTransaction().merchant.enabledPrinciples;
+        if (principles.contains(CreditCardType.MASTERCARD) && principles.contains(CreditCardType.VISA)) {
+            if (principles.contains(CreditCardType.JCB)) {
+                if (principles.contains(CreditCardType.AMEX)) {
+                    return CreditCardType.TYPE_MASTER_VISA_JCB_AMEX;
+                }
+                return CreditCardType.TYPE_MASTER_VISA_JCB;
+            } else if (principles.contains(CreditCardType.AMEX)) {
+                return CreditCardType.TYPE_MASTER_VISA_AMEX;
+            }
+            return CreditCardType.TYPE_MASTER_VISA;
+        }
+        return CreditCardType.TYPE_UNKNOWN;
+    }
+
+    public static SnapCustomerDetails buildCustomerDetails() {
+        if (MidtransUi.getInstance().getTransaction() != null) {
+            CustomerDetails customerDetails = MidtransUi.getInstance().getTransaction().customerDetails;
+            return new SnapCustomerDetails(
+                    customerDetails.firstName,
+                    customerDetails.email,
+                    customerDetails.phone
+            );
+        }
+        return null;
+    }
 }

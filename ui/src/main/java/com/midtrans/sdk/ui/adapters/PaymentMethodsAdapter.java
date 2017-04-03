@@ -16,10 +16,7 @@ import java.util.List;
 /**
  * Created by ziahaqi on 2/19/17.
  */
-
 public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAdapter.PaymentViewHolder> {
-
-    private static final String TAG = PaymentMethodsAdapter.class.getSimpleName();
 
     private ArrayList<PaymentMethodModel> paymentMethodModelList = new ArrayList<>();
     private PaymentMethodListener paymentMethodListener;
@@ -43,16 +40,19 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.adapter_payment_method_row, parent, false);
+                .inflate(R.layout.item_payment_methods, parent, false);
 
         return new PaymentViewHolder(view, paymentMethodListener);
     }
 
     @Override
     public void onBindViewHolder(PaymentViewHolder holder, int position) {
-        holder.mImageView.setImageResource(paymentMethodModelList.get(position).getImageId());
-        holder.name.setText(paymentMethodModelList.get(position).getName());
-        holder.description.setText(paymentMethodModelList.get(position).getDescription());
+        if (position != RecyclerView.NO_POSITION) {
+            PaymentMethodModel paymentMethodModel = paymentMethodModelList.get(position);
+            holder.logo.setImageResource(paymentMethodModel.getImageId());
+            holder.name.setText(paymentMethodModel.getName());
+            holder.description.setText(paymentMethodModel.getDescription());
+        }
     }
 
     @Override
@@ -66,14 +66,14 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
     class PaymentViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name;
-        TextView description;
-        ImageView mImageView;
+        private TextView name;
+        private TextView description;
+        private ImageView logo;
 
         PaymentViewHolder(View itemView, final PaymentMethodListener listener) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.text_payment_method_name);
-            mImageView = (ImageView) itemView.findViewById(R.id.img_payment_method_icon);
+            logo = (ImageView) itemView.findViewById(R.id.img_payment_method_icon);
             description = (TextView) itemView.findViewById(R.id.text_payment_method_description);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

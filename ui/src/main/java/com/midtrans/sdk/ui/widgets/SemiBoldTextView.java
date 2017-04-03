@@ -1,11 +1,9 @@
 package com.midtrans.sdk.ui.widgets;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.midtrans.sdk.ui.MidtransUi;
 
@@ -13,7 +11,7 @@ import com.midtrans.sdk.ui.MidtransUi;
  * Created by ziahaqi on 2/19/17.
  */
 
-public class SemiBoldTextView extends TextView {
+public class SemiBoldTextView extends AppCompatTextView {
 
     public SemiBoldTextView(Context context) {
         super(context);
@@ -30,16 +28,10 @@ public class SemiBoldTextView extends TextView {
         init();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SemiBoldTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
-
     private void init() {
         MidtransUi uiSdk = MidtransUi.getInstance();
-        if (uiSdk != null && uiSdk.getFontSemiBold() != null) {
-            Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), uiSdk.getFontSemiBold());
+        if (uiSdk != null && uiSdk.getSemiBoldFontPath() != null) {
+            Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), uiSdk.getSemiBoldFontPath());
             if (typeface != null) {
                 setTypeface(typeface);
             }

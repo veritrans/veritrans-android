@@ -10,6 +10,8 @@ machine:
     ruby:
         version: 2.0.0-p648
     environment:
+        KEYSTORE_PATH: ${HOME}/${CIRCLE_PROJECT_REPONAME}/demo/midtrans-demo.jks
+        FABRIC_PATH: ${HOME}/${CIRCLE_PROJECT_REPONAME}/demo/fabric.properties
         ANDROID_HOME: /usr/local/android-sdk-linux
         GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
         _JAVA_OPTIONS: "-Xms512m -Xmx2048m"
@@ -21,6 +23,7 @@ dependencies:
         - gem install bmp
         # Copy environment variables to gradle.properties
         - source environmentSetup.sh && copyEnvVarsToGradleProperties
+        - source downloadKeystore.sh && downloadKeystore && downloadFabricSecret
     override:
         - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-25.0.2,android-25,extra-google-m2repository,extra-google-google_play_services,extra-android-m2repository
         - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
@@ -36,6 +39,10 @@ test:
         # Unit Test Core v2
        - (./gradlew :core:testDebugUnitTestCoverage -PdisablePreDex):
                      timeout: 3600
+
+        # Unit Test Demo App
+       - (./gradlew demo:assembleRelease -PdisablePreDex):
+                   timeout: 3600
        # UI Test
        - emulator -avd circleci-android22 -no-audio -no-window:
             background: true
@@ -71,6 +78,11 @@ deployment:
             - ./gradlew :clean :uikit:assembleRelease :uikit:bintrayUpload -PdisablePreDex
             - ./gradlew :clean :scancard:assembleRelease :scancard:bintrayUpload -PdisablePreDex
             - ./gradlew :clean :widgets:assembleRelease :widgets:bintrayUpload -PdisablePreDex
+    develop:
+        branch: develop
+        owner: veritrans
+        commands:
+            - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
 
     bump:
       branch: release

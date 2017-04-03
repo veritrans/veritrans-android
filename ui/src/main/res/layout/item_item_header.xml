@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:orientation="vertical"
     android:id="@+id/layout_total_amount"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:gravity="center_vertical"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/sixteen_dp"
-    android:paddingRight="@dimen/sixteen_dp" >
+    android:paddingRight="@dimen/sixteen_dp"
+    tools:background="@color/navy_blue.primary">
 
     <RelativeLayout
-        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/eight_dp"
-        android:layout_marginTop="@dimen/eight_dp">
+        android:layout_marginBottom="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:gravity="center_vertical">
 
         <com.midtrans.sdk.ui.widgets.DefaultTextView
             android:id="@+id/total_amount"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:textColor="@color/white"
             android:textSize="@dimen/header_text_size"
+            android:textStyle="bold"
             tools:text="Rp. 120.000" />
 
         <com.midtrans.sdk.ui.widgets.DefaultTextView
-            android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:id="@+id/payable_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:text="@string/payable_amount"
             android:textColor="@color/white"
-            android:textSize="@dimen/primary_text_size" />
+            android:textSize="@dimen/primary_text_size"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <RelativeLayout

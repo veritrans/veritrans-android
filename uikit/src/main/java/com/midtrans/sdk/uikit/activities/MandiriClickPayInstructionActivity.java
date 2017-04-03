@@ -43,6 +43,10 @@ public class MandiriClickPayInstructionActivity extends BaseActivity {
         if (item.getItemId() == android.R.id.home) {
             //close activity on click of cross button.
             finish();
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+            }
         }
 
         return super.onOptionsItemSelected(item);

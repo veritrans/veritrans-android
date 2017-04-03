@@ -1,13 +1,13 @@
 package com.midtrans.sdk.core.models.snap;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by rakawm on 10/19/16.
  */
 
-public class BaseTransactionResponse {
+public class BaseTransactionResponse implements Serializable {
     public final String statusCode;
     public final String statusMessage;
     public final String transactionId;

@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.Toolbar;
@@ -44,10 +46,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected boolean saveCurrentFragment = false;
     protected Toolbar toolbar;
     protected String TAG = getClass().getSimpleName();
-    private int resultCode = RESULT_CANCELED;
-
     protected RelativeLayout layoutTotalAmount;
-
+    private int resultCode = RESULT_CANCELED;
     private int primaryColor = 0;
     private int secondaryColor = 0;
     private int primaryDarkColor = 0;
@@ -60,7 +60,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initTheme();
-
     }
 
     public void replaceFragment(Fragment fragment, int fragmentContainer, boolean addToBackStack, boolean clearBackStack) {
@@ -103,8 +102,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void initPaymentResult(PaymentResult result, String paymentType) {
         CustomSetting settings = MidtransUi.getInstance().getCustomSetting();
-        Log.d(TAG, "show:" + settings.showPaymentStatus);
-        if (settings != null && settings.showPaymentStatus) {
+        Log.d(TAG, "show:" + settings.isShowPaymentStatus());
+        if (settings.isShowPaymentStatus()) {
             PaymentStatusFragment fragment = PaymentStatusFragment.newInstance(result, paymentType);
             replaceFragment(fragment, R.id.main_layout, true, false);
         } else {
@@ -125,23 +124,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void initTheme() {
-        if (MidtransUi.getInstance() != null) {
-            Logger.d(TAG, "prim:" + primaryColor);
-            Logger.d(TAG, "secon:" + secondaryColor);
-            Logger.d(TAG, "dar:" + primaryDarkColor);
-
+        MidtransUi midtransUi = MidtransUi.getInstance();
+        if (midtransUi != null) {
             BaseColorTheme baseColorTheme = MidtransUi.getInstance().getColorTheme();
             if (baseColorTheme != null) {
                 this.primaryColor = baseColorTheme.getPrimaryColor();
                 this.primaryDarkColor = baseColorTheme.getPrimaryDarkColor();
                 this.secondaryColor = baseColorTheme.getSecondaryColor();
+                Logger.d(TAG, "prim:" + primaryColor);
+                Logger.d(TAG, "secon:" + secondaryColor);
+                Logger.d(TAG, "dar:" + primaryDarkColor);
+
             }
-            CustomSetting customSetting = MidtransUi.getInstance().getCustomSetting();
-            if (customSetting != null) {
-                this.fontDefault = customSetting.fontDefault;
-                this.fontSemiBold = customSetting.fontSemiBold;
-                this.fontBold = customSetting.fontBold;
-            }
+
+            this.fontDefault = midtransUi.getDefaultFontPath();
+            this.fontSemiBold = midtransUi.getSemiBoldFontPath();
+            this.fontBold = midtransUi.getBoldFontPath();
 
         }
         setStatusBarColor();
@@ -160,6 +158,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             } catch (RuntimeException exception) {
                 Logger.e(TAG, exception.getMessage());
             }
+        }
+    }
+
+    public void filterEditTextColor(EditText editText) {
+        if (secondaryColor != 0) {
+            editText.getBackground().setColorFilter(secondaryColor, PorterDuff.Mode.SRC_ATOP);
         }
     }
 
@@ -190,6 +194,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void setIconColorFilter(FancyButton fancyButton) {
+        if (primaryDarkColor != 0) {
+            fancyButton.setIconColorFilter(primaryDarkColor);
+        }
+    }
+
     public void setHintColor(View view) {
         if (secondaryColor != 0) {
             try {
@@ -211,12 +221,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (primaryDarkColor != 0) {
             try {
                 if (view instanceof TextView) {
-                    ((TextView) view).setTextColor(secondaryColor);
-                } else if (view instanceof Button) {
-                    ((Button) view).setTextColor(secondaryColor);
-
-                } else if (view instanceof EditText) {
-                    ((EditText) view).setTextColor(secondaryColor);
+                    ((TextView) view).setTextColor(primaryDarkColor);
+                } else if (view instanceof FancyButton) {
+                    ((FancyButton) view).setTextColor(primaryDarkColor);
                 }
             } catch (RuntimeException exception) {
                 Logger.e(TAG, exception.getMessage());
@@ -246,6 +253,18 @@ public abstract class BaseActivity extends AppCompatActivity {
                     secondaryColor
             };
             checkBox.setSupportButtonTintList(new ColorStateList(states, trackColors));
+        }
+    }
+
+    public void initToolbarBackButton() {
+        // Set toolbar back icon
+        if (primaryDarkColor != 0) {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+            if (toolbar != null) {
+                Drawable backIcon = ContextCompat.getDrawable(this, R.drawable.ic_back);
+                backIcon.setColorFilter(primaryDarkColor, PorterDuff.Mode.SRC_ATOP);
+                toolbar.setNavigationIcon(backIcon);
+            }
         }
     }
 
@@ -290,7 +309,29 @@ public abstract class BaseActivity extends AppCompatActivity {
                 indicator.setBackgroundColor(primaryColor);
             }
         }
+    }
 
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        if (MidtransUi.getInstance().getCustomSetting().isAnimationEnabled()) {
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        }
+    }
 
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+        if (MidtransUi.getInstance().getCustomSetting().isAnimationEnabled()) {
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (MidtransUi.getInstance().getCustomSetting().isAnimationEnabled()) {
+            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+        }
     }
 }

@@ -37,12 +37,15 @@ public class ColoredAppCompatEditText extends AppCompatEditText {
             try {
                 getBackground().setColorFilter(colorTheme.getSecondaryColor(), PorterDuff.Mode.SRC_ATOP);
                 setHintTextColor(colorTheme.getSecondaryColor());
-                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), uiSdk.getFontDefault());
-                if (typeface != null) {
-                    setTypeface(typeface);
-                }
             } catch (RuntimeException exception) {
                 Logger.e(this.getClass().getSimpleName(), exception.getMessage());
+            }
+        }
+
+        if (uiSdk != null && uiSdk.getDefaultFontPath() != null) {
+            Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), uiSdk.getDefaultFontPath());
+            if (typeface != null) {
+                setTypeface(typeface);
             }
         }
     }

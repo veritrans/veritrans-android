@@ -1,12 +1,16 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -74,6 +78,28 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         setUpBankList();
     }
 
+    private void prepareToolbar() {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            drawable.setColorFilter(
+                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+        toolbar.setNavigationIcon(drawable);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SdkUIFlowUtil.hideKeyboard(SelectBankTransferActivity.this);
+                finish();
+                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                }
+            }
+        });
+    }
+
     /**
      * Set up bank list.
      */
@@ -81,8 +107,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         //setup tool bar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        prepareToolbar();
         // setUp recyclerView
         ArrayList<String> banks = getIntent().getStringArrayListExtra(EXTRA_BANK);
         if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
@@ -95,6 +120,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
             Intent startMandiriBankPayment = new Intent(this, BankTransferActivity.class);
             startMandiriBankPayment.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
@@ -102,6 +131,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startMandiriBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
             Intent startBankPayment = new Intent(this, BankTransferActivity.class);
             startBankPayment.putExtra(
@@ -113,6 +146,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
 
             Intent startOtherBankPayment = new Intent(this, BankTransferActivity.class);
@@ -124,6 +161,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startOtherBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else {
             if (banks != null && banks.size() > 0) {
                 initialiseBankTransfersModel(banks);
@@ -184,19 +225,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         }
         SdkUIFlowUtil.sortBankPaymentMethodsByPriority(data);
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            SdkUIFlowUtil.hideKeyboard(this);
-            finish();
-            return false;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     /**
      * sends broadcast for transaction details.
      */
@@ -253,7 +281,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
-
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (name.equals(getString(R.string.permata_bank_transfer))) {
             Intent startBankPayment = new Intent(this, BankTransferActivity.class);
             startBankPayment.putExtra(
@@ -264,7 +295,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
-
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (name.equals(getString(R.string.mandiri_bank_transfer))) {
             Intent startMandiriBankPayment = new Intent(this, BankTransferActivity.class);
             startMandiriBankPayment.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);
@@ -272,7 +306,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startMandiriBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
-
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (name.equals(getString(R.string.all_bank_transfer))) {
 
             Intent startOtherBankPayment = new Intent(this, BankTransferActivity.class);
@@ -284,7 +321,10 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     startOtherBankPayment,
                     Constants.RESULT_CODE_PAYMENT_TRANSFER
             );
-
+            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else {
             Toast.makeText(this, "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
         }

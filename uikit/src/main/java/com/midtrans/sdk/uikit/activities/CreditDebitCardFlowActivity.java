@@ -43,8 +43,8 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
-import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
+import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
@@ -62,7 +62,6 @@ import com.midtrans.sdk.uikit.scancard.ScannerModel;
 import com.midtrans.sdk.uikit.utilities.ReadBankDetailTask;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
-import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,7 +123,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-        imageSavedCardDelete = (ImageView) findViewById(R.id.image_saved_card_delete);
 
         initializeTheme();
         setSupportActionBar(toolbar);

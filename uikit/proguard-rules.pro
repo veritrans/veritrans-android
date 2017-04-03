@@ -101,6 +101,7 @@
 #-keep class com.midtrans.sdk.activities.**{ *;}
 -keep class com.midtrans.sdk.uikit.fragments.**{*;}
 -keep class com.midtrans.sdk.corekit.models.** { *; }
+-keep class com.midtrans.sdk.uikit.models.** { *; }
 -keep class com.midtrans.sdk.uikit.scancard.** { *; }
 -keep class com.midtrans.sdk.corekit.eventbus.**{*;}
 -keep class com.midtrans.sdk.corekit.analytics.MixpanelEvent{*;}

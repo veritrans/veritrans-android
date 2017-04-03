@@ -107,12 +107,15 @@
     <!--add credicard-->
     <string name="hint_name_on_card">Name on the card</string>
     <string name="hint_card_number">Card Number</string>
+    <string name="hint_card_number_example" translatable="false">48●● ●●●● ●●●● ●●14</string>
     <string name="hint_cvv">CVV</string>
+    <string name="hint_cvv_example" translatable="false">●●●</string>
     <string name="save_card_message">Save my card details</string>
     <string name="pay_now">Pay now</string>
     <string name="pay_with_instalments">Pay with instalment ?</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
-    <string name="hint_expiry_date">Expiry(mm/yy)</string>
+    <string name="hint_expiry_date">Expiry</string>
+    <string name="hint_expiry_date_example">MM / YY</string>
     <string name="validation_message_card_number">Please enter card number</string>
     <string name="validation_message_invalid_card_no">Please enter valid card number</string>
     <string name="validation_message_invalid_token_no">Challenge token must be 6 characters.</string>
@@ -391,7 +394,7 @@
     <string name="success">success</string>
     <string name="fetching_cards">Fetching cards</string>
     <string name="btn_save_card">Register Card</string>
-    <string name="btn_scan_card">Scan Card Using Camera</string>
+    <string name="btn_scan_card">scan card using camera</string>
     <string name="offer_applied">Offer Applied Successfully !</string>
     <string name="offer_not_applied">This card is not applicable for this promotion, please use another one.</string>
     <string name="no_offers">No offers found</string>
@@ -648,6 +651,9 @@
     <string name="payment_not_enabled_message">Can\'t open the page, please enable the payment channel.</string>
 
     <string name="payment_method_description_credit_card">Pay with VISA, MasterCard, JCB or AMEX</string>
+    <string name="payment_method_description_credit_card_2">Pay with VISA or MasterCard</string>
+    <string name="payment_method_description_credit_card_3">Pay with VISA, MasterCard or JCB</string>
+    <string name="payment_method_description_credit_card_4">Pay with VISA, MasterCard or AMEX</string>
     <string name="payment_method_description_bank_transfer">Pay from ATM Bersama, Prima or Alto</string>
     <string name="payment_method_description_klik_bca">Pay with your KlikBCA account</string>
     <string name="payment_method_description_bca_klikpay">Pay with BCA KlikPay</string>
@@ -679,4 +685,7 @@
     <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.\n\nTransaction will be cancelled if payment is not completed within 2 hours.</string>
     <string name="error_paid_order_id">Order ID has been paid, please use another order ID</string>
     <string name="save_card_dialog">We will securely save your card details so you can reuse them later.</string>
+    <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
+    <string name="delete_this_card">delete this card</string>
+    <string name="error_message_failed_checkout">Checkout failed.\nPlease try again or cancel the payment.</string>
 </resources>

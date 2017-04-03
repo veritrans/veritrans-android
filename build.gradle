@@ -11,6 +11,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url "http://dl.bintray.com/pt-midtrans/maven" }
     }
 
     project.plugins.whenPluginAdded { plugin ->

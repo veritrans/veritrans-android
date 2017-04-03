@@ -39,6 +39,7 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.api.support.membermodification.MemberMatcher;
 import org.powermock.api.support.membermodification.MemberModifier;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -55,7 +56,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Settings.class, Settings.Secure.class, LocalDataHandler.class, Utils.class, Log.class, TextUtils.class, Logger.class, MixpanelAnalyticsManager.class})
-
+@PowerMockIgnore("javax.net.ssl.*")
 public class SDKUtilsTest {
 
     @Mock

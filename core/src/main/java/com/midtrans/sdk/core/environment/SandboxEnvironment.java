@@ -5,6 +5,6 @@ package com.midtrans.sdk.core.environment;
  */
 
 public class SandboxEnvironment extends BaseEnvironment {
-    public static final String PAYMENT_API_URL = "https://api.sandbox.veritrans.co.id/v2/";
-    public static final String SNAP_API_URL = "https://app.sandbox.veritrans.co.id/snap/v1/";
+    public static final String PAYMENT_API_URL = "https://api.sandbox.midtrans.com/v2/";
+    public static final String SNAP_API_URL = "https://app.sandbox.midtrans.com/snap/v1/";
 }

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity;
@@ -70,11 +71,15 @@ public class MandiriClickPayFragment extends Fragment {
                 MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_MANDIRI_CLICKPAY_OVERVIEW);
 
                 getActivity().startActivity(new Intent(getActivity(), MandiriClickPayInstructionActivity.class));
+                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
             }
         });
 
         textInput1.setText("");
-        textInput2.setText(String.valueOf(MidtransSDK.getInstance().getTransactionRequest().getAmount()));
+        textInput2.setText(Utils.formatDouble(MidtransSDK.getInstance().getTransactionRequest().getAmount()));
         textInput3.setText(String.valueOf(SdkUIFlowUtil.generateRandomNumber()));
 
         MidtransSDK midtransSDK = MidtransSDK.getInstance();

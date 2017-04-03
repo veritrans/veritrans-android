@@ -20,6 +20,7 @@ import com.midtrans.sdk.ui.models.CreditCardTransaction;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.utils.UiUtils;
+import com.midtrans.sdk.ui.utils.Utils;
 
 import java.util.List;
 
@@ -29,16 +30,15 @@ import java.util.List;
 
 public class CreditCardPresenter extends BasePresenter implements CreditCardContract.Presenter {
 
+    public PaymentResult getPaymentResult;
     private Context context;
     private CreditCardContract.CreditCardDetailView cardDetailView;
     private CreditCardContract.SavedCreditCardsView savedCreditCardsView;
-
     private boolean newCardPayment;
     private int termInstallmentSelected = 0;
     private CardTokenResponse cardTokenResponse;
     private CreditCardPaymentResponse paymentResponse;
     private CreditCardTransaction creditCardTransaction = new CreditCardTransaction();
-    public PaymentResult getPaymentResult;
 
 
     public CreditCardPresenter(@NonNull Context context) {
@@ -59,10 +59,7 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
 
     public boolean isNormalMode() {
         SnapTransaction transaction = midtransUiSdk.getTransaction();
-        if (!isCreditCardOneClickMode(transaction.creditCard) && !isCreditCardTwoClickMode(transaction.creditCard)) {
-            return true;
-        }
-        return false;
+        return !isCreditCardOneClickMode(transaction.creditCard) && !isCreditCardTwoClickMode(transaction.creditCard);
     }
 
     public boolean isCreditCardOneClickMode(CreditCard creditCard) {
@@ -234,9 +231,9 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
             cardPaymentParams.setInstallment(installmentBankSeleted + "_" + installmentTermSelected);
         }
 
-        MidtransCore.getInstance().paymentUsingCreditCard(midtransUiSdk.readCheckoutToken(),
+        MidtransCore.getInstance().paymentUsingCreditCard(midtransUiSdk.getCheckoutToken(),
                 cardPaymentParams,
-                midtransUiSdk.createSnapCustomerDetails(),
+                Utils.createSnapCustomerDetails(),
                 new MidtransCoreCallback<CreditCardPaymentResponse>() {
                     @Override
                     public void onSuccess(CreditCardPaymentResponse response) {
@@ -273,12 +270,12 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
     }
 
     public boolean isBuiltInTokenStorage() {
-        return midtransUiSdk.isBuiltInTokenStorage();
+        return midtransUiSdk.isTokenStorageEnabled();
     }
 
     public boolean haveSavedTokens() {
         CreditCard creditCard = midtransUiSdk.getTransaction().creditCard;
-        if (midtransUiSdk.isBuiltInTokenStorage() && creditCard != null) {
+        if (midtransUiSdk.isTokenStorageEnabled() && creditCard != null) {
             if (creditCard.savedTokens != null && !creditCard.savedTokens.isEmpty()) {
                 return true;
             }

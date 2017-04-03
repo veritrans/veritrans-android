@@ -1,10 +1,12 @@
 package com.midtrans.sdk.core.models.merchant;
 
+import java.io.Serializable;
+
 /**
  * Created by rakawm on 10/19/16.
  */
 
-public class ItemDetails {
+public class ItemDetails implements Serializable {
     public final String id;
     public final int price;
     public final int quantity;

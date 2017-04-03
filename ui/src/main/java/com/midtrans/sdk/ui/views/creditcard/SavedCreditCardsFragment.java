@@ -91,7 +91,7 @@ public class SavedCreditCardsFragment extends BaseFragment implements CreditCard
     }
 
     private void bindData() {
-        Drawable filteredDrawable = UiUtils.filterDrawableImage(getContext(), R.mipmap.ic_plus_new,
+        Drawable filteredDrawable = UiUtils.filterDrawableImage(getContext(), R.drawable.ic_plus_new,
                 buttonNewCard.getmDefaultIconColor());
         buttonNewCard.setIconResource(filteredDrawable);
 
