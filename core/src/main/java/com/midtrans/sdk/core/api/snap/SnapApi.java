@@ -41,6 +41,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -290,4 +291,13 @@ public interface SnapApi {
      */
     @GET("bank_bins")
     Call<List<BankBinsResponse>> getBankBins();
+
+    /**
+     * Delete selected card from user's account.
+     */
+    @DELETE("transactions/{token}/saved_tokens/{masked_card}")
+    Call<Void> deleteCard(
+            @Path("token") String checkoutToken,
+            @Path("masked_card") String maskedCard
+    );
 }
