@@ -267,7 +267,6 @@ public class MidtransUi {
         this.checkoutUrl = null;
         this.checkoutToken = null;
         this.transaction = null;
-        this.checkoutToken = null;
     }
 
     /**

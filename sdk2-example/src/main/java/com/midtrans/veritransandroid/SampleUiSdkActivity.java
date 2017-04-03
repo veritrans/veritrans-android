@@ -132,8 +132,6 @@ public class SampleUiSdkActivity extends AppCompatActivity {
             creditCard.setChannel(Channel.MIGS);
         }
 
-        boolean creditCardSecure = rb3dsSecure.isChecked();
-
 //        if (preAuthActive.isChecked()) {
 //            // Set Pre Auth mode
 //            creditCard.setType(CardTokenRequest.TYPE_AUTHORIZE);
@@ -142,10 +140,10 @@ public class SampleUiSdkActivity extends AppCompatActivity {
         if (rbCardOneclick.isChecked()) {
             creditCard.setSecure(true);
             creditCard.setSaveCard(true);
-            creditCardSecure = true;
         } else if (rbCardTwoclick.isChecked()) {
             creditCard.setSaveCard(true);
         } else {
+            creditCard.setSecure(rb3dsSecure.isChecked());
             if (rb3dsSecure.isChecked()) {
                 creditCard.setSecure(true);
             } else {
@@ -153,6 +151,6 @@ public class SampleUiSdkActivity extends AppCompatActivity {
             }
         }
 
-        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", creditCard, itemDetailsList, customerDetails, checkoutOrderDetails, creditCardSecure, null, null);
+        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", creditCard, itemDetailsList, customerDetails, checkoutOrderDetails, null, null);
     }
 }
