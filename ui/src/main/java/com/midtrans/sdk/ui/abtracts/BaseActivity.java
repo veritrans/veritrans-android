@@ -334,4 +334,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
         }
     }
+
+    @Override
+    public void setSupportActionBar(@Nullable Toolbar toolbar) {
+        Drawable backButton = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        backButton.setColorFilter(getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
+        toolbar.setNavigationIcon(backButton);
+        super.setSupportActionBar(toolbar);
+
+    }
 }
