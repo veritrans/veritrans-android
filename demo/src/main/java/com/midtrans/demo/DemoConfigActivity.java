@@ -542,7 +542,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 if (checked) {
                     cardClickTitle.setText(R.string.credit_card_type_two_clicks);
                     secureEnabledSelection.setChecked(true);
-
                 }
             }
         });
