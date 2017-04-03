@@ -40,7 +40,6 @@ import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * Created by rakawm on 3/15/17.
@@ -542,6 +541,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     cardClickTitle.setText(R.string.credit_card_type_two_clicks);
+                    secureEnabledSelection.setChecked(true);
                 }
             }
         });
@@ -551,6 +551,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     cardClickTitle.setText(R.string.credit_card_type_one_click);
+                    secureEnabledSelection.setChecked(true);
                 }
             }
         });
@@ -1294,7 +1295,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             userDetail.setUserFullName(getString(R.string.order_review_customer_details_name));
             userDetail.setEmail(getString(R.string.order_review_customer_details_email));
             userDetail.setPhoneNumber(getString(R.string.order_review_customer_details_phone));
-            userDetail.setUserId(UUID.randomUUID().toString());
+            userDetail.setUserId(getString(R.string.sample_user_id));
             ArrayList<UserAddress> userAddresses = new ArrayList<>();
             UserAddress userAddress = new UserAddress();
             userAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
