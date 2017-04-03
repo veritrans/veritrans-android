@@ -1,5 +1,5 @@
 ---
-version: 1.4.2
+version: 1.5.1
 commit: Bump to version %.%.%
 files:
   corekit/build.gradle: version = '%.%.%'

@@ -310,6 +310,7 @@ public class CardDetailsFragment extends Fragment {
                             } else {
                                 request.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
                             }
+                            setPaymentInstallment();
                             ((CreditCardFlowActivity) getActivity()).twoClickPayment(request);
                         } else {
                             String cardNumberText = cardNumber.getText().toString();
