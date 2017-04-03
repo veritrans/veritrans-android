@@ -1,10 +1,16 @@
 package com.midtrans.sdk.ui.abtracts;
 
+import android.content.res.ColorStateList;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
+import android.widget.EditText;
 
 import com.midtrans.sdk.ui.widgets.FancyButton;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by ziahaqi on 2/24/17.
@@ -74,5 +80,11 @@ public class BaseFragment extends Fragment {
             return ((BaseActivity) getActivity()).getPrimaryDarkColor();
         }
         return 0;
+    }
+
+    public void setEditTextColorFilter(AppCompatEditText editText){
+        if(getActivity() instanceof BaseActivity){
+            ((BaseActivity)getActivity()).setEditTextColorFilter(editText);
+        }
     }
 }

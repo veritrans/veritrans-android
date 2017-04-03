@@ -688,4 +688,7 @@
     <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
     <string name="delete_this_card">delete this card</string>
     <string name="error_message_failed_checkout">Checkout failed.\nPlease try again or cancel the payment.</string>
+    <string name="tab_atm_bersama">ATM Bersama</string>
+    <string name="tab_prima">Prima</string>
+    <string name="error_invalid_payment_form">Invalid Form Payment</string>
 </resources>

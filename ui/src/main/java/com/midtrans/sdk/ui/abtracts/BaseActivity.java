@@ -8,12 +8,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,12 +37,16 @@ import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.views.PaymentStatusFragment;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by ziahaqi on 2/19/17.
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    private static final String DEFAULT_TEXT_COLOR = "mDefaultTextColor";
+    private static final String FOCUSED_TEXT_COLOR = "mFocusedTextColor";
     protected String currentFragmentName;
     protected Fragment currentFragment = null;
     protected boolean saveCurrentFragment = false;
@@ -256,6 +262,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public  void setEditTextColorFilter(AppCompatEditText editText) {
+        try {
+            Field fDefaultTextColor = TextInputLayout.class.getDeclaredField(DEFAULT_TEXT_COLOR);
+            fDefaultTextColor.setAccessible(true);
+            fDefaultTextColor.set(editText, new ColorStateList(new int[][]{{0}}, new int[]{getSecondaryColor()}));
+
+            Field fFocusedTextColor = TextInputLayout.class.getDeclaredField(FOCUSED_TEXT_COLOR);
+            fFocusedTextColor.setAccessible(true);
+            fFocusedTextColor.set(editText, new ColorStateList(new int[][]{{0}}, new int[]{getSecondaryColor()}));
+
+            editText.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{getSecondaryColor()}));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void initToolbarBackButton() {
         // Set toolbar back icon
         if (primaryDarkColor != 0) {
@@ -341,6 +364,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         backButton.setColorFilter(getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
         toolbar.setNavigationIcon(backButton);
         super.setSupportActionBar(toolbar);
-
     }
 }

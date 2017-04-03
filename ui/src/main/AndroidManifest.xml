@@ -5,16 +5,26 @@
         android:allowBackup="true"
         android:theme="@style/MidtransSdkTheme">
 
-        <activity android:name=".views.transaction.TransactionActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".views.creditcard.CreditCardActivity" android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.transaction.TransactionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.creditcard.CreditCardActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.creditcard.details.CreditCardDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.PaymentStatusActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".views.banktransfer.list.BankTransferListActivity"
+        <activity
+            android:name="com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.banktransfer.list.BankTransferListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.banktransfer.payment.BankTransferPaymentActivity"
             android:screenOrientation="portrait" />
     </application>
 

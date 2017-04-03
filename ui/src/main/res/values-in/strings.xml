@@ -487,4 +487,5 @@
     <string name="redeem_bni_reward">Tukarkan poin hadiah BNI</string>
     <string name="delete_this_card">hapus kartu ini</string>
     <string name="error_message_failed_checkout">Checkout gagal.\nMohon ulangi atau batalkan pembayaran.</string>
+    <string name="error_invalid_payment_form">Form Pembayaran tidak valid</string>
 </resources>

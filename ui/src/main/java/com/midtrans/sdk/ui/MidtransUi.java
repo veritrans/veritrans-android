@@ -270,6 +270,9 @@ public class MidtransUi {
         this.checkoutToken = null;
     }
 
+    public void trackEvent(String eventName) {
+    }
+
     /**
      * MidtransUi builder class.
      */

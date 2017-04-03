@@ -1,7 +1,7 @@
 package com.midtrans.sdk.ui.adapters;
 
 /**
- * Created by rakawm on 2/28/17.
+ * Created by ziahaqi on 4/3/17.
  */
 
 
@@ -11,18 +11,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
-import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionATMBersamaFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionAltoFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionBCAFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionBCAKlikFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionBCAMobileFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionMandiriFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionMandiriInternetFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionPermataFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionPrimaFragment;
-import com.midtrans.sdk.uikit.widgets.MagicViewPager;
+import com.midtrans.sdk.ui.R;
+import com.midtrans.sdk.ui.constants.PaymentType;
+import com.midtrans.sdk.ui.views.instructions.InstructionATMBersamaFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionAltoFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionBCAFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionBCAKlikFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionBCAMobileFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionMandiriFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionMandiriInternetFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionPermataFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionPrimaFragment;
+import com.midtrans.sdk.ui.widgets.MagicViewPager;
 
 public class InstructionFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -34,43 +34,50 @@ public class InstructionFragmentPagerAdapter extends FragmentStatePagerAdapter {
     private final String bank;
     private int currentPosition = -1;
 
-    public InstructionFragmentPagerAdapter(Context context, String bank, FragmentManager fragmentManager, int number) {
+    public InstructionFragmentPagerAdapter(Context context, String bank, FragmentManager fragmentManager, int pages) {
         super(fragmentManager);
         this.context = context;
-        this.pages = number;
+        this.pages = pages;
         this.bank = bank;
     }
 
     @Override
     public Fragment getItem(int position) {
-
         Fragment fragment;
+        switch (bank) {
+            case PaymentType.BCA_VA:
+                if (position == 0) {
+                    fragment = new InstructionBCAFragment();
+                } else if (position == 1) {
+                    fragment = new InstructionBCAKlikFragment();
+                } else {
+                    fragment = new InstructionBCAMobileFragment();
+                }
+                break;
+            case PaymentType.E_CHANNEL:
+                if (position == 0) {
+                    fragment = new InstructionMandiriFragment();
+                } else {
+                    fragment = new InstructionMandiriInternetFragment();
+                }
+                break;
+            case PaymentType.PERMATA_VA:
+                fragment = new InstructionPermataFragment();
+                break;
+            case PaymentType.BNI_VA:
+                fragment = new InstructionPermataFragment();
+                break;
+            default:
+                if (position == 0) {
+                    fragment = new InstructionATMBersamaFragment();
 
-        if (bank.equals(BankTransferFragment.TYPE_BCA)) {
-            if (position == 0) {
-                fragment = new InstructionBCAFragment();
-            } else if (position == 1) {
-                fragment = new InstructionBCAKlikFragment();
-            } else fragment = new InstructionBCAMobileFragment();
+                } else if (position == 1) {
+                    fragment = new InstructionPrimaFragment();
 
-        } else if (bank.equals(BankTransferFragment.TYPE_PERMATA)) {
-            fragment = new InstructionPermataFragment();
-
-        } else if (bank.equals(BankTransferFragment.TYPE_MANDIRI) ||
-                bank.equals(BankTransferFragment.TYPE_MANDIRI_BILL)) {
-            if (position == 0) {
-                fragment = new InstructionMandiriFragment();
-            } else {
-                fragment = new InstructionMandiriInternetFragment();
-            }
-        } else {
-            if (position == 0) {
-                fragment = new InstructionATMBersamaFragment();
-            } else if (position == 1) {
-                fragment = new InstructionPrimaFragment();
-            } else {
-                fragment = new InstructionAltoFragment();
-            }
+                } else {
+                    fragment = new InstructionAltoFragment();
+                }
+                break;
         }
 
         return fragment;
@@ -90,32 +97,51 @@ public class InstructionFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
+        String instructionTitle;
 
-        if (bank.equals(BankTransferFragment.TYPE_BCA)) {
-            if (position == 0) {
-                return context.getString(R.string.tab_bca_atm);
-            } else if (position == 1) {
-                return context.getString(R.string.tab_bca_klik);
-            } else return context.getString(R.string.tab_bca_mobile);
-        } else if (bank.equals(BankTransferFragment.TYPE_PERMATA)) {
-            if (position == 0) return context.getString(R.string.tab_permata_atm);
-            else return context.getString(R.string.tab_alto);
-        } else if (bank.equals(BankTransferFragment.TYPE_MANDIRI_BILL) ||
-                bank.equals(BankTransferFragment.TYPE_MANDIRI)) {
-            if (position == 0) {
-                return context.getString(R.string.tab_mandiri_atm);
-            } else {
-                return context.getString(R.string.tab_mandiri_internet);
-            }
-        } else {
-            if (position == 0) {
-                return context.getString(R.string.tab_atm_bersama);
-            } else if (position == 1) {
-                return context.getString(R.string.tab_prima);
-            } else {
-                return context.getString(R.string.tab_alto);
-            }
+        switch (bank) {
+            case PaymentType.BCA_VA:
+                if (position == 0) {
+                    instructionTitle = context.getString(R.string.tab_bca_atm);
+
+                } else if (position == 1) {
+                    instructionTitle = context.getString(R.string.tab_bca_klik);
+
+                } else {
+                    instructionTitle = context.getString(R.string.tab_bca_mobile);
+                }
+                break;
+            case PaymentType.E_CHANNEL:
+                if (position == 0) {
+                    instructionTitle = context.getString(R.string.tab_mandiri_atm);
+                } else {
+                    instructionTitle = context.getString(R.string.tab_mandiri_internet);
+                }
+                break;
+            case PaymentType.PERMATA_VA:
+                if (position == 0) {
+                    instructionTitle = context.getString(R.string.tab_permata_atm);
+
+                } else {
+                    instructionTitle = context.getString(R.string.tab_alto);
+                }
+                break;
+            case PaymentType.BNI_VA:
+                instructionTitle = context.getString(R.string.tab_atm_bersama);
+                break;
+            default:
+                if (position == 0) {
+                    instructionTitle = context.getString(R.string.tab_atm_bersama);
+
+                } else if (position == 1) {
+                    instructionTitle = context.getString(R.string.tab_prima);
+
+                } else {
+                    instructionTitle = context.getString(R.string.tab_alto);
+                }
+                break;
         }
+        return instructionTitle;
     }
 
     @Override
