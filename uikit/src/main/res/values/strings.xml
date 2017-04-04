@@ -688,7 +688,7 @@
     <string name="total_point">Your total %1$s Reward Point is %2$s</string>
     <string name="redeem_bni_title">Redeem BNI Reward Point</string>
     <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
-    <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.\n\nTransaction will be cancelled if payment is not completed within 2 hours.</string>
+    <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.</string>
     <string name="error_delete_message">Failed to delete card</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
