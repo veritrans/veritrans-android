@@ -107,7 +107,7 @@
     <!--add credicard-->
     <string name="hint_name_on_card">Name on the card</string>
     <string name="hint_card_number">Card Number</string>
-    <string name="hint_card_number_example" translatable="false">48●● ●●●● ●●●● ●●14</string>
+    <string name="hint_card_number_example">4811 1111 1111 1114 (Example)</string>
     <string name="hint_cvv">CVV</string>
     <string name="hint_cvv_example" translatable="false">●●●</string>
     <string name="save_card_message">Save my card details</string>

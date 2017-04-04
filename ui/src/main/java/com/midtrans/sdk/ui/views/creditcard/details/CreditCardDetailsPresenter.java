@@ -1,6 +1,7 @@
 package com.midtrans.sdk.ui.views.creditcard.details;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
@@ -35,11 +36,13 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
     private PaymentResult<CreditCardPaymentResponse> paymentResult;
     private SavedToken savedToken;
     private boolean saveCard;
+    private List<String> whitelistBins;
 
     public void init(Context context, CreditCardDetailsView view) {
         this.cardDetailsView = view;
         initCallbacks();
         initBankBins(context);
+        initWhitelistBins();
     }
 
     private void initBankBins(Context context) {
@@ -64,6 +67,13 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
                 // Do nothing
             }
         });
+    }
+
+    private void initWhitelistBins() {
+        CreditCard creditCard = MidtransUi.getInstance().getTransaction().creditCard;
+        if (creditCard != null) {
+            whitelistBins = creditCard.whitelistBins;
+        }
     }
 
     void startTokenize(String cardNumber, String expiryMonth, String expiryYear, String cvv) {
@@ -224,5 +234,30 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
 
     public List<BankBinsResponse> getBankBins() {
         return bankBins;
+    }
+
+    public List<String> getWhitelistBins() {
+        return whitelistBins;
+    }
+
+    public boolean isWhitelistBinsAvailable() {
+        return whitelistBins != null
+                && !whitelistBins.isEmpty();
+    }
+
+    public boolean isCardBinLockingValid(String cardNumber) {
+        return !TextUtils.isEmpty(cardNumber)
+                && cardNumber.length() >= 7
+                && isCardBinValid(cardNumber);
+    }
+
+    private boolean isCardBinValid(String cardNumber) {
+        String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+        return isInWhiteList(cardBin);
+    }
+
+    private boolean isInWhiteList(String cardBin) {
+        CreditCard creditCard = MidtransUi.getInstance().getTransaction().creditCard;
+        return creditCard.whitelistBins.contains(cardBin);
     }
 }

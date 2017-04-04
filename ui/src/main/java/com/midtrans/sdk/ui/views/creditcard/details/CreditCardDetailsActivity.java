@@ -73,6 +73,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     private TextView cardNumberErrorText;
     private TextView cardCvvErrorText;
     private TextView cardExpiryErrorText;
+    private TextView textInvalidPromoStatus;
 
     private ImageView cardLogo;
     private ImageView bankLogo;
@@ -135,6 +136,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         cardNumberField = (EditText) findViewById(R.id.field_card_number);
         cardCvvField = (EditText) findViewById(R.id.field_cvv);
         cardExpiryField = (EditText) findViewById(R.id.field_expiry);
+        textInvalidPromoStatus = (TextView) findViewById(R.id.text_offer_status_not_applied);
 
         cardNumberErrorText = (TextView) findViewById(R.id.error_message_card_number);
         cardExpiryErrorText = (TextView) findViewById(R.id.error_message_expiry);
@@ -354,6 +356,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
             public void onFocusChange(View view, boolean focused) {
                 if (!focused) {
                     checkCardNumberValidity();
+                    checkBinLockingValidity();
                 }
             }
         });
@@ -373,6 +376,17 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
                 }
             }
         });
+    }
+
+    private void checkBinLockingValidity() {
+        if (presenter.isWhitelistBinsAvailable()) {
+            String cardNumber = cardNumberField.getText().toString().trim();
+            if (presenter.isCardBinLockingValid(cardNumber)) {
+                hideInvalidBinLockingStatus();
+            } else {
+                showInvalidBinLockingStatus();
+            }
+        }
     }
 
     private void initSaveCardLayout() {
@@ -402,29 +416,47 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
             @Override
             public void onClick(View view) {
                 if (checkCardValidity()) {
-                    String cvv = cardCvvField.getText().toString();
-                    showProgressDialog(getString(R.string.processing_payment));
-                    if (isOneClickMode()) {
-                        presenter.startPayment();
-                    } else {
-                        if (isTwoClickMode()) {
-                            presenter.startTokenize(cvv);
+                    // TODO: Track event pay now
+                    //midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+                    if (checkPaymentValidity()) {
+                        String cvv = cardCvvField.getText().toString();
+                        showProgressDialog(getString(R.string.processing_payment));
+                        if (isOneClickMode()) {
+                            presenter.startPayment();
                         } else {
-                            String cardNumber = cardNumberField.getText().toString();
-                            String expiry = cardExpiryField.getText().toString();
-                            // Start payment
-                            presenter.setSaveCard(checkboxSaveCard.isChecked());
-                            presenter.startTokenize(
-                                    cardNumber.replace(" ", ""),
-                                    expiry.split(" / ")[0],
-                                    expiry.split(" / ")[1],
-                                    cvv
-                            );
+                            if (isTwoClickMode()) {
+                                presenter.startTokenize(cvv);
+                            } else {
+                                String cardNumber = cardNumberField.getText().toString();
+                                String expiry = cardExpiryField.getText().toString();
+                                // Start payment
+                                presenter.setSaveCard(checkboxSaveCard.isChecked());
+                                presenter.startTokenize(
+                                        cardNumber.replace(" ", ""),
+                                        expiry.split(" / ")[0],
+                                        expiry.split(" / ")[1],
+                                        cvv
+                                );
+                            }
                         }
                     }
                 }
             }
         });
+    }
+
+    private boolean checkPaymentValidity() {
+        // Card bin validation for bin locking and installment
+        String cardNumber = cardNumberField.getText().toString().trim();
+        if (presenter.isWhitelistBinsAvailable()) {
+            if (!presenter.isCardBinLockingValid(cardNumber)) {
+                Toast.makeText(this, getString(R.string.card_bin_invalid), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        //TODO: installment validation
+
+        return true;
     }
 
     private void initProgressDialog() {
@@ -490,18 +522,23 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     private void setCardType(String cardType) {
         switch (cardType) {
             case CardUtilities.CARD_TYPE_VISA:
+                cardLogo.setVisibility(View.VISIBLE);
                 cardLogo.setImageResource(R.drawable.ic_visa);
                 break;
             case CardUtilities.CARD_TYPE_MASTERCARD:
+                cardLogo.setVisibility(View.VISIBLE);
                 cardLogo.setImageResource(R.drawable.ic_mastercard);
                 break;
             case CardUtilities.CARD_TYPE_JCB:
+                cardLogo.setVisibility(View.VISIBLE);
                 cardLogo.setImageResource(R.drawable.ic_jcb);
                 break;
             case CardUtilities.CARD_TYPE_AMEX:
+                cardLogo.setVisibility(View.VISIBLE);
                 cardLogo.setImageResource(R.drawable.ic_amex);
                 break;
             default:
+                cardLogo.setVisibility(View.GONE);
                 cardLogo.setImageResource(0);
         }
     }
@@ -854,18 +891,19 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         SavedToken savedToken = (SavedToken) getIntent().getSerializableExtra(EXTRA_CARD_DETAILS);
         if (savedToken != null) {
             presenter.setSavedToken(savedToken);
-            setCardTitle(savedToken);
+            if (savedToken.tokenType.equals(SavedToken.TWO_CLICKS)) {
+                cardCvvField.requestFocus();
+            }
             bindSavedMaskedCardNumber(savedToken.maskedCard);
             bindSavedMaskedExpiry();
             if (savedToken.tokenType.equals(SavedToken.ONE_CLICK)) {
                 bindSavedCvv();
                 // TODO: Disable installment
-            } else {
-                cardCvvField.requestFocus();
             }
-
             initDeleteCardButton(savedToken);
             showDeleteCardButton();
+            checkBinLockingValidity();
+            setCardTitle(savedToken);
 
             containerSaveCard.setVisibility(View.GONE);
             scanCardButton.setVisibility(View.GONE);
@@ -909,7 +947,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     private String getCardTitle(SavedToken savedToken) {
         String cardType = CardUtilities.getCardType(savedToken.maskedCard);
         String cardBin = savedToken.maskedCard.substring(0, 4);
-        return cardType + "-" + cardBin;
+        return !TextUtils.isEmpty(cardType) ? cardType + "-" + cardBin : cardBin;
     }
 
     private void initDeleteCardButton(final SavedToken savedToken) {
@@ -953,5 +991,13 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
     private void hideDeleteCardButton() {
         deleteCardButton.setVisibility(View.GONE);
+    }
+
+    private void showInvalidBinLockingStatus() {
+        textInvalidPromoStatus.setVisibility(View.VISIBLE);
+    }
+
+    private void hideInvalidBinLockingStatus() {
+        textInvalidPromoStatus.setVisibility(View.GONE);
     }
 }

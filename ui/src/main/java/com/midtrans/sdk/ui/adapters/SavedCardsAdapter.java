@@ -82,7 +82,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         String cardType = CardUtilities.getCardType(maskedCard);
         holder.swipeLayout.setOffset(0);
         String cardName = maskedCard.substring(0, 4);
-        holder.textCardName.setText(cardType + "-" + cardName);
+        holder.textCardName.setText(!TextUtils.isEmpty(cardType) ? cardType + "-" + cardName : cardName);
         String cardNumber = UiUtils.getMaskedCardNumber(maskedCard);
         holder.textCardNumber.setText(cardNumber);
 
@@ -93,18 +93,23 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     private void setCardType(String cardType, ImageView imageView) {
         switch (cardType) {
             case CardUtilities.CARD_TYPE_VISA:
+                imageView.setVisibility(View.VISIBLE);
                 imageView.setImageResource(R.drawable.ic_visa);
                 break;
             case CardUtilities.CARD_TYPE_MASTERCARD:
+                imageView.setVisibility(View.VISIBLE);
                 imageView.setImageResource(R.drawable.ic_mastercard);
                 break;
             case CardUtilities.CARD_TYPE_JCB:
+                imageView.setVisibility(View.VISIBLE);
                 imageView.setImageResource(R.drawable.ic_jcb);
                 break;
             case CardUtilities.CARD_TYPE_AMEX:
+                imageView.setVisibility(View.VISIBLE);
                 imageView.setImageResource(R.drawable.ic_amex);
                 break;
             default:
+                imageView.setVisibility(View.GONE);
                 imageView.setImageDrawable(null);
                 break;
         }

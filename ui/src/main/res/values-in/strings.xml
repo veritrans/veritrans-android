@@ -490,4 +490,5 @@
     <string name="error_message_failed_checkout">Checkout gagal.\nMohon ulangi atau batalkan pembayaran.</string>
     <string name="mandiri_debit_card">Kartu Debit Mandiri</string>
     <string name="bni_debit_online_card">Kartu Debit Online BNI</string>
+    <string name="hint_card_number_example">4811 1111 1111 1114 (Example)</string>
 </resources>
