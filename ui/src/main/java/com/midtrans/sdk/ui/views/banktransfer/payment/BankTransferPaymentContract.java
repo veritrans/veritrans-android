@@ -18,9 +18,6 @@ public interface BankTransferPaymentContract {
         void onPaymentSuccess(PaymentResult paymentResult);
     }
 
-    interface bankTransferStatusView {
-
-    }
 
     interface Presenter {
 

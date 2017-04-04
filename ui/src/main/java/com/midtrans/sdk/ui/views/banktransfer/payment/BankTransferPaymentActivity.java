@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
+import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
@@ -127,9 +128,14 @@ public class BankTransferPaymentActivity extends BaseActivity {
     }
 
     public void showPaymentStatus(PaymentResult response) {
-        BankTransferStatusFragment statusFragment = BankTransferStatusFragment.newInstance(response, paymentType);
-        presenter.setStatusView(statusFragment);
-        replaceFragment(statusFragment, R.id.fragment_container, false, false);
+        if(paymentType.equals(PaymentType.E_CHANNEL)){
+            BankTransferMandiriStatusFragment statusFragment = BankTransferMandiriStatusFragment.newInstance(response, paymentType);
+            replaceFragment(statusFragment, R.id.fragment_container, false, false);
+        }else{
+            BankTransferStatusFragment statusFragment = BankTransferStatusFragment.newInstance(response, paymentType);
+            replaceFragment(statusFragment, R.id.fragment_container, false, false);
+        }
+
         currentFragment = STATUS_FRAGMENT;
     }
 

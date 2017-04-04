@@ -28,7 +28,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".views.banktransfer.instruction.BankTransferInstructionActivity"
+            android:name=".views.instructions.BankTransferInstructionActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity"

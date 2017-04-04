@@ -21,7 +21,6 @@ public class BankTransferPresenter extends BasePaymentPresenter implements BankT
 
     private BankTransferPaymentContract.BankTransferPaymentView paymentView;
     private PaymentResult paymentResult;
-    private BankTransferPaymentContract.bankTransferStatusView statusView;
 
     public BankTransferPresenter() {
         midtransUiSdk = MidtransUi.getInstance();
@@ -157,11 +156,6 @@ public class BankTransferPresenter extends BasePaymentPresenter implements BankT
                         paymentView.onPaymentError(throwable.getMessage());
                     }
                 });
-    }
-
-    public void setStatusView(BankTransferPaymentContract.bankTransferStatusView statusView) {
-        this.statusView = statusView;
-        this.paymentView.setPresenter(this);
     }
 
     public PaymentResult getPaymentResult() {

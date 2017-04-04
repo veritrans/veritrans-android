@@ -1,4 +1,4 @@
-package com.midtrans.sdk.ui.views.banktransfer.instruction;
+package com.midtrans.sdk.ui.views.instructions;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -35,11 +35,8 @@ import com.midtrans.sdk.ui.widgets.DefaultTextView;
 public class BankTransferInstructionActivity extends BaseActivity {
     public static final String DOWNLOAD_URL = "url";
     public static final String BANK = "bank";
-    public static final String TYPE_BCA = "bank.bca";
-    public static final String TYPE_PERMATA = "bank.permata";
     public static final String TYPE_MANDIRI = "bank.mandiri";
     public static final String TYPE_MANDIRI_BILL = "bank.mandiri.bill";
-    public static final String TYPE_ALL_BANK = "bank.others";
     public static final String PAGE = "page";
     public static final int KLIKBCA_PAGE = 1;
     private static final int PAGE_MARGIN = 20;
@@ -191,17 +188,17 @@ public class BankTransferInstructionActivity extends BaseActivity {
 
             Fragment fragment;
 
-            if (getIntent().getStringExtra(BANK).equals(TYPE_BCA)) {
+            if (getIntent().getStringExtra(BANK).equals(PaymentType.BCA_VA)) {
                 if (position == 0) {
                     fragment = new InstructionBCAFragment();
                 } else if (position == 1) {
                     fragment = new InstructionBCAKlikFragment();
                 } else fragment = new InstructionBCAMobileFragment();
 
-            } else if (getIntent().getStringExtra(BANK).equals(TYPE_PERMATA)) {
+            } else if (getIntent().getStringExtra(BANK).equals(PaymentType.PERMATA_VA)) {
                 fragment = new InstructionPermataFragment();
 
-            } else if (getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI) ||
+            } else if (getIntent().getStringExtra(BANK).equals(PaymentType.E_CHANNEL) ||
                     getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI_BILL)) {
                 if (position == 0) {
                     fragment = new InstructionMandiriFragment();
@@ -236,16 +233,16 @@ public class BankTransferInstructionActivity extends BaseActivity {
         @Override
         public CharSequence getPageTitle(int position) {
 
-            if (getIntent().getStringExtra(BANK).equals(TYPE_BCA)) {
+            if (getIntent().getStringExtra(BANK).equals(PaymentType.BCA_VA)) {
                 if (position == 0) {
                     return getString(R.string.tab_bca_atm);
                 } else if (position == 1) {
                     return getString(R.string.tab_bca_klik);
                 } else return getString(R.string.tab_bca_mobile);
-            } else if (getIntent().getStringExtra(BANK).equals(TYPE_PERMATA)) {
+            } else if (getIntent().getStringExtra(BANK).equals(PaymentType.PERMATA_VA)) {
                 if (position == 0) return getString(R.string.tab_permata_atm);
                 else return getString(R.string.tab_alto);
-            } else if (getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI_BILL) ||
+            } else if (getIntent().getStringExtra(BANK).equals(PaymentType.E_CHANNEL) ||
                     getIntent().getStringExtra(BANK).equals(TYPE_MANDIRI)) {
                 if (position == 0) {
                     return getString(R.string.tab_mandiri_atm);
