@@ -104,7 +104,7 @@ public class SavedCreditCardsFragment extends BaseFragment implements CreditCard
     private void setViewPagerValues() {
         if (savedCreditCards.haveSavedCards()) {
             if (getActivity() != null) {
-                cardsAdapter.setData(savedCreditCards.getSavedCards());
+                //cardsAdapter.setData(savedCreditCards.getSavedCards());
                 cardsAdapter.setListener(this);
                 fadeInAnimation(buttonNewCard);
             }
@@ -236,7 +236,7 @@ public class SavedCreditCardsFragment extends BaseFragment implements CreditCard
 
     @Override
     public void onItemClick(int position) {
-        SavedToken savedToken = cardsAdapter.getItem(position);
-        showCardDetails(savedToken);
+        //SavedToken savedToken = cardsAdapter.getItem(position);
+        //showCardDetails(savedToken);
     }
 }

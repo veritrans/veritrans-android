@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.midtrans.sdk.core.models.BankType;
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
 import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
@@ -120,7 +121,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
     private void initPresenter() {
         presenter = new CreditCardDetailsPresenter();
-        presenter.init(this);
+        presenter.init(this, this);
     }
 
     private void initMidtransUi() {
@@ -195,8 +196,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
     private void initToolbar() {
         // Set title
-        TextView titleText = (TextView) findViewById(R.id.page_title);
-        titleText.setText(R.string.card_details);
+        setHeaderTitle(getString(R.string.card_details));
 
         // Set merchant logo
         ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
@@ -262,6 +262,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
                 String cardType = CardUtilities.getCardType(cardNumberField.getText().toString());
                 setCardType(cardType);
+                setBankType();
 
                 // Move to next input
                 if (editable.length() >= 18 && cardType.equals(getString(R.string.amex))) {
@@ -501,6 +502,70 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
             default:
                 cardLogo.setImageResource(0);
         }
+    }
+
+    private void setBankType() {
+        // Don't set card type when card number is empty
+        String cardNumberText = cardNumberField.getText().toString().trim();
+        if (isCardNumberValidForBankChecking(cardNumberText)) {
+            bankLogo.setImageDrawable(null);
+        } else {
+            String cardBin = getCardBinForBankChecking(cardNumberText);
+            String bank = CreditCardUtils.getBankByBin(presenter.getBankBins(), cardBin);
+            if (bank != null) {
+                switch (bank) {
+                    case BankType.BCA:
+                        bankLogo.setImageResource(R.drawable.bca);
+                        setHeaderTitle(getString(R.string.card_details));
+                        break;
+                    case BankType.BNI:
+                        bankLogo.setImageResource(R.drawable.bni);
+                        setHeaderTitle(getString(R.string.card_details));
+                        break;
+                    case BankType.BRI:
+                        bankLogo.setImageResource(R.drawable.bri);
+                        setHeaderTitle(getString(R.string.card_details));
+                        break;
+                    case BankType.CIMB:
+                        bankLogo.setImageResource(R.drawable.cimb);
+                        setHeaderTitle(getString(R.string.card_details));
+                        break;
+                    case BankType.MANDIRI:
+                        bankLogo.setImageResource(R.drawable.mandiri);
+                        setHeaderTitle(getString(R.string.card_details));
+                        if (CreditCardUtils.isMandiriDebitCard(presenter.getBankBins(), cardBin)) {
+                            setHeaderTitle(getString(R.string.mandiri_debit_card));
+                        }
+                        break;
+                    case BankType.MAYBANK:
+                        bankLogo.setImageResource(R.drawable.maybank);
+                        setHeaderTitle(getString(R.string.card_details));
+                        break;
+                    case BankType.BNI_DEBIT_ONLINE:
+                        bankLogo.setImageResource(R.drawable.bni);
+                        setHeaderTitle(getString(R.string.bni_debit_online_card));
+                        break;
+                    default:
+                        unsetBankLogo();
+                        setHeaderTitle(getString(R.string.card_details));
+                }
+            } else {
+                unsetBankLogo();
+                setHeaderTitle(getString(R.string.card_details));
+            }
+        }
+    }
+
+    private void unsetBankLogo() {
+        bankLogo.setImageDrawable(null);
+    }
+
+    private String getCardBinForBankChecking(String cardNumber) {
+        return cardNumber.replace(" ", "").substring(0, 6);
+    }
+
+    private boolean isCardNumberValidForBankChecking(String cardNumber) {
+        return TextUtils.isEmpty(cardNumber) || cardNumber.length() < 7;
     }
 
     private boolean checkCardValidity() {
@@ -831,8 +896,12 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     }
 
     private void setCardTitle(SavedToken savedToken) {
+        setHeaderTitle(getCardTitle(savedToken));
+    }
+
+    private void setHeaderTitle(String title) {
         TextView titleText = (TextView) findViewById(R.id.page_title);
-        titleText.setText(getCardTitle(savedToken));
+        titleText.setText(title);
     }
 
     private String getCardTitle(SavedToken savedToken) {

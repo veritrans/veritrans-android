@@ -1,11 +1,14 @@
 package com.midtrans.sdk.ui.views.creditcard.details;
 
+import android.content.Context;
+
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.papi.CardTokenRequest;
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
 import com.midtrans.sdk.core.models.snap.CreditCard;
 import com.midtrans.sdk.core.models.snap.SavedToken;
+import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentParams;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
@@ -13,6 +16,8 @@ import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
+
+import java.util.List;
 
 /**
  * Created by rakawm on 3/27/17.
@@ -23,6 +28,7 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
     private MidtransCoreCallback<CardTokenResponse> getCardTokenCallback;
     private MidtransCoreCallback<CreditCardPaymentResponse> paymentCallback;
     private MidtransCoreCallback<Void> deleteCardCallback;
+    private List<BankBinsResponse> bankBins;
 
     private CreditCardDetailsView cardDetailsView;
     private String cardToken;
@@ -30,9 +36,34 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
     private SavedToken savedToken;
     private boolean saveCard;
 
-    public void init(CreditCardDetailsView view) {
+    public void init(Context context, CreditCardDetailsView view) {
         this.cardDetailsView = view;
         initCallbacks();
+        initBankBins(context);
+    }
+
+    private void initBankBins(Context context) {
+        // Set from local
+        bankBins = MidtransUi.getInstance().getBankBinsFromLocal(context);
+        // Fetch from Snap API
+        MidtransCore.getInstance().getBankBins(new MidtransCoreCallback<List<BankBinsResponse>>() {
+            @Override
+            public void onSuccess(List<BankBinsResponse> object) {
+                if (object != null && !object.isEmpty()) {
+                    bankBins = object;
+                }
+            }
+
+            @Override
+            public void onFailure(List<BankBinsResponse> object) {
+                // Do nothing
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                // Do nothing
+            }
+        });
     }
 
     void startTokenize(String cardNumber, String expiryMonth, String expiryYear, String cvv) {
@@ -189,5 +220,9 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
     public boolean isOneClickMode() {
         CreditCard creditCard = MidtransUi.getInstance().getTransaction().creditCard;
         return isTwoClicksMode() && creditCard.secure;
+    }
+
+    public List<BankBinsResponse> getBankBins() {
+        return bankBins;
     }
 }

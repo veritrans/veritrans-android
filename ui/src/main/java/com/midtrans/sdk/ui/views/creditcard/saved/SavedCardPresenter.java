@@ -1,11 +1,17 @@
 package com.midtrans.sdk.ui.views.creditcard.saved;
 
+import android.content.Context;
+
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
+import com.midtrans.sdk.core.models.snap.CreditCard;
 import com.midtrans.sdk.core.models.snap.SavedToken;
+import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
 import com.midtrans.sdk.ui.models.PaymentResult;
+import com.midtrans.sdk.ui.models.SavedCard;
+import com.midtrans.sdk.ui.utils.CreditCardUtils;
 import com.midtrans.sdk.ui.utils.UiUtils;
 import com.midtrans.sdk.ui.utils.Utils;
 
@@ -19,12 +25,56 @@ import java.util.List;
 public class SavedCardPresenter extends BasePaymentPresenter {
 
     private SavedCardView savedCardView;
+    private List<BankBinsResponse> bankBins;
 
-    public List<SavedToken> getSavedCards() {
-        return MidtransUi.getInstance().getTransaction().creditCard != null
-                && MidtransUi.getInstance().getTransaction().creditCard.savedTokens != null
-                && !MidtransUi.getInstance().getTransaction().creditCard.savedTokens.isEmpty() ?
-                filterCards() : null;
+    public SavedCardPresenter(Context context) {
+        initBankBins(context);
+    }
+
+    private void initBankBins(Context context) {
+        bankBins = MidtransUi.getInstance().getBankBinsFromLocal(context);
+        MidtransCore.getInstance().getBankBins(new MidtransCoreCallback<List<BankBinsResponse>>() {
+            @Override
+            public void onSuccess(List<BankBinsResponse> object) {
+                if (object != null && !object.isEmpty()) {
+                    bankBins = object;
+                }
+            }
+
+            @Override
+            public void onFailure(List<BankBinsResponse> object) {
+                // Do nothing
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                // Do nothing
+            }
+        });
+    }
+
+    public List<SavedCard> getSavedCards() {
+        CreditCard creditCard = MidtransUi.getInstance().getTransaction().creditCard;
+        if (creditCard != null) {
+            if (creditCard.savedTokens != null && !creditCard.savedTokens.isEmpty()) {
+                return includeBankIntoSavedCard();
+            }
+        }
+        return null;
+    }
+
+    private List<SavedCard> includeBankIntoSavedCard() {
+        List<SavedToken> savedTokens = filterCards();
+        List<SavedCard> savedCards = new ArrayList<>();
+        for (SavedToken savedToken : savedTokens) {
+            SavedCard savedCard = new SavedCard();
+            savedCard.setSavedToken(savedToken);
+            String cardBin = savedToken.maskedCard.substring(0, 6);
+            savedCard.setBank(CreditCardUtils.getBankByBin(bankBins, cardBin));
+
+            savedCards.add(savedCard);
+        }
+        return savedCards;
     }
 
     public boolean isOneClick() {
@@ -87,5 +137,13 @@ public class SavedCardPresenter extends BasePaymentPresenter {
 
     public void setSavedCardView(SavedCardView savedCardView) {
         this.savedCardView = savedCardView;
+    }
+
+    public List<BankBinsResponse> getBankBins() {
+        return bankBins;
+    }
+
+    public void setBankBins(List<BankBinsResponse> bankBins) {
+        this.bankBins = bankBins;
     }
 }
