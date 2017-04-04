@@ -475,7 +475,6 @@
     <!--KlikBCA Payment Instructions-->
     <string name="klikbca_instruction_1">Please make sure that the UserID is active and registered at BCA.</string>
     <string name="klikbca_instruction_2">Please continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
-    <string name="klikbca_instruction_3">Transaction will be cancelled if payment is not completed within 2 hours.</string>
 
     <string name="error_user_id">Please fill user ID.</string>
     <string name="btn_close">Close</string>
