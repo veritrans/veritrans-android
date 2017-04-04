@@ -1,22 +1,27 @@
 package com.midtrans.sdk.ui.views.banktransfer.payment;
 
-import android.text.TextUtils;
-
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
-import com.midtrans.sdk.core.models.snap.CustomerDetails;
+import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
 import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
 import com.midtrans.sdk.ui.constants.PaymentType;
+import com.midtrans.sdk.ui.models.PaymentResult;
+import com.midtrans.sdk.ui.utils.Utils;
 
 /**
  * Created by ziahaqi on 4/3/17.
  */
 
-public class BankTransferPresenter extends BasePaymentPresenter implements BankTransferPaymentContract.Presenter{
+public class BankTransferPresenter extends BasePaymentPresenter implements BankTransferPaymentContract.Presenter {
 
-    private BankTransferPaymentContract.bankTransferPaymentView paymentView;
+    private BankTransferPaymentContract.BankTransferPaymentView paymentView;
+    private PaymentResult paymentResult;
+    private BankTransferPaymentContract.bankTransferStatusView statusView;
 
     public BankTransferPresenter() {
         midtransUiSdk = MidtransUi.getInstance();
@@ -43,55 +48,123 @@ public class BankTransferPresenter extends BasePaymentPresenter implements BankT
     }
 
     public void performPayment(String userEmail, String bankType) {
-        CustomerDetails customerDetails;
-        if(TextUtils.isEmpty(userEmail)){
-            CustomerDetails currentCustomerDetail = midtransUiSdk.getTransaction().customerDetails;
-            customerDetails = new CustomerDetails(currentCustomerDetail.firstName,
-                    currentCustomerDetail.lastName, currentCustomerDetail.email, currentCustomerDetail.phone,
-                    currentCustomerDetail.shippingAddress, currentCustomerDetail.billingAddress);
-        }else{
-            customerDetails = midtransUiSdk.getTransaction().customerDetails;
-        }
+        SnapCustomerDetails customerDetails = Utils.createSnapCustomerDetails(userEmail);
 
-        switch (bankType){
+        switch (bankType) {
             case PaymentType.BCA_VA:
                 performBcaBankTransferPayment(customerDetails);
                 break;
             case PaymentType.E_CHANNEL:
-
+                performMandiriBillPayment(customerDetails);
                 break;
             case PaymentType.PERMATA_VA:
-
-                break;
-            case PaymentType.BNI_VA:
-
+                performPermataBankTransferPayment(customerDetails);
                 break;
             case PaymentType.OTHER_VA:
-
+                performOtherBankPayment(customerDetails);
                 break;
         }
-        MidtransCore.getInstance().paymentUsingBcaBankTransfer(midtransUiSdk.getTransaction().token,
-                midtransUiSdk.getTransaction().customerDetails.email =
-                );
     }
 
-    private void performBcaBankTransferPayment(CustomerDetails customerDetails) {
-//        MidtransCore.getInstance().paymentUsingBcaBankTransfer(midtransUiSdk.getTransaction().token,
-//                customerDetails, new MidtransCoreCallback<BcaBankTransferPaymentResponse>() {
-//                    @Override
-//                    public void onSuccess(BcaBankTransferPaymentResponse object) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(BcaBankTransferPaymentResponse object) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable throwable) {
-//
-//                    }
-//                });
+    private void performOtherBankPayment(SnapCustomerDetails customerDetails) {
+        MidtransCore.getInstance().paymentUsingOtherBankTransfer(midtransUiSdk.getTransaction().token,
+                customerDetails, new MidtransCoreCallback<OtherBankTransferPaymentResponse>() {
+                    @Override
+                    public void onSuccess(OtherBankTransferPaymentResponse response) {
+                        paymentResult = new PaymentResult<>(response);
+                        paymentView.onPaymentSuccess(paymentResult);
+                    }
+
+                    @Override
+                    public void onFailure(OtherBankTransferPaymentResponse response) {
+                        paymentResult = new PaymentResult<>(response);
+                        paymentView.onPaymentFailure(paymentResult);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        paymentResult = new PaymentResult(throwable.getMessage());
+                        paymentView.onPaymentError(throwable.getMessage());
+
+                    }
+                });
+    }
+
+    private void performPermataBankTransferPayment(SnapCustomerDetails customerDetails) {
+        MidtransCore.getInstance().paymentUsingPermataBankTransfer(midtransUiSdk.getTransaction().token,
+                customerDetails, new MidtransCoreCallback<PermataBankTransferPaymentResponse>() {
+                    @Override
+                    public void onSuccess(PermataBankTransferPaymentResponse response) {
+                        paymentResult = new PaymentResult<>(response);
+                        paymentView.onPaymentSuccess(paymentResult);
+                    }
+
+                    @Override
+                    public void onFailure(PermataBankTransferPaymentResponse response) {
+                        paymentResult = new PaymentResult<>(response);
+                        paymentView.onPaymentFailure(paymentResult);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        paymentResult = new PaymentResult<>(throwable.getMessage());
+                        paymentView.onPaymentError(throwable.getMessage());
+                    }
+                });
+    }
+
+    private void performMandiriBillPayment(SnapCustomerDetails customerDetails) {
+        MidtransCore.getInstance().paymentUsingMandiriBankTransfer(midtransUiSdk.getTransaction().token,
+                customerDetails, new MidtransCoreCallback<MandiriBankTransferPaymentResponse>() {
+                    @Override
+                    public void onSuccess(MandiriBankTransferPaymentResponse response) {
+                        paymentResult = new PaymentResult<>(response);
+                        paymentView.onPaymentSuccess(paymentResult);
+                    }
+
+                    @Override
+                    public void onFailure(MandiriBankTransferPaymentResponse response) {
+                        paymentResult = new PaymentResult<>(response);
+                        paymentView.onPaymentFailure(paymentResult);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        paymentResult = new PaymentResult<>(throwable.getMessage());
+                        paymentView.onPaymentError(throwable.getMessage());
+                    }
+                });
+    }
+
+    private void performBcaBankTransferPayment(SnapCustomerDetails customerDetails) {
+        MidtransCore.getInstance().paymentUsingBcaBankTransfer(midtransUiSdk.getTransaction().token,
+                customerDetails, new MidtransCoreCallback<BcaBankTransferPaymentResponse>() {
+                    @Override
+                    public void onSuccess(BcaBankTransferPaymentResponse response) {
+                        paymentResult = new PaymentResult<>(response);
+                        paymentView.onPaymentSuccess(paymentResult);
+                    }
+
+                    @Override
+                    public void onFailure(BcaBankTransferPaymentResponse response) {
+                        paymentResult = new PaymentResult<>(response);
+                        paymentView.onPaymentFailure(paymentResult);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        paymentResult = new PaymentResult<>(throwable.getMessage());
+                        paymentView.onPaymentError(throwable.getMessage());
+                    }
+                });
+    }
+
+    public void setStatusView(BankTransferPaymentContract.bankTransferStatusView statusView) {
+        this.statusView = statusView;
+        this.paymentView.setPresenter(this);
+    }
+
+    public PaymentResult getPaymentResult() {
+        return paymentResult;
     }
 }

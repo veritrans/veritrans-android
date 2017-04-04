@@ -26,6 +26,11 @@
         <activity
             android:name=".views.banktransfer.payment.BankTransferPaymentActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.banktransfer.instruction.BankTransferInstructionActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

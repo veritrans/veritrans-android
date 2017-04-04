@@ -1,6 +1,5 @@
 package com.midtrans.sdk.ui.views.banktransfer.payment;
 
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,15 +16,14 @@ import com.midtrans.sdk.ui.abtracts.BaseFragment;
 import com.midtrans.sdk.ui.adapters.InstructionFragmentPagerAdapter;
 import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.PaymentType;
-
-import java.lang.reflect.Field;
+import com.midtrans.sdk.ui.models.PaymentResult;
+import com.midtrans.sdk.ui.utils.UiUtils;
 
 /**
  * Created by ziahaqi on 4/3/17.
  */
 
-public class BankTransferPaymentFragment extends BaseFragment implements BankTransferPaymentContract.bankTransferPaymentView {
-    public static final String DOWNLOAD_URL = "url";
+public class BankTransferPaymentFragment extends BaseFragment implements BankTransferPaymentContract.BankTransferPaymentView {
     public static final String ARGS_BANK_TYPE = "bank.type";
     public static final String PAGE = "page";
     public static final int KLIKBCA_PAGE = 1;
@@ -136,107 +134,7 @@ public class BankTransferPaymentFragment extends BaseFragment implements BankTra
         }
     }
 
-    /**
-     * initializes view and adds click listener for it.
-     *
-     * @param view view that needed to be initialized
-     */
-    private void initializeViews(View view) {
-//        instructionViewPager = (ViewPager) view.findViewById(R.id.tab_view_pager);
-//        instructionTab = (TabLayout) view.findViewById(R.id.tab_instructions);
-//        mEditTextEmailId = (AppCompatEditText) view.findViewById(R.id.et_email);
-//        mTextInputEmailId = (TextInputLayout) view.findViewById(R.id.email_til);
-//        try {
-//            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            mEditTextEmailId.setText(userDetail.getEmail());
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
-//
-//        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-//        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
-//            if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
-//                // Set color filter in edit text
-//                try {
-//                    Field fDefaultTextColor = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
-//                    fDefaultTextColor.setAccessible(true);
-//                    fDefaultTextColor.set(mTextInputEmailId, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
-//
-//                    Field fFocusedTextColor = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
-//                    fFocusedTextColor.setAccessible(true);
-//                    fFocusedTextColor.set(mTextInputEmailId, new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
-//
-//                    mEditTextEmailId.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
-//                instructionTab.setSelectedTabIndicatorColor(midtransSDK.getColorTheme().getPrimaryColor());
-//            }
-//        }
-    }
 
-
-    /**
-     * created to give access to email id field from {
-     * .BankTransferActivity}.
-     *
-     * @return email identifier
-     */
-//    public String getEmailId() {
-//        if (mEditTextEmailId != null) {
-//            return mEditTextEmailId.getText().toString();
-//        } else {
-//            return null;
-//        }
-//    }
-//    private void setUpViewPager() {
-//        pagerInstruction.setPageMargin(PAGE_MARGIN);
-//        int pageNumber;
-//        String bankInstruction = getArguments().getString(BANK);
-//        switch (bankInstruction) {
-//            case TYPE_BCA:
-//
-//                break;
-//            case TYPE_PERMATA:
-//                pageNumber = 2;
-//
-//                //track page permata va overview
-//                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_PERMATA_VA_OVERVIEW);
-//                break;
-//            case TYPE_MANDIRI:
-//                pageNumber = 2;
-//                break;
-//            case TYPE_MANDIRI_BILL:
-//                pageNumber = 2;
-//
-//                //track page mandiri bill overview
-//                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL_OVERVIEW);
-//                break;
-//            case TYPE_ALL_BANK:
-//                pageNumber = 3;
-//
-//                //track page other bank va overview
-//                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA_OVERVIEW);
-//                break;
-//            default:
-//                pageNumber = 0;
-//                break;
-//        }
-//        InstructionFragmentPagerAdapter adapter = new InstructionFragmentPagerAdapter(getContext(), bankInstruction, getChildFragmentManager(), pageNumber);
-//        instructionViewPager.setAdapter(adapter);
-//        if (POSITION > -1) {
-//            instructionViewPager.setCurrentItem(POSITION);
-//        }
-//    }
     private void setUpTabLayout() {
         tabLayout.setupWithViewPager(pagerInstruction);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -263,4 +161,24 @@ public class BankTransferPaymentFragment extends BaseFragment implements BankTra
     public String getUserEmail() {
         return editEmail.getText().toString().trim();
     }
+
+
+    @Override
+    public void onPaymentError(String error) {
+        ((BankTransferPaymentActivity) getActivity()).showPaymentStatus(new PaymentResult(error));
+    }
+
+
+    @Override
+    public void onPaymentFailure(PaymentResult paymentResult) {
+        UiUtils.hideProgressDialog();
+        ((BankTransferPaymentActivity) getActivity()).showPaymentStatus(paymentResult);
+    }
+
+    @Override
+    public void onPaymentSuccess(PaymentResult paymentResult) {
+        UiUtils.hideProgressDialog();
+        ((BankTransferPaymentActivity) getActivity()).showPaymentStatus(paymentResult);
+    }
+
 }

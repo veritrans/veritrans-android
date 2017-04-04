@@ -121,7 +121,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void completePayment(PaymentResult result) {
         Intent data = new Intent();
         data.putExtra(Constants.PAYMENT_RESULT, result);
-        setResult(this.resultCode, data);
+        setResult(resultCode, data);
         finish();
     }
 

@@ -22,8 +22,7 @@ import java.util.List;
  * Created by ziahaqi on 3/30/17.
  */
 
-public class BankTransferListActivity extends BaseActivity implements BankTransferListContract,
-        BankTransferListAdapter.BankTransferListener {
+public class BankTransferListActivity extends BaseActivity implements BankTransferListAdapter.BankTransferListener {
     public static final String ARGS_BANK_LIST = "args.banks";
 
     private RecyclerView rvBankList;
@@ -82,5 +81,21 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
         Intent intent = new Intent(this, BankTransferPaymentActivity.class);
         intent.putExtra(BankTransferPaymentActivity.ARGS_PAYMENT_TYPE, bankPaymentMethod.getPaymentType());
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.INTENT_CODE_PAYMENT) {
+            if (resultCode == RESULT_OK) {
+                setResult(RESULT_OK, data);
+                finish();
+            } else if (resultCode == RESULT_CANCELED) {
+                if (data != null) {
+                    setResult(RESULT_CANCELED, data);
+                    finish();
+                }
+            }
+        }
     }
 }

@@ -233,7 +233,7 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
 
         MidtransCore.getInstance().paymentUsingCreditCard(midtransUiSdk.getCheckoutToken(),
                 cardPaymentParams,
-                Utils.createSnapCustomerDetails(),
+                Utils.createSnapCustomerDetails(null),
                 new MidtransCoreCallback<CreditCardPaymentResponse>() {
                     @Override
                     public void onSuccess(CreditCardPaymentResponse response) {

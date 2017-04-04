@@ -328,7 +328,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             }
         }
 
-
         final MidtransSDK midtransSDK = MidtransSDK.getInstance();
 
         if (midtransSDK != null) {

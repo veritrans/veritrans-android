@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.constants.Theme;
+import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
@@ -89,7 +90,11 @@ public class BankTransferPaymentActivity extends BaseActivity {
         buttonSeeAccountNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                performTransaction();
+                if (currentFragment.equals(PAYMENT_FRAGMENT)) {
+                    performTransaction();
+                } else {
+                    onBackPressed();
+                }
             }
         });
     }
@@ -105,7 +110,6 @@ public class BankTransferPaymentActivity extends BaseActivity {
      * {@see }
      */
     private void performTransaction() {
-
         // for sending instruction on email only if email-Id is entered.
         if (paymentFragment != null && !paymentFragment.isDetached()) {
 
@@ -119,6 +123,23 @@ public class BankTransferPaymentActivity extends BaseActivity {
             presenter.performPayment(userEmail, paymentType);
         } else {
             UiUtils.showToast(this, getString(R.string.error_invalid_payment_form));
+        }
+    }
+
+    public void showPaymentStatus(PaymentResult response) {
+        BankTransferStatusFragment statusFragment = BankTransferStatusFragment.newInstance(response, paymentType);
+        presenter.setStatusView(statusFragment);
+        replaceFragment(statusFragment, R.id.fragment_container, false, false);
+        currentFragment = STATUS_FRAGMENT;
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResultCode(RESULT_CANCELED);
+        if (currentFragment.equals(STATUS_FRAGMENT)) {
+            completePayment(presenter.getPaymentResult());
+        } else {
+            super.onBackPressed();
         }
     }
 
