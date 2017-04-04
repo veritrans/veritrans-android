@@ -183,7 +183,9 @@ public class SavedCardActivity extends BaseActivity implements SavedCardView {
                 && midtransUi.getColorTheme() != null
                 && midtransUi.getColorTheme().getPrimaryDarkColor() != 0) {
             Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
             positiveButton.setTextColor(midtransUi.getColorTheme().getPrimaryDarkColor());
+            negativeButton.setTextColor(midtransUi.getColorTheme().getPrimaryDarkColor());
         }
     }
 
