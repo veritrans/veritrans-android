@@ -40,7 +40,6 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
     private CreditCardPaymentResponse paymentResponse;
     private CreditCardTransaction creditCardTransaction = new CreditCardTransaction();
 
-
     public CreditCardPresenter(@NonNull Context context) {
         this.context = context;
         this.midtransUiSdk = MidtransUi.getInstance();
@@ -93,7 +92,7 @@ public class CreditCardPresenter extends BasePresenter implements CreditCardCont
     @Override
     public void twoClicksPayment(@NonNull CreditCardDetails cardDetailModel, @NonNull String cardCVV) {
         CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard(cardDetailModel.getSavedToken().token,
-                cardCVV, true, midtransUiSdk.getTransaction().transactionDetails.grossAmount);
+                cardCVV, true, isSecureCardpayment(), midtransUiSdk.getTransaction().transactionDetails.grossAmount);
         getCreditCardToken(cardTokenRequest);
     }
 

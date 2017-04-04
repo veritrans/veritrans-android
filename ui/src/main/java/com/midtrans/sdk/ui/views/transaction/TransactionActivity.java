@@ -25,6 +25,7 @@ import com.midtrans.sdk.ui.models.PaymentMethodModel;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.views.creditcard.details.CreditCardDetailsActivity;
+import com.midtrans.sdk.ui.views.creditcard.saved.SavedCardActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 import com.squareup.picasso.Callback;
@@ -159,8 +160,7 @@ public class TransactionActivity
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.sendPaymentResult(new PaymentResult(true));
-                finish();
+                onBackPressed();
             }
         });
     }
@@ -194,13 +194,25 @@ public class TransactionActivity
     private void showPaymentActivity(PaymentMethodModel paymentMethod) {
         switch (paymentMethod.getPaymentType()) {
             case PaymentType.CREDIT_CARD:
-                Intent intent = new Intent(this, CreditCardDetailsActivity.class);
-                startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+                startCreditCardFlow();
                 break;
             case PaymentType.BANK_TRANSFER:
                 break;
             default:
                 break;
+        }
+    }
+
+    private void startCreditCardFlow() {
+        if (MidtransUi.getInstance().getTransaction().creditCard != null
+                && MidtransUi.getInstance().getTransaction().creditCard.saveCard
+                && MidtransUi.getInstance().getTransaction().creditCard.savedTokens != null
+                && !MidtransUi.getInstance().getTransaction().creditCard.savedTokens.isEmpty()) {
+            Intent intent = new Intent(this, SavedCardActivity.class);
+            startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+        } else {
+            Intent intent = new Intent(this, CreditCardDetailsActivity.class);
+            startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
         }
     }
 
@@ -229,10 +241,13 @@ public class TransactionActivity
                     Logger.d(TAG, "onActivityResult():response:" + result);
 
                     if (result != null) {
+                        MidtransUi.getInstance().clearTransaction();
                         presenter.sendPaymentResult(result);
                         finish();
                     }
                 }
+            } else if (resultCode == RESULT_FIRST_USER) {
+                startCreditCardFlow();
             }
         } else {
             Logger.d(TAG, "failed to send result back " + requestCode);
@@ -252,9 +267,15 @@ public class TransactionActivity
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.sendPaymentResult(new PaymentResult(true));
-                finish();
+                onBackPressed();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        MidtransUi.getInstance().clearTransaction();
+        presenter.sendPaymentResult(new PaymentResult(true));
+        finish();
     }
 }

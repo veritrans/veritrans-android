@@ -2,17 +2,22 @@ package com.midtrans.sdk.ui.views.creditcard.details;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
+import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.core.utils.CardUtilities;
 import com.midtrans.sdk.ui.CustomSetting;
@@ -32,6 +38,7 @@ import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
+import com.midtrans.sdk.ui.utils.CreditCardUtils;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.utils.UiUtils;
 import com.midtrans.sdk.ui.views.PaymentStatusActivity;
@@ -50,6 +57,7 @@ import java.util.Date;
 public class CreditCardDetailsActivity extends BaseActivity implements CreditCardDetailsView {
 
     public static final String EXTRA_CARD_DETAILS = "card.details";
+    public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
     public static final int STATUS_REQUEST_CODE = 1015;
 
     private MidtransUi midtransUi;
@@ -91,7 +99,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_card_payment);
+        setContentView(R.layout.activity_card_details);
         initPresenter();
         initMidtransUi();
         initViews();
@@ -105,6 +113,9 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         initSaveCardCheckbox();
         initPayNowButton();
         initProgressDialog();
+        initCvvHelp();
+        initSaveCardHelp();
+        initSavedCardIfAvailable();
     }
 
     private void initPresenter() {
@@ -286,7 +297,6 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
                 String input = editable.toString();
                 if (editable.length() == 4) {
                     if (lastExpDate.length() > editable.length()) {
-
                         try {
                             int month = Integer.parseInt(input.substring(0, 2));
                             if (month <= 12) {
@@ -391,17 +401,26 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
             @Override
             public void onClick(View view) {
                 if (checkCardValidity()) {
-                    String cardNumber = cardNumberField.getText().toString();
-                    String expiry = cardExpiryField.getText().toString();
                     String cvv = cardCvvField.getText().toString();
-                    showProgressDialog();
-                    // Start payment
-                    presenter.startTokenize(
-                            cardNumber.replace(" ", ""),
-                            expiry.split(" / ")[0],
-                            expiry.split(" / ")[1],
-                            cvv
-                    );
+                    showProgressDialog(getString(R.string.processing_payment));
+                    if (isOneClickMode()) {
+                        presenter.startPayment();
+                    } else {
+                        if (isTwoClickMode()) {
+                            presenter.startTokenize(cvv);
+                        } else {
+                            String cardNumber = cardNumberField.getText().toString();
+                            String expiry = cardExpiryField.getText().toString();
+                            // Start payment
+                            presenter.setSaveCard(checkboxSaveCard.isChecked());
+                            presenter.startTokenize(
+                                    cardNumber.replace(" ", ""),
+                                    expiry.split(" / ")[0],
+                                    expiry.split(" / ")[1],
+                                    cvv
+                            );
+                        }
+                    }
                 }
             }
         });
@@ -412,6 +431,57 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.setMessage(getString(R.string.processing_payment));
+    }
+
+    private void initCvvHelp() {
+        cvvHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
+                        .setTitle(R.string.what_is_cvv)
+                        .setView(R.layout.layout_dialog_cvv)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+                changeDialogButtonColor(alertDialog);
+            }
+        });
+    }
+
+    private void initSaveCardHelp() {
+        saveCardHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Show help dialog
+                AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
+                        .setTitle(R.string.save_card_message)
+                        .setMessage(R.string.layout_save_card_dialog)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+                changeDialogButtonColor(alertDialog);
+            }
+        });
+    }
+
+    private void changeDialogButtonColor(AlertDialog alertDialog) {
+        if (alertDialog.isShowing()
+                && midtransUi != null
+                && midtransUi.getColorTheme() != null
+                && midtransUi.getColorTheme().getPrimaryDarkColor() != 0) {
+            Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setTextColor(midtransUi.getColorTheme().getPrimaryDarkColor());
+        }
     }
 
     private void setCardType(String cardType) {
@@ -567,13 +637,13 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     }
 
     private boolean isTwoClickMode() {
-        //TODO: Change to real implementation
-        return false;
+        return presenter.isTwoClicksMode()
+                && presenter.getSavedToken() != null;
     }
 
     private boolean isOneClickMode() {
-        //TODO: Change to real implementation
-        return false;
+        return presenter.isOneClickMode()
+                && presenter.getSavedToken() != null;
     }
 
     private void showValidationError(TextView textView, String errorText) {
@@ -638,6 +708,22 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     }
 
     @Override
+    public void onDeleteCardSuccess(SavedToken savedToken) {
+        dismissProgressDialog();
+
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_DELETED_CARD_DETAILS, savedToken);
+        setResult(RESULT_FIRST_USER, intent);
+        finish();
+    }
+
+    @Override
+    public void onDeleteCardFailure(String message) {
+        dismissProgressDialog();
+        Toast.makeText(this, getString(R.string.error_delete_message), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public String getMaskedCardNumber() {
         return null;
     }
@@ -647,7 +733,8 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         return checkboxSaveCard.isChecked();
     }
 
-    private void showProgressDialog() {
+    private void showProgressDialog(String message) {
+        progressDialog.setMessage(message);
         progressDialog.show();
     }
 
@@ -673,7 +760,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         Logger.d(TAG, "reqCode:" + requestCode + " | res:" + resultCode);
         if (resultCode == RESULT_OK) {
             if (requestCode == Constants.INTENT_CODE_WEB_PAYMENT) {
-                showProgressDialog();
+                showProgressDialog(getString(R.string.processing_payment));
                 presenter.startPayment();
             }
 
@@ -694,5 +781,106 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         data.putExtra(Constants.PAYMENT_RESULT, paymentResult);
         setResult(resultCode, data);
         finish();
+    }
+
+    private void initSavedCardIfAvailable() {
+        SavedToken savedToken = (SavedToken) getIntent().getSerializableExtra(EXTRA_CARD_DETAILS);
+        if (savedToken != null) {
+            presenter.setSavedToken(savedToken);
+            setCardTitle(savedToken);
+            bindSavedMaskedCardNumber(savedToken.maskedCard);
+            bindSavedMaskedExpiry();
+            if (savedToken.tokenType.equals(SavedToken.ONE_CLICK)) {
+                bindSavedCvv();
+                // TODO: Disable installment
+            } else {
+                cardCvvField.requestFocus();
+            }
+
+            initDeleteCardButton(savedToken);
+            showDeleteCardButton();
+
+            containerSaveCard.setVisibility(View.GONE);
+            scanCardButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void bindSavedMaskedCardNumber(String maskedCardNumber) {
+        cardNumberField.setText(CreditCardUtils.getMaskedCardNumber(maskedCardNumber));
+        cardNumberField.setEnabled(false);
+    }
+
+    private void bindSavedMaskedExpiry() {
+        cardExpiryField.setInputType(InputType.TYPE_CLASS_TEXT);
+        cardExpiryField.setFilters(getFilterArray());
+        cardExpiryField.setText(CreditCardUtils.getMaskedExpDate());
+        cardExpiryField.setEnabled(false);
+    }
+
+    private void bindSavedCvv() {
+        cardCvvField.setInputType(InputType.TYPE_CLASS_TEXT);
+        cardCvvField.setFilters(getFilterArray());
+        cardCvvField.setText(CreditCardUtils.getMaskedCardCvv());
+        cardCvvField.setEnabled(false);
+    }
+
+    private InputFilter[] getFilterArray() {
+        InputFilter[] filterArray = new InputFilter[1];
+        filterArray[0] = new InputFilter.LengthFilter(20);
+        return filterArray;
+    }
+
+    private void setCardTitle(SavedToken savedToken) {
+        TextView titleText = (TextView) findViewById(R.id.page_title);
+        titleText.setText(getCardTitle(savedToken));
+    }
+
+    private String getCardTitle(SavedToken savedToken) {
+        String cardType = CardUtilities.getCardType(savedToken.maskedCard);
+        String cardBin = savedToken.maskedCard.substring(0, 4);
+        return cardType + "-" + cardBin;
+    }
+
+    private void initDeleteCardButton(final SavedToken savedToken) {
+        deleteCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDeleteConfirmation(savedToken);
+            }
+        });
+    }
+
+    private void showDeleteConfirmation(final SavedToken savedToken) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(R.string.card_delete_message)
+                .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        deleteCard(savedToken);
+                    }
+                })
+                .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create();
+        alertDialog.show();
+        changeDialogButtonColor(alertDialog);
+    }
+
+    private void deleteCard(SavedToken savedToken) {
+        showProgressDialog(getString(R.string.processing_delete));
+        presenter.deleteCard(savedToken);
+    }
+
+    private void showDeleteCardButton() {
+        deleteCardButton.setVisibility(View.VISIBLE);
+    }
+
+    private void hideDeleteCardButton() {
+        deleteCardButton.setVisibility(View.GONE);
     }
 }

@@ -196,7 +196,7 @@ public class CreditCardDetailsFragment extends BaseFragment implements CreditCar
                 // Show help dialog
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.save_card_message)
-                        .setMessage(R.string.save_card_dialog)
+                        .setMessage(R.string.layout_save_card_dialog)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

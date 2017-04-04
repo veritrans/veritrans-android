@@ -514,17 +514,20 @@ public class CardTokenRequest {
      * @param savedTokenId saved token id from previous transaction.
      * @param cardCvv      card cvv.
      * @param twoClick     true if two clicks was enabled.
+     * @param secure  true if secure was enabled.
      * @param grossAmount  transaction amount.
      * @return card request object.
      */
     public static CardTokenRequest newNormalTwoClicksCard(String savedTokenId,
                                                           String cardCvv,
                                                           boolean twoClick,
+                                                          boolean secure,
                                                           int grossAmount) {
         CardTokenRequest cardTokenRequest = new CardTokenRequest();
         cardTokenRequest.savedTokenId = savedTokenId;
         cardTokenRequest.cardCvv = cardCvv;
         cardTokenRequest.twoClick = twoClick;
+        cardTokenRequest.secure = secure;
         cardTokenRequest.grossAmount = grossAmount;
         return cardTokenRequest;
     }
@@ -747,6 +750,10 @@ public class CardTokenRequest {
         return secure;
     }
 
+    public void setSecure(boolean secure) {
+        this.secure = secure;
+    }
+
     public boolean isTwoClick() {
         return twoClick;
     }
@@ -759,12 +766,24 @@ public class CardTokenRequest {
         return grossAmount;
     }
 
+    public void setGrossAmount(int grossAmount) {
+        this.grossAmount = grossAmount;
+    }
+
     public boolean isInstallment() {
         return installment;
     }
 
+    public void setInstallment(boolean installment) {
+        this.installment = installment;
+    }
+
     public int getInstallmentTerm() {
         return installmentTerm;
+    }
+
+    public void setInstallmentTerm(int installmentTerm) {
+        this.installmentTerm = installmentTerm;
     }
 
     public String getType() {
@@ -775,31 +794,15 @@ public class CardTokenRequest {
         return bank;
     }
 
-    public void setCardType(String cardType) {
-        this.type = cardType;
-    }
-
     public void setBank(String bank) {
         this.bank = bank;
     }
 
+    public void setCardType(String cardType) {
+        this.type = cardType;
+    }
+
     public void setChannel(String channel) {
         this.channel = channel;
-    }
-
-    public void setInstallment(boolean installment) {
-        this.installment = installment;
-    }
-
-    public void setInstallmentTerm(int installmentTerm) {
-        this.installmentTerm = installmentTerm;
-    }
-
-    public void setSecure(boolean secure) {
-        this.secure = secure;
-    }
-
-    public void setGrossAmount(int grossAmount) {
-        this.grossAmount = grossAmount;
     }
 }

@@ -94,7 +94,7 @@ public class MidtransApiManagerTest {
         MockRetrofit mockRetrofit = MockMidtransRetrofit.getMidtransRetrofit();
         midtransApi = mockRetrofit.create(MidtransApi.class);
         MidtransApi api = midtransApi.returningResponse(new CardTokenResponse(null, "bni", "200", "token", "url"));
-        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard("saved_token", "cardcvv", true, 10000);
+        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard("saved_token", "cardcvv", true, true, 10000);
         midtransApiManager = new MidtransApiManager(api);
         midtransApiManager.getCardToken(cardTokenRequest, new MidtransCoreCallback<CardTokenResponse>() {
             @Override
@@ -121,7 +121,7 @@ public class MidtransApiManagerTest {
         MockRetrofit mockRetrofit = MockMidtransRetrofit.getMidtransRetrofit();
         midtransApi = mockRetrofit.create(MidtransApi.class);
         MidtransApi api = midtransApi.returningResponse(new CardTokenResponse("failed", null, "400", null, null));
-        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard("saved_token", "cardcvv", true, 10000);
+        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard("saved_token", "cardcvv", true, true, 10000);
         midtransApiManager = new MidtransApiManager(api);
         midtransApiManager.getCardToken(cardTokenRequest, new MidtransCoreCallback<CardTokenResponse>() {
             @Override
@@ -147,7 +147,7 @@ public class MidtransApiManagerTest {
         MockRetrofit mockRetrofit = MockMidtransRetrofit.getErrorMidtransRetrofit();
         midtransApi = mockRetrofit.create(MidtransApi.class);
         MidtransApi api = midtransApi.returningResponse(null);
-        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard("saved_token", "cardcvv", true, 10000);
+        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard("saved_token", "cardcvv", true, true, 10000);
         midtransApiManager = new MidtransApiManager(api);
         midtransApiManager.getCardToken(cardTokenRequest, new MidtransCoreCallback<CardTokenResponse>() {
             @Override

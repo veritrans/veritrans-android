@@ -18,7 +18,6 @@ public class CheckoutTokenRequest implements Serializable {
     public CheckoutOrderDetails transactionDetails;
     public Expiry expiry;
     public Object custom;
-    public boolean secureCreditCardPayment;
 
     /**
      * Create minimal checkout using transaction details.
@@ -50,7 +49,6 @@ public class CheckoutTokenRequest implements Serializable {
                                                            List<ItemDetails> itemDetails,
                                                            CustomerDetails customerDetails,
                                                            CheckoutOrderDetails transactionDetails,
-                                                            boolean secureCreditCardPayment,
                                                            Expiry expiry,
                                                            Map<String, String> custom) {
         CheckoutTokenRequest checkoutTokenRequest = new CheckoutTokenRequest();
@@ -60,7 +58,6 @@ public class CheckoutTokenRequest implements Serializable {
         checkoutTokenRequest.customerDetails = customerDetails;
         checkoutTokenRequest.transactionDetails = transactionDetails;
         checkoutTokenRequest.expiry = expiry;
-        checkoutTokenRequest.secureCreditCardPayment = secureCreditCardPayment;
         if (custom != null && !custom.isEmpty()) {
             checkoutTokenRequest.custom = Utilities.createCustomMapObject(custom);
         }

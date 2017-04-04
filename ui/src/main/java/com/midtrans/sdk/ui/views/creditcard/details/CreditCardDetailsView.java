@@ -1,6 +1,7 @@
 package com.midtrans.sdk.ui.views.creditcard.details;
 
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
+import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 
 /**
@@ -20,6 +21,10 @@ public interface CreditCardDetailsView {
     void onCreditCardPaymentFailure(CreditCardPaymentResponse response);
 
     void onCreditCardPaymentSuccess(CreditCardPaymentResponse response);
+
+    void onDeleteCardSuccess(SavedToken savedToken);
+
+    void onDeleteCardFailure(String message);
 
     String getMaskedCardNumber();
 
