@@ -16,7 +16,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.creditcard.details.CreditCardDetailsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.PaymentStatusActivity"
             android:screenOrientation="portrait" />

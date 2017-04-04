@@ -134,7 +134,8 @@ public class SavedCardActivity extends BaseActivity implements SavedCardView {
     }
 
     private void initCards() {
-        if (presenter.getSavedCards() != null) {
+        if (presenter.getSavedCards() != null
+                && !presenter.getSavedCards().isEmpty()) {
             adapter.setData(presenter.getSavedCards());
             adapter.notifyDataSetChanged();
             adapter.setListener(new SavedCardsAdapter.SavedCardAdapterEventListener() {
@@ -153,6 +154,8 @@ public class SavedCardActivity extends BaseActivity implements SavedCardView {
                     }
                 }
             });
+        } else {
+            startCardDetails();
         }
     }
 

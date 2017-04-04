@@ -50,6 +50,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by rakawm on 3/27/17.
@@ -74,6 +75,8 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     private TextView cardCvvErrorText;
     private TextView cardExpiryErrorText;
     private TextView textInvalidPromoStatus;
+    private TextView textInstallmentTerm;
+    private TextView textTitleInstallment;
 
     private ImageView cardLogo;
     private ImageView bankLogo;
@@ -86,6 +89,8 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     private FancyButton scanCardButton;
     private FancyButton deleteCardButton;
     private FancyButton payNowButton;
+    private FancyButton decreaseInstallmentButton;
+    private FancyButton increaseInstallmentButton;
 
     private RelativeLayout containerSaveCard;
     private LinearLayout containerInstallment;
@@ -137,6 +142,8 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         cardCvvField = (EditText) findViewById(R.id.field_cvv);
         cardExpiryField = (EditText) findViewById(R.id.field_expiry);
         textInvalidPromoStatus = (TextView) findViewById(R.id.text_offer_status_not_applied);
+        textInstallmentTerm = (TextView) findViewById(R.id.text_installment_term);
+        textTitleInstallment = (TextView) findViewById(R.id.title_installment);
 
         cardNumberErrorText = (TextView) findViewById(R.id.error_message_card_number);
         cardExpiryErrorText = (TextView) findViewById(R.id.error_message_expiry);
@@ -153,6 +160,8 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         scanCardButton = (FancyButton) findViewById(R.id.button_scan_card);
         deleteCardButton = (FancyButton) findViewById(R.id.button_delete);
         payNowButton = (FancyButton) findViewById(R.id.btn_pay_now);
+        decreaseInstallmentButton = (FancyButton) findViewById(R.id.button_installment_decrease);
+        increaseInstallmentButton = (FancyButton) findViewById(R.id.button_installment_increase);
 
         containerSaveCard = (RelativeLayout) findViewById(R.id.container_save_card_details);
         containerInstallment = (LinearLayout) findViewById(R.id.container_installment);
@@ -182,7 +191,21 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         filterEditTextColor(cardExpiryField);
         filterEditTextColor(cardCvvField);
 
+        initInstallmentColorTheme();
         initThemeColor();
+    }
+
+    private void initInstallmentColorTheme() {
+        // Set color theme for button increase and decrease
+        setTextColor(decreaseInstallmentButton);
+        setBorderColor(decreaseInstallmentButton);
+        setTextColor(increaseInstallmentButton);
+        setBorderColor(increaseInstallmentButton);
+        setTextColor(textTitleInstallment);
+
+        // Set color theme
+        setBackgroundColor(textInstallmentTerm, Theme.SECONDARY_COLOR);
+        textInstallmentTerm.getBackground().setAlpha(50);
     }
 
     private void initItemDetails() {
@@ -357,6 +380,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
                 if (!focused) {
                     checkCardNumberValidity();
                     checkBinLockingValidity();
+                    checkInstallment();
                 }
             }
         });
@@ -454,7 +478,12 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
                 return false;
             }
         }
-        //TODO: installment validation
+
+        // Installment validation
+        if (!presenter.isInstallmentValid()) {
+            Toast.makeText(this, getString(R.string.installment_required), Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         return true;
     }
@@ -507,6 +536,97 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         });
     }
 
+    private void checkInstallment() {
+        String cardNumber = cardNumberField.getText().toString();
+        if (presenter.isInstallmentAvailable()
+                && !presenter.isCardNumberNotValidForBankChecking(cardNumber)
+                && !presenter.isBankNotAvailableForInstallment()) {
+            String cardBin = presenter.getCardBinForBankChecking(cardNumber);
+            List<Integer> installmentTerms = presenter.getInstallmentTermsForCardNumber(cardBin);
+            initInstallmentLayout(installmentTerms);
+        } else {
+            hideInstallmentContainer();
+        }
+    }
+
+    private void initInstallmentLayout(List<Integer> installmentTerms) {
+        if (installmentTerms != null && installmentTerms.size() > 1) {
+            initInstallmentPresenter(installmentTerms);
+            showInstallmentContainer();
+            setInstallmentTermText();
+            initInstallmentButton();
+        } else {
+            hideInstallmentContainer();
+        }
+    }
+
+    private void initInstallmentPresenter(List<Integer> installmentTerms) {
+        presenter.setSelectedInstallmentTerms(installmentTerms);
+        presenter.setInstallmentCurrentPosition(0);
+        presenter.setInstallmentTermsCount(installmentTerms.size() - 1);
+    }
+
+    private void setInstallmentTermText() {
+        String installmentTerm;
+        int term = presenter.getSelectedInstallmentTerm();
+        if (term < 1) {
+            installmentTerm = getString(R.string.no_installment);
+        } else {
+            installmentTerm = getString(R.string.formatted_installment_month, term + "");
+        }
+        textInstallmentTerm.setText(installmentTerm);
+    }
+
+    private void initInstallmentButton() {
+        increaseInstallmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int installmentTermCurrentPosition = presenter.getInstallmentCurrentPosition();
+                int installmentTermCount = presenter.getInstallmentTermsCount();
+                if (installmentTermCurrentPosition >= 0 && installmentTermCurrentPosition < installmentTermCount) {
+                    presenter.setInstallmentCurrentPosition(installmentTermCurrentPosition + 1);
+                    setInstallmentTermText();
+                }
+                disableEnableInstallmentButton();
+            }
+        });
+
+        decreaseInstallmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int installmentTermCurrentPosition = presenter.getInstallmentCurrentPosition();
+                int installmentTermCount = presenter.getInstallmentTermsCount();
+                if (installmentTermCurrentPosition > 0 && installmentTermCurrentPosition <= installmentTermCount) {
+                    presenter.setInstallmentCurrentPosition(installmentTermCurrentPosition - 1);
+                    setInstallmentTermText();
+                }
+                disableEnableInstallmentButton();
+            }
+        });
+    }
+
+    private void disableEnableInstallmentButton() {
+        int installmentTermCurrentPosition = presenter.getInstallmentCurrentPosition();
+        int installmentTermCount = presenter.getInstallmentTermsCount();
+        if (installmentTermCurrentPosition == 0
+                && installmentTermCount == 0) {
+            decreaseInstallmentButton.setEnabled(false);
+            increaseInstallmentButton.setEnabled(false);
+        } else if (installmentTermCurrentPosition > 0
+                && installmentTermCurrentPosition < installmentTermCount) {
+            decreaseInstallmentButton.setEnabled(true);
+            increaseInstallmentButton.setEnabled(true);
+        } else if (installmentTermCurrentPosition > 0
+                && installmentTermCurrentPosition == installmentTermCount) {
+            decreaseInstallmentButton.setEnabled(true);
+            increaseInstallmentButton.setEnabled(false);
+        } else if (installmentTermCurrentPosition == 0
+                && installmentTermCurrentPosition < installmentTermCount) {
+            decreaseInstallmentButton.setEnabled(false);
+            increaseInstallmentButton.setEnabled(true);
+        }
+    }
+
     private void changeDialogButtonColor(AlertDialog alertDialog) {
         if (alertDialog.isShowing()
                 && midtransUi != null
@@ -546,10 +666,10 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     private void setBankType() {
         // Don't set card type when card number is empty
         String cardNumberText = cardNumberField.getText().toString().trim();
-        if (isCardNumberValidForBankChecking(cardNumberText)) {
+        if (presenter.isCardNumberNotValidForBankChecking(cardNumberText)) {
             bankLogo.setImageDrawable(null);
         } else {
-            String cardBin = getCardBinForBankChecking(cardNumberText);
+            String cardBin = presenter.getCardBinForBankChecking(cardNumberText);
             String bank = CreditCardUtils.getBankByBin(presenter.getBankBins(), cardBin);
             if (bank != null) {
                 switch (bank) {
@@ -597,14 +717,6 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
     private void unsetBankLogo() {
         bankLogo.setImageDrawable(null);
-    }
-
-    private String getCardBinForBankChecking(String cardNumber) {
-        return cardNumber.replace(" ", "").substring(0, 6);
-    }
-
-    private boolean isCardNumberValidForBankChecking(String cardNumber) {
-        return TextUtils.isEmpty(cardNumber) || cardNumber.length() < 7;
     }
 
     private boolean checkCardValidity() {
@@ -891,20 +1003,19 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         SavedToken savedToken = (SavedToken) getIntent().getSerializableExtra(EXTRA_CARD_DETAILS);
         if (savedToken != null) {
             presenter.setSavedToken(savedToken);
-            if (savedToken.tokenType.equals(SavedToken.TWO_CLICKS)) {
-                cardCvvField.requestFocus();
-            }
             bindSavedMaskedCardNumber(savedToken.maskedCard);
             bindSavedMaskedExpiry();
             if (savedToken.tokenType.equals(SavedToken.ONE_CLICK)) {
                 bindSavedCvv();
-                // TODO: Disable installment
+                hideInstallmentContainer();
             }
             initDeleteCardButton(savedToken);
             showDeleteCardButton();
             checkBinLockingValidity();
             setCardTitle(savedToken);
-
+            if (savedToken.tokenType.equals(SavedToken.TWO_CLICKS)) {
+                checkInstallment();
+            }
             containerSaveCard.setVisibility(View.GONE);
             scanCardButton.setVisibility(View.GONE);
         }
@@ -999,5 +1110,13 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
     private void hideInvalidBinLockingStatus() {
         textInvalidPromoStatus.setVisibility(View.GONE);
+    }
+
+    private void showInstallmentContainer() {
+        containerInstallment.setVisibility(View.VISIBLE);
+    }
+
+    private void hideInstallmentContainer() {
+        containerInstallment.setVisibility(View.GONE);
     }
 }
