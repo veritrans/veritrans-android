@@ -12,13 +12,13 @@
             android:name=".views.creditcard.CreditCardActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".views.creditcard.saved.SavedCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".views.creditcard.details.CreditCardDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.PaymentStatusActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.banktransfer.list.BankTransferListActivity"
@@ -29,6 +29,9 @@
 
         <activity
             android:name=".views.banktransfer.instruction.BankTransferInstructionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity"
             android:screenOrientation="portrait" />
 
     </application>

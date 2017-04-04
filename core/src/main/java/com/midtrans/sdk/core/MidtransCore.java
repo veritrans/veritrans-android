@@ -102,7 +102,6 @@ public class MidtransCore {
      * @param callback             callback to be called after checkout was finished.
      */
     public void checkout(String checkoutUrl, CheckoutTokenRequest checkoutTokenRequest, MidtransCoreCallback<CheckoutTokenResponse> callback) {
-        this.secureCreditCardPayment = checkoutTokenRequest.secureCreditCardPayment;
         MerchantApiManager merchantApiManager = initialiseMerchantApiManager(checkoutUrl.endsWith("/") ? checkoutUrl : checkoutUrl + "/");
         merchantApiManager.checkout(checkoutUrl, checkoutTokenRequest, callback);
     }
@@ -377,6 +376,19 @@ public class MidtransCore {
                                      String pin,
                                      MidtransCoreCallback<GiftCardPaymentResponse> callback) {
         snapApiManager.paymentUsingGiftCard(checkoutToken, PaymentUtilities.buildGiftCardPaymentRequest(cardNumber, pin), callback);
+    }
+
+    /**
+     * Start deleting card for specific checkout token.
+     *
+     * @param checkoutToken checkout token.
+     * @param maskedCard    masked card number.
+     * @param callback      callback to be called after delete process was finished.
+     */
+    public void deleteCard(String checkoutToken,
+                           String maskedCard,
+                           MidtransCoreCallback<Void> callback) {
+        snapApiManager.deleteCard(checkoutToken, maskedCard, callback);
     }
 
     /**

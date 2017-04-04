@@ -452,6 +452,28 @@ public class SnapApiManager {
     }
 
     /**
+     * Start delete card from token storage.
+     *
+     * @param checkoutToken checkout token.
+     * @param maskedCard masked card.
+     * @param callback callback to be called after process was finished.
+     */
+    public void deleteCard(String checkoutToken, String maskedCard, final MidtransCoreCallback<Void> callback) {
+        Call<Void> response = snapApi.deleteCard(checkoutToken, maskedCard);
+        response.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                handleDeleteCardResponse(response, callback);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+                callback.onError(new RuntimeException("Failed to delete card.", throwable));
+            }
+        });
+    }
+
+    /**
      * Start getting bank bins from Snap.
      *
      * @param callback callback to be called after API call was finished.
@@ -494,6 +516,14 @@ public class SnapApiManager {
     private void handleGetBankBinsResponse(Response<List<BankBinsResponse>> response, MidtransCoreCallback<List<BankBinsResponse>> callback) {
         if (response.isSuccessful()
                 && response.code() == 200) {
+            callback.onSuccess(response.body());
+        } else {
+            callback.onFailure(response.body());
+        }
+    }
+
+    private void handleDeleteCardResponse(Response<Void> response, MidtransCoreCallback<Void> callback) {
+        if (response.isSuccessful()) {
             callback.onSuccess(response.body());
         } else {
             callback.onFailure(response.body());

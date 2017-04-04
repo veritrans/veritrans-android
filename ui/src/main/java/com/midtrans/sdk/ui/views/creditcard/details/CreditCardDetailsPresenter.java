@@ -5,6 +5,7 @@ import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.papi.CardTokenRequest;
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
 import com.midtrans.sdk.core.models.snap.CreditCard;
+import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentParams;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
@@ -21,10 +22,13 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
 
     private MidtransCoreCallback<CardTokenResponse> getCardTokenCallback;
     private MidtransCoreCallback<CreditCardPaymentResponse> paymentCallback;
+    private MidtransCoreCallback<Void> deleteCardCallback;
 
     private CreditCardDetailsView cardDetailsView;
     private String cardToken;
     private PaymentResult<CreditCardPaymentResponse> paymentResult;
+    private SavedToken savedToken;
+    private boolean saveCard;
 
     public void init(CreditCardDetailsView view) {
         this.cardDetailsView = view;
@@ -54,12 +58,49 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
         }
     }
 
+    void startTokenize(String cvv) {
+        SnapTransaction snapTransaction = MidtransUi.getInstance().getTransaction();
+        CreditCard creditCard = snapTransaction.creditCard;
+        CardTokenRequest cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard(
+                savedToken.token,
+                cvv,
+                true,
+                creditCard.secure,
+                snapTransaction.transactionDetails.grossAmount
+        );
+        MidtransCore.getInstance().getCardToken(cardTokenRequest, getCardTokenCallback);
+    }
+
     void startPayment() {
         MidtransCore.getInstance().paymentUsingCreditCard(
                 MidtransUi.getInstance().getTransaction().token,
-                CreditCardPaymentParams.newBasicPaymentParams(cardToken),
+                isOneClickMode() ? buildOneClickCreditCardPaymentParams() : buildCreditCardPaymentParams(),
                 UiUtils.buildCustomerDetails(),
                 paymentCallback);
+    }
+
+    void deleteCard(final SavedToken savedToken) {
+        MidtransCore.getInstance().deleteCard(
+                MidtransUi.getInstance().getTransaction().token,
+                savedToken.maskedCard,
+                new MidtransCoreCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void object) {
+                        UiUtils.removeCardFromMidtransTransaction(savedToken);
+                        cardDetailsView.onDeleteCardSuccess(savedToken);
+                    }
+
+                    @Override
+                    public void onFailure(Void object) {
+                        cardDetailsView.onDeleteCardFailure("Failed to delete card");
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        cardDetailsView.onDeleteCardFailure(throwable.getMessage());
+                    }
+                }
+        );
     }
 
     private void initCallbacks() {
@@ -112,5 +153,41 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
 
     public PaymentResult<CreditCardPaymentResponse> getPaymentResult() {
         return paymentResult;
+    }
+
+    public SavedToken getSavedToken() {
+        return savedToken;
+    }
+
+    public void setSavedToken(SavedToken savedToken) {
+        this.savedToken = savedToken;
+    }
+
+    public boolean isSaveCard() {
+        return saveCard;
+    }
+
+    public void setSaveCard(boolean saveCard) {
+        this.saveCard = saveCard;
+    }
+
+    private CreditCardPaymentParams buildCreditCardPaymentParams() {
+        CreditCardPaymentParams creditCardPaymentParams = CreditCardPaymentParams.newBasicPaymentParams(cardToken);
+        creditCardPaymentParams.setSaveCard(saveCard);
+        return creditCardPaymentParams;
+    }
+
+    private CreditCardPaymentParams buildOneClickCreditCardPaymentParams() {
+        return CreditCardPaymentParams.newOneClickPaymentParams(savedToken.maskedCard);
+    }
+
+    public boolean isTwoClicksMode() {
+        CreditCard creditCard = MidtransUi.getInstance().getTransaction().creditCard;
+        return creditCard != null && creditCard.saveCard;
+    }
+
+    public boolean isOneClickMode() {
+        CreditCard creditCard = MidtransUi.getInstance().getTransaction().creditCard;
+        return isTwoClicksMode() && creditCard.secure;
     }
 }

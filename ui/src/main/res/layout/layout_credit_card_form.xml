@@ -351,6 +351,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/container_security"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
         android:visibility="gone"
         app:fb_borderColor="@color/dark_red"
         app:fb_iconColor="@color/dark_red"

@@ -58,8 +58,8 @@ public class RestAdapter {
 
     private Retrofit buildMerchantApiRetrofit(String checkoutUrl) {
         return new Retrofit.Builder()
-                .baseUrl(checkoutUrl)
                 .client(buildOkHttpClient())
+                .baseUrl(checkoutUrl)
                 .addConverterFactory(GsonConverterFactory.create(Utilities.buildGson()))
                 .build();
     }

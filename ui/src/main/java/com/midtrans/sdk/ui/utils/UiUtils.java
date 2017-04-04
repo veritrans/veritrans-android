@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.midtrans.sdk.core.models.CreditCardType;
 import com.midtrans.sdk.core.models.snap.CustomerDetails;
+import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
 import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
 import com.midtrans.sdk.core.models.snap.transaction.SnapEnabledPayment;
@@ -423,5 +424,19 @@ public class UiUtils {
             );
         }
         return null;
+    }
+
+    public static void removeCardFromMidtransTransaction(SavedToken savedToken) {
+        List<SavedToken> savedTokens = MidtransUi.getInstance().getTransaction().creditCard.savedTokens;
+        int position = -1;
+        for (SavedToken token : savedTokens) {
+            if (token.maskedCard.equals(savedToken.maskedCard)) {
+                position = savedTokens.indexOf(token);
+            }
+        }
+
+        if (position != -1) {
+            savedTokens.remove(position);
+        }
     }
 }
