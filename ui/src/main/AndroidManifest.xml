@@ -32,7 +32,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.creditcard.points.BankPointsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity"
             android:screenOrientation="portrait" />
