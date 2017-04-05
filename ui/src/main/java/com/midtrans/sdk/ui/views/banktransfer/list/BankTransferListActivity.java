@@ -10,7 +10,9 @@ import android.support.v7.widget.Toolbar;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.adapters.BankTransferListAdapter;
+import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.ui.constants.Constants;
+import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentMethodModel;
 import com.midtrans.sdk.ui.utils.PaymentMethodUtils;
 import com.midtrans.sdk.ui.views.banktransfer.payment.BankTransferPaymentActivity;
@@ -25,11 +27,11 @@ import java.util.List;
 public class BankTransferListActivity extends BaseActivity implements BankTransferListAdapter.BankTransferListener {
     public static final String ARGS_BANK_LIST = "args.banks";
 
-    private RecyclerView rvBankList;
-    private DefaultTextView tvTotalAmount;
+    private RecyclerView rvBankList, rvItemDetails;
     private DefaultTextView tvTitle;
 
     private BankTransferListAdapter bankTransferListAdapter;
+    private ItemDetailsAdapter itemDetailsAdapter;
     private BankTransferListPresenter presenter;
 
     @Override
@@ -45,6 +47,13 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
     private void initProperties() {
         presenter = new BankTransferListPresenter();
         bankTransferListAdapter = new BankTransferListAdapter(this);
+        itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
+            @Override
+            public void onItemShown() {
+
+            }
+        }, presenter.createItemDetails(this));
+
         List<String> bankList = getIntent().getStringArrayListExtra(ARGS_BANK_LIST);
         List<PaymentMethodModel> bankPaymentMethods = PaymentMethodUtils.createBankPaymentMethods(this, bankList);
         bankTransferListAdapter.setData(bankPaymentMethods);
@@ -59,18 +68,19 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
                 onBackPressed();
             }
         });
+        rvItemDetails.setLayoutManager(new LinearLayoutManager(this));
+        rvItemDetails.setAdapter(itemDetailsAdapter);
         rvBankList.setHasFixedSize(true);
         rvBankList.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvBankList.setAdapter(bankTransferListAdapter);
-        bankTransferListAdapter.notifyDataSetChanged();
-        tvTotalAmount.setText(presenter.getFormattedTotalAmount());
         tvTitle.setText(getString(R.string.activity_select_bank));
+        setBackgroundColor(rvItemDetails, Theme.PRIMARY_COLOR);
     }
 
     private void bindView() {
         rvBankList = (RecyclerView) findViewById(R.id.rv_bank_list);
-        tvTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        rvItemDetails = (RecyclerView) findViewById(R.id.container_item_details);
         tvTitle = (DefaultTextView) findViewById(R.id.page_title);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
     }

@@ -8,21 +8,21 @@
     <include layout="@layout/toolbar_payment_page" />
 
     <RelativeLayout
-        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/layout_total_amount"
-            android:id="@+id/layout_total_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <include
+            android:id="@+id/container_item_details"
+            layout="@layout/layout_item_details" />
+
         <android.support.v7.widget.RecyclerView
-            android:layout_below="@id/layout_total_amount"
             android:id="@+id/rv_bank_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/container_item_details">
 
         </android.support.v7.widget.RecyclerView>
     </RelativeLayout>

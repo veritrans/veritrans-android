@@ -488,5 +488,5 @@
     <string name="delete_this_card">hapus kartu ini</string>
     <string name="error_delete_message">Gagal menghapus kartu</string>
     <string name="error_message_failed_checkout">Checkout gagal.\nMohon ulangi atau batalkan pembayaran.</string>
-    <string name="error_invalid_payment_form">Form Pembayaran tidak valid</string>
+    <string name="error_invalid_payment_form">Formulir Pembayaran tidak valid</string>
 </resources>

@@ -3,6 +3,8 @@ package com.midtrans.sdk.ui.views.banktransfer.payment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
+import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
@@ -28,13 +31,14 @@ public class BankTransferPaymentActivity extends BaseActivity {
     public static final String ARGS_PAYMENT_TYPE = "payment.type";
     public String currentFragment = PAYMENT_FRAGMENT;
 
-    private TextView tvTotalAmount;
     private FancyButton buttonSeeAccountNumber;
     private TextView tvTitle;
-
+    private RecyclerView rvItemDetails;
     private BankTransferPresenter presenter;
-    private String paymentType;
     private BankTransferPaymentFragment paymentFragment;
+
+    private String paymentType;
+    private ItemDetailsAdapter itemDetailsAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,9 +47,9 @@ public class BankTransferPaymentActivity extends BaseActivity {
 
         // get position of selected payment method
         initProperties();
-        bindView();
+        bindViews();
         initThemeColor();
-        setupView();
+        setupViews();
         setupFragment();
     }
 
@@ -65,22 +69,29 @@ public class BankTransferPaymentActivity extends BaseActivity {
             UiUtils.showToast(BankTransferPaymentActivity.this, getString(R.string.error_something_wrong));
             finish();
         }
+
+        itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
+            @Override
+            public void onItemShown() {
+
+            }
+        }, presenter.createItemDetails(this));
     }
 
-    private void bindView() {
+    private void bindViews() {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         buttonSeeAccountNumber = (FancyButton) findViewById(R.id.btn_confirm_payment);
-        tvTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
         tvTitle = (DefaultTextView) findViewById(R.id.page_title);
-
+        rvItemDetails = (RecyclerView)findViewById(R.id.container_item_details);
     }
 
-    private void setupView() {
+    private void setupViews() {
         setBackgroundColor(buttonSeeAccountNumber, Theme.PRIMARY_COLOR);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        tvTotalAmount.setText(presenter.getFormattedTotalAmount());
         tvTitle.setText(getString(R.string.bank_transfer));
+        rvItemDetails.setLayoutManager(new LinearLayoutManager(this));
+        rvItemDetails.setAdapter(itemDetailsAdapter);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +109,8 @@ public class BankTransferPaymentActivity extends BaseActivity {
                 }
             }
         });
+
+        setBackgroundColor(rvItemDetails, Theme.PRIMARY_COLOR);
     }
 
     public void setHeaderTitle(String title) {

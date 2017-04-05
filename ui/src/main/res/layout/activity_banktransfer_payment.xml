@@ -25,22 +25,24 @@
     </android.support.v7.widget.Toolbar>
 
     <include
-        android:id="@+id/layout_total_amount"
-        layout="@layout/layout_total_amount"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
         android:layout_below="@id/main_toolbar"
-        android:layout_marginTop="10dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/container_item_details"
+        layout="@layout/layout_item_details" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/layout_total_amount" />
+        android:layout_below="@id/container_item_details" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <com.midtrans.sdk.ui.widgets.FancyButton
             android:id="@+id/btn_confirm_payment"

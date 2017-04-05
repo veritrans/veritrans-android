@@ -223,6 +223,7 @@ public class TransactionActivity
 
     @Override
     public void onItemShown() {
+
     }
 
     @Override
