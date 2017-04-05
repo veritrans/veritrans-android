@@ -1,13 +1,20 @@
 package com.midtrans.sdk.core.api;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.internal.bind.DateTypeAdapter;
+
 import com.midtrans.sdk.core.Environment;
 import com.midtrans.sdk.core.api.merchant.MerchantApi;
 import com.midtrans.sdk.core.api.papi.MidtransApi;
 import com.midtrans.sdk.core.api.snap.SnapApi;
+import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentParams;
 import com.midtrans.sdk.core.utils.Logger;
 import com.midtrans.sdk.core.utils.PaymentUtilities;
 import com.midtrans.sdk.core.utils.Utilities;
 
+import java.sql.Date;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -52,7 +59,7 @@ public class RestAdapter {
         return new Retrofit.Builder()
                 .client(buildOkHttpClient())
                 .baseUrl(PaymentUtilities.getSnapBaseUrl(environment))
-                .addConverterFactory(GsonConverterFactory.create(Utilities.buildGson()))
+                .addConverterFactory(GsonConverterFactory.create(buildSnapGson()))
                 .build();
     }
 
@@ -81,5 +88,13 @@ public class RestAdapter {
                         HttpLoggingInterceptor.Level.BODY :
                         HttpLoggingInterceptor.Level.NONE);
         return httpLoggingInterceptor;
+    }
+
+    private Gson buildSnapGson() {
+        return new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                .registerTypeAdapter(CreditCardPaymentParams.class, new CreditCardPaymentParamsTypeAdapter())
+                .create();
     }
 }

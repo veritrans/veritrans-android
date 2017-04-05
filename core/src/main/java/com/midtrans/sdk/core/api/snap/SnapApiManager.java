@@ -11,6 +11,7 @@ import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResp
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentRequest;
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
+import com.midtrans.sdk.core.models.snap.card.BankPointResponse;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentRequest;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.core.models.snap.conveniencestore.indomaret.IndomaretPaymentRequest;
@@ -491,6 +492,38 @@ public class SnapApiManager {
                 callback.onError(new RuntimeException("Failed to get bank bins", throwable));
             }
         });
+    }
+
+    /**
+     * Get bank point.
+     *
+     * @param checkoutToken checkout token.
+     * @param cardToken     card token.
+     * @param callback      callback to be called after the process was finished.
+     */
+    public void getBankPoint(String checkoutToken, String cardToken, final MidtransCoreCallback<BankPointResponse> callback) {
+        Call<BankPointResponse> response = snapApi.getBankPoint(checkoutToken, cardToken);
+        response.enqueue(new Callback<BankPointResponse>() {
+            @Override
+            public void onResponse(Call<BankPointResponse> call, Response<BankPointResponse> response) {
+                handleGetBankPointResponse(response, callback);
+            }
+
+            @Override
+            public void onFailure(Call<BankPointResponse> call, Throwable throwable) {
+                callback.onError(new RuntimeException("Failed to get bank point", throwable));
+            }
+        });
+    }
+
+    private void handleGetBankPointResponse(Response<BankPointResponse> response, MidtransCoreCallback<BankPointResponse> callback) {
+        if (response.isSuccessful()
+                && response.code() == 200
+                && response.body().statusCode.equalsIgnoreCase("200")) {
+            callback.onSuccess(response.body());
+        } else {
+            callback.onFailure(response.body());
+        }
     }
 
     private <T extends BaseTransactionResponse> void handlePaymentResponse(Response<T> response, MidtransCoreCallback<T> callback) {

@@ -9,6 +9,7 @@ import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResp
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentRequest;
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
+import com.midtrans.sdk.core.models.snap.card.BankPointResponse;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentRequest;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.core.models.snap.conveniencestore.indomaret.IndomaretPaymentRequest;
@@ -299,5 +300,18 @@ public interface SnapApi {
     Call<Void> deleteCard(
             @Path("token") String checkoutToken,
             @Path("masked_card") String maskedCard
+    );
+
+    /**
+     * Get bank point.
+     *
+     * @param checkoutToken checkout token.
+     * @param cardToken     card token.
+     * @return bank point details.
+     */
+    @GET("transactions/{token}/point_inquiry/{card_token}")
+    Call<BankPointResponse> getBankPoint(
+            @Path("token") String checkoutToken,
+            @Path("card_token") String cardToken
     );
 }

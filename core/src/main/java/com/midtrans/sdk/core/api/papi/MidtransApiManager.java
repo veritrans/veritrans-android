@@ -44,7 +44,8 @@ public class MidtransApiManager {
                     cardTokenRequest.getBank(),
                     cardTokenRequest.isInstallment(),
                     cardTokenRequest.getInstallmentTerm(),
-                    !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON
+                    !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON,
+                    cardTokenRequest.isPoint()
             );
         } else {
             if (cardTokenRequest.isSecure()) {
@@ -60,7 +61,8 @@ public class MidtransApiManager {
                         cardTokenRequest.getBank(),
                         cardTokenRequest.isInstallment(),
                         cardTokenRequest.getInstallmentTerm(),
-                        !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON
+                        !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON,
+                        cardTokenRequest.isPoint()
                 );
             } else {
                 cardTokenResponseCall = midtransApi.getCardToken(
@@ -73,7 +75,8 @@ public class MidtransApiManager {
                         cardTokenRequest.getBank(),
                         cardTokenRequest.isInstallment(),
                         cardTokenRequest.getInstallmentTerm(),
-                        !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON
+                        !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON,
+                        cardTokenRequest.isPoint()
                 );
             }
         }

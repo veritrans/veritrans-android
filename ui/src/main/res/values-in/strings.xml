@@ -484,12 +484,16 @@
     <string name="klik_bca_continue">Mohon lanjutkan proses pembayaran lewat KlikBCA dengan membuka <b>www.klikbca.com</b> di browser anda.\n\nTransaksi akan dibatalkan bila pembayaran tidak diselesaikan dalam 2 jam.</string>
     <string name="error_paid_order_id">Order ID sudah dibayar, silakan gunakan order id lain.</string>
     <string name="layout_save_card_dialog">Kami akan menyimpan kartu anda sehingga bisa digunakan untuk transaksi selanjutnya.</string>
-    <string name="redeem_bni_reward">Tukarkan poin hadiah BNI</string>
+    <string name="redeem_point_reward">Tukarkan poin hadiah</string>
     <string name="delete_this_card">hapus kartu ini</string>
     <string name="error_delete_message">Gagal menghapus kartu</string>
     <string name="error_message_failed_checkout">Checkout gagal.\nMohon ulangi atau batalkan pembayaran.</string>
     <string name="mandiri_debit_card">Kartu Debit Mandiri</string>
     <string name="bni_debit_online_card">Kartu Debit Online BNI</string>
-    <string name="hint_card_number_example">4811 1111 1111 1114 (Example)</string>
     <string name="error_invalid_payment_form">Formulir Pembayaran tidak valid</string>
+    <string name="hint_card_number_example">4811 1111 1111 1114 (Contoh)</string>
+
+    <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
+    <string name="total_bank_point">Total poin anda</string>
+    <string name="status_redeemed_point">DISKON POIN</string>
 </resources>
