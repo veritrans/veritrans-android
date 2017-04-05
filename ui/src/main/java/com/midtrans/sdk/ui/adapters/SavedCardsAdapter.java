@@ -1,6 +1,7 @@
 package com.midtrans.sdk.ui.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.midtrans.sdk.core.models.snap.SavedToken;
+import com.midtrans.sdk.core.models.BankType;
 import com.midtrans.sdk.core.utils.CardUtilities;
 import com.midtrans.sdk.ui.R;
+import com.midtrans.sdk.ui.models.SavedCard;
 import com.midtrans.sdk.ui.utils.UiUtils;
 import com.midtrans.sdk.ui.widgets.AspectRatioImageView;
 
@@ -25,34 +27,34 @@ import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.SavedCardsViewHolder> {
 
-    private List<SavedToken> savedCards = new ArrayList<>();
+    private List<SavedCard> savedCards = new ArrayList<>();
 
     private SavedCardAdapterEventListener listener;
     private SavedCardPromoListener promoListener;
     private DeleteCardListener deleteCardListener;
 
-    public List<SavedToken> getData() {
+    public List<SavedCard> getData() {
         return savedCards;
     }
 
-    public void setData(List<SavedToken> cards) {
+    public void setData(List<SavedCard> cards) {
         this.savedCards.clear();
         this.savedCards.addAll(cards);
         this.notifyDataSetChanged();
     }
 
     public void deleteCard(String maskedCard) {
-        SavedToken savedToken = searchCard(maskedCard);
-        if (savedToken != null) {
-            int position = savedCards.indexOf(savedToken);
+        SavedCard savedCard = searchCard(maskedCard);
+        if (savedCard != null) {
+            int position = savedCards.indexOf(savedCard);
             savedCards.remove(position);
         }
     }
 
-    private SavedToken searchCard(String maskedCard) {
-        for (SavedToken savedToken : savedCards) {
-            if (savedToken.maskedCard.equals(maskedCard)) {
-                return savedToken;
+    private SavedCard searchCard(String maskedCard) {
+        for (SavedCard savedCard : savedCards) {
+            if (savedCard.getSavedToken().maskedCard.equals(maskedCard)) {
+                return savedCard;
             }
         }
         return null;
@@ -62,7 +64,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         this.listener = listener;
     }
 
-    public SavedToken getItem(int position) {
+    public SavedCard getItem(int position) {
         return savedCards.get(position);
     }
 
@@ -75,29 +77,75 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
 
     @Override
     public void onBindViewHolder(SavedCardsAdapter.SavedCardsViewHolder holder, int position) {
-        SavedToken card = savedCards.get(position);
-        String maskedCard = card.maskedCard;
+        SavedCard card = savedCards.get(position);
+        String maskedCard = card.getSavedToken().maskedCard;
         String cardType = CardUtilities.getCardType(maskedCard);
         holder.swipeLayout.setOffset(0);
-        switch (cardType) {
-            case CardUtilities.CARD_TYPE_VISA:
-                holder.imageCardType.setImageResource(R.drawable.ic_visa);
-                break;
-            case CardUtilities.CARD_TYPE_MASTERCARD:
-                holder.imageCardType.setImageResource(R.drawable.ic_mastercard);
-                break;
-            case CardUtilities.CARD_TYPE_JCB:
-                holder.imageCardType.setImageResource(R.drawable.ic_jcb);
-                break;
-            case CardUtilities.CARD_TYPE_AMEX:
-                holder.imageCardType.setImageResource(R.drawable.ic_amex);
-                break;
-        }
         String cardName = maskedCard.substring(0, 4);
-        holder.textCardName.setText(cardType + "-" + cardName);
+        holder.textCardName.setText(!TextUtils.isEmpty(cardType) ? cardType + "-" + cardName : cardName);
         String cardNumber = UiUtils.getMaskedCardNumber(maskedCard);
         holder.textCardNumber.setText(cardNumber);
 
+        setCardType(cardType, holder.imageCardType);
+        setBankType(card.getBank(), holder.bankLogo);
+    }
+
+    private void setCardType(String cardType, ImageView imageView) {
+        switch (cardType) {
+            case CardUtilities.CARD_TYPE_VISA:
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageResource(R.drawable.ic_visa);
+                break;
+            case CardUtilities.CARD_TYPE_MASTERCARD:
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageResource(R.drawable.ic_mastercard);
+                break;
+            case CardUtilities.CARD_TYPE_JCB:
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageResource(R.drawable.ic_jcb);
+                break;
+            case CardUtilities.CARD_TYPE_AMEX:
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageResource(R.drawable.ic_amex);
+                break;
+            default:
+                imageView.setVisibility(View.GONE);
+                imageView.setImageDrawable(null);
+                break;
+        }
+    }
+
+    private void setBankType(String bank, ImageView imageView) {
+        if (bank != null && !TextUtils.isEmpty(bank)) {
+            switch (bank) {
+                case BankType.BCA:
+                    imageView.setImageResource(R.drawable.bca);
+                    break;
+                case BankType.BNI:
+                    imageView.setImageResource(R.drawable.bni);
+                    break;
+                case BankType.BRI:
+                    imageView.setImageResource(R.drawable.bri);
+                    break;
+                case BankType.CIMB:
+                    imageView.setImageResource(R.drawable.cimb);
+                    break;
+                case BankType.MANDIRI:
+                    imageView.setImageResource(R.drawable.mandiri);
+                    break;
+                case BankType.MAYBANK:
+                    imageView.setImageResource(R.drawable.maybank);
+                    break;
+                case BankType.BNI_DEBIT_ONLINE:
+                    imageView.setImageResource(R.drawable.bni);
+                    break;
+                default:
+                    imageView.setImageDrawable(null);
+                    break;
+            }
+        } else {
+            imageView.setImageDrawable(null);
+        }
     }
 
     @Override

@@ -1,10 +1,15 @@
 package com.midtrans.sdk.core.models.papi;
 
+import com.midtrans.sdk.core.models.BankType;
+import com.midtrans.sdk.core.models.Channel;
+
 /**
  * Created by rakawm on 10/19/16.
  */
 
 public class CardTokenRequest {
+    public static final String TYPE_AUTHORIZE = "authorize";
+
     private String cardNumber;
     private String cardCvv;
     private String cardExpiryMonth;
@@ -89,6 +94,7 @@ public class CardTokenRequest {
         cardTokenRequest.cardExpiryMonth = cardExpiryMonth;
         cardTokenRequest.cardExpiryYear = cardExpiryYear;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
         return cardTokenRequest;
     }
 
@@ -116,6 +122,7 @@ public class CardTokenRequest {
         cardTokenRequest.cardExpiryYear = cardExpiryYear;
         cardTokenRequest.type = type;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
         return cardTokenRequest;
     }
 
@@ -204,6 +211,7 @@ public class CardTokenRequest {
         cardTokenRequest.installment = installment;
         cardTokenRequest.installmentTerm = installmentTerm;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
         return cardTokenRequest;
     }
 
@@ -238,6 +246,7 @@ public class CardTokenRequest {
         cardTokenRequest.installmentTerm = installmentTerm;
         cardTokenRequest.type = type;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
         return cardTokenRequest;
     }
 
@@ -326,6 +335,7 @@ public class CardTokenRequest {
         cardTokenRequest.secure = secure;
         cardTokenRequest.grossAmount = grossAmount;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
         return cardTokenRequest;
     }
 
@@ -360,6 +370,7 @@ public class CardTokenRequest {
         cardTokenRequest.grossAmount = grossAmount;
         cardTokenRequest.type = type;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
         return cardTokenRequest;
     }
 
@@ -466,6 +477,7 @@ public class CardTokenRequest {
         cardTokenRequest.installment = installment;
         cardTokenRequest.installmentTerm = installmentTerm;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
         return cardTokenRequest;
     }
 
@@ -505,6 +517,7 @@ public class CardTokenRequest {
         cardTokenRequest.installmentTerm = installmentTerm;
         cardTokenRequest.type = type;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
         return cardTokenRequest;
     }
 
@@ -539,6 +552,7 @@ public class CardTokenRequest {
      * @param cardCvv      card cvv.
      * @param twoClick     true if two clicks was enabled.
      * @param grossAmount  transaction amount.
+     * @param secure true if 3D secure was enabled.
      * @param type         transaction type.
      * @return card request object.
      */
@@ -546,12 +560,14 @@ public class CardTokenRequest {
                                                              String cardCvv,
                                                              boolean twoClick,
                                                              int grossAmount,
+                                                             boolean secure,
                                                              String type) {
         CardTokenRequest cardTokenRequest = new CardTokenRequest();
         cardTokenRequest.savedTokenId = savedTokenId;
         cardTokenRequest.cardCvv = cardCvv;
         cardTokenRequest.twoClick = twoClick;
         cardTokenRequest.grossAmount = grossAmount;
+        cardTokenRequest.secure = secure;
         cardTokenRequest.type = type;
         return cardTokenRequest;
     }
@@ -563,6 +579,7 @@ public class CardTokenRequest {
      * @param cardCvv      card cvv.
      * @param twoClick     true if two clicks was enabled.
      * @param grossAmount  transaction amount.
+     * @param secure  true if 3D secure was enabled.
      * @param bank         acquiring bank.
      * @return card request object.
      */
@@ -570,13 +587,16 @@ public class CardTokenRequest {
                                                                        String cardCvv,
                                                                        boolean twoClick,
                                                                        int grossAmount,
+                                                                       boolean secure,
                                                                        String bank) {
         CardTokenRequest cardTokenRequest = new CardTokenRequest();
         cardTokenRequest.savedTokenId = savedTokenId;
         cardTokenRequest.cardCvv = cardCvv;
         cardTokenRequest.twoClick = twoClick;
         cardTokenRequest.grossAmount = grossAmount;
+        cardTokenRequest.secure = secure;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
         return cardTokenRequest;
     }
 
@@ -588,6 +608,7 @@ public class CardTokenRequest {
      * @param cardCvv      card cvv.
      * @param twoClick     true if two clicks was enabled.
      * @param grossAmount  transaction amount.
+     * @param secure true if 3D secure was enabled.
      * @param type         transaction type.
      * @param bank         acquiring bank.
      * @return card request object.
@@ -596,6 +617,7 @@ public class CardTokenRequest {
                                                                           String cardCvv,
                                                                           boolean twoClick,
                                                                           int grossAmount,
+                                                                          boolean secure,
                                                                           String type,
                                                                           String bank) {
         CardTokenRequest cardTokenRequest = new CardTokenRequest();
@@ -603,8 +625,10 @@ public class CardTokenRequest {
         cardTokenRequest.cardCvv = cardCvv;
         cardTokenRequest.twoClick = twoClick;
         cardTokenRequest.grossAmount = grossAmount;
+        cardTokenRequest.secure = secure;
         cardTokenRequest.type = type;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
         return cardTokenRequest;
     }
 
@@ -615,6 +639,7 @@ public class CardTokenRequest {
      * @param cardCvv         card cvv.
      * @param twoClick        true if two clicks was enabled.
      * @param grossAmount     transaction amount.
+     * @param secure true if 3D secure was enabled.
      * @param installment     true if installment was enabled.
      * @param installmentTerm installment term.
      * @return card request object.
@@ -623,6 +648,7 @@ public class CardTokenRequest {
                                                                      String cardCvv,
                                                                      boolean twoClick,
                                                                      int grossAmount,
+                                                                     boolean secure,
                                                                      boolean installment,
                                                                      int installmentTerm) {
         CardTokenRequest cardTokenRequest = new CardTokenRequest();
@@ -630,6 +656,7 @@ public class CardTokenRequest {
         cardTokenRequest.cardCvv = cardCvv;
         cardTokenRequest.twoClick = twoClick;
         cardTokenRequest.grossAmount = grossAmount;
+        cardTokenRequest.secure = secure;
         cardTokenRequest.installment = installment;
         cardTokenRequest.installmentTerm = installmentTerm;
         return cardTokenRequest;
@@ -642,6 +669,7 @@ public class CardTokenRequest {
      * @param cardCvv         card cvv.
      * @param twoClick        true if two clicks was enabled.
      * @param grossAmount     transaction amount.
+     * @param secure true if 3D secure is enabled
      * @param installment     true if installment was enabled.
      * @param installmentTerm installment term.
      * @param type            transaction type.
@@ -651,6 +679,7 @@ public class CardTokenRequest {
                                                                         String cardCvv,
                                                                         boolean twoClick,
                                                                         int grossAmount,
+                                                                        boolean secure,
                                                                         boolean installment,
                                                                         int installmentTerm,
                                                                         String type) {
@@ -659,6 +688,7 @@ public class CardTokenRequest {
         cardTokenRequest.cardCvv = cardCvv;
         cardTokenRequest.twoClick = twoClick;
         cardTokenRequest.grossAmount = grossAmount;
+        cardTokenRequest.secure = secure;
         cardTokenRequest.installment = installment;
         cardTokenRequest.installmentTerm = installmentTerm;
         cardTokenRequest.type = type;
@@ -673,6 +703,7 @@ public class CardTokenRequest {
      * @param cardCvv         card cvv.
      * @param twoClick        true if two clicks was enabled.
      * @param grossAmount     transaction amount.
+     * @param secure true if 3D secure was enabled.
      * @param installment     true if installment was enabled.
      * @param installmentTerm installment term.
      * @param bank            acquiring bank.
@@ -682,6 +713,7 @@ public class CardTokenRequest {
                                                                                   String cardCvv,
                                                                                   boolean twoClick,
                                                                                   int grossAmount,
+                                                                                  boolean secure,
                                                                                   boolean installment,
                                                                                   int installmentTerm,
                                                                                   String bank) {
@@ -690,9 +722,11 @@ public class CardTokenRequest {
         cardTokenRequest.cardCvv = cardCvv;
         cardTokenRequest.twoClick = twoClick;
         cardTokenRequest.grossAmount = grossAmount;
+        cardTokenRequest.secure = secure;
         cardTokenRequest.installment = installment;
         cardTokenRequest.installmentTerm = installmentTerm;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
         return cardTokenRequest;
     }
 
@@ -704,6 +738,7 @@ public class CardTokenRequest {
      * @param cardCvv         card cvv.
      * @param twoClick        true if two clicks was enabled.
      * @param grossAmount     transaction amount.
+     * @param secure true if 3D secure was enabled.
      * @param installment     true if installment was enabled.
      * @param installmentTerm installment term.
      * @param type            transaction type.
@@ -714,6 +749,7 @@ public class CardTokenRequest {
                                                                                      String cardCvv,
                                                                                      boolean twoClick,
                                                                                      int grossAmount,
+                                                                                     boolean secure,
                                                                                      boolean installment,
                                                                                      int installmentTerm,
                                                                                      String type,
@@ -723,11 +759,24 @@ public class CardTokenRequest {
         cardTokenRequest.cardCvv = cardCvv;
         cardTokenRequest.twoClick = twoClick;
         cardTokenRequest.grossAmount = grossAmount;
+        cardTokenRequest.secure = secure;
         cardTokenRequest.installment = installment;
         cardTokenRequest.installmentTerm = installmentTerm;
         cardTokenRequest.type = type;
         cardTokenRequest.bank = bank;
+        setChannel(cardTokenRequest);
+
         return cardTokenRequest;
+    }
+
+    private static void setChannel(CardTokenRequest cardTokenRequest) {
+        if (cardTokenRequest.bank.equalsIgnoreCase(BankType.BCA)
+                || cardTokenRequest.bank.equalsIgnoreCase(BankType.MAYBANK)
+                || cardTokenRequest.bank.equalsIgnoreCase(BankType.BRI)) {
+            cardTokenRequest.setChannel(Channel.MIGS);
+        } else {
+            cardTokenRequest.setChannel(Channel.DRAGON);
+        }
     }
 
     public String getCardNumber() {
@@ -800,6 +849,10 @@ public class CardTokenRequest {
 
     public void setCardType(String cardType) {
         this.type = cardType;
+    }
+
+    public String getChannel() {
+        return channel;
     }
 
     public void setChannel(String channel) {

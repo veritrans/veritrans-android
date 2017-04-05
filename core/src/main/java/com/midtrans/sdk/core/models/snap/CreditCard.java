@@ -2,7 +2,6 @@ package com.midtrans.sdk.core.models.snap;
 
 import com.midtrans.sdk.core.models.snap.card.Installment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,17 +15,24 @@ public class CreditCard {
     public final String channel;
     public final String bank;
     public final List<SavedToken> savedTokens;
+    public final String type;
     public Installment installment;
     public List<String> whitelistBins;
 
 
-
-    public CreditCard(boolean saveCard, boolean secure, String tokenId, String channel, String bank, List<SavedToken> savedTokens) {
+    public CreditCard(boolean saveCard,
+                      boolean secure,
+                      String tokenId,
+                      String channel,
+                      String bank,
+                      List<SavedToken> savedTokens,
+                      String type) {
         this.saveCard = saveCard;
         this.secure = secure;
         this.tokenId = tokenId;
         this.channel = channel;
         this.bank = bank;
         this.savedTokens = savedTokens;
+        this.type = type;
     }
 }

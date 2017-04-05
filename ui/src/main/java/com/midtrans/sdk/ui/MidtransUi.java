@@ -1,17 +1,22 @@
 package com.midtrans.sdk.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.midtrans.sdk.core.Environment;
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
+import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
 import com.midtrans.sdk.core.utils.Logger;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
 import com.midtrans.sdk.ui.themes.CustomColorTheme;
+import com.midtrans.sdk.ui.utils.CreditCardUtils;
 import com.midtrans.sdk.ui.views.transaction.TransactionActivity;
+
+import java.util.List;
 
 /**
  * Created by ziahaqi on 2/19/17.
@@ -241,6 +246,16 @@ public class MidtransUi {
      */
     public void setPaymentCallback(MidtransUiCallback paymentCallback) {
         this.paymentCallback = paymentCallback;
+    }
+
+    /**
+     * Return local bank bins data.
+     *
+     * @param context application context.
+     * @return list of bank bins data.
+     */
+    public List<BankBinsResponse> getBankBinsFromLocal(Context context) {
+        return CreditCardUtils.getBankBins(context);
     }
 
     /**
