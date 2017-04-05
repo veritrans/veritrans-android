@@ -138,7 +138,7 @@ public class BankTransferPaymentFragment extends Fragment {
         Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
         intent.putExtra(BankTransferInstructionActivity.BANK, getArguments().getString(BankTransferInstructionActivity.BANK));
         getActivity().startActivity(intent);
-        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                 && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
             getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
@@ -149,7 +149,7 @@ public class BankTransferPaymentFragment extends Fragment {
         intent.putExtra(BankTransferInstructionActivity.BANK, getArguments().getString(BankTransferInstructionActivity.BANK));
         intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, downloadUrl);
         getActivity().startActivity(intent);
-        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                 && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
             getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }

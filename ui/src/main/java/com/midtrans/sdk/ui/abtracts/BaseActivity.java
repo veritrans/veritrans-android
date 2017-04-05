@@ -262,18 +262,24 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public  void setEditTextColorFilter(AppCompatEditText editText) {
+    public void setTextInputLayoutColorFilter(TextInputLayout textInputLayout) {
         try {
             Field fDefaultTextColor = TextInputLayout.class.getDeclaredField(DEFAULT_TEXT_COLOR);
             fDefaultTextColor.setAccessible(true);
-            fDefaultTextColor.set(editText, new ColorStateList(new int[][]{{0}}, new int[]{getSecondaryColor()}));
+            fDefaultTextColor.set(textInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{getSecondaryColor()}));
 
             Field fFocusedTextColor = TextInputLayout.class.getDeclaredField(FOCUSED_TEXT_COLOR);
             fFocusedTextColor.setAccessible(true);
-            fFocusedTextColor.set(editText, new ColorStateList(new int[][]{{0}}, new int[]{getSecondaryColor()}));
+            fFocusedTextColor.set(textInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{getSecondaryColor()}));
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setEditTextCompatBackgroundTintColor(AppCompatEditText editText) {
+        try {
             editText.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{getSecondaryColor()}));
-
         } catch (Exception e) {
             e.printStackTrace();
         }

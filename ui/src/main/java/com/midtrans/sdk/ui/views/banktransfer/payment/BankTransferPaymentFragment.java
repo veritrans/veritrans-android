@@ -61,7 +61,8 @@ public class BankTransferPaymentFragment extends BaseFragment implements BankTra
     }
 
     private void setupView() {
-        setEditTextColorFilter(editEmail);
+        setTextInputColorFilter(textEmail);
+        setEditTextCompatBackgroundTintColor(editEmail);
         tabLayout.setSelectedTabIndicatorColor(getPrimaryColor());
         pagerInstruction.setPageMargin(PAGE_MARGIN);
         int pageNumber;
