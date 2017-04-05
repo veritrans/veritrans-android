@@ -32,10 +32,13 @@ public class PaymentResult<T extends BaseTransactionResponse> implements Seriali
 
     private void initPaymentStatus() {
         if (transactionResponse.statusCode.equals(PaymentStatus.CODE_200) ||
-                transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.SUCCESS) ||
-                transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.SETTLEMENT)) {
+                (!TextUtils.isEmpty(transactionResponse.transactionStatus) &&
+                        (transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.SUCCESS) ||
+                                transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.SETTLEMENT)))) {
             paymentStatus = PaymentStatus.SUCCESS;
-        } else if (transactionResponse.statusCode.equals(PaymentStatus.PENDING) || transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.PENDING)) {
+        } else if (transactionResponse.statusCode.equals(PaymentStatus.CODE_201)
+                || (!TextUtils.isEmpty(transactionResponse.transactionStatus)
+                && transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.PENDING))) {
             if (transactionResponse.fraudStatus.equalsIgnoreCase(PaymentStatus.CHALLENGE)) {
                 paymentStatus = PaymentStatus.CHALLENGE;
             } else {

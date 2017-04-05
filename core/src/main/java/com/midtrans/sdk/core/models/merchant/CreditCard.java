@@ -18,6 +18,7 @@ public class CreditCard implements Serializable {
     private String channel;
     private String bank;
     private List<SavedToken> savedTokens;
+    private String type;
 
     public boolean isSaveCard() {
         return saveCard;
@@ -65,5 +66,13 @@ public class CreditCard implements Serializable {
 
     public void setSavedTokens(List<SavedToken> savedTokens) {
         this.savedTokens = savedTokens;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

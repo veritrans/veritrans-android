@@ -100,42 +100,190 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
         CardTokenRequest cardTokenRequest;
         if (creditCard.secure) {
             if (isInstallmentAvailable() && getSelectedInstallmentTerm() != 0) {
-                cardTokenRequest = CardTokenRequest.newNormalInstallmentSecureCard(
-                        cardNumber,
-                        cvv,
-                        expiryMonth,
-                        expiryYear,
-                        true,
-                        transaction.transactionDetails.grossAmount,
-                        true,
-                        getSelectedInstallmentTerm()
-                );
+                if (!TextUtils.isEmpty(creditCard.type)) {
+                    if (!TextUtils.isEmpty(creditCard.bank)) {
+                        cardTokenRequest = CardTokenRequest.newAcquiringBankAuthorizeInstallmentSecureCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                transaction.transactionDetails.grossAmount,
+                                true,
+                                getSelectedInstallmentTerm(),
+                                creditCard.type,
+                                creditCard.bank
+                        );
+                    } else {
+                        cardTokenRequest = CardTokenRequest.newAuthorizeInstallmentSecureCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                transaction.transactionDetails.grossAmount,
+                                true,
+                                getSelectedInstallmentTerm(),
+                                creditCard.type
+                        );
+                    }
+                } else {
+                    if (!TextUtils.isEmpty(creditCard.bank)) {
+                        cardTokenRequest = CardTokenRequest.newAcquiringBankNormalInstallmentSecureCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                transaction.transactionDetails.grossAmount,
+                                true,
+                                getSelectedInstallmentTerm(),
+                                creditCard.bank
+                        );
+                    } else {
+                        cardTokenRequest = CardTokenRequest.newNormalInstallmentSecureCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                transaction.transactionDetails.grossAmount,
+                                true,
+                                getSelectedInstallmentTerm()
+                        );
+                    }
+                }
             } else {
-                cardTokenRequest = CardTokenRequest.newNormalSecureCard(
-                        cardNumber,
-                        cvv,
-                        expiryMonth,
-                        expiryYear,
-                        true,
-                        transaction.transactionDetails.grossAmount);
+                if (!TextUtils.isEmpty(creditCard.type)) {
+                    if (!TextUtils.isEmpty(creditCard.bank)) {
+                        cardTokenRequest = CardTokenRequest.newAcquiringBankAuthorizeSecureCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                transaction.transactionDetails.grossAmount,
+                                creditCard.type,
+                                creditCard.bank
+                        );
+                    } else {
+                        cardTokenRequest = CardTokenRequest.newAuthorizeSecureCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                transaction.transactionDetails.grossAmount,
+                                creditCard.type
+                        );
+                    }
+                } else {
+                    if (!TextUtils.isEmpty(creditCard.bank)) {
+                        cardTokenRequest = CardTokenRequest.newAcquiringBankNormalSecureCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                transaction.transactionDetails.grossAmount,
+                                creditCard.bank
+                        );
+                    } else {
+                        cardTokenRequest = CardTokenRequest.newNormalSecureCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                transaction.transactionDetails.grossAmount);
+                    }
+                }
             }
         } else {
             if (isInstallmentAvailable() && getSelectedInstallmentTerm() != 0) {
-                cardTokenRequest = CardTokenRequest.newNormalInstallmentCard(
-                        cardNumber,
-                        cvv,
-                        expiryMonth,
-                        expiryYear,
-                        true,
-                        getSelectedInstallmentTerm()
-                );
+                if (!TextUtils.isEmpty(creditCard.type)) {
+                    if (!TextUtils.isEmpty(creditCard.bank)) {
+                        cardTokenRequest = CardTokenRequest.newAcquiringBankAuthorizeInstallmentCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                getSelectedInstallmentTerm(),
+                                creditCard.type,
+                                creditCard.bank
+                        );
+                    } else {
+                        cardTokenRequest = CardTokenRequest.newAuthorizeInstallmentCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                getSelectedInstallmentTerm(),
+                                creditCard.type
+                        );
+                    }
+                } else {
+                    if (!TextUtils.isEmpty(creditCard.bank)) {
+                        cardTokenRequest = CardTokenRequest.newAcquiringBankInstallmentCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                getSelectedInstallmentTerm(),
+                                creditCard.bank
+                        );
+                    } else {
+                        cardTokenRequest = CardTokenRequest.newNormalInstallmentCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                true,
+                                getSelectedInstallmentTerm()
+                        );
+                    }
+                }
             } else {
-                cardTokenRequest = CardTokenRequest.newNormalCard(
-                        cardNumber,
-                        cvv,
-                        expiryMonth,
-                        expiryYear
-                );
+                if (!TextUtils.isEmpty(creditCard.type)) {
+                    if (!TextUtils.isEmpty(creditCard.bank)) {
+                        cardTokenRequest = CardTokenRequest.newAcquiringBankAuthorizeCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                creditCard.type,
+                                creditCard.bank
+                        );
+                    } else {
+                        cardTokenRequest = CardTokenRequest.newAuthorizeCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                creditCard.type
+                        );
+                    }
+                } else {
+                    if (!TextUtils.isEmpty(creditCard.bank)) {
+                        cardTokenRequest = CardTokenRequest.newAcquiringBankNormalCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear,
+                                creditCard.bank
+                        );
+                    } else {
+                        cardTokenRequest = CardTokenRequest.newNormalCard(
+                                cardNumber,
+                                cvv,
+                                expiryMonth,
+                                expiryYear
+                        );
+                    }
+                }
             }
         }
         MidtransCore.getInstance().getCardToken(cardTokenRequest, getCardTokenCallback);
@@ -146,22 +294,97 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
         CreditCard creditCard = snapTransaction.creditCard;
         CardTokenRequest cardTokenRequest;
         if (isInstallmentAvailable() && getSelectedInstallmentTerm() != 0) {
-            cardTokenRequest = CardTokenRequest.newNormalInstallmentTwoClicksCard(
-                    savedToken.token,
-                    cvv,
-                    true,
-                    snapTransaction.transactionDetails.grossAmount,
-                    creditCard.secure,
-                    getSelectedInstallmentTerm()
-            );
+            if (!TextUtils.isEmpty(creditCard.type)) {
+                if (!TextUtils.isEmpty(creditCard.bank)) {
+                    cardTokenRequest = CardTokenRequest.newAcquiringBankAuthorizeInstallmentTwoClicksCard(
+                            savedToken.token,
+                            cvv,
+                            true,
+                            snapTransaction.transactionDetails.grossAmount,
+                            true,
+                            creditCard.secure,
+                            getSelectedInstallmentTerm(),
+                            creditCard.type,
+                            creditCard.bank
+                    );
+                } else {
+                    cardTokenRequest = CardTokenRequest.newAuthorizeInstallmentTwoClicksCard(
+                            savedToken.token,
+                            cvv,
+                            true,
+                            snapTransaction.transactionDetails.grossAmount,
+                            creditCard.secure,
+                            true,
+                            getSelectedInstallmentTerm(),
+                            creditCard.type
+                    );
+                }
+            } else {
+                if (!TextUtils.isEmpty(creditCard.bank)) {
+                    cardTokenRequest = CardTokenRequest.newAcquiringBankNormalInstallmentTwoClicksCard(
+                            savedToken.token,
+                            cvv,
+                            true,
+                            snapTransaction.transactionDetails.grossAmount,
+                            creditCard.secure,
+                            true,
+                            getSelectedInstallmentTerm(),
+                            creditCard.bank
+                    );
+                } else {
+                    cardTokenRequest = CardTokenRequest.newNormalInstallmentTwoClicksCard(
+                            savedToken.token,
+                            cvv,
+                            true,
+                            snapTransaction.transactionDetails.grossAmount,
+                            creditCard.secure,
+                            true,
+                            getSelectedInstallmentTerm()
+                    );
+                }
+            }
         } else {
-            cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard(
-                    savedToken.token,
-                    cvv,
-                    true,
-                    creditCard.secure,
-                    snapTransaction.transactionDetails.grossAmount
-            );
+            if (!TextUtils.isEmpty(creditCard.type)) {
+                if (!TextUtils.isEmpty(creditCard.bank)) {
+                    cardTokenRequest = CardTokenRequest.newAcquiringBankAuthorizeTwoClicksCard(
+                            savedToken.token,
+                            cvv,
+                            true,
+                            snapTransaction.transactionDetails.grossAmount,
+                            creditCard.secure,
+                            creditCard.type,
+                            creditCard.bank
+                    );
+                } else {
+                    cardTokenRequest = CardTokenRequest.newAuthorizeTwoClicksCard(
+                            savedToken.token,
+                            cvv,
+                            true,
+                            snapTransaction.transactionDetails.grossAmount,
+                            creditCard.secure,
+                            creditCard.type
+                    );
+                }
+            } else {
+                if (!TextUtils.isEmpty(creditCard.bank)) {
+                    cardTokenRequest = CardTokenRequest.newAcquiringBankNormalTwoClicksCard(
+                            savedToken.token,
+                            cvv,
+                            true,
+                            snapTransaction.transactionDetails.grossAmount,
+                            creditCard.secure,
+                            creditCard.bank
+                    );
+                } else {
+                    cardTokenRequest = CardTokenRequest.newNormalTwoClicksCard(
+                            savedToken.token,
+                            cvv,
+                            true,
+                            creditCard.secure,
+                            snapTransaction.transactionDetails.grossAmount
+                    );
+                }
+            }
         }
         MidtransCore.getInstance().getCardToken(cardTokenRequest, getCardTokenCallback);
     }
@@ -404,7 +627,10 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
     }
 
     public int getSelectedInstallmentTerm() {
-        return selectedInstallmentTerms.get(installmentCurrentPosition);
+        if (selectedInstallmentTerms != null) {
+            return selectedInstallmentTerms.get(installmentCurrentPosition);
+        }
+        return 0;
     }
 
     public boolean isInstallmentValid() {

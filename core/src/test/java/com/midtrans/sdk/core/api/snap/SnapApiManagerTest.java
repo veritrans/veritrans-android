@@ -88,7 +88,7 @@ public class SnapApiManagerTest {
                 null,
                 null,
                 enabledPayments,
-                new CreditCard(false, false, null, null, null, null),
+                new CreditCard(false, false, null, null, null, null, null),
                 new SnapMerchantData(
                         new SnapMerchantPreference("test-merchant", null, null, null, null, null, null, null),
                         "clientkey",
