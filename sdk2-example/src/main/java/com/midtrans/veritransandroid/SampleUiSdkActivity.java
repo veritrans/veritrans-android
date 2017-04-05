@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
 import com.midtrans.sdk.core.models.merchant.CreditCard;
 import com.midtrans.sdk.core.models.merchant.CustomerDetails;
 import com.midtrans.sdk.core.models.merchant.ItemDetails;
+import com.midtrans.sdk.core.models.papi.CardTokenRequest;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.MidtransUiCallback;
 import com.midtrans.sdk.ui.models.PaymentResult;
@@ -33,7 +35,8 @@ import java.util.UUID;
 public class SampleUiSdkActivity extends AppCompatActivity {
 
     private RadioButton rbCardNormal, rbCardTwoclick, rbCardOneclick, rb3dsSecure, rb3dsNotSecure,
-            rbBankBni, rbBankMandiri, rbBankBca, rbBankMyBank, rbBankBri;
+            rbBankBni, rbBankMandiri, rbBankBca, rbBankMyBank, rbBankBri, preAuthActive;
+    private EditText etCustomField1, etCustomField2, etCustomField3;
 
     private Button buttonUiSdk;
 
@@ -51,7 +54,10 @@ public class SampleUiSdkActivity extends AppCompatActivity {
         rbBankBri = (RadioButton) findViewById(R.id.radio_bri);
         rbBankMandiri = (RadioButton) findViewById(R.id.radio_mandiri);
         rbBankMyBank = (RadioButton) findViewById(R.id.radio_maybank);
-
+        preAuthActive = (RadioButton) findViewById(R.id.radio_pre_auth_active);
+        etCustomField1 = (EditText) findViewById(R.id.custom_field1);
+        etCustomField2 = (EditText) findViewById(R.id.custom_field2);
+        etCustomField3 = (EditText) findViewById(R.id.custom_field3);
         buttonUiSdk = (Button) findViewById(R.id.show_ui_flow);
 
         setupViews();
@@ -132,10 +138,10 @@ public class SampleUiSdkActivity extends AppCompatActivity {
             creditCard.setChannel(Channel.MIGS);
         }
 
-//        if (preAuthActive.isChecked()) {
-//            // Set Pre Auth mode
-//            creditCard.setType(CardTokenRequest.TYPE_AUTHORIZE);
-//        }
+        if (preAuthActive.isChecked()) {
+            // Set Pre Auth mode
+            creditCard.setType(CardTokenRequest.TYPE_AUTHORIZE);
+        }
 
         if (rbCardOneclick.isChecked()) {
             creditCard.setSecure(true);
@@ -151,6 +157,10 @@ public class SampleUiSdkActivity extends AppCompatActivity {
             }
         }
 
-        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", creditCard, itemDetailsList, customerDetails, checkoutOrderDetails, null, null);
+        String customField1 = etCustomField1.getText().toString();
+        String customField2 = etCustomField2.getText().toString();
+        String customField3 = etCustomField3.getText().toString();
+
+        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", creditCard, itemDetailsList, customerDetails, checkoutOrderDetails, null, customField1, customField2, customField3);
     }
 }

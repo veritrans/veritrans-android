@@ -25,6 +25,7 @@ import com.midtrans.sdk.ui.adapters.SavedCardsAdapter;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
+import com.midtrans.sdk.ui.models.SavedCard;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.views.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.ui.widgets.FancyButton;
@@ -65,7 +66,7 @@ public class SavedCardActivity extends BaseActivity implements SavedCardView {
     }
 
     private void initPresenter() {
-        presenter = new SavedCardPresenter();
+        presenter = new SavedCardPresenter(this);
         presenter.setSavedCardView(this);
     }
 
@@ -133,25 +134,28 @@ public class SavedCardActivity extends BaseActivity implements SavedCardView {
     }
 
     private void initCards() {
-        if (presenter.getSavedCards() != null) {
+        if (presenter.getSavedCards() != null
+                && !presenter.getSavedCards().isEmpty()) {
             adapter.setData(presenter.getSavedCards());
             adapter.notifyDataSetChanged();
             adapter.setListener(new SavedCardsAdapter.SavedCardAdapterEventListener() {
                 @Override
                 public void onItemClick(int position) {
-                    SavedToken savedToken = adapter.getItem(position);
-                    startCardDetails(savedToken);
+                    SavedCard savedToken = adapter.getItem(position);
+                    startCardDetails(savedToken.getSavedToken());
                 }
             });
             adapter.setDeleteCardListener(new SavedCardsAdapter.DeleteCardListener() {
                 @Override
                 public void onItemDelete(int position) {
                     if (position != RecyclerView.NO_POSITION) {
-                        SavedToken savedToken = adapter.getItem(position);
-                        showDeleteConfirmation(savedToken);
+                        SavedCard savedToken = adapter.getItem(position);
+                        showDeleteConfirmation(savedToken.getSavedToken());
                     }
                 }
             });
+        } else {
+            startCardDetails();
         }
     }
 
@@ -182,7 +186,9 @@ public class SavedCardActivity extends BaseActivity implements SavedCardView {
                 && midtransUi.getColorTheme() != null
                 && midtransUi.getColorTheme().getPrimaryDarkColor() != 0) {
             Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
             positiveButton.setTextColor(midtransUi.getColorTheme().getPrimaryDarkColor());
+            negativeButton.setTextColor(midtransUi.getColorTheme().getPrimaryDarkColor());
         }
     }
 

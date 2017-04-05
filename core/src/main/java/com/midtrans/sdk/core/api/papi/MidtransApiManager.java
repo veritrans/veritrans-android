@@ -1,7 +1,10 @@
 package com.midtrans.sdk.core.api.papi;
 
+import android.text.TextUtils;
+
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
+import com.midtrans.sdk.core.models.Channel;
 import com.midtrans.sdk.core.models.papi.CardTokenRequest;
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
 
@@ -40,7 +43,8 @@ public class MidtransApiManager {
                     cardTokenRequest.getType(),
                     cardTokenRequest.getBank(),
                     cardTokenRequest.isInstallment(),
-                    cardTokenRequest.getInstallmentTerm()
+                    cardTokenRequest.getInstallmentTerm(),
+                    !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON
             );
         } else {
             if (cardTokenRequest.isSecure()) {
@@ -55,7 +59,8 @@ public class MidtransApiManager {
                         cardTokenRequest.getType(),
                         cardTokenRequest.getBank(),
                         cardTokenRequest.isInstallment(),
-                        cardTokenRequest.getInstallmentTerm()
+                        cardTokenRequest.getInstallmentTerm(),
+                        !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON
                 );
             } else {
                 cardTokenResponseCall = midtransApi.getCardToken(
@@ -67,7 +72,8 @@ public class MidtransApiManager {
                         cardTokenRequest.getType(),
                         cardTokenRequest.getBank(),
                         cardTokenRequest.isInstallment(),
-                        cardTokenRequest.getInstallmentTerm()
+                        cardTokenRequest.getInstallmentTerm(),
+                        !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON
                 );
             }
         }

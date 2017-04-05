@@ -1,10 +1,7 @@
 package com.midtrans.sdk.core.models.merchant;
 
-import com.midtrans.sdk.core.utils.Utilities;
-
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rakawm on 10/19/16.
@@ -17,7 +14,9 @@ public class CheckoutTokenRequest implements Serializable {
     public CustomerDetails customerDetails;
     public CheckoutOrderDetails transactionDetails;
     public Expiry expiry;
-    public Object custom;
+    public String customField1;
+    public String customField2;
+    public String customField3;
 
     /**
      * Create minimal checkout using transaction details.
@@ -41,16 +40,20 @@ public class CheckoutTokenRequest implements Serializable {
      * @param customerDetails    customer details.
      * @param transactionDetails transaction details.
      * @param expiry             custom expiry details.
-     * @param custom             custom map (key-value) object.
+     * @param customField1       custom field 1.
+     * @param customField2       custom field 2.
+     * @param customField3       custom field 3
      * @return checkout token request.
      */
-    public static CheckoutTokenRequest  newCompleteCheckout(String userId,
+    public static CheckoutTokenRequest newCompleteCheckout(String userId,
                                                            CreditCard creditCard,
                                                            List<ItemDetails> itemDetails,
                                                            CustomerDetails customerDetails,
                                                            CheckoutOrderDetails transactionDetails,
                                                            Expiry expiry,
-                                                           Map<String, String> custom) {
+                                                           String customField1,
+                                                           String customField2,
+                                                           String customField3) {
         CheckoutTokenRequest checkoutTokenRequest = new CheckoutTokenRequest();
         checkoutTokenRequest.userId = userId;
         checkoutTokenRequest.creditCard = creditCard;
@@ -58,9 +61,9 @@ public class CheckoutTokenRequest implements Serializable {
         checkoutTokenRequest.customerDetails = customerDetails;
         checkoutTokenRequest.transactionDetails = transactionDetails;
         checkoutTokenRequest.expiry = expiry;
-        if (custom != null && !custom.isEmpty()) {
-            checkoutTokenRequest.custom = Utilities.createCustomMapObject(custom);
-        }
+        checkoutTokenRequest.customField1 = customField1;
+        checkoutTokenRequest.customField2 = customField2;
+        checkoutTokenRequest.customField3 = customField3;
         return checkoutTokenRequest;
     }
 }

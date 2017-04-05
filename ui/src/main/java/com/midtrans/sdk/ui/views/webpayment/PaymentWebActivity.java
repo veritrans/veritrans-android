@@ -7,7 +7,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.Button;
 
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.constants.Constants;
@@ -92,6 +94,19 @@ public class PaymentWebActivity extends BaseActivity {
                 .setMessage(R.string.cancel_transaction_message)
                 .create();
         dialog.show();
+
+        changeDialogButtonColor(dialog);
     }
 
+    private void changeDialogButtonColor(AlertDialog alertDialog) {
+        if (alertDialog.isShowing()
+                && MidtransUi.getInstance() != null
+                && MidtransUi.getInstance().getColorTheme() != null
+                && MidtransUi.getInstance().getColorTheme().getPrimaryDarkColor() != 0) {
+            Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            positiveButton.setTextColor(MidtransUi.getInstance().getColorTheme().getPrimaryDarkColor());
+            negativeButton.setTextColor(MidtransUi.getInstance().getColorTheme().getPrimaryDarkColor());
+        }
+    }
 }
